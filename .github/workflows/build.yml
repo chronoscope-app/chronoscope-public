@@ -72,11 +72,12 @@ jobs:
           xcrun swiftc --version
           xcrun --sdk macosx --show-sdk-version
           xcrun --sdk macosx --show-sdk-path
-          find "$(xcrun --sdk macosx --show-sdk-path)" \( -name '*AppIntents*.tbd' -o -name '*FoundationModels*.tbd' \) -print
+          SDK="$(cd "$(xcrun --sdk macosx --show-sdk-path)" && pwd -P)"
+          printf 'Canonical macOS SDK: %s\n' "$SDK"
+          find "$SDK" \( -name '*AppIntents*.tbd' -o -name '*FoundationModels*.tbd' \) -print
           xcrun --find appintentsmetadataprocessor
           test "$(uname -m)" = arm64
           test "$(xcrun --sdk macosx --show-sdk-version)" = 26.5
-          SDK="$(xcrun --sdk macosx --show-sdk-path)"
           test -e "$SDK/System/Library/Frameworks/FoundationModels.framework/FoundationModels.tbd"
           test -e "$SDK/System/Library/Frameworks/AppIntents.framework/AppIntents.tbd"
           find "$SDK" -name '_AppIntents_AppKit.tbd' -print | grep .
