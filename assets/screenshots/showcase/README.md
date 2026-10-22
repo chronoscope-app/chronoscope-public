@@ -4,28 +4,28 @@ These 16 screenshots were selected from the delivered **October 22, 2026 Chronos
 
 Capture source: Chronoscope **0.15.2**, commit `915de1cff20fb465e5d78bdd6a49e9d1cec10257`. Renderer recorded by the capture manifest: Native Linux Tauri / WebKitGTK / Cesium WebGL2, software GPU. These are application screenshots, not a hardware-performance or cross-platform acceptance test.
 
-The image files are **byte-identical full-resolution 1920 × 1200 WebP payloads** from the simple gallery and original showcase; no recapture, resize or recompression was applied. They are smaller than the matching original PNGs. The standalone HTML gallery is not part of this repository.
+The canonical gallery images are **full-resolution 1920 × 1200 PNGs**, converted losslessly from the exact selected WebP payloads in the simple gallery and original showcase. Every decoded RGBA pixel is identical to its selected source; no recapture, resize, enhancement or generated content was applied. The original WebP files remain as unused provenance assets. The standalone HTML gallery is not part of this repository.
 
 ## Picture order
 
 | Gallery picture | Title / image | View |
 | --- | --- | --- |
-| 1 | [A migration drawn through time](01-storks-migration-time.webp) | Space-time |
-| 4 | [Three birds, three journeys](04-storks-map.webp) | 2D Map |
-| 6 | [August departure](06-storks-august.webp) | Space-time |
-| 12 | [Ocean journeys](12-seals-ocean.webp) | 2D Map |
-| 17 | [Along the Belgian coast](17-gulls-coastal-tracks.webp) | 2D Map |
-| 20 | [Coastal movement through June](20-gulls-space-time.webp) | Space-time |
-| 23 | [Approaching the waterfront](23-ships-port-close.webp) | 2D Map |
-| 24 | [A day of traffic in three dimensions](24-ships-space-time.webp) | Space-time |
-| 27 | [Vessel types and recorded speed](27-ships-speed-chart.webp) | 2D Map |
-| 28 | [A decade across the Atlantic](28-hurricanes-atlantic-globe.webp) | Globe |
-| 35 | [The Pacific Ring of Fire](35-earthquakes-pacific.webp) | Globe |
-| 41 | [London heat map in daylight](41-crime-london-light.webp) | 2D Map |
-| 42 | [Published reports as count cells](42-crime-density.webp) | 2D Map |
-| 54 | [Dive depths beside ocean tracks](54-compact-seals-depth-chart.webp) | 2D Map |
-| 56 | [Coastal GPS with a compact speed chart](56-compact-gulls-speed-chart.webp) | 2D Map |
-| 57 | [Bay traffic with a compact comparison](57-compact-ships-speed-chart.webp) | 2D Map |
+| 1 | [A migration drawn through time](01-storks-migration-time.png) | Space-time |
+| 4 | [Three birds, three journeys](04-storks-map.png) | 2D Map |
+| 6 | [August departure](06-storks-august.png) | Space-time |
+| 12 | [Ocean journeys](12-seals-ocean.png) | 2D Map |
+| 17 | [Along the Belgian coast](17-gulls-coastal-tracks.png) | 2D Map |
+| 20 | [Coastal movement through June](20-gulls-space-time.png) | Space-time |
+| 23 | [Approaching the waterfront](23-ships-port-close.png) | 2D Map |
+| 24 | [A day of traffic in three dimensions](24-ships-space-time.png) | Space-time |
+| 27 | [Vessel types and recorded speed](27-ships-speed-chart.png) | 2D Map |
+| 28 | [A decade across the Atlantic](28-hurricanes-atlantic-globe.png) | Globe |
+| 35 | [The Pacific Ring of Fire](35-earthquakes-pacific.png) | Globe |
+| 41 | [London heat map in daylight](41-crime-london-light.png) | 2D Map |
+| 42 | [Published reports as count cells](42-crime-density.png) | 2D Map |
+| 54 | [Dive depths beside ocean tracks](54-compact-seals-depth-chart.png) | 2D Map |
+| 56 | [Coastal GPS with a compact speed chart](56-compact-gulls-speed-chart.png) | 2D Map |
+| 57 | [Bay traffic with a compact comparison](57-compact-ships-speed-chart.png) | 2D Map |
 
 ## Data sources and interpretation
 
