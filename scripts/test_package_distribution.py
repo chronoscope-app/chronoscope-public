@@ -36,12 +36,13 @@ class SourceArchiveTests(unittest.TestCase):
         self.output = self.base / 'source.zip'
         self.git('init', '-q')
         put(self.repo, 'README.md', 'reviewed source\n')
-        put(self.repo, 'scripts/run.sh', '#!/bin/sh\nexit 0\n').chmod(0o755)
+        put(self.repo, 'scripts/run.sh', '#!/bin/sh\nexit 0\n')
         put(self.repo, '.env.example', 'EXAMPLE=\n')
         self.git('add', '.')
-        # Windows filesystems do not convey POSIX execute bits to Git.
-        # The export contract is the indexed mode, so set that fixture explicitly.
-        self.git('update-index', '--chmod=+x', 'scripts/run.sh')
+        # ZIP permissions come from Git's index, not the host filesystem.
+        # Windows chmod cannot set the executable bit; core.filemode=false
+        # also disables filesystem-mode detection on otherwise POSIX hosts.
+        self.git('update-index', '--chmod=+x', '--', 'scripts/run.sh')
         self.git('-c', 'user.name=Packaging fixture', '-c', 'user.email=fixture@example.invalid',
                  'commit', '-qm', 'fixture')
 
@@ -64,6 +65,25 @@ class SourceArchiveTests(unittest.TestCase):
         with zipfile.ZipFile(self.output) as archive:
             self.assertEqual(archive.read('chronoscope/README.md'), b'tracked local edit\n')
             self.assertEqual((archive.getinfo('chronoscope/scripts/run.sh').external_attr >> 16) & 0o777, 0o755)
+
+    def test_archive_permissions_follow_index_not_worktree(self):
+        self.git('config', 'core.filemode', 'false')
+        # Deliberately disagree with the indexed modes where chmod is supported.
+        (self.repo / 'scripts/run.sh').chmod(0o644)
+        (self.repo / 'README.md').chmod(0o755)
+        for executable in [False, True]:
+            with self.subTest(executable=executable):
+                self.git('update-index', '--chmod=' + ('+x' if executable else '-x'),
+                         '--', 'scripts/run.sh')
+                source.package_source(self.repo, self.output)
+                source.verify_archive(self.output)
+                with zipfile.ZipFile(self.output) as archive:
+                    for name, mode in [('scripts/run.sh', 0o755 if executable else 0o644),
+                                       ('README.md', 0o644)]:
+                        info = archive.getinfo('chronoscope/' + name)
+                        self.assertEqual(info.create_system, 3)
+                        self.assertEqual(stat.S_IFMT(info.external_attr >> 16), stat.S_IFREG)
+                        self.assertEqual((info.external_attr >> 16) & 0o777, mode)
 
     def test_archive_preserves_explicit_crlf_bytes(self):
         expected = b'tracked local edit\r\n'
