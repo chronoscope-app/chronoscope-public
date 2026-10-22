@@ -21,7 +21,8 @@ NODE = shutil.which('node')
 def put(root, name, content='fixture notice\n'):
     file = root / name
     file.parent.mkdir(parents=True, exist_ok=True)
-    file.write_text(content)
+    # Fixtures assert exact archive bytes; do not translate LF on Windows.
+    file.write_bytes(content.encode("utf-8"))
     return file
 
 
@@ -60,6 +61,13 @@ class SourceArchiveTests(unittest.TestCase):
         with zipfile.ZipFile(self.output) as archive:
             self.assertEqual(archive.read('chronoscope/README.md'), b'tracked local edit\n')
             self.assertEqual((archive.getinfo('chronoscope/scripts/run.sh').external_attr >> 16) & 0o777, 0o755)
+
+    def test_archive_preserves_explicit_crlf_bytes(self):
+        expected = b'tracked local edit\r\n'
+        (self.repo / 'README.md').write_bytes(expected)
+        source.package_source(self.repo, self.output)
+        with zipfile.ZipFile(self.output) as archive:
+            self.assertEqual(archive.read('chronoscope/README.md'), expected)
 
     def test_archive_bytes_are_reproducible_for_same_inputs(self):
         source.package_source(self.repo, self.output)
