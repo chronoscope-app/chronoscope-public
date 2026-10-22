@@ -39,6 +39,9 @@ class SourceArchiveTests(unittest.TestCase):
         put(self.repo, 'scripts/run.sh', '#!/bin/sh\nexit 0\n').chmod(0o755)
         put(self.repo, '.env.example', 'EXAMPLE=\n')
         self.git('add', '.')
+        # Windows filesystems do not convey POSIX execute bits to Git.
+        # The export contract is the indexed mode, so set that fixture explicitly.
+        self.git('update-index', '--chmod=+x', 'scripts/run.sh')
         self.git('-c', 'user.name=Packaging fixture', '-c', 'user.email=fixture@example.invalid',
                  'commit', '-qm', 'fixture')
 
