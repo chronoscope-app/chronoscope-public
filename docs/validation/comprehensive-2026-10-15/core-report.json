@@ -1,0 +1,1464 @@
+{
+  "cases": {
+    "earthquakes": {
+      "status": "passed",
+      "elapsed_s": 2.274,
+      "records": 1895,
+      "every_source_time_coordinate_and_magnitude_checked": true,
+      "analysis": {
+        "Proximity": {
+          "candidate_visits": 31,
+          "count": 20,
+          "evaluated_count": 1895,
+          "input_count": 1895,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 20
+        },
+        "Stationary": {
+          "candidate_visits": 0,
+          "count": 0,
+          "evaluated_count": 1895,
+          "input_count": 1895,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 0
+        },
+        "Gaps": {
+          "candidate_visits": 0,
+          "count": 0,
+          "evaluated_count": 1895,
+          "input_count": 1895,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 0
+        },
+        "Speed": {
+          "candidate_visits": 0,
+          "count": 0,
+          "evaluated_count": 1895,
+          "input_count": 1895,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 0
+        },
+        "Clusters": {
+          "candidate_visits": 31,
+          "count": 3,
+          "evaluated_count": 1895,
+          "input_count": 1895,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 3
+        }
+      },
+      "workspace": "QA_DIR/workspaces/usgs-earthquakes.chronoscope",
+      "mapping": {
+        "category": 14,
+        "clock": null,
+        "coordinate_column": null,
+        "coordinate_system": "dd",
+        "custom_format": "",
+        "date_order": "auto",
+        "decimal_comma": false,
+        "default_date": "",
+        "default_entity": "Observations",
+        "default_hemisphere": "",
+        "default_zone": 0,
+        "easting": null,
+        "end": null,
+        "entity": 11,
+        "geometry_wkt": null,
+        "hemisphere": null,
+        "label": 13,
+        "lat": 1,
+        "lon": 2,
+        "mgrs": null,
+        "northing": null,
+        "offset_minutes": 0,
+        "related_to": null,
+        "time": 0,
+        "time_encoding": "auto",
+        "value": 4,
+        "zone": null
+      }
+    },
+    "fires": {
+      "status": "passed",
+      "elapsed_s": 58.211,
+      "records": 95718,
+      "every_source_time_and_coordinate_checked": true,
+      "auto_cells": 785,
+      "raw_rendered": 0,
+      "regional_matches": 2316,
+      "confidence_counts": {
+        "nominal": 76925,
+        "high": 6599,
+        "low": 12194
+      },
+      "workspace": "QA_DIR/workspaces/viirs-global.chronoscope",
+      "mapping": {
+        "category": 8,
+        "clock": 6,
+        "coordinate_column": null,
+        "coordinate_system": "dd",
+        "custom_format": "",
+        "date_order": "auto",
+        "decimal_comma": false,
+        "default_date": "",
+        "default_entity": "Independent VIIRS detections",
+        "default_hemisphere": "",
+        "default_zone": 0,
+        "easting": null,
+        "end": null,
+        "entity": null,
+        "geometry_wkt": null,
+        "hemisphere": null,
+        "label": 7,
+        "lat": 0,
+        "lon": 1,
+        "mgrs": null,
+        "northing": null,
+        "offset_minutes": 0,
+        "related_to": null,
+        "time": 5,
+        "time_encoding": "auto",
+        "value": 11,
+        "zone": null
+      }
+    },
+    "buoys": {
+      "status": "passed",
+      "elapsed_s": 4.177,
+      "records": 2995,
+      "native_excel_sheets": 3,
+      "entities": {
+        "41009": 998,
+        "44013": 996,
+        "46042": 1001
+      },
+      "every_source_value_time_and_coordinate_checked": true,
+      "aggregation": {
+        "before": 2995,
+        "after": 507,
+        "undo_exact_count": true
+      },
+      "analysis": {
+        "Proximity": {
+          "candidate_visits": 17725,
+          "count": 0,
+          "evaluated_count": 2995,
+          "input_count": 2995,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 7,
+          "returned_findings": 0
+        },
+        "Stationary": {
+          "candidate_visits": 0,
+          "count": 3,
+          "evaluated_count": 2995,
+          "input_count": 2995,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 7,
+          "returned_findings": 3
+        },
+        "Gaps": {
+          "candidate_visits": 0,
+          "count": 10,
+          "evaluated_count": 2995,
+          "input_count": 2995,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 7,
+          "returned_findings": 10
+        },
+        "Speed": {
+          "candidate_visits": 0,
+          "count": 0,
+          "evaluated_count": 2995,
+          "input_count": 2995,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 7,
+          "returned_findings": 0
+        },
+        "Clusters": {
+          "candidate_visits": 17725,
+          "count": 3,
+          "evaluated_count": 2995,
+          "input_count": 2995,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 7,
+          "returned_findings": 3
+        }
+      },
+      "workspace": "QA_DIR/workspaces/noaa-buoys.chronoscope"
+    },
+    "biodiversity": {
+      "status": "passed",
+      "elapsed_s": 0.276,
+      "records": 285,
+      "analysis": {
+        "Proximity": {
+          "candidate_visits": 2421,
+          "count": 2371,
+          "evaluated_count": 285,
+          "input_count": 285,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 100
+        },
+        "Stationary": {
+          "candidate_visits": 0,
+          "count": 0,
+          "evaluated_count": 285,
+          "input_count": 285,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 0
+        },
+        "Gaps": {
+          "candidate_visits": 0,
+          "count": 0,
+          "evaluated_count": 285,
+          "input_count": 285,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 0
+        },
+        "Speed": {
+          "candidate_visits": 0,
+          "count": 0,
+          "evaluated_count": 285,
+          "input_count": 285,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 0
+        },
+        "Clusters": {
+          "candidate_visits": 2421,
+          "count": 22,
+          "evaluated_count": 285,
+          "input_count": 285,
+          "input_limited": false,
+          "limit": 100,
+          "limited": false,
+          "offset": 0,
+          "revision": 3,
+          "returned_findings": 22
+        }
+      },
+      "workspace": "QA_DIR/workspaces/gbif-biodiversity.chronoscope",
+      "date_only_semantics": "Source day represented at midnight; not a measured observation hour"
+    },
+    "utm": {
+      "status": "passed",
+      "elapsed_s": 0.2,
+      "records": 80,
+      "max_independent_coordinate_error_metres": 3.581743608872128e-09,
+      "workspace": "QA_DIR/workspaces/quakes-utm.chronoscope"
+    },
+    "mgrs": {
+      "status": "passed",
+      "elapsed_s": 0.225,
+      "records": 80,
+      "max_independent_coordinate_error_metres": 4.0375716588938893e-07,
+      "workspace": "QA_DIR/workspaces/quakes-mgrs.chronoscope"
+    },
+    "editing-and-persistence": {
+      "status": "passed",
+      "elapsed_s": 3.252,
+      "records": 2180,
+      "layers": 2,
+      "edit_tag_undo_redo_delete_restore_group_save_open_export_cursor_verified": true,
+      "workspace": "QA_DIR/workspaces/edited-multi-source.chronoscope"
+    }
+  },
+  "operations": [
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.1471,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.71,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0446,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0314,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0116,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0071,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0066,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0064,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0101,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0003,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0006,
+      "ok": true
+    },
+    {
+      "command": "view_set",
+      "elapsed_s": 0.0015,
+      "ok": true
+    },
+    {
+      "command": "save",
+      "elapsed_s": 0.4797,
+      "ok": true
+    },
+    {
+      "command": "open",
+      "elapsed_s": 0.8012,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.001,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.4434,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 31.1176,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.1705,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0368,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0447,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0443,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0514,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0465,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0644,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0566,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.041,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0466,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0442,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0574,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0407,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0487,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0563,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0487,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0495,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0435,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0529,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0436,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0802,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0564,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0423,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0402,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0379,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0312,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0339,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0581,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0472,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0616,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0645,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0414,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0597,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0467,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0629,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0427,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0717,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0415,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0683,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0329,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0532,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0348,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.047,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0367,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0525,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0407,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.035,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0618,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0642,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0387,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0623,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0426,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0362,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0558,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0353,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0346,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0365,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0348,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0382,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0382,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0383,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.037,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0355,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0326,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0352,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0388,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0427,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0388,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0432,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0393,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0368,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0428,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0393,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0387,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0389,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0353,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.036,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0381,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0371,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0442,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0404,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0368,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0364,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0349,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0441,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0408,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0459,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0447,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0384,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0345,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.032,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0326,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0328,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0359,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0444,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0279,
+      "ok": true
+    },
+    {
+      "command": "view_snapshot_v1",
+      "elapsed_s": 1.5535,
+      "ok": true
+    },
+    {
+      "command": "aggregate",
+      "elapsed_s": 0.1373,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.01,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0004,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.001,
+      "ok": true
+    },
+    {
+      "command": "view_set",
+      "elapsed_s": 0.001,
+      "ok": true
+    },
+    {
+      "command": "save",
+      "elapsed_s": 19.9853,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.4529,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.4456,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.3815,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.3472,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.3442,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.3392,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0485,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0434,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0383,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.023,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0205,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0131,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0169,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0558,
+      "ok": true
+    },
+    {
+      "command": "space_time_aggregate",
+      "elapsed_s": 0.443,
+      "ok": true
+    },
+    {
+      "command": "aggregate_apply",
+      "elapsed_s": 0.4706,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.0009,
+      "ok": true
+    },
+    {
+      "command": "undo",
+      "elapsed_s": 0.0007,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.0015,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0003,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0007,
+      "ok": true
+    },
+    {
+      "command": "view_set",
+      "elapsed_s": 0.0063,
+      "ok": true
+    },
+    {
+      "command": "save",
+      "elapsed_s": 0.6502,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.1453,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.0729,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.1438,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.0283,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0039,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0003,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0008,
+      "ok": true
+    },
+    {
+      "command": "view_set",
+      "elapsed_s": 0.0039,
+      "ok": true
+    },
+    {
+      "command": "save",
+      "elapsed_s": 0.0182,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.1744,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.0247,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0044,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0012,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0008,
+      "ok": true
+    },
+    {
+      "command": "view_set",
+      "elapsed_s": 0.0016,
+      "ok": true
+    },
+    {
+      "command": "save",
+      "elapsed_s": 0.0175,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.1504,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.8759,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.0103,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.1578,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.1447,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.082,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0099,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.1462,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.7218,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.0054,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.1175,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.0383,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0014,
+      "ok": true
+    },
+    {
+      "command": "select",
+      "elapsed_s": 0.0019,
+      "ok": true
+    },
+    {
+      "command": "save_group",
+      "elapsed_s": 0.0004,
+      "ok": true
+    },
+    {
+      "command": "tag",
+      "elapsed_s": 0.0037,
+      "ok": true
+    },
+    {
+      "command": "edit_many",
+      "elapsed_s": 0.0032,
+      "ok": true
+    },
+    {
+      "command": "events",
+      "elapsed_s": 0.0041,
+      "ok": true
+    },
+    {
+      "command": "events",
+      "elapsed_s": 0.0007,
+      "ok": true
+    },
+    {
+      "command": "events",
+      "elapsed_s": 0.0006,
+      "ok": true
+    },
+    {
+      "command": "undo",
+      "elapsed_s": 0.0311,
+      "ok": true
+    },
+    {
+      "command": "events",
+      "elapsed_s": 0.004,
+      "ok": true
+    },
+    {
+      "command": "redo",
+      "elapsed_s": 0.0028,
+      "ok": true
+    },
+    {
+      "command": "events",
+      "elapsed_s": 0.0039,
+      "ok": true
+    },
+    {
+      "command": "delete",
+      "elapsed_s": 0.0019,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.0006,
+      "ok": true
+    },
+    {
+      "command": "undo",
+      "elapsed_s": 0.0018,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.0005,
+      "ok": true
+    },
+    {
+      "command": "select",
+      "elapsed_s": 0.0006,
+      "ok": true
+    },
+    {
+      "command": "restore_group",
+      "elapsed_s": 0.0008,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.028,
+      "ok": true
+    },
+    {
+      "command": "filter",
+      "elapsed_s": 0.0039,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.0011,
+      "ok": true
+    },
+    {
+      "command": "filter",
+      "elapsed_s": 0.0012,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0003,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0007,
+      "ok": true
+    },
+    {
+      "command": "view_set",
+      "elapsed_s": 0.0007,
+      "ok": true
+    },
+    {
+      "command": "save",
+      "elapsed_s": 0.6841,
+      "ok": true
+    },
+    {
+      "command": "open",
+      "elapsed_s": 0.8059,
+      "ok": true
+    },
+    {
+      "command": "events",
+      "elapsed_s": 0.0046,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.0225,
+      "ok": true
+    },
+    {
+      "command": "export",
+      "elapsed_s": 0.1847,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0146,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0149,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.021,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0243,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0234,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0251,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0233,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0232,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0232,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0255,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0231,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.024,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0266,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0353,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0234,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0279,
+      "ok": true
+    },
+    {
+      "command": "import_preview",
+      "elapsed_s": 0.1272,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 0.0698,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0089,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0069,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0014,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0011,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0013,
+      "ok": true
+    },
+    {
+      "command": "analyze",
+      "elapsed_s": 0.0053,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0003,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0006,
+      "ok": true
+    },
+    {
+      "command": "view_set",
+      "elapsed_s": 0.0016,
+      "ok": true
+    },
+    {
+      "command": "save",
+      "elapsed_s": 0.0491,
+      "ok": true
+    }
+  ]
+}

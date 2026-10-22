@@ -1,0 +1,261 @@
+{
+  "version": "0.8.0",
+  "date": "2026-10-14",
+  "platform": "Linux x86_64, software graphics",
+  "rust_tests": 141,
+  "passed": true,
+  "checks": [
+    {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.404
+    },
+    {
+      "name": "core-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 5.89
+    },
+    {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 26.303
+    },
+    {
+      "name": "cli-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--bin",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.241
+    },
+    {
+      "name": "generated-contracts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.177
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 5.307
+    },
+    {
+      "name": "native-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope-desktop",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 4.981
+    },
+    {
+      "name": "native-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope-desktop"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 45.629
+    },
+    {
+      "name": "browser-ui",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:ui"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 73.274
+    },
+    {
+      "name": "browser-gis",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:gis"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.058
+    },
+    {
+      "name": "browser-assistant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:assistant"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 26.536
+    },
+    {
+      "name": "browser-wkt-wmts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:wkt-wmts"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 23.003
+    },
+    {
+      "name": "browser-hardening-final",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "test:hardening"
+      ],
+      "exit_code": 0,
+      "covers": "all-view wheel/buttons; close globe; save/discard/cancel; 26k point refinement; repeated 1050 WKT-feature viewport refinement"
+    }
+  ],
+  "wmts": {
+    "meshes": {
+      "features": 6,
+      "fillMeshes": 3,
+      "points": 1,
+      "triangles": 0
+    },
+    "rasterMeshes": 1,
+    "status": "64 map tiles \u00b7 9 cache hits \u00b7 65 network requests this session",
+    "toasts": [],
+    "geometries": 6,
+    "uniqueTiles": 64,
+    "networkTileRequests": 64,
+    "peakConcurrency": 8,
+    "publicRequests": 0,
+    "offlineReuse": true,
+    "errors": []
+  },
+  "assistant": {
+    "glyphs": {
+      "circle": "SphereGeometry",
+      "triangle": "CircleGeometry",
+      "segments": 3,
+      "count": 2
+    },
+    "aiRequests": 2,
+    "errors": [],
+    "publicWmtsRequests": 0,
+    "provider": "localhost scripted fixture; no live model used"
+  },
+  "navigation": {
+    "zoom": [
+      {
+        "mode": "space-time",
+        "before": 6.450381694132527,
+        "wheelIn": 5.703245506529084,
+        "wheelOut": 7.295394166771842
+      },
+      {
+        "mode": "map",
+        "before": 1,
+        "wheelIn": 0.8841717865652724,
+        "wheelOut": 1.1310019333286845
+      },
+      {
+        "mode": "globe",
+        "before": 2.2061809848373217,
+        "wheelIn": 2.197275653673068,
+        "wheelOut": 2.810678931539091
+      },
+      {
+        "mode": "calendar",
+        "before": 6.450381694132527,
+        "wheelIn": 5.703245506529084,
+        "wheelOut": 7.295394166771842
+      }
+    ],
+    "close": {
+      "bounds": [
+        -122.39688462102474,
+        37.79377850030119,
+        -122.39051537897522,
+        37.797254602350634
+      ],
+      "near": 8.623253225548134e-06,
+      "min": 2.1972741668963387,
+      "distance": 2.1974166319608495,
+      "observation": "1",
+      "projected": [
+        -1.8268357163475465e-12,
+        -0.008928800318012051,
+        0.8999991076690809
+      ]
+    },
+    "viewportDetail": {
+      "count": 55,
+      "bounds": [
+        -78.98758427534443,
+        43.004705780789145,
+        -78.98641572465554,
+        43.005294217956724
+      ]
+    },
+    "geometryViewportDetail": "Both 525-feature regions refine after panning a 1050-feature dataset",
+    "unsavedProtection": "save/discard/cancel passed",
+    "errors": []
+  },
+  "public_wmts_requests": 0,
+  "github_runners_used": false,
+  "verification_notes": [
+    "Generated contracts were regenerated after formatting drift; the final Rust drift check passes.",
+    "The final frontend build and hardening suite include the repeated geometry viewport fix.",
+    "Timings are debug/software-renderer measurements, not physical GPU FPS.",
+    "Close-globe verification centers a loaded observation at 500 m and checks its projected position against the clipping planes."
+  ],
+  "limitations": [
+    "Physical GPU and smartcard hardware are not verified by this script.",
+    "Native checks apply only to the current operating system.",
+    "Signing, notarization and paid AI-provider evaluation are separate checks."
+  ]
+}

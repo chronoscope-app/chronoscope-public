@@ -1,0 +1,1 @@
+{"type":"Topology","transform":{"scale":[0.1,0.1],"translate":[-80,24]},"objects":{"zones":{"type":"GeometryCollection","geometries":[{"type":"Polygon","id":"a","arcs":[[0]],"properties":{"name":"Western zone"}},{"type":"Polygon","id":"b","arcs":[[-2]],"properties":{"name":"Eastern zone"}}]}},"arcs":[[[0,0],[10,0],[0,10],[-10,0],[0,-10]],[[10,0],[10,0],[0,10],[-10,0],[0,-10]]]}

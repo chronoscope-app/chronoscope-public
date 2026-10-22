@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "One button scans all hurricane records; cards expose exact counts, methods and examples",
+      "evidence": {
+        "records": 3568,
+        "kinds": [
+          "duplicates",
+          "duplicates",
+          "outliers",
+          "outliers",
+          "correlation",
+          "periodicity"
+        ]
+      }
+    },
+    {
+      "name": "Restoring the same view redraws cached finding cards as well as the result count"
+    },
+    {
+      "name": "Supporting-record action selects the complete evidence and opens the actual sortable table",
+      "evidence": {
+        "selected": 119,
+        "examples": 5
+      }
+    },
+    {
+      "name": "Changed scopes are marked stale without automatic analysis; restoring a scope reuses cached results"
+    },
+    {
+      "name": "Selected-record scope and optional measurement fields use their declared exact inputs",
+      "evidence": {
+        "selectedRecords": 70
+      }
+    },
+    {
+      "name": "Spatial/custom controls remain available and retain edited parameters"
+    },
+    {
+      "name": "Empty scopes produce no fabricated candidates"
+    },
+    {
+      "name": "Opening another workspace resets prior field choices and keeps Find patterns usable"
+    }
+  ],
+  "errors": []
+}

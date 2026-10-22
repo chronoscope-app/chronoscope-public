@@ -1,0 +1,14 @@
+{
+  "version": "0.14.1",
+  "rust_tests_passed": 230,
+  "core_clippy": "passed with -D warnings",
+  "contracts": "generated TypeScript matches authored Rust contracts",
+  "format": "cargo fmt check passed",
+  "checks": [
+    "live RPC schema validation and cancellation cleanup",
+    "partial display patches and same-mode camera preservation",
+    "GIS exact selection and slash/metadata identity isolation",
+    "byte-bounded GIS page continuation and revision guard",
+    "SI presentation-only grant enforces metadata restrictions"
+  ]
+}

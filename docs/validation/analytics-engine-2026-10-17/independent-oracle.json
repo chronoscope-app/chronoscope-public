@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "public_requests": 0,
+  "dataset": "samples/atlantic-hurricanes-2021-2025-tracks.chronoscope",
+  "oracle": "NumPy, SciPy and scikit-learn over complete projected source rows",
+  "checks": [
+    "Exact quantiles match NumPy over all hurricane wind measurements",
+    "One-sample and Welch tests, confidence intervals and degrees of freedom match SciPy",
+    "OLS coefficients/fit match SciPy; PCA variance and basis match scikit-learn",
+    "Histograms match NumPy and calendar bucket denominators cover every Event",
+    "Storm/year maximum preparation followed by exact median uses storm-level units, not track-position weighting",
+    "Actual stdio MCP discovery/run/result roundtrip matches CLI; persistence is correctly advertised as an effect"
+  ],
+  "event_count": 1604,
+  "result_count": 8
+}

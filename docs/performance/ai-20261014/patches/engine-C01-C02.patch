@@ -1,0 +1,30 @@
+diff --git a/src/engine.rs b/src/engine.rs
+index ca742dd..b01157a 100644
+--- a/src/engine.rs
++++ b/src/engine.rs
+@@ -398,11 +398,7 @@ impl Engine {
+             let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+             (
+                 s.revision,
+-                if mutation {
+-                    s.project.clone()
+-                } else {
+-                    Project::new(Dataset::default())
+-                },
++                s.project.clone(),
+                 s.preferences.clone(),
+             )
+         };
+diff --git a/src/stream_import.rs b/src/stream_import.rs
+index c42dc46..2195857 100644
+--- a/src/stream_import.rs
++++ b/src/stream_import.rs
+@@ -114,7 +114,7 @@ impl PendingImport {
+                 mapping,
+                 &self.sample.source,
+                 first_id
+-                    .checked_add(accepted as u64)
++                    .checked_add((accepted + rejected) as u64)
+                     .ok_or("Event ID capacity exhausted")?,
+             )?;
+             accepted += report.events.len();

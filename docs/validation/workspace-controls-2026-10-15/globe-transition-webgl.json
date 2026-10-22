@@ -1,0 +1,355 @@
+{
+  "checks": [
+    {
+      "mode": "space-time",
+      "bounds": [
+        -69.21000000000001,
+        38.69999,
+        -69.08999999999999,
+        38.700010000000006
+      ],
+      "viewBounds": [
+        -74.02978199782703,
+        38.48951998561595,
+        -68.88366351195356,
+        42.7488538661016
+      ],
+      "points": 9,
+      "rasters": 1,
+      "sourceSize": [
+        1877,
+        2048
+      ],
+      "sourceGreen": 3844096,
+      "camera": [
+        3.5999999999999996,
+        3.6000000000000005,
+        4.800000000000001
+      ],
+      "near": 0.001,
+      "far": 100,
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "effectError": "",
+      "green": 912616,
+      "file": "/workspace/chronoscope-ui-20261015/globe-transition-webgl/0-space-time.png",
+      "requests": 2
+    },
+    {
+      "mode": "globe",
+      "bounds": [
+        -69.21000000000001,
+        38.69999,
+        -69.08999999999999,
+        38.700010000000006
+      ],
+      "viewBounds": [
+        -180,
+        -85.0511287798066,
+        180,
+        85.0511287798066
+      ],
+      "points": 0,
+      "rasters": 0,
+      "sourceSize": [
+        2048,
+        2048
+      ],
+      "sourceGreen": 4194304,
+      "camera": [
+        1.858365065673799,
+        4.28254967661224,
+        4.944314669398746
+      ],
+      "near": 0.001,
+      "far": 100,
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "effectError": "",
+      "green": 479749,
+      "file": "/workspace/chronoscope-ui-20261015/globe-transition-webgl/1-globe.png",
+      "requests": 2
+    },
+    {
+      "mode": "space-time",
+      "bounds": [
+        -69.21000000000001,
+        38.69999,
+        -69.08999999999999,
+        38.700010000000006
+      ],
+      "viewBounds": [
+        -74.02978199782703,
+        38.48951998561595,
+        -68.88366351195356,
+        42.7488538661016
+      ],
+      "points": 9,
+      "rasters": 1,
+      "sourceSize": [
+        1877,
+        2048
+      ],
+      "sourceGreen": 3844096,
+      "camera": [
+        3.5999999999999996,
+        3.6000000000000005,
+        4.800000000000001
+      ],
+      "near": 0.001,
+      "far": 100,
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "effectError": "",
+      "green": 912616,
+      "file": "/workspace/chronoscope-ui-20261015/globe-transition-webgl/2-space-time.png",
+      "requests": 2
+    },
+    {
+      "mode": "map",
+      "bounds": [
+        -69.21000000000001,
+        38.69999,
+        -69.08999999999999,
+        38.700010000000006
+      ],
+      "viewBounds": [
+        -69.25915593681349,
+        38.641318605076236,
+        -69.0408440631865,
+        38.75863857323179
+      ],
+      "points": 0,
+      "rasters": 1,
+      "sourceSize": [
+        2048,
+        1410
+      ],
+      "sourceGreen": 2887680,
+      "camera": [
+        0,
+        6.9999999999965,
+        0.0000069999999999988335
+      ],
+      "near": 0.001,
+      "far": 100,
+      "up": [
+        0,
+        0,
+        -1
+      ],
+      "effectError": "",
+      "green": 950906,
+      "file": "/workspace/chronoscope-ui-20261015/globe-transition-webgl/3-map.png",
+      "requests": 2
+    },
+    {
+      "mode": "globe",
+      "bounds": [
+        -69.21000000000001,
+        38.69999,
+        -69.08999999999999,
+        38.700010000000006
+      ],
+      "viewBounds": [
+        -180,
+        -85.0511287798066,
+        180,
+        85.0511287798066
+      ],
+      "points": 0,
+      "rasters": 0,
+      "sourceSize": [
+        2048,
+        2048
+      ],
+      "sourceGreen": 4194304,
+      "camera": [
+        1.8938012521674552,
+        4.23424637257125,
+        4.972391222908368
+      ],
+      "near": 0.001,
+      "far": 100,
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "effectError": "",
+      "green": 478105,
+      "file": "/workspace/chronoscope-ui-20261015/globe-transition-webgl/4-globe.png",
+      "requests": 2
+    },
+    {
+      "mode": "map",
+      "bounds": [
+        -69.21000000000001,
+        38.69999,
+        -69.08999999999999,
+        38.700010000000006
+      ],
+      "viewBounds": [
+        -69.25915593681349,
+        38.641318605076236,
+        -69.0408440631865,
+        38.75863857323179
+      ],
+      "points": 0,
+      "rasters": 1,
+      "sourceSize": [
+        2048,
+        1410
+      ],
+      "sourceGreen": 2887680,
+      "camera": [
+        0,
+        6.9999999999965,
+        0.0000069999999999988335
+      ],
+      "near": 0.001,
+      "far": 100,
+      "up": [
+        0,
+        0,
+        -1
+      ],
+      "effectError": "",
+      "green": 950906,
+      "file": "/workspace/chronoscope-ui-20261015/globe-transition-webgl/5-map.png",
+      "requests": 2
+    },
+    {
+      "mode": "space-time",
+      "bounds": [
+        -69.21000000000001,
+        38.69999,
+        -69.08999999999999,
+        38.700010000000006
+      ],
+      "viewBounds": [
+        -74.02978199782703,
+        38.48951998561595,
+        -68.88366351195356,
+        42.7488538661016
+      ],
+      "points": 9,
+      "rasters": 1,
+      "sourceSize": [
+        1877,
+        2048
+      ],
+      "sourceGreen": 3844096,
+      "camera": [
+        3.5999999999999996,
+        3.6000000000000005,
+        4.800000000000001
+      ],
+      "near": 0.001,
+      "far": 100,
+      "up": [
+        0,
+        1,
+        0
+      ],
+      "effectError": "",
+      "green": 912616,
+      "file": "/workspace/chronoscope-ui-20261015/globe-transition-webgl/6-space-time.png",
+      "requests": 2
+    }
+  ],
+  "errors": [],
+  "floorChecks": [
+    {
+      "theme": "light",
+      "mode": "space-time",
+      "bloom": false,
+      "rgb": [
+        37,
+        212,
+        77
+      ]
+    },
+    {
+      "theme": "light",
+      "mode": "space-time",
+      "bloom": true,
+      "rgb": [
+        37,
+        212,
+        77
+      ]
+    },
+    {
+      "theme": "light",
+      "mode": "map",
+      "bloom": false,
+      "rgb": [
+        34,
+        211,
+        75
+      ]
+    },
+    {
+      "theme": "light",
+      "mode": "map",
+      "bloom": true,
+      "rgb": [
+        34,
+        211,
+        75
+      ]
+    },
+    {
+      "theme": "dark",
+      "mode": "space-time",
+      "bloom": false,
+      "rgb": [
+        37,
+        212,
+        77
+      ]
+    },
+    {
+      "theme": "dark",
+      "mode": "space-time",
+      "bloom": true,
+      "rgb": [
+        37,
+        212,
+        77
+      ]
+    },
+    {
+      "theme": "dark",
+      "mode": "map",
+      "bloom": false,
+      "rgb": [
+        34,
+        211,
+        75
+      ]
+    },
+    {
+      "theme": "dark",
+      "mode": "map",
+      "bloom": true,
+      "rgb": [
+        34,
+        211,
+        75
+      ]
+    }
+  ],
+  "backend": "WebGL2",
+  "passed": true
+}

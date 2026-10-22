@@ -1,0 +1,5 @@
+
+> chronoscope-cesium-ui@0.13.3 test:time-axis
+> node scripts/time-axis-test.mjs
+
+Time axis: compact UTC overview dates, detail on zoom, deduplication, bounded near-plane clipping and empty/single-instant ranges passed.

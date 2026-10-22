@@ -1,0 +1,12 @@
+{
+  "glyphs": {
+    "circle": "SphereGeometry",
+    "triangle": "CircleGeometry",
+    "segments": 3,
+    "count": 2
+  },
+  "aiRequests": 2,
+  "errors": [],
+  "publicWmtsRequests": 0,
+  "provider": "localhost scripted fixture; no live model used"
+}

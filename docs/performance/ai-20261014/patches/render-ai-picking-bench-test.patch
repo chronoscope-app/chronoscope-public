@@ -1,0 +1,14 @@
+diff --git a/frontend/scripts/ai-picking-bench.mjs b/frontend/scripts/ai-picking-bench.mjs
+new file mode 100644
+index 0000000..af70ff8
+--- /dev/null
++++ b/frontend/scripts/ai-picking-bench.mjs
+@@ -0,0 +1,8 @@
++import fs from 'node:fs';import vm from 'node:vm';import ts from 'typescript';import * as THREE from 'three/webgpu';import assert from 'node:assert/strict';
++const source=fs.readFileSync('frontend/src/view.ts','utf8'),method=source.slice(source.indexOf('  pick(e: PointerEvent)'),source.indexOf('  pointerMove(')).replace('  pick(e: PointerEvent)','function pick(e: PointerEvent)');
++const ctx={THREE,isFrontFacing:()=>true,MERCATOR_LIMIT:85};vm.createContext(ctx);vm.runInContext(ts.transpile(method+';this.pick=pick'),ctx);
++const camera=new THREE.PerspectiveCamera(40,1382/622,.001,100);camera.position.set(3.6,3.6,4.8);camera.lookAt(0,1.25,0);camera.updateMatrixWorld();
++const points=Array.from({length:100000},(_,i)=>({id:String(i+1),lat:43.1+(i%1000)*.0008,lon:-79.9+Math.floor(i/1000)*.008,time:i%5000,entity:i%20}));
++const world=p=>{let R=6378137,lon=R*p.lon*Math.PI/180,lat=R*Math.log(Math.tan(Math.PI/4+p.lat*Math.PI/360)),cx=R*-79.5*Math.PI/180,cy=R*Math.log(Math.tan(Math.PI/4+43.5*Math.PI/360)),scale=150000/3.3;return new THREE.Vector3((lon-cx)/scale,p.time/5000*2.8,-(lat-cy)/scale)};
++const obj={pointMesh:{},host:{getBoundingClientRect:()=>({left:0,top:0,width:1382,height:622})},renderPoints:points,pos:world,mode:'space-time',camera,generation:1,pickWorld:new Float64Array(0),pickWorldGeneration:-1,pickScratch:new THREE.Vector3()};
++const e={clientX:691,clientY:311};let runs=[];for(let i=0;i<9;i++){obj.pickBuckets=undefined;let start=performance.now();let result=ctx.pick.call(obj,e);runs.push({ms:performance.now()-start,id:result?.id??null});}assert.equal(new Set(runs.map(r=>r.id)).size,1);console.log(JSON.stringify({name:'first-hover-after-camera-invalidation-100k',runs,usesCachedWorld:source.includes('pickWorldGeneration')}));

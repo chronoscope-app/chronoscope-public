@@ -1,0 +1,14 @@
+
+> chronoscope-ui@0.9.0 test:ui
+> node scripts/qa.mjs
+
+Automatic graphics backend: WebGPU
+GPU atlas centre [ 9, 206, 9, 255 ]
+100k globe construction {
+  milliseconds: 3207.39999999851,
+  instances: 100000,
+  trailsLimited: false
+}
+100k synthetic rendering: { milliseconds: 267.20000000298023, instances: 100000, drawCalls: 0 }
+Runtime globe WebGPU loss recovered to WebGL2
+Passed: themes, large canvas, filter, analysis, selection, edit/undo, CSV/Excel/MGRS import, DTED file/folder, terrain, GPU fallback, authenticated bridge, minute imports/manual override, help/tooltips/shortcuts, portable camera/terrain, flat map, WGS84 globe, curved raster and layer tables. Screenshots: <validation-output>/screenshots/ui

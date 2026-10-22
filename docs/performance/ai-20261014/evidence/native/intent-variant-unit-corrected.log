@@ -1,0 +1,2 @@
+{"test":"capture-before-observer-write","expected":2000,"actual":2000,"pass":true}
+{"test":"serialized-latest-intent","calls":[2000,6000],"pass":true}

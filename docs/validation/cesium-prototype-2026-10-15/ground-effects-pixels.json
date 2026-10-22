@@ -1,0 +1,442 @@
+{
+  "modes": [
+    {
+      "mode": "map",
+      "heat": {
+        "changed": 74245,
+        "total": 11384724,
+        "bounds": [
+          234,
+          142,
+          1027,
+          726
+        ]
+      },
+      "bloom": {
+        "changed": 26933,
+        "total": 1667713,
+        "bounds": [
+          253,
+          155,
+          1009,
+          713
+        ]
+      },
+      "camera": {
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -8901663.080178821,
+            4814567.976809083,
+            12756274
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            0,
+            1,
+            0
+          ],
+          "frustum_width": 7229.569962280884
+        }
+      },
+      "groundPolygon": [
+        [
+          173.18168744403397,
+          771.8398659159219
+        ],
+        [
+          1088.818312555966,
+          771.8398659159219
+        ],
+        [
+          1088.818312555966,
+          97.16013408440324
+        ],
+        [
+          173.18168744403397,
+          97.1601340840781
+        ]
+      ]
+    },
+    {
+      "mode": "space-time",
+      "heat": {
+        "changed": 37997,
+        "total": 5828458,
+        "bounds": [
+          321,
+          387,
+          888,
+          693
+        ]
+      },
+      "bloom": {
+        "changed": 13365,
+        "total": 822435,
+        "bounds": [
+          342,
+          394,
+          871,
+          680
+        ]
+      },
+      "camera": {
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -8901663.080178821,
+            4808249.0256616585,
+            6636.536949500442
+          ],
+          "direction": [
+            5.546170121990861e-17,
+            0.7431448254773799,
+            -0.6691306063588742
+          ],
+          "up": [
+            5.489832903998569e-17,
+            0.6691306063588423,
+            0.7431448254774086
+          ]
+        }
+      },
+      "groundPolygon": [
+        [
+          258.6989454562933,
+          717.7434487949536
+        ],
+        [
+          1003.3010545437066,
+          717.7434487949536
+        ],
+        [
+          902.1463639210775,
+          373.411821606301
+        ],
+        [
+          359.85363607894635,
+          373.41182160616194
+        ]
+      ],
+      "heightDifference": {
+        "changed": 0,
+        "total": 0,
+        "bounds": [
+          1262,
+          869,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "mode": "globe",
+      "heat": {
+        "changed": 63136,
+        "total": 9692038,
+        "bounds": [
+          348,
+          196,
+          887,
+          712
+        ]
+      },
+      "bloom": {
+        "changed": 21624,
+        "total": 1301981,
+        "bounds": [
+          368,
+          210,
+          868,
+          693
+        ]
+      },
+      "camera": {
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            811881.2702576705,
+            -4588016.856206621,
+            4350758.149765609
+          ],
+          "direction": [
+            -0.1576010650949744,
+            0.8906183326317838,
+            -0.4265687399014502
+          ],
+          "up": [
+            -0.0743294878497461,
+            0.42004287530811973,
+            0.904455145454368
+          ]
+        }
+      },
+      "groundPolygon": [
+        [
+          304.2347797589345,
+          747.5583612138513
+        ],
+        [
+          957.7652202410057,
+          747.5583612138513
+        ],
+        [
+          906.313166975621,
+          170.38452981393584
+        ],
+        [
+          355.68683302436267,
+          170.38452981393357
+        ]
+      ]
+    }
+  ],
+  "details": {
+    "diagnostics": {
+      "renderer": "cesium-webgl2",
+      "groundOnly": true,
+      "bloomIsolation": "event-layer-only",
+      "clusterPoints": 0,
+      "clusterLabels": 0,
+      "densityInstances": 0,
+      "atlasLayers": 1,
+      "rasterWidth": 512,
+      "rasterHeight": 512,
+      "heatPeak": 0,
+      "heatCeiling": 1,
+      "pending": false,
+      "error": ""
+    },
+    "layerIndex": 1,
+    "layers": [
+      {
+        "i": 0,
+        "alpha": 1,
+        "show": true,
+        "rectangle": {
+          "west": -3.141592653589793,
+          "south": -1.5707963267948966,
+          "east": 3.141592653589793,
+          "north": 1.5707963267948966
+        },
+        "tiles": 2048
+      },
+      {
+        "i": 1,
+        "alpha": 1,
+        "show": true,
+        "rectangle": {
+          "west": -1.3960281749222159,
+          "south": 0.7545784879609991,
+          "east": -1.395276897445725,
+          "north": 0.755131315014096
+        },
+        "tiles": 512
+      }
+    ],
+    "tilesLoaded": true,
+    "renderedTiles": [
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          },
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          },
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          },
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          },
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          },
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          },
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          },
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          },
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          },
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      },
+      {
+        "level": 13,
+        "imagery": [
+          {
+            "ready": 4,
+            "provider": "ym"
+          }
+        ]
+      }
+    ],
+    "packetBounds": [
+      -79.98399998014185,
+      43.236000004964545,
+      -79.946,
+      43.26399999503546
+    ]
+  },
+  "errors": [],
+  "publicRequests": 0
+}

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Installation and platform status
+    url: https://github.com/chronoscope-app/chronoscope-public/blob/main/docs/INSTALLATION.md
+    about: Check supported architectures, preview downloads and known installation limits.
+  - name: User guide
+    url: https://github.com/chronoscope-app/chronoscope-public/blob/main/docs/USER-GUIDE.md
+    about: Find workflows, data formats and app controls.
+  - name: Security reporting instructions
+    url: https://github.com/chronoscope-app/chronoscope-public/blob/main/SECURITY.md
+    about: Read the private-reporting instructions before sharing security-sensitive information.

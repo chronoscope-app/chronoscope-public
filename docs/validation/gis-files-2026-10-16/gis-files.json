@@ -1,0 +1,195 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Open renders native geojson",
+      "evidence": {
+        "loaded": true,
+        "entities": 3,
+        "primitive": false,
+        "features": 3,
+        "resources": 2
+      }
+    },
+    {
+      "name": "Open renders native topojson",
+      "evidence": {
+        "loaded": true,
+        "entities": 2,
+        "primitive": false,
+        "features": 2,
+        "resources": 2
+      }
+    },
+    {
+      "name": "Open renders native kml",
+      "evidence": {
+        "loaded": true,
+        "entities": 1,
+        "primitive": false,
+        "features": 1,
+        "resources": 1
+      }
+    },
+    {
+      "name": "Open renders native kmz",
+      "evidence": {
+        "loaded": true,
+        "entities": 1,
+        "primitive": false,
+        "features": 1,
+        "resources": 1
+      }
+    },
+    {
+      "name": "Open renders native czml",
+      "evidence": {
+        "loaded": true,
+        "entities": 1,
+        "primitive": false,
+        "features": 3,
+        "resources": 1
+      }
+    },
+    {
+      "name": "Open renders native gpx",
+      "evidence": {
+        "loaded": true,
+        "entities": 2,
+        "primitive": false,
+        "features": 4,
+        "resources": 1
+      }
+    },
+    {
+      "name": "Open renders native gltf",
+      "evidence": {
+        "loaded": true,
+        "primitive": true,
+        "features": 0,
+        "resources": 2
+      }
+    },
+    {
+      "name": "Open renders native glb",
+      "evidence": {
+        "loaded": true,
+        "primitive": true,
+        "features": 0,
+        "resources": 1
+      }
+    },
+    {
+      "name": "Native 3D Tiles content is fetched, decoded and ready in the live scene",
+      "evidence": {}
+    },
+    {
+      "name": "Open renders native tiles3d",
+      "evidence": {
+        "loaded": true,
+        "primitive": true,
+        "features": 0,
+        "resources": 2
+      }
+    },
+    {
+      "name": "JSON GIS is distinguished from workspace JSON in Open",
+      "evidence": {}
+    },
+    {
+      "name": "Native rendering preserves source feature IDs beyond JavaScript safe integers",
+      "evidence": {}
+    },
+    {
+      "name": "Source XML descriptions retain attributes without executing markup or contacting external URLs",
+      "evidence": {}
+    },
+    {
+      "name": "Reference table and native polygon highlights share exact feature IDs",
+      "evidence": {
+        "selected": [
+          "zone-1",
+          "zone-2"
+        ]
+      }
+    },
+    {
+      "name": "Reference layers persist through Globe, 2D and Columbus transitions",
+      "evidence": {}
+    },
+    {
+      "name": "Native CZML animation follows Chronoscope time focus",
+      "evidence": {
+        "a": [
+          1012518.353413592,
+          -5742276.92974376,
+          2578690.158718329
+        ],
+        "b": [
+          1158414.1108291934,
+          -5637673.1282223705,
+          2740832.399477085
+        ]
+      }
+    },
+    {
+      "name": "Portable GIS workspace reopens all formats and packaged model/tile assets",
+      "evidence": {}
+    },
+    {
+      "name": "Timed polygons retain full geometry plus centroid circles and entity tracks",
+      "evidence": {
+        "points": 3,
+        "centroids": 2,
+        "polygons": 2,
+        "tracks": 2
+      }
+    },
+    {
+      "name": "Centroid markers/tracks can be hidden while polygons remain",
+      "evidence": {}
+    },
+    {
+      "name": "Entity/category rows use compact consistent 24px spacing",
+      "evidence": {
+        "entities": [
+          24,
+          24
+        ],
+        "categories": [
+          {
+            "height": 24,
+            "margin": "0px"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "requests": [],
+  "screenshots": [
+    "polygon-events-time-centroids.png"
+  ],
+  "tileStart": {
+    "mode": "map",
+    "show": true,
+    "position": {
+      "x": 12756274,
+      "y": -8794239.772668611,
+      "z": 2782987.269831839
+    },
+    "center": {
+      "x": 1103641.92247457,
+      "y": -5677745.48445974,
+      "z": 2679074.4629577873
+    },
+    "radius": 40000,
+    "content": 2,
+    "stats": {
+      "pending": 0,
+      "processing": 1,
+      "selected": 0
+    }
+  },
+  "cspViolations": []
+}

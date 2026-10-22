@@ -1,0 +1,6 @@
+PUBLIC TILE usgs-topo { width: 256, height: 256, colors: 1613 }
+PUBLIC TILE usgs-imagery { width: 256, height: 256, colors: 3639 }
+PUBLIC TILE eox-streets { width: 256, height: 256, colors: 3644 }
+PUBLIC TILE eox-terrain { width: 256, height: 256, colors: 102 }
+PUBLIC TILE eox-sentinel-2025 { width: 256, height: 256, colors: 3411 }
+PUBLIC TILE eox-sentinel-2024 { width: 256, height: 256, colors: 3259 }

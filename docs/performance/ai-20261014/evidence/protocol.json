@@ -1,0 +1,17 @@
+{
+  "base_sha": "7400b55220c25da714df93be1157f1ad3b990427",
+  "million_order": [
+    "baseline",
+    "prepared",
+    "indexed"
+  ],
+  "repeats": 3,
+  "shared_baseline": true,
+  "driver_sha256": "1bbf7aa04f18bdc360aec05b62fd1796cf339c904e0d65e394d13696dad8cde5",
+  "driver_loop_excerpt": "for repeat in 1 2 3; do\n for variant in baseline prepared indexed; do\n  flock -x \"$L\" /usr/bin/time -v -o \"$A/raw/million-$variant-r$repeat.time\" \"$A/binaries/$variant-engine\" 1000000 \"$A/fixtures\" > \"$A/raw/million-$variant-r$repeat.json\"\n done\ndone\n",
+  "operation_p95": null,
+  "operation_p99": null,
+  "os_page_cache": "uncontrolled/warm",
+  "cold_os_cache": false,
+  "randomized": false
+}

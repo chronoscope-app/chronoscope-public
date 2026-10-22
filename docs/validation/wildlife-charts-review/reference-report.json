@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "revision": "4de556ae7d05c06e571882acedd041ddb7fa87fb",
+  "records": 40727,
+  "datasets": [
+    {
+      "id": "animal-gps",
+      "records": 15697,
+      "entities": 3,
+      "max_value": 283.303684387873,
+      "numeric_values": 15611
+    },
+    {
+      "id": "local-wildlife",
+      "records": 3439,
+      "entities": 3,
+      "max_value": 8.46,
+      "numeric_values": 3439
+    },
+    {
+      "id": "stork-migration",
+      "records": 6090,
+      "entities": 3,
+      "max_value": null,
+      "numeric_values": 0
+    },
+    {
+      "id": "elephant-seals",
+      "records": 15501,
+      "entities": 3,
+      "max_value": 1489.0,
+      "numeric_values": 15501
+    }
+  ],
+  "checks": [
+    "Every CSV/project source field, coordinate, canonical value and minute timestamp agrees for all four animal datasets",
+    "Entity counts, means, minima, maxima, sums and daily maxima agree with independent Python calculations",
+    "Inclusive quartiles and Tukey whiskers agree with Python statistics",
+    "Histogram bins and linked source IDs agree with independent calculations",
+    "Visible/all/selected scopes retain exact counts; saved projects reopen with data and presets",
+    "Stork empty Values remain missing rather than becoming zero"
+  ]
+}

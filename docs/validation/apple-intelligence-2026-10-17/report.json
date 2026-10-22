@@ -1,0 +1,205 @@
+{
+  "version": "0.15.0",
+  "verification": "local only",
+  "rust_tests": 242,
+  "rust_all_targets_clippy": "passed",
+  "native_classifier": [
+    {
+      "case": "recommend",
+      "prompt": "Recommend analyses for this selection",
+      "seconds": 1.028,
+      "expected": "recommend",
+      "result": {
+        "kind": "recommend"
+      },
+      "passed": true
+    },
+    {
+      "case": "gaps",
+      "prompt": "Find gaps longer than 6 hours",
+      "seconds": 0.402,
+      "expected": "gaps",
+      "result": {
+        "kind": "gaps"
+      },
+      "passed": true
+    },
+    {
+      "case": "missing",
+      "prompt": "Find gaps in the track",
+      "seconds": 0.419,
+      "expected": "gaps",
+      "result": {
+        "kind": "gaps"
+      },
+      "passed": true
+    },
+    {
+      "case": "speed",
+      "prompt": "Prepare track speed outliers above 250 km/h",
+      "seconds": 0.411,
+      "expected": "speed",
+      "result": {
+        "kind": "speed"
+      },
+      "passed": true
+    },
+    {
+      "case": "proximity",
+      "prompt": "Find events within 2 km and 5 minutes of each other",
+      "seconds": 0.372,
+      "expected": "proximity",
+      "result": {
+        "kind": "proximity"
+      },
+      "passed": true
+    },
+    {
+      "case": "clusters",
+      "prompt": "Find clusters of at least 5 events within 500 metres and 10 minutes",
+      "seconds": 0.376,
+      "expected": "clusters",
+      "result": {
+        "kind": "clusters"
+      },
+      "passed": true
+    },
+    {
+      "case": "stationary",
+      "prompt": "Find stationary periods within 200 metres lasting at least 2 hours",
+      "seconds": 0.378,
+      "expected": "stationary",
+      "result": {
+        "kind": "stationary"
+      },
+      "passed": true
+    },
+    {
+      "case": "wind",
+      "prompt": "Compare the maximum wind speeds of these hurricanes",
+      "seconds": 0.415,
+      "expected": "unsupported",
+      "result": {
+        "kind": "unsupported"
+      },
+      "passed": true
+    },
+    {
+      "case": "explain",
+      "prompt": "Explain the last analysis findings",
+      "seconds": 0.447,
+      "expected": "explain",
+      "result": {
+        "kind": "explain"
+      },
+      "passed": true
+    }
+  ],
+  "local_chat_ui": {
+    "passed": true,
+    "provider": "actual Apple on-device Foundation Models",
+    "checks": [
+      "gear configures local provider; no API key, file grants, external tools or Tools shortcut",
+      "explicit recommendation uses stable routing; engine computes eligibility",
+      "missing threshold produces no executable plan",
+      "6 hours converts exactly to 21600 seconds; stale plan rejected after selection change",
+      "review button executes exact read-only gap analysis; bounded evidence shown",
+      "real local explanation includes exact evaluated counts and finding limits",
+      "cancel stops local inference without executing an analysis"
+    ],
+    "errors": [],
+    "publicRequests": 0
+  },
+  "hosted_si_and_mcp_client": {
+    "glyphs": {
+      "engine": "CesiumJS",
+      "circleCount": 3,
+      "triangleCount": 2,
+      "trianglePath": "M12 2 23 22H1Z",
+      "triangleWidth": 11,
+      "triangleHeight": 11,
+      "renderedCircleIds": [
+        "1",
+        "3",
+        "5"
+      ],
+      "renderedTriangleIds": [
+        "2",
+        "4"
+      ],
+      "inferredIds": [
+        "2",
+        "4"
+      ]
+    },
+    "siRequests": 7,
+    "externalCalls": 4,
+    "externalWrites": 1,
+    "externalCompatibility": "2025-11-25 initialize/session fallback, bearer failure, 2 MiB response bound, output-schema rejection",
+    "externalProtocol": "2026-07-28 / Streamable HTTP JSON discovery + SSE tool results",
+    "errors": [],
+    "publicWmtsRequests": 0,
+    "provider": "localhost scripted fixture; no live model used"
+  },
+  "cli_mcp_scale": {
+    "passed": true,
+    "synthetic": true,
+    "checks": [
+      "100k exact eligibility and reviewed analysis through persistent CLI; bounded context/results",
+      "real MCP discovers and executes new tools with valid structured output; Apple provider returns reviewed proposal"
+    ],
+    "scale": {
+      "events": 100000,
+      "context_bytes": 1444,
+      "context_ms": 373.67,
+      "analysis_ms": 691.69,
+      "findings": 0,
+      "returned_findings": 0,
+      "limited": false
+    },
+    "mcp_tools": 90
+  },
+  "native_intent_handlers": {
+    "passed": true,
+    "perform_methods": 5,
+    "profile": "isolated synthetic",
+    "view_effect": "map",
+    "selection_effect": 48
+  },
+  "mac_bundle": {
+    "metadata_actions": 5,
+    "metadata_shortcuts": 5,
+    "authentication": "requiresLocalDeviceAuthentication",
+    "signature": "local ad hoc; no Developer ID or notarization",
+    "public_appkit_overlay": "retained and weak linked; ad hoc resource seal verified"
+  },
+  "native_ui": {
+    "local_provider_configured": true,
+    "reviewed_gap_analysis": 188,
+    "evaluated": 192,
+    "actual_on_device_explanation": true
+  },
+  "hosted_workflows_dispatched": false,
+  "windows_linux_runtime": "not tested on this Mac; shared Rust paths and existing per-user Windows configuration retained",
+  "shortcuts_discovery": {
+    "passed": true,
+    "actions": 5,
+    "actual_system_execution": "blocked by macOS signing gate: missing Apple team ID in unsigned/ad hoc build",
+    "isolated_native_swift_diagnostic": "same failure with both AppKit and standard SwiftUI lifecycle; no user data accessed",
+    "diagnostics": "Administrator-provided linkd log: Unable to get teamId from org.chronoscope.desktop; requiresValidatedBundle rejection on com.apple.linkd.mediator. Independent minimal Swift app reproduces missing-team-ID rejection. No system security settings changed."
+  },
+  "unit_conversion_edge_cases": "passed: named hours, km/metres, minutes, mph conversion; reject missing/ambiguous/negative/grouped/leading-decimal quantities; time window does not route to wind analysis",
+  "explanation_context": "at most 3 findings, each summary/metric capped at 160 characters with controls removed; Unicode stress test remains below 6000-byte evidence budget",
+  "fresh_native_bundle_transport": {
+    "passed": true,
+    "attached_mcp_tools": 90,
+    "apple_local_available": true,
+    "pause_clears_afterimages": true,
+    "fade_durations_ms": {
+      "arrival": 550,
+      "departure": 2400
+    },
+    "compact_context_bytes": 1432,
+    "render_errors": 0
+  }
+}

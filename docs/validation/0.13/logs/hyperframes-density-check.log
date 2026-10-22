@@ -1,0 +1,42 @@
+[SystemMemory] cgroup memory limit detected: 16384 MiB. It governs memory-adaptive render behaviour instead of host RAM.
+◆  Checking chronoscope-density-training
+[hyperframes] browserGpuMode probe → software (WebGL renderer vendor="Google Inc. (Mesa)" renderer="ANGLE (Mesa, llvmpipe (LLVM 19.1.7 256 bits), OpenGL ES 3.2)")
+
+Lint
+  ⚠ nested_structure_needs_subcomposition: <section id="step-0"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    /workspace/chronoscope/videos/chronoscope-density-training/index.html #step-0 t=0s
+    Fix: Move <section id="step-0"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="step-1"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    /workspace/chronoscope/videos/chronoscope-density-training/index.html #step-1 t=0s
+    Fix: Move <section id="step-1"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="step-2"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    /workspace/chronoscope/videos/chronoscope-density-training/index.html #step-2 t=0s
+    Fix: Move <section id="step-2"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="step-3"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    /workspace/chronoscope/videos/chronoscope-density-training/index.html #step-3 t=0s
+    Fix: Move <section id="step-3"> and its contents into a sub-composition file and mount it with data-composition-src.
+  0 error(s), 4 warning(s), 0 info(s)
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ◇ 0 issues across 9 sample(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ◇ 28/28 text checks pass WCAG AA
+
+Snapshots
+  ◇ 5 PNG(s) saved
+    .hyperframes/artifacts/snapshots/c5d9b7e7-cb4d-4f86-be30-743e732d1cb2/frame-00-at-1.6s.png
+    .hyperframes/artifacts/snapshots/c5d9b7e7-cb4d-4f86-be30-743e732d1cb2/frame-01-at-7.8s.png
+    .hyperframes/artifacts/snapshots/c5d9b7e7-cb4d-4f86-be30-743e732d1cb2/frame-02-at-14.0s.png
+    .hyperframes/artifacts/snapshots/c5d9b7e7-cb4d-4f86-be30-743e732d1cb2/frame-03-at-20.2s.png
+    .hyperframes/artifacts/snapshots/c5d9b7e7-cb4d-4f86-be30-743e732d1cb2/frame-04-at-26.4s.png
+
+◇  Check passed
+Report: /workspace/chronoscope/videos/chronoscope-density-training/.hyperframes/artifacts/checks/e356afaf-69ca-4448-8c36-ec40c00be1ce.json
+Revision: 7320b837-2bd1-45de-bb63-d729d9d9ebee (recorded-revision)

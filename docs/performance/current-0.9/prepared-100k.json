@@ -1,0 +1,206 @@
+{
+  "driver": "baseline then each variant per repeat; OS page cache uncontrolled",
+  "gpu": false,
+  "repeats": 3,
+  "binaries": {
+    "baseline": {
+      "path": "baseline",
+      "sha256": "d546e66d9e9e1991eac8154c62072438b6af91af438208ef448c8bd1ae3213ce"
+    },
+    "prepared": {
+      "path": "prepared",
+      "sha256": "58aeb355f22683aaf35945f5d6580d8d07356cdcee212fe551bd2a433e7fafa9"
+    }
+  },
+  "runs": [
+    {
+      "variant": "baseline",
+      "rows": 100000,
+      "repeat": 1,
+      "exit_code": 0,
+      "elapsed_s": 26.209189200002584,
+      "metrics": {
+        "bounds_s": 0.03728083,
+        "copy_into_s": 7.704192445,
+        "db_bytes": 238182400,
+        "ingest_s": 8.356729601,
+        "numeric_order_s": 0.053375543,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 700102,
+        "open_database_s": 3.395841361,
+        "preview_s": 0.06906666,
+        "render_100k_s": 0.345201815,
+        "rows": 100000,
+        "save_database_s": 1.928467451,
+        "selective_order_s": 0.049722432,
+        "snapshot_compact_first_s": 0.046736444,
+        "snapshot_full_after_compact_s": 0.379569796,
+        "sqlite_version": "3.50.2",
+        "summary_full_s": 0.405446583
+      }
+    },
+    {
+      "variant": "prepared",
+      "rows": 100000,
+      "repeat": 1,
+      "exit_code": 0,
+      "elapsed_s": 22.320745989003626,
+      "metrics": {
+        "bounds_s": 0.03976825,
+        "copy_into_s": 6.204143521,
+        "db_bytes": 238182400,
+        "ingest_s": 6.124107208,
+        "numeric_order_s": 0.058704144,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 700102,
+        "open_database_s": 3.307517635,
+        "preview_s": 0.064493777,
+        "render_100k_s": 0.369832279,
+        "rows": 100000,
+        "save_database_s": 1.754162176,
+        "selective_order_s": 0.057458741,
+        "snapshot_compact_first_s": 0.047202925,
+        "snapshot_full_after_compact_s": 0.39437435,
+        "sqlite_version": "3.50.2",
+        "summary_full_s": 0.437850412
+      }
+    },
+    {
+      "variant": "baseline",
+      "rows": 100000,
+      "repeat": 2,
+      "exit_code": 0,
+      "elapsed_s": 25.300409715004207,
+      "metrics": {
+        "bounds_s": 0.042497339,
+        "copy_into_s": 7.633192453,
+        "db_bytes": 238182400,
+        "ingest_s": 7.6992601149999995,
+        "numeric_order_s": 0.055139982,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 700102,
+        "open_database_s": 3.330915121,
+        "preview_s": 0.063520995,
+        "render_100k_s": 0.351830109,
+        "rows": 100000,
+        "save_database_s": 1.8334523630000001,
+        "selective_order_s": 0.055358231,
+        "snapshot_compact_first_s": 0.044934905,
+        "snapshot_full_after_compact_s": 0.387880791,
+        "sqlite_version": "3.50.2",
+        "summary_full_s": 0.427282937
+      }
+    },
+    {
+      "variant": "prepared",
+      "rows": 100000,
+      "repeat": 2,
+      "exit_code": 0,
+      "elapsed_s": 22.941461233000155,
+      "metrics": {
+        "bounds_s": 0.041277187,
+        "copy_into_s": 6.490160377,
+        "db_bytes": 238182400,
+        "ingest_s": 6.247993788,
+        "numeric_order_s": 0.062749083,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 700102,
+        "open_database_s": 3.36952212,
+        "preview_s": 0.061667717,
+        "render_100k_s": 0.409565359,
+        "rows": 100000,
+        "save_database_s": 1.7443194690000001,
+        "selective_order_s": 0.059928743,
+        "snapshot_compact_first_s": 0.049844254,
+        "snapshot_full_after_compact_s": 0.407099889,
+        "sqlite_version": "3.50.2",
+        "summary_full_s": 0.439222448
+      }
+    },
+    {
+      "variant": "baseline",
+      "rows": 100000,
+      "repeat": 3,
+      "exit_code": 0,
+      "elapsed_s": 26.580424191997736,
+      "metrics": {
+        "bounds_s": 0.040439093,
+        "copy_into_s": 8.330719164,
+        "db_bytes": 238182400,
+        "ingest_s": 8.094743488,
+        "numeric_order_s": 0.060105809,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 700102,
+        "open_database_s": 3.355875877,
+        "preview_s": 0.062246867,
+        "render_100k_s": 0.388923801,
+        "rows": 100000,
+        "save_database_s": 1.909627288,
+        "selective_order_s": 0.05878281,
+        "snapshot_compact_first_s": 0.048177098,
+        "snapshot_full_after_compact_s": 0.402258369,
+        "sqlite_version": "3.50.2",
+        "summary_full_s": 0.445553138
+      }
+    },
+    {
+      "variant": "prepared",
+      "rows": 100000,
+      "repeat": 3,
+      "exit_code": 0,
+      "elapsed_s": 23.514313213003334,
+      "metrics": {
+        "bounds_s": 0.038606792,
+        "copy_into_s": 6.309813037,
+        "db_bytes": 238182400,
+        "ingest_s": 6.808880716,
+        "numeric_order_s": 0.062937946,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 700102,
+        "open_database_s": 3.307817632,
+        "preview_s": 0.060957679,
+        "render_100k_s": 0.447827167,
+        "rows": 100000,
+        "save_database_s": 1.821902051,
+        "selective_order_s": 0.059922263,
+        "snapshot_compact_first_s": 0.048434836,
+        "snapshot_full_after_compact_s": 0.448428525,
+        "sqlite_version": "3.50.2",
+        "summary_full_s": 0.46592847
+      }
+    }
+  ],
+  "operation_p95": null,
+  "operation_p95_reason": "three repetitions do not establish tail latency",
+  "fixtures": {
+    "fixture-100000.csv": {
+      "bytes": 15067847,
+      "sha256": "2a97e1dd5cedcd82137e5a3bb30dee8b7981c578c67aec32dee1c58b5316bdc0"
+    }
+  },
+  "scope": "CPU release build, shared Linux VM, three interleaved repetitions; OS page cache uncontrolled; no GPU or public network",
+  "provenance": {
+    "base": "main 5d4a51d with C01/C02/C03/C24a correctness changes",
+    "prepared": "same worktree with C04 prepared-statement change",
+    "indexed": "C05 indexed endpoint/predicate change, including signed-zero correction",
+    "note": "Binary hashes identify measured builds. Source-stage descriptions are not claims of a byte-for-byte final-release benchmark. Variants compiled sequentially in one worktree; later storage-only mode was not used."
+  }
+}

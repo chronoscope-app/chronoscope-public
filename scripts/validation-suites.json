@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "groups": {
+    "unit": [
+      "cesium-effects-math-test.mjs",
+      "cesium-geometry-test.mjs",
+      "cesium-resource-test.mjs",
+      "controllers-test.mjs",
+      "display-math-test.mjs",
+      "filter-intent-test.mjs",
+      "flat-lines-test.mjs",
+      "packet-test.mjs",
+      "playback-clock-test.mjs",
+      "space-time-frame-test.mjs",
+      "time-axis-test.mjs",
+      "timeline-labels-test.mjs",
+      "chart-guidance-test.mjs",
+      "publication-attribution-test.mjs"
+    ],
+    "browser": [
+      "analytics-qa.mjs",
+      "assistant-qa.mjs",
+      "basemap-qa.mjs",
+      "cesium-context-qa.mjs",
+      "cesium-effects-pixels-qa.mjs",
+      "cesium-globe-time-qa.mjs",
+      "cesium-terrain-qa.mjs",
+      "chart-shortcuts-qa.mjs",
+      "chart-workflow-qa.mjs",
+      "charts-qa.mjs",
+      "charts-timezone-qa.mjs",
+      "cluster-identity-qa.mjs",
+      "display-recovery-qa.mjs",
+      "empty-workspace-qa.mjs",
+      "event-table-qa.mjs",
+      "field-roles-qa.mjs",
+      "gis-files-qa.mjs",
+      "map-notifications-qa.mjs",
+      "navigation-qa.mjs",
+      "navigation-sphere-qa.mjs",
+      "notifications-qa.mjs",
+      "pan-direction-qa.mjs",
+      "patterns-qa.mjs",
+      "playback-speed-qa.mjs",
+      "playback-transitions-qa.mjs",
+      "real-demos-qa.mjs",
+      "si-rich-chat-qa.mjs",
+      "si-settings-qa.mjs",
+      "sidebar-time-qa.mjs",
+      "space-time-window-qa.mjs",
+      "spectrum-qa.mjs",
+      "subsecond-qa.mjs",
+      "webmcp-disabled-qa.mjs",
+      "wkt-wmts-qa.mjs",
+      "workspace-boundaries-qa.mjs",
+      "cesium-parity-qa.mjs",
+      "toolbar-dialogs-qa.mjs",
+      "si-certificate-qa.mjs",
+      "time-rail-qa.mjs"
+    ],
+    "performance": [
+      "cesium-scale-qa.mjs",
+      "performance-100k-qa.mjs",
+      "performance-qa.mjs"
+    ],
+    "apple": [
+      "apple-discovery-qa.mjs",
+      "apple-fields-qa.mjs",
+      "apple-local-qa.mjs"
+    ],
+    "experimental": [
+      "webmcp-qa.mjs"
+    ]
+  },
+  "requirements": {
+    "unit": "Node and installed frontend dependencies",
+    "browser": "Built CLI/frontend and installed Chromium; local fixtures only",
+    "performance": "Opt-in controlled performance run; requires --browser --performance",
+    "apple": "Opt-in macOS with actual Apple Intelligence; requires --apple-local",
+    "experimental": "Non-default experimental-browser-webmcp build; not part of standard releases"
+  },
+  "serial_browser": [
+    "navigation-qa.mjs",
+    "playback-speed-qa.mjs",
+    "playback-transitions-qa.mjs"
+  ]
+}

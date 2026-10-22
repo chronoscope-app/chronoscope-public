@@ -1,0 +1,142 @@
+{
+  "services": {
+    "nasa": {
+      "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml",
+      "bounds": [
+        -80.1,
+        43.15,
+        -79.85,
+        43.35
+      ],
+      "capabilities": true,
+      "layer_count": 1330,
+      "first_layer": {
+        "dimensions": [],
+        "formats": [
+          "image/jpeg"
+        ],
+        "id": "BlueMarble_ShadedRelief",
+        "limits": {},
+        "matrix_sets": [
+          "GoogleMapsCompatible_Level8"
+        ],
+        "style": "default",
+        "templates": {
+          "image/jpeg": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief/default/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpeg"
+        },
+        "title": "Blue Marble Shaded Relief (MODIS)"
+      }
+    },
+    "usgs-imagery": {
+      "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+      "bounds": [
+        -122.45,
+        36.75,
+        -122.35,
+        36.83
+      ],
+      "capabilities": true,
+      "layer_count": 1,
+      "first_layer": {
+        "dimensions": [],
+        "formats": [
+          "image/jpgpng"
+        ],
+        "id": "USGSImageryOnly",
+        "limits": {},
+        "matrix_sets": [
+          "default028mm",
+          "GoogleMapsCompatible"
+        ],
+        "style": "default",
+        "templates": {
+          "image/jpgpng": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/WMTS/tile/1.0.0/USGSImageryOnly/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}"
+        },
+        "title": "USGSImageryOnly"
+      }
+    },
+    "usgs-topo": {
+      "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+      "bounds": [
+        -80.2,
+        28.48,
+        -80.17,
+        28.53
+      ],
+      "capabilities": true,
+      "layer_count": 1,
+      "first_layer": {
+        "dimensions": [],
+        "formats": [
+          "image/jpgpng"
+        ],
+        "id": "USGSTopo",
+        "limits": {},
+        "matrix_sets": [
+          "default028mm",
+          "GoogleMapsCompatible"
+        ],
+        "style": "default",
+        "templates": {
+          "image/jpgpng": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/WMTS/tile/1.0.0/USGSTopo/{Style}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}"
+        },
+        "title": "USGSTopo"
+      }
+    },
+    "eox": {
+      "url": "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+      "bounds": [
+        -80.1,
+        43.15,
+        -79.85,
+        43.35
+      ],
+      "capabilities": true,
+      "layer_count": 47,
+      "first_layer": {
+        "dimensions": [],
+        "formats": [
+          "image/jpeg"
+        ],
+        "id": "s2cloudless-2024_3857",
+        "limits": {},
+        "matrix_sets": [
+          "g",
+          "GoogleMapsCompatible"
+        ],
+        "style": "default",
+        "templates": {
+          "image/jpeg": "http://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"
+        },
+        "title": "Sentinel-2 cloudless layer for 2024 by EOX - 3857"
+      }
+    }
+  },
+  "operations": [
+    {
+      "command": "wmts_access",
+      "elapsed_s": 0.134,
+      "ok": true
+    },
+    {
+      "command": "wmts_capabilities",
+      "elapsed_s": 1.069,
+      "ok": true
+    },
+    {
+      "command": "wmts_capabilities",
+      "elapsed_s": 0.44,
+      "ok": true
+    },
+    {
+      "command": "wmts_capabilities",
+      "elapsed_s": 0.896,
+      "ok": true
+    },
+    {
+      "command": "wmts_capabilities",
+      "elapsed_s": 2.904,
+      "ok": true
+    }
+  ]
+}

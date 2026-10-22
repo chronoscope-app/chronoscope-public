@@ -1,0 +1,1038 @@
+{
+  "passed": true,
+  "renderer": "CesiumJS WebGL",
+  "desktopContentSecurityPolicy": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:",
+  "publicMapRequests": 0,
+  "checks": [
+    {
+      "name": "Authenticated Rust bridge renders real hurricane data in native Cesium WebGL",
+      "evidence": {
+        "context": true,
+        "cesium": "Bn",
+        "canvasWidth": 1250,
+        "pointCount": 3568,
+        "mode": 1
+      }
+    },
+    {
+      "name": "Unchanged refreshes retain GPU resources; selection, style and camera invalidate them",
+      "evidence": {
+        "unchanged": true,
+        "tracksReused": true,
+        "selected": true,
+        "hidden": true,
+        "restored": true,
+        "cameraInvalidated": true,
+        "roundoffReused": true,
+        "smallMovementInvalidated": true,
+        "focusReused": true
+      }
+    },
+    {
+      "name": "Playback preserves point/triangle fades, IDs and selection with bounded GPU uploads",
+      "evidence": {
+        "bufferSubDataCalls": 44,
+        "mapped": true,
+        "halfAlphas": true,
+        "incoming": 100,
+        "outgoing": 100,
+        "during": {
+          "engine": "CesiumJS",
+          "navigation": {
+            "inertia": false,
+            "freeLook": false,
+            "northUpOnly": false,
+            "gestureMaximumTiltDegrees": 85,
+            "keyboardFocus": "map",
+            "active": false
+          },
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "timeHeightMeters": 311694.57424,
+          "displayTimeBounds": [
+            1735689600,
+            1735709600
+          ],
+          "contextRecoveries": 0,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "lastRenderError": "",
+          "sceneMode": 1,
+          "pointCount": 9990,
+          "triangleCount": 10,
+          "fadingPointCount": 100,
+          "fadingTriangleCount": 0,
+          "fadingStemSegments": 100,
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "arrivingPointCount": 90,
+          "arrivingTriangleCount": 10,
+          "triangleVisibleCount": 10,
+          "selectionCount": 3,
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "trackPolylines": 2,
+          "stemSegments": 9990,
+          "trailInputEdges": 9999,
+          "trailOutputEdges": 9999,
+          "geodesicRendering": {
+            "geometry": {
+              "remainingSegments": 0,
+              "remainingInterpolation": 200000,
+              "interpolated": 0,
+              "coarsened": 0,
+              "sourceSegments": 0
+            },
+            "trails": {
+              "remainingSegments": 19998,
+              "remainingInterpolation": 200000,
+              "interpolated": 0,
+              "coarsened": 0,
+              "sourceSegments": 19998
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000
+          },
+          "axisLabels": 3,
+          "orbitHandles": 4,
+          "requestRenderMode": true,
+          "performance": {
+            "renderedFrames": 41,
+            "active": false,
+            "sampleFrames": 5,
+            "fps": null,
+            "frameP95Ms": 25.599999999976717,
+            "renderCpuP95Ms": 5.199999999953434
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapPending": 0,
+            "basemapError": "",
+            "basemapRenderedTiles": 0,
+            "basemapAlignmentErrorPixels": 0,
+            "basemapMaximumLevel": 0,
+            "imageryLayers": 1,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "verticalDatum": "unresolved-msl",
+            "geoidModel": null,
+            "mode": "space-time"
+          },
+          "effectError": ""
+        },
+        "after": {
+          "engine": "CesiumJS",
+          "navigation": {
+            "inertia": false,
+            "freeLook": false,
+            "northUpOnly": false,
+            "gestureMaximumTiltDegrees": 85,
+            "keyboardFocus": "map",
+            "active": false
+          },
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "timeHeightMeters": 311694.57424,
+          "displayTimeBounds": [
+            1735689600,
+            1735709600
+          ],
+          "contextRecoveries": 0,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "lastRenderError": "",
+          "sceneMode": 1,
+          "pointCount": 9990,
+          "triangleCount": 10,
+          "fadingPointCount": 0,
+          "fadingTriangleCount": 0,
+          "fadingStemSegments": 0,
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "triangleVisibleCount": 10,
+          "selectionCount": 3,
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "trackPolylines": 2,
+          "stemSegments": 9990,
+          "trailInputEdges": 9999,
+          "trailOutputEdges": 9999,
+          "geodesicRendering": {
+            "geometry": {
+              "remainingSegments": 0,
+              "remainingInterpolation": 200000,
+              "interpolated": 0,
+              "coarsened": 0,
+              "sourceSegments": 0
+            },
+            "trails": {
+              "remainingSegments": 19998,
+              "remainingInterpolation": 200000,
+              "interpolated": 0,
+              "coarsened": 0,
+              "sourceSegments": 19998
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000
+          },
+          "axisLabels": 3,
+          "orbitHandles": 4,
+          "requestRenderMode": true,
+          "performance": {
+            "renderedFrames": 48,
+            "active": false,
+            "sampleFrames": 6,
+            "fps": null,
+            "frameP95Ms": 29.300000000046566,
+            "renderCpuP95Ms": 91.80000000004657
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapPending": 0,
+            "basemapError": "",
+            "basemapRenderedTiles": 0,
+            "basemapAlignmentErrorPixels": 0,
+            "basemapMaximumLevel": 0,
+            "imageryLayers": 1,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "verticalDatum": "unresolved-msl",
+            "geoidModel": null,
+            "mode": "space-time"
+          },
+          "effectError": ""
+        },
+        "expectedCount": 10000,
+        "context": {
+          "alpha": false,
+          "antialias": true,
+          "depth": true,
+          "desynchronized": false,
+          "failIfMajorPerformanceCaveat": false,
+          "powerPreference": "high-performance",
+          "premultipliedAlpha": true,
+          "preserveDrawingBuffer": false,
+          "stencil": true,
+          "xrCompatible": false
+        }
+      }
+    },
+    {
+      "name": "Afterimages and vertical trails persist across refreshes, expire, clear on pause/hide and respect reduced motion",
+      "evidence": {
+        "retained": true,
+        "triangleRetained": true,
+        "stemsRetained": true,
+        "noPickIds": true,
+        "currentOnly": true,
+        "oldestExpired": true,
+        "clearedOnPause": true,
+        "createdAgain": true,
+        "clearedOnHide": true,
+        "reducedMotion": true
+      }
+    },
+    {
+      "name": "Independent WGS84 ECEF references agree at equator, hemispheres, poles and date line",
+      "evidence": [
+        {
+          "lat": 0,
+          "lon": 0,
+          "errorMeters": 0
+        },
+        {
+          "lat": 0,
+          "lon": 90,
+          "errorMeters": 0
+        },
+        {
+          "lat": 40,
+          "lon": -75,
+          "errorMeters": 9.313225746154785e-10
+        },
+        {
+          "lat": -35,
+          "lon": 151,
+          "errorMeters": 4.656612873077393e-10
+        },
+        {
+          "lat": 85,
+          "lon": 179.9,
+          "errorMeters": 1.1368683772161603e-13
+        },
+        {
+          "lat": -85,
+          "lon": -179.9,
+          "errorMeters": 1.1368683772161603e-13
+        }
+      ]
+    },
+    {
+      "name": "Entity facets retain top-ten, show-all, clickable sorting and collapse controls",
+      "evidence": {
+        "totalEntities": 83
+      }
+    },
+    {
+      "name": "Globe, 2D, Columbus space-time and calendar have actual native modes and wheel/slider zoom",
+      "evidence": [
+        {
+          "name": "space-time",
+          "sceneMode": 1,
+          "before": 18476022.435830146,
+          "wheelIn": 11432655.847487167,
+          "wheelOut": 21899719.065586958,
+          "sliderIn": 21542384.02761773,
+          "anchorErrorMeters": null
+        },
+        {
+          "name": "map",
+          "sceneMode": 2,
+          "before": 13136813.108514212,
+          "wheelIn": 8128841.772809797,
+          "wheelOut": 15571128.308410868,
+          "sliderIn": 15434634.435374442,
+          "anchorErrorMeters": 2.7939677238464355e-9
+        },
+        {
+          "name": "globe",
+          "sceneMode": 3,
+          "before": 9149523.439844819,
+          "wheelIn": 5601296.800691519,
+          "wheelOut": 10883995.037290068,
+          "sliderIn": 10692195.518771565,
+          "anchorErrorMeters": null
+        },
+        {
+          "name": "calendar",
+          "sceneMode": 1,
+          "before": 1529156.5214270083,
+          "wheelIn": 946216.658931084,
+          "wheelOut": 1812516.6432756074,
+          "sliderIn": 1793912.4497477529,
+          "anchorErrorMeters": null
+        },
+        {
+          "name": "space-time",
+          "sceneMode": 1,
+          "before": 18476022.435830146,
+          "wheelIn": 11432655.847487167,
+          "wheelOut": 21899719.06558697,
+          "sliderIn": 21542384.027617734,
+          "anchorErrorMeters": null
+        }
+      ]
+    },
+    {
+      "name": "Dragging brackets/window and keyboard scrubbing preview live events without reframing",
+      "evidence": {
+        "samples": 12,
+        "distinctEventFrames": 12
+      }
+    },
+    {
+      "name": "Continuous attribute table supports click, Ctrl-click and inclusive Shift range; native view follows exact IDs",
+      "evidence": {
+        "firstId": "1",
+        "selectedCount": 5
+      }
+    },
+    {
+      "name": "Actual native Cesium event picking updates the shared exact selection",
+      "evidence": {
+        "id": "28",
+        "x": 974.3344485519923,
+        "y": 304.28234263641434
+      }
+    },
+    {
+      "name": "Event search filters both native geographic display and continuous attribute table",
+      "evidence": {
+        "matching": 85
+      }
+    },
+    {
+      "name": "Live time-height input, independent tracks and portable scene state persist",
+      "evidence": {
+        "workspace": "cesium-state.chronoscope"
+      }
+    },
+    {
+      "name": "Time-only triangle interpolation remains display-only in all geographic modes",
+      "evidence": {
+        "id": "2"
+      }
+    },
+    {
+      "name": "WKT geometry backend and native view retain six non-point features across map/globe/Columbus",
+      "evidence": {
+        "count": 6
+      }
+    },
+    {
+      "name": "Default dense display uses bounded native clusters with exact member counts",
+      "evidence": {
+        "clusterCount": 60,
+        "cellCount": 124,
+        "diagnostics": {
+          "renderer": "cesium-webgl2",
+          "groundOnly": false,
+          "bloomIsolation": "event-layer-only",
+          "clusterPoints": 60,
+          "clusterLabels": 60,
+          "densityInstances": 0,
+          "atlasLayers": 0,
+          "rasterWidth": 0,
+          "rasterHeight": 0,
+          "heatPeak": 0,
+          "heatCeiling": 0,
+          "pending": false,
+          "error": ""
+        }
+      }
+    },
+    {
+      "name": "Native cluster picking opens exact member table and selects every member through app controls",
+      "evidence": {
+        "count": 123
+      }
+    },
+    {
+      "name": "Live Columbus viewport contracts on zoom, retains elevated evidence and declusters exact records",
+      "evidence": {
+        "beforeViewport": {
+          "ground": [
+            -79.99176329597785,
+            43.23494953835043,
+            -79.94559670402214,
+            43.267441877001225
+          ],
+          "data": [
+            -79.99176329597785,
+            43.23212987133625,
+            -79.94559670402214,
+            43.267441877001225
+          ],
+          "mapZoom": 15.216572429910935,
+          "visibleUpper": 1000,
+          "omittedUpper": 0,
+          "nativeRectangleAvailable": false
+        },
+        "zoomViewport": [
+          -79.98150401627743,
+          43.23904653532739,
+          -79.95585598372257,
+          43.25710180563941
+        ],
+        "zoomMapZoom": 16.064573503845605,
+        "declustering": [
+          {
+            "cells": 720,
+            "count": 12000,
+            "aggregated": true,
+            "level": 17,
+            "mapZoom": 16.064573503845605,
+            "points": 12000,
+            "bounds": [
+              -79.98150401627743,
+              43.23622686831322,
+              -79.95585598372257,
+              43.25710180563941
+            ]
+          },
+          {
+            "cells": 1756,
+            "count": 12000,
+            "aggregated": true,
+            "level": 18,
+            "mapZoom": 17.06458288050978,
+            "points": 12000,
+            "bounds": [
+              -79.97509196646457,
+              43.23949686280676,
+              -79.9622680335354,
+              43.250639261038096
+            ]
+          },
+          {
+            "cells": 2468,
+            "count": 6526,
+            "aggregated": true,
+            "level": 19,
+            "mapZoom": 18.064593338417016,
+            "points": 6526,
+            "bounds": [
+              -79.97188595999263,
+              43.24183901496801,
+              -79.96547404000738,
+              43.24740800731694
+            ]
+          },
+          {
+            "cells": 2925,
+            "count": 2956,
+            "aggregated": true,
+            "level": 21,
+            "mapZoom": 19.064603111098837,
+            "points": 2956,
+            "bounds": [
+              -79.97028296913791,
+              43.24301008200329,
+              -79.96707703086209,
+              43.24579239293489
+            ]
+          }
+        ],
+        "declustered": {
+          "count": 799,
+          "active": false,
+          "points": 799,
+          "level": 22,
+          "mapZoom": 20.064622656424458,
+          "exactTotal": 12000
+        }
+      }
+    },
+    {
+      "name": "Native Columbus density creates native count cells",
+      "evidence": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": false,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 180,
+        "atlasLayers": 0,
+        "rasterWidth": 0,
+        "rasterHeight": 0,
+        "heatPeak": 0,
+        "heatCeiling": 0,
+        "pending": false,
+        "error": "",
+        "changedCanvasPixels": 155059
+      }
+    },
+    {
+      "name": "Native Columbus heatmap uses ground resources",
+      "evidence": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": true,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 0,
+        "atlasLayers": 1,
+        "rasterWidth": 512,
+        "rasterHeight": 512,
+        "heatPeak": 379.56035885999245,
+        "heatCeiling": 379.56035885999245,
+        "pending": false,
+        "error": "",
+        "changedCanvasPixels": 28725
+      }
+    },
+    {
+      "name": "Native Columbus bloom uses ground resources",
+      "evidence": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": true,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 0,
+        "atlasLayers": 1,
+        "rasterWidth": 512,
+        "rasterHeight": 512,
+        "heatPeak": 0,
+        "heatCeiling": 1,
+        "pending": false,
+        "error": "",
+        "changedCanvasPixels": 23699
+      }
+    },
+    {
+      "name": "Real DTED mesh is installed in Cesium's native terrain provider",
+      "evidence": {
+        "basemap": "none",
+        "basemapPending": 0,
+        "basemapError": "",
+        "basemapRenderedTiles": 0,
+        "basemapAlignmentErrorPixels": 0,
+        "basemapMaximumLevel": 0,
+        "imageryLayers": 1,
+        "tileCount": 0,
+        "imageryRequestedTiles": 0,
+        "terrainActive": true,
+        "terrainCovered": 1089,
+        "verticalDatum": "egm96",
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "mode": "space-time",
+        "datumInterpretation": "EGM96 explicitly chosen for renderer test; original sample only declares MSL"
+      }
+    },
+    {
+      "name": "Native imagery remains installed through repeated globe/map/Columbus transitions",
+      "evidence": {
+        "basemap": "none",
+        "basemapPending": 0,
+        "basemapError": "",
+        "basemapRenderedTiles": 0,
+        "basemapAlignmentErrorPixels": 0,
+        "basemapMaximumLevel": 0,
+        "imageryLayers": 3,
+        "tileCount": 1,
+        "imageryRequestedTiles": 0,
+        "terrainActive": true,
+        "terrainCovered": 1089,
+        "verticalDatum": "egm96",
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "mode": "space-time",
+        "localMapRequests": 1,
+        "terrainMapZoom": [
+          {
+            "before": 16.00710120049098,
+            "after": 16.69959482011768
+          },
+          {
+            "before": 16.00710120049098,
+            "after": 16.69959482011768
+          }
+        ]
+      }
+    },
+    {
+      "name": "Actual Excel import dialog detects worksheet and renders its located records",
+      "evidence": {
+        "rows": 5,
+        "located": 4
+      }
+    },
+    {
+      "name": "Unified Open routes native and legacy workspaces, imports Excel, preserves data on cancel/error and guards unsaved edits",
+      "evidence": {
+        "fileRoutes": [
+          {
+            "command": "open",
+            "path": "/workspace/chronoscope-wildlife-review/parity/Unified Open.CHRONOSCOPE"
+          },
+          {
+            "command": "open",
+            "path": "/workspace/chronoscope-wildlife-review/parity/legacy.chrono.JSON"
+          },
+          {
+            "command": "import_preview",
+            "path": "/workspace/chronoscope-basemap/tests/fixtures/import/small-study.xlsx"
+          },
+          {
+            "command": "import_preview",
+            "path": "/workspace/chronoscope-wildlife-review/parity/unsupported.data"
+          }
+        ],
+        "shortcuts": [
+          "Ctrl+O",
+          "Ctrl+I"
+        ],
+        "pickerCancellation": true,
+        "unsavedCancellation": [
+          "workspace",
+          "data"
+        ]
+      }
+    },
+    {
+      "name": "Full-range playback retains every event and advances focus without redundant data snapshots",
+      "evidence": {
+        "before": {
+          "focus": 0.45,
+          "bounds": [
+            -122.419796,
+            37.774208,
+            -122.39090399999999,
+            37.797892
+          ],
+          "ids": [
+            "1",
+            "3",
+            "4",
+            "2"
+          ]
+        },
+        "after": {
+          "focus": 0.6349333333333391,
+          "bounds": [
+            -122.419796,
+            37.774208,
+            -122.39090399999999,
+            37.797892
+          ],
+          "ids": [
+            "1",
+            "3",
+            "4",
+            "2"
+          ],
+          "filter": {
+            "bounds": null,
+            "end": null,
+            "facet_fields": {},
+            "facet_hidden": {},
+            "hidden_categories": [],
+            "hidden_entities": [],
+            "hidden_sources": [],
+            "located_only": false,
+            "predicates": [],
+            "search": "",
+            "selected_only": false,
+            "start": null
+          },
+          "diagnostics": {
+            "engine": "CesiumJS",
+            "navigation": {
+              "inertia": false,
+              "freeLook": false,
+              "northUpOnly": false,
+              "gestureMaximumTiltDegrees": 85,
+              "keyboardFocus": "map",
+              "active": false
+            },
+            "globeTime": false,
+            "globeTimeScale": 1,
+            "timeHeightMeters": 1845.5435740747141,
+            "displayTimeBounds": [
+              1750147200,
+              1750152600
+            ],
+            "contextRecoveries": 0,
+            "recovering": false,
+            "renderErrorCount": 0,
+            "lastRenderError": "",
+            "sceneMode": 1,
+            "pointCount": 4,
+            "triangleCount": 0,
+            "fadingPointCount": 0,
+            "fadingTriangleCount": 0,
+            "fadingStemSegments": 0,
+            "fadeDurationsMs": {
+              "arrival": 550,
+              "departure": 2400
+            },
+            "arrivingPointCount": 0,
+            "arrivingTriangleCount": 0,
+            "triangleVisibleCount": 0,
+            "selectionCount": 0,
+            "geometryFeatures": 0,
+            "geometryPrimitives": 2,
+            "trackPolylines": 2,
+            "stemSegments": 4,
+            "trailInputEdges": 2,
+            "trailOutputEdges": 2,
+            "geodesicRendering": {
+              "geometry": {
+                "remainingSegments": 0,
+                "remainingInterpolation": 200000,
+                "interpolated": 0,
+                "coarsened": 0,
+                "sourceSegments": 0
+              },
+              "trails": {
+                "remainingSegments": 4,
+                "remainingInterpolation": 200000,
+                "interpolated": 0,
+                "coarsened": 0,
+                "sourceSegments": 4
+              },
+              "maximumAddedVertices": 400000,
+              "sourceEndpointBudget": 400000
+            },
+            "axisLabels": 3,
+            "orbitHandles": 4,
+            "requestRenderMode": true,
+            "performance": {
+              "renderedFrames": 656,
+              "active": true,
+              "sampleFrames": 10,
+              "fps": 9.440196356083792,
+              "frameP95Ms": 184.70000000006985,
+              "renderCpuP95Ms": 1.400000000023283
+            },
+            "terrain": {
+              "basemap": "none",
+              "basemapPending": 0,
+              "basemapError": "",
+              "basemapRenderedTiles": 0,
+              "basemapAlignmentErrorPixels": 0,
+              "basemapMaximumLevel": 0,
+              "imageryLayers": 1,
+              "tileCount": 0,
+              "imageryRequestedTiles": 0,
+              "terrainActive": false,
+              "terrainCovered": 0,
+              "verticalDatum": "egm96",
+              "geoidModel": "NGA EGM96 15-minute; H+N",
+              "mode": "space-time"
+            },
+            "effectError": ""
+          }
+        },
+        "playbackRequests": []
+      }
+    },
+    {
+      "name": "Playback advances native focus smoothly and preserves the chosen interval and geographic frame",
+      "evidence": {
+        "playbackBefore": {
+          "focus": 0.3882666666666725,
+          "bounds": [
+            -122.39569999999999,
+            37.793499999999995,
+            -122.3917,
+            37.7976
+          ],
+          "filter": {
+            "bounds": null,
+            "end": 1750150560,
+            "facet_fields": {},
+            "facet_hidden": {},
+            "hidden_categories": [],
+            "hidden_entities": [],
+            "hidden_sources": [],
+            "located_only": false,
+            "predicates": [],
+            "search": "",
+            "selected_only": false,
+            "start": 1750147320
+          }
+        },
+        "playbackAfter": {
+          "focus": 0.5382666666666724,
+          "bounds": [
+            -122.39569999999999,
+            37.793499999999995,
+            -122.3917,
+            37.7976
+          ],
+          "filter": {
+            "bounds": null,
+            "end": 1750151520,
+            "facet_fields": {},
+            "facet_hidden": {},
+            "hidden_categories": [],
+            "hidden_entities": [],
+            "hidden_sources": [],
+            "located_only": false,
+            "predicates": [],
+            "search": "",
+            "selected_only": false,
+            "start": 1750148280
+          },
+          "timeBounds": [
+            1750147200,
+            1750152600
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pattern analysis selects exact evidence and Charts remains available",
+      "evidence": {
+        "findingCount": 1,
+        "findingSelection": 2
+      }
+    },
+    {
+      "name": "Saved selection group round-trips exact evidence through application controls",
+      "evidence": {
+        "groupCount": 1,
+        "selectionCount": 2
+      }
+    },
+    {
+      "name": "Inspector editing and undo/redo still operate the shared Rust store",
+      "evidence": {
+        "id": "1"
+      }
+    },
+    {
+      "name": "Import UI recognizes separate clocks, second truncation and short/spaced MGRS without suffix padding",
+      "evidence": {
+        "mgrs": "18TWL85661131",
+        "epoch": 1791879300
+      }
+    },
+    {
+      "name": "Manual date-order override is previewed and committed through the real import controls",
+      "evidence": {
+        "expectedUTC": "2026-03-04 08:15"
+      }
+    },
+    {
+      "name": "Invalid coordinates require row review and do not replace data before explicit acceptance",
+      "evidence": {
+        "accepted": 1,
+        "rejected": 1
+      }
+    },
+    {
+      "name": "Actual polar CSV import, initial fit and native marker picking retain ±89° data across geographic modes",
+      "evidence": {
+        "initialPolarFrame": {
+          "bounds": [
+            -18.6,
+            -90,
+            18.6,
+            90
+          ],
+          "points": 2
+        },
+        "modes": [
+          {
+            "mode": "space-time",
+            "frame": [
+              -18.6,
+              -90,
+              18.6,
+              90
+            ],
+            "dataBounds": [
+              -180,
+              -90,
+              180,
+              90
+            ],
+            "width": 1250,
+            "height": 843,
+            "markers": [
+              {
+                "id": "1",
+                "lat": 89.0000000000001,
+                "show": true,
+                "pixel": {
+                  "x": 664.8638052414194,
+                  "y": 101.48347426509395
+                },
+                "picked": true
+              },
+              {
+                "id": "2",
+                "lat": -89.0000000000001,
+                "show": true,
+                "pixel": {
+                  "x": 579.8150615850205,
+                  "y": 699.61419187087
+                },
+                "picked": true
+              }
+            ]
+          },
+          {
+            "mode": "map",
+            "frame": [
+              -18.6,
+              -90,
+              18.6,
+              90
+            ],
+            "dataBounds": [
+              -133.4519573053737,
+              -90,
+              133.4519573053737,
+              90
+            ],
+            "width": 1250,
+            "height": 843,
+            "markers": [
+              {
+                "id": "1",
+                "lat": 89.0000000000001,
+                "show": true,
+                "pixel": {
+                  "x": 695.25,
+                  "y": 4.683333333332939
+                },
+                "picked": true
+              },
+              {
+                "id": "2",
+                "lat": -89.0000000000001,
+                "show": true,
+                "pixel": {
+                  "x": 554.75,
+                  "y": 838.3166666666671
+                },
+                "picked": true
+              }
+            ]
+          },
+          {
+            "mode": "globe",
+            "frame": [
+              -18.6,
+              -90,
+              18.6,
+              90
+            ],
+            "dataBounds": [
+              -180,
+              -90,
+              180,
+              90
+            ],
+            "width": 1250,
+            "height": 843,
+            "markers": [
+              {
+                "id": "1",
+                "lat": 89.0000000000001,
+                "show": true,
+                "pixel": null,
+                "picked": null
+              },
+              {
+                "id": "2",
+                "lat": -89.0000000000001,
+                "show": true,
+                "pixel": null,
+                "picked": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Light mode and keyboard-opened local help remain available",
+      "evidence": {}
+    }
+  ],
+  "screenshots": [
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/hurricanes-space-time.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/hurricanes-map.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/hurricanes-globe.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/hurricanes-space-time.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/time-only-triangle.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/wkt-space-time.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/dense-clusters.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/dense-density.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/dense-heatmap.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/dense-bloom.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/local-imagery-dted.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/excel-imported.png",
+    "/workspace/chronoscope-wildlife-review/parity/screenshots/light-mode.png"
+  ],
+  "errors": [],
+  "failures": [],
+  "started": "2026-10-18T16:36:28.125Z",
+  "scriptErrors": [],
+  "cspViolations": [],
+  "finished": "2026-10-18T16:40:18.233Z"
+}

@@ -1,0 +1,188 @@
+{
+  "passed": true,
+  "platform": "Linux Tauri WebKitGTK",
+  "software_renderer": true,
+  "native_macos_windows_tested": false,
+  "checks": [
+    {
+      "name": "Attached MCP reports the actual WebView API/backend/loading state",
+      "evidence": {
+        "mode": "space-time",
+        "backend": "WebGL2",
+        "webgpu_api_available": false,
+        "hardware_acceleration": "unknown"
+      }
+    },
+    {
+      "name": "WGS84 geographic look-at in map",
+      "evidence": {
+        "mode": "map",
+        "scene": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "frustum_width": 500000,
+          "position": [
+            -8794239.772668611,
+            2782987.269831839,
+            12756274
+          ],
+          "up": [
+            3.251594349189817e-08,
+            0.9999999999999996,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "Geographic target projects to the viewport centre in map",
+      "evidence": {
+        "x": 531,
+        "y": 371,
+        "width": 1062,
+        "height": 742
+      }
+    },
+    {
+      "name": "2D zoom factor changes native map width exactly",
+      "evidence": {
+        "before": 500000,
+        "after": 250000
+      }
+    },
+    {
+      "name": "WGS84 geographic look-at in globe",
+      "evidence": {
+        "mode": "globe",
+        "scene": {
+          "direction": [
+            -0.18791017799129198,
+            0.9667140608267965,
+            0.17364817766693053
+          ],
+          "position": [
+            1197597.011470216,
+            -6161102.514873139,
+            2592250.374124322
+          ],
+          "up": [
+            0.03313363432959482,
+            -0.17045777155400846,
+            0.9848077530122081
+          ]
+        }
+      }
+    },
+    {
+      "name": "Geographic target projects to the viewport centre in globe",
+      "evidence": {
+        "x": 531.0000000000005,
+        "y": 370.9978898765486,
+        "width": 1062,
+        "height": 742
+      }
+    },
+    {
+      "name": "WGS84 geographic look-at in space-time",
+      "evidence": {
+        "mode": "space-time",
+        "scene": {
+          "direction": [
+            -5.2288165367395954e-17,
+            0.5735764363510457,
+            -0.819152044288992
+          ],
+          "position": [
+            -8794239.772668611,
+            2496199.051656316,
+            409576.0221444997
+          ],
+          "up": [
+            7.049586895741348e-17,
+            0.8191520442889916,
+            0.5735764363510465
+          ]
+        }
+      }
+    },
+    {
+      "name": "Geographic target projects to the viewport centre in space-time",
+      "evidence": {
+        "x": 531,
+        "y": 370.99788987655376,
+        "width": 1062,
+        "height": 742
+      }
+    },
+    {
+      "name": "North-up uses native geographic bearing",
+      "evidence": {
+        "bearing": 5.684341886080802e-14
+      }
+    },
+    {
+      "name": "Partial display changes and repeated mode preserve the live camera and other settings",
+      "evidence": {
+        "point_scale": 1.7
+      }
+    },
+    {
+      "name": "Native GIS layer fitting returns actual layer readiness",
+      "evidence": {
+        "layers": [
+          {
+            "enabled": true,
+            "error": null,
+            "format": "geojson",
+            "id": "8e8918de2e6b9f6f2a28ee30ab12f930",
+            "loaded": true,
+            "ready": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "Ergonomic CLI navigation and live status attach to the same desktop",
+      "evidence": {
+        "mode": "globe",
+        "backend": "WebGL2"
+      }
+    },
+    {
+      "name": "CLI capture saves a real PNG with spaces in the path and no base64 stdout",
+      "evidence": {
+        "bytes": 271368,
+        "mime_type": "image/png",
+        "saved": "/workspace/chronoscope-cesium/.qa/native SI screenshot.png"
+      }
+    },
+    {
+      "name": "CLI capture enforces explicit overwrite",
+      "evidence": {
+        "bytes": 271368
+      }
+    },
+    {
+      "name": "Existing MCP image capture still returns real native pixels",
+      "evidence": {
+        "width": 1062,
+        "height": 771,
+        "sampled_colors": 11382,
+        "bytes": 271368
+      }
+    }
+  ],
+  "images": [
+    {
+      "file": "native-agent-camera.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 11382,
+      "bytes": 271368
+    }
+  ],
+  "public_maps_enabled": false
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Theft-from-the-person reports · Central London · January 2025",
+    "creator": "Police.uk / Single Online Home National Digital Team and contributing police forces",
+    "source_url": "https://data.police.uk/api/crimes-street/theft-from-the-person?date=2025-01&poly=51.49,-0.18:51.54,-0.18:51.54,-0.08:51.49,-0.08",
+    "license": "Open Government Licence v3.0. Contains public sector information licensed under the Open Government Licence v3.0.",
+    "license_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "changes": "Fixed response retrieved 2026-10-21; all 4,053 returned records retained without thinning or deduplication. Published approximate coordinates are unchanged. Nested JSON fields flattened; missing outcomes remain blank. Only month is published: month_anchor_utc is the first day of that month for display grouping, not an incident timestamp. Heat weights count records; tracks are off. Anonymised report concentrations are not exact incident locations or a crime-risk score."
+  }
+]

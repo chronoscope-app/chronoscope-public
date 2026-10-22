@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "publicRequests": 0,
+  "checks": [
+    "Persistent full-scope hurricane group result opens with five year rows, findings, denominators and chart",
+    "Exact source Event row selection reaches live workspace/map and attribute-table selection",
+    "Changed-source evidence is visibly stale and cannot select current source rows",
+    "Removing a derived artifact retains all source Events",
+    "Small workspace saves use portable SQLite and retain result artifacts after reopen"
+  ],
+  "errors": []
+}

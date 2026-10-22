@@ -1,0 +1,81 @@
+{
+  "source": "https://www.nhc.noaa.gov/data/hurdat/hurdat2-1851-2025-02272026.txt",
+  "basin_reference": "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.NA.list.v04r01.csv",
+  "source_sha256": "1b9b0c7beed5b4505838658b1d30e159fc84330c60891a58cfcf43ae55c37202",
+  "years": [
+    2016,
+    2025
+  ],
+  "selection": "Original Atlantic-basin records of storms reaching HU in the Atlantic; Pacific portions excluded using IBTrACS BASIN tags; no interpolation or synthetic observations",
+  "storms": 83,
+  "records": 3568,
+  "storm_counts_by_year": {
+    "2016": 7,
+    "2017": 10,
+    "2018": 8,
+    "2019": 6,
+    "2020": 14,
+    "2021": 7,
+    "2022": 8,
+    "2023": 7,
+    "2024": 11,
+    "2025": 5
+  },
+  "bounds": [
+    -100.3,
+    8.9,
+    8,
+    64
+  ],
+  "near_atlanta_storms": [
+    "Irma 2017",
+    "Nate 2017",
+    "Florence 2018",
+    "Michael 2018",
+    "Sally 2020",
+    "Delta 2020",
+    "Zeta 2020",
+    "Elsa 2021",
+    "Ida 2021",
+    "Nicole 2022",
+    "Helene 2024"
+  ],
+  "basemap": {
+    "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml",
+    "layer": "BlueMarble_ShadedRelief",
+    "matrix_set": "GoogleMapsCompatible_Level8",
+    "style": "default",
+    "format": "image/jpeg",
+    "time": "",
+    "enabled": true,
+    "level": 4
+  },
+  "map_bounds": [
+    -106,
+    4,
+    12,
+    66
+  ],
+  "map_tiles": 24,
+  "cache_hits": 25,
+  "public_tile_requests": 0,
+  "errors": [],
+  "basin_reference_sha256": "4f640622259c6e4d30ccbea454ee838a1cfa88f3c06115fe5a56460de33f2094",
+  "rendering": "Actual Chronoscope UI, Chromium WebGL2 on SwiftShader Linux",
+  "time_axis_years_verified": [
+    2016,
+    2017,
+    2019,
+    2021,
+    2023,
+    2025
+  ],
+  "portable_reopen": {
+    "records": 3568,
+    "views": 4,
+    "wmts_layer": "BlueMarble_ShadedRelief"
+  },
+  "total_unique_public_map_tiles_for_this_demo": 24,
+  "test_request_spacing_ms": 1000,
+  "test_concurrency": 1
+}

@@ -1,0 +1,5 @@
+
+> chronoscope-cesium-ui@0.13.3 test:cesium-resources
+> node scripts/cesium-resource-test.mjs
+
+Cesium resources: 8 independent PROJ geoid references, dateline/poles, Mercator DTED sampling/voids, native mesh interpolation/availability/cache, explicit datum enforcement passed.

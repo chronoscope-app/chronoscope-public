@@ -1,0 +1,5 @@
+PASS Million-row import retains the exact source count
+PASS Bounded source/entity query pages retain exact million-row totals
+PASS Bounded clusters and selection agree with independent source-coordinate enumeration
+PASS Actual default Cesium display uses bounded native collections, not a million Entities
+PASS Native cluster layer produces visible nonblank canvas pixels

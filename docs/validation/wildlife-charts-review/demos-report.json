@@ -1,0 +1,115 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "noaa-ais: offline picker loads original observations and four saved views",
+      "evidence": {
+        "count": 8473,
+        "entities": 10
+      }
+    },
+    {
+      "name": "noaa-ais: 2D, globe and space-time render without errors",
+      "evidence": {}
+    },
+    {
+      "name": "noaa-ais: complete attribute table sorts by actual numeric values",
+      "evidence": {
+        "columns": 40
+      }
+    },
+    {
+      "name": "noaa-ais: playback remains functional",
+      "evidence": {}
+    },
+    {
+      "name": "animal-gps: offline picker loads original observations and four saved views",
+      "evidence": {
+        "count": 15697,
+        "entities": 3
+      }
+    },
+    {
+      "name": "animal-gps: 2D, globe and space-time render without errors",
+      "evidence": {}
+    },
+    {
+      "name": "animal-gps: complete attribute table sorts by actual numeric values",
+      "evidence": {
+        "columns": 47
+      }
+    },
+    {
+      "name": "animal-gps: playback remains functional",
+      "evidence": {}
+    },
+    {
+      "name": "local-wildlife: offline picker loads original observations and four saved views",
+      "evidence": {
+        "count": 3439,
+        "entities": 3
+      }
+    },
+    {
+      "name": "local-wildlife: 2D, globe and space-time render without errors",
+      "evidence": {}
+    },
+    {
+      "name": "local-wildlife: complete attribute table sorts by actual numeric values",
+      "evidence": {
+        "columns": 52
+      }
+    },
+    {
+      "name": "local-wildlife: playback remains functional",
+      "evidence": {}
+    },
+    {
+      "name": "stork-migration: offline picker loads original observations and four saved views",
+      "evidence": {
+        "count": 6090,
+        "entities": 3
+      }
+    },
+    {
+      "name": "stork-migration: 2D, globe and space-time render without errors",
+      "evidence": {}
+    },
+    {
+      "name": "stork-migration: complete attribute table sorts by actual numeric values",
+      "evidence": {
+        "columns": 31
+      }
+    },
+    {
+      "name": "stork-migration: playback remains functional",
+      "evidence": {}
+    },
+    {
+      "name": "elephant-seals: offline picker loads original observations and four saved views",
+      "evidence": {
+        "count": 15501,
+        "entities": 3
+      }
+    },
+    {
+      "name": "elephant-seals: 2D, globe and space-time render without errors",
+      "evidence": {}
+    },
+    {
+      "name": "elephant-seals: complete attribute table sorts by actual numeric values",
+      "evidence": {
+        "columns": 60
+      }
+    },
+    {
+      "name": "elephant-seals: playback remains functional",
+      "evidence": {}
+    },
+    {
+      "name": "Saved bloom view restores with all original AIS observations",
+      "evidence": {}
+    }
+  ],
+  "errors": []
+}

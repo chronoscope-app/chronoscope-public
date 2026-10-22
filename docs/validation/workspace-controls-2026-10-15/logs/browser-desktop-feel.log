@@ -1,0 +1,19 @@
+
+> chronoscope-ui@0.13.3 test:desktop-feel
+> node scripts/desktop-feel-qa.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: {"calls":6,"planes":3,"bounds":[-79.96199999999999,43.248,-79.95661,43.25339],"after":[-79.96199999999999,43.248,-79.95661,43.25339],"filter":{"bounds":null,"end":1791967380,"hidden_categories":[],"hidden_entities":[],"hidden_sources":[],"located_only":false,"predicates":[],"search":"","selected_only":false,"start":1791965280}}
+    at file:///workspace/chronoscope/frontend/scripts/desktop-feel-qa.mjs:460:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

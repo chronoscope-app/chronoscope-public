@@ -1,0 +1,1328 @@
+{
+  "passed": true,
+  "runtime": "Actual Tauri WebKitGTK with tauri://localhost custom scheme",
+  "software_renderer": true,
+  "checks": [
+    {
+      "name": "Native custom-scheme heat-map worker produces visible atlas pixels",
+      "evidence": {
+        "state": {
+          "count": 144,
+          "mode": "map",
+          "backend": "Cesium WebGL2",
+          "resources": {
+            "imageryLayers": 1,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "verticalDatum": "unresolved-msl",
+            "geoidModel": null,
+            "mode": "map"
+          },
+          "display": {
+            "renderer": "cesium-webgl2",
+            "groundOnly": true,
+            "bloomIsolation": "event-layer-only",
+            "clusterPoints": 0,
+            "clusterLabels": 0,
+            "densityInstances": 0,
+            "atlasLayers": 1,
+            "rasterWidth": 512,
+            "rasterHeight": 512,
+            "heatPeak": 4.127259934007757,
+            "heatCeiling": 4.127259934007757,
+            "pending": false,
+            "error": ""
+          },
+          "worker": false,
+          "primitiveCount": 10,
+          "tiles": [
+            {
+              "level": 9,
+              "x": 285,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 284,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 285,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 284,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 286,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 286,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 287,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 287,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 283,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 283,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 285,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 284,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 285,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 284,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 286,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 287,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 286,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 287,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 283,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 283,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 288,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 288,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 288,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 288,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            }
+          ]
+        },
+        "changed_pixels": 71351,
+        "capture": {
+          "width": 1062,
+          "height": 771,
+          "sampled_colors": 14117,
+          "bytes": 331330
+        }
+      }
+    },
+    {
+      "name": "Native custom-scheme ground-bloom worker produces visible isolated emission",
+      "evidence": {
+        "state": {
+          "count": 144,
+          "mode": "map",
+          "backend": "Cesium WebGL2",
+          "resources": {
+            "imageryLayers": 1,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "verticalDatum": "unresolved-msl",
+            "geoidModel": null,
+            "mode": "map"
+          },
+          "display": {
+            "renderer": "cesium-webgl2",
+            "groundOnly": true,
+            "bloomIsolation": "event-layer-only",
+            "clusterPoints": 0,
+            "clusterLabels": 0,
+            "densityInstances": 0,
+            "atlasLayers": 1,
+            "rasterWidth": 512,
+            "rasterHeight": 512,
+            "heatPeak": 4.127259934007757,
+            "heatCeiling": 4.127259934007757,
+            "pending": false,
+            "error": ""
+          },
+          "worker": false,
+          "primitiveCount": 10,
+          "tiles": [
+            {
+              "level": 9,
+              "x": 285,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 284,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 285,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 284,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 286,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 286,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 287,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 287,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 283,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 283,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 285,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 284,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 285,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 284,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 286,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 287,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 286,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 287,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 283,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 283,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 288,
+              "y": 132,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 288,
+              "y": 133,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 288,
+              "y": 131,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            },
+            {
+              "level": 9,
+              "x": 288,
+              "y": 130,
+              "mesh": true,
+              "terrainData": true,
+              "minimumHeight": 0,
+              "maximumHeight": 0
+            }
+          ]
+        },
+        "changed_pixels": 1337,
+        "capture": {
+          "width": 1062,
+          "height": 771,
+          "sampled_colors": 13328,
+          "bytes": 259926
+        }
+      }
+    },
+    {
+      "name": "Native DTED worker/uploaded GPU surface agrees with source in globe",
+      "evidence": {
+        "proof": {
+          "probes": [
+            {
+              "topHeight": 451.6946667092804,
+              "topAbsoluteError": 0.03585275813662747,
+              "westRayHeight": 451.6543202426968,
+              "eastRayHeight": 451.7272571960492,
+              "westRayError": 0.03991599028137216,
+              "eastRayError": 0.039545505806586334,
+              "lat": 43.248,
+              "lon": -79.952,
+              "renderedHeight": 451.6903528352777,
+              "expectedHeight": 451.730519467417,
+              "absoluteError": 0.04016663213934635,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 458.7249943748351,
+              "topAbsoluteError": 0.048342697678720015,
+              "westRayHeight": 458.69932069622223,
+              "eastRayHeight": 458.75597036540404,
+              "westRayError": 0.04425055892937735,
+              "eastRayError": 0.047132524472147,
+              "lat": 43.248,
+              "lon": -79.95,
+              "renderedHeight": 458.72764549119296,
+              "expectedHeight": 458.7733370725138,
+              "absoluteError": 0.04569158132085249,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 459.7062188809323,
+              "topAbsoluteError": 0.04796731496088569,
+              "westRayHeight": 459.6987762237425,
+              "eastRayHeight": 459.70653608169727,
+              "westRayError": 0.051573991875784486,
+              "eastRayError": 0.05148609447076069,
+              "lat": 43.248,
+              "lon": -79.94800000000001,
+              "renderedHeight": 459.7026561131429,
+              "expectedHeight": 459.75418619589317,
+              "absoluteError": 0.051530082750275596,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 405.22420854902265,
+              "topAbsoluteError": 0.23548932688976265,
+              "westRayHeight": 405.2099153143343,
+              "eastRayHeight": 405.24078025266516,
+              "westRayError": 0.23585025157399286,
+              "eastRayError": 0.2374068711596351,
+              "lat": 43.25,
+              "lon": -79.952,
+              "renderedHeight": 405.2253477391079,
+              "expectedHeight": 404.9887192221329,
+              "absoluteError": 0.2366285169750313,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 407.9451492935858,
+              "topAbsoluteError": 0.24517219118598632,
+              "westRayHeight": 407.9280929996131,
+              "eastRayHeight": 407.9427118073874,
+              "westRayError": 0.23607667991905146,
+              "eastRayError": 0.23477392228187455,
+              "lat": 43.25,
+              "lon": -79.95,
+              "renderedHeight": 407.93453187522465,
+              "expectedHeight": 407.6999771023998,
+              "absoluteError": 0.23455477282482207,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 404.4791953422561,
+              "topAbsoluteError": 0.29265034677490576,
+              "westRayHeight": 404.48851116101514,
+              "eastRayHeight": 404.4499302560783,
+              "westRayError": 0.28330135507508203,
+              "eastRayError": 0.2820500710559486,
+              "lat": 43.25,
+              "lon": -79.94800000000001,
+              "renderedHeight": 404.46922066568186,
+              "expectedHeight": 404.1865449954812,
+              "absoluteError": 0.28267567020066053,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 395.3163952705219,
+              "topAbsoluteError": 0.002612108557684678,
+              "westRayHeight": 395.3028542356854,
+              "eastRayHeight": 395.3156924619046,
+              "westRayError": 0.009821577023501504,
+              "eastRayError": 0.009646483545623141,
+              "lat": 43.252,
+              "lon": -79.952,
+              "renderedHeight": 395.30927329822896,
+              "expectedHeight": 395.3190073790796,
+              "absoluteError": 0.009734080850648752,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 396.4386137753731,
+              "topAbsoluteError": 0.016326611630177013,
+              "westRayHeight": 396.439763100019,
+              "eastRayHeight": 396.4423427137234,
+              "westRayError": 0.01281746219251545,
+              "eastRayError": 0.014957498071680675,
+              "lat": 43.252,
+              "lon": -79.95,
+              "renderedHeight": 396.4410528583604,
+              "expectedHeight": 396.45494038700326,
+              "absoluteError": 0.013887528642840152,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 393.88273661474364,
+              "topAbsoluteError": 0.013520180684452043,
+              "westRayHeight": 393.8879072531609,
+              "eastRayHeight": 393.86220626764646,
+              "westRayError": 0.021793422676182672,
+              "eastRayError": 0.020606647372574116,
+              "lat": 43.252,
+              "lon": -79.94800000000001,
+              "renderedHeight": 393.8750567097996,
+              "expectedHeight": 393.8962567954281,
+              "absoluteError": 0.02120008562849307,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            }
+          ],
+          "mode": "globe",
+          "bounds": [
+            -79.956,
+            43.244,
+            -79.944,
+            43.256
+          ],
+          "terrainBounds": [
+            -80,
+            43.22675635062657,
+            -79.89490892518842,
+            43.279051199519344
+          ],
+          "status": {
+            "imageryLayers": 1,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "verticalDatum": "egm96",
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "mode": "globe"
+          },
+          "tilesLoaded": false,
+          "tiles": [
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 579.6526323861385,
+              "max": 754.5092251963194
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 526.1356011624574,
+              "max": 735.1413895082997
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 627.2802065325853,
+              "max": 765.2286451623302
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 666.1691917629797,
+              "max": 772.3196702526675
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 511.6451245516099,
+              "max": 709.2766193136415
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 504.9324088309888,
+              "max": 702.8209368795337
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 673.2730829643514,
+              "max": 778.3455362545687
+            },
+            {
+              "level": 12,
+              "mesh": true,
+              "min": 0,
+              "max": 822.7413752078269
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 474.8979045155984,
+              "max": 688.6471898580071
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 480.2375250264,
+              "max": 718.4724681284931
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 378.36947703784796,
+              "max": 480.2375250264
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 376.98664763303503,
+              "max": 490.9440357639446
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 353.95626383718985,
+              "max": 380.1171392300882
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 346.57123358264244,
+              "max": 378.36947703784796
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 320.4835874588921,
+              "max": 359.809982123903
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 323.3201663719369,
+              "max": 353.95626383718985
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 324.6254732896486,
+              "max": 350.5092537554029
+            }
+          ]
+        },
+        "capture": {
+          "width": 1062,
+          "height": 771,
+          "sampled_colors": 140,
+          "bytes": 17009
+        },
+        "elapsed_seconds": 5.77
+      }
+    },
+    {
+      "name": "Native DTED worker/uploaded GPU surface agrees with source in map",
+      "evidence": {
+        "proof": {
+          "probes": [
+            {
+              "topHeight": 451.6946575370665,
+              "topAbsoluteError": 0.035845495967237184,
+              "westRayHeight": 451.6543095194424,
+              "eastRayHeight": 451.72724651003074,
+              "westRayError": 0.03991180982649212,
+              "eastRayError": 0.039538226767831475,
+              "lat": 43.248,
+              "lon": -79.952,
+              "renderedHeight": 451.6903421352344,
+              "expectedHeight": 451.73050303303376,
+              "absoluteError": 0.04016089779935328,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 458.80284068758,
+              "topAbsoluteError": 0.1843120846298234,
+              "westRayHeight": 458.78618178097423,
+              "eastRayHeight": 458.8248078900959,
+              "westRayError": 0.16468816249670226,
+              "eastRayError": 0.16617926776950753,
+              "lat": 43.248,
+              "lon": -79.95,
+              "renderedHeight": 458.8054947963966,
+              "expectedHeight": 458.9871527722098,
+              "absoluteError": 0.1816579758132093,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 459.70621469877534,
+              "topAbsoluteError": 0.04797729341134982,
+              "westRayHeight": 459.69877021027025,
+              "eastRayHeight": 459.7065300722024,
+              "westRayError": 0.05158952649526327,
+              "eastRayError": 0.051494175405537135,
+              "lat": 43.248,
+              "lon": -79.94800000000001,
+              "renderedHeight": 459.70265010363323,
+              "expectedHeight": 459.7541919921867,
+              "absoluteError": 0.05154188855345865,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 405.07427078711237,
+              "topAbsoluteError": 0.7848392727026976,
+              "westRayHeight": 405.0600077749239,
+              "eastRayHeight": 405.09087217924787,
+              "westRayError": 0.7849820533434695,
+              "eastRayError": 0.7870348720090306,
+              "lat": 43.25,
+              "lon": -79.952,
+              "renderedHeight": 405.0754399309948,
+              "expectedHeight": 404.28943151440967,
+              "absoluteError": 0.7860084165851049,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 407.8627716840496,
+              "topAbsoluteError": 0.6926946314501379,
+              "westRayHeight": 407.86503869130553,
+              "eastRayHeight": 407.8598939180914,
+              "westRayError": 0.7093641763269147,
+              "eastRayError": 0.7090042069827405,
+              "lat": 43.25,
+              "lon": -79.95,
+              "renderedHeight": 407.8624662566102,
+              "expectedHeight": 407.1700770525995,
+              "absoluteError": 0.6923892040107376,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 404.2864286462476,
+              "topAbsoluteError": 0.9539458089562913,
+              "westRayHeight": 404.30650723917086,
+              "eastRayHeight": 404.26792718118054,
+              "westRayError": 0.9548370603887975,
+              "eastRayError": 0.9546316853800931,
+              "lat": 43.25,
+              "lon": -79.94800000000001,
+              "renderedHeight": 404.2872171659529,
+              "expectedHeight": 403.3324828372913,
+              "absoluteError": 0.9547343286615728,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 395.3163509826669,
+              "topAbsoluteError": 0.0026368249124857357,
+              "westRayHeight": 395.3028098751925,
+              "eastRayHeight": 395.3156481113106,
+              "westRayError": 0.009852293604978968,
+              "eastRayError": 0.009665335050613066,
+              "lat": 43.252,
+              "lon": -79.952,
+              "renderedHeight": 395.30922894367245,
+              "expectedHeight": 395.3189878075794,
+              "absoluteError": 0.009758863906938586,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 396.4941781194041,
+              "topAbsoluteError": 0.09104117276393708,
+              "westRayHeight": 396.48936698971363,
+              "eastRayHeight": 396.4816482985183,
+              "westRayError": 0.08952328874266868,
+              "eastRayError": 0.09012531583698546,
+              "lat": 43.252,
+              "lon": -79.95,
+              "renderedHeight": 396.4855075950632,
+              "expectedHeight": 396.58521929216806,
+              "absoluteError": 0.09971169710485128,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 393.88269143392336,
+              "topAbsoluteError": 0.013552741162129678,
+              "westRayHeight": 393.88786200973504,
+              "eastRayHeight": 393.86216100762834,
+              "westRayError": 0.02182121302496398,
+              "eastRayError": 0.020644119782730286,
+              "lat": 43.252,
+              "lon": -79.94800000000001,
+              "renderedHeight": 393.8750114597546,
+              "expectedHeight": 393.8962441750855,
+              "absoluteError": 0.021232715330882,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            }
+          ],
+          "mode": "map",
+          "bounds": [
+            -79.956,
+            43.244,
+            -79.944,
+            43.256
+          ],
+          "terrainBounds": [
+            -79.962,
+            43.238,
+            -79.938,
+            43.262
+          ],
+          "status": {
+            "imageryLayers": 1,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "verticalDatum": "egm96",
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "mode": "map"
+          },
+          "tilesLoaded": false,
+          "tiles": [
+            {
+              "level": 12,
+              "mesh": true,
+              "min": 0,
+              "max": 670.80241907873
+            },
+            {
+              "level": 12,
+              "mesh": true,
+              "min": 0,
+              "max": 0
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 0,
+              "max": 723.5115440021259
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 0,
+              "max": 695.453323296966
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 0,
+              "max": 742.9212638023783
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 0,
+              "max": 748.3563801836847
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 0,
+              "max": 661.000860153432
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 0,
+              "max": 0
+            },
+            {
+              "level": 12,
+              "mesh": true,
+              "min": 0,
+              "max": 0
+            }
+          ]
+        },
+        "capture": {
+          "width": 1062,
+          "height": 771,
+          "sampled_colors": 131,
+          "bytes": 16070
+        },
+        "elapsed_seconds": 5.593
+      }
+    },
+    {
+      "name": "Native DTED worker/uploaded GPU surface agrees with source in space-time",
+      "evidence": {
+        "proof": {
+          "probes": [
+            {
+              "topHeight": 451.6946575370665,
+              "topAbsoluteError": 0.035845495967237184,
+              "westRayHeight": 451.6543095194424,
+              "eastRayHeight": 451.72724651003074,
+              "westRayError": 0.03991180982649212,
+              "eastRayError": 0.039538226767831475,
+              "lat": 43.248,
+              "lon": -79.952,
+              "renderedHeight": 451.6903421352344,
+              "expectedHeight": 451.73050303303376,
+              "absoluteError": 0.04016089779935328,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 458.80284068758,
+              "topAbsoluteError": 0.1843120846298234,
+              "westRayHeight": 458.78618178097423,
+              "eastRayHeight": 458.8248078900959,
+              "westRayError": 0.16468816249670226,
+              "eastRayError": 0.16617926776950753,
+              "lat": 43.248,
+              "lon": -79.95,
+              "renderedHeight": 458.8054947963966,
+              "expectedHeight": 458.9871527722098,
+              "absoluteError": 0.1816579758132093,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 459.70621469877534,
+              "topAbsoluteError": 0.04797729341134982,
+              "westRayHeight": 459.69877021027025,
+              "eastRayHeight": 459.7065300722024,
+              "westRayError": 0.05158952649526327,
+              "eastRayError": 0.051494175405537135,
+              "lat": 43.248,
+              "lon": -79.94800000000001,
+              "renderedHeight": 459.70265010363323,
+              "expectedHeight": 459.7541919921867,
+              "absoluteError": 0.05154188855345865,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 405.07427078711237,
+              "topAbsoluteError": 0.7848392727026976,
+              "westRayHeight": 405.0600077749239,
+              "eastRayHeight": 405.09087217924787,
+              "westRayError": 0.7849820533434695,
+              "eastRayError": 0.7870348720090306,
+              "lat": 43.25,
+              "lon": -79.952,
+              "renderedHeight": 405.0754399309948,
+              "expectedHeight": 404.28943151440967,
+              "absoluteError": 0.7860084165851049,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 407.8627716840496,
+              "topAbsoluteError": 0.6926946314501379,
+              "westRayHeight": 407.86503869130553,
+              "eastRayHeight": 407.8598939180914,
+              "westRayError": 0.7093641763269147,
+              "eastRayError": 0.7090042069827405,
+              "lat": 43.25,
+              "lon": -79.95,
+              "renderedHeight": 407.8624662566102,
+              "expectedHeight": 407.1700770525995,
+              "absoluteError": 0.6923892040107376,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 404.2864286462476,
+              "topAbsoluteError": 0.9539458089562913,
+              "westRayHeight": 404.30650723917086,
+              "eastRayHeight": 404.26792718118054,
+              "westRayError": 0.9548370603887975,
+              "eastRayError": 0.9546316853800931,
+              "lat": 43.25,
+              "lon": -79.94800000000001,
+              "renderedHeight": 404.2872171659529,
+              "expectedHeight": 403.3324828372913,
+              "absoluteError": 0.9547343286615728,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 395.3163509826669,
+              "topAbsoluteError": 0.0026368249124857357,
+              "westRayHeight": 395.3028098751925,
+              "eastRayHeight": 395.3156481113106,
+              "westRayError": 0.009852293604978968,
+              "eastRayError": 0.009665335050613066,
+              "lat": 43.252,
+              "lon": -79.952,
+              "renderedHeight": 395.30922894367245,
+              "expectedHeight": 395.3189878075794,
+              "absoluteError": 0.009758863906938586,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 396.4941781194041,
+              "topAbsoluteError": 0.09104117276393708,
+              "westRayHeight": 396.48936698971363,
+              "eastRayHeight": 396.4816482985183,
+              "westRayError": 0.08952328874266868,
+              "eastRayError": 0.09012531583698546,
+              "lat": 43.252,
+              "lon": -79.95,
+              "renderedHeight": 396.4855075950632,
+              "expectedHeight": 396.58521929216806,
+              "absoluteError": 0.09971169710485128,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            },
+            {
+              "topHeight": 393.88269143392336,
+              "topAbsoluteError": 0.013552741162129678,
+              "westRayHeight": 393.88786200973504,
+              "eastRayHeight": 393.86216100762834,
+              "westRayError": 0.02182121302496398,
+              "eastRayError": 0.020644119782730286,
+              "lat": 43.252,
+              "lon": -79.94800000000001,
+              "renderedHeight": 393.8750114597546,
+              "expectedHeight": 393.8962441750855,
+              "absoluteError": 0.021232715330882,
+              "loadedLevel": 15,
+              "declaredError": 4.632547168798561
+            }
+          ],
+          "mode": "space-time",
+          "bounds": [
+            -79.956,
+            43.244,
+            -79.944,
+            43.256
+          ],
+          "terrainBounds": [
+            -79.962,
+            43.238,
+            -79.938,
+            43.262
+          ],
+          "status": {
+            "imageryLayers": 1,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "verticalDatum": "egm96",
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "mode": "space-time"
+          },
+          "tilesLoaded": true,
+          "tiles": [
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 455.31943349638175,
+              "max": 627.2801976229824
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 434.15493338411716,
+              "max": 579.6526324010733
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 387.88071828538943,
+              "max": 469.1356677692037
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 389.0727562867939,
+              "max": 455.31943349638175
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 469.1356677692037,
+              "max": 666.169225219036
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 382.35230761139593,
+              "max": 473.26323118417594
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 360.30156899538065,
+              "max": 390.373423848126
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 366.02697681539905,
+              "max": 389.9070003073663
+            },
+            {
+              "level": 15,
+              "mesh": true,
+              "min": 361.4539419712167,
+              "max": 387.88071828538943
+            }
+          ]
+        },
+        "capture": {
+          "width": 1062,
+          "height": 771,
+          "sampled_colors": 1684,
+          "bytes": 46596
+        },
+        "elapsed_seconds": 2.972
+      }
+    }
+  ],
+  "images": [
+    {
+      "file": "native-worker-baseline.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 12318,
+      "bytes": 202154
+    },
+    {
+      "file": "native-worker-heatmap.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 14117,
+      "bytes": 331330
+    },
+    {
+      "file": "native-worker-bloom.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 13328,
+      "bytes": 259926
+    },
+    {
+      "file": "native-worker-ellipsoid.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 12418,
+      "bytes": 208884
+    },
+    {
+      "file": "native-dted-globe.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 140,
+      "bytes": 17009
+    },
+    {
+      "file": "native-dted-map.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 131,
+      "bytes": 16070
+    },
+    {
+      "file": "native-dted-space-time.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 1684,
+      "bytes": 46596
+    }
+  ],
+  "limitations": [
+    "Linux/Xvfb/llvmpipe only; no physical Mac/Windows/GPU claim.",
+    "Local public DTED and packaged Blue Marble; WMTS forced offline."
+  ],
+  "note": "Earlier overview-only terrain readiness criterion (>100m tile relief) was invalid for fine local terrain and replaced with actual uploaded GPU top-triangle/source agreement at nine Hamilton probes. No app source change was needed for that harness correction."
+}

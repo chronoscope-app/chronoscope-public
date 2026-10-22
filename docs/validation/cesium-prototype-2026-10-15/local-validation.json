@@ -1,0 +1,249 @@
+{
+  "started_utc": "2026-10-16T00:13:43.065564+00:00",
+  "platform": "linux",
+  "offline_browser_fixtures": true,
+  "github_runners_used": false,
+  "checks": [
+    {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 1.213,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/rust-format.log"
+    },
+    {
+      "name": "core-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 45.879,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/core-clippy.log"
+    },
+    {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 79.304,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/rust-tests.log"
+    },
+    {
+      "name": "cli-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--bin",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.332,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/cli-build.log"
+    },
+    {
+      "name": "generated-contracts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.347,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/generated-contracts.log"
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 16.459,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/frontend-build.log"
+    },
+    {
+      "name": "filter-intent-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:intent"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.561,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/filter-intent-unit.log"
+    },
+    {
+      "name": "display-math-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:display-math"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.574,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/display-math-unit.log"
+    },
+    {
+      "name": "packet-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:packet"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.701,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/packet-unit.log"
+    },
+    {
+      "name": "cesium-resources-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:cesium-resources"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 1.65,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/cesium-resources-unit.log"
+    },
+    {
+      "name": "cesium-effects-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:cesium-effects"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.696,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/cesium-effects-unit.log"
+    },
+    {
+      "name": "cesium-geometry-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:cesium-geometry"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 1.321,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/cesium-geometry-unit.log"
+    },
+    {
+      "name": "browser-cesium",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:cesium"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 138.134,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/browser-cesium.log"
+    },
+    {
+      "name": "browser-assistant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:assistant"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 37.579,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/browser-assistant.log"
+    },
+    {
+      "name": "browser-wkt-wmts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:wkt-wmts"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 101.885,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/browser-wkt-wmts.log"
+    },
+    {
+      "name": "browser-webmcp",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:webmcp"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.685,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/browser-webmcp.log"
+    },
+    {
+      "name": "browser-map-presets",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:map-presets"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 8.445,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/browser-map-presets.log"
+    },
+    {
+      "name": "browser-cesium-context",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:cesium-context"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 12.99,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/browser-cesium-context.log"
+    },
+    {
+      "name": "browser-effects-pixels",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:effects-pixels"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 55.239,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/browser-effects-pixels.log"
+    },
+    {
+      "name": "browser-cesium-terrain",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:cesium-terrain"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 39.428,
+      "log": "/workspace/chronoscope-cesium-qa/final-green/logs/browser-cesium-terrain.log"
+    }
+  ],
+  "limitations": [
+    "Cesium WebGL2 is verified with software rendering; physical GPU and smartcard hardware are not verified by this script.",
+    "Native checks apply only to the current operating system.",
+    "The archived extension bridge is disabled; the WebMCP suite verifies absence of its commands and interface.",
+    "Signing, notarization and paid SI-provider evaluation are separate checks."
+  ],
+  "finished_utc": "2026-10-16T00:22:49.501857+00:00",
+  "passed": true
+}

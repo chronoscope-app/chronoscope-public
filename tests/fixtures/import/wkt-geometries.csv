@@ -1,0 +1,8 @@
+entity,timestamp,geometry,label
+Point,2026-01-01 00:00,POINT Z(-79.96 43.25 125),"Synthetic WGS84 geometry; Z retained, not used as elevation"
+Route,2026-01-01 00:10,"LINESTRING(-79.98 43.24,-79.95 43.26,-79.92 43.28)","Synthetic WGS84 geometry; Z retained, not used as elevation"
+Area with hole,2026-01-01 00:20,"POLYGON((-79.975 43.245,-79.955 43.245,-79.955 43.265,-79.975 43.265,-79.975 43.245),(-79.97 43.25,-79.97 43.26,-79.96 43.26,-79.96 43.25,-79.97 43.25))","Synthetic WGS84 geometry; Z retained, not used as elevation"
+Multiple points,2026-01-01 00:30,"MULTIPOINT((-79.94 43.245),(-79.93 43.25),(-79.92 43.255))","Synthetic WGS84 geometry; Z retained, not used as elevation"
+Multiple routes,2026-01-01 00:40,"MULTILINESTRING((-79.98 43.27,-79.965 43.28),(-79.955 43.275,-79.945 43.285))","Synthetic WGS84 geometry; Z retained, not used as elevation"
+Multiple areas,2026-01-01 00:50,"MULTIPOLYGON(((-79.945 43.265,-79.935 43.265,-79.94 43.275,-79.945 43.265)),((-79.93 43.265,-79.92 43.265,-79.925 43.275,-79.93 43.265)))","Synthetic WGS84 geometry; Z retained, not used as elevation"
+Collection,2026-01-01 01:00,"GEOMETRYCOLLECTION(POINT(-79.98 43.285),LINESTRING(-79.98 43.285,-79.965 43.285))","Synthetic WGS84 geometry; Z retained, not used as elevation"

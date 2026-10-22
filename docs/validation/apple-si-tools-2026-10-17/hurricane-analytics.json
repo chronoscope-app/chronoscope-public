@@ -1,0 +1,103 @@
+{
+  "passed": true,
+  "dataset": "samples/atlantic-hurricanes-2021-2025-tracks.chronoscope",
+  "event_count": 1604,
+  "oracle": "Python standard-library statistics over complete projected Events, independent of Rust arithmetic",
+  "oracle_results": {
+    "count": 1604,
+    "missing": 0,
+    "sum": 98360.0,
+    "mean": 61.3216957605985,
+    "variance_population": 817.610975678012,
+    "standard_deviation_sample": 28.602815004700062,
+    "pearson_r": -0.91314751900456
+  },
+  "rust_statistics": {
+    "evaluated_count": 1604,
+    "field": "attribute:max_wind_kt",
+    "method": "Streaming Welford moments and compensated sum; finite numeric values only. Missing/non-numeric values excluded explicitly. Pearson correlation describes linear association, not causation.",
+    "other_field": "attribute:min_pressure_mb",
+    "paired": {
+      "count": 1604,
+      "mean_x": 61.32169576059846,
+      "mean_y": 983.5529925187037,
+      "missing_pairs": 0,
+      "pearson_r": -0.9131475190045631,
+      "undefined_reason": null
+    },
+    "revision": 1,
+    "sampled": false,
+    "scope": {
+      "filter_sha256": "0ff8a4bd7155ed4dd301e899d8893cddfdd8322675f2d015e9dcc454af8d99ea",
+      "selected_only": false,
+      "source": null
+    },
+    "summary": {
+      "count": 1604,
+      "max": 165.0,
+      "mean": 61.32169576059846,
+      "min": 15.0,
+      "missing": 0,
+      "standard_deviation_population": 28.59389752513658,
+      "standard_deviation_sample": 28.60281500470006,
+      "sum": 98360.0,
+      "variance_population": 817.6109756780118
+    }
+  },
+  "mcp_statistics_match": true,
+  "mcp_year_groups": {
+    "field": "value",
+    "group_by": "year",
+    "groups": [
+      {
+        "count": 289,
+        "key": "2021",
+        "max": 135.0,
+        "mean": 62.94117647058823,
+        "min": 15.0,
+        "numeric_count": 289,
+        "sum": 18190.0
+      },
+      {
+        "count": 303,
+        "key": "2022",
+        "max": 140.0,
+        "mean": 56.51815181518152,
+        "min": 20.0,
+        "numeric_count": 303,
+        "sum": 17125.0
+      },
+      {
+        "count": 399,
+        "key": "2023",
+        "max": 145.0,
+        "mean": 55.93984962406015,
+        "min": 20.0,
+        "numeric_count": 399,
+        "sum": 22320.0
+      },
+      {
+        "count": 384,
+        "key": "2024",
+        "max": 155.0,
+        "mean": 63.190104166666664,
+        "min": 15.0,
+        "numeric_count": 384,
+        "sum": 24265.0
+      },
+      {
+        "count": 229,
+        "key": "2025",
+        "max": 165.0,
+        "mean": 71.87772925764192,
+        "min": 25.0,
+        "numeric_count": 229,
+        "sum": 16460.0
+      }
+    ],
+    "limit": 100,
+    "limited": false,
+    "revision": 1
+  },
+  "public_requests": 0
+}

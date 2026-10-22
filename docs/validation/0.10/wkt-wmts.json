@@ -1,0 +1,21 @@
+{
+  "meshes": {
+    "features": 6,
+    "fillMeshes": 3,
+    "points": 1,
+    "triangles": 0
+  },
+  "rasterMeshes": 1,
+  "status": "64 map tiles · 1 cache hits · 72 network requests this session",
+  "toasts": [
+    "Imported 7 observations"
+  ],
+  "geometries": 6,
+  "uniqueTiles": 128,
+  "networkTileRequests": 135,
+  "peakConcurrency": 8,
+  "publicRequests": 0,
+  "offlineReuse": true,
+  "savedServerSwitching": "Two named local WMTS servers and two layers persist and switch after reload",
+  "errors": []
+}

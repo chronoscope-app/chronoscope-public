@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "records": 1895,
+  "findings": 20,
+  "independent_oracle": "All pairs of actual USGS observations, pyproj.Geod WGS84, radius 1000 m, tolerance 3600 s",
+  "false_positives": 0,
+  "false_negatives": 0
+}

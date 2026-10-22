@@ -1,0 +1,76 @@
+diff --git a/frontend/src/main.ts b/frontend/src/main.ts
+index 438fbaf..4533634 100644
+--- a/frontend/src/main.ts
++++ b/frontend/src/main.ts
+@@ -158,12 +158,14 @@ async function refresh(render = true) {
+     ($("#search") as HTMLInputElement).value = s.filter.search;
+   ($("#selected-only") as HTMLInputElement).checked = s.filter.selected_only;
+   const [lo, hi] = s.time_bounds;
++  if (rangeAppliedVersion === rangeIntentVersion) {
+   ($("#window-start") as HTMLInputElement).value = String(
+     s.filter.start === null ? 0 : ((s.filter.start - lo) / (hi - lo)) * 1000,
+   );
+   ($("#window-end") as HTMLInputElement).value = String(
+     s.filter.end === null ? 1000 : ((s.filter.end - lo) / (hi - lo)) * 1000,
+   );
++  }
+   ($("#exact-start") as HTMLInputElement).value =
+     s.filter.start === null ? "" : time(s.filter.start);
+   ($("#exact-end") as HTMLInputElement).value =
+@@ -962,12 +964,9 @@ async function settings() {
+   });
+ }
+ async function timeWindow(start: number, end: number) {
+-  const [lo, hi] = snapshot.time_bounds;
+-  await filter({
+-    ...snapshot.filter,
+-    start: start === 0 ? null : Math.round(lo + (hi - lo) * start),
+-    end: end === 1 ? null : Math.round(lo + (hi - lo) * end),
+-  });
++  clearTimeout(rangeTimer);
++  captureRangeIntent(start,end);
++  await drainRangeIntent();
+ }
+ let searchTimer: number | undefined;
+ $("#search").addEventListener("input", () => {
+@@ -1396,14 +1395,35 @@ on("#apply-bounds", async () => {
+   });
+ });
+ let rangeTimer: number | undefined;
++let rangeIntentVersion = 0;
++let rangeAppliedVersion = 0;
++let rangeIntent: {version:number; start:number; end:number; bounds:[number,number]} | undefined;
++let rangeDrainRunning = false;
++function captureRangeIntent(start:number,end:number) {
++  rangeIntent={version:++rangeIntentVersion,start,end,bounds:[...snapshot.time_bounds]};
++}
++async function drainRangeIntent() {
++  if(rangeDrainRunning)return;
++  rangeDrainRunning=true;
++  try {
++    while(rangeIntent && rangeAppliedVersion<rangeIntent.version) {
++      const intent=rangeIntent, [lo,hi]=intent.bounds;
++      await call("filter",{filter:{...snapshot.filter,
++        start:intent.start===0?null:Math.round(lo+(hi-lo)*intent.start),
++        end:intent.end===1?null:Math.round(lo+(hi-lo)*intent.end)}});
++      // Older requests may mutate backend state, but must never mark newer
++      // intents applied. Serialization guarantees newest request goes last.
++      if(intent.version===rangeIntentVersion)rangeAppliedVersion=intent.version;
++      await refresh();
++    }
++  } finally {rangeDrainRunning=false;}
++}
+ for (const id of ["#window-start", "#window-end"])
+   $(id).addEventListener("input", () => {
++    const a=Number(input("#window-start"))/1000, b=Number(input("#window-end"))/1000;
++    captureRangeIntent(Math.min(a,b),Math.max(a,b));
+     clearTimeout(rangeTimer);
+-    rangeTimer = setTimeout(() => {
+-      const a = Number(input("#window-start")) / 1000,
+-        b = Number(input("#window-end")) / 1000;
+-      timeWindow(Math.min(a, b), Math.max(a, b)).catch(() => {});
+-    }, 150);
++    rangeTimer=setTimeout(()=>drainRangeIntent().catch(error=>toast(String(error),true)),150);
+   });
+ on("#full-range", () => timeWindow(0, 1));
+ $("#histogram").addEventListener("pointerdown", async (e) => {

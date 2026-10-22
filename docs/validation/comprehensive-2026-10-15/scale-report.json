@@ -1,0 +1,151 @@
+{
+  "synthetic": true,
+  "oracle": {
+    "records": 1000000,
+    "value_gt_90": 90000,
+    "time_window": 120000,
+    "spatial": 83370
+  },
+  "csv_bytes": 80566939,
+  "operations": [
+    {
+      "command": "import_preview",
+      "elapsed_s": 2.9396,
+      "rss_mib": 35.828125,
+      "ok": true
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 312.9854,
+      "rss_mib": 78.93359375,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.0213,
+      "rss_mib": 79.12109375,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.5875,
+      "rss_mib": 79.75,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.0016,
+      "rss_mib": 79.75,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.2424,
+      "rss_mib": 80.328125,
+      "ok": true
+    },
+    {
+      "command": "query",
+      "elapsed_s": 0.2815,
+      "rss_mib": 82.0703125,
+      "ok": true
+    },
+    {
+      "command": "filter",
+      "elapsed_s": 0.0018,
+      "rss_mib": 82.0703125,
+      "ok": true
+    },
+    {
+      "command": "select_query",
+      "elapsed_s": 0.3714,
+      "rss_mib": 84.12109375,
+      "ok": true
+    },
+    {
+      "command": "snapshot",
+      "elapsed_s": 0.0142,
+      "rss_mib": 84.12109375,
+      "ok": true
+    },
+    {
+      "command": "filter",
+      "elapsed_s": 0.0508,
+      "rss_mib": 84.12109375,
+      "ok": true
+    },
+    {
+      "command": "select",
+      "elapsed_s": 0.0276,
+      "rss_mib": 84.12109375,
+      "ok": true
+    },
+    {
+      "command": "view_set",
+      "elapsed_s": 0.0018,
+      "rss_mib": 84.12109375,
+      "ok": true
+    },
+    {
+      "command": "view_snapshot_v1",
+      "elapsed_s": 14.4695,
+      "rss_mib": 115.56640625,
+      "ok": true
+    },
+    {
+      "command": "view_snapshot_v1",
+      "elapsed_s": 1.0126,
+      "rss_mib": 115.60546875,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0011,
+      "rss_mib": 115.60546875,
+      "ok": true
+    },
+    {
+      "command": "preferences",
+      "elapsed_s": 0.0007,
+      "rss_mib": 115.73046875,
+      "ok": true
+    },
+    {
+      "command": "save",
+      "elapsed_s": 16.0635,
+      "rss_mib": 117.8984375,
+      "ok": false
+    }
+  ],
+  "packets": [
+    {
+      "cells": 144,
+      "raw_points": 0
+    },
+    {
+      "cells": 144,
+      "raw_points": 0
+    }
+  ],
+  "status": "partial_vm_disk_limit",
+  "build_profile": "Unoptimized Rust debug/test profile with debug symbols disabled",
+  "validated": [
+    "Million-row streaming import",
+    "Independent exact value/time/spatial counts",
+    "90,000-row selection with bounded ID projection",
+    "Automatic display packet bounded to 144 cells"
+  ],
+  "save": {
+    "status": "blocked_by_vm_capacity",
+    "error_code": "RESOURCE_LIMIT",
+    "message": "Workspace exceeds its 32 GiB database budget or working disk is full; allow space for working copies, portable saves and journals (database or disk is full)",
+    "partial_output_removed": true,
+    "initial_free_disk_approx_gib": 2.5,
+    "observed_working_database_approx_gib": 1.7
+  },
+  "limitations": [
+    "No million-record browser FPS measurement",
+    "No completed million-record portable save/reopen",
+    "Elapsed times are from an unoptimized build on a shared virtual CPU"
+  ]
+}

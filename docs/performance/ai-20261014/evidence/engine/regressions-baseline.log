@@ -1,0 +1,28 @@
+   Compiling chronoscope v0.5.2 (<isolated-worktree>)
+    Finished `release` profile [optimized] target(s) in 38.64s
+     Running tests/ai_engine_regressions.rs (target/release/deps/ai_engine_regressions-4e0afd12e1db112d)
+
+running 2 tests
+
+thread 'failed_read_stale_cursor_preserves_metadata_and_store' panicked at tests/ai_engine_regressions.rs:28:34:
+assertion `left == right` failed: failed READ must preserve name/filter/selection/scene/revision/store
+  left: Object {"categories": Object {"Dwell": Number(15), "Exchange": Number(20), "Transit": Number(157)}, "category_limit": Number(5000), "count": Number(192), "entities": Object {"Atlas": Number(48), "Beacon": Number(48), "Cedar": Number(48), "Delta": Number(48)}, "filter": Object {"bounds": Null, "end": Null, "hidden_categories": Array [], "hidden_entities": Array [], "hidden_sources": Array [], "located_only": Bool(false), "predicates": Array [], "search": String(""), "selected_only": Bool(false), "start": Null}, "layers": Array [Object {"count": Number(192), "enabled": Bool(true), "source": String("Synthetic demonstration"), "visible": Number(192)}], "name": String(""), "preferences": Object {"coordinates": String("dd"), "map": Object {"enabled": Bool(true), "format": String("image/jpeg"), "layer": String("BlueMarble_ShadedRelief"), "matrix_set": String("GoogleMapsCompatible_Level8"), "style": String("default"), "time": String(""), "url": String("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml")}, "terrain_exaggeration": Number(1.0), "terrain_path": Null, "theme": String("dark")}, "redo": Number(0), "revision": Number(2), "scene": Object {"bounds": Null, "camera_zoom": Null, "expanded": Bool(false), "focus": Null, "inspector_tab": String(""), "mode": String(""), "position": Null, "table_attributes": Bool(false), "table_descending": Bool(false), "table_open": Bool(false), "table_respect_filters": Bool(false), "table_sort": String(""), "table_source": Null, "target": Null, "time_height": Null}, "selected": Array [], "selected_count": Number(0), "selection_limited": Bool(false), "stats": Object {"count": Number(192), "max": Number(99.0), "mean": Number(57.75), "median": Number(57.5), "min": Number(20.0), "std_dev": Number(23.457852274522764), "sum": Number(11088.0)}, "time_bounds": Array [Number(1750147200), Number(1750189740)], "time_resolution": String("minute"), "undo": Number(0), "visible": Number(192)}
+ right: Object {"categories": Object {"Dwell": Number(15), "Exchange": Number(20), "Transit": Number(157)}, "category_limit": Number(5000), "count": Number(192), "entities": Object {"Atlas": Number(48), "Beacon": Number(48), "Cedar": Number(48), "Delta": Number(48)}, "filter": Object {"bounds": Null, "end": Null, "hidden_categories": Array [], "hidden_entities": Array [], "hidden_sources": Array [], "located_only": Bool(false), "predicates": Array [], "search": String("not found"), "selected_only": Bool(false), "start": Null}, "layers": Array [Object {"count": Number(192), "enabled": Bool(true), "source": String("Synthetic demonstration"), "visible": Number(0)}], "name": String("Important study"), "preferences": Object {"coordinates": String("dd"), "map": Object {"enabled": Bool(true), "format": String("image/jpeg"), "layer": String("BlueMarble_ShadedRelief"), "matrix_set": String("GoogleMapsCompatible_Level8"), "style": String("default"), "time": String(""), "url": String("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml")}, "terrain_exaggeration": Number(1.0), "terrain_path": Null, "theme": String("dark")}, "redo": Number(0), "revision": Number(2), "scene": Object {"bounds": Null, "camera_zoom": Null, "expanded": Bool(false), "focus": Null, "inspector_tab": String(""), "mode": String(""), "position": Null, "table_attributes": Bool(false), "table_descending": Bool(false), "table_open": Bool(false), "table_respect_filters": Bool(false), "table_sort": String(""), "table_source": Null, "target": Null, "time_height": Number(2.5)}, "selected": Array [String("1")], "selected_count": Number(1), "selection_limited": Bool(false), "stats": Object {"count": Number(0), "max": Null, "mean": Null, "median": Number(0.0), "min": Null, "std_dev": Number(0.0), "sum": Number(0.0)}, "time_bounds": Array [Number(1750147200), Number(1750189740)], "time_resolution": String("minute"), "undo": Number(0), "visible": Number(0)}
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test failed_read_stale_cursor_preserves_metadata_and_store ... FAILED
+
+thread 'rejected_first_row_cross_batch_count_and_identity' panicked at tests/ai_engine_regressions.rs:14:2:
+assertion `left == right` failed: accepted must equal actual store count across rejected batch boundary
+  left: Number(999)
+ right: Number(1000)
+test rejected_first_row_cross_batch_count_and_identity ... FAILED
+
+failures:
+
+failures:
+    failed_read_stale_cursor_preserves_metadata_and_store
+    rejected_first_row_cross_batch_count_and_identity
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+error: test failed, to rerun pass `-p chronoscope --test ai_engine_regressions`

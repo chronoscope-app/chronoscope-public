@@ -1,0 +1,237 @@
+{
+  "started_utc": "2026-10-14T19:46:05.268756+00:00",
+  "platform": "linux",
+  "offline_browser_fixtures": true,
+  "github_runners_used": false,
+  "checks": [
+    {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.382,
+      "log": "logs/rust-format.log",
+      "original_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "core-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.402,
+      "log": "logs/core-clippy.log",
+      "original_log_sha256": "a6c5483f45ed2147c4fa61281f409bf72e8169bbb5c8c574707cde317f4c56fc",
+      "retained_log_sha256": "3c8abc30d16e70122743e2112554146c2cb15e00781e2d03782b21b242967e61"
+    },
+    {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 7.923,
+      "log": "logs/rust-tests.log",
+      "original_log_sha256": "18ddc1a92c0555288fc753298338578621dad954cae326b95c71723ce7857be4",
+      "retained_log_sha256": "8b40b7a441f1d0cbb016925096775ba150b5b6148e45b441e31ef106f3fd1acd"
+    },
+    {
+      "name": "cli-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--bin",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.211,
+      "log": "logs/cli-build.log",
+      "original_log_sha256": "299f16a2c523be18fef769975d2df00e0505521db047540feea3a74b94666887",
+      "retained_log_sha256": "299f16a2c523be18fef769975d2df00e0505521db047540feea3a74b94666887"
+    },
+    {
+      "name": "generated-contracts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.158,
+      "log": "logs/generated-contracts.log",
+      "original_log_sha256": "5952032cd02ae17375c5926e22ea8459acfbca5d23baa366be311ca4ea118f9c",
+      "retained_log_sha256": "5952032cd02ae17375c5926e22ea8459acfbca5d23baa366be311ca4ea118f9c"
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 4.442,
+      "log": "logs/frontend-build.log",
+      "original_log_sha256": "3b28cbec025753353c1bbf0610517afa6611808653daa2a438b20ae3f58cc5b3",
+      "retained_log_sha256": "830e00f0f6601d16abb0af88e5642604bbefb1e4f4f5eb300dc598ffa4b71b7e"
+    },
+    {
+      "name": "filter-intent-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:intent"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.457,
+      "log": "logs/filter-intent-unit.log",
+      "original_log_sha256": "7b12779a4f06acd4848f49484e1cc66653c8ce37b35a89da193f474dfdff5735",
+      "retained_log_sha256": "7b12779a4f06acd4848f49484e1cc66653c8ce37b35a89da193f474dfdff5735"
+    },
+    {
+      "name": "packet-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:packet"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.518,
+      "log": "logs/packet-unit.log",
+      "original_log_sha256": "1767fa5cf7ce01dd9d59dc5a280d82b5dcac7faf399b994418660fa5f37f9a16",
+      "retained_log_sha256": "1767fa5cf7ce01dd9d59dc5a280d82b5dcac7faf399b994418660fa5f37f9a16"
+    },
+    {
+      "name": "browser-ui",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:ui"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 65.095,
+      "log": "logs/browser-ui.log",
+      "original_log_sha256": "99e44957b7e851c847f09aaf779ae2b471173bc24b1e79b500b07420154c30a0",
+      "retained_log_sha256": "34ce454f9201ee590d9b0c8a0bdac5e70b3bc451eee01aaff23f95a26d13feab"
+    },
+    {
+      "name": "browser-gis",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:gis"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 2.218,
+      "log": "logs/browser-gis.log",
+      "original_log_sha256": "a6a99b7eb33ad88895b82c753c1e72c6518711c4b1e679cd23051b7bf0d9412d",
+      "retained_log_sha256": "a6a99b7eb33ad88895b82c753c1e72c6518711c4b1e679cd23051b7bf0d9412d"
+    },
+    {
+      "name": "browser-assistant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:assistant"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 14.366,
+      "log": "logs/browser-assistant.log",
+      "original_log_sha256": "ce525372902d169dcbead4fcf979e341f5f8d1cb24b69fb1c56d50ce18c4d659",
+      "retained_log_sha256": "ce525372902d169dcbead4fcf979e341f5f8d1cb24b69fb1c56d50ce18c4d659"
+    },
+    {
+      "name": "browser-wkt-wmts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:wkt-wmts"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 16.161,
+      "log": "logs/browser-wkt-wmts.log",
+      "original_log_sha256": "30df3e23dfacc831850de7a939fc02a788b02a8e1087c1a4e4fb0f226d893143",
+      "retained_log_sha256": "30df3e23dfacc831850de7a939fc02a788b02a8e1087c1a4e4fb0f226d893143"
+    },
+    {
+      "name": "browser-hardening",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:hardening"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 31.463,
+      "log": "logs/browser-hardening.log",
+      "original_log_sha256": "1fa93be70cb55f106ab00d502d6b386511958eb79b3fef3a935137c1ae9ca791",
+      "retained_log_sha256": "1fa93be70cb55f106ab00d502d6b386511958eb79b3fef3a935137c1ae9ca791"
+    },
+    {
+      "name": "native-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope-desktop",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 1.057,
+      "log": "logs/native-clippy.log",
+      "original_log_sha256": "909263409344a1d66face44f04a041bb98961965180c894af38be298778170e0",
+      "retained_log_sha256": "4c2de4547ecab14a711f074b701e59ec501426e3578be804b94c730bdceeefc8"
+    },
+    {
+      "name": "native-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope-desktop"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 6.214,
+      "log": "logs/native-build.log",
+      "original_log_sha256": "5fbc83417215bf3a2378a4a3b530b8c26feb0c621d2132d568a94425569399e1",
+      "retained_log_sha256": "56cfe19954f0fadef48c0a68d2ec7983b047ad7fa10e91e8642a8205deea3793"
+    }
+  ],
+  "limitations": [
+    "Physical GPU and smartcard hardware are not verified by this script.",
+    "Native checks apply only to the current operating system.",
+    "Signing, notarization and paid AI-provider evaluation are separate checks."
+  ],
+  "finished_utc": "2026-10-14T19:48:36.348335+00:00",
+  "passed": true,
+  "version": "0.9.0",
+  "source_base": "5d4a51d",
+  "last_production_source_commit": "0b3af9b",
+  "rust_test_count": 161,
+  "public_wmts_requests": 0,
+  "source_files": "source-files.json",
+  "note": "Final rerun after correcting the portable scene fixture and fixing redundant startup map loading. Logs retain all checks; path placeholders remove local checkout/fixture paths. No physical GPU/native Mac/Windows runtime claim. Retained text logs also normalize trailing whitespace; original log hashes remain recorded."
+}

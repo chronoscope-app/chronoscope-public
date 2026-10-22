@@ -1,0 +1,5 @@
+
+> chronoscope-ui@0.13.3 test:desktop-feel
+> node scripts/desktop-feel-qa.mjs
+
+{"passed":true,"table_selection":"replace, ctrl/cmd toggle, shift/ctrl-shift ranges across scroll windows and sorted fields","text_drag":"disabled outside editable/copy surfaces","effects":"one-click automatic, advanced inputs validated","playback":{"calls":13,"frames":11,"planes":5,"bounds":[-79.96199999999999,43.248,-79.95661,43.25339],"after":[-79.96199999999999,43.248,-79.95661,43.25339],"filter":{"bounds":null,"end":1791967140,"hidden_categories":[],"hidden_entities":[],"hidden_sources":[],"located_only":false,"predicates":[],"search":"","selected_only":false,"start":1791965040}}}

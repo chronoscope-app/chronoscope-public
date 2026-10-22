@@ -1,0 +1,13 @@
+diff --git a/src/stream_import.rs b/src/stream_import.rs
+index c42dc46..2195857 100644
+--- a/src/stream_import.rs
++++ b/src/stream_import.rs
+@@ -114,7 +114,7 @@ impl PendingImport {
+                 mapping,
+                 &self.sample.source,
+                 first_id
+-                    .checked_add(accepted as u64)
++                    .checked_add((accepted + rejected) as u64)
+                     .ok_or("Event ID capacity exhausted")?,
+             )?;
+             accepted += report.events.len();

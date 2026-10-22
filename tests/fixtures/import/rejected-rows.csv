@@ -1,0 +1,5 @@
+entity,timestamp,latitude,longitude,category,label,value,related_to
+Alpha,2025-06-17T08:00:00Z,37.7955,-122.3937,Arrival,Ferry terminal,10,Bravo
+Invalid,2025-06-17,91,0,,,,
+Invalid,ambiguous date,37,-122,,,,
+Invalid,2025-06-17,NaN,0,,,,

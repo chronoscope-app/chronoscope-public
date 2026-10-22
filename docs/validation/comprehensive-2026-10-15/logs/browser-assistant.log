@@ -1,0 +1,20 @@
+
+> chronoscope-ui@0.13.3 test:assistant
+> node scripts/assistant-qa.mjs
+
+Local MCP fixture: modern server/discover
+Local MCP fixture: modern tools/list
+Local MCP fixture: modern tools/call
+Local MCP fixture: modern tools/call
+Local MCP fixture: modern server/discover
+Local MCP fixture: legacy server/discover
+Local MCP fixture: legacy initialize
+Local MCP fixture: legacy notifications/initialized
+Local MCP fixture: legacy tools/list
+Local MCP fixture: legacy tools/call
+Local MCP fixture: modern server/discover
+Local MCP fixture: modern tools/list
+Local MCP fixture: modern tools/call
+Local MCP fixture: modern server/discover
+Local MCP fixture: modern tools/list
+Assistant, import aggregation, exact preview/apply/undo, triangle rendering and picking passed; 0 public WMTS requests.

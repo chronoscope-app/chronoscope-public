@@ -1,0 +1,22 @@
+   Compiling chronoscope v0.5.2 (<isolated-worktree>)
+    Finished `release` profile [optimized] target(s) in 1m 06s
+     Running tests/ai_engine_oracles.rs (target/release/deps/ai_engine_oracles-68fe35cfe63f6bd9)
+
+running 2 tests
+test compact_then_full_snapshot_matches_full_projection ... ok
+
+thread 'direct_predicates_match_domain_unicode_missing_numeric_whitespace' panicked at tests/ai_engine_oracles.rs:2:1053:
+assertion `left == right` failed: value Contains -0
+  left: []
+ right: [49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test direct_predicates_match_domain_unicode_missing_numeric_whitespace ... FAILED
+
+failures:
+
+failures:
+    direct_predicates_match_domain_unicode_missing_numeric_whitespace
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+error: test failed, to rerun pass `-p chronoscope --test ai_engine_oracles`

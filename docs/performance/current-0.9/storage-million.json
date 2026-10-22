@@ -1,0 +1,178 @@
+{
+  "driver": "baseline then each variant per repeat; OS page cache uncontrolled",
+  "gpu": false,
+  "repeats": 3,
+  "binaries": {
+    "baseline": {
+      "path": "million-baseline",
+      "sha256": "e9f584e9aa89774ce754dac5cf8cd0f4a3c64ee4c9aad1f0033b1c53f4f09843"
+    },
+    "current": {
+      "path": "million-current",
+      "sha256": "4b8d4ed56956c6218ae449e27fa639958a62dbfb180ed924abb666bcde5a2334"
+    }
+  },
+  "runs": [
+    {
+      "variant": "baseline",
+      "rows": 1000000,
+      "repeat": 1,
+      "exit_code": 0,
+      "elapsed_s": 104.6261402270029,
+      "peak_process_rss_kib": 53716,
+      "metrics": {
+        "bounds_s": 0.402924799,
+        "ingest_s": 101.667770795,
+        "mode": "storage-only; no copy/save/render",
+        "numeric_order_s": 0.592582617,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 7000912,
+        "preview_s": 0.67442165,
+        "rows": 1000000,
+        "selective_order_s": 0.524717278,
+        "sqlite_version": "3.50.2",
+        "working_database_bytes": 2502946816
+      }
+    },
+    {
+      "variant": "current",
+      "rows": 1000000,
+      "repeat": 1,
+      "exit_code": 0,
+      "elapsed_s": 84.49709009000071,
+      "peak_process_rss_kib": 63248,
+      "metrics": {
+        "bounds_s": 8.7031e-05,
+        "ingest_s": 82.939577154,
+        "mode": "storage-only; no copy/save/render",
+        "numeric_order_s": 0.334310919,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 1814,
+        "preview_s": 0.661217009,
+        "rows": 1000000,
+        "selective_order_s": 0.411611403,
+        "sqlite_version": "3.50.2",
+        "working_database_bytes": 2502946816
+      }
+    },
+    {
+      "variant": "baseline",
+      "rows": 1000000,
+      "repeat": 2,
+      "exit_code": 0,
+      "elapsed_s": 108.15053602000262,
+      "peak_process_rss_kib": 53668,
+      "metrics": {
+        "bounds_s": 0.342467803,
+        "ingest_s": 105.808267607,
+        "mode": "storage-only; no copy/save/render",
+        "numeric_order_s": 0.539006165,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 7000912,
+        "preview_s": 0.625278984,
+        "rows": 1000000,
+        "selective_order_s": 0.502631364,
+        "sqlite_version": "3.50.2",
+        "working_database_bytes": 2502946816
+      }
+    },
+    {
+      "variant": "current",
+      "rows": 1000000,
+      "repeat": 2,
+      "exit_code": 0,
+      "elapsed_s": 86.76378889699845,
+      "peak_process_rss_kib": 63168,
+      "metrics": {
+        "bounds_s": 8.4377e-05,
+        "ingest_s": 85.298652548,
+        "mode": "storage-only; no copy/save/render",
+        "numeric_order_s": 0.334438597,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 1814,
+        "preview_s": 0.616349484,
+        "rows": 1000000,
+        "selective_order_s": 0.380235467,
+        "sqlite_version": "3.50.2",
+        "working_database_bytes": 2502946816
+      }
+    },
+    {
+      "variant": "baseline",
+      "rows": 1000000,
+      "repeat": 3,
+      "exit_code": 0,
+      "elapsed_s": 103.63584673999867,
+      "peak_process_rss_kib": 53100,
+      "metrics": {
+        "bounds_s": 0.331444612,
+        "ingest_s": 101.305970359,
+        "mode": "storage-only; no copy/save/render",
+        "numeric_order_s": 0.532501368,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 7000912,
+        "preview_s": 0.634919677,
+        "rows": 1000000,
+        "selective_order_s": 0.502235776,
+        "sqlite_version": "3.50.2",
+        "working_database_bytes": 2502946816
+      }
+    },
+    {
+      "variant": "current",
+      "rows": 1000000,
+      "repeat": 3,
+      "exit_code": 0,
+      "elapsed_s": 96.51884123199852,
+      "peak_process_rss_kib": 62828,
+      "metrics": {
+        "bounds_s": 0.000111458,
+        "ingest_s": 95.04449252,
+        "mode": "storage-only; no copy/save/render",
+        "numeric_order_s": 0.322101858,
+        "numeric_plan": [
+          "SCAN e USING INDEX events_time",
+          "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+        ],
+        "numeric_vm_steps": 1814,
+        "preview_s": 0.611732039,
+        "rows": 1000000,
+        "selective_order_s": 0.405494857,
+        "sqlite_version": "3.50.2",
+        "working_database_bytes": 2502946816
+      }
+    }
+  ],
+  "storage_only": true,
+  "peak_rss_method": "POSIX wait4 maximum resident set, normalized to KiB",
+  "operation_p95": null,
+  "operation_p95_reason": "three repetitions do not establish tail latency",
+  "fixtures": {
+    "fixture-1000000.csv": {
+      "bytes": 151677947,
+      "sha256": "1c43a8117e929e1da024982901099df74ae6feaa5dbdf24359b8e50b10b35241"
+    }
+  },
+  "provenance": {
+    "baseline_source_commit": "8b7e509",
+    "current_source_commit": "3aaff66",
+    "benchmark_example_sha256": "4fe9574fe326fbd3805cec94b870ee54e6761bce67cf8a9d91ed37b442394ffb",
+    "note": "Baseline example copied from current to add identical storage-only mode. Both release variants rebuilt independently; binary hashes verified distinct before measurement. Later version/docs/terrain-cache diagnostic changes do not affect measured paths."
+  },
+  "scope": "Shared Linux VM CPU release binaries, storage-only; no copy/save/open/render/GPU/network; OS page cache uncontrolled; three repeats; peak RSS is child process, not desktop process tree."
+}

@@ -1,0 +1,22 @@
+
+> chronoscope-ui@0.13.3 test:wkt-wmts
+> node scripts/wkt-wmts-qa.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Transparent upper imagery must reveal lower server imagery
+
+150 !== 90
+
+    at file:///workspace/chronoscope/frontend/scripts/wkt-wmts-qa.mjs:522:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 150,
+  expected: 90,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

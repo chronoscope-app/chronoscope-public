@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Empty map",
+      "passed": true
+    },
+    {
+      "name": "Empty globe",
+      "passed": true
+    },
+    {
+      "name": "Empty calendar",
+      "passed": true
+    },
+    {
+      "name": "Empty space-time",
+      "passed": true
+    },
+    {
+      "name": "Hurricanes load into an empty workspace",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

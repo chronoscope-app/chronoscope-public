@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Chronoscope Browser WebMCP",
+  "version": "0.13.0",
+  "description": "Share draft WebMCP tools from one explicitly chosen tab with Chronoscope.",
+  "permissions": ["activeTab", "scripting", "storage", "alarms"],
+  "host_permissions": ["http://127.0.0.1/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Share WebMCP tab with Chronoscope"
+  }
+}

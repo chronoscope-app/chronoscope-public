@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Exact count chart and imported numeric fields are available",
+      "evidence": {}
+    },
+    {
+      "name": "Navigation aligns with canvas tools; tooltips wait one second",
+      "evidence": {
+        "nav": 66,
+        "canvas": 66
+      }
+    },
+    {
+      "name": "Line, area, UTC bins, grouping, stacking and second Y axes render actual fields",
+      "evidence": {}
+    },
+    {
+      "name": "Scatter, full-scope OLS and chart-row selection identify the exact source IDs",
+      "evidence": {
+        "selected": 1
+      }
+    },
+    {
+      "name": "All and Selected scopes and the actual sortable attribute table share selection",
+      "evidence": {}
+    },
+    {
+      "name": "Exact histogram bins and Tukey boxplots cover all ten seasons",
+      "evidence": {}
+    },
+    {
+      "name": "Dragging the native ECharts brush selects exact underlying records without a redraw loop",
+      "evidence": {
+        "selected": 407
+      }
+    },
+    {
+      "name": "Chart presets survive save/reopen; docked charts fit desktop sizes and presets can be removed",
+      "evidence": {}
+    },
+    {
+      "name": "Empty selections remain empty; full-range playback does not recalculate unchanged charts",
+      "evidence": {
+        "requests": []
+      }
+    }
+  ],
+  "errors": []
+}

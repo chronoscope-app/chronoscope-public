@@ -1,0 +1,313 @@
+{
+  "passed": true,
+  "publicRequests": 0,
+  "checks": [
+    {
+      "name": "Backend scene mode is restored at app startup without a legacy Three.js camera",
+      "mode": "calendar"
+    },
+    {
+      "name": "Native WEBGL_lose_context creates exactly one replacement Cesium Viewer and restores camera/data/selection/theme/terrain/raster/bloom without changing unknown locations",
+      "before": {
+        "camera": {
+          "renderer": "cesium",
+          "cesium_camera": {
+            "position": [
+              -609540.1690568281,
+              -1193666.3217744422,
+              1092323.0588225704
+            ],
+            "direction": [
+              0.3200682026693332,
+              0.7540334324835056,
+              -0.5735764363510459
+            ],
+            "up": [
+              0.22411416825030045,
+              0.5279798934870927,
+              0.8191520442889918
+            ]
+          }
+        },
+        "ids": [
+          "1",
+          "2",
+          "3"
+        ],
+        "selected": [
+          "2"
+        ],
+        "terrain": {
+          "imageryLayers": 2,
+          "tileCount": 1,
+          "imageryRequestedTiles": 0,
+          "terrainActive": true,
+          "terrainCovered": 9,
+          "verticalDatum": "ellipsoid",
+          "geoidModel": null,
+          "mode": "calendar"
+        },
+        "display": {
+          "renderer": "cesium-webgl2",
+          "groundOnly": true,
+          "bloomIsolation": "event-layer-only",
+          "clusterPoints": 0,
+          "clusterLabels": 0,
+          "densityInstances": 0,
+          "atlasLayers": 0,
+          "rasterWidth": 0,
+          "rasterHeight": 0,
+          "heatPeak": 0,
+          "heatCeiling": 0,
+          "pending": false,
+          "error": ""
+        },
+        "theme": "light",
+        "mode": "calendar"
+      },
+      "after": {
+        "camera": {
+          "renderer": "cesium",
+          "cesium_camera": {
+            "position": [
+              -609540.1690568267,
+              -1193666.3217744324,
+              1092323.0588225638
+            ],
+            "direction": [
+              0.3200682026693345,
+              0.7540334324835058,
+              -0.5735764363510448
+            ],
+            "up": [
+              0.22411416825030034,
+              0.5279798934870942,
+              0.8191520442889908
+            ]
+          }
+        },
+        "ids": [
+          "1",
+          "2",
+          "3"
+        ],
+        "selected": [
+          "2"
+        ],
+        "terrain": {
+          "imageryLayers": 2,
+          "tileCount": 1,
+          "imageryRequestedTiles": 0,
+          "terrainActive": true,
+          "terrainCovered": 9,
+          "verticalDatum": "ellipsoid",
+          "geoidModel": null,
+          "mode": "calendar"
+        },
+        "display": {
+          "renderer": "cesium-webgl2",
+          "groundOnly": true,
+          "bloomIsolation": "event-layer-only",
+          "clusterPoints": 0,
+          "clusterLabels": 0,
+          "densityInstances": 0,
+          "atlasLayers": 0,
+          "rasterWidth": 0,
+          "rasterHeight": 0,
+          "heatPeak": 0,
+          "heatCeiling": 0,
+          "pending": false,
+          "error": ""
+        },
+        "theme": "light",
+        "mode": "calendar",
+        "diagnostics": {
+          "engine": "CesiumJS",
+          "contextRecoveries": 1,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "sceneMode": 1,
+          "pointCount": 2,
+          "triangleCount": 1,
+          "triangleVisibleCount": 1,
+          "selectionCount": 1,
+          "geometryFeatures": 0,
+          "geometryPrimitives": 0,
+          "trackPolylines": 1,
+          "stemSegments": 0,
+          "trailInputEdges": 2,
+          "trailOutputEdges": 2,
+          "axisLabels": 19,
+          "orbitHandles": 0,
+          "requestRenderMode": true,
+          "terrain": {
+            "imageryLayers": 2,
+            "tileCount": 1,
+            "imageryRequestedTiles": 0,
+            "terrainActive": true,
+            "terrainCovered": 9,
+            "verticalDatum": "ellipsoid",
+            "geoidModel": null,
+            "mode": "calendar"
+          },
+          "effectError": ""
+        },
+        "viewerCount": 1,
+        "glyphCount": 10
+      },
+      "meanPixelDifference": 0.04876587301587301
+    }
+  ],
+  "errors": [],
+  "fixture": "Synthetic ellipsoid-height terrain and local checker raster; no public requests",
+  "mode": "calendar",
+  "recoveryEvidence": {
+    "before": {
+      "camera": {
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -609540.1690568281,
+            -1193666.3217744422,
+            1092323.0588225704
+          ],
+          "direction": [
+            0.3200682026693332,
+            0.7540334324835056,
+            -0.5735764363510459
+          ],
+          "up": [
+            0.22411416825030045,
+            0.5279798934870927,
+            0.8191520442889918
+          ]
+        }
+      },
+      "ids": [
+        "1",
+        "2",
+        "3"
+      ],
+      "selected": [
+        "2"
+      ],
+      "terrain": {
+        "imageryLayers": 2,
+        "tileCount": 1,
+        "imageryRequestedTiles": 0,
+        "terrainActive": true,
+        "terrainCovered": 9,
+        "verticalDatum": "ellipsoid",
+        "geoidModel": null,
+        "mode": "calendar"
+      },
+      "display": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": true,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 0,
+        "atlasLayers": 0,
+        "rasterWidth": 0,
+        "rasterHeight": 0,
+        "heatPeak": 0,
+        "heatCeiling": 0,
+        "pending": false,
+        "error": ""
+      },
+      "theme": "light",
+      "mode": "calendar"
+    },
+    "after": {
+      "camera": {
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -609540.1690568267,
+            -1193666.3217744324,
+            1092323.0588225638
+          ],
+          "direction": [
+            0.3200682026693345,
+            0.7540334324835058,
+            -0.5735764363510448
+          ],
+          "up": [
+            0.22411416825030034,
+            0.5279798934870942,
+            0.8191520442889908
+          ]
+        }
+      },
+      "ids": [
+        "1",
+        "2",
+        "3"
+      ],
+      "selected": [
+        "2"
+      ],
+      "terrain": {
+        "imageryLayers": 2,
+        "tileCount": 1,
+        "imageryRequestedTiles": 0,
+        "terrainActive": true,
+        "terrainCovered": 9,
+        "verticalDatum": "ellipsoid",
+        "geoidModel": null,
+        "mode": "calendar"
+      },
+      "display": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": true,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 0,
+        "atlasLayers": 0,
+        "rasterWidth": 0,
+        "rasterHeight": 0,
+        "heatPeak": 0,
+        "heatCeiling": 0,
+        "pending": false,
+        "error": ""
+      },
+      "theme": "light",
+      "mode": "calendar",
+      "diagnostics": {
+        "engine": "CesiumJS",
+        "contextRecoveries": 1,
+        "recovering": false,
+        "renderErrorCount": 0,
+        "sceneMode": 1,
+        "pointCount": 2,
+        "triangleCount": 1,
+        "triangleVisibleCount": 1,
+        "selectionCount": 1,
+        "geometryFeatures": 0,
+        "geometryPrimitives": 0,
+        "trackPolylines": 1,
+        "stemSegments": 0,
+        "trailInputEdges": 2,
+        "trailOutputEdges": 2,
+        "axisLabels": 19,
+        "orbitHandles": 0,
+        "requestRenderMode": true,
+        "terrain": {
+          "imageryLayers": 2,
+          "tileCount": 1,
+          "imageryRequestedTiles": 0,
+          "terrainActive": true,
+          "terrainCovered": 9,
+          "verticalDatum": "ellipsoid",
+          "geoidModel": null,
+          "mode": "calendar"
+        },
+        "effectError": ""
+      },
+      "viewerCount": 1,
+      "glyphCount": 10
+    }
+  }
+}

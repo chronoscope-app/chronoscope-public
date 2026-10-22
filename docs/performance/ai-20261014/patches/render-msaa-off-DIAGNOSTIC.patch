@@ -1,0 +1,22 @@
+diff --git a/frontend/src/view.ts b/frontend/src/view.ts
+index 9ce7d5e..f26440d 100644
+--- a/frontend/src/view.ts
++++ b/frontend/src/view.ts
+@@ -111,7 +111,7 @@ export class SpaceTimeView {
+     const forceWebGL =
+       new URLSearchParams(location.search).get("renderer") === "webgl";
+     this.renderer = new THREE.WebGPURenderer({
+-      antialias: true,
++      antialias: false,
+       alpha: false,
+       forceWebGL,
+     });
+@@ -179,7 +179,7 @@ export class SpaceTimeView {
+     await this.ready;
+     const previous = this.renderer;
+     const next = new THREE.WebGPURenderer({
+-      antialias: true,
++      antialias: false,
+       alpha: false,
+       forceWebGL: true,
+     });

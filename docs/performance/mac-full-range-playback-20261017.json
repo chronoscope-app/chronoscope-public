@@ -1,0 +1,893 @@
+{
+  "date": "2026-10-17",
+  "base_commit": "1887058953c16efff007d223d85278c4cb88222d",
+  "platform": "native macOS 27.0.1, Apple M5, Tauri WKWebView",
+  "method": {
+    "base_commit": "1887058953c16efff007d223d85278c4cb88222d",
+    "baseline_adapter": "The baseline renderer is unchanged. Its Play callback is adapted to preserve the selected window width (including Full range), because the published callback always narrows it to 25%. The baseline still issues an unchanged full-range filter/snapshot every 250 ms.",
+    "candidate": "Preserve the selected interval and do not filter or republish unchanged time bounds.",
+    "dataset_rows": 100000,
+    "native_mode": "space-time",
+    "time_window": "full-range; all 100000 retained throughout playback",
+    "animation": "25-second repeating continuous time-focus sweep; full-range event positions do not change and no events enter or leave",
+    "viewport_css": [
+      1062,
+      737
+    ],
+    "resolution_scale": 1.5,
+    "framebuffer": [
+      1593,
+      1105
+    ],
+    "antialias": true,
+    "bloom": true,
+    "tracks": true,
+    "trails": true,
+    "public_imagery": false,
+    "terrain": false,
+    "paired_autosave": false,
+    "measurement": "four rolling-120-render-frame observations, eight seconds apart, after eight-second warmup; CPU sampled separately over 15-second intervals using process cumulative CPU time",
+    "no_hosted_runners": true
+  },
+  "quality": {
+    "scene": {
+      "bounds": null,
+      "cesium_camera": {
+        "direction": [
+          7.880821506938068e-16,
+          0.7431448254773921,
+          -0.6691306063588606
+        ],
+        "position": [
+          -8966980.126465546,
+          -1162673.1605053633,
+          4677333.938834689
+        ],
+        "up": [
+          -7.843600833745579e-16,
+          0.6691306063588559,
+          0.7431448254773964
+        ]
+      },
+      "display": {
+        "bloom": true,
+        "bloom_radius": 0.1,
+        "bloom_strength": 1.3,
+        "bloom_threshold": 0.1,
+        "cluster_pixels": 48,
+        "heat_max": null,
+        "heat_radius": 32,
+        "heat_reference_zoom": null,
+        "heat_weight": "count",
+        "mode": "points",
+        "partition": "all",
+        "point_scale": 1,
+        "show_centroids": true,
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": true,
+        "spatial_culling": true,
+        "time_bin_minutes": 0,
+        "track_opacity": 1,
+        "trail_gap_minutes": 0,
+        "trail_opacity": 1,
+        "trail_pixels": 2
+      },
+      "entity_colors": {},
+      "expanded": false,
+      "focus": 0.5,
+      "gis_table": null,
+      "globe_time": false,
+      "globe_time_scale": 1,
+      "inspector_tab": "inspect",
+      "mode": "space-time",
+      "render_budget": 100000,
+      "renderer": "cesium",
+      "table_attributes": false,
+      "table_column_offset": 0,
+      "table_descending": false,
+      "table_open": false,
+      "table_respect_filters": true,
+      "table_sort": "time",
+      "table_source": null,
+      "time_height": 2.8
+    },
+    "viewport_css": {
+      "height": 737,
+      "width": 1062
+    },
+    "resolution_scale": 1.5,
+    "framebuffer": [
+      1593,
+      1105
+    ],
+    "antialias": true,
+    "bloom_raster": [
+      512,
+      512
+    ],
+    "points": 100000,
+    "vertical_segments": 100000,
+    "track_polylines": 200
+  },
+  "native_runs": {
+    "baseline-a": {
+      "median_fps": 59.985007496251875,
+      "median_frame_p95_ms": 30.0,
+      "median_render_cpu_p95_ms": 1.0,
+      "median_query_ms": 0.5430625024018809,
+      "median_status_ms": 35.259916505310684,
+      "samples": [
+        {
+          "performance": {
+            "active": true,
+            "fps": 59.880239520958085,
+            "frameP95Ms": 30,
+            "renderCpuP95Ms": 1,
+            "renderedFrames": 1645,
+            "sampleFrames": 120
+          },
+          "statusMs": 1.6520829958608374,
+          "queryMs": 0.7705419993726537,
+          "visible": 100000,
+          "focus": 0.3058399999999999,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 60.210737581535376,
+            "frameP95Ms": 30,
+            "renderCpuP95Ms": 1,
+            "renderedFrames": 2127,
+            "sampleFrames": 120
+          },
+          "statusMs": 42.75537500507198,
+          "queryMs": 0.5470830074045807,
+          "visible": 100000,
+          "focus": 0.6268400000000001,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 59.97001499250375,
+            "frameP95Ms": 30,
+            "renderCpuP95Ms": 1,
+            "renderedFrames": 2611,
+            "sampleFrames": 120
+          },
+          "statusMs": 64.86854099784978,
+          "queryMs": 0.49270900490228087,
+          "visible": 100000,
+          "focus": 0.94956,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 60,
+            "frameP95Ms": 30,
+            "renderCpuP95Ms": 1,
+            "renderedFrames": 3093,
+            "sampleFrames": 120
+          },
+          "statusMs": 27.764458005549386,
+          "queryMs": 0.5390419973991811,
+          "visible": 100000,
+          "focus": 0.27083999999999975,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        }
+      ]
+    },
+    "candidate-a": {
+      "median_fps": 60.015007503751875,
+      "median_frame_p95_ms": 18.0,
+      "median_render_cpu_p95_ms": 3.0,
+      "median_query_ms": 0.8591040023020469,
+      "median_status_ms": 2.4359585004276596,
+      "samples": [
+        {
+          "performance": {
+            "active": true,
+            "fps": 60,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 2,
+            "renderedFrames": 1353,
+            "sampleFrames": 120
+          },
+          "statusMs": 6.41791700036265,
+          "queryMs": 32.79074998863507,
+          "visible": 100000,
+          "focus": 0.05684,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 60.03001500750375,
+            "frameP95Ms": 21,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 1836,
+            "sampleFrames": 120
+          },
+          "statusMs": 2.16379199991934,
+          "queryMs": 0.7517089979955927,
+          "visible": 100000,
+          "focus": 0.37883999999999984,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 60.03001500750375,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 2316,
+            "sampleFrames": 120
+          },
+          "statusMs": 2.13370900019072,
+          "queryMs": 0.7660830015083775,
+          "visible": 100000,
+          "focus": 0.6988399999999999,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 60,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 2796,
+            "sampleFrames": 120
+          },
+          "statusMs": 2.708125000935979,
+          "queryMs": 0.9521250030957162,
+          "visible": 100000,
+          "focus": 0.018839999999999968,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        }
+      ]
+    },
+    "final": {
+      "median_fps": 60.015007503751875,
+      "median_frame_p95_ms": 18.0,
+      "median_render_cpu_p95_ms": 2.5,
+      "median_query_ms": 0.925187996472232,
+      "median_status_ms": 3.951707993110176,
+      "samples": [
+        {
+          "performance": {
+            "active": true,
+            "fps": 60,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 2,
+            "renderedFrames": 3767,
+            "sampleFrames": 120
+          },
+          "statusMs": 5.411249992903322,
+          "queryMs": 36.645291998866014,
+          "visible": 100000,
+          "focus": 0.08279999999999998,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 60.03001500750375,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 2,
+            "renderedFrames": 4250,
+            "sampleFrames": 120
+          },
+          "statusMs": 2.4736249906709418,
+          "queryMs": 0.7619999960297719,
+          "visible": 100000,
+          "focus": 0.40476,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 60,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 4731,
+            "sampleFrames": 120
+          },
+          "statusMs": 7.372209001914598,
+          "queryMs": 0.8450839959550649,
+          "visible": 100000,
+          "focus": 0.7254799999999999,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 60.03001500750375,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 5211,
+            "sampleFrames": 120
+          },
+          "statusMs": 2.4921659933170304,
+          "queryMs": 1.0052919969893992,
+          "visible": 100000,
+          "focus": 0.045560000000000045,
+          "triangles": 0,
+          "arriving": 0,
+          "drawn": null,
+          "bloom": null,
+          "tracks": 200,
+          "stems": 100000,
+          "points": 100000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        }
+      ]
+    },
+    "normal-autosave": {
+      "median_fps": 60.03001500750375,
+      "median_frame_p95_ms": 18.0,
+      "median_render_cpu_p95_ms": 3.0,
+      "median_query_ms": 1.4889375015627593,
+      "median_status_ms": null,
+      "samples": [
+        {
+          "queryMs": 0.5719590117223561,
+          "points": 100000,
+          "visible": 100000,
+          "focus": 0.9985999999999997,
+          "performance": {
+            "active": true,
+            "fps": 60.090135202804206,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 29122,
+            "sampleFrames": 120
+          },
+          "errors": 0
+        },
+        {
+          "queryMs": 2.3844590032240376,
+          "points": 100000,
+          "visible": 100000,
+          "focus": 0.32132000000000005,
+          "performance": {
+            "active": true,
+            "fps": 60.03001500750375,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 29604,
+            "sampleFrames": 120
+          },
+          "errors": 0
+        },
+        {
+          "queryMs": 1.688958000158891,
+          "points": 100000,
+          "visible": 100000,
+          "focus": 0.6413599999999988,
+          "performance": {
+            "active": true,
+            "fps": 59.97001499250375,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 30084,
+            "sampleFrames": 120
+          },
+          "errors": 0
+        },
+        {
+          "queryMs": 1.2889170029666275,
+          "points": 100000,
+          "visible": 100000,
+          "focus": 0.9619600000000013,
+          "performance": {
+            "active": true,
+            "fps": 60.06006006006006,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 30565,
+            "sampleFrames": 120
+          },
+          "errors": 0
+        },
+        {
+          "queryMs": 1.1959580006077886,
+          "points": 100000,
+          "visible": 100000,
+          "focus": 0.28196000000000154,
+          "performance": {
+            "active": true,
+            "fps": 59.94005994005994,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 31045,
+            "sampleFrames": 120
+          },
+          "errors": 0
+        },
+        {
+          "queryMs": 1.2143330095568672,
+          "points": 100000,
+          "visible": 100000,
+          "focus": 0.6019599999999983,
+          "performance": {
+            "active": true,
+            "fps": 60.06006006006006,
+            "frameP95Ms": 18,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 31525,
+            "sampleFrames": 120
+          },
+          "errors": 0
+        },
+        {
+          "queryMs": 2.0439590007299557,
+          "points": 100000,
+          "visible": 100000,
+          "focus": 0.9226400000000012,
+          "performance": {
+            "active": true,
+            "fps": 60.03001500750375,
+            "frameP95Ms": 19,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 32006,
+            "sampleFrames": 120
+          },
+          "errors": 0
+        },
+        {
+          "queryMs": 1.701542001683265,
+          "points": 100000,
+          "visible": 100000,
+          "focus": 0.2427199999999985,
+          "performance": {
+            "active": true,
+            "fps": 59.880239520958085,
+            "frameP95Ms": 19,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 32486,
+            "sampleFrames": 120
+          },
+          "errors": 0
+        }
+      ]
+    }
+  },
+  "cpu_intervals": {
+    "baseline": {
+      "elapsed_seconds": 15.045811375006451,
+      "components": [
+        {
+          "role": "app",
+          "cpu_percent_one_core": 58.95328459809425,
+          "end_rss_mib": 1270.78125
+        },
+        {
+          "role": "gpu_process",
+          "cpu_percent_one_core": 13.625054501250661,
+          "end_rss_mib": 75.4375
+        },
+        {
+          "role": "web_content",
+          "cpu_percent_one_core": 27.78181844645256,
+          "end_rss_mib": 992.65625
+        }
+      ],
+      "combined_cpu_percent_one_core": 100.36015754579748
+    },
+    "candidate": {
+      "elapsed_seconds": 15.053442333999556,
+      "components": [
+        {
+          "role": "app",
+          "cpu_percent_one_core": 5.3808290624034925,
+          "end_rss_mib": 545.921875
+        },
+        {
+          "role": "gpu_process",
+          "cpu_percent_one_core": 23.449785913931304,
+          "end_rss_mib": 77.84375
+        },
+        {
+          "role": "web_content",
+          "cpu_percent_one_core": 27.568445196264843,
+          "end_rss_mib": 867.53125
+        }
+      ],
+      "combined_cpu_percent_one_core": 56.39906017259964
+    },
+    "final": {
+      "elapsed_seconds": 15.054450750001706,
+      "components": [
+        {
+          "role": "app",
+          "cpu_percent_one_core": 5.579745245769957,
+          "end_rss_mib": 253.234375
+        },
+        {
+          "role": "gpu_process",
+          "cpu_percent_one_core": 23.581066217242064,
+          "end_rss_mib": 64.03125
+        },
+        {
+          "role": "web_content",
+          "cpu_percent_one_core": 26.038811146926435,
+          "end_rss_mib": 561.265625
+        }
+      ],
+      "combined_cpu_percent_one_core": 55.19962260993846
+    }
+  },
+  "quality_comparison": {
+    "size": [
+      1593,
+      1134
+    ],
+    "differing_pixels": 0,
+    "baseline_executable_sha256": "73c872e6ed64115454bf5a66676d134b6988228cfe6cc51e67eeba3d26791059",
+    "final_executable_sha256": "359330790f1c90c845eb6881221442ca31bbef1dc8396e948a6106b27d3b99d7"
+  },
+  "native_bloom": {
+    "bloom_changed_pixels": 29807,
+    "restored_bloom": true,
+    "pointCount": 100000
+  },
+  "native_selection": {
+    "passed": true,
+    "exact_ids": [
+      "100000",
+      "99999",
+      "99998"
+    ],
+    "source_selected_count": 3,
+    "observations": [
+      {
+        "selected": 3,
+        "points": 100000,
+        "focus": 0.7983200000000004
+      }
+    ]
+  },
+  "cli": {
+    "snapshot_count": 100000,
+    "capture_mime": "image/png",
+    "capture_bytes": 838593
+  },
+  "verification": {
+    "integration_passed": true,
+    "integration_checks": [
+      "Authenticated Rust bridge renders real hurricane data in native Cesium WebGL",
+      "Unchanged refreshes retain GPU resources; selection, style and camera invalidate them",
+      "Playback preserves point/triangle fades, IDs and selection with bounded GPU uploads",
+      "Independent WGS84 ECEF references agree at equator, hemispheres, poles and date line",
+      "Entity facets retain top-ten, show-all, clickable sorting and collapse controls",
+      "Globe, 2D, Columbus space-time and calendar have actual native modes and wheel/button zoom",
+      "Dragging brackets/window and keyboard scrubbing preview live events without reframing",
+      "Continuous attribute table supports click, Ctrl-click and inclusive Shift range; native view follows exact IDs",
+      "Actual native Cesium event picking updates the shared exact selection",
+      "Event search filters both native geographic display and continuous attribute table",
+      "Live time-height input, independent tracks and portable scene state persist",
+      "Time-only triangle interpolation remains display-only in all geographic modes",
+      "WKT geometry backend and native view retain six non-point features across map/globe/Columbus",
+      "Default dense display uses bounded native clusters with exact member counts",
+      "Native cluster picking opens exact member table and selects every member through app controls",
+      "Live Columbus viewport contracts on zoom, retains elevated evidence and declusters exact records",
+      "Native Columbus density creates native count cells",
+      "Native Columbus heatmap uses ground resources",
+      "Native Columbus bloom uses ground resources",
+      "Real DTED mesh is installed in Cesium's native terrain provider",
+      "Native imagery remains installed through repeated globe/map/Columbus transitions",
+      "Actual Excel import dialog detects worksheet and renders its located records",
+      "Unified Open routes native and legacy workspaces, imports Excel, preserves data on cancel/error and guards unsaved edits",
+      "Full-range playback retains every event and advances focus without redundant data snapshots",
+      "Playback advances native focus smoothly and preserves the chosen interval and geographic frame",
+      "Pattern analysis selects exact evidence and Charts remains available",
+      "Saved selection group round-trips exact evidence through application controls",
+      "Inspector editing and undo/redo still operate the shared Rust store",
+      "Import UI recognizes separate clocks, second truncation and short/spaced MGRS without suffix padding",
+      "Manual date-order override is previewed and committed through the real import controls",
+      "Invalid coordinates require row review and do not replace data before explicit acceptance",
+      "Actual polar CSV import, initial fit and native marker picking retain \u00b189\u00b0 data across geographic modes",
+      "Light mode and keyboard-opened local help remain available"
+    ],
+    "integration_errors": [],
+    "filter_intent_unit_checks": true,
+    "packet_unit_checks": true,
+    "hardware_passed": true,
+    "hardware_renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+    "hardware_workloads": 36,
+    "hardware_public_requests": 0,
+    "hardware_errors": [],
+    "hardware_playback": [
+      {
+        "budget": 20000,
+        "round": 0,
+        "fps": 60.00268168409764,
+        "counts": {
+          "minimumDrawn": 20000,
+          "maximumDrawn": 20000,
+          "minimumVisible": 100000,
+          "maximumVisible": 100000,
+          "focusBefore": 0.45,
+          "focusAfter": 0.5696600000001192
+        }
+      },
+      {
+        "budget": 20000,
+        "round": 1,
+        "fps": 59.67064470964732,
+        "counts": {
+          "minimumDrawn": 20000,
+          "maximumDrawn": 20000,
+          "minimumVisible": 100000,
+          "maximumVisible": 100000,
+          "focusBefore": 0.5696600000001192,
+          "focusAfter": 0.6899559999999999
+        }
+      },
+      {
+        "budget": 20000,
+        "round": 2,
+        "fps": 60.00268168409767,
+        "counts": {
+          "minimumDrawn": 20000,
+          "maximumDrawn": 20000,
+          "minimumVisible": 100000,
+          "maximumVisible": 100000,
+          "focusBefore": 0.6899559999999999,
+          "focusAfter": 0.8096439999999998
+        }
+      },
+      {
+        "budget": 100000,
+        "round": 0,
+        "fps": 58.37273764878526,
+        "counts": {
+          "minimumDrawn": 100000,
+          "maximumDrawn": 100000,
+          "minimumVisible": 100000,
+          "maximumVisible": 100000,
+          "focusBefore": 0.8096439999999998,
+          "focusAfter": 0.9326399999999999
+        }
+      },
+      {
+        "budget": 100000,
+        "round": 1,
+        "fps": 58.69044886717609,
+        "counts": {
+          "minimumDrawn": 100000,
+          "maximumDrawn": 100000,
+          "minimumVisible": 100000,
+          "maximumVisible": 100000,
+          "focusBefore": 0.9326399999999999,
+          "focusAfter": 0.0549759999996422
+        }
+      },
+      {
+        "budget": 100000,
+        "round": 2,
+        "fps": 58.6904488671758,
+        "counts": {
+          "minimumDrawn": 100000,
+          "maximumDrawn": 100000,
+          "minimumVisible": 100000,
+          "maximumVisible": 100000,
+          "focusBefore": 0.0549759999996422,
+          "focusAfter": 0.17726799999964232
+        }
+      }
+    ],
+    "normal_autosave_restored": true,
+    "local_only": true,
+    "hosted_workflows_dispatched": false
+  },
+  "autosave_observations": {
+    "initial_copy_ms": 101830,
+    "repeat_changed_copy_ms": 207,
+    "initial_query_timeout_seconds": 45,
+    "root_cause": "unresolved; initial slow save completed, no permanent lockup; repeated changed-document save did not reproduce the delay",
+    "save_code_modified": false,
+    "diagnostics": [
+      {
+        "command": "autosave_unsaved",
+        "duration_ms": 101830,
+        "ok": true,
+        "revision": 13,
+        "time": "2026-10-17T11:10:31.978209+00:00"
+      },
+      {
+        "command": "autosave_unsaved",
+        "duration_ms": 0,
+        "ok": true,
+        "revision": 13,
+        "time": "2026-10-17T11:10:50.164941+00:00"
+      },
+      {
+        "command": "autosave_unsaved",
+        "duration_ms": 0,
+        "ok": true,
+        "revision": 13,
+        "time": "2026-10-17T11:11:20.171094+00:00"
+      },
+      {
+        "command": "autosave_unsaved",
+        "duration_ms": 0,
+        "ok": true,
+        "revision": 13,
+        "time": "2026-10-17T11:11:50.171116+00:00"
+      },
+      {
+        "command": "autosave_unsaved",
+        "duration_ms": 0,
+        "ok": true,
+        "revision": 13,
+        "time": "2026-10-17T11:12:20.175860+00:00"
+      },
+      {
+        "command": "autosave_unsaved",
+        "duration_ms": 0,
+        "ok": true,
+        "revision": 13,
+        "time": "2026-10-17T11:12:50.179846+00:00"
+      },
+      {
+        "command": "autosave_unsaved",
+        "duration_ms": 0,
+        "ok": true,
+        "revision": 13,
+        "time": "2026-10-17T11:13:20.184305+00:00"
+      },
+      {
+        "command": "autosave_unsaved",
+        "duration_ms": 207,
+        "ok": true,
+        "revision": 15,
+        "time": "2026-10-17T11:13:50.396755+00:00"
+      },
+      {
+        "command": "autosave_unsaved",
+        "duration_ms": 0,
+        "ok": true,
+        "revision": 15,
+        "time": "2026-10-17T11:14:20.191619+00:00"
+      }
+    ],
+    "preexisting_diagnostic": {
+      "command": "autosave_unsaved",
+      "duration_ms": 161545,
+      "time": "2026-10-17T10:29:36.070048+00:00",
+      "note": "Recorded before this full-range playback change."
+    }
+  },
+  "known_preexisting_issue": {
+    "terrain_precision": "Previously reproduced identically in baseline and candidate in MAC_NATIVE_PLAYBACK_2026-10-17.md. Terrain rendering and thresholds unchanged; deeper precision suite not rerun for this playback-only change."
+  }
+}

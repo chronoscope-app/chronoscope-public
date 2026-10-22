@@ -1,0 +1,36 @@
+   Compiling chronoscope v0.13.3 (/workspace/chronoscope-cesium)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.00s
+     Running tests/cesium_scene.rs (target/debug/deps/cesium_scene-f79113b813edc481)
+
+running 6 tests
+test geographic_cesium_summary_retains_polar_events_in_flat_modes ... ok
+test globe_time_clusters_retain_time_slabs_and_ground_effects_stay_flat ... ok
+test invalid_cesium_camera_is_rejected_and_agent_fit_clears_it ... ok
+test cesium_camera_roundtrips_without_becoming_event_coordinates ... ok
+test terrain_datum_requires_explicit_choice_and_saves_with_workspace ... ok
+test globe_time_is_optional_portable_agent_state_without_changing_source_events ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/display_lod.rs (target/debug/deps/display_lod-903c2f8e4cb84c28)
+
+running 6 tests
+test dateline_poles_negative_utc_boundaries_and_viewport_members_are_exact ... ok
+test dense_display_keeps_bounded_unselected_time_only_markers ... ok
+test weights_coarsening_temporal_limits_and_invalid_cell_contracts ... ok
+test bloom_keeps_bounded_unselected_events_in_every_geographic_view ... ok
+test ground_effects_combine_time_slabs_but_keep_time_filter_and_elevated_evidence ... ok
+test exact_bins_members_selection_cache_and_portable_defaults ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.38s
+
+     Running tests/views_layers.rs (target/debug/deps/views_layers-dbffa12853d59763)
+
+running 4 tests
+test attribute_table_numeric_sort_pagination_and_exact_ids ... ok
+test entity_colors_and_line_strengths_survive_views_and_documents ... ok
+test layers_filter_render_analysis_and_keep_hidden_source_inspectable ... ok
+test globe_map_zoom_and_attribute_table_state_roundtrip_in_v3_bundle ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+

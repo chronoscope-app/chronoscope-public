@@ -1,0 +1,461 @@
+{
+  "passed": true,
+  "renderer": "CesiumJS WebGL",
+  "desktopContentSecurityPolicy": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:",
+  "publicMapRequests": 0,
+  "checks": [
+    {
+      "name": "Authenticated Rust bridge renders real hurricane data in native Cesium WebGL",
+      "evidence": {
+        "context": true,
+        "cesium": "ii",
+        "canvasWidth": 1262,
+        "pointCount": 3568,
+        "mode": 1
+      }
+    },
+    {
+      "name": "Independent WGS84 ECEF references agree at equator, hemispheres, poles and date line",
+      "evidence": [
+        {
+          "lat": 0,
+          "lon": 0,
+          "errorMeters": 0
+        },
+        {
+          "lat": 0,
+          "lon": 90,
+          "errorMeters": 0
+        },
+        {
+          "lat": 40,
+          "lon": -75,
+          "errorMeters": 9.313225746154785e-10
+        },
+        {
+          "lat": -35,
+          "lon": 151,
+          "errorMeters": 4.656612873077393e-10
+        },
+        {
+          "lat": 85,
+          "lon": 179.9,
+          "errorMeters": 1.1368683772161603e-13
+        },
+        {
+          "lat": -85,
+          "lon": -179.9,
+          "errorMeters": 1.1368683772161603e-13
+        }
+      ]
+    },
+    {
+      "name": "Entity facets retain top-ten, show-all, clickable sorting and collapse controls",
+      "evidence": {
+        "totalEntities": 83
+      }
+    },
+    {
+      "name": "Globe, 2D, Columbus space-time and calendar have actual native modes and wheel/button zoom",
+      "evidence": [
+        {
+          "name": "space-time",
+          "sceneMode": 1,
+          "before": 18476022.435830146,
+          "wheelIn": 14624534.65177213,
+          "wheelOut": 21168866.024270467,
+          "buttonIn": 15168427.992356762,
+          "anchorErrorMeters": null
+        },
+        {
+          "name": "map",
+          "sceneMode": 2,
+          "before": 13136813.108514212,
+          "wheelIn": 8128841.772809797,
+          "wheelOut": 21230067.39106187,
+          "buttonIn": 15164333.850758478,
+          "anchorErrorMeters": 1.041250292910165e-9
+        },
+        {
+          "name": "globe",
+          "sceneMode": 3,
+          "before": 8914316.442868002,
+          "wheelIn": 7735784.641517763,
+          "wheelOut": 9828924.791781748,
+          "buttonIn": 6987539.051700662,
+          "anchorErrorMeters": null
+        },
+        {
+          "name": "calendar",
+          "sceneMode": 1,
+          "before": 1529156.5214270083,
+          "wheelIn": 1058952.4818738792,
+          "wheelOut": 1867534.984191366,
+          "buttonIn": 1333953.560176886,
+          "anchorErrorMeters": null
+        },
+        {
+          "name": "space-time",
+          "sceneMode": 1,
+          "before": 18476022.435830146,
+          "wheelIn": 15286468.030470742,
+          "wheelOut": 20448572.06392054,
+          "buttonIn": 15018592.284303382,
+          "anchorErrorMeters": null
+        }
+      ]
+    },
+    {
+      "name": "Continuous attribute table supports click, Ctrl-click and inclusive Shift range; native view follows exact IDs",
+      "evidence": {
+        "firstId": "1",
+        "selectedCount": 5
+      }
+    },
+    {
+      "name": "Actual native Cesium event picking updates the shared exact selection",
+      "evidence": {
+        "id": "1056",
+        "x": 792.4737363616182,
+        "y": 571.8050450183264
+      }
+    },
+    {
+      "name": "Event search filters both native geographic display and continuous attribute table",
+      "evidence": {
+        "matching": 85
+      }
+    },
+    {
+      "name": "Live time-height input, independent tracks and portable scene state persist",
+      "evidence": {
+        "workspace": "cesium-state.chronoscope"
+      }
+    },
+    {
+      "name": "Time-only triangle interpolation remains display-only in all geographic modes",
+      "evidence": {
+        "id": "2"
+      }
+    },
+    {
+      "name": "WKT geometry backend and native view retain six non-point features across map/globe/Columbus",
+      "evidence": {
+        "count": 6
+      }
+    },
+    {
+      "name": "Default dense display uses bounded native clusters with exact member counts",
+      "evidence": {
+        "clusterCount": 15,
+        "cellCount": 493,
+        "diagnostics": {
+          "renderer": "cesium-webgl2",
+          "groundOnly": false,
+          "bloomIsolation": "event-layer-only",
+          "clusterPoints": 15,
+          "clusterLabels": 15,
+          "densityInstances": 0,
+          "atlasLayers": 0,
+          "rasterWidth": 0,
+          "rasterHeight": 0,
+          "heatPeak": 0,
+          "heatCeiling": 0,
+          "pending": false,
+          "error": ""
+        }
+      }
+    },
+    {
+      "name": "Native cluster picking opens exact member table and selects every member through app controls",
+      "evidence": {
+        "count": 493
+      }
+    },
+    {
+      "name": "Live Columbus viewport contracts on zoom, retains elevated evidence and declusters exact records",
+      "evidence": {
+        "beforeViewport": {
+          "ground": [
+            -79.99213936687511,
+            43.234815150929755,
+            -79.94522063312489,
+            43.26831838704075
+          ],
+          "data": [
+            -79.99213936687511,
+            43.232045106004655,
+            -79.94522063312489,
+            43.26831838704075
+          ],
+          "mapZoom": 15.207041402864013,
+          "visibleUpper": 1000,
+          "omittedUpper": 0,
+          "nativeRectangleAvailable": false
+        },
+        "zoomViewport": [
+          -79.98171294388062,
+          43.23897194664977,
+          -79.95564705611936,
+          43.25758875409281
+        ],
+        "zoomMapZoom": 16.055042484496184,
+        "declustering": [
+          {
+            "cells": 180,
+            "count": 12000,
+            "aggregated": true,
+            "level": 17,
+            "mapZoom": 16.055042484496184,
+            "points": 0,
+            "bounds": [
+              -79.98171294388062,
+              43.23620190172466,
+              -79.95564705611936,
+              43.25758875409281
+            ]
+          },
+          {
+            "cells": 1188,
+            "count": 12000,
+            "aggregated": true,
+            "level": 19,
+            "mapZoom": 17.055051878743917,
+            "points": 0,
+            "bounds": [
+              -79.9751964295078,
+              43.23949681356734,
+              -79.96216357049217,
+              43.250882733499054
+            ]
+          },
+          {
+            "cells": 1586,
+            "count": 6526,
+            "aggregated": true,
+            "level": 20,
+            "mapZoom": 18.055056800748932,
+            "points": 0,
+            "bounds": [
+              -79.97193820363796,
+              43.24183895668515,
+              -79.96542179636204,
+              43.2475297554291
+            ]
+          },
+          {
+            "cells": 1605,
+            "count": 2956,
+            "aggregated": true,
+            "level": 21,
+            "mapZoom": 19.055058934702505,
+            "points": 0,
+            "bounds": [
+              -79.97030909940929,
+              43.243010021985974,
+              -79.96705090059068,
+              43.245853275353916
+            ]
+          }
+        ],
+        "declustered": {
+          "count": 799,
+          "active": false,
+          "points": 799,
+          "level": 22,
+          "mapZoom": 20.055063203651077,
+          "exactTotal": 12000
+        }
+      }
+    },
+    {
+      "name": "Native Columbus density creates native count cells",
+      "evidence": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": false,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 180,
+        "atlasLayers": 0,
+        "rasterWidth": 0,
+        "rasterHeight": 0,
+        "heatPeak": 0,
+        "heatCeiling": 0,
+        "pending": false,
+        "error": "",
+        "changedCanvasPixels": 155375
+      }
+    },
+    {
+      "name": "Native Columbus heatmap uses ground resources",
+      "evidence": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": true,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 0,
+        "atlasLayers": 1,
+        "rasterWidth": 512,
+        "rasterHeight": 512,
+        "heatPeak": 373.940201615477,
+        "heatCeiling": 373.940201615477,
+        "pending": false,
+        "error": "",
+        "changedCanvasPixels": 28946
+      }
+    },
+    {
+      "name": "Native Columbus bloom uses ground resources",
+      "evidence": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": true,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 0,
+        "atlasLayers": 1,
+        "rasterWidth": 512,
+        "rasterHeight": 512,
+        "heatPeak": 0,
+        "heatCeiling": 1,
+        "pending": false,
+        "error": "",
+        "changedCanvasPixels": 24008
+      }
+    },
+    {
+      "name": "Real DTED mesh is installed in Cesium's native terrain provider",
+      "evidence": {
+        "imageryLayers": 1,
+        "tileCount": 0,
+        "imageryRequestedTiles": 0,
+        "terrainActive": true,
+        "terrainCovered": 1089,
+        "verticalDatum": "egm96",
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "mode": "space-time",
+        "datumInterpretation": "EGM96 explicitly chosen for renderer test; original sample only declares MSL"
+      }
+    },
+    {
+      "name": "Native imagery remains installed through repeated globe/map/Columbus transitions",
+      "evidence": {
+        "imageryLayers": 3,
+        "tileCount": 1,
+        "imageryRequestedTiles": 0,
+        "terrainActive": true,
+        "terrainCovered": 1089,
+        "verticalDatum": "egm96",
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "mode": "space-time",
+        "localMapRequests": 1,
+        "terrainMapZoom": [
+          {
+            "before": 16.050924746363297,
+            "after": 16.74341836599
+          },
+          {
+            "before": 16.050924746363297,
+            "after": 16.74341836599
+          }
+        ]
+      }
+    },
+    {
+      "name": "Actual Excel import dialog detects worksheet and renders its located records",
+      "evidence": {
+        "rows": 5,
+        "located": 4
+      }
+    },
+    {
+      "name": "Playback advances native focus smoothly while preserving the geographic frame",
+      "evidence": {
+        "playbackBefore": {
+          "focus": 0.1307779999996422,
+          "bounds": [
+            -122.419796,
+            37.774208,
+            -122.39090399999999,
+            37.797892
+          ]
+        },
+        "playbackAfter": {
+          "focus": 0.14627599999964236,
+          "bounds": [
+            -122.419796,
+            37.774208,
+            -122.39090399999999,
+            37.797892
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pattern analysis selects exact evidence and Charts remains available",
+      "evidence": {
+        "findingCount": 1,
+        "findingSelection": 2
+      }
+    },
+    {
+      "name": "Saved selection group round-trips exact evidence through application controls",
+      "evidence": {
+        "groupCount": 1,
+        "selectionCount": 2
+      }
+    },
+    {
+      "name": "Inspector editing and undo/redo still operate the shared Rust store",
+      "evidence": {
+        "id": "1"
+      }
+    },
+    {
+      "name": "Import UI recognizes separate clocks, second truncation and short/spaced MGRS without suffix padding",
+      "evidence": {
+        "mgrs": "18TWL85661131",
+        "epoch": 1791879300
+      }
+    },
+    {
+      "name": "Manual date-order override is previewed and committed through the real import controls",
+      "evidence": {
+        "expectedUTC": "2026-03-04 08:15"
+      }
+    },
+    {
+      "name": "Invalid coordinates require row review and do not replace data before explicit acceptance",
+      "evidence": {
+        "accepted": 1,
+        "rejected": 1
+      }
+    },
+    {
+      "name": "Light mode and keyboard-opened local help remain available",
+      "evidence": {}
+    }
+  ],
+  "screenshots": [
+    "/workspace/chronoscope-cesium-qa/parity/release/hurricanes-space-time.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/hurricanes-map.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/hurricanes-globe.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/hurricanes-space-time.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/time-only-triangle.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/wkt-space-time.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/dense-clusters.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/dense-density.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/dense-heatmap.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/dense-bloom.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/local-imagery-dted.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/excel-imported.png",
+    "/workspace/chronoscope-cesium-qa/parity/release/light-mode.png"
+  ],
+  "errors": [],
+  "failures": [],
+  "started": "2026-10-16T00:03:02.092Z",
+  "cspViolations": [],
+  "finished": "2026-10-16T00:07:11.318Z"
+}

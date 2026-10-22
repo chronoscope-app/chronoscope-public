@@ -1,0 +1,5 @@
+
+> chronoscope-ui@0.13.3 test:hardening
+> node scripts/hardening-qa.mjs
+
+Passed: unsaved save/discard/cancel, wheel and buttons in all four views, close globe clipping/viewport, 26k-event viewport detail, and repeated WKT viewport refinement.

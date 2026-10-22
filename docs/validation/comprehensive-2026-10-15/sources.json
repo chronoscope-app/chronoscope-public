@@ -1,0 +1,103 @@
+{
+  "usgs-earthquakes-month.csv": {
+    "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month.csv",
+    "retrieved_utc": "2026-10-15T16:26:34.399461+00:00",
+    "status": 200,
+    "bytes": 363402,
+    "content_type": "text/csv; charset=utf-8",
+    "sha256": "ae0a8340f9fcf7746036fcb8b99dd0ab859b1966d07b440f90c1ec6f9e378dc5"
+  },
+  "firms-viirs-usa-24h.csv": {
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/viirs/csv/VIIRS_SNPP_NRT_USA_contiguous_and_Hawaii_24h.csv",
+    "retrieved_utc": "2026-10-15T16:26:34.400110+00:00",
+    "error": "HTTP Error 404: Not Found"
+  },
+  "ndbc-stations.txt": {
+    "url": "https://www.ndbc.noaa.gov/data/stations/station_table.txt",
+    "retrieved_utc": "2026-10-15T16:26:34.400514+00:00",
+    "status": 200,
+    "bytes": 364520,
+    "content_type": "text/plain; charset=ISO-8859-1",
+    "sha256": "76b759a217dd379b6205347fbbd36c32307b1ae8bfa95873c7cfd3b8c19e3377"
+  },
+  "buoy-41009.txt": {
+    "url": "https://www.ndbc.noaa.gov/data/realtime2/41009.txt",
+    "retrieved_utc": "2026-10-15T16:26:34.683274+00:00",
+    "status": 200,
+    "bytes": 606864,
+    "content_type": "text/plain; charset=ISO-8859-1",
+    "sha256": "45fe36a614d5d52d0c4be68ee9d43c0a2342cd1c7d238809c6dcbb0e0cb5cfa4"
+  },
+  "buoy-46042.txt": {
+    "url": "https://www.ndbc.noaa.gov/data/realtime2/46042.txt",
+    "retrieved_utc": "2026-10-15T16:26:34.801612+00:00",
+    "status": 200,
+    "bytes": 608838,
+    "content_type": "text/plain; charset=ISO-8859-1",
+    "sha256": "92227c8d549cb0d4ce093e0fdc7c4cc8091a99d61b326ce14896ba2ff88198c0"
+  },
+  "buoy-44013.txt": {
+    "url": "https://www.ndbc.noaa.gov/data/realtime2/44013.txt",
+    "retrieved_utc": "2026-10-15T16:26:34.807578+00:00",
+    "status": 200,
+    "bytes": 607052,
+    "content_type": "text/plain; charset=ISO-8859-1",
+    "sha256": "9059187a892cadccb07f7a59856a7aa58b65cffcc029c6a61b346de3312e3b68"
+  },
+  "wmts-usgs-imagery.xml": {
+    "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+    "retrieved_utc": "2026-10-15T16:26:35.003828+00:00",
+    "status": 200,
+    "bytes": 17408,
+    "content_type": "text/xml;charset=utf-8",
+    "sha256": "1f76f5dcedf0cc604dcb78407f855349fb86070ab401d827f09db4d5741700ab"
+  },
+  "wmts-usgs-topo.xml": {
+    "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+    "retrieved_utc": "2026-10-15T16:26:35.108839+00:00",
+    "status": 200,
+    "bytes": 17339,
+    "content_type": "text/xml;charset=utf-8",
+    "sha256": "a0702b582c5375e871f86964875466590dbb4c52af0f30e27eabdd1671bcb911"
+  },
+  "wmts-eox.xml": {
+    "url": "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+    "retrieved_utc": "2026-10-15T16:26:35.163928+00:00",
+    "status": 200,
+    "bytes": 67911,
+    "content_type": "application/xml",
+    "sha256": "5f7f37b51f4bd53a2ec309d21a3fe94ef889d4af1b6b707d98cd6bf1940f5f34"
+  },
+  "wmts-basemap-at.xml": {
+    "url": "https://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml",
+    "retrieved_utc": "2026-10-15T16:26:35.448566+00:00",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  "gbif-observations.json": {
+    "url": "https://api.gbif.org/v1/occurrence/search?hasCoordinate=true&hasGeospatialIssue=false&year=2025&limit=300&basisOfRecord=HUMAN_OBSERVATION",
+    "retrieved_utc": "2026-10-15T16:27:05.751655+00:00",
+    "status": 200,
+    "bytes": 1561609,
+    "sha256": "b3b1a431360c21f89f7f80aa23539ccffb313c99f30127feb186d5da967b14b8"
+  },
+  "firms-downloads.html": {
+    "url": "https://firms.modaps.eosdis.nasa.gov/active_fire/",
+    "retrieved_utc": "2026-10-15T16:27:07.630458+00:00",
+    "status": 200,
+    "bytes": 3846,
+    "sha256": "92f643ba132023b18c9ff0eb07e56c6496ca5797a7079025647669bf3b988841"
+  },
+  "firms-viirs-global-24h.csv": {
+    "url": "https://firms.modaps.eosdis.nasa.gov/data/active_fire/suomi-npp-viirs-c2/csv/SUOMI_VIIRS_C2_Global_24h.csv",
+    "retrieved_utc": "2026-10-15T16:28:24.693583+00:00",
+    "status": 200,
+    "bytes": 7789319,
+    "sha256": "1f1394ae40c96fa035fe655a21e62a5cda373e47e1dd9ab4255681d41cf06721"
+  },
+  "gbif-ontario.json": {
+    "url": "https://api.gbif.org/v1/occurrence/search?hasCoordinate=true&hasGeospatialIssue=false&year=2025&limit=200&decimalLatitude=43.19%2C43.32&decimalLongitude=-80.09%2C-79.88",
+    "retrieved_utc": "2026-10-15T16:45:31.082623+00:00",
+    "sha256": "eddd26dbc7b6d7fa6ec69d05c4caccabc703880deea37c3398fde909c0d24bcf",
+    "bytes": 1442629
+  }
+}

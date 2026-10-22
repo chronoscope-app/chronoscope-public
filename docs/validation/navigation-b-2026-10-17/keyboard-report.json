@@ -1,0 +1,108 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "globe mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+      "evidence": {
+        "anchorErrorPixels": 1.6872833525231947e-7,
+        "fineZoomRatio": 0.2500013095472386,
+        "navigation": {
+          "inertia": false,
+          "freeLook": false,
+          "northUpOnly": false,
+          "gestureMaximumTiltDegrees": 85,
+          "keyboardFocus": "map",
+          "active": false
+        }
+      }
+    },
+    {
+      "name": "space-time mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+      "evidence": {
+        "anchorErrorPixels": 0.0000029594511315940353,
+        "fineZoomRatio": 0.2500000000732694,
+        "navigation": {
+          "inertia": false,
+          "freeLook": false,
+          "northUpOnly": false,
+          "gestureMaximumTiltDegrees": 85,
+          "keyboardFocus": "map",
+          "active": false
+        }
+      }
+    },
+    {
+      "name": "map mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+      "evidence": {
+        "anchorErrorPixels": 5.355179513080077e-10,
+        "fineZoomRatio": 0.25000000000000067,
+        "navigation": {
+          "inertia": false,
+          "freeLook": false,
+          "northUpOnly": true,
+          "gestureMaximumTiltDegrees": 85,
+          "keyboardFocus": "map",
+          "active": false
+        }
+      }
+    },
+    {
+      "name": "calendar mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+      "evidence": {
+        "anchorErrorPixels": 7.178891709472494e-8,
+        "fineZoomRatio": 0.24999999999999012,
+        "navigation": {
+          "inertia": false,
+          "freeLook": false,
+          "northUpOnly": false,
+          "gestureMaximumTiltDegrees": 85,
+          "keyboardFocus": "map",
+          "active": false
+        }
+      }
+    },
+    {
+      "name": "Rapid additive map clicks retain both exact records",
+      "evidence": {
+        "ids": [
+          "136",
+          "37"
+        ]
+      }
+    },
+    {
+      "name": "Slower double-click restores selection after initial click feedback",
+      "evidence": {}
+    },
+    {
+      "name": "Escape cancels delayed picking without reselecting a record",
+      "evidence": {}
+    },
+    {
+      "name": "Extreme zoom/tilt remains bounded and never changes event time or Time height",
+      "evidence": {}
+    },
+    {
+      "name": "Select mode keeps Shift-drag box selection and camera position",
+      "evidence": {}
+    },
+    {
+      "name": "Focused O switches Globe/2D",
+      "evidence": {}
+    },
+    {
+      "name": "Space retains timeline play/pause",
+      "evidence": {}
+    },
+    {
+      "name": "Table Shift+Down selects rows without camera navigation",
+      "evidence": {}
+    },
+    {
+      "name": "Shared CLI/MCP view adapter retains full zoom factor semantics",
+      "evidence": {}
+    }
+  ],
+  "errors": [],
+  "publicRequests": 0
+}

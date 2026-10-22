@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "MCP discovery",
+    "UTC grid",
+    "Exact selection",
+    "Rust period changes",
+    "CLI/MCP parity"
+  ]
+}

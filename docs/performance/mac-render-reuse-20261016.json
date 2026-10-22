@@ -1,0 +1,780 @@
+{
+  "baseline_commit": "33bd5d0747b2a61d78fd6eb11d5f736a8e381a70",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+  "viewport_css": [
+    1800,
+    1100
+  ],
+  "scene_canvas": [
+    1262,
+    869
+  ],
+  "device_scale": 1,
+  "trials_per_workload": 3,
+  "hardware_browser_results": {
+    "bloom-refresh": {
+      "baseline": {
+        "refresh_p50_ms": 88.19999998807907,
+        "fps": null,
+        "render_cpu_p95_ms": 2.9000000059604645,
+        "browser_task_ms": [
+          258.8539999999995,
+          256.19499999999994,
+          246.0299999999993
+        ],
+        "frame_p95_ms": [
+          0,
+          0,
+          0
+        ],
+        "frame_max_ms": [
+          0,
+          0,
+          0
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          28,
+          27,
+          27
+        ]
+      },
+      "tuned": {
+        "refresh_p50_ms": 19.200000002980232,
+        "fps": null,
+        "render_cpu_p95_ms": 0.800000011920929,
+        "browser_task_ms": [
+          80.88300000000004,
+          50.44599999999999,
+          56.700000000000195
+        ],
+        "frame_p95_ms": [
+          0,
+          0,
+          0
+        ],
+        "frame_max_ms": [
+          0,
+          0,
+          0
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          9,
+          7,
+          7
+        ]
+      }
+    },
+    "dense-focus": {
+      "baseline": {
+        "refresh_p50_ms": 0,
+        "fps": 60.00268168409767,
+        "render_cpu_p95_ms": 1.9000000059604645,
+        "browser_task_ms": [
+          406.6230000000006,
+          451.23399999999947,
+          386.58199999999886
+        ],
+        "frame_p95_ms": [
+          16.799999999995634,
+          16.700000000004366,
+          16.700000000004366
+        ],
+        "frame_max_ms": [
+          16.80000000000291,
+          16.80000000000291,
+          16.80000000000291
+        ],
+        "point_counts": [
+          20000,
+          20000,
+          20000
+        ],
+        "rendered_frames": [
+          179,
+          180,
+          180
+        ]
+      },
+      "tuned": {
+        "refresh_p50_ms": 0,
+        "fps": 59.668655621854036,
+        "render_cpu_p95_ms": 1.7000000029802322,
+        "browser_task_ms": [
+          378.13399999999933,
+          431.9750000000004,
+          392.92299999999966
+        ],
+        "frame_p95_ms": [
+          16.700000000004366,
+          16.80000000000291,
+          16.700000000004366
+        ],
+        "frame_max_ms": [
+          16.80000000000291,
+          33.30000000000291,
+          33.30000000000291
+        ],
+        "point_counts": [
+          20000,
+          20000,
+          20000
+        ],
+        "rendered_frames": [
+          179,
+          180,
+          180
+        ]
+      }
+    },
+    "dense-orbit": {
+      "baseline": {
+        "refresh_p50_ms": 0,
+        "fps": 60.0046931044885,
+        "render_cpu_p95_ms": 1.5,
+        "browser_task_ms": [
+          410.08000000000067,
+          327.9099999999993,
+          384.4799999999999
+        ],
+        "frame_p95_ms": [
+          16.799999999995634,
+          16.700000000004366,
+          16.700000000004366
+        ],
+        "frame_max_ms": [
+          16.80000000000291,
+          16.80000000000291,
+          16.80000000000291
+        ],
+        "point_counts": [
+          20000,
+          20000,
+          20000
+        ],
+        "rendered_frames": [
+          180,
+          180,
+          180
+        ]
+      },
+      "tuned": {
+        "refresh_p50_ms": 0,
+        "fps": 60.002681684097524,
+        "render_cpu_p95_ms": 1.5,
+        "browser_task_ms": [
+          410.83099999999996,
+          436.78799999999995,
+          374.7220000000002
+        ],
+        "frame_p95_ms": [
+          16.700000000004366,
+          16.799999999995634,
+          16.700000000004366
+        ],
+        "frame_max_ms": [
+          16.80000000000291,
+          16.80000000000291,
+          16.80000000000291
+        ],
+        "point_counts": [
+          20000,
+          20000,
+          20000
+        ],
+        "rendered_frames": [
+          180,
+          180,
+          180
+        ]
+      }
+    },
+    "filter": {
+      "baseline": {
+        "refresh_p50_ms": 15.200000002980232,
+        "fps": null,
+        "render_cpu_p95_ms": 2.199999988079071,
+        "browser_task_ms": [
+          153.821,
+          141.43099999999987,
+          135.10299999999998
+        ],
+        "frame_p95_ms": [
+          0,
+          0,
+          0
+        ],
+        "frame_max_ms": [
+          0,
+          0,
+          0
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          12,
+          12,
+          11
+        ]
+      },
+      "tuned": {
+        "refresh_p50_ms": 11.599999994039536,
+        "fps": null,
+        "render_cpu_p95_ms": 2.0999999940395355,
+        "browser_task_ms": [
+          102.27500000000003,
+          94.60699999999989,
+          86.45699999999978
+        ],
+        "frame_p95_ms": [
+          0,
+          0,
+          0
+        ],
+        "frame_max_ms": [
+          0,
+          0,
+          0
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          10,
+          9,
+          8
+        ]
+      }
+    },
+    "focus": {
+      "baseline": {
+        "refresh_p50_ms": 0,
+        "fps": 60.00268168409762,
+        "render_cpu_p95_ms": 3.2999999970197678,
+        "browser_task_ms": [
+          547.9119999999999,
+          447.848,
+          564.9530000000001
+        ],
+        "frame_p95_ms": [
+          16.700000000000728,
+          16.799999999999272,
+          16.799999999999272
+        ],
+        "frame_max_ms": [
+          16.800000000000182,
+          16.80000000000109,
+          16.80000000000291
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          180,
+          180,
+          180
+        ]
+      },
+      "tuned": {
+        "refresh_p50_ms": 0,
+        "fps": 60.0026816840976,
+        "render_cpu_p95_ms": 3.5,
+        "browser_task_ms": [
+          548.627,
+          591.0789999999997,
+          478.3089999999994
+        ],
+        "frame_p95_ms": [
+          16.700000000000728,
+          16.700000000000728,
+          16.700000000000728
+        ],
+        "frame_max_ms": [
+          16.800000000000182,
+          16.80000000000109,
+          16.799999999999272
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          180,
+          180,
+          180
+        ]
+      }
+    },
+    "idle": {
+      "baseline": {
+        "refresh_p50_ms": 0,
+        "fps": null,
+        "render_cpu_p95_ms": 4,
+        "browser_task_ms": [
+          99.816,
+          57.06800000000012,
+          120.69200000000002
+        ],
+        "frame_p95_ms": [
+          0,
+          0,
+          0
+        ],
+        "frame_max_ms": [
+          0,
+          0,
+          0
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          13,
+          1,
+          22
+        ]
+      },
+      "tuned": {
+        "refresh_p50_ms": 0,
+        "fps": null,
+        "render_cpu_p95_ms": 3.9000000059604645,
+        "browser_task_ms": [
+          93.822,
+          54.54899999999996,
+          119.83299999999986
+        ],
+        "frame_p95_ms": [
+          0,
+          0,
+          0
+        ],
+        "frame_max_ms": [
+          0,
+          0,
+          0
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          13,
+          1,
+          21
+        ]
+      }
+    },
+    "orbit": {
+      "baseline": {
+        "refresh_p50_ms": 0,
+        "fps": 60.000670398551954,
+        "render_cpu_p95_ms": 3.9000000059604645,
+        "browser_task_ms": [
+          664.7070000000001,
+          459.7199999999999,
+          685.3450000000007
+        ],
+        "frame_p95_ms": [
+          16.700000000000728,
+          16.700000000000728,
+          16.799999999999272
+        ],
+        "frame_max_ms": [
+          16.80000000000109,
+          16.80000000000291,
+          16.80000000000291
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          180,
+          180,
+          180
+        ]
+      },
+      "tuned": {
+        "refresh_p50_ms": 0,
+        "fps": 60.0026816840976,
+        "render_cpu_p95_ms": 3.0999999940395355,
+        "browser_task_ms": [
+          572.464,
+          557.9079999999999,
+          507.9760000000002
+        ],
+        "frame_p95_ms": [
+          16.799999999999272,
+          16.700000000000728,
+          16.799999999999272
+        ],
+        "frame_max_ms": [
+          16.80000000000109,
+          16.80000000000291,
+          16.80000000000291
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          180,
+          180,
+          180
+        ]
+      }
+    },
+    "playback": {
+      "baseline": {
+        "refresh_p50_ms": 0,
+        "fps": 60.0026816840976,
+        "render_cpu_p95_ms": 2.199999988079071,
+        "browser_task_ms": [
+          614.575,
+          565.0409999999999,
+          620.1409999999994
+        ],
+        "frame_p95_ms": [
+          16.799999999999272,
+          16.799999999999272,
+          16.799999999995634
+        ],
+        "frame_max_ms": [
+          16.80000000000109,
+          16.80000000000291,
+          16.80000000000291
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          182,
+          182,
+          182
+        ]
+      },
+      "tuned": {
+        "refresh_p50_ms": 0,
+        "fps": 60.00268168409767,
+        "render_cpu_p95_ms": 2.2000000029802322,
+        "browser_task_ms": [
+          521.792,
+          478.3010000000001,
+          517.3480000000002
+        ],
+        "frame_p95_ms": [
+          16.700000000000728,
+          16.700000000000728,
+          16.799999999995634
+        ],
+        "frame_max_ms": [
+          16.80000000000109,
+          16.799999999999272,
+          16.80000000000291
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          182,
+          182,
+          182
+        ]
+      }
+    },
+    "refresh": {
+      "baseline": {
+        "refresh_p50_ms": 21.400000005960464,
+        "fps": null,
+        "render_cpu_p95_ms": 3.5999999940395355,
+        "browser_task_ms": [
+          143.924,
+          133.82700000000014,
+          128.8879999999999
+        ],
+        "frame_p95_ms": [
+          0,
+          0,
+          0
+        ],
+        "frame_max_ms": [
+          0,
+          0,
+          0
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          9,
+          8,
+          9
+        ]
+      },
+      "tuned": {
+        "refresh_p50_ms": 16.299999997019768,
+        "fps": null,
+        "render_cpu_p95_ms": 2.5,
+        "browser_task_ms": [
+          91.10199999999999,
+          43.99500000000023,
+          88.42000000000016
+        ],
+        "frame_p95_ms": [
+          0,
+          0,
+          0
+        ],
+        "frame_max_ms": [
+          0,
+          0,
+          0
+        ],
+        "point_counts": [
+          3568,
+          3568,
+          3568
+        ],
+        "rendered_frames": [
+          7,
+          5,
+          7
+        ]
+      }
+    }
+  },
+  "github_actions_dispatched": false,
+  "retained_js_heap_mib": {
+    "baseline": 34.92734146118164,
+    "tuned": 34.741600036621094
+  },
+  "exact_query_median_ms": {
+    "baseline": 2.037084000003233,
+    "tuned": 2.1869169999990845
+  },
+  "bloom_framebuffer_pixel_identical": true,
+  "limitations": [
+    "Chromium ANGLE Metal cadence is not native WebKit FPS or GPU execution time.",
+    "Dense orbit browser CPU samples overlap (median about 6.9% higher in tuned run); dense focus has one missed refresh in two trials. Small scheduling differences do not establish a systematic regression or improvement.",
+    "Exact query medians are both approximately 2 ms; Rust query implementation is unchanged.",
+    "Native attachment recovered immediately after macOS was unlocked. Native playback observations below include two plain and one bloom series per build; ten overlapping 120-frame windows per series are not independent trials. Playback point counts vary with the moving window, so no isolated native CPU speedup is claimed.",
+    "Synthetic stress retains exactly 20000 points and vertical stems; this fixture produces no tracks under the loaded gap setting. Hurricane workloads include tracks.",
+    "No public WMTS network-performance or Windows/Linux native performance claims.",
+    "Settled native background rendering was approximately 6.45 Hz; no zero-idle-render claim is made. Browser idle render counts were nearly identical before/after (13/1/22 versus 13/1/21 over the three two-second samples), with slightly lower candidate CPU work."
+  ],
+  "source_sha256": {
+    "frontend/src/view.ts": "00fcb37105dd66ec180e673f4b011aedb86811f99b0428d72302defed94321fd",
+    "frontend/src/cesium-display-layer.ts": "8d21bff01a85c1a1feb68aeb9e2af6a09def8f356beab435bfacffefe5a0d5e6",
+    "frontend/scripts/performance-qa.mjs": "4d4cd94967bda5490249d28e526cfb0010c93df77da1fa48d8052390f2d341e0",
+    "frontend/package.json": "c78b079a6d60efe50e369c97c168c8a5dbf3d6f2aa78056962b9aa56b62bf86b",
+    "frontend/scripts/cesium-parity-qa.mjs": "9d21dfc50080c8602b1a3a7f91d73a8de2dac7e40535d3d46a23b918eee33f5b"
+  },
+  "native_bundle_sha256": "a65cfadebb6980217b32da5c1628244bbd3be499cd8fa4c303eb2e277334d221",
+  "local_verification": {
+    "rendering_integration_passed": true,
+    "checks": 31,
+    "errors": [],
+    "resource_reuse_regression_fails_against_prior_frontend": true,
+    "typescript": true,
+    "formatting": true,
+    "filter_intent": true,
+    "display_math": true,
+    "ground_effect_math": true,
+    "geodesic_geometry": true,
+    "native_release_build": true
+  },
+  "native_verification": {
+    "passed": true,
+    "count": 3568,
+    "visible": 3568,
+    "checks": [
+      {
+        "mode": "globe",
+        "points": 3568,
+        "imageryLayers": 1,
+        "errors": 0
+      },
+      {
+        "mode": "map",
+        "points": 3568,
+        "imageryLayers": 1,
+        "errors": 0
+      },
+      {
+        "mode": "space-time",
+        "points": 3568,
+        "imageryLayers": 1,
+        "errors": 0
+      }
+    ],
+    "autosave_restored": true,
+    "macos_unlock_restored_attachment": true,
+    "source_unchanged_after_benchmark": true,
+    "native_canvas_pixels": [
+      1593,
+      1105
+    ],
+    "native_capture_pixels": [
+      1593,
+      1134
+    ],
+    "settled_idle_samples": [
+      {
+        "active": true,
+        "fps": 6.45195978278402,
+        "frameP95Ms": 168,
+        "renderCpuP95Ms": 4,
+        "renderedFrames": 5783,
+        "sampleFrames": 120
+      },
+      {
+        "active": true,
+        "fps": 6.451266060964464,
+        "frameP95Ms": 168,
+        "renderCpuP95Ms": 4,
+        "renderedFrames": 5790,
+        "sampleFrames": 120
+      },
+      {
+        "active": true,
+        "fps": 6.457167455876022,
+        "frameP95Ms": 168,
+        "renderCpuP95Ms": 4,
+        "renderedFrames": 5796,
+        "sampleFrames": 120
+      },
+      {
+        "active": true,
+        "fps": 6.46900269541779,
+        "frameP95Ms": 168,
+        "renderCpuP95Ms": 4,
+        "renderedFrames": 5803,
+        "sampleFrames": 120
+      }
+    ]
+  },
+  "native_performance": {
+    "baseline": {
+      "baseline-playback-1": {
+        "samples": 10,
+        "fps_median": 60.0,
+        "render_cpu_p95_median_ms": 2.0,
+        "mcp_query_median_ms": 0.8086669986369088,
+        "point_count_range": [
+          592,
+          1089
+        ],
+        "viewport_css": {
+          "height": 737,
+          "width": 1062
+        },
+        "render_errors": 0
+      },
+      "baseline-playback-2": {
+        "samples": 10,
+        "fps_median": 59.955037466281844,
+        "render_cpu_p95_median_ms": 2.0,
+        "mcp_query_median_ms": 0.7262704966706224,
+        "point_count_range": [
+          661,
+          1160
+        ],
+        "viewport_css": {
+          "height": 737,
+          "width": 1062
+        },
+        "render_errors": 0
+      },
+      "baseline-bloom-1": {
+        "samples": 10,
+        "fps_median": 59.494298463063956,
+        "render_cpu_p95_median_ms": 3.0,
+        "mcp_query_median_ms": 0.6572704951395281,
+        "point_count_range": [
+          741,
+          1090
+        ],
+        "viewport_css": {
+          "height": 737,
+          "width": 1062
+        },
+        "render_errors": 0
+      }
+    },
+    "tuned": {
+      "tuned-playback-1": {
+        "samples": 10,
+        "fps_median": 60.0,
+        "render_cpu_p95_median_ms": 2.0,
+        "mcp_query_median_ms": 0.5764369998360053,
+        "point_count_range": [
+          592,
+          991
+        ],
+        "viewport_css": {
+          "height": 737,
+          "width": 1062
+        },
+        "render_errors": 0
+      },
+      "tuned-playback-2": {
+        "samples": 10,
+        "fps_median": 60.0,
+        "render_cpu_p95_median_ms": 3.0,
+        "mcp_query_median_ms": 0.7906460014055483,
+        "point_count_range": [
+          592,
+          1089
+        ],
+        "viewport_css": {
+          "height": 737,
+          "width": 1062
+        },
+        "render_errors": 0
+      },
+      "tuned-bloom-1": {
+        "samples": 10,
+        "fps_median": 59.985007496251875,
+        "render_cpu_p95_median_ms": 3.0,
+        "mcp_query_median_ms": 0.7721665024291724,
+        "point_count_range": [
+          702,
+          1086
+        ],
+        "viewport_css": {
+          "height": 737,
+          "width": 1062
+        },
+        "render_errors": 0
+      }
+    }
+  }
+}

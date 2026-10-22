@@ -1,0 +1,179 @@
+{
+  "passed": true,
+  "rows": 1000000,
+  "synthetic": true,
+  "renderer": "CesiumJS WebGL2",
+  "softwareRenderer": true,
+  "publicRequests": 0,
+  "githubRunnersUsed": false,
+  "started": "2026-10-15T23:35:19.439Z",
+  "timingsSeconds": {
+    "generateCsv": 0.3101,
+    "importPreview": 1.8278,
+    "importCommit": 213.1941,
+    "exactSnapshot": 0.0317,
+    "exactSourceQuery": 1.1195,
+    "exactNamedSourceQuery": 1.024,
+    "exactEntityQuery": 0.0069,
+    "displayGrid": 10.9526,
+    "exactClusterMemberQuery": 1.6221,
+    "exactClusterSelection": 0.0048,
+    "browserInitialDisplay": 20.0066
+  },
+  "checks": [
+    {
+      "name": "Million-row import retains the exact source count",
+      "evidence": {
+        "count": 1000000,
+        "visible": 1000000
+      }
+    },
+    {
+      "name": "Bounded source/entity query pages retain exact million-row totals",
+      "evidence": {
+        "source": "million-events.csv / CSV",
+        "sourceCount": 1000000,
+        "entityCount": 10000,
+        "returned": 5
+      }
+    },
+    {
+      "name": "Bounded clusters and selection agree with independent source-coordinate enumeration",
+      "evidence": {
+        "cells": 2632,
+        "level": 15,
+        "sourceCount": 1000000,
+        "cellCount": 45,
+        "independentlyCounted": 45,
+        "memberQueryCount": 45,
+        "selectionCount": 45
+      }
+    },
+    {
+      "name": "Actual default Cesium display uses bounded native collections, not a million Entities",
+      "evidence": {
+        "count": 1000000,
+        "visible": 1000000,
+        "defaultMode": "auto",
+        "actualMode": 1,
+        "clusterCount": 180,
+        "packetCount": 1000000,
+        "actualNativeClusterPoints": 180,
+        "actualNativeClusterLabels": 80,
+        "displayDiagnostics": {
+          "renderer": "cesium-webgl2",
+          "groundOnly": false,
+          "bloomIsolation": "event-layer-only",
+          "clusterPoints": 180,
+          "clusterLabels": 80,
+          "densityInstances": 0,
+          "atlasLayers": 0,
+          "rasterWidth": 0,
+          "rasterHeight": 0,
+          "heatPeak": 0,
+          "heatCeiling": 0,
+          "pending": false,
+          "error": ""
+        },
+        "representativeEvents": 0,
+        "cesiumEntities": 0,
+        "primitiveCollections": 12,
+        "canvasWidth": 1262,
+        "canvasHeight": 869,
+        "webgl2": true
+      }
+    },
+    {
+      "name": "Native cluster layer produces visible nonblank canvas pixels",
+      "evidence": {
+        "width": 1262,
+        "height": 869,
+        "clusterChangedPixels": 142435,
+        "coloredPixels": 132100
+      }
+    }
+  ],
+  "errors": [],
+  "memory": {
+    "rustPeakObservedRssBytes": 188043264,
+    "rustAfterImportAndQueries": {
+      "cpuTimeSeconds": 218.91,
+      "rssBytes": 112263168,
+      "peakRssBytes": 132964352
+    },
+    "chromiumProcesses": [
+      {
+        "type": "browser",
+        "pid": 317810,
+        "cpuTimeSeconds": 0.86,
+        "rssBytes": 137056256,
+        "peakRssBytes": 145969152
+      },
+      {
+        "type": "renderer",
+        "pid": 317904,
+        "cpuTimeSeconds": 0.01,
+        "rssBytes": 34693120,
+        "peakRssBytes": 34693120
+      },
+      {
+        "type": "renderer",
+        "pid": 317906,
+        "cpuTimeSeconds": 2.45,
+        "rssBytes": 203272192,
+        "peakRssBytes": 221650944
+      },
+      {
+        "type": "renderer",
+        "pid": 317895,
+        "cpuTimeSeconds": 0.67,
+        "rssBytes": 91590656,
+        "peakRssBytes": 92954624
+      },
+      {
+        "type": "GPU",
+        "pid": 317851,
+        "cpuTimeSeconds": 46.74,
+        "rssBytes": 368447488,
+        "peakRssBytes": 375607296
+      },
+      {
+        "type": "network.mojom.NetworkService",
+        "pid": 317854,
+        "cpuTimeSeconds": 0.13,
+        "rssBytes": 65327104,
+        "peakRssBytes": 65835008
+      },
+      {
+        "type": "storage.mojom.StorageService",
+        "pid": 317876,
+        "cpuTimeSeconds": 0,
+        "rssBytes": 23506944,
+        "peakRssBytes": 23506944
+      }
+    ],
+    "chromiumSummedRssBytes": 923893760,
+    "rustEnd": {
+      "cpuTimeSeconds": 235.89,
+      "rssBytes": 154816512,
+      "peakRssBytes": 187478016
+    }
+  },
+  "disk": {
+    "initialFreeBytes": 3794759680,
+    "inputBytes": 34900045,
+    "minimumFreeBytes": 940158976,
+    "finalFreeBytes": 2354946048,
+    "approximateConsumedBytes": 1439813632
+  },
+  "limitations": [
+    "Debug Rust build on Linux VM; ingestion wall times are not release throughput.",
+    "SwiftShader software rendering is not dedicated-GPU FPS or native macOS/Windows validation.",
+    "RSS sums can double-count shared pages; Chromium renderer RSS is reported separately.",
+    "No map downloads, portable million-row copy, or arbitrary budget increases."
+  ],
+  "import": {
+    "rejected": 0
+  },
+  "finished": "2026-10-15T23:39:31.052Z"
+}

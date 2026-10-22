@@ -1,0 +1,102 @@
+{
+  "zoom": [
+    {
+      "mode": "space-time",
+      "before": 6.450381694132527,
+      "wheelIn": 5.703245506529084,
+      "wheelOut": 7.295394166771842
+    },
+    {
+      "mode": "map",
+      "before": 1,
+      "wheelIn": 0.8841717865652724,
+      "wheelOut": 1.1310019333286845
+    },
+    {
+      "mode": "globe",
+      "before": 2.2061809848373217,
+      "wheelIn": 2.197275653673068,
+      "wheelOut": 2.810678931539091
+    },
+    {
+      "mode": "calendar",
+      "before": 6.450381694132527,
+      "wheelIn": 5.703245506529084,
+      "wheelOut": 7.295394166771842
+    }
+  ],
+  "close": {
+    "bounds": [
+      -122.39671135196807,
+      37.793778506388776,
+      -122.39068864803193,
+      37.797254602173325
+    ],
+    "near": 0.000008623253225548134,
+    "min": 2.1972741668963387,
+    "distance": 2.1974166319608495,
+    "observation": "1",
+    "projected": [
+      -1.931947092431985e-12,
+      -0.008928800318012051,
+      0.8999991076690809
+    ]
+  },
+  "viewportDetail": {
+    "count": 55,
+    "bounds": [
+      -78.98755248669677,
+      43.004705780789145,
+      -78.98644751330323,
+      43.005294217956724
+    ]
+  },
+  "terrainReuse": {
+    "reused": 0,
+    "changed": 1,
+    "nullRepeated": 0
+  },
+  "selectionCapacity": {
+    "same": true,
+    "shrink": true,
+    "zero": true,
+    "grown": true
+  },
+  "pickingCache": {
+    "before": "4",
+    "after": "4",
+    "expected": "4",
+    "reused": true
+  },
+  "disposal": {
+    "results": [
+      {
+        "releases": 1,
+        "children": 0,
+        "queued": false,
+        "pointer": true
+      },
+      {
+        "releases": 1,
+        "children": 0,
+        "queued": false,
+        "pointer": true
+      },
+      {
+        "releases": 1,
+        "children": 0,
+        "queued": false,
+        "pointer": true
+      }
+    ],
+    "earlyResult": {
+      "children": 0,
+      "callbacks": 0
+    }
+  },
+  "renderBudget": "Explicit 100k budget displays all 26k stored points and persists through theme/capture",
+  "wideColumns": "512 source fields accessible in 32-column windows; last raw value and scene offset verified",
+  "geometryViewportDetail": "Both 525-feature regions refine after panning a 1050-feature dataset",
+  "unsavedProtection": "save/discard/cancel passed",
+  "errors": []
+}

@@ -1,0 +1,9 @@
+{
+  "time": 0,
+  "lat": 1,
+  "lon": 2,
+  "value": 4,
+  "label": 13,
+  "category": 14,
+  "default_entity": "Earthquakes"
+}

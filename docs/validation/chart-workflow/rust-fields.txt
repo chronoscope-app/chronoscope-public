@@ -1,0 +1,13 @@
+   Compiling chronoscope v0.15.1 (/workspace/chronoscope-basemap)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.67s
+     Running tests/field_profile.rs (target/debug/deps/field_profile-76ca76611788df9b)
+
+running 6 tests
+test ambiguous_imported_names_require_an_explicit_column ... ok
+test exact_completeness_preserves_text_numeric_null_and_collection_semantics ... ok
+test every_canonical_and_derived_field_is_supported_and_unknown_is_not_empty ... ok
+test filters_selection_sources_empty_scopes_and_revision_guards_are_explicit ... ok
+test imported_display_names_resolve_explicitly_without_substituting_columns ... ok
+test long_values_are_disclosed_as_omitted_while_counts_remain_exact ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s

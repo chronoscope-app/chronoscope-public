@@ -1,0 +1,66 @@
+{
+  "checks": [
+    "Existing/empty saved libraries retain all built-ins; provider selections populate advertised layers and licenses without public traffic or activating maps",
+    "Six real provider tiles decoded successfully through production WMTS engine, with one worker and 1200ms pacing",
+    "Canvas export/MCP screenshot includes provider credits in an appended footer without covering map pixels"
+  ],
+  "errors": [],
+  "public_tiles": [
+    {
+      "id": "usgs-topo",
+      "width": 256,
+      "height": 256,
+      "colors": 1613,
+      "requests": 5,
+      "cache_hits": 0,
+      "tile": "/workspace/chronoscope-polish-20261015/map-presets-live-2/usgs-topo.jpg"
+    },
+    {
+      "id": "usgs-imagery",
+      "width": 256,
+      "height": 256,
+      "colors": 3639,
+      "requests": 7,
+      "cache_hits": 0,
+      "tile": "/workspace/chronoscope-polish-20261015/map-presets-live-2/usgs-imagery.jpg"
+    },
+    {
+      "id": "eox-streets",
+      "width": 256,
+      "height": 256,
+      "colors": 3644,
+      "requests": 9,
+      "cache_hits": 0,
+      "tile": "/workspace/chronoscope-polish-20261015/map-presets-live-2/eox-streets.jpg"
+    },
+    {
+      "id": "eox-terrain",
+      "width": 256,
+      "height": 256,
+      "colors": 102,
+      "requests": 10,
+      "cache_hits": 1,
+      "tile": "/workspace/chronoscope-polish-20261015/map-presets-live-2/eox-terrain.jpg"
+    },
+    {
+      "id": "eox-sentinel-2025",
+      "width": 256,
+      "height": 256,
+      "colors": 3411,
+      "requests": 11,
+      "cache_hits": 2,
+      "tile": "/workspace/chronoscope-polish-20261015/map-presets-live-2/eox-sentinel-2025.jpg"
+    },
+    {
+      "id": "eox-sentinel-2024",
+      "width": 256,
+      "height": 256,
+      "colors": 3259,
+      "requests": 12,
+      "cache_hits": 3,
+      "tile": "/workspace/chronoscope-polish-20261015/map-presets-live-2/eox-sentinel-2024.jpg"
+    }
+  ],
+  "public_wmts_enabled": true,
+  "passed": true
+}

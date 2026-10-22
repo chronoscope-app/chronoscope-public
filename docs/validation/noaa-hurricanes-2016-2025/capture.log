@@ -1,0 +1,34 @@
+Import mapping {}
+Map plan 24
+Map loaded { tiles: 24, cache_hits: 25 }
+Heat state {
+  options: {
+    mode: 'heatmap',
+    cluster_pixels: 48,
+    time_bin_minutes: 0,
+    partition: 'all',
+    spatial_culling: true,
+    trail_pixels: 1,
+    trail_gap_minutes: 720,
+    heat_radius: 64,
+    heat_weight: 'count',
+    heat_max: null,
+    heat_reference_zoom: null,
+    bloom: false,
+    bloom_strength: 1.3,
+    bloom_radius: 0.1,
+    bloom_threshold: 0.1
+  },
+  count: 3568,
+  cells: 498
+}
+Multi-year axis labels [
+  '2016-01-07 00:00',
+  '2017-12-24 06:00',
+  '2019-12-11 12:00',
+  '2021-11-27 18:00',
+  '2023-11-15 00:00',
+  '2025-11-01 06:00'
+]
+Portable reopen validated { records: 3568, views: 4, wmts: 'BlueMarble_ShadedRelief' }
+Final renderer { backend: 'WebGL2', error: '', records: 3568 }

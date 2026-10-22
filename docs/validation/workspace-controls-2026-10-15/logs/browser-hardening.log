@@ -1,0 +1,18 @@
+
+> chronoscope-ui@0.13.3 test:hardening
+> node scripts/hardening-qa.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-nav=\'in\']')[22m
+
+    at /workspace/chronoscope/frontend/scripts/hardening-qa.mjs:198:16 {
+  log: [ "  - waiting for locator('[data-nav=\\'in\\']')" ],
+  name: 'TimeoutError'
+}
+
+Node.js v24.19.0

@@ -1,0 +1,56 @@
+{
+  "rows": 1000000,
+  "profile": "debug Rust, warm OS cache uncontrolled; single run, no tail/FPS inference",
+  "cells": 48,
+  "displayed_raw_points": 2000,
+  "operations": [
+    {
+      "command": "import_preview",
+      "elapsed_s": 2.5624,
+      "response_bytes": 2665,
+      "cache_hit": null
+    },
+    {
+      "command": "import_commit",
+      "elapsed_s": 303.2116,
+      "response_bytes": 445,
+      "cache_hit": null
+    },
+    {
+      "command": "view_set",
+      "elapsed_s": 0.0011,
+      "response_bytes": 976,
+      "cache_hit": null
+    },
+    {
+      "command": "display_data",
+      "elapsed_s": 5.617,
+      "response_bytes": 24247,
+      "cache_hit": false
+    },
+    {
+      "command": "display_data",
+      "elapsed_s": 0.0034,
+      "response_bytes": 24246,
+      "cache_hit": true
+    },
+    {
+      "command": "select_query",
+      "elapsed_s": 7.9762,
+      "response_bytes": 347,
+      "cache_hit": null
+    },
+    {
+      "command": "display_data",
+      "elapsed_s": 4.0621,
+      "response_bytes": 24430,
+      "cache_hit": true
+    },
+    {
+      "command": "view_snapshot_v1",
+      "elapsed_s": 33.3103,
+      "response_bytes": 297772,
+      "cache_hit": null
+    }
+  ]
+}

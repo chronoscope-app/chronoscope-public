@@ -1,0 +1,14 @@
+{
+  "unmodified-smoke": {
+    "sampledColors": 18
+  },
+  "unmodified-smoke-long": {
+    "sampledColors": 18
+  },
+  "original-xvfb-smoke": {
+    "colors": 1237
+  },
+  "clean-unmodified-smoke": {
+    "sampledColors": 18
+  }
+}

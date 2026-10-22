@@ -1,0 +1,53 @@
+diff --git a/src/store.rs b/src/store.rs
+index 04bb8a5..ef5b3f8 100644
+--- a/src/store.rs
++++ b/src/store.rs
+@@ -1119,39 +1119,16 @@ impl DataStore {
+         Ok(())
+     }
+     pub fn copy_into(&self, target: &mut Self) -> Result<(), String> {
+-        target
+-            .connection
+-            .execute_batch("SAVEPOINT copy_events")
+-            .map_err(err)?;
+-        let result = (|| {
+-            let mut q = self
+-                .connection
+-                .prepare("SELECT payload FROM events ORDER BY id_key")
+-                .map_err(err)?;
+-            let mut rows = q.query([]).map_err(err)?;
+-            while let Some(row) = rows.next().map_err(err)? {
+-                crate::operation::check()?;
+-                let text: String = row.get(0).map_err(err)?;
+-                target.insert(&decode_event(&text)?)?;
+-            }
+-            Ok(())
+-        })();
+-        match result {
+-            Ok(()) => {
+-                target
+-                    .connection
+-                    .execute_batch("RELEASE copy_events")
+-                    .map_err(err)?;
+-                target.checkpoint()?;
+-                target.changed()
+-            }
+-            Err(e) => {
+-                let _ = target
+-                    .connection
+-                    .execute_batch("ROLLBACK TO copy_events; RELEASE copy_events");
+-                Err(e)
+-            }
++        if target.count()? != 0 { return Err("Backup copy requires an empty staged target".into()); }
++        // Prototype ONLY: isolated clone before ingest, never backup over existing staged input.
++        let backup = rusqlite::backup::Backup::new(&self.connection, &mut target.connection).map_err(err)?;
++        while backup.step(1024).map_err(err)? != rusqlite::backup::StepResult::Done {
++            crate::operation::check()?;
+         }
++        drop(backup);
++        target.connection.execute_batch("DELETE FROM history_rows; DELETE FROM history; DELETE FROM resources; DELETE FROM meta").map_err(err)?;
++        target.checkpoint()?;
++        target.changed()
+     }
+     pub fn load_events(&mut self, events: impl IntoIterator<Item = Event>) -> Result<(), String> {
+         self.connection

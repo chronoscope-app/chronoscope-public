@@ -1,0 +1,10 @@
+Chronoscope — local Mac handoff
+
+Build and installation: docs/MAC_HANDOFF.md
+CLI and MCP: docs/CLI-MCP.md
+User guide: docs/USER-GUIDE.md
+
+Use https://github.com/chronoscope-app/chronoscope-public. Build and verify locally; GitHub
+Actions workflows are manual-only. The installed app is Chronoscope.app.
+CesiumJS WebGL2 powers the geographic views; engine and provider license credits
+are packaged with the app. See assets/NOTICE.md.

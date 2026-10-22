@@ -1,0 +1,17 @@
+diff --git a/src/engine.rs b/src/engine.rs
+index ca742dd..b01157a 100644
+--- a/src/engine.rs
++++ b/src/engine.rs
+@@ -398,11 +398,7 @@ impl Engine {
+             let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+             (
+                 s.revision,
+-                if mutation {
+-                    s.project.clone()
+-                } else {
+-                    Project::new(Dataset::default())
+-                },
++                s.project.clone(),
+                 s.preferences.clone(),
+             )
+         };

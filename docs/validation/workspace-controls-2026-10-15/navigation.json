@@ -1,0 +1,18 @@
+{
+  "checks": [
+    "compass drag direction, north-up and mode restrictions",
+    "108 globe ENU orientation cases, centre retention and persisted camera roll; explicit rotating compass labels",
+    "entity colors, visibility and independent line strength persist",
+    "summary-layer exclusivity, heat smoothing and saved-view access",
+    "compact time-axis labels at study scale",
+    "12 bloom toggles with repeated imagery replacement retain basemap pixels",
+    "80% bloom dark: 345139 map pixels, 0 darkened, 225715 brightened; unaffected imagery retained",
+    "80% bloom light: 343894 map pixels, 0 darkened, 225402 brightened; unaffected imagery retained",
+    "strength 50/80/50 and repeated camera switches preserve empty background and isolated emission",
+    "zoomed time axis adds UTC hours/minutes",
+    "200ms incoming/outgoing point fades and exact paused frame",
+    "reduced motion bypasses transitions"
+  ],
+  "errors": [],
+  "backend": "WebGL2"
+}

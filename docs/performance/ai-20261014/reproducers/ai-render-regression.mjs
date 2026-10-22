@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import * as THREE from 'three/webgpu';
+const old=new THREE.OctahedronGeometry(.018,0);
+const positions=[.018,0,0,-.018,0,0,0,.018,0,0,-.018,0,0,0,.018,0,0,-.018];
+const indices=[0,2,4,0,4,3,0,3,5,0,5,2,1,2,5,1,5,3,1,3,4,1,4,2];
+const canonical=(a)=>{let triangles=[];for(let i=0;i<a.length;i+=9){let vertices=[a.slice(i,i+3),a.slice(i+3,i+6),a.slice(i+6,i+9)];let rotations=vertices.map((_,j)=>[...vertices.slice(j),...vertices.slice(0,j)].flat().map(x=>Number(x.toFixed(8))).join(','));triangles.push(rotations.sort()[0]);}return triangles.sort();};
+const expanded=indices.flatMap(i=>positions.slice(i*3,i*3+3));
+assert.deepEqual(canonical(Array.from(old.getAttribute('position').array)),canonical(expanded),'winding and triangle coordinates must match');
+assert.equal(old.getAttribute('position').count,24);assert.equal(positions.length/3,6);assert.equal(indices.length/3,8);
+console.log('glyph-equivalent-triangles PASS: 24 -> 6 positions; 8 triangles unchanged');

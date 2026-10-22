@@ -1,0 +1,9 @@
+
+> chronoscope-ui@0.12.0 test:wkt-wmts
+> node scripts/wkt-wmts-qa.mjs
+
+Browser error: Failed to load resource: the server responded with a status of 400 (Bad Request)
+API rejection: {"error":{"code":"NOT_FOUND","message":"Job not found or expired"}}
+Browser error: Failed to load resource: the server responded with a status of 400 (Bad Request)
+API rejection: {"error":{"code":"NOT_FOUND","message":"Job not found or expired"}}
+WKT detection, holes/picking, multipart rendering and reopen passed. All 64 requested WMTS tiles loaded concurrently, cache/offline reuse passed; 0 public requests.

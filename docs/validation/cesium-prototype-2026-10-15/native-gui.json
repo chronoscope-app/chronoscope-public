@@ -1,0 +1,110 @@
+{
+  "passed": true,
+  "platform": "Linux Tauri WebKitGTK",
+  "software_renderer": true,
+  "native_macos_windows_tested": false,
+  "checks": [
+    {
+      "name": "Native executable uses isolated prototype profile and registration",
+      "evidence": {
+        "descriptor": "/workspace/chronoscope-cesium-qa/native-gui/data/chronoscopecesium/agent-connection.json",
+        "registration": [
+          "chronoscope-cesium"
+        ]
+      }
+    },
+    {
+      "name": "Running real Tauri GUI accepts attached stdio MCP",
+      "evidence": {
+        "count": 192,
+        "startup_seconds": 10.046
+      }
+    },
+    {
+      "name": "Native WebKit Cesium canvas is captured through live MCP",
+      "evidence": {
+        "width": 1062,
+        "height": 771,
+        "sampled_colors": 3715,
+        "bytes": 128655
+      }
+    },
+    {
+      "name": "Native GUI loads real hurricane workspace and renders tracks",
+      "evidence": {
+        "count": 3568,
+        "capture": {
+          "width": 1062,
+          "height": 771,
+          "sampled_colors": 6606,
+          "bytes": 433921
+        }
+      }
+    },
+    {
+      "name": "Native 2D mode can be driven and captured by MCP",
+      "evidence": {
+        "width": 1062,
+        "height": 771,
+        "sampled_colors": 18846,
+        "bytes": 1246118
+      }
+    },
+    {
+      "name": "Native Globe mode can be driven and captured by MCP",
+      "evidence": {
+        "width": 1062,
+        "height": 771,
+        "sampled_colors": 14653,
+        "bytes": 930171
+      }
+    }
+  ],
+  "images": [
+    {
+      "file": "native-demo-space-time.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 3715,
+      "bytes": 128655
+    },
+    {
+      "file": "native-hurricanes-space-time.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 6606,
+      "bytes": 433921
+    },
+    {
+      "file": "native-hurricanes-map.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 18846,
+      "bytes": 1246118
+    },
+    {
+      "file": "native-hurricanes-globe.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 14653,
+      "bytes": 930171
+    }
+  ],
+  "public_map_requests_configured": false,
+  "limitations": [
+    "Linux native WebKitGTK with llvmpipe under Xvfb; no physical GPU/Mac/Windows/smartcard claim.",
+    "External map sources disabled and Rust WMTS transport forced offline in isolated private preferences.",
+    "SDK WebKit helper paths relocated privately as in AppImage packaging; system libraries unchanged."
+  ],
+  "capture_loading_retries": [
+    {
+      "name": "native-demo-space-time",
+      "attempt": 1
+    },
+    {
+      "name": "native-hurricanes-map",
+      "attempt": 1
+    }
+  ],
+  "finished": "2026-10-16T00:14:48Z"
+}

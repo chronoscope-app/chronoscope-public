@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "platform": "Linux Tauri WebKitGTK",
+  "software_renderer": true,
+  "native_macos_windows_tested": false,
+  "checks": [
+    {
+      "name": "Attached MCP enables time elevation in the actual native UI with a modest default",
+      "evidence": {
+        "mode": "globe",
+        "enabled": true,
+        "scale": 1,
+        "height": 1822.0774254144246,
+        "points": 12,
+        "pressed": "true",
+        "disabled": false,
+        "label": "1.8 km"
+      }
+    },
+    {
+      "name": "Native toggle disables elevation and synchronizes backend state",
+      "evidence": {
+        "mode": "globe",
+        "enabled": false,
+        "scale": 1,
+        "height": 1822.0774254144246,
+        "points": 12,
+        "pressed": "false",
+        "disabled": false,
+        "label": "1.8 km"
+      }
+    },
+    {
+      "name": "Native slider updates live and saves its independent scale",
+      "evidence": {
+        "mode": "globe",
+        "enabled": true,
+        "scale": 0.05,
+        "height": 91.10387127072124,
+        "points": 12,
+        "pressed": "true",
+        "disabled": false,
+        "label": "91 m"
+      }
+    },
+    {
+      "name": "MCP changes scale on an already elevated Globe and the native GUI rebuilds it",
+      "evidence": {
+        "mode": "globe",
+        "enabled": true,
+        "scale": 2,
+        "height": 3644.1548508288492,
+        "points": 12,
+        "pressed": "true",
+        "disabled": false,
+        "label": "3.6 km"
+      }
+    },
+    {
+      "name": "Live MCP captures the actual native Globe canvas",
+      "evidence": {
+        "width": 1062,
+        "height": 771,
+        "sampled_colors": 352,
+        "bytes": 14574
+      }
+    }
+  ],
+  "images": [
+    {
+      "file": "native-globe-time.png",
+      "width": 1062,
+      "height": 771,
+      "sampled_colors": 352,
+      "bytes": 14574
+    }
+  ],
+  "public_maps_enabled": false
+}

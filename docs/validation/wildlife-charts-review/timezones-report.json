@@ -1,0 +1,194 @@
+{
+  "passed": true,
+  "errors": [],
+  "timezones": [
+    {
+      "zone": "UTC",
+      "axisName": "time (UTC)",
+      "firstX": 1077408000000,
+      "useUTC": true,
+      "labels": [
+        {
+          "raw": "2004-02-22 00:00:00",
+          "label": "22"
+        },
+        {
+          "raw": "2004-03-01 00:00:00",
+          "label": "{primary|Mar}"
+        },
+        {
+          "raw": "2004-03-04 00:00:00",
+          "label": "4"
+        },
+        {
+          "raw": "2004-03-17 00:00:00",
+          "label": "17"
+        },
+        {
+          "raw": "2004-04-01 00:00:00",
+          "label": "{primary|Apr}"
+        },
+        {
+          "raw": "2004-04-02 00:00:00",
+          "label": "2"
+        },
+        {
+          "raw": "2004-04-17 00:00:00",
+          "label": "17"
+        },
+        {
+          "raw": "2004-05-01 00:00:00",
+          "label": "{primary|May}"
+        },
+        {
+          "raw": "2004-05-03 00:00:00",
+          "label": "3"
+        },
+        {
+          "raw": "2004-05-17 00:00:00",
+          "label": "17"
+        },
+        {
+          "raw": "2004-06-01 00:00:00",
+          "label": "{primary|Jun}"
+        },
+        {
+          "raw": "2004-06-02 00:00:00",
+          "label": "2"
+        },
+        {
+          "raw": "2004-06-03 00:00:00",
+          "label": "3"
+        }
+      ]
+    },
+    {
+      "zone": "America/New_York",
+      "axisName": "time (UTC)",
+      "firstX": 1077408000000,
+      "useUTC": true,
+      "labels": [
+        {
+          "raw": "2004-02-22 00:00:00",
+          "label": "22"
+        },
+        {
+          "raw": "2004-03-01 00:00:00",
+          "label": "{primary|Mar}"
+        },
+        {
+          "raw": "2004-03-04 00:00:00",
+          "label": "4"
+        },
+        {
+          "raw": "2004-03-17 00:00:00",
+          "label": "17"
+        },
+        {
+          "raw": "2004-04-01 00:00:00",
+          "label": "{primary|Apr}"
+        },
+        {
+          "raw": "2004-04-02 00:00:00",
+          "label": "2"
+        },
+        {
+          "raw": "2004-04-17 00:00:00",
+          "label": "17"
+        },
+        {
+          "raw": "2004-05-01 00:00:00",
+          "label": "{primary|May}"
+        },
+        {
+          "raw": "2004-05-03 00:00:00",
+          "label": "3"
+        },
+        {
+          "raw": "2004-05-17 00:00:00",
+          "label": "17"
+        },
+        {
+          "raw": "2004-06-01 00:00:00",
+          "label": "{primary|Jun}"
+        },
+        {
+          "raw": "2004-06-02 00:00:00",
+          "label": "2"
+        },
+        {
+          "raw": "2004-06-03 00:00:00",
+          "label": "3"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Tokyo",
+      "axisName": "time (UTC)",
+      "firstX": 1077408000000,
+      "useUTC": true,
+      "labels": [
+        {
+          "raw": "2004-02-22 00:00:00",
+          "label": "22"
+        },
+        {
+          "raw": "2004-03-01 00:00:00",
+          "label": "{primary|Mar}"
+        },
+        {
+          "raw": "2004-03-04 00:00:00",
+          "label": "4"
+        },
+        {
+          "raw": "2004-03-17 00:00:00",
+          "label": "17"
+        },
+        {
+          "raw": "2004-04-01 00:00:00",
+          "label": "{primary|Apr}"
+        },
+        {
+          "raw": "2004-04-02 00:00:00",
+          "label": "2"
+        },
+        {
+          "raw": "2004-04-17 00:00:00",
+          "label": "17"
+        },
+        {
+          "raw": "2004-05-01 00:00:00",
+          "label": "{primary|May}"
+        },
+        {
+          "raw": "2004-05-03 00:00:00",
+          "label": "3"
+        },
+        {
+          "raw": "2004-05-17 00:00:00",
+          "label": "17"
+        },
+        {
+          "raw": "2004-06-01 00:00:00",
+          "label": "{primary|Jun}"
+        },
+        {
+          "raw": "2004-06-02 00:00:00",
+          "label": "2"
+        },
+        {
+          "raw": "2004-06-03 00:00:00",
+          "label": "3"
+        }
+      ]
+    }
+  ],
+  "publicRequests": 0,
+  "checks": [
+    "UTC, New York (including DST) and Tokyo render identical daily UTC axis labels",
+    "Daily elephant-seal buckets begin on the correct UTC calendar day",
+    "Charts explicitly label the UTC time axis",
+    "Rendering keeps all 15,501 source records unchanged and requests no public services"
+  ],
+  "visibleControls": 8
+}

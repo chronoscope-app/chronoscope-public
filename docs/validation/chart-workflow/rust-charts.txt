@@ -1,0 +1,16 @@
+   Compiling chronoscope v0.15.1 (/workspace/chronoscope-basemap)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.49s
+     Running tests/charts.rs (target/debug/deps/charts-7ae7201bba87c232)
+
+running 9 tests
+test histogram_edges_and_box_quantiles_use_full_scope ... ok
+test automatic_units_require_uniform_complete_scope_metadata ... ok
+test aggregations_scopes_imported_fields_and_linked_members_are_exact ... ok
+test presets_round_trip_and_unknown_fields_do_not_become_empty_charts ... ok
+test public_view_set_merges_chart_settings_and_validates_presets ... ok
+test presentation_labels_roundtrip_without_changing_calculations_or_selection ... ok
+test scatter_pairs_trendline_secondary_axis_and_limits ... ok
+test selection_retries_and_internal_keys_are_safe ... ok
+test one_mark_can_select_more_than_ten_thousand_records_without_paging ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s

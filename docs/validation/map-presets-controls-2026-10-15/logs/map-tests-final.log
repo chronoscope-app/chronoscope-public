@@ -1,0 +1,18 @@
+   Compiling chronoscope v0.13.3 (/workspace/chronoscope)
+    Finished `test` profile [unoptimized] target(s) in 1.09s
+     Running tests/map_presets.rs (target/debug/deps/map_presets-4a2a6fc183121e49)
+
+running 2 tests
+test builtins_match_real_provider_capabilities_and_plan_supported_tiles ... ok
+test builtins_do_not_overwrite_or_repopulate_an_existing_library ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/map_servers.rs (target/debug/deps/map_servers-bfc61b33f6a68b99)
+
+running 2 tests
+test server_tool_advertises_that_it_can_change_local_settings ... ok
+test multiple_servers_are_validated_local_persistent_and_available_to_agents ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+

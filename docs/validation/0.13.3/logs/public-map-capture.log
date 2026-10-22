@@ -1,0 +1,23 @@
+{ effectError: '', post: true, cells: 975 }
+{
+  bloom: {
+    mode: 'heatmap',
+    cluster_pixels: 48,
+    time_bin_minutes: 60,
+    partition: 'all',
+    spatial_culling: true,
+    trail_pixels: 2,
+    trail_gap_minutes: 180,
+    heat_radius: 64,
+    heat_weight: 'count',
+    heat_max: null,
+    heat_reference_zoom: null,
+    bloom: true,
+    bloom_strength: 2,
+    bloom_radius: 0.6,
+    bloom_threshold: 0.15
+  },
+  post: true,
+  error: ''
+}
+{"screenshots":"/workspace/chronoscope-pics-ground-final3","observations":3000,"terrain":"public n43.dt0","map":"Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual","cache_hits":5,"tiles":4,"public_requests":0}

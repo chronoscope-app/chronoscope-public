@@ -1,0 +1,194 @@
+{
+  "passed": true,
+  "errors": [],
+  "timezones": [
+    {
+      "zone": "UTC",
+      "axisName": "Time (UTC)",
+      "firstX": 1077408000000,
+      "useUTC": true,
+      "labels": [
+        {
+          "raw": "2004-02-22 00:00:00",
+          "label": "Feb 22, 2004"
+        },
+        {
+          "raw": "2004-03-01 00:00:00",
+          "label": "Mar 1, 2004"
+        },
+        {
+          "raw": "2004-03-04 00:00:00",
+          "label": "Mar 4, 2004"
+        },
+        {
+          "raw": "2004-03-17 00:00:00",
+          "label": "Mar 17, 2004"
+        },
+        {
+          "raw": "2004-04-01 00:00:00",
+          "label": "Apr 1, 2004"
+        },
+        {
+          "raw": "2004-04-02 00:00:00",
+          "label": "Apr 2, 2004"
+        },
+        {
+          "raw": "2004-04-17 00:00:00",
+          "label": "Apr 17, 2004"
+        },
+        {
+          "raw": "2004-05-01 00:00:00",
+          "label": "May 1, 2004"
+        },
+        {
+          "raw": "2004-05-03 00:00:00",
+          "label": "May 3, 2004"
+        },
+        {
+          "raw": "2004-05-17 00:00:00",
+          "label": "May 17, 2004"
+        },
+        {
+          "raw": "2004-06-01 00:00:00",
+          "label": "Jun 1, 2004"
+        },
+        {
+          "raw": "2004-06-02 00:00:00",
+          "label": "Jun 2, 2004"
+        },
+        {
+          "raw": "2004-06-03 00:00:00",
+          "label": "Jun 3, 2004"
+        }
+      ]
+    },
+    {
+      "zone": "America/New_York",
+      "axisName": "Time (UTC)",
+      "firstX": 1077408000000,
+      "useUTC": true,
+      "labels": [
+        {
+          "raw": "2004-02-22 00:00:00",
+          "label": "Feb 22, 2004"
+        },
+        {
+          "raw": "2004-03-01 00:00:00",
+          "label": "Mar 1, 2004"
+        },
+        {
+          "raw": "2004-03-04 00:00:00",
+          "label": "Mar 4, 2004"
+        },
+        {
+          "raw": "2004-03-17 00:00:00",
+          "label": "Mar 17, 2004"
+        },
+        {
+          "raw": "2004-04-01 00:00:00",
+          "label": "Apr 1, 2004"
+        },
+        {
+          "raw": "2004-04-02 00:00:00",
+          "label": "Apr 2, 2004"
+        },
+        {
+          "raw": "2004-04-17 00:00:00",
+          "label": "Apr 17, 2004"
+        },
+        {
+          "raw": "2004-05-01 00:00:00",
+          "label": "May 1, 2004"
+        },
+        {
+          "raw": "2004-05-03 00:00:00",
+          "label": "May 3, 2004"
+        },
+        {
+          "raw": "2004-05-17 00:00:00",
+          "label": "May 17, 2004"
+        },
+        {
+          "raw": "2004-06-01 00:00:00",
+          "label": "Jun 1, 2004"
+        },
+        {
+          "raw": "2004-06-02 00:00:00",
+          "label": "Jun 2, 2004"
+        },
+        {
+          "raw": "2004-06-03 00:00:00",
+          "label": "Jun 3, 2004"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Tokyo",
+      "axisName": "Time (UTC)",
+      "firstX": 1077408000000,
+      "useUTC": true,
+      "labels": [
+        {
+          "raw": "2004-02-22 00:00:00",
+          "label": "Feb 22, 2004"
+        },
+        {
+          "raw": "2004-03-01 00:00:00",
+          "label": "Mar 1, 2004"
+        },
+        {
+          "raw": "2004-03-04 00:00:00",
+          "label": "Mar 4, 2004"
+        },
+        {
+          "raw": "2004-03-17 00:00:00",
+          "label": "Mar 17, 2004"
+        },
+        {
+          "raw": "2004-04-01 00:00:00",
+          "label": "Apr 1, 2004"
+        },
+        {
+          "raw": "2004-04-02 00:00:00",
+          "label": "Apr 2, 2004"
+        },
+        {
+          "raw": "2004-04-17 00:00:00",
+          "label": "Apr 17, 2004"
+        },
+        {
+          "raw": "2004-05-01 00:00:00",
+          "label": "May 1, 2004"
+        },
+        {
+          "raw": "2004-05-03 00:00:00",
+          "label": "May 3, 2004"
+        },
+        {
+          "raw": "2004-05-17 00:00:00",
+          "label": "May 17, 2004"
+        },
+        {
+          "raw": "2004-06-01 00:00:00",
+          "label": "Jun 1, 2004"
+        },
+        {
+          "raw": "2004-06-02 00:00:00",
+          "label": "Jun 2, 2004"
+        },
+        {
+          "raw": "2004-06-03 00:00:00",
+          "label": "Jun 3, 2004"
+        }
+      ]
+    }
+  ],
+  "publicRequests": 0,
+  "checks": [
+    "UTC, New York (including DST) and Tokyo render identical daily UTC axis labels",
+    "Daily elephant-seal buckets begin on the correct UTC calendar day",
+    "Charts explicitly label the UTC time axis",
+    "Rendering keeps all 15,501 source records unchanged and requests no public services"
+  ],
+  "visibleControls": 1
+}

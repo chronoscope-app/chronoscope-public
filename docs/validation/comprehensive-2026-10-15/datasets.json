@@ -1,0 +1,61 @@
+{
+  "usgs-earthquakes-month.csv": {
+    "records": 1895,
+    "source": "USGS month M2.5+ CSV; original download",
+    "path": "QA_DIR/public/usgs-earthquakes-month.csv"
+  },
+  "firms-viirs-global-24h.csv": {
+    "records": 95718,
+    "source": "NASA FIRMS Suomi-NPP VIIRS Collection 2 global 24-hour snapshot",
+    "path": "QA_DIR/public/firms-viirs-global-24h.csv"
+  },
+  "viirs-north-america.csv": {
+    "records": 2316,
+    "derivation": "Geographic subset of original FIRMS rows",
+    "source": "firms-viirs-global-24h.csv"
+  },
+  "noaa-buoys-week.csv": {
+    "records": 2995,
+    "derivation": "Latest complete seven-day subset; station metadata joined by station ID; missing MM values blank",
+    "source": "NOAA NDBC official station table and realtime text",
+    "stations": {
+      "41009": {
+        "lat": 28.508,
+        "lon": -80.185,
+        "label": "CANAVERAL 20 NM East of Cape Canaveral, FL"
+      },
+      "44013": {
+        "lat": 42.346,
+        "lon": -70.651,
+        "label": "BOSTON 16 NM East of Boston, MA"
+      },
+      "46042": {
+        "lat": 36.787,
+        "lon": -122.408,
+        "label": "MONTEREY - 27NM WNW of Monterey, CA"
+      }
+    }
+  },
+  "noaa-buoys-week.xlsx": {
+    "records": 2995,
+    "sheets": [
+      "41009",
+      "44013",
+      "46042"
+    ],
+    "derivation": "Same rows as CSV, native Excel date and clock cells, one station per worksheet"
+  },
+  "gbif-biodiversity-2025.csv": {
+    "records": 285,
+    "derivation": "API sample, CC BY/CC0 records only, observer names omitted; occurrence key is entity (no implied animal tracks)",
+    "source": "GBIF occurrence API 2025 query"
+  },
+  "quakes-utm.csv": {
+    "records": 80,
+    "derivation": "Independent PROJ WGS84 UTM encoding of 80 original USGS points; coordinates unchanged"
+  },
+  "quakes-mgrs.csv": {
+    "records": 80,
+    "derivation": "GEOTRANS MGRS encodings, mixed precision 100 km to 1 m, spaced and compact; cell-centre expected coordinates are approximate cells, not exact original observations"
+  }
+}

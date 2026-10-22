@@ -1,0 +1,5 @@
+
+> chronoscope-ui@0.13.0 test:intent
+> node scripts/filter-intent-test.mjs
+
+Passed: 30 deterministic range bursts, joined drains, external CAS rebasing, failed-write retry and captured debounced deltas.

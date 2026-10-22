@@ -1,0 +1,53 @@
+diff --git a/src-tauri/src/main.rs b/src-tauri/src/main.rs
+index ab2f7d2..c2ca0d8 100644
+--- a/src-tauri/src/main.rs
++++ b/src-tauri/src/main.rs
+@@ -49,6 +49,14 @@ fn agent_status(state: State<'_, AgentState>) -> Result<Value, String> {
+         .unwrap_or(serde_json::json!({"enabled":false})))
+ }
+
++#[tauri::command]
++fn perf_emit(payload: Value) -> Result<(), String> {
++    use std::io::Write;
++    let path = std::env::var("CHRONOSCOPE_PERF_OUTPUT").map_err(|e| e.to_string())?;
++    let mut file = std::fs::OpenOptions::new().create(true).append(true).open(path).map_err(|e| e.to_string())?;
++    writeln!(file, "{}", payload).map_err(|e| e.to_string())
++}
++
+ fn main() {
+     let engine = Arc::new(
+         Engine::new(
+@@ -64,7 +72,8 @@ fn main() {
+         .invoke_handler(tauri::generate_handler![
+             dispatch,
+             agent_access,
+-            agent_status
++            agent_status,
++            perf_emit
+         ])
+         .on_window_event(|window, event| {
+             if matches!(event, tauri::WindowEvent::Destroyed) {
+@@ -80,6 +89,23 @@ fn main() {
+             }
+         })
+         .setup(move |app| {
++            if let Ok(path) = std::env::var("CHRONOSCOPE_PERF_SCRIPT") {
++                if let Some(window) = app.get_webview_window("main") {
++                    if std::env::var_os("CHRONOSCOPE_PERF_EXPANDED").is_some() {
++                        let _ = window.set_size(tauri::LogicalSize::new(1920.0, 1080.0));
++                    }
++                    let source = std::fs::read_to_string(path)?;
++                    let quick = std::env::var_os("CHRONOSCOPE_PERF_QUICK").is_some();
++                    let expanded = std::env::var_os("CHRONOSCOPE_PERF_EXPANDED").is_some();
++                    let source = format!("window.__perfQuick = {quick}; window.__perfExpanded = {expanded};{source}");
++                    std::thread::spawn(move || {
++                        for _ in 0..100 {
++                            std::thread::sleep(std::time::Duration::from_millis(100));
++                            let _ = window.eval(&source);
++                        }
++                    });
++                }
++            }
+             let handle = app.handle().clone();
+             engine
+                 .set_observer(Arc::new(move |event| {

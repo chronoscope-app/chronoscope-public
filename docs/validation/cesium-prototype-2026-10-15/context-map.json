@@ -1,0 +1,309 @@
+{
+  "passed": true,
+  "publicRequests": 0,
+  "checks": [
+    {
+      "name": "Backend scene mode is restored at app startup without a legacy Three.js camera",
+      "mode": "map"
+    },
+    {
+      "name": "Native WEBGL_lose_context creates exactly one replacement Cesium Viewer and restores camera/data/selection/theme/terrain/raster/bloom without changing unknown locations",
+      "before": {
+        "camera": {
+          "renderer": "cesium",
+          "cesium_camera": {
+            "position": [
+              -9393806.550081182,
+              3757088.47401838,
+              12756274
+            ],
+            "direction": [
+              0,
+              0,
+              -1
+            ],
+            "up": [
+              0,
+              1,
+              0
+            ],
+            "frustum_width": 2044.9349682368659
+          }
+        },
+        "ids": [
+          "2"
+        ],
+        "selected": [
+          "2"
+        ],
+        "terrain": {
+          "imageryLayers": 2,
+          "tileCount": 1,
+          "imageryRequestedTiles": 12,
+          "terrainActive": true,
+          "terrainCovered": 9,
+          "verticalDatum": "ellipsoid",
+          "geoidModel": null,
+          "mode": "map"
+        },
+        "display": {
+          "renderer": "cesium-webgl2",
+          "groundOnly": true,
+          "bloomIsolation": "event-layer-only",
+          "clusterPoints": 0,
+          "clusterLabels": 0,
+          "densityInstances": 0,
+          "atlasLayers": 1,
+          "rasterWidth": 512,
+          "rasterHeight": 512,
+          "heatPeak": 0,
+          "heatCeiling": 1,
+          "pending": false,
+          "error": ""
+        },
+        "theme": "light",
+        "mode": "map"
+      },
+      "after": {
+        "camera": {
+          "renderer": "cesium",
+          "cesium_camera": {
+            "position": [
+              -9393806.550081182,
+              3757088.47401838,
+              12756274
+            ],
+            "direction": [
+              0,
+              0,
+              -1
+            ],
+            "up": [
+              0,
+              1,
+              0
+            ],
+            "frustum_width": 2044.9349682368659
+          }
+        },
+        "ids": [
+          "2"
+        ],
+        "selected": [
+          "2"
+        ],
+        "terrain": {
+          "imageryLayers": 2,
+          "tileCount": 1,
+          "imageryRequestedTiles": 12,
+          "terrainActive": true,
+          "terrainCovered": 9,
+          "verticalDatum": "ellipsoid",
+          "geoidModel": null,
+          "mode": "map"
+        },
+        "display": {
+          "renderer": "cesium-webgl2",
+          "groundOnly": true,
+          "bloomIsolation": "event-layer-only",
+          "clusterPoints": 0,
+          "clusterLabels": 0,
+          "densityInstances": 0,
+          "atlasLayers": 1,
+          "rasterWidth": 512,
+          "rasterHeight": 512,
+          "heatPeak": 0,
+          "heatCeiling": 1,
+          "pending": false,
+          "error": ""
+        },
+        "theme": "light",
+        "mode": "map",
+        "diagnostics": {
+          "engine": "CesiumJS",
+          "contextRecoveries": 1,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "sceneMode": 2,
+          "pointCount": 0,
+          "triangleCount": 1,
+          "triangleVisibleCount": 1,
+          "selectionCount": 1,
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "trackPolylines": 0,
+          "stemSegments": 0,
+          "trailInputEdges": 0,
+          "trailOutputEdges": 0,
+          "axisLabels": 0,
+          "orbitHandles": 0,
+          "requestRenderMode": true,
+          "terrain": {
+            "imageryLayers": 2,
+            "tileCount": 1,
+            "imageryRequestedTiles": 12,
+            "terrainActive": true,
+            "terrainCovered": 9,
+            "verticalDatum": "ellipsoid",
+            "geoidModel": null,
+            "mode": "map"
+          },
+          "effectError": ""
+        },
+        "viewerCount": 1,
+        "glyphCount": 10
+      },
+      "meanPixelDifference": 0.044362896825396826
+    }
+  ],
+  "errors": [],
+  "fixture": "Synthetic ellipsoid-height terrain and local checker raster; no public requests",
+  "mode": "map",
+  "recoveryEvidence": {
+    "before": {
+      "camera": {
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -9393806.550081182,
+            3757088.47401838,
+            12756274
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            0,
+            1,
+            0
+          ],
+          "frustum_width": 2044.9349682368659
+        }
+      },
+      "ids": [
+        "2"
+      ],
+      "selected": [
+        "2"
+      ],
+      "terrain": {
+        "imageryLayers": 2,
+        "tileCount": 1,
+        "imageryRequestedTiles": 12,
+        "terrainActive": true,
+        "terrainCovered": 9,
+        "verticalDatum": "ellipsoid",
+        "geoidModel": null,
+        "mode": "map"
+      },
+      "display": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": true,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 0,
+        "atlasLayers": 1,
+        "rasterWidth": 512,
+        "rasterHeight": 512,
+        "heatPeak": 0,
+        "heatCeiling": 1,
+        "pending": false,
+        "error": ""
+      },
+      "theme": "light",
+      "mode": "map"
+    },
+    "after": {
+      "camera": {
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -9393806.550081182,
+            3757088.47401838,
+            12756274
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            0,
+            1,
+            0
+          ],
+          "frustum_width": 2044.9349682368659
+        }
+      },
+      "ids": [
+        "2"
+      ],
+      "selected": [
+        "2"
+      ],
+      "terrain": {
+        "imageryLayers": 2,
+        "tileCount": 1,
+        "imageryRequestedTiles": 12,
+        "terrainActive": true,
+        "terrainCovered": 9,
+        "verticalDatum": "ellipsoid",
+        "geoidModel": null,
+        "mode": "map"
+      },
+      "display": {
+        "renderer": "cesium-webgl2",
+        "groundOnly": true,
+        "bloomIsolation": "event-layer-only",
+        "clusterPoints": 0,
+        "clusterLabels": 0,
+        "densityInstances": 0,
+        "atlasLayers": 1,
+        "rasterWidth": 512,
+        "rasterHeight": 512,
+        "heatPeak": 0,
+        "heatCeiling": 1,
+        "pending": false,
+        "error": ""
+      },
+      "theme": "light",
+      "mode": "map",
+      "diagnostics": {
+        "engine": "CesiumJS",
+        "contextRecoveries": 1,
+        "recovering": false,
+        "renderErrorCount": 0,
+        "sceneMode": 2,
+        "pointCount": 0,
+        "triangleCount": 1,
+        "triangleVisibleCount": 1,
+        "selectionCount": 1,
+        "geometryFeatures": 0,
+        "geometryPrimitives": 2,
+        "trackPolylines": 0,
+        "stemSegments": 0,
+        "trailInputEdges": 0,
+        "trailOutputEdges": 0,
+        "axisLabels": 0,
+        "orbitHandles": 0,
+        "requestRenderMode": true,
+        "terrain": {
+          "imageryLayers": 2,
+          "tileCount": 1,
+          "imageryRequestedTiles": 12,
+          "terrainActive": true,
+          "terrainCovered": 9,
+          "verticalDatum": "ellipsoid",
+          "geoidModel": null,
+          "mode": "map"
+        },
+        "effectError": ""
+      },
+      "viewerCount": 1,
+      "glyphCount": 10
+    }
+  }
+}

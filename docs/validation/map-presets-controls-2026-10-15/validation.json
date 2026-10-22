@@ -1,0 +1,297 @@
+{
+  "started_utc": "2026-10-15T21:33:10.832275+00:00",
+  "platform": "linux",
+  "offline_browser_fixtures": true,
+  "github_runners_used": false,
+  "checks": [
+    {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.44,
+      "log": "logs/rust-format.log"
+    },
+    {
+      "name": "core-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "log": "logs/core-clippy-final.log",
+      "initial_exit_code": 0,
+      "targeted_rerun": true
+    },
+    {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 29.904,
+      "log": "logs/rust-tests.log"
+    },
+    {
+      "name": "cli-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--bin",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.215,
+      "log": "logs/cli-build.log"
+    },
+    {
+      "name": "generated-contracts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "logs/contracts-final.log",
+      "initial_exit_code": 0,
+      "targeted_rerun": true
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "log": "logs/final-frontend-build.log",
+      "initial_exit_code": 0,
+      "targeted_rerun": true
+    },
+    {
+      "name": "filter-intent-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:intent"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.433,
+      "log": "logs/filter-intent-unit.log"
+    },
+    {
+      "name": "display-math-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:display-math"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.452,
+      "log": "logs/display-math-unit.log"
+    },
+    {
+      "name": "packet-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:packet"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.503,
+      "log": "logs/packet-unit.log"
+    },
+    {
+      "name": "browser-ui",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:ui"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 82.986,
+      "log": "logs/browser-ui.log"
+    },
+    {
+      "name": "browser-gis",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:gis"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 5.795,
+      "log": "logs/browser-gis.log"
+    },
+    {
+      "name": "browser-assistant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:assistant"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 35.879,
+      "log": "logs/browser-assistant.log"
+    },
+    {
+      "name": "browser-wkt-wmts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:wkt-wmts"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 51.793,
+      "log": "logs/browser-wkt-wmts.log"
+    },
+    {
+      "name": "browser-hardening",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:hardening"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 43.459,
+      "log": "logs/browser-hardening.log"
+    },
+    {
+      "name": "browser-display",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:display"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 45.843,
+      "log": "logs/browser-display.log"
+    },
+    {
+      "name": "browser-webmcp",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:webmcp"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.829,
+      "log": "logs/browser-webmcp.log"
+    },
+    {
+      "name": "browser-desktop-feel",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:desktop-feel"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 27.343,
+      "log": "logs/browser-desktop-feel.log"
+    },
+    {
+      "name": "browser-navigation-views",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:navigation-views"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 137.486,
+      "log": "logs/browser-navigation-views.log"
+    },
+    {
+      "name": "browser-workspace-controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:workspace-controls"
+      ],
+      "exit_code": 0,
+      "log": "logs/controls-final.log",
+      "initial_exit_code": 1,
+      "targeted_rerun": true
+    },
+    {
+      "name": "browser-globe-transition",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:globe-transition"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 79.73,
+      "log": "logs/browser-globe-transition.log"
+    },
+    {
+      "name": "browser-map-presets",
+      "exit_code": 0,
+      "log": "logs/screenshots-final.log",
+      "evidence": "map-presets.json"
+    },
+    {
+      "name": "native-clippy",
+      "exit_code": 0,
+      "elapsed_s": 1.967,
+      "log": "logs/native-clippy.log"
+    },
+    {
+      "name": "native-build",
+      "exit_code": 0,
+      "elapsed_s": 4.289,
+      "log": "logs/native-build.log"
+    },
+    {
+      "name": "native-cli-smoke",
+      "exit_code": 0,
+      "elapsed_s": 3.76,
+      "log": "logs/native-cli-smoke.log"
+    }
+  ],
+  "limitations": [
+    "Physical GPU and smartcard hardware are not verified by this script.",
+    "Native checks apply only to the current operating system.",
+    "The archived extension bridge is disabled; the WebMCP suite verifies absence of its commands and interface.",
+    "Signing, notarization and paid SI-provider evaluation are separate checks."
+  ],
+  "finished_utc": "2026-10-15T21:42:44.469433+00:00",
+  "passed": true,
+  "initial_run": "initial-validation.json",
+  "consolidated_utc": "2026-10-15T21:46:47.445585+00:00",
+  "method": "Retain passing broad checks; rerun focused controls after correcting the old right-anchored close-button CSS. Final source received scoped map tests/lint, production frontend build and native checks.",
+  "additional_checks": [
+    {
+      "name": "public-WMTS-six-tile-sample",
+      "exit_code": 0,
+      "evidence": "public-map-samples.json"
+    },
+    {
+      "name": "final-map-tests",
+      "exit_code": 0,
+      "log": "logs/map-tests-final.log"
+    }
+  ],
+  "notes": [
+    "The initial focused controls failure revealed existing absolute-right close-button CSS; final CSS is anchored left and the focused rerun passes.",
+    "A new provider-UI test initially counted six capabilities calls; caching correctly reduced them to three. Its wait now also waits for the async preset selector to populate.",
+    "Public samples used six tiles total, one per added choice, one worker and 1200ms request pacing. Final screenshots replay a cached USGS tile without additional public WMTS traffic."
+  ]
+}

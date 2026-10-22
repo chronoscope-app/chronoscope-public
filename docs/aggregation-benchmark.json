@@ -1,0 +1,21 @@
+{
+  "rows": 1000000,
+  "source_bytes": 45780043,
+  "retained": 1000,
+  "seconds_including_reopen": 92.553,
+  "workspace_bytes": 24982,
+  "build": "caller-selected CLI; elapsed time is not a cross-platform guarantee",
+  "result": {
+    "accepted": 1000000,
+    "aggregated": 999000,
+    "aggregation": {
+      "radius_m": 100.0,
+      "window_minutes": 15
+    },
+    "reasons": [],
+    "rejected": 0,
+    "retained": 1000,
+    "revision": 3,
+    "storage": "sqlite"
+  }
+}

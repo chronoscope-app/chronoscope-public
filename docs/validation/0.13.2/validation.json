@@ -1,0 +1,257 @@
+{
+  "started_utc": "2026-10-15T01:32:00.465219+00:00",
+  "platform": "linux",
+  "offline_browser_fixtures": true,
+  "github_runners_used": false,
+  "checks": [
+    {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.442,
+      "log": "logs/rust-format.log"
+    },
+    {
+      "name": "core-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 5.816,
+      "log": "logs/core-clippy.log"
+    },
+    {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 50.097,
+      "log": "logs/rust-tests.log"
+    },
+    {
+      "name": "cli-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--bin",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 31.341,
+      "log": "logs/cli-build.log"
+    },
+    {
+      "name": "generated-contracts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.178,
+      "log": "logs/generated-contracts.log"
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 4.261,
+      "log": "logs/frontend-build.log"
+    },
+    {
+      "name": "filter-intent-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:intent"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.382,
+      "log": "logs/filter-intent-unit.log"
+    },
+    {
+      "name": "display-math-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:display-math"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.402,
+      "log": "logs/display-math-unit.log"
+    },
+    {
+      "name": "packet-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:packet"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.472,
+      "log": "logs/packet-unit.log"
+    },
+    {
+      "name": "browser-ui",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:ui"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 77.384,
+      "log": "logs/browser-ui.log"
+    },
+    {
+      "name": "browser-gis",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:gis"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 2.956,
+      "log": "logs/browser-gis.log"
+    },
+    {
+      "name": "browser-assistant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:assistant"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 24.602,
+      "log": "logs/browser-assistant.log"
+    },
+    {
+      "name": "browser-wkt-wmts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:wkt-wmts"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 51.126,
+      "log": "logs/browser-wkt-wmts.log"
+    },
+    {
+      "name": "browser-hardening",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:hardening"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 45.356,
+      "log": "logs/browser-hardening.log"
+    },
+    {
+      "name": "browser-display",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:display"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 29.792,
+      "log": "logs/browser-display.log"
+    },
+    {
+      "name": "browser-webmcp",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:webmcp"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.072,
+      "log": "logs/browser-webmcp.log"
+    },
+    {
+      "name": "browser-desktop-feel",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:desktop-feel"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 13.363,
+      "log": "logs/browser-desktop-feel.log"
+    },
+    {
+      "name": "native-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope-desktop",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 5.178,
+      "log": "logs/native-clippy.log"
+    },
+    {
+      "name": "native-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope-desktop"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 19.805,
+      "log": "logs/native-build.log"
+    },
+    {
+      "name": "native-cli-smoke",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "scripts/test_desktop_cli.py",
+        "--binary",
+        "/workspace/chronoscope/target/debug/chronoscope-desktop"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.624,
+      "log": "logs/native-cli-smoke.log"
+    }
+  ],
+  "limitations": [
+    "Physical GPU and smartcard hardware are not verified by this script.",
+    "Native checks apply only to the current operating system.",
+    "The archived extension bridge is disabled; the WebMCP suite verifies absence of its commands and interface.",
+    "Signing, notarization and paid SI-provider evaluation are separate checks."
+  ],
+  "finished_utc": "2026-10-15T01:38:10.131846+00:00",
+  "passed": true
+}

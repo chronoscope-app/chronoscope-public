@@ -1,0 +1,13 @@
+
+> chronoscope-ui@0.13.3 test:workspace-controls
+> node scripts/workspace-controls-qa.mjs
+
+PASS Entity/category quantities, name sorting, top ten, show all and independent collapse
+STEP search Jose
+STEP search matched 27
+STEP scroll
+PASS Search filters the attribute table; continuous bounded scrolling, range selection and first/last row keyboard navigation
+PASS Sliders update while pointer is held, preserve marker geometry and persist final values; compact rose and removed overlays
+PASS Four small face-centre sphere handles rotate the space-time view
+PASS Map wheel zoom keeps the cursor ground position fixed
+PASS Actual WMTS loading retains opaque imagery after Globe → space-time → 2D and repeated switches

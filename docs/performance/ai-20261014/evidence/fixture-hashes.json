@@ -1,0 +1,42 @@
+[
+  {
+    "track": "engine",
+    "file": "fixture-100000.csv",
+    "sha256": "2a97e1dd5cedcd82137e5a3bb30dee8b7981c578c67aec32dee1c58b5316bdc0",
+    "bytes": 15067847,
+    "synthetic": true,
+    "fixture_included": false
+  },
+  {
+    "track": "engine",
+    "file": "fixture-1000000.csv",
+    "sha256": "1c43a8117e929e1da024982901099df74ae6feaa5dbdf24359b8e50b10b35241",
+    "bytes": 151677947,
+    "synthetic": true,
+    "fixture_included": false
+  },
+  {
+    "track": "render",
+    "file": "accepted-100000-dispersed.csv",
+    "sha256": "13381de8cc3cc6bd325a4433b677df6dbe3473634e7a7e91feed94ecef37fc47",
+    "bytes": 11378962,
+    "synthetic": true,
+    "fixture_included": false
+  },
+  {
+    "track": "render",
+    "file": "accepted-100000-dense.csv",
+    "sha256": "9387cf8a40bc7005313d56c872b60e74f905a8fcf18f491b0baca65868ad485f",
+    "bytes": 11378962,
+    "synthetic": true,
+    "fixture_included": false
+  },
+  {
+    "track": "render",
+    "file": "accepted-20000-dispersed.csv",
+    "sha256": "6512699e360cfa6982a55edb43a0d17f4220ac4aa66d944c22176dd04fe3e6a5",
+    "bytes": 2266961,
+    "synthetic": true,
+    "fixture_included": false
+  }
+]

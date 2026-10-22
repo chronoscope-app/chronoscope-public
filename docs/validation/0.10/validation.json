@@ -1,0 +1,264 @@
+{
+  "started_utc": "2026-10-14T20:50:01.258682+00:00",
+  "platform": "linux",
+  "offline_browser_fixtures": true,
+  "github_runners_used": false,
+  "checks": [
+    {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.41,
+      "log": "logs/rust-format.log",
+      "original_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "core-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 4.839,
+      "log": "logs/core-clippy.log",
+      "original_log_sha256": "2935955f06259d930833c9fb64533ba93a51975e17cc08d0b0a8178cc1c95f40",
+      "retained_log_sha256": "d40e5a1332ef02a0bffdaa06fe4c2980236a225965acba05c0eabb1460e5c213"
+    },
+    {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 30.342,
+      "log": "logs/rust-tests.log",
+      "original_log_sha256": "6186845c1f99e9b3c771e6a4a0af4add51efad881123697f674b014dcbbb4043",
+      "retained_log_sha256": "afd132cedf7822288e730fad4633c3d965b3a618a6cffc31d64b0f479108044c"
+    },
+    {
+      "name": "cli-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--bin",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.199,
+      "log": "logs/cli-build.log",
+      "original_log_sha256": "4f27ac380b22e1d975eee20ce727fa8cbc09061177f6253af0777fd4de7b7506",
+      "retained_log_sha256": "4f27ac380b22e1d975eee20ce727fa8cbc09061177f6253af0777fd4de7b7506"
+    },
+    {
+      "name": "generated-contracts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.145,
+      "log": "logs/generated-contracts.log",
+      "original_log_sha256": "5952032cd02ae17375c5926e22ea8459acfbca5d23baa366be311ca4ea118f9c",
+      "retained_log_sha256": "5952032cd02ae17375c5926e22ea8459acfbca5d23baa366be311ca4ea118f9c"
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.876,
+      "log": "logs/frontend-build.log",
+      "original_log_sha256": "b332f42a858ef39c47e7f05de3b76e28c2e1f938bc1cb545604e1aca760c2617",
+      "retained_log_sha256": "6f63f1efdaef62e6db93d7441d519288e895c6588f0612cc850e66e80f0cca03"
+    },
+    {
+      "name": "filter-intent-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:intent"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.371,
+      "log": "logs/filter-intent-unit.log",
+      "original_log_sha256": "b738f04bd2997a2918a49f0a46a704823f0256f304cb957a724139e64f5c3fed",
+      "retained_log_sha256": "b738f04bd2997a2918a49f0a46a704823f0256f304cb957a724139e64f5c3fed"
+    },
+    {
+      "name": "packet-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:packet"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.46,
+      "log": "logs/packet-unit.log",
+      "original_log_sha256": "c8abc796341a39e193ee110d06d84ee2b58da2008f6734a8ac63d9b214a77d74",
+      "retained_log_sha256": "c8abc796341a39e193ee110d06d84ee2b58da2008f6734a8ac63d9b214a77d74"
+    },
+    {
+      "name": "browser-ui",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:ui"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 61.116,
+      "log": "logs/browser-ui.log",
+      "original_log_sha256": "a9693bde8a3c6057b1c11037f851ac0b387661529180e6ab1c0a5a71927d1bcc",
+      "retained_log_sha256": "aae39457c5f2f18953884d46065a601f7cf298afcc6d51d911222d10b88d509a"
+    },
+    {
+      "name": "browser-gis",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:gis"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.4,
+      "log": "logs/browser-gis.log",
+      "original_log_sha256": "11ebbc89cda407ebaba3b8b1eb074c19765b3358b00bee271545d06d9ea173ea",
+      "retained_log_sha256": "11ebbc89cda407ebaba3b8b1eb074c19765b3358b00bee271545d06d9ea173ea"
+    },
+    {
+      "name": "browser-assistant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:assistant"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 14.459,
+      "log": "logs/browser-assistant.log",
+      "original_log_sha256": "e8a1ffa95ad01bcb7fdb8647664bb294f1e043ad6fe3ba8ea52b6f2a91f22a0b",
+      "retained_log_sha256": "e8a1ffa95ad01bcb7fdb8647664bb294f1e043ad6fe3ba8ea52b6f2a91f22a0b"
+    },
+    {
+      "name": "browser-wkt-wmts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:wkt-wmts"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 21.767,
+      "log": "logs/browser-wkt-wmts.log",
+      "original_log_sha256": "8acbf6806c5758ba0bd2892ffe2553beae2efe5865589b2636d570e0ab5c2457",
+      "retained_log_sha256": "8acbf6806c5758ba0bd2892ffe2553beae2efe5865589b2636d570e0ab5c2457"
+    },
+    {
+      "name": "browser-hardening",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:hardening"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 29.423,
+      "log": "logs/browser-hardening.log",
+      "original_log_sha256": "1e2326cbf92dd491fab81d433eeab12c9b5c84190ae443d63354199c99ec2e42",
+      "retained_log_sha256": "1e2326cbf92dd491fab81d433eeab12c9b5c84190ae443d63354199c99ec2e42"
+    },
+    {
+      "name": "native-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope-desktop",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 4.37,
+      "log": "logs/native-clippy.log",
+      "original_log_sha256": "b1220cc51d7d28487c032939d0610f933f0160fab4fb4b5839dee3ee93d1722c",
+      "retained_log_sha256": "42c2216c129db3a001f565e4beb2e80fe8467e25989da478ff2a8e116c4ab8db"
+    },
+    {
+      "name": "native-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope-desktop"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 15.795,
+      "log": "logs/native-build.log",
+      "original_log_sha256": "b4eede6cc7120072092ec1893af5db24970ac08ccc1a2e47eeed671fb82a3100",
+      "retained_log_sha256": "981eec59c166b33fac776c3f4f4f02f844c10be378f4becabf9b6aa5441a2e20"
+    },
+    {
+      "name": "native-cli-smoke",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "scripts/test_desktop_cli.py",
+        "--binary",
+        "<repo>/target/debug/chronoscope-desktop"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 3.7,
+      "log": "logs/native-cli-smoke.log",
+      "original_log_sha256": "60396507afd800885f9a8a83d6b29edb4dd328ae08aab54f136cbf88de31b29f",
+      "retained_log_sha256": "60396507afd800885f9a8a83d6b29edb4dd328ae08aab54f136cbf88de31b29f"
+    }
+  ],
+  "limitations": [
+    "Physical GPU and smartcard hardware are not verified by this script.",
+    "Native checks apply only to the current operating system.",
+    "Signing, notarization and paid AI-provider evaluation are separate checks."
+  ],
+  "finished_utc": "2026-10-14T20:53:15.940510+00:00",
+  "passed": true,
+  "version": "0.10.0",
+  "source_base": "8deafd38a4cbc77c2fad06b3b2398bea158d68a8",
+  "rust_tests": 167,
+  "public_wmts_requests": 0,
+  "source_files": "source-files.json",
+  "note": "All final functional checks passed. Afterwards one offline help sentence was corrected to match the unsaved-change label; production frontend and native assets were rebuilt successfully. Retained logs normalize local paths and trailing whitespace, with original hashes preserved. Native CLI smoke uses the actual desktop executable without DISPLAY/WAYLAND_DISPLAY; it does not verify native Mac/Windows GUI behavior.",
+  "documentation_rebuilds": [
+    {
+      "kind": "frontend",
+      "exit_code": 0,
+      "log": "logs/ux-final-doc-assets.log",
+      "sha256": "3383826c5becf21d8f1729edc59b61889d71ba0e7fed857ce4114b281d79dedb"
+    },
+    {
+      "kind": "native",
+      "exit_code": 0,
+      "log": "logs/ux-final-doc-native.log",
+      "sha256": "b9eff39213abc5dbdd250b9bdb3eecd6f2237621a6694ec6b732a3548b640d64"
+    }
+  ]
+}

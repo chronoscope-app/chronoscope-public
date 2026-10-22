@@ -1,0 +1,162 @@
+{
+  "invalid_image_rejected": true,
+  "passed": true,
+  "system_preferences_changed": false,
+  "theme_events": [
+    "Light",
+    "Dark",
+    "Light"
+  ],
+  "worker_thread_rejected": true,
+  "pixel_checks": [
+    {
+      "theme": "Light",
+      "mean_channel_error": 2.6018687484544345,
+      "opposite_theme_error": 156.53255383355915
+    },
+    {
+      "theme": "Dark",
+      "mean_channel_error": 4.74908099766531,
+      "opposite_theme_error": 157.3888566057813
+    }
+  ],
+  "dock_pixels_match": true,
+  "capture_note": "Generated TIFF/PNG captures remain local; reproduce with the native example and check_icons.mjs.",
+  "platform": "macOS 27.0.1, Apple Silicon",
+  "windows_runtime_tested": false,
+  "windows_packaging": {
+    "installMode": "currentUser",
+    "requestedExecutionLevel": "asInvoker",
+    "uiAccess": false
+  },
+  "selection_ui_checks": [
+    {
+      "name": "Entity toggles add selections and deselect only the chosen entity",
+      "evidence": {}
+    },
+    {
+      "name": "Rapid entity toggles preserve other selections",
+      "evidence": {}
+    },
+    {
+      "name": "Partial and filtered entity selections toggle completely; keyboard focus survives",
+      "evidence": {}
+    },
+    {
+      "name": "Distinct workspace arrows update on expansion, restoration and saved scenes",
+      "evidence": {}
+    },
+    {
+      "name": "Entity selection is shaded in both lists without a map selection banner",
+      "evidence": {
+        "entity": "Leslie 2018"
+      }
+    },
+    {
+      "name": "dark contrast, custom entity colors and amber selection",
+      "evidence": {
+        "contrast": [
+          {
+            "selector": ".entity[data-selected=\"true\"] .entity-name",
+            "ratio": 12.212957983214178
+          },
+          {
+            "selector": ".entity[data-selected=\"true\"] .entity-count",
+            "ratio": 8.976123243790918
+          },
+          {
+            "selector": ".view-entity[data-selected=\"true\"] span",
+            "ratio": 12.212957983214178
+          },
+          {
+            "selector": ".view-entity[data-selected=\"true\"] small",
+            "ratio": 8.976123243790918
+          },
+          {
+            "selector": "#play",
+            "ratio": 8.916849004354681
+          },
+          {
+            "selector": "[data-tab=\"views\"]",
+            "ratio": 9.3686829599555
+          },
+          {
+            "selector": ".range-label",
+            "ratio": 11.505478984839733
+          },
+          {
+            "selector": ".time-range-hint",
+            "ratio": 11.505478984839733
+          },
+          {
+            "selector": ".metric-label",
+            "ratio": 11.505478984839733
+          }
+        ],
+        "shading": {
+          "background": "rgb(62, 48, 27)",
+          "border": "rgb(255, 210, 122)"
+        }
+      }
+    },
+    {
+      "name": "light contrast, custom entity colors and amber selection",
+      "evidence": {
+        "contrast": [
+          {
+            "selector": ".entity[data-selected=\"true\"] .entity-name",
+            "ratio": 15.686039704714588
+          },
+          {
+            "selector": ".entity[data-selected=\"true\"] .entity-count",
+            "ratio": 6.484800450174243
+          },
+          {
+            "selector": ".view-entity[data-selected=\"true\"] span",
+            "ratio": 15.686039704714588
+          },
+          {
+            "selector": ".view-entity[data-selected=\"true\"] small",
+            "ratio": 6.484800450174243
+          },
+          {
+            "selector": "#play",
+            "ratio": 7.145929698957153
+          },
+          {
+            "selector": "[data-tab=\"views\"]",
+            "ratio": 5.875099281725192
+          },
+          {
+            "selector": ".range-label",
+            "ratio": 10.307355969735845
+          },
+          {
+            "selector": ".time-range-hint",
+            "ratio": 10.307355969735845
+          },
+          {
+            "selector": ".metric-label",
+            "ratio": 10.307355969735845
+          }
+        ],
+        "shading": {
+          "background": "rgb(255, 240, 202)",
+          "border": "rgb(124, 75, 0)"
+        }
+      }
+    },
+    {
+      "name": "Clearing selection clears both entity list highlights",
+      "evidence": {}
+    }
+  ],
+  "native_build": "passed; launched with CLI attachment",
+  "native_selection_counts": [
+    0,
+    48,
+    96,
+    48,
+    0
+  ]
+}

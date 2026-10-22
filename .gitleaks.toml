@@ -1,0 +1,21 @@
+title = "Chronoscope local secret scanning"
+
+[extend]
+useDefault = true
+
+# These exact lines were checked against SHA-256 of the named historical source.
+# Keep the full default rules. Do not suppress entire files, paths or commits.
+[[rules]]
+id = "generic-api-key"
+
+[[rules.allowlists]]
+description = "Verified historical source checksum entries (15 findings; exact values only)"
+condition = "AND"
+regexTarget = "line"
+paths = ['''(?:^|/)docs/(?:validation/0\.(?:10|11|12)|performance/current-0\.9)/source-files\.json$''']
+regexes = [
+  '''^\s*"src/agent/access\.rs":\ "9f8f8a22b6badcbd102d810da0ba615984bfefa2cb69c4e9a99a9f0458eacbed",\s*$''',
+  '''^\s*"src/api\.rs":\ "9d15885097a1cebcb575284934f7d12f4851b1808ebe72b6dcf16c1524ee2980",\s*$''',
+  '''^\s*"src/wmts_auth\.rs":\ "8d38122dacc985e9d929bc9bc2799ad3f3eeeb7e62750b685f0db68016a82281",\s*$''',
+  '''^\s*"tests/wmts_auth\.rs":\ "990ea4340b752e99a3b35e4b23641b6d9e8b674f4df106a3848215b74a3f96f9",\s*$''',
+]

@@ -1,0 +1,159 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Puck controls, dragging and shortcuts in space-time",
+      "evidence": {
+        "bearing": 0,
+        "tilt": 47.99999999999999
+      }
+    },
+    {
+      "name": "Puck controls, dragging and shortcuts in globe",
+      "evidence": {
+        "bearing": 8.242130888902466e-7,
+        "tilt": 17.999999780217134
+      }
+    },
+    {
+      "name": "Puck controls, dragging and shortcuts in map",
+      "evidence": {
+        "bearing": 0,
+        "tilt": 0
+      }
+    },
+    {
+      "name": "24 globe heading/tilt cases match independent WGS84 ENU vectors",
+      "evidence": {
+        "cases": 24
+      }
+    },
+    {
+      "name": "Held pan repeats and stops on release without changing selection"
+    },
+    {
+      "name": "Light/dark puck has N, eye and fit without duplicate zoom/fit buttons"
+    },
+    {
+      "name": "Controls fit space-time 1600×1000",
+      "evidence": {
+        "scene": {
+          "x": 248,
+          "y": 48,
+          "right": 1310,
+          "bottom": 817,
+          "width": 1062,
+          "height": 769
+        },
+        "nav": {
+          "x": 1178,
+          "y": 62,
+          "right": 1298,
+          "bottom": 207,
+          "width": 120,
+          "height": 145
+        },
+        "overlaps": [],
+        "clipping": [],
+        "short": false
+      }
+    },
+    {
+      "name": "Controls fit space-time 1000×700",
+      "evidence": {
+        "scene": {
+          "x": 210,
+          "y": 48,
+          "right": 750,
+          "bottom": 542,
+          "width": 540,
+          "height": 494
+        },
+        "nav": {
+          "x": 618,
+          "y": 62,
+          "right": 738,
+          "bottom": 207,
+          "width": 120,
+          "height": 145
+        },
+        "overlaps": [],
+        "clipping": [],
+        "short": false
+      }
+    },
+    {
+      "name": "Controls fit space-time 1000×700 with table",
+      "evidence": {
+        "scene": {
+          "x": 210,
+          "y": 48,
+          "right": 750,
+          "bottom": 382,
+          "width": 540,
+          "height": 334
+        },
+        "nav": {
+          "x": 618,
+          "y": 62,
+          "right": 738,
+          "bottom": 207,
+          "width": 120,
+          "height": 145
+        },
+        "overlaps": [],
+        "clipping": [],
+        "short": true
+      }
+    },
+    {
+      "name": "Controls fit globe 1000×700 with table",
+      "evidence": {
+        "scene": {
+          "x": 210,
+          "y": 48,
+          "right": 750,
+          "bottom": 382,
+          "width": 540,
+          "height": 334
+        },
+        "nav": {
+          "x": 618,
+          "y": 62,
+          "right": 738,
+          "bottom": 207,
+          "width": 120,
+          "height": 145
+        },
+        "overlaps": [],
+        "clipping": [],
+        "short": true
+      }
+    },
+    {
+      "name": "Controls fit map 1000×700 with table",
+      "evidence": {
+        "scene": {
+          "x": 210,
+          "y": 48,
+          "right": 750,
+          "bottom": 382,
+          "width": 540,
+          "height": 334
+        },
+        "nav": {
+          "x": 642,
+          "y": 62,
+          "right": 738,
+          "bottom": 207,
+          "width": 96,
+          "height": 145
+        },
+        "overlaps": [],
+        "clipping": [],
+        "short": true
+      }
+    }
+  ],
+  "errors": []
+}
