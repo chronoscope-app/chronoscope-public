@@ -26,6 +26,92 @@ def architecture(path):
         return {0x1000007: 'x86_64', 0x100000c: 'arm64'}[struct.unpack_from('<I', data, 4)[0]]
     raise ValueError('Unknown executable header')
 
+# Mac-only seal-to-archive identity guards. Never follow bundle symlinks while
+# inventorying; reject special files and bound both traversal and hashed bytes.
+MAC_MAX_ENTRIES = 20000
+MAC_MAX_BYTES = 512 * 1024 * 1024
+
+def mac_app_inventory(app):
+    inventory = {}
+    total = 0
+    def visit(path, name):
+        nonlocal total
+        if len(inventory) >= MAC_MAX_ENTRIES:
+            raise ValueError('Mac app inventory entry cap exceeded')
+        info = path.lstat()
+        mode = info.st_mode & 0o7777
+        if path.is_symlink():
+            inventory[name] = ('symlink', mode, os.readlink(path))
+        elif path.is_dir():
+            inventory[name] = ('directory', mode)
+            for child in sorted(path.iterdir()):
+                visit(child, child.name if name == '.' else name + '/' + child.name)
+        elif path.is_file():
+            total += info.st_size
+            if total > MAC_MAX_BYTES:
+                raise ValueError('Mac app inventory byte cap exceeded')
+            digest = hashlib.sha256()
+            size = 0
+            with path.open('rb') as stream:
+                while block := stream.read(1024 * 1024):
+                    size += len(block)
+                    if size > info.st_size:
+                        raise ValueError('Mac app changed during inventory')
+                    digest.update(block)
+            if size != info.st_size or path.lstat() != info:
+                raise ValueError('Mac app changed during inventory')
+            inventory[name] = ('file', mode, size, digest.hexdigest())
+        else:
+            raise ValueError('Mac app contains unsupported file type')
+    visit(app, '.')
+    return inventory
+
+def mac_metadata_check(app):
+    metadata = app / 'Contents/Resources/Metadata.appintents'
+    # Require a physical, nonempty regular metadata file, not an empty entry
+    # or external symlink target standing in for generated metadata.
+    if (metadata.is_symlink() or not metadata.is_dir() or
+            not any(p.is_file() and not p.is_symlink() and p.stat().st_size > 0
+                    for p in metadata.iterdir())):
+        raise ValueError('App Intents metadata missing or empty')
+
+def mac_archive_inventory(package, app_name):
+    prefix = 'Chronoscope/' + app_name
+    inventory = {}
+    total = 0
+    with tarfile.open(package, 'r:xz') as archive:
+        # Stream bounded headers rather than getmembers() on an unchecked tar.
+        for member in archive:
+            if member.name != prefix and not member.name.startswith(prefix + '/'):
+                continue
+            name = '.' if member.name == prefix else member.name[len(prefix) + 1:]
+            if (name in inventory or len(inventory) >= MAC_MAX_ENTRIES or
+                    (name != '.' and any(p in ('', '.', '..') for p in name.split('/')))):
+                raise ValueError('Invalid Mac archive inventory')
+            mode = member.mode & 0o7777
+            if member.isdir():
+                inventory[name] = ('directory', mode)
+            elif member.issym():
+                inventory[name] = ('symlink', mode, member.linkname)
+            elif member.isfile():
+                total += member.size
+                if total > MAC_MAX_BYTES:
+                    raise ValueError('Mac archive inventory byte cap exceeded')
+                digest = hashlib.sha256()
+                size = 0
+                with archive.extractfile(member) as stream:
+                    while block := stream.read(1024 * 1024):
+                        size += len(block)
+                        if size > member.size:
+                            raise ValueError('Invalid Mac archive file size')
+                        digest.update(block)
+                if size != member.size:
+                    raise ValueError('Invalid Mac archive file size')
+                inventory[name] = ('file', mode, size, digest.hexdigest())
+            else:
+                raise ValueError('Mac archive contains unsupported file type')
+    return inventory
+
 def stage(target, output, max_bytes):
     output = output.resolve()
     if output.is_relative_to(ROOT):
@@ -79,16 +165,32 @@ def stage(target, output, max_bytes):
             apps = list((release / 'bundle/macos').glob('*.app'))
             if len(apps) != 1:
                 raise ValueError('Actual macOS GUI app required')
-            bundled = apps[0] / 'Contents/MacOS/chronoscope-desktop'
+            # Validate the copied payload that will actually enter the archive.
+            # Bundler signing can legitimately change the build-tree GUI bytes.
+            packaged_app = root / apps[0].name
+            shutil.copytree(apps[0], packaged_app, symlinks=True)
+            bundled = packaged_app / 'Contents/MacOS/chronoscope-desktop'
             if architecture(bundled) != expected:
                 raise ValueError('Bundled GUI architecture mismatch')
-            verify_notices(apps[0] / 'Contents/Resources/third-party', ROOT)
-            shutil.copytree(apps[0], root / apps[0].name, symlinks=True)
+            subprocess.run(['codesign', '--verify', '--deep', '--strict', str(packaged_app)], check=True)
+            verify_notices(packaged_app / 'Contents/Resources/third-party', ROOT)
+            mac_metadata_check(packaged_app)
+            sealed_inventory = mac_app_inventory(packaged_app)
+            smoked_hash = hashlib.sha256(bundled.read_bytes()).hexdigest()
+            subprocess.run(['python', str(ROOT / 'scripts/test_desktop_cli.py'), '--binary', str(bundled)], check=True, timeout=180)
+            if hashlib.sha256(bundled.read_bytes()).hexdigest() != smoked_hash:
+                raise ValueError('Packaged Mac GUI changed during smoke')
+            evidence['build_tree_gui_sha256'] = evidence['gui_sha256']
+            evidence['gui_sha256'] = smoked_hash
             evidence['linkage'] = subprocess.check_output(['otool', '-L', str(bundled)], text=True)
-            subprocess.run(['codesign', '--verify', '--deep', '--strict', str(apps[0])], check=True)
-            metadata = apps[0] / 'Contents/Resources/Metadata.appintents'
-            if not metadata.is_dir() or not any(metadata.iterdir()):
-                raise ValueError('App Intents metadata missing')
+            if hashlib.sha256(bundled.read_bytes()).hexdigest() != smoked_hash:
+                raise ValueError('Packaged Mac GUI changed during linkage')
+            subprocess.run(['codesign', '--verify', '--deep', '--strict', str(packaged_app)], check=True)
+            verify_notices(packaged_app / 'Contents/Resources/third-party', ROOT)
+            mac_metadata_check(packaged_app)
+            if mac_app_inventory(packaged_app) != sealed_inventory:
+                raise ValueError('Sealed Mac app changed during validation')
+            evidence['automated_tests'].extend(['copied app codesign --verify --deep --strict', 'copied app frontend notices', 'copied app App Intents metadata present', 'packaged desktop CLI/agent/MCP smoke'])
             (root / 'INSTALL.txt').write_text('Experimental builds for testing; you may encounter bugs.\n\nApple Silicon macOS: extract and drag Chronoscope.app to Applications. Ad-hoc signed, not notarized. macOS may block first launch: after reviewing source/checksum, use System Settings > Privacy & Security > Open Anyway if offered. Not for Intel Macs.\n')
         elif target == 'linux-x86_64':
             packages = list((release / 'bundle/appimage').glob('*.AppImage'))
@@ -100,9 +202,24 @@ def stage(target, output, max_bytes):
         shutil.copytree(ROOT / 'frontend/dist/third-party', root / 'third-party')
         (root / 'SOURCE-ACCESS.txt').write_text('Exact application source and dependency sources with retained licenses/NOTICE and SHA256 manifests accompany these downloads on the same prerelease: chronoscope-source.zip and chronoscope-dependency-sources.tar.xz. MPL covered source is included. Application source includes patched GLib and frontend Knockout modification. Root MIT does not replace upstream/data/media licenses. See third-party/docs/DISTRIBUTION.md. Linux additionally requires its native source archive and replacement instructions.\n')
         if target == 'macos-arm64':
-            package = output / f'chronoscope-{target}.tar.xz'
-            with tarfile.open(package, 'w:xz') as archive:
+            # Write privately; compare actual archived bytes/types/modes/links
+            # with the sealed pre-smoke inventory before exposing any output.
+            staged_package = Path(temporary) / f'chronoscope-{target}.tar.xz'
+            if mac_app_inventory(packaged_app) != sealed_inventory:
+                raise ValueError('Sealed Mac app changed before archive')
+            with tarfile.open(staged_package, 'w:xz') as archive:
                 archive.add(root, arcname='Chronoscope')
+            archived_inventory = mac_archive_inventory(staged_package, packaged_app.name)
+            archived_gui = archived_inventory.get('Contents/MacOS/chronoscope-desktop')
+            if not archived_gui or archived_gui[0] != 'file' or archived_gui[3] != smoked_hash:
+                raise ValueError('Archived Mac GUI differs from smoked GUI')
+            if (archived_inventory != sealed_inventory or
+                    mac_app_inventory(packaged_app) != sealed_inventory):
+                raise ValueError('Sealed Mac app changed at archive boundary')
+            evidence['archived_gui_sha256'] = smoked_hash
+            evidence['automated_tests'].extend(['final copied app strict seal/notices/nonempty metadata', 'archived app file/symlink/mode inventory matches sealed app'])
+            package = output / staged_package.name
+            staged_package.replace(package)
         else:
             package = Path(shutil.make_archive(str(output / f'chronoscope-{target}'), 'zip', root.parent, root.name))
     evidence.update(package=package.name, package_sha256=hashlib.sha256(package.read_bytes()).hexdigest(), package_bytes=package.stat().st_size)
