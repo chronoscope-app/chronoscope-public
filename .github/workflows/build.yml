@@ -67,8 +67,13 @@ jobs:
       - name: macOS SDK evidence
         if: runner.os == 'macOS'
         run: |
+          set -x
           xcodebuild -version
           xcrun swiftc --version
+          xcrun --sdk macosx --show-sdk-version
+          xcrun --sdk macosx --show-sdk-path
+          find "$(xcrun --sdk macosx --show-sdk-path)" \( -name '*AppIntents*.tbd' -o -name '*FoundationModels*.tbd' \) -print
+          xcrun --find appintentsmetadataprocessor
           test "$(uname -m)" = arm64
           test "$(xcrun --sdk macosx --show-sdk-version)" = 26.5
           SDK="$(xcrun --sdk macosx --show-sdk-path)"
