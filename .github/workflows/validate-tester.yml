@@ -1,0 +1,91 @@
+name: Validate exact tester download
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Completed build.yml run in this repository
+        required: true
+        type: string
+      build_sha:
+        description: Reviewed build commit (40 lowercase hex characters)
+        required: true
+        type: string
+      platform:
+        description: Validate one existing package, never rebuild
+        required: true
+        type: choice
+        options: [windows-x86_64, macos-arm64]
+      expected_package_sha256:
+        description: Independently reviewed nested download SHA256 (64 lowercase hex)
+        required: true
+        type: string
+      reviewed_validation_sha:
+        description: Reviewed validator/workflow commit, must equal dispatch SHA
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: chronoscope-final-package-validation
+  cancel-in-progress: false
+jobs:
+  validate:
+    if: github.repository == 'chronoscope-app/chronoscope-public' && github.ref == 'refs/heads/main'
+    runs-on: ${{ inputs.platform == 'windows-x86_64' && 'windows-2025' || 'macos-26' }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Refuse unreviewed validator or malformed inputs
+        env:
+          REVIEWED_SHA: ${{ inputs.reviewed_validation_sha }}
+          BUILD_SHA: ${{ inputs.build_sha }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+          PACKAGE_SHA256: ${{ inputs.expected_package_sha256 }}
+          PLATFORM: ${{ inputs.platform }}
+        run: |
+          [[ "$REVIEWED_SHA" =~ ^[0-9a-f]{40}$ && "$GITHUB_SHA" == "$REVIEWED_SHA" ]]
+          [[ "$BUILD_SHA" =~ ^[0-9a-f]{40}$ && "$BUILD_RUN_ID" =~ ^[1-9][0-9]{0,19}$ ]]
+          [[ "$PACKAGE_SHA256" =~ ^[0-9a-f]{64}$ ]]
+          [[ "$PLATFORM" == windows-x86_64 || "$PLATFORM" == macos-arm64 ]]
+          [[ "$RUNNER_ENVIRONMENT" == github-hosted ]]
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          persist-credentials: false
+          path: validator
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
+        with:
+          ref: ${{ inputs.build_sha }}
+          persist-credentials: false
+          path: built-source
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - name: Validate final artifact; JSON receipt in logs only
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+          BUILD_SHA: ${{ inputs.build_sha }}
+          PLATFORM: ${{ inputs.platform }}
+          PACKAGE_SHA256: ${{ inputs.expected_package_sha256 }}
+          REVIEWED_SHA: ${{ inputs.reviewed_validation_sha }}
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -B validator/scripts/validate_tester_download.py \
+            --build-run-id "$BUILD_RUN_ID" --build-sha "$BUILD_SHA" \
+            --platform "$PLATFORM" --expected-package-sha256 "$PACKAGE_SHA256" \
+            --reviewed-validation-sha "$REVIEWED_SHA" --source-root "$GITHUB_WORKSPACE/built-source"
+# Deliberately no upload, cache, release, dispatch, installation or repository writes.
