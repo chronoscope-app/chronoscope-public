@@ -62,12 +62,19 @@ def stage(target, output, max_bytes):
             for manifest in manifests:
                 verify_notices(manifest.parent, ROOT)
             evidence['installer_notice_manifests'] = len(manifests)
-            shutil.copy2(gui, root / gui.name)
+            installed = list(extracted.rglob('chronoscope-desktop.exe'))
+            if len(installed) != 1 or architecture(installed[0]) != expected:
+                raise ValueError('Actual installer GUI executable missing or wrong architecture')
+            installed_hash = hashlib.sha256(installed[0].read_bytes()).hexdigest()
+            if installed_hash != evidence['gui_sha256']:
+                raise ValueError('Actual installer GUI differs from tested release executable')
+            evidence['installer_gui_sha256'] = installed_hash
+            # Ship the complete installer once, not duplicate GUI/CLI binaries.
+            # The installed desktop executable also exposes the tested CLI/MCP.
             shutil.copy2(packages[0], root / packages[0].name)
-            shutil.copy2(release / 'chronoscope.exe', root / 'chronoscope.exe')
             inspect = shutil.which('llvm-objdump') or str(Path('C:/Program Files/LLVM/bin/llvm-objdump.exe'))
             evidence['linkage'] = subprocess.check_output([inspect, '-p', str(gui)], text=True)
-            (root / 'INSTALL.txt').write_text('Experimental builds for testing; you may encounter bugs.\n\nWindows x64: use the included current-user installer, or run chronoscope-desktop.exe. Unsigned; Windows may display a publisher warning. Microsoft Edge WebView2 Evergreen Runtime must already be installed (not redistributed). Get it at https://developer.microsoft.com/microsoft-edge/webview2/ .\n')
+            (root / 'INSTALL.txt').write_text('Experimental builds for testing; you may encounter bugs.\n\nWindows x64: use the included current-user installer. The installed Chronoscope executable also supports CLI/MCP commands. Unsigned; Windows may display a publisher warning. Microsoft Edge WebView2 Evergreen Runtime must already be installed (not redistributed). Get it at https://developer.microsoft.com/microsoft-edge/webview2/ .\n')
         elif target == 'macos-arm64':
             apps = list((release / 'bundle/macos').glob('*.app'))
             if len(apps) != 1:
