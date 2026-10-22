@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "metrics": {
+    "count": 12000,
+    "cells": 39,
+    "raw": 0,
+    "mode": "auto",
+    "bloom": false
+  },
+  "checks": [
+    "default reversible clusters",
+    "exact member table",
+    "whole-cell box selection",
+    "density",
+    "heat map worker",
+    "light labels",
+    "bloom postprocessing",
+    "ground heat matches DTED vertices and voids",
+    "ground effects ignore time height while observations retain it",
+    "small ground bloom glyphs and repeated terrain atlas replacement",
+    "bloom failure restores ordinary rendering",
+    "zoom declusters to exact observations",
+    "empty density emits no zero-size GPU buffers",
+    "globe heat atlas",
+    "globe bloom follows displayed terrain depth bias",
+    "space-time slabs"
+  ],
+  "renderer": "WebGPU on linux software test path; no physical GPU FPS claim",
+  "errors": []
+}

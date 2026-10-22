@@ -1,0 +1,11 @@
+[package]
+name = "chronoscope-glib-backport-tests"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+# Deliberately separate workspace: never add GLib to the default CLI graph.
+[workspace]
+
+[dependencies]
+glib = { path = "../../vendor/glib" }

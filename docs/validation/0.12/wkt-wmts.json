@@ -1,0 +1,46 @@
+{
+  "meshes": {
+    "features": 6,
+    "fillMeshes": 3,
+    "points": 1,
+    "triangles": 0
+  },
+  "rasterMeshes": 1,
+  "status": "64 map tiles · 1 layers loaded",
+  "toasts": [
+    "Imported 7 observations"
+  ],
+  "geometries": 6,
+  "uniqueTiles": 128,
+  "networkTileRequests": 128,
+  "peakConcurrency": 8,
+  "publicRequests": 0,
+  "offlineReuse": true,
+  "stack": {
+    "datelineZoom": {
+      "greenwich": 11.73488451438199,
+      "dateline": 11.73488451441163
+    },
+    "servers": 2,
+    "layers": 2,
+    "compositeSurfaces": 1,
+    "opacity": "50% blended with transparent holes",
+    "zoomBoundary": 4,
+    "overviewZoom": 1.685375111977212,
+    "closeZoom": 5.000000000000001,
+    "portable": true,
+    "terrain": {
+      "textureWidth": 1705,
+      "textureHeight": 2048,
+      "vertices": 16641,
+      "frameBounds": [
+        -79.99,
+        43.22,
+        -79.91,
+        43.29
+      ]
+    }
+  },
+  "savedServerSwitching": "Two named local WMTS servers and two layers persist and switch after reload",
+  "errors": []
+}

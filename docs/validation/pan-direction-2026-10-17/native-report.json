@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "native_build_and_launch": true,
+  "native_left_pan_normalized_screen_delta": [
+    -0.0038168915643664245,
+    -5.432602186855645e-22
+  ],
+  "browser_direction_cases": 56,
+  "render_errors": 0,
+  "hosted_workflows_dispatched": false,
+  "native_right_pan_camera_lateral_metres": -279412.04892388475
+}

@@ -1,0 +1,31 @@
+name: Feature request
+description: Explain the task you want Chronoscope to help with.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe your goal in ordinary language. Use synthetic examples and leave out private records, location histories and credentials.
+        Suggestions are welcome; there is no delivery-date or support commitment.
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to do?
+      description: Explain the workflow or question and who it would help.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe what a successful result would look like. Screenshots or mockups are optional and should contain only safe data.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Current workaround or alternatives
+  - type: input
+    id: platform
+    attributes:
+      label: Relevant platform or version

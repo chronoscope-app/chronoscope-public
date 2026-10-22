@@ -1,0 +1,10 @@
+{
+  "baseline": "matched-baseline-instrumented-r1/100k.png",
+  "variant": "matched-static-terrain-r1/100k.png",
+  "rgbEqual": true,
+  "size": [
+    1382,
+    704
+  ],
+  "scope": "Flat synthetic33x33 terrain/full100k capture; atlas/stale-load/mode correctness NOT validated"
+}

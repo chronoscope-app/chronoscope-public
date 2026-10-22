@@ -1,0 +1,9 @@
+{
+  "base_commit": "24baf638dfef7a4a89443936e0dcc52492ea470a",
+  "rust_tests": 15,
+  "browser_check_groups": 32,
+  "wildlife_events_exercised": 40727,
+  "native_macos_tested": false,
+  "hardware_gpu_tested": false,
+  "github_runners_used": false
+}

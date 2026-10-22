@@ -1,0 +1,11 @@
+{
+  "baseline": "matched-baseline-instrumented-r1/100k.png",
+  "variant": "matched-indexed-r1/100k.png",
+  "size": [
+    1382,
+    704
+  ],
+  "rgbPixelDifferenceBoundingBox": null,
+  "equal": true,
+  "note": "Matching capture after full100k terrain/value rebuild; geometry/material/silhouette visual equality only, not performance proof"
+}

@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.evaluate: TypeError: Cannot read properties of undefined (reading 'usedTimes')
+    at KC.delete (http://127.0.0.1:35963/assets/gpu-1_zdlSiP.js:79:9111)
+    at p.onDispose (http://127.0.0.1:35963/assets/gpu-1_zdlSiP.js:71:71941)
+    at yv.dispose (http://127.0.0.1:35963/assets/gpu-1_zdlSiP.js:71:71038)
+    at $l.onMaterialDispose (http://127.0.0.1:35963/assets/gpu-1_zdlSiP.js:71:66520)
+    at $l.dispatchEvent (http://127.0.0.1:35963/assets/gpu-1_zdlSiP.js:5:1847)
+    at $l.dispose (http://127.0.0.1:35963/assets/gpu-1_zdlSiP.js:5:99353)
+    at pn.release (http://127.0.0.1:35963/assets/index-OiWoMqji.js:13:18600)
+    at http://127.0.0.1:35963/assets/index-OiWoMqji.js:13:20500
+    at NF.traverse (http://127.0.0.1:35963/assets/gpu-1_zdlSiP.js:5:71018)
+    at pn.clear (http://127.0.0.1:35963/assets/index-OiWoMqji.js:13:20285)
+    at /workspace/chronoscope/frontend/scripts/globe-transition-qa.mjs:148:14 {
+  log: []
+}
+
+Node.js v24.19.0

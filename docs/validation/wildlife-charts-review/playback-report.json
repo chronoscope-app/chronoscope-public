@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Rabbit beside Play; all eight rates; keyboard, Escape and outside dismissal",
+      "evidence": {}
+    },
+    {
+      "name": "Both playback menus hover-open after 1s, cancel safely, share one popup and have no tooltips",
+      "evidence": {}
+    },
+    {
+      "name": "Hour, Day and Week control actual UTC advancement, change live and persist",
+      "evidence": [
+        {
+          "label": "Hour",
+          "secondsPerSecond": 3393.2512453376194
+        },
+        {
+          "label": "Day",
+          "secondsPerSecond": 86129.30788947492
+        },
+        {
+          "label": "Week",
+          "secondsPerSecond": 587483.9419519246
+        }
+      ]
+    },
+    {
+      "name": "Actual playback runs at quarter, normal and double speed; live changes, pause and resume",
+      "evidence": {
+        "rates": [
+          {
+            "rate": 0.25,
+            "actual": 0.22708522212115692
+          },
+          {
+            "rate": 1,
+            "actual": 0.9942934782605574
+          },
+          {
+            "rate": 2,
+            "actual": 1.9760115868557024
+          }
+        ],
+        "resume": 0.6960140363510299
+      }
+    },
+    {
+      "name": "Moving-window playback retains its width at 2×",
+      "evidence": {
+        "bounds": null,
+        "end": 1514315700,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": 1452282960
+      }
+    },
+    {
+      "name": "Views descriptions, Stems label, footer credits, fixed tabs and left-side entity colors",
+      "evidence": {}
+    },
+    {
+      "name": "Menu is visible above timeline in both themes and window sizes",
+      "evidence": {}
+    }
+  ],
+  "errors": []
+}

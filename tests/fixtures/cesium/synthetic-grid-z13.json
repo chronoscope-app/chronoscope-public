@@ -1,0 +1,19 @@
+{
+  "bounds": [
+    -79.98046875,
+    43.22919511396501,
+    -79.9365234375,
+    43.261206124799784
+  ],
+  "col": 2276,
+  "row": 3002,
+  "level": 13,
+  "url": null,
+  "attribution": "Chronoscope synthetic test grid \u00b7 MIT",
+  "sourceResolution": "Synthetic diagnostic pattern; not an observation or geographic image",
+  "image_file": "synthetic-grid-z13.png",
+  "sha256": "d80facef6248be9c2eb930d38cc175eb7737910c4c20d738adefff0910892abc",
+  "acquired_utc": "2026-10-21",
+  "license_url": "../../../LICENSE",
+  "purpose": "Offline renderer/WMTS alignment test with first-party generated artwork"
+}

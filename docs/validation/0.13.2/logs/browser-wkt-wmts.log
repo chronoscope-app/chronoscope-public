@@ -1,0 +1,5 @@
+
+> chronoscope-ui@0.13.2 test:wkt-wmts
+> node scripts/wkt-wmts-qa.mjs
+
+WKT detection, holes/picking, multipart rendering and reopen passed. All 64 requested WMTS tiles loaded concurrently, cache/offline reuse passed; 0 public requests.

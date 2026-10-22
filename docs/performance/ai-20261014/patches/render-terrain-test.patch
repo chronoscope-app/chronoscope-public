@@ -1,0 +1,10 @@
+diff --git a/frontend/scripts/ai-terrain-regression.mjs b/frontend/scripts/ai-terrain-regression.mjs
+new file mode 100644
+index 0000000..579a30a
+--- /dev/null
++++ b/frontend/scripts/ai-terrain-regression.mjs
+@@ -0,0 +1,4 @@
++import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';import ts from 'typescript';
++const s=fs.readFileSync('frontend/src/view.ts','utf8'),a=s.indexOf('  async setTerrain('),b=s.indexOf('  buildTerrain()',a),method=s.slice(a,b).replace('async setTerrain','async function setTerrain');
++const context={};vm.createContext(context);vm.runInContext(ts.transpile(method+';this.fn=setTerrain'),context);
++let builds=0,obj={ready:Promise.resolve(),terrain:null,rebuild(){builds++}};let t={width:2,height:2,elevations:[1,2,3,4]};await context.fn.call(obj,t);await context.fn.call(obj,t);await context.fn.call(obj,t);let expected=s.includes('if(this.terrain===terrain)return')||s.includes('if (this.terrain === terrain) return')?1:3;assert.equal(builds,expected);await context.fn.call(obj,{...t});assert.equal(builds,expected+1);await context.fn.call(obj,null);assert.equal(obj.terrain,null);console.log(JSON.stringify({test:'immutable-terrain-snapshot-reuse',rebuildsRepeated:expected,newObjectInvalidates:true,unload:true}));

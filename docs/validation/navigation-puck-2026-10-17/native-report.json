@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "native_build_and_launch": true,
+  "native_ui": {
+    "placement": "map top-right",
+    "tilt_keyboard": "Home then Down sets 5 degrees",
+    "top_down_eye": "sets 0 degrees",
+    "fit": "restores hurricane framing"
+  },
+  "browser_groups": 11,
+  "pan_direction_cases": 56,
+  "events": 3568,
+  "render_errors": 0,
+  "hosted_workflows_dispatched": false
+}

@@ -1,0 +1,4 @@
+
+> chronoscope-cesium-ui@0.13.3 test:map-presets
+> node scripts/map-presets-qa.mjs
+

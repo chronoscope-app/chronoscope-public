@@ -1,0 +1,7 @@
+    Checking tokio-rustls v0.26.6
+    Checking hyper-rustls v0.27.10
+    Checking reqwest v0.13.5
+    Checking reqwest v0.12.28
+    Checking rmcp v3.5.1
+    Checking chronoscope v0.13.0 (/workspace/chronoscope)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.73s

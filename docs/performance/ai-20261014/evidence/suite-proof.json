@@ -1,0 +1,30 @@
+{
+  "correctness": {
+    "passed": 109,
+    "failed": 0,
+    "source": "evidence/engine/full-suite-correctness.log",
+    "sha256": "0af430acdfe8b7162d77f8d1105bab64e226cfa526a3c98f0e0362d651c9d248",
+    "applied_correctness_gates": true
+  },
+  "prepared": {
+    "passed": 109,
+    "failed": 0,
+    "source": "evidence/engine/full-suite-prepared.log",
+    "sha256": "75aa3218e7e8b97ed64bcd018dbaa58715942fa2eea3dee3cd538984883447e3",
+    "applied_correctness_gates": true
+  },
+  "indexed": {
+    "passed": 109,
+    "failed": 0,
+    "source": "evidence/engine/full-suite-indexed.log",
+    "sha256": "413d84f84cf21495495a9f1cd03052b4a8248021b2df5a718845bdd6d9a583c7",
+    "applied_correctness_gates": true
+  },
+  "serialized": {
+    "passed": 109,
+    "failed": 0,
+    "source": "evidence/engine/full-suite-serialized.log",
+    "sha256": "8c415bcb8bb789975acb0477f188a56025d170ac55537c442292b76a266d61c5",
+    "applied_correctness_gates": true
+  }
+}

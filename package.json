@@ -1,0 +1,11 @@
+{
+  "name": "chronoscope-workspace",
+  "version": "0.15.2",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix frontend run build",
+    "dev": "npm --prefix frontend run dev",
+    "desktop": "frontend/node_modules/.bin/tauri dev",
+    "bundle": "frontend/node_modules/.bin/tauri build"
+  }
+}

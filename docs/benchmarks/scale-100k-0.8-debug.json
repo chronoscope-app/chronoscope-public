@@ -1,0 +1,22 @@
+{
+  "aggregate_s": 0.293122422,
+  "cached_next_page_s": 0.001378993,
+  "csv_bytes": 15067847,
+  "dry_run_delete_s": 0.457194302,
+  "first_filtered_sort_s": 0.125887504,
+  "import_s": 39.626193614,
+  "preview_s": 0.489054174,
+  "render_20k_s": 0.701728849,
+  "reopen_s": 16.496127157,
+  "rows": 100000,
+  "save_s": 2.809040633,
+  "select_exact_s": 0.060443381,
+  "snapshot_cached_s": 0.056283195,
+  "snapshot_first_s": 0.062871669,
+  "stream_export_s": 4.229167497,
+  "workspace_bytes": 237264896,
+  "build_profile": "unoptimized debug",
+  "platform": "shared Linux VM; browser QA running concurrently",
+  "version": "0.8.0",
+  "peak_rss": "not measured in this run"
+}

@@ -1,0 +1,26 @@
+
+> chronoscope-ui@0.13.3 build
+> tsc && vite build
+
+vite v6.4.4 building for production...
+transforming...
+✓ 38 modules transformed.
+rendering chunks...
+[plugin vite:reporter] 
+(!) /workspace/chronoscope/frontend/node_modules/@tauri-apps/api/core.js is dynamically imported by /workspace/chronoscope/frontend/src/main.ts, /workspace/chronoscope/frontend/src/main.ts, /workspace/chronoscope/frontend/src/main.ts, /workspace/chronoscope/frontend/src/main.ts, /workspace/chronoscope/frontend/src/main.ts but also statically imported by /workspace/chronoscope/frontend/node_modules/@tauri-apps/api/event.js, /workspace/chronoscope/frontend/node_modules/@tauri-apps/plugin-dialog/dist-js/index.js, /workspace/chronoscope/frontend/src/bridge.ts, dynamic import will not move module into another chunk.
+
+computing gzip size...
+dist/index.html                               0.53 kB │ gzip:   0.32 kB
+dist/assets/heat-worker-BQYCu5HO.js           1.50 kB
+dist/assets/earth-blue-marble-BIjNooeF.jpg  266.60 kB
+dist/assets/index-BKs9rm6d.css               26.44 kB │ gzip:   6.37 kB
+dist/assets/index-BHXKBL8y.js                 0.31 kB │ gzip:   0.20 kB
+dist/assets/event-rGXYJVHl.js                 1.15 kB │ gzip:   0.60 kB
+dist/assets/index-CCRFOnC-.js               281.32 kB │ gzip:  94.78 kB
+dist/assets/gpu-1_zdlSiP.js                 777.78 kB │ gzip: 213.77 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.87s

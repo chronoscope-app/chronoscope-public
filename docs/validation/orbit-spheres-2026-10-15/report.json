@@ -1,0 +1,120 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "side": "north",
+      "direction": "left",
+      "headingDelta": -12,
+      "tiltDelta": -1.2789769243681803e-13,
+      "controllerRestored": true
+    },
+    {
+      "side": "north",
+      "direction": "right",
+      "headingDelta": 12,
+      "tiltDelta": -1.0658141036401503e-13,
+      "controllerRestored": true
+    },
+    {
+      "side": "north",
+      "direction": "up",
+      "headingDelta": 0,
+      "tiltDelta": 6.000003051757716,
+      "controllerRestored": true
+    },
+    {
+      "side": "north",
+      "direction": "down",
+      "headingDelta": 0,
+      "tiltDelta": -5.999999999999986,
+      "controllerRestored": true
+    },
+    {
+      "side": "south",
+      "direction": "left",
+      "headingDelta": -12,
+      "tiltDelta": -1.0658141036401503e-13,
+      "controllerRestored": true
+    },
+    {
+      "side": "south",
+      "direction": "right",
+      "headingDelta": 12,
+      "tiltDelta": -4.973799150320701e-14,
+      "controllerRestored": true
+    },
+    {
+      "side": "south",
+      "direction": "up",
+      "headingDelta": 0,
+      "tiltDelta": 5.9999999999998295,
+      "controllerRestored": true
+    },
+    {
+      "side": "south",
+      "direction": "down",
+      "headingDelta": 0,
+      "tiltDelta": -6.000000000000163,
+      "controllerRestored": true
+    },
+    {
+      "side": "west",
+      "direction": "left",
+      "headingDelta": -12,
+      "tiltDelta": 7.815970093361102e-14,
+      "controllerRestored": true
+    },
+    {
+      "side": "west",
+      "direction": "right",
+      "headingDelta": 12,
+      "tiltDelta": 2.1316282072803006e-14,
+      "controllerRestored": true
+    },
+    {
+      "side": "west",
+      "direction": "up",
+      "headingDelta": 0,
+      "tiltDelta": 5.9999999999998295,
+      "controllerRestored": true
+    },
+    {
+      "side": "west",
+      "direction": "down",
+      "headingDelta": 0,
+      "tiltDelta": -6.000000000000085,
+      "controllerRestored": true
+    },
+    {
+      "side": "east",
+      "direction": "left",
+      "headingDelta": -12,
+      "tiltDelta": 0,
+      "controllerRestored": true
+    },
+    {
+      "side": "east",
+      "direction": "right",
+      "headingDelta": 12,
+      "tiltDelta": -1.7763568394002505e-13,
+      "controllerRestored": true
+    },
+    {
+      "side": "east",
+      "direction": "up",
+      "headingDelta": 0,
+      "tiltDelta": 6.0000000000000355,
+      "controllerRestored": true
+    },
+    {
+      "side": "east",
+      "direction": "down",
+      "headingDelta": 0,
+      "tiltDelta": -6.000000000000085,
+      "controllerRestored": true
+    }
+  ],
+  "errors": [],
+  "public_tiles": [],
+  "public_wmts_enabled": false
+}

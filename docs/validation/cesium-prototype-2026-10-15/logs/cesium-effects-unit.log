@@ -1,0 +1,5 @@
+
+> chronoscope-cesium-ui@0.13.3 test:cesium-effects
+> node scripts/cesium-effects-math-test.mjs
+
+Cesium ground effects: count conservation, weights, UTC-window accumulation, transparency, isolated bloom, threshold, and combined heat/bloom passed.

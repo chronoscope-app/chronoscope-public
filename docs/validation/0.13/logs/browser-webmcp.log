@@ -1,0 +1,20 @@
+
+> chronoscope-ui@0.13.0 test:webmcp
+> node scripts/webmcp-qa.mjs
+
+{
+  "status": "passed",
+  "browser_api": "explicit local protocol fixture",
+  "extension_runtime": "extension API harness with real Chromium page (managed policy blocks extension installation)",
+  "tests": [
+    "shipped background and page-adapter round trip",
+    "SDK discovery",
+    "read grant",
+    "action grant and per-call permission",
+    "argument validation",
+    "cancellation reaches browser AbortSignal",
+    "unpaired rejection",
+    "navigation revocation",
+    "embedded extension export"
+  ]
+}

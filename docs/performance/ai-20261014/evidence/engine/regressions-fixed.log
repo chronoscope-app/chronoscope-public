@@ -1,0 +1,9 @@
+   Compiling chronoscope v0.5.2 (<isolated-worktree>)
+    Finished `release` profile [optimized] target(s) in 1m 47s
+     Running tests/ai_engine_regressions.rs (target/release/deps/ai_engine_regressions-4e0afd12e1db112d)
+
+running 2 tests
+test failed_read_stale_cursor_preserves_metadata_and_store ... ok
+test rejected_first_row_cross_batch_count_and_identity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s

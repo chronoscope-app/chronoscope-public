@@ -1,0 +1,138 @@
+[
+  {
+    "name": "ChatGPT",
+    "width": 1024,
+    "height": 1024,
+    "bounds": [
+      {
+        "threshold": 16,
+        "left": 90,
+        "top": 98,
+        "right": 933,
+        "bottom": 943,
+        "width_percent": 82.421875,
+        "height_percent": 82.6171875
+      },
+      {
+        "threshold": 128,
+        "left": 100,
+        "top": 100,
+        "right": 923,
+        "bottom": 923,
+        "width_percent": 80.46875,
+        "height_percent": 80.46875
+      },
+      {
+        "threshold": 250,
+        "left": 101,
+        "top": 101,
+        "right": 922,
+        "bottom": 922,
+        "width_percent": 80.2734375,
+        "height_percent": 80.2734375
+      }
+    ]
+  },
+  {
+    "name": "ChatGPT chat",
+    "width": 1024,
+    "height": 1024,
+    "bounds": [
+      {
+        "threshold": 16,
+        "left": 90,
+        "top": 98,
+        "right": 933,
+        "bottom": 943,
+        "width_percent": 82.421875,
+        "height_percent": 82.6171875
+      },
+      {
+        "threshold": 128,
+        "left": 100,
+        "top": 100,
+        "right": 923,
+        "bottom": 923,
+        "width_percent": 80.46875,
+        "height_percent": 80.46875
+      },
+      {
+        "threshold": 250,
+        "left": 101,
+        "top": 101,
+        "right": 922,
+        "bottom": 922,
+        "width_percent": 80.2734375,
+        "height_percent": 80.2734375
+      }
+    ]
+  },
+  {
+    "name": "Notes",
+    "width": 256,
+    "height": 256,
+    "bounds": [
+      {
+        "threshold": 16,
+        "left": 22,
+        "top": 25,
+        "right": 232,
+        "bottom": 234,
+        "width_percent": 82.421875,
+        "height_percent": 82.03125
+      },
+      {
+        "threshold": 128,
+        "left": 25,
+        "top": 25,
+        "right": 230,
+        "bottom": 230,
+        "width_percent": 80.46875,
+        "height_percent": 80.46875
+      },
+      {
+        "threshold": 250,
+        "left": 26,
+        "top": 26,
+        "right": 229,
+        "bottom": 229,
+        "width_percent": 79.6875,
+        "height_percent": 79.6875
+      }
+    ]
+  },
+  {
+    "name": "Chronoscope",
+    "width": 512,
+    "height": 512,
+    "bounds": [
+      {
+        "threshold": 16,
+        "left": 8,
+        "top": 8,
+        "right": 503,
+        "bottom": 503,
+        "width_percent": 96.875,
+        "height_percent": 96.875
+      },
+      {
+        "threshold": 128,
+        "left": 8,
+        "top": 8,
+        "right": 503,
+        "bottom": 503,
+        "width_percent": 96.875,
+        "height_percent": 96.875
+      },
+      {
+        "threshold": 250,
+        "left": 8,
+        "top": 8,
+        "right": 503,
+        "bottom": 503,
+        "width_percent": 96.875,
+        "height_percent": 96.875
+      }
+    ]
+  }
+]

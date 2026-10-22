@@ -1,0 +1,19 @@
+
+> chronoscope-ui@0.13.3 test:navigation-views
+> node scripts/navigation-views-qa.mjs
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Left needle drag increases camera bearing and moves needle left: 323.130102354156 -> 323.130102354156
+    at file:///workspace/chronoscope/frontend/scripts/navigation-views-qa.mjs:132:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

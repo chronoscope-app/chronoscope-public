@@ -1,0 +1,68 @@
+
+> chronoscope-ui@0.13.3 test:display
+> node scripts/display-qa.mjs
+
+Cluster hit {
+  x: 656.4964444013237,
+  y: 691.8293480128109,
+  count: 32,
+  cell: {
+    key: '',
+    level: 16,
+    partition: 'all',
+    slab: 0,
+    time_bin_minutes: 0,
+    viewport: [
+      -80.01813454927968,
+      43.22477909126973,
+      -79.89582190117719,
+      43.27950693310947
+    ],
+    x: 18207,
+    y: 24021
+  }
+} <canvas data-engine="three.js r180 webgpu" width="1382" height="849" style="display: block; touch-action: none; width: 1382px; height: 849px;"></canvas>
+Box down { down: { x: 253, y: 53 }, start: { x: 253, y: 53 } }
+Globe resolved {
+  zoom: 12.247500213946145,
+  level: 16,
+  atlas: [
+    -79.99457421507337,
+    43.220647279888354,
+    -79.91938223538348,
+    43.28364185236449
+  ],
+  overlayObjects: [ 'Mesh' ],
+  terrain: false,
+  material: undefined
+}
+{
+  "status": "passed",
+  "metrics": {
+    "count": 12000,
+    "cells": 39,
+    "raw": 0,
+    "mode": "auto",
+    "bloom": false
+  },
+  "checks": [
+    "default reversible clusters",
+    "exact member table",
+    "whole-cell box selection",
+    "density",
+    "heat map worker",
+    "light labels",
+    "bloom postprocessing",
+    "ground heat matches DTED vertices and voids",
+    "ground effects ignore time height while observations retain it",
+    "small ground bloom glyphs and repeated terrain atlas replacement",
+    "bloom failure restores ordinary rendering",
+    "zoom declusters to exact observations",
+    "empty density emits no zero-size GPU buffers",
+    "globe heat atlas",
+    "globe bloom follows displayed terrain depth bias",
+    "space-time slabs"
+  ],
+  "renderer": "WebGL2 on linux software test path; no physical GPU FPS claim",
+  "errors": []
+}

@@ -1,0 +1,97 @@
+{
+  "live": true,
+  "passed": true,
+  "checks": [
+    {
+      "name": "one default Streets basemap; no built-in WMTS catalog",
+      "evidence": {}
+    },
+    {
+      "name": "2D native street tiles; WGS84/mercator pixel alignment",
+      "evidence": {
+        "basemap": "streets",
+        "basemapPending": 0,
+        "basemapError": "",
+        "basemapRenderedTiles": 45,
+        "basemapAlignmentErrorPixels": 8.278675522888079e-10,
+        "basemapMaximumLevel": 15,
+        "imageryLayers": 2,
+        "tileCount": 0,
+        "imageryRequestedTiles": 0,
+        "terrainActive": false,
+        "terrainCovered": 0,
+        "verticalDatum": "unresolved-msl",
+        "geoidModel": null,
+        "mode": "map"
+      }
+    },
+    {
+      "name": "simple Map dialog shows Streets; custom servers are advanced",
+      "evidence": {}
+    },
+    {
+      "name": "Streets toggle persists and releases/recreates the vector renderer",
+      "evidence": {}
+    },
+    {
+      "name": "space-time imagery stays on the ground",
+      "evidence": {
+        "basemap": "streets",
+        "basemapPending": 0,
+        "basemapError": "",
+        "basemapRenderedTiles": 83,
+        "basemapAlignmentErrorPixels": 8.278675522888079e-10,
+        "basemapMaximumLevel": 15,
+        "imageryLayers": 2,
+        "tileCount": 0,
+        "imageryRequestedTiles": 0,
+        "terrainActive": false,
+        "terrainCovered": 0,
+        "verticalDatum": "unresolved-msl",
+        "geoidModel": null,
+        "mode": "space-time"
+      }
+    },
+    {
+      "name": "globe uses the same native tiled street basemap",
+      "evidence": {
+        "basemap": "streets",
+        "basemapPending": 0,
+        "basemapError": "",
+        "basemapRenderedTiles": 117,
+        "basemapAlignmentErrorPixels": 8.278675522888079e-10,
+        "basemapMaximumLevel": 15,
+        "imageryLayers": 2,
+        "tileCount": 0,
+        "imageryRequestedTiles": 0,
+        "terrainActive": false,
+        "terrainCovered": 0,
+        "verticalDatum": "unresolved-msl",
+        "geoidModel": null,
+        "mode": "globe"
+      }
+    },
+    {
+      "name": "fresh vector renderer reloads style, tiles and fonts from private disk cache offline",
+      "evidence": {
+        "bytes": 41000448
+      }
+    },
+    {
+      "name": "custom WMTS connection editor remains available without provider catalog",
+      "evidence": {}
+    },
+    {
+      "name": "strict desktop CSP and both renderers produce no uncaught errors",
+      "evidence": {}
+    }
+  ],
+  "errors": [],
+  "csp": [],
+  "screenshots": [
+    "streets-2d.png",
+    "streets-settings.png",
+    "streets-space-time.png",
+    "streets-globe.png"
+  ]
+}

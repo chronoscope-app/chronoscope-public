@@ -1,0 +1,17 @@
+
+> chronoscope-ui@0.10.0 test:gis
+> node scripts/gis-qa.mjs
+
+GIS frontend oracles passed {
+  projectionErrors: { mercator: 2.9802322387695312e-8, ecef: 1.862645149230957e-9 },
+  terrainCheck: {
+    error: 1.4826174676851878e-8,
+    scaleAt60: 199.99999999999994,
+    hole: null
+  },
+  domainCheck: {
+    flat: { drawn: 2, omitted: 2, notice: true, selectionDrawn: 0 },
+    globeDrawn: 4,
+    globeOmitted: 0
+  }
+}

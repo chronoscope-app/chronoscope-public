@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "errors": [],
+  "timezones": [],
+  "publicRequests": 0,
+  "checks": [
+    "Saved seal name, explicit source units and description appear with one visible selector and no modal",
+    "UTC date ticks include month/year context instead of bare day numbers",
+    "Keyboard and pointer resizing retain an interactive map and do not rerun analytics",
+    "All four task starters produce schema-backed count, time, distribution and relationship charts",
+    "Custom titles and units render as text and survive named presets and portable save/reopen",
+    "The docked chart renders in light and dark modes",
+    "Empty selection and bounded marks explain scope; coarser intervals require an explicit click",
+    "Missing stork measurements offer a working one-click Event-count fallback without altering records",
+    "Gull missing counts and original extreme values remain visible with one-click boxplots; undeclared units are not guessed",
+    "Charts coexist with the source table and restore normal pane sizing when switching tabs",
+    "Refresh fields recalculates the chart; bobcat/fisher units use consistent explicit source metadata"
+  ]
+}

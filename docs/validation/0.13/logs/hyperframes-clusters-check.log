@@ -1,0 +1,42 @@
+[SystemMemory] cgroup memory limit detected: 16384 MiB. It governs memory-adaptive render behaviour instead of host RAM.
+◆  Checking chronoscope-training
+[hyperframes] browserGpuMode probe → software (WebGL renderer vendor="Google Inc. (Mesa)" renderer="ANGLE (Mesa, llvmpipe (LLVM 19.1.7 256 bits), OpenGL ES 3.2)")
+
+Lint
+  ⚠ nested_structure_needs_subcomposition: <section id="step-0"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    /workspace/chronoscope/videos/chronoscope-training/index.html #step-0 t=0s
+    Fix: Move <section id="step-0"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="step-1"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    /workspace/chronoscope/videos/chronoscope-training/index.html #step-1 t=0s
+    Fix: Move <section id="step-1"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="step-2"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    /workspace/chronoscope/videos/chronoscope-training/index.html #step-2 t=0s
+    Fix: Move <section id="step-2"> and its contents into a sub-composition file and mount it with data-composition-src.
+  ⚠ nested_structure_needs_subcomposition: <section id="step-3"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.
+    /workspace/chronoscope/videos/chronoscope-training/index.html #step-3 t=0s
+    Fix: Move <section id="step-3"> and its contents into a sub-composition file and mount it with data-composition-src.
+  0 error(s), 4 warning(s), 0 info(s)
+
+Runtime
+  ◇ 0 errors, 0 warnings
+
+Layout
+  ◇ 0 issues across 9 sample(s)
+
+Motion
+  ◇ 0 errors, 0 warnings
+
+Contrast
+  ◇ 28/28 text checks pass WCAG AA
+
+Snapshots
+  ◇ 5 PNG(s) saved
+    .hyperframes/artifacts/snapshots/1c3256e4-ec92-43ae-a6ff-686df15598ce/frame-00-at-1.6s.png
+    .hyperframes/artifacts/snapshots/1c3256e4-ec92-43ae-a6ff-686df15598ce/frame-01-at-7.8s.png
+    .hyperframes/artifacts/snapshots/1c3256e4-ec92-43ae-a6ff-686df15598ce/frame-02-at-14.0s.png
+    .hyperframes/artifacts/snapshots/1c3256e4-ec92-43ae-a6ff-686df15598ce/frame-03-at-20.2s.png
+    .hyperframes/artifacts/snapshots/1c3256e4-ec92-43ae-a6ff-686df15598ce/frame-04-at-26.4s.png
+
+◇  Check passed
+Report: /workspace/chronoscope/videos/chronoscope-training/.hyperframes/artifacts/checks/99816596-3434-45a0-a146-fa357f1226ae.json
+Revision: 208b397d-caab-4bef-be88-910e86a8827a (recorded-revision)

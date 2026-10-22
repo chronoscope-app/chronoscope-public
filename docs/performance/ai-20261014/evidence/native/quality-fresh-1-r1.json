@@ -1,0 +1,126 @@
+{
+  "hardwareGate": true,
+  "visualSampledColors": {
+    "100k.png": 1058
+  },
+  "pssPeakMiB": 591.73828125,
+  "cpuMeanPercent": 74.55128806459177,
+  "gpuElapsedMs": null,
+  "reasonGpuElapsedNull": "WebKit does not expose EXT_disjoint_timer_query_webgl2",
+  "samples": [
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 6562,
+      "event": "sample",
+      "info": {
+        "calls": 190,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "n": 89,
+        "p50": 77,
+        "p95": 86,
+        "p99": 88
+      },
+      "label": "orbit100k",
+      "points": 100000,
+      "qualityChanged": false,
+      "renderScale": 1,
+      "submit": {
+        "n": 90,
+        "p50": 2,
+        "p95": 3,
+        "p99": 5.000000000001819
+      },
+      "wholeDrawJs": {
+        "n": 90,
+        "p50": 2,
+        "p95": 3,
+        "p99": 5.000000000001819
+      }
+    }
+  ],
+  "construction": [],
+  "picking": [],
+  "timeline": [],
+  "imports": [],
+  "terrainReuse": [
+    {
+      "event": "terrain-reuse",
+      "ms": [
+        359,
+        347,
+        348,
+        348,
+        342,
+        345
+      ],
+      "points": 100000,
+      "rebuilds": 7,
+      "stats": {
+        "n": 6,
+        "p50": 348,
+        "p95": 359,
+        "p99": 359
+      }
+    }
+  ],
+  "staticTerrain": [
+    {
+      "event": "static-terrain",
+      "ms": [
+        366,
+        355,
+        353,
+        364,
+        362.00000000000364,
+        345.99999999999636
+      ],
+      "points": 100000,
+      "retained": false,
+      "stats": {
+        "n": 6,
+        "p50": 362.00000000000364,
+        "p95": 366,
+        "p99": 366
+      }
+    }
+  ],
+  "complete": true,
+  "engineCounters": [
+    {
+      "pci": "0000:00:02.0",
+      "engineSecondsDelta": 0.0,
+      "maxResidentVRAMKiB": null
+    },
+    {
+      "pci": "0000:3a:00.0",
+      "engineSecondsDelta": 0.0,
+      "maxResidentVRAMKiB": 4248
+    },
+    {
+      "pci": "0000:3a:00.0",
+      "engineSecondsDelta": 6.065963043,
+      "maxResidentVRAMKiB": 208820
+    }
+  ],
+  "phaseEngineSecondsByDriver": {
+    "startup": {
+      "i915": 0.0,
+      "amdgpu": 0.135330812
+    },
+    "orbit100k": {
+      "i915": 0.0,
+      "amdgpu": 5.876065269
+    }
+  }
+}

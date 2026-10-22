@@ -1,0 +1,16 @@
+{
+  "glyphs": {
+    "circle": "SphereGeometry",
+    "triangle": "CircleGeometry",
+    "segments": 3,
+    "count": 2
+  },
+  "siRequests": 7,
+  "externalCalls": 4,
+  "externalWrites": 1,
+  "externalCompatibility": "2025-11-25 initialize/session fallback, bearer failure, 2 MiB response bound, output-schema rejection",
+  "externalProtocol": "2026-07-28 / Streamable HTTP JSON discovery + SSE tool results",
+  "errors": [],
+  "publicWmtsRequests": 0,
+  "provider": "localhost scripted fixture; no live model used"
+}

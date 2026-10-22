@@ -1,0 +1,344 @@
+{
+  "bounds": [
+    -79.99,
+    43.22,
+    -79.91,
+    43.29
+  ],
+  "observations": [
+    {
+      "id": "1",
+      "lat": 43.25,
+      "lon": -79.96
+    }
+  ],
+  "terrain": {
+    "bounds": [
+      -79.99,
+      43.22,
+      -79.91,
+      43.29
+    ],
+    "vertices": 16641
+  },
+  "textured": true,
+  "camera": [
+    0.2812795080636024,
+    1.5065983250576134,
+    1.5871150615315357
+  ],
+  "target": [
+    0,
+    0,
+    0
+  ],
+  "readout": "NASA Global Imagery Browse Services for EOSDIS · time 2000-12-01 · DTED · MSL display heights; no geoid correction · 4× vertical",
+  "scene": {
+    "mode": "globe",
+    "camera_zoom": 4.1,
+    "table_source": null,
+    "table_attributes": false,
+    "table_respect_filters": false,
+    "table_sort": "time",
+    "table_descending": false,
+    "position": [
+      0.2812795080636024,
+      1.5065983250576134,
+      1.5871150615315357
+    ],
+    "target": [
+      0,
+      0,
+      0
+    ],
+    "time_height": 2.8,
+    "focus": 0,
+    "bounds": [
+      -79.99,
+      43.22,
+      -79.91,
+      43.29
+    ],
+    "table_open": false,
+    "inspector_tab": "inspect",
+    "expanded": false
+  },
+  "wmts": {
+    "requests": 0,
+    "cache_hits": 21,
+    "tiles": 4,
+    "layer": "Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual",
+    "time": "2000-12-01"
+  },
+  "errors": [],
+  "geometries": [
+    {
+      "entity": "Route",
+      "id": "2",
+      "shape": {
+        "bounds": [
+          -79.98,
+          43.24,
+          -79.92,
+          43.28
+        ],
+        "dimensions": "XY",
+        "kind": "LineString",
+        "lines": [
+          [
+            [
+              -79.98,
+              43.24
+            ],
+            [
+              -79.95,
+              43.26
+            ],
+            [
+              -79.92,
+              43.28
+            ]
+          ]
+        ],
+        "points": [],
+        "polygons": [],
+        "vertex_count": 3
+      },
+      "time": 1767226200
+    },
+    {
+      "entity": "Area with hole",
+      "id": "3",
+      "shape": {
+        "bounds": [
+          -79.975,
+          43.245,
+          -79.955,
+          43.265
+        ],
+        "dimensions": "XY",
+        "kind": "Polygon",
+        "lines": [],
+        "points": [],
+        "polygons": [
+          [
+            [
+              [
+                -79.975,
+                43.245
+              ],
+              [
+                -79.955,
+                43.245
+              ],
+              [
+                -79.955,
+                43.265
+              ],
+              [
+                -79.975,
+                43.265
+              ],
+              [
+                -79.975,
+                43.245
+              ]
+            ],
+            [
+              [
+                -79.97,
+                43.25
+              ],
+              [
+                -79.97,
+                43.26
+              ],
+              [
+                -79.96,
+                43.26
+              ],
+              [
+                -79.96,
+                43.25
+              ],
+              [
+                -79.97,
+                43.25
+              ]
+            ]
+          ]
+        ],
+        "vertex_count": 10
+      },
+      "time": 1767226800
+    },
+    {
+      "entity": "Multiple points",
+      "id": "4",
+      "shape": {
+        "bounds": [
+          -79.94,
+          43.245,
+          -79.92,
+          43.255
+        ],
+        "dimensions": "XY",
+        "kind": "MultiPoint",
+        "lines": [],
+        "points": [
+          [
+            -79.94,
+            43.245
+          ],
+          [
+            -79.93,
+            43.25
+          ],
+          [
+            -79.92,
+            43.255
+          ]
+        ],
+        "polygons": [],
+        "vertex_count": 3
+      },
+      "time": 1767227400
+    },
+    {
+      "entity": "Multiple routes",
+      "id": "5",
+      "shape": {
+        "bounds": [
+          -79.98,
+          43.27,
+          -79.945,
+          43.285
+        ],
+        "dimensions": "XY",
+        "kind": "MultiLineString",
+        "lines": [
+          [
+            [
+              -79.98,
+              43.27
+            ],
+            [
+              -79.965,
+              43.28
+            ]
+          ],
+          [
+            [
+              -79.955,
+              43.275
+            ],
+            [
+              -79.945,
+              43.285
+            ]
+          ]
+        ],
+        "points": [],
+        "polygons": [],
+        "vertex_count": 4
+      },
+      "time": 1767228000
+    },
+    {
+      "entity": "Multiple areas",
+      "id": "6",
+      "shape": {
+        "bounds": [
+          -79.945,
+          43.265,
+          -79.92,
+          43.275
+        ],
+        "dimensions": "XY",
+        "kind": "MultiPolygon",
+        "lines": [],
+        "points": [],
+        "polygons": [
+          [
+            [
+              [
+                -79.945,
+                43.265
+              ],
+              [
+                -79.935,
+                43.265
+              ],
+              [
+                -79.94,
+                43.275
+              ],
+              [
+                -79.945,
+                43.265
+              ]
+            ]
+          ],
+          [
+            [
+              [
+                -79.93,
+                43.265
+              ],
+              [
+                -79.92,
+                43.265
+              ],
+              [
+                -79.925,
+                43.275
+              ],
+              [
+                -79.93,
+                43.265
+              ]
+            ]
+          ]
+        ],
+        "vertex_count": 8
+      },
+      "time": 1767228600
+    },
+    {
+      "entity": "Collection",
+      "id": "7",
+      "shape": {
+        "bounds": [
+          -79.98,
+          43.285,
+          -79.965,
+          43.285
+        ],
+        "dimensions": "XY",
+        "kind": "GeometryCollection",
+        "lines": [
+          [
+            [
+              -79.98,
+              43.285
+            ],
+            [
+              -79.965,
+              43.285
+            ]
+          ]
+        ],
+        "points": [
+          [
+            -79.98,
+            43.285
+          ]
+        ],
+        "polygons": [],
+        "vertex_count": 3
+      },
+      "time": 1767229200
+    }
+  ],
+  "provenance": "Synthetic WGS84 WKT shapes; real public DTED2 terrain and cached NASA Landsat rasters"
+}

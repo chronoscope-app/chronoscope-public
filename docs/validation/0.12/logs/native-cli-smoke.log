@@ -1,0 +1,1 @@
+Passed: desktop binary --help, agent enable/config/disable, paths with spaces, and real stdio MCP initialization/discovery/query without a display.

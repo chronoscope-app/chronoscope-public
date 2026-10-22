@@ -1,0 +1,18 @@
+{
+  "meshes": {
+    "features": 6,
+    "fillMeshes": 3,
+    "points": 1,
+    "triangles": 0
+  },
+  "rasterMeshes": 1,
+  "status": "64 map tiles · 1 cache hits · 65 network requests this session",
+  "toasts": [],
+  "geometries": 6,
+  "uniqueTiles": 64,
+  "networkTileRequests": 64,
+  "peakConcurrency": 8,
+  "publicRequests": 0,
+  "offlineReuse": true,
+  "errors": []
+}

@@ -1,0 +1,53 @@
+{
+  "meshes": {
+    "features": 6,
+    "fillMeshes": 3,
+    "points": 3,
+    "triangles": 0
+  },
+  "rasterMeshes": 1,
+  "nativeImageryLayers": 4,
+  "nativeImageryTilesRequested": 16,
+  "status": "64 map tiles \u00b7 1 layers loaded",
+  "toasts": [],
+  "renderer": "Cesium native imagery",
+  "geometries": 6,
+  "uniqueTiles": 128,
+  "networkTileRequests": 128,
+  "peakConcurrency": 8,
+  "publicRequests": 0,
+  "datumCaveat": "N43 source says MSL; EGM96 explicitly selected as test assumption, not source-proven datum",
+  "offlineReuse": true,
+  "stack": {
+    "datelineZoom": {
+      "greenwich": 14.061885739622602,
+      "dateline": 14.061885740099354
+    },
+    "servers": 2,
+    "layers": 2,
+    "compositeSurfaces": 1,
+    "opacity": "50% blended with transparent holes",
+    "zoomBoundary": 4,
+    "overviewZoom": 2.3839159235914273,
+    "closeZoom": 5,
+    "portable": true,
+    "terrain": {
+      "textureWidth": 1368,
+      "textureHeight": 2048,
+      "nativeProvider": "Do",
+      "covered": 66049,
+      "sampleEllipsoidHeight": 424.8469647530224,
+      "renderedTerrainHeight": 424.2793893511877,
+      "frameBounds": [
+        -79.99,
+        43.22,
+        -79.91,
+        43.29
+      ],
+      "datum": "egm96",
+      "sceneMode": 1
+    }
+  },
+  "savedServerSwitching": "Two named local WMTS servers and two layers persist and switch after reload",
+  "errors": []
+}

@@ -1,0 +1,54 @@
+diff --git a/src/engine.rs b/src/engine.rs
+index ca742dd..ead37e6 100644
+--- a/src/engine.rs
++++ b/src/engine.rs
+@@ -637,7 +637,7 @@ impl Engine {
+             "snapshot" => {
+                 let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+                 let p = &s.project;
+-                let mut v = s.store.summary(&p.filter)?;
++                let mut v = s.store.summary_mode(&p.filter, args["compact"].as_bool().unwrap_or(false))?;
+                 let limit = args["selection_limit"].as_u64().unwrap_or(1000) as usize;
+                 for (k, value) in [
+                     ("revision", json!(s.revision)),
+diff --git a/src/store.rs b/src/store.rs
+index 04bb8a5..43a58c9 100644
+--- a/src/store.rs
++++ b/src/store.rs
+@@ -1312,7 +1312,10 @@ impl DataStore {
+         Ok(())
+     }
+     pub fn summary(&self, filter: &Filter) -> Result<Value, String> {
+-        let key = serde_json::to_string(&(self.data_revision, self.selection_revision, filter))
++        self.summary_mode(filter, false)
++    }
++    pub fn summary_mode(&self, filter: &Filter, compact: bool) -> Result<Value, String> {
++        let key = serde_json::to_string(&(self.data_revision, self.selection_revision, filter, compact))
+             .map_err(err)?;
+         if let Some(v) = self.summary_cache.borrow().get(&key) {
+             return Ok(v.clone());
+@@ -1332,6 +1335,9 @@ impl DataStore {
+             }
+             Ok(Value::Object(value))
+         };
++        let mut histogram = vec![0u64; 100];
++        let mut selected = vec![0u64; 100];
++        if !compact {
+         let mut q=self.connection.prepare(&format!("SELECT min(99,cast((e.time-?1)*100.0/(?2-?1) AS INTEGER)),count(*),sum(e.id IN (SELECT id FROM selection)) FROM {table} o JOIN events e ON e.r=o.r GROUP BY 1")).map_err(err)?;
+         let rows = q
+             .query_map(params![lo, hi], |r| {
+@@ -1342,13 +1348,12 @@ impl DataStore {
+                 ))
+             })
+             .map_err(err)?;
+-        let mut histogram = vec![0u64; 100];
+-        let mut selected = vec![0u64; 100];
+         for row in rows {
+             let (b, n, s) = row.map_err(err)?;
+             histogram[b] = n;
+             selected[b] = s;
+         }
++        }
+         let mut q=self.connection.prepare(&format!("SELECT count(e.value),avg(e.value),min(e.value),max(e.value),sum(e.value) FROM {table} o JOIN events e ON e.r=o.r")).map_err(err)?;
+         let mut stats=q.query_row([],|r|Ok(json!({"count":r.get::<_,u64>(0)?,"mean":r.get::<_,Option<f64>>(1)?,"min":r.get::<_,Option<f64>>(2)?,"max":r.get::<_,Option<f64>>(3)?,"sum":r.get::<_,Option<f64>>(4)?.unwrap_or(0.)}))).map_err(err)?;
+         let n = stats["count"].as_u64().unwrap() as usize;

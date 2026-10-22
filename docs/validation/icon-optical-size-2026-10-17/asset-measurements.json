@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "macos": [
+    {
+      "theme": "light",
+      "width": 512,
+      "height": 512,
+      "bounds": {
+        "left": 50,
+        "top": 50,
+        "right": 461,
+        "bottom": 461
+      },
+      "body_percent": 80.46875
+    },
+    {
+      "theme": "dark",
+      "width": 512,
+      "height": 512,
+      "bounds": {
+        "left": 50,
+        "top": 50,
+        "right": 461,
+        "bottom": 461
+      },
+      "body_percent": 80.46875
+    }
+  ],
+  "windows_linux_unchanged": true,
+  "pure_black_preserved": true
+}

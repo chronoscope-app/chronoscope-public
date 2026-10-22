@@ -1,0 +1,3386 @@
+{
+  "scope": "Exact identities for 32 current media and 255 historical object/path pairs. Historical rights gaps are retained; retired assets are excluded from HEAD, not retroactively cleared.",
+  "credits": {
+    "blue_marble": "NASA / Robert Simmon and Reto Stöckli; https://earthobservatory.nasa.gov/images/57730/the-blue-marble-2002 ; https://www.nasa.gov/nasa-brand-center/images-and-media/",
+    "black_rock": "Scott LaPoint (2026), Hudson Highlands Wildlife Connectivity Project; https://doi.org/10.5441/001/1.652 ; CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ ; selected/aggregated/rendered by Chronoscope",
+    "eox": "EOxCloudless by EOX IT Services GmbH / modified Copernicus Sentinel data 2024; https://cloudless.eox.at/ ; CC BY-NC-SA 4.0 https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "natural_earth": "Natural Earth II public-domain shaded relief; https://www.naturalearthdata.com/about/terms-of-use/ ; downsampled without color alteration"
+  },
+  "rows": [
+    {
+      "path": "docs/assistant-tools.png",
+      "oid": "b1491ce4927c2d668a0e1c96974b1d1e2f217597",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:133",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-close-zoom-08.png",
+      "oid": "b41b1a7b663437d6f1388e5044b42a5df897e869",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Synthetic San Francisco study, close-up bundled NASA Blue Marble globe surface; no detailed external WMTS imagery",
+      "license": "NASA media guidelines; preserve NASA / Robert Simmon / Reto Stöckli credit, no endorsement",
+      "evidence": [
+        "2076486:frontend/scripts/hardening-qa.mjs:70-72 disables map",
+        "docs/VALIDATION.md:109",
+        "full-resolution visible Geography layer: WGS84 globe · NASA Blue Marble"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Historical earlier object matched visually but its exact generating run was not reconstructed. NASA exact legacy image record redirects; copyright exception review incomplete.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-dark.png",
+      "oid": "e170236680ca43f0d21ff28f4da4409bab404aff",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:197",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-light.png",
+      "oid": "1fe886ffd5e66f20fe97e081ddbd4831a1a13197",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:197",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-raster-test.png",
+      "oid": "f666498cc688876d385a6b4fd55a7a1ad0773dd0",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:197",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-webgpu-atlas.png",
+      "oid": "f7ec6f779a1f1c82174a7257b1c26822dedbeb60",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Generated #00ff00 GPU test atlas over bundled NASA Blue Marble, not a commercial satellite tile",
+      "license": "NASA media guidelines on underlying globe; synthetic atlas does not acquire imagery license",
+      "evidence": [
+        "177e4ff:frontend/scripts/qa.mjs:799-837; creates 128x128 green canvas, attribution Synthetic GPU atlas",
+        "3b4f229:frontend/scripts/qa.mjs:837 same capture logic",
+        "assets/NOTICE.md:10-16"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Current and historical objects visually agree with exact retained capture code; NASA original-record exception review incomplete.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/help-guide.png",
+      "oid": "5faf64a2ffd2ff19f7170236352dbb3aa00e7db6",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:207",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/map-2d.png",
+      "oid": "a62ce2c2c3b9cc7e16794dd5fbac0d0ece984996",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:197",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-agent-map-05.png",
+      "oid": "65aad2dffd394b44ece479152d4b6dd947a5a177",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-appdir.png",
+      "oid": "70a0d955b67ae51110f5c82ae46dd04809b523f2",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "SHA-256 identical to docs/native-appimage.png and docs/native-tauri.png"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-appimage.png",
+      "oid": "70a0d955b67ae51110f5c82ae46dd04809b523f2",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/USGS dataset capture context",
+      "license": "agency public data policy; background imagery separate",
+      "evidence": "docs/VALIDATION.md:251",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-tauri.png",
+      "oid": "70a0d955b67ae51110f5c82ae46dd04809b523f2",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-attribute-table-04.png",
+      "oid": "084b3746142011508617bd9a65ad20f35e97e320",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:195",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/attributes.png",
+      "oid": "084b3746142011508617bd9a65ad20f35e97e320",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/capture/assets/attributes.png",
+      "oid": "084b3746142011508617bd9a65ad20f35e97e320",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-filter.png",
+      "oid": "95dacfc9b59f9abcf1076af7b042891caf7155e0",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-globe-04.png",
+      "oid": "3e2a7c428757f830048899c0b53bd854956a206b",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:195",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-globe-study-04.png",
+      "oid": "6c0f0d0a4e35ad01dc9da95745d4ed37647bcf2c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-globe-terrain-04.png",
+      "oid": "12089db0ccba4023ef59f4323681ddb26e3f347c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:195",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/globe-terrain.png",
+      "oid": "12089db0ccba4023ef59f4323681ddb26e3f347c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/capture/assets/globe-terrain.png",
+      "oid": "12089db0ccba4023ef59f4323681ddb26e3f347c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-help-03.png",
+      "oid": "eb25045d888c28d5150be581325f17dd94c8aaef",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:205",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-help-04.png",
+      "oid": "dd0be04ea8ee6066764a3f166e81049f3ca24797",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:195",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-import.png",
+      "oid": "0b084895909285acc13affcf428bafacaa21542d",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-map-04.png",
+      "oid": "c0e0e2ef7c58c599adfe2682ca6847a05e46134d",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:195",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-mcp-globe-05.png",
+      "oid": "acd9f0de7d1d42e77381dbee115f61ff84687744",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-mcp-map-05.png",
+      "oid": "bd0180eec6e7c5eebb29dfb573c28163727d18a4",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-mcp-terrain-05.png",
+      "oid": "d7ec779332a79aa8daf17aece851be3293cbad76",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-mcp-world-05.png",
+      "oid": "1bd0976a4d054a3bf7d903ebe22430121ef97447",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/VALIDATION.md:159 native MCP maps and offline follow-up; visual world matches bundled image"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-mcp-world-light-05.png",
+      "oid": "54093cc77601b9eda45e839cd182e0d358fcfca5",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/VALIDATION.md:159 native MCP maps and offline follow-up; visual world matches bundled image"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-open-04.png",
+      "oid": "fa9a7e1ea8e5b44e6d45eb1014e73e23dd752d70",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA GIBS Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual, nominal 2000-12-01, Ontario terrain and synthetic data",
+      "license": "NASA imagery guidance; terrain source distinct, not automatically GDAL MIT",
+      "evidence": [
+        "docs/GIS-ACCURACY.md:60-67",
+        "docs/gis-capture-report.json exact layer/time/four level-12 tiles",
+        "docs/VALIDATION.md:33 for bloom-ground-map and companion test context"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "DTED2 Mapzen/Terrain Tiles N43W080 conversion in historical closeups needs underlying terrain-source credit chain. 0.13.3 uses exact n43.dt0 whose permission chain remains incomplete. Filename association of bloom-ground-space-time is adjacent-run evidence, not exact named link in docs.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-terrain-closeup-051-canvas.png",
+      "oid": "db37ec9fa5a589879b4a7ed65a69bff21025f985",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA GIBS Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual, nominal 2000-12-01, Ontario terrain and synthetic data",
+      "license": "NASA imagery guidance; terrain source distinct, not automatically GDAL MIT",
+      "evidence": [
+        "docs/GIS-ACCURACY.md:60-67",
+        "docs/gis-capture-report.json exact layer/time/four level-12 tiles",
+        "docs/VALIDATION.md:33 for bloom-ground-map and companion test context"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "DTED2 Mapzen/Terrain Tiles N43W080 conversion in historical closeups needs underlying terrain-source credit chain. 0.13.3 uses exact n43.dt0 whose permission chain remains incomplete. Filename association of bloom-ground-space-time is adjacent-run evidence, not exact named link in docs.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-terrain-closeup-051.png",
+      "oid": "63b47b653ef50b5298714e0bb6cad0d8d701eb0d",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/GIS-ACCURACY.md:60",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-terrain-true-scale-051-canvas.png",
+      "oid": "bc5e6ef246058c53c0107775ab6b029dc0633797",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA GIBS Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual, nominal 2000-12-01, Ontario terrain and synthetic data",
+      "license": "NASA imagery guidance; terrain source distinct, not automatically GDAL MIT",
+      "evidence": [
+        "docs/GIS-ACCURACY.md:60-67",
+        "docs/gis-capture-report.json exact layer/time/four level-12 tiles",
+        "docs/VALIDATION.md:33 for bloom-ground-map and companion test context"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "DTED2 Mapzen/Terrain Tiles N43W080 conversion in historical closeups needs underlying terrain-source credit chain. 0.13.3 uses exact n43.dt0 whose permission chain remains incomplete. Filename association of bloom-ground-space-time is adjacent-run evidence, not exact named link in docs.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-terrain-true-scale-051.png",
+      "oid": "a60405ce9ffaf88ebd2a706e5add52a0e6f5fad5",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/GIS-ACCURACY.md:62",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/native-workspace-03.png",
+      "oid": "ac6cd3255b8030ce3ba95f98a514da496c02bf84",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:205",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/portable-workspace.png",
+      "oid": "7129018b4efc548a8712cd7b5ba626d14d845928",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:207",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/preview.png",
+      "oid": "56631b3ff4ef67c83476ddabbffd739506fefd91",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "visible synthetic demonstration workspace; exact original test-run linkage incomplete"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/qa/calendar.png",
+      "oid": "443bf39041fa122e4f3b4f94b5f13342ae5e3509",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "visible synthetic demonstration workspace; exact original test-run linkage incomplete"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/qa/edited-event.png",
+      "oid": "ff7a5a68a0494313aa884af753e9fc344c144a2c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "visible synthetic demonstration workspace; exact original test-run linkage incomplete"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/qa/excel-import.png",
+      "oid": "f88b328ddb7546b82ea657494057512782bdbb8b",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "visible synthetic demonstration workspace; exact original test-run linkage incomplete"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/qa/map.png",
+      "oid": "569f8bcb2ccca0f3d46be4d0f0f0947edf6a8eea",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "visible synthetic demonstration workspace; exact original test-run linkage incomplete"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/qa/network.png",
+      "oid": "451c9cf61db79f43a6d1fe969a086e5eb5b3d5d9",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "visible synthetic demonstration workspace; exact original test-run linkage incomplete"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/qa/pattern-selection.png",
+      "oid": "d6f1a6ed0ac7b2ce8c9e8908679b019bb018d12c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "visible synthetic demonstration workspace; exact original test-run linkage incomplete"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/qa/reopened-project.png",
+      "oid": "6622cc634959379fdb3d574a5b6d1a8c6f15e697",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "visible synthetic demonstration workspace; exact original test-run linkage incomplete"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/compass-bloom-2026-10-15/compass.png",
+      "oid": "3d783601e8603ed321639118fd358850a88e4504",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA hurricane data + cached NASA GIBS",
+      "license": "NOAA public-domain data / NASA media guidelines",
+      "evidence": "docs/screenshots/compass-bloom-2026-10-15/README.md:7",
+      "verification": "directory expressly describes all four captures",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/compass-bloom-2026-10-15/light.png",
+      "oid": "2dba0ee4164cb2d132b8d60303e75dcb8be65c17",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA hurricane data + cached NASA GIBS",
+      "license": "NOAA public-domain data / NASA media guidelines",
+      "evidence": "docs/screenshots/compass-bloom-2026-10-15/README.md:7",
+      "verification": "directory expressly describes all four captures",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/compass-bloom-2026-10-15/map.png",
+      "oid": "7aea4e7d72c25c22e5ead0afa905c5e470b5dd57",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA hurricane data + cached NASA GIBS",
+      "license": "NOAA public-domain data / NASA media guidelines",
+      "evidence": "docs/screenshots/compass-bloom-2026-10-15/README.md:7",
+      "verification": "directory expressly describes all four captures",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/compass-bloom-2026-10-15/space-time.png",
+      "oid": "d1e999823c72489e155176718c917d857ccf31c1",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA hurricane data + cached NASA GIBS",
+      "license": "NOAA public-domain data / NASA media guidelines",
+      "evidence": "docs/screenshots/compass-bloom-2026-10-15/README.md:7",
+      "verification": "directory expressly describes all four captures",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/linked-workspace.png",
+      "oid": "755e96bf10338d77390b147ed1bab3706bd81145",
+      "current_path": true,
+      "current_blob": false,
+      "source": "NOAA/USGS dataset capture context",
+      "license": "agency public data policy; background imagery separate",
+      "evidence": "docs/screenshots/current/README.md:8",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/repeating-patterns.png",
+      "oid": "d66b39f3feaa88eccf0098d89fa88a172e1620f3",
+      "current_path": true,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/screenshots/current/README.md:9",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/si-analysis.png",
+      "oid": "e41ddddf3e82c1983c86d817cdaacf44dc8a4c2b",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/screenshots/current/README.md:10",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/space-time.png",
+      "oid": "f1a2c5d4c74330f11c527ac267d564bb665eb6ae",
+      "current_path": true,
+      "current_blob": false,
+      "source": "NOAA/USGS dataset capture context",
+      "license": "agency public data policy; background imagery separate",
+      "evidence": "docs/screenshots/current/README.md:7",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/terrain-closeup-gis-canvas.png",
+      "oid": "76bb2add01734aaa090be4d0a71d42f8567305e2",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA GIBS Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual, nominal 2000-12-01, Ontario terrain and synthetic data",
+      "license": "NASA imagery guidance; terrain source distinct, not automatically GDAL MIT",
+      "evidence": [
+        "docs/GIS-ACCURACY.md:60-67",
+        "docs/gis-capture-report.json exact layer/time/four level-12 tiles",
+        "docs/VALIDATION.md:33 for bloom-ground-map and companion test context"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "DTED2 Mapzen/Terrain Tiles N43W080 conversion in historical closeups needs underlying terrain-source credit chain. 0.13.3 uses exact n43.dt0 whose permission chain remains incomplete. Filename association of bloom-ground-space-time is adjacent-run evidence, not exact named link in docs.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/terrain-closeup-gis.png",
+      "oid": "87a93e57b4b3962609eb9eb49b9bdc52366c2dde",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/GIS-ACCURACY.md:62",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/terrain-wmts.png",
+      "oid": "fdc773ec16b923014e6ac9d3ef93a3a6ccf56095",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/triangles-terrain.png",
+      "oid": "c94c880facc538ccd729a78279c0f81e5cb135b9",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:133",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.11/linked-selection.png",
+      "oid": "647c5d2af739b8880db48c15875e6c6ad79e06bc",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "docs/validation/0.11/README.md local provider and WMTS fixtures, not live services"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.11/si-chat-dark.png",
+      "oid": "7be0bebf69b6904e640e325f1c830901bc0a08e3",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "docs/validation/0.11/README.md local provider and WMTS fixtures, not live services"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.11/si-chat-light.png",
+      "oid": "31e93ddcdbd089b556890702f4b0073132dccfaf",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "docs/validation/0.11/README.md local provider and WMTS fixtures, not live services"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.12/mcp-tool-grants.png",
+      "oid": "7bfc821b3293d0d62b569beb6ae5b213d8558ed1",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/validation/0.12/README.md:13",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.12/multi-server-dted-drape.png",
+      "oid": "112b3eda7c010d7fd71666fd09e2a300aa183c57",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/validation/0.12/README.md:12",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.12/multi-server-layer-settings.png",
+      "oid": "16c76614df222b1894862e7ea26bc4adc14a04ec",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/validation/0.12/README.md:11",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.12/multi-server-zoom-handoff.png",
+      "oid": "f6934bac3ca37b6da85fc7e5f0694d269f74dcdc",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Programmatically generated 256x256 RGBA local tiles; no copied geographic map",
+      "license": "Synthetic fixture/application capture; real DTED only if actually rendered (not evident in this flat capture)",
+      "evidence": [
+        "frontend/scripts/wkt-wmts-qa.mjs:241-249 generated PNG channels",
+        "frontend/scripts/wkt-wmts-qa.mjs:670 exact screenshot filename",
+        "docs/validation/0.12/README.md local synthetic WMTS"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.12/si-external-mcp.png",
+      "oid": "eb66987c8df651545343c1d494b157422964cabc",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:71",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.13.3/bloom-ground-map.png",
+      "oid": "aa633fcf3e10a6d219d4a58793c9ca47125ebd0b",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA GIBS Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual, nominal 2000-12-01, Ontario terrain and synthetic data",
+      "license": "NASA imagery guidance; terrain source distinct, not automatically GDAL MIT",
+      "evidence": [
+        "docs/GIS-ACCURACY.md:60-67",
+        "docs/gis-capture-report.json exact layer/time/four level-12 tiles",
+        "docs/VALIDATION.md:33 for bloom-ground-map and companion test context"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "DTED2 Mapzen/Terrain Tiles N43W080 conversion in historical closeups needs underlying terrain-source credit chain. 0.13.3 uses exact n43.dt0 whose permission chain remains incomplete. Filename association of bloom-ground-space-time is adjacent-run evidence, not exact named link in docs.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.13.3/bloom-ground-space-time.png",
+      "oid": "5c99e84b35717d7f260fa9622f0841ff896fa948",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA GIBS Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual, nominal 2000-12-01, Ontario terrain and synthetic data",
+      "license": "NASA imagery guidance; terrain source distinct, not automatically GDAL MIT",
+      "evidence": [
+        "docs/GIS-ACCURACY.md:60-67",
+        "docs/gis-capture-report.json exact layer/time/four level-12 tiles",
+        "docs/VALIDATION.md:33 for bloom-ground-map and companion test context"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "DTED2 Mapzen/Terrain Tiles N43W080 conversion in historical closeups needs underlying terrain-source credit chain. 0.13.3 uses exact n43.dt0 whose permission chain remains incomplete. Filename association of bloom-ground-space-time is adjacent-run evidence, not exact named link in docs.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.13.3/heat-ground-space-time.png",
+      "oid": "d7008086e27330a420532e98082020d5ab61b379",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:33",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.13/globe-heatmap.png",
+      "oid": "6cd7afeeed6b77fa09efc8564a719b3990349445",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/VALIDATION.md:57; full scene shows flat close-up underlying globe, not detailed WELD"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.13/heatmap.png",
+      "oid": "471560146f1e3a3d9a43216f23ea8a3d47358a41",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "docs/VALIDATION.md:57; heat blobs rendered on plain grid"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-density-training/assets/06-heatmap.png",
+      "oid": "471560146f1e3a3d9a43216f23ea8a3d47358a41",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.13/terrain-map-clusters.png",
+      "oid": "858831bf46626b2e419ee000c9f01e94eac59b41",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:57",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/0.13/webmcp-setup.png",
+      "oid": "0311284abaa7a8deea057ccfc47b264092fc446e",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:61",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-webmcp-training/assets/webmcp-setup.png",
+      "oid": "0311284abaa7a8deea057ccfc47b264092fc446e",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/app-capture/app-help-dialog.png",
+      "oid": "075eac04387029cd01dbeba9e31a716f66afcc36",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/validation/app-capture/README.md: native hurricane events; tests disable external maps, bundled imagery/data"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/app-capture/app-with-charts-table.png",
+      "oid": "45f11dfc08130798a462a58c5a72a5fb788e7bcc",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/validation/app-capture/README.md: native hurricane events; tests disable external maps, bundled imagery/data"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/app-capture/detached-si.png",
+      "oid": "86c4fc0f24726885723c0086c6c81d756251aae8",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Chronoscope UI / synthetic observations or fixtures; no recognizable third-party geographic raster visible",
+      "license": "First-party application capture subject to existing incorporated notices; no newly identified map-image license condition",
+      "evidence": [
+        "local visual review: chart/grid/flat synthetic floor, no recognizable geographic imagery",
+        "docs/validation/app-capture/README.md detached chat capture; scripted test message, no map"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/bloom-axis-2026-10-15/globe-bloom-with-events.png",
+      "oid": "f8fe0a9c008a1d8086bdf3f2baeb5a2109e4e576",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Synthetic event/effect footprints, no detailed geographic imagery visible",
+      "license": "Application/test capture, not a third-party satellite image",
+      "evidence": [
+        "docs/validation/bloom-axis-2026-10-15/README.md explicitly synthetic data/effect footprints; no external map requests",
+        "local visual inspection green flat effect plane or empty axes"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/bloom-axis-2026-10-15/map-bloom-with-events.png",
+      "oid": "4188cab5f39be1fdcd388269b62e1c45bbee2c8d",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Synthetic event/effect footprints, no detailed geographic imagery visible",
+      "license": "Application/test capture, not a third-party satellite image",
+      "evidence": [
+        "docs/validation/bloom-axis-2026-10-15/README.md explicitly synthetic data/effect footprints; no external map requests",
+        "local visual inspection green flat effect plane or empty axes"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/bloom-axis-2026-10-15/space-time-bloom-with-events.png",
+      "oid": "8d0d8bf688081d8c1ceee4cd78943c25763986f0",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Synthetic event/effect footprints, no detailed geographic imagery visible",
+      "license": "Application/test capture, not a third-party satellite image",
+      "evidence": [
+        "docs/validation/bloom-axis-2026-10-15/README.md explicitly synthetic data/effect footprints; no external map requests",
+        "local visual inspection green flat effect plane or empty axes"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/bloom-axis-2026-10-15/time-axis-detail.png",
+      "oid": "e69f08932f335194e27ea73afe65fdd277d51d33",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Synthetic event/effect footprints, no detailed geographic imagery visible",
+      "license": "Application/test capture, not a third-party satellite image",
+      "evidence": [
+        "docs/validation/bloom-axis-2026-10-15/README.md explicitly synthetic data/effect footprints; no external map requests",
+        "local visual inspection green flat effect plane or empty axes"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/bloom-axis-2026-10-15/time-axis-overview.png",
+      "oid": "0e3deae05c9058a1e3a302ef74b9674e3b3edd70",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Synthetic event/effect footprints, no detailed geographic imagery visible",
+      "license": "Application/test capture, not a third-party satellite image",
+      "evidence": [
+        "docs/validation/bloom-axis-2026-10-15/README.md explicitly synthetic data/effect footprints; no external map requests",
+        "local visual inspection green flat effect plane or empty axes"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/branding-2026-10-16/compact-attribution-dark.png",
+      "oid": "0fade6cfa82624b5138bd2a93c0e63b88158fe92",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Flat-color synthetic local attribution test raster",
+      "license": "First-party fixture/application capture, no EOX/NASA satellite image claim for visible flat raster",
+      "evidence": [
+        "docs/validation/branding-2026-10-16/README.md explicitly synthetic flat-color raster"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-agents-2026-10-16/native-agent-camera.png",
+      "oid": "e31c248cbf9aaeec6fafe7de31f1471ad06af93c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "full-resolution bottom credit reads NASA Visible Earth / Blue Marble",
+        "docs/validation/cesium-agents-2026-10-16/native-desktop.json:187 public_maps_enabled false"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/ground-bloom.png",
+      "oid": "0854a0fe6b7b246e1c0693d05e7bd841b4febab6",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/ground-heatmap.png",
+      "oid": "7355c5ffeeb979940cdc01c4ed9515e5f891dea1",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/hurricanes-globe.png",
+      "oid": "22f351a2f74cd798eeba74d6ad9af789afe65dd3",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/hurricanes-space-time.png",
+      "oid": "9eb30ff32e1f9286c863174c56d5887fe09e23d4",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/million-clusters.png",
+      "oid": "8ffcddde3a471a2e789c47ee4d6305317ec7151a",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/native-mcp-globe.png",
+      "oid": "61515c520bc217cfa1ebb6cdbba88d9abb8fefcd",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/native-mcp-space-time.png",
+      "oid": "bfc2e4757b2b0578c9477981e11c50e8d3e3127f",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/restored-canvas-capture.png",
+      "oid": "377678269d2962823abc6b2842c5fa8311e3ea8a",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/terrain-dted2-globe.png",
+      "oid": "9eeaaf868bfa0af0fcbedaa8ce48e21c5306a6aa",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/terrain-globe.png",
+      "oid": "9eeaaf868bfa0af0fcbedaa8ce48e21c5306a6aa",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/cesium-prototype-2026-10-15/terrain-space-time.png",
+      "oid": "d49350bda8aee2a8d6ae54ca9df2eefecc88f12b",
+      "current_path": false,
+      "current_blob": false,
+      "source": "mixed NASA/EOX or synthetic renderer capture",
+      "license": "NASA policy / CC-BY-NC-SA-4.0 as imagery present",
+      "evidence": "docs/validation/cesium-prototype-2026-10-15/README.md:45-52",
+      "verification": "directory-level provenance; individual pixels not all matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/comprehensive-2026-10-15/screenshots/atlantic-five-years-bloom-tracks.png",
+      "oid": "35f6374e7dba7c35d234d451970d47a76f66fe26",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/NASA/USGS/GBIF according to named case",
+      "license": "agency policy / occurrence CC-BY/CC0; map terms separate",
+      "evidence": "docs/validation/comprehensive-2026-10-15/README.md:18-30,42-55,83-92",
+      "verification": "case-level provenance; not a universal MIT label",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/comprehensive-2026-10-15/screenshots/atlantic-five-years-heat-tracks.png",
+      "oid": "37a22765b2efbf86cd2934582b2a7fe717540c91",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/NASA/USGS/GBIF according to named case",
+      "license": "agency policy / occurrence CC-BY/CC0; map terms separate",
+      "evidence": "docs/validation/comprehensive-2026-10-15/README.md:18-30,42-55,83-92",
+      "verification": "case-level provenance; not a universal MIT label",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/comprehensive-2026-10-15/screenshots/noaa-excel-stationary.png",
+      "oid": "d5cab3241170c1bbc3945b8034692922a480025b",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/NASA/USGS/GBIF according to named case",
+      "license": "agency policy / occurrence CC-BY/CC0; map terms separate",
+      "evidence": "docs/validation/comprehensive-2026-10-15/README.md:18-30,42-55,83-92",
+      "verification": "case-level provenance; not a universal MIT label",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/comprehensive-2026-10-15/screenshots/ontario-2d-imagery.png",
+      "oid": "d73c6db7d1de9f850f50da32579248a5d8f7b885",
+      "current_path": false,
+      "current_blob": false,
+      "source": "EOX-2024 + GBIF + terrain",
+      "license": "CC-BY-NC-SA-4.0 + occurrence CC-BY/CC0",
+      "evidence": "docs/validation/comprehensive-2026-10-15/README.md:26,49,92",
+      "verification": "named screenshot and directory provenance",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/comprehensive-2026-10-15/screenshots/ontario-terrain-space-time.png",
+      "oid": "a4edf18fb97cd5478ffca75c826c8ff82aff3261",
+      "current_path": false,
+      "current_blob": false,
+      "source": "EOX-2024 + GBIF + terrain",
+      "license": "CC-BY-NC-SA-4.0 + occurrence CC-BY/CC0",
+      "evidence": "docs/validation/comprehensive-2026-10-15/README.md:26,49,92",
+      "verification": "named screenshot and directory provenance",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/comprehensive-2026-10-15/screenshots/usgs-regional-globe.png",
+      "oid": "efde3d88ca9f131fe0574748be29987efb11f06b",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/NASA/USGS/GBIF according to named case",
+      "license": "agency policy / occurrence CC-BY/CC0; map terms separate",
+      "evidence": "docs/validation/comprehensive-2026-10-15/README.md:18-30,42-55,83-92",
+      "verification": "case-level provenance; not a universal MIT label",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/comprehensive-2026-10-15/screenshots/viirs-95718-automatic-clusters.png",
+      "oid": "228b44a0fc3d28fb138c2cdbed22a45ca78fd107",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/NASA/USGS/GBIF according to named case",
+      "license": "agency policy / occurrence CC-BY/CC0; map terms separate",
+      "evidence": "docs/validation/comprehensive-2026-10-15/README.md:18-30,42-55,83-92",
+      "verification": "case-level provenance; not a universal MIT label",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/comprehensive-2026-10-15/screenshots/viirs-light-mode.png",
+      "oid": "df08e3d6e03046ac7b3e4c2876cca9a0c6cb7869",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/NASA/USGS/GBIF according to named case",
+      "license": "agency policy / occurrence CC-BY/CC0; map terms separate",
+      "evidence": "docs/validation/comprehensive-2026-10-15/README.md:18-30,42-55,83-92",
+      "verification": "case-level provenance; not a universal MIT label",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/eight-chart-shortcuts/composition-dark.png",
+      "oid": "7ef0af6ea729c9bd190afcb2c053ac78d879fe1a",
+      "current_path": false,
+      "current_blob": false,
+      "source": "ECharts-rendered chart from Scott LaPoint Black Rock bobcat/fisher CC BY 4.0 data, 3439 Events",
+      "license": "CC BY 4.0 source-data attribution/changes context; chart styling not a replacement for source credit",
+      "evidence": [
+        "docs/validation/eight-chart-shortcuts/README.md Actual app captures explicitly Black Rock 3439 Events",
+        "docs/WILDLIFE-DEMOS.md; DOI 10.5441/001/1.652",
+        "visible chart-only images, no map provider to resolve"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "These are NOT rights-free synthetic charts. Retain Scott LaPoint, source DOI, CC BY 4.0 link and indicate aggregation/rendering. Original audited source metadata supports license; per-image adjacent credit improvement recommended.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/eight-chart-shortcuts/patterns-dark.png",
+      "oid": "2425d5b522af14597c1e960f44ab2f6377c69738",
+      "current_path": false,
+      "current_blob": false,
+      "source": "ECharts-rendered chart from Scott LaPoint Black Rock bobcat/fisher CC BY 4.0 data, 3439 Events",
+      "license": "CC BY 4.0 source-data attribution/changes context; chart styling not a replacement for source credit",
+      "evidence": [
+        "docs/validation/eight-chart-shortcuts/README.md Actual app captures explicitly Black Rock 3439 Events",
+        "docs/WILDLIFE-DEMOS.md; DOI 10.5441/001/1.652",
+        "visible chart-only images, no map provider to resolve"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "These are NOT rights-free synthetic charts. Retain Scott LaPoint, source DOI, CC BY 4.0 link and indicate aggregation/rendering. Original audited source metadata supports license; per-image adjacent credit improvement recommended.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/eight-chart-shortcuts/patterns-light.png",
+      "oid": "9c7d42d355077866a4d3ce64b537053bbe97eebb",
+      "current_path": false,
+      "current_blob": false,
+      "source": "ECharts-rendered chart from Scott LaPoint Black Rock bobcat/fisher CC BY 4.0 data, 3439 Events",
+      "license": "CC BY 4.0 source-data attribution/changes context; chart styling not a replacement for source credit",
+      "evidence": [
+        "docs/validation/eight-chart-shortcuts/README.md Actual app captures explicitly Black Rock 3439 Events",
+        "docs/WILDLIFE-DEMOS.md; DOI 10.5441/001/1.652",
+        "visible chart-only images, no map provider to resolve"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "These are NOT rights-free synthetic charts. Retain Scott LaPoint, source DOI, CC BY 4.0 link and indicate aggregation/rendering. Original audited source metadata supports license; per-image adjacent credit improvement recommended.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/eight-chart-shortcuts/periods-dark.png",
+      "oid": "6ea1c6c048a64ac52c16520ff8b430cd5f1fe78b",
+      "current_path": false,
+      "current_blob": false,
+      "source": "ECharts-rendered chart from Scott LaPoint Black Rock bobcat/fisher CC BY 4.0 data, 3439 Events",
+      "license": "CC BY 4.0 source-data attribution/changes context; chart styling not a replacement for source credit",
+      "evidence": [
+        "docs/validation/eight-chart-shortcuts/README.md Actual app captures explicitly Black Rock 3439 Events",
+        "docs/WILDLIFE-DEMOS.md; DOI 10.5441/001/1.652",
+        "visible chart-only images, no map provider to resolve"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "These are NOT rights-free synthetic charts. Retain Scott LaPoint, source DOI, CC BY 4.0 link and indicate aggregation/rendering. Original audited source metadata supports license; per-image adjacent credit improvement recommended.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/eight-chart-shortcuts/spread-dark.png",
+      "oid": "bd1205f29a267a669cf11ef9d0c1a2f0d788b8a3",
+      "current_path": false,
+      "current_blob": false,
+      "source": "ECharts-rendered chart from Scott LaPoint Black Rock bobcat/fisher CC BY 4.0 data, 3439 Events",
+      "license": "CC BY 4.0 source-data attribution/changes context; chart styling not a replacement for source credit",
+      "evidence": [
+        "docs/validation/eight-chart-shortcuts/README.md Actual app captures explicitly Black Rock 3439 Events",
+        "docs/WILDLIFE-DEMOS.md; DOI 10.5441/001/1.652",
+        "visible chart-only images, no map provider to resolve"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "These are NOT rights-free synthetic charts. Retain Scott LaPoint, source DOI, CC BY 4.0 link and indicate aggregation/rendering. Original audited source metadata supports license; per-image adjacent credit improvement recommended.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/event-terminology-2026-10-15/atlanta-table-controls.png",
+      "oid": "83f070397f29943cd6724cc885e0bd0772ecb447",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/validation/map-presets-controls-2026-10-15/README.md:30",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/event-terminology-2026-10-15/built-in-maps.png",
+      "oid": "39299d30e8c99b08d9018fff4455b6065b39ae01",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/validation/event-terminology-2026-10-15/README.md:19",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/field-roles/field-roles-editor.png",
+      "oid": "eb675592d36d6b267f9ba6f4ee7abd208a61c3ae",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/validation/field-roles/README.md:24-Event synthetic field fixture; no public map requests"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/field-roles/roles-category-chart.png",
+      "oid": "24c025d92656a4a535532f392915d9550a677d89",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/validation/field-roles/README.md:24-Event synthetic field fixture; no public map requests"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/gis-files-2026-10-16/native-polygon-events.png",
+      "oid": "301afcf26cac641d292842609f78af5ed62d9887",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/validation/gis-files-2026-10-16/README.md:9",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/gis-files-2026-10-16/native-tiles.png",
+      "oid": "3d426c3d9711bda5d5ac9a63f7b29ef651caf0df",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/validation/gis-files-2026-10-16/README.md:9",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/gis-files-2026-10-16/polygon-events-time-centroids.png",
+      "oid": "36db44e1a561720cd2848a4095a37cc952529560",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/validation/gis-files-2026-10-16/README.md explicitly coarse bundled Blue Marble and synthetic GIS except Box; no Box model visible in this polygon capture"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/globe-time-2026-10-15/hurricanes-globe-time-dark.png",
+      "oid": "1889fd5ee9b93291c112197cbe5fcf84ed758a42",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/validation/globe-time-2026-10-15/README.md explicitly globe uses bundled NASA Blue Marble; NOAA 1604 source events"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/globe-time-2026-10-15/hurricanes-globe-time-light.png",
+      "oid": "209529b6b86c96eea721e43c9c2121d83a32bcb4",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/validation/globe-time-2026-10-15/README.md explicitly globe uses bundled NASA Blue Marble; NOAA 1604 source events"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/globe-time-2026-10-15/native-globe-time.png",
+      "oid": "101ce27ed8927d6888e8d4296d7569ca7cb96f24",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Small synthetic native local track on uniform dark background",
+      "license": "Application capture; no recognizable NASA pixels visible, although test configuration uses bundled globe",
+      "evidence": [
+        "docs/validation/globe-time-2026-10-15/README.md native fixture small synthetic track"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "First-party authorship not independently warranted; preserve incorporated library/font notices where applicable.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/map-presets-controls-2026-10-15/atlanta-table-controls.png",
+      "oid": "5b0e2d45fee981a689e0d3d09703fd5c7d3f91f6",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/validation/map-presets-controls-2026-10-15/README.md:30",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/map-presets-controls-2026-10-15/built-in-maps.png",
+      "oid": "a5f2169dba665538451e722d836d33b57e0f5f25",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/validation/event-terminology-2026-10-15/README.md:19",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/noaa-hurricanes-2016-2025/bloom.png",
+      "oid": "4e87fb63d1a37969279fd03b8ee6d97d8a1ac939",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA hurricane data + NASA basemap",
+      "license": "NOAA public domain / NASA media guidelines",
+      "evidence": "samples/public/SOURCES.md:5; docs/NOAA-HURRICANE-DEMO.md",
+      "verification": "directory/workflow provenance",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/noaa-hurricanes-2016-2025/heat-map.png",
+      "oid": "0a6fc9d6a7e5f127b02dfa78160805dd2bfcc323",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA hurricane data + NASA basemap",
+      "license": "NOAA public domain / NASA media guidelines",
+      "evidence": "samples/public/SOURCES.md:5; docs/NOAA-HURRICANE-DEMO.md",
+      "verification": "directory/workflow provenance",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/noaa-hurricanes-2016-2025/space-time-heat.png",
+      "oid": "9be2a34858df9baecd94c7eb7623ef23e76b8feb",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA hurricane data + NASA basemap",
+      "license": "NOAA public domain / NASA media guidelines",
+      "evidence": "samples/public/SOURCES.md:5; docs/NOAA-HURRICANE-DEMO.md",
+      "verification": "directory/workflow provenance",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/noaa-hurricanes-2021-2025-tracks/map.png",
+      "oid": "5a57d9eb0a22a20f37779582ef6a81efa81df745",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA hurricane data + NASA basemap",
+      "license": "NOAA public domain / NASA media guidelines",
+      "evidence": "samples/public/SOURCES.md:5; docs/NOAA-HURRICANE-DEMO.md",
+      "verification": "directory/workflow provenance",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/noaa-hurricanes-2021-2025-tracks/space-time.png",
+      "oid": "dffb7d29f8bb0ccecff5c52c9145cdb7ec663d8d",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA hurricane data + NASA basemap",
+      "license": "NOAA public domain / NASA media guidelines",
+      "evidence": "samples/public/SOURCES.md:5; docs/NOAA-HURRICANE-DEMO.md",
+      "verification": "directory/workflow provenance",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/single-corner-frame-2026-10-16/single-corner-hurricanes-dark.png",
+      "oid": "5268478b2a42b98b7d420508385cdb7b2fd9ea60",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/validation/single-corner-frame-2026-10-16/README.md synthetic polygons / NOAA Atlantic tracks; visual-check.json imageryRequestedTiles 0; recognizable bundled map"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/single-corner-frame-2026-10-16/single-corner-polygons-dark.png",
+      "oid": "20e4bee2b8982dc79051ceb7bacf991970593fa2",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/USGS dataset capture context",
+      "license": "agency public data policy; background imagery separate",
+      "evidence": "docs/validation/single-corner-frame-2026-10-16/README.md:7",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/single-corner-frame-2026-10-16/single-corner-polygons-light.png",
+      "oid": "1d1f26f1e722906a8dc4d161e3c622e0eda0bdd7",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Bundled NASA Blue Marble with application/data overlays",
+      "license": "NASA media guidelines; retain NASA / Robert Simmon / Reto Stöckli credit; government content not automatically MIT",
+      "evidence": [
+        "assets/NOTICE.md:10-16",
+        "visible broad-coastline globe/flat map consistent with bundled image; provider not inferred solely from color",
+        "docs/validation/single-corner-frame-2026-10-16/README.md synthetic polygons / NOAA Atlantic tracks; visual-check.json imageryRequestedTiles 0; recognizable bundled map"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Provider refined, not all-MIT clearance. Exact legacy NASA source record now redirects. Retain named credit and NASA third-party/non-endorsement caveat. Data overlays retain their separate source conditions.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/space-time-map-window/space-time-study.png",
+      "oid": "3968a84f5f262ce25ff9a5125400d4a643e1c733",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap Streets with application overlays",
+      "license": "OpenFreeMap service terms + map attribution",
+      "evidence": "docs/validation/space-time-map-window/README.md:51",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/space-time-map-window/space-time-zoomed-out.png",
+      "oid": "334d10bf0324406eee1ac44c827f8b2793436619",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap Streets with application overlays",
+      "license": "OpenFreeMap service terms + map attribution",
+      "evidence": "docs/validation/space-time-map-window/README.md:51",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/streets-2026-10-17/streets-2d.png",
+      "oid": "2c98cbea7cd884ac5afaeccb0bde2a369e7f0244",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap/OpenMapTiles/OpenStreetMap",
+      "license": "OpenFreeMap service terms + OSM attribution/ODbL data rights",
+      "evidence": "docs/validation/streets-2026-10-17/README.md; frontend/src/streets.ts:85-88",
+      "verification": "named Streets capture",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/streets-2026-10-17/streets-globe.png",
+      "oid": "1585319246bd37994fd2127fcda25371b121996f",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap/OpenMapTiles/OpenStreetMap",
+      "license": "OpenFreeMap service terms + OSM attribution/ODbL data rights",
+      "evidence": "docs/validation/streets-2026-10-17/README.md; frontend/src/streets.ts:85-88",
+      "verification": "named Streets capture",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/streets-2026-10-17/streets-settings.png",
+      "oid": "6aef711c8090dd4da1fa56101e736266cf655582",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap/OpenMapTiles/OpenStreetMap",
+      "license": "OpenFreeMap service terms + OSM attribution/ODbL data rights",
+      "evidence": "docs/validation/streets-2026-10-17/README.md; frontend/src/streets.ts:85-88",
+      "verification": "named Streets capture",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/streets-2026-10-17/streets-space-time.png",
+      "oid": "3ccd17f3a867ae3dbacf08dd8e1ac1e0acb77bed",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap/OpenMapTiles/OpenStreetMap",
+      "license": "OpenFreeMap service terms + OSM attribution/ODbL data rights",
+      "evidence": "docs/validation/streets-2026-10-17/README.md; frontend/src/streets.ts:85-88",
+      "verification": "named Streets capture",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/workspace-controls-2026-10-15/noaa-excel-stationary.png",
+      "oid": "3813ade4d83da5ec1414a15e9b2f5048d6c607e7",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/USGS dataset capture context",
+      "license": "agency public data policy; background imagery separate",
+      "evidence": "docs/validation/workspace-controls-2026-10-15/README.md:33",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/workspace-controls-2026-10-15/ontario-terrain-space-time.png",
+      "oid": "931ef8016e4824446d8fd0ce9a011b1ed393ad77",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NOAA/USGS dataset capture context",
+      "license": "agency public data policy; background imagery separate",
+      "evidence": "docs/validation/workspace-controls-2026-10-15/README.md:29",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/workspace-controls-2026-10-15/viirs-light-mode.png",
+      "oid": "af83c0574461995926240aa52ee482ca36634b75",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Real VIIRS detections rendered as clusters on grid; no detailed geographic raster visible",
+      "license": "Public NASA/NOAA FIRMS/VIIRS data provenance must be retained, not EOX merely because same directory tested EOX elsewhere",
+      "evidence": [
+        "docs/validation/workspace-controls-2026-10-15/README.md VIIRS 95718 detections",
+        "public-ui-report.json names exact screenshot",
+        "visual grid-only screenshot"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Exact VIIRS source acquisition/product rights are not established by generic NASA/NOAA label in this bounded follow-up; retain dataset citation/product metadata. No evidence this image contains EOX pixels.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-auto-gpu.png",
+      "oid": "2edeaf3485f922e71abd4c79f57468f82934cb92",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-dark.png",
+      "oid": "7cc556ddfaf2eba5f43394b49bc425b2b5e88fa5",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-light.png",
+      "oid": "cc6b0d9f16c934f94cc0bcbef29bc19ee7d8a435",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/wkt-map.png",
+      "oid": "9fe7c7711fef8bba0003eee786b8eb95ce8c75f9",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:121",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/wkt-terrain.png",
+      "oid": "74e522f78efb29ff55626e14e44fc281a60bd029",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:121",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/public/icon-dark.svg",
+      "oid": "cdcaafc5a12645abafaa54dce42c6d3b751ccf35",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon-dark.svg",
+      "oid": "cdcaafc5a12645abafaa54dce42c6d3b751ccf35",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/public/icon.svg",
+      "oid": "409056d44c76f7c849abe147fbd1c8da2033e2e4",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon-light.svg",
+      "oid": "409056d44c76f7c849abe147fbd1c8da2033e2e4",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon.svg",
+      "oid": "409056d44c76f7c849abe147fbd1c8da2033e2e4",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "frontend/src/assets/earth-blue-marble.jpg",
+      "oid": "bb5f75df5eba852ed6372b3859a9871318f4693a",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA Blue Marble 2002",
+      "license": "NASA media usage guidelines",
+      "evidence": "assets/NOTICE.md:10-16",
+      "verification": "exact asset notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/src/assets/egm96-15-cm.bin",
+      "oid": "34a3dc72f9c33cbadd895d76c836177bb6fec93d",
+      "current_path": true,
+      "current_blob": true,
+      "source": "NGA EGM96 via PROJ-datumgrid 1.8",
+      "license": "public domain",
+      "evidence": "frontend/src/assets/egm96-15-NOTICE.txt:1-24",
+      "verification": "exact asset notice and hash"
+    },
+    {
+      "path": "src-tauri/icons/128x128.png",
+      "oid": "910770292f2692b5ff4361a7607b40e655de07c4",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/128x128@2x.png",
+      "oid": "5a7f747eff1caaab68d8d53316030ba529ecf59e",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/32x32.png",
+      "oid": "de9f93a626e809a2c76eaf9d76081a875e42e998",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon-dark.png",
+      "oid": "3b554e24ce15290c0a633d794b21387ba126f352",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon-dark.svg",
+      "oid": "f5129881b1289486a077f4747ede4e3578a64d45",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon-light.png",
+      "oid": "2b205d33b83debe9dc2e33b003738ea767ed52ef",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon.png",
+      "oid": "2b205d33b83debe9dc2e33b003738ea767ed52ef",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon-macos-dark.png",
+      "oid": "6be6b757528a584ced43e421087aeff7c5e7ce08",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon-macos-dark.svg",
+      "oid": "751fed43e91d34ae5013f9d8d80a63f0c600bf5d",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon-macos-light.png",
+      "oid": "3d127c52b7b365bb941d20b4d31f04c95e7ece76",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon-macos-light.svg",
+      "oid": "ba9d5c6d5a5f34ca436e7922cbcc843d0b035c3a",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon.icns",
+      "oid": "b011c4c610a719e86f246608d1c5a1e52d139fa8",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "src-tauri/icons/icon.ico",
+      "oid": "a9b928fa15f45fc6a211305df5bda81903f8578a",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified"
+    },
+    {
+      "path": "tests/fixtures/cesium/eox-hamilton-z13.jpg",
+      "oid": "5b32577fd541f2f3b4d3fcec6641a5bed93aba49",
+      "current_path": false,
+      "current_blob": false,
+      "source": "EOX-2024",
+      "license": "CC-BY-NC-SA-4.0",
+      "evidence": "tests/fixtures/cesium/README.md:3-19",
+      "verification": "exact fixture notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "samples/gis/box/Box.glb",
+      "oid": "95ec886b6b92b134291fd41d34ac9d5349306e0a",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Khronos Box / Cesium 2017",
+      "license": "CC-BY-4.0",
+      "evidence": "tests/fixtures/gis/README.md:5",
+      "verification": "exact fixture notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "tests/fixtures/gis/box/Box.glb",
+      "oid": "95ec886b6b92b134291fd41d34ac9d5349306e0a",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Khronos Box / Cesium 2017",
+      "license": "CC-BY-4.0",
+      "evidence": "tests/fixtures/gis/README.md:5",
+      "verification": "exact fixture notice"
+    },
+    {
+      "path": "samples/gis/box/Box.gltf",
+      "oid": "7f603f07fcca2aa7992d0f831519e7c2791c5506",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Khronos Box / Cesium 2017",
+      "license": "CC-BY-4.0",
+      "evidence": "tests/fixtures/gis/README.md:5",
+      "verification": "exact fixture notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "tests/fixtures/gis/box/Box.gltf",
+      "oid": "7f603f07fcca2aa7992d0f831519e7c2791c5506",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Khronos Box / Cesium 2017",
+      "license": "CC-BY-4.0",
+      "evidence": "tests/fixtures/gis/README.md:5",
+      "verification": "exact fixture notice"
+    },
+    {
+      "path": "samples/gis/box/Box0.bin",
+      "oid": "d7798abb5161eca17ac8a6883a1f53c6786b484d",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Khronos Box / Cesium 2017",
+      "license": "CC-BY-4.0",
+      "evidence": "tests/fixtures/gis/README.md:5",
+      "verification": "exact fixture notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "tests/fixtures/gis/box/Box0.bin",
+      "oid": "d7798abb5161eca17ac8a6883a1f53c6786b484d",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Khronos Box / Cesium 2017",
+      "license": "CC-BY-4.0",
+      "evidence": "tests/fixtures/gis/README.md:5",
+      "verification": "exact fixture notice"
+    },
+    {
+      "path": "samples/public/n43.dt0",
+      "oid": "855a07dd957e7d943ad816a3824203e7bf9f11f2",
+      "current_path": false,
+      "current_blob": false,
+      "source": "exact same Git blob as current GDAL DTED0 fixture",
+      "license": "NGA/GDAL public-domain provenance; exact n43 notice not found",
+      "evidence": "855a07dd957e7d943ad816a3824203e7bf9f11f2: samples/public/n43.dt0 and tests/fixtures/terrain/n43.dt0",
+      "verification": "identical Git object, upstream bytes independently matched",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "tests/fixtures/terrain/n43.dt0",
+      "oid": "855a07dd957e7d943ad816a3824203e7bf9f11f2",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NGA/NIMA GDAL DTED0 sample",
+      "license": "upstream public-domain provenance under follow-up",
+      "evidence": "tests/fixtures/terrain/SOURCES.md:3",
+      "verification": "exact path source; permission under follow-up",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-density-training/assets/05-density.png",
+      "oid": "02aeb54d919a067e2e9f5ca778310c5a42cc3fee",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-density-training/assets/07-bloom.png",
+      "oid": "ef31d2129de41f5b8fd10e4049d32770ed2f4bb5",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-density-training/assets/11-display-settings.png",
+      "oid": "26be89ec8e068edec8a91e2749bb95ed9e944426",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-density-training/assets/JetBrainsMono.woff2",
+      "oid": "585887339efd032b6b715466ae72d86e306bec79",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Inter/Space Grotesk/JetBrains Mono",
+      "license": "OFL-1.1",
+      "evidence": "sibling *OFL.txt",
+      "verification": "exact named font family notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-training/assets/JetBrainsMono.woff2",
+      "oid": "585887339efd032b6b715466ae72d86e306bec79",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Inter/Space Grotesk/JetBrains Mono",
+      "license": "OFL-1.1",
+      "evidence": "sibling *OFL.txt",
+      "verification": "exact named font family notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-webmcp-training/assets/JetBrainsMono.woff2",
+      "oid": "585887339efd032b6b715466ae72d86e306bec79",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Inter/Space Grotesk/JetBrains Mono",
+      "license": "OFL-1.1",
+      "evidence": "sibling *OFL.txt",
+      "verification": "exact named font family notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-density-training/assets/SpaceGrotesk.ttf",
+      "oid": "a1b2e6c26093066510a31147e7aec9abdc8d6c5e",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Inter/Space Grotesk/JetBrains Mono",
+      "license": "OFL-1.1",
+      "evidence": "sibling *OFL.txt",
+      "verification": "exact named font family notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/fonts/SpaceGrotesk.ttf",
+      "oid": "a1b2e6c26093066510a31147e7aec9abdc8d6c5e",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Inter/Space Grotesk/JetBrains Mono",
+      "license": "OFL-1.1",
+      "evidence": "sibling *OFL.txt",
+      "verification": "exact named font family notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-training/assets/SpaceGrotesk.ttf",
+      "oid": "a1b2e6c26093066510a31147e7aec9abdc8d6c5e",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Inter/Space Grotesk/JetBrains Mono",
+      "license": "OFL-1.1",
+      "evidence": "sibling *OFL.txt",
+      "verification": "exact named font family notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-webmcp-training/assets/SpaceGrotesk.ttf",
+      "oid": "a1b2e6c26093066510a31147e7aec9abdc8d6c5e",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Inter/Space Grotesk/JetBrains Mono",
+      "license": "OFL-1.1",
+      "evidence": "sibling *OFL.txt",
+      "verification": "exact named font family notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-density-training/density-heat-bloom.mp4",
+      "oid": "ec4f7aae4c020b4afbabf050e325779a9516ce25",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/analysis.png",
+      "oid": "3fbfe16b13310958efd313c38b1a658e2573fc97",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/capture/assets/analysis.png",
+      "oid": "3fbfe16b13310958efd313c38b1a658e2573fc97",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/filters.png",
+      "oid": "7448d3e1f6cf8633963b6b02972a05902ddfa888",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/capture/assets/filters.png",
+      "oid": "7448d3e1f6cf8633963b6b02972a05902ddfa888",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/fonts/Inter.ttf",
+      "oid": "047c92f6e2212473dc436020afed689527076d44",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Inter/Space Grotesk/JetBrains Mono",
+      "license": "OFL-1.1",
+      "evidence": "sibling *OFL.txt",
+      "verification": "exact named font family notice",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-dark.png",
+      "oid": "5dd5e6d41fb2f993ba2f39d92092e1c49c0f62f7",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:197",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/globe.png",
+      "oid": "5dd5e6d41fb2f993ba2f39d92092e1c49c0f62f7",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/capture/assets/globe.png",
+      "oid": "5dd5e6d41fb2f993ba2f39d92092e1c49c0f62f7",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/map.png",
+      "oid": "f636410ae843a5ca1635fe2767a99d39b362ed6c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/capture/assets/map.png",
+      "oid": "f636410ae843a5ca1635fe2767a99d39b362ed6c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/original-score.wav",
+      "oid": "2f264b2237cc1acb13b06483b84488d52758fb2e",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-dark.png",
+      "oid": "807c45152244cda3788a710c9f534c9c007dd7c6",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/assets/workspace.png",
+      "oid": "807c45152244cda3788a710c9f534c9c007dd7c6",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/capture/assets/workspace.png",
+      "oid": "807c45152244cda3788a710c9f534c9c007dd7c6",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/poster.png",
+      "oid": "0d10a15bd746a49a4ef734309ab185cdaeca04ca",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-intro/storyboard-preview.jpg",
+      "oid": "31ec3f1b5d0e4be5bdea6aadeb3a10b303db8a72",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-training/assets/01-auto-clusters.png",
+      "oid": "23378120158f69867999fbae0a57319cb337eb2e",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-training/assets/02-cluster-actions.png",
+      "oid": "26bc50fafe01fb14ae3c9e00eda4a711c45e70ad",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-training/assets/03-member-table.png",
+      "oid": "339789fe576fe405575fd9392092f705e00eb2b3",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-training/assets/09-space-time-clusters.png",
+      "oid": "0774b7cb444b97139aca7a40c1d8200aa451d818",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-training/clusters-and-members.mp4",
+      "oid": "6a582b2e3a7e47600f006c720065880f5248e6a7",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-webmcp-training/assets/webmcp-connections.png",
+      "oid": "8a6c6230592b67e7fbcd7a08bdfc76bdd80d9278",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-webmcp-training/assets/webmcp-grants.png",
+      "oid": "6505459f975178ebd0882d13f9c40cc25894302b",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "videos/chronoscope-webmcp-training/browser-webmcp.mp4",
+      "oid": "654c120f19190dd5e756bc4122e55d22a3ae8ef7",
+      "current_path": false,
+      "current_blob": false,
+      "source": "first-party synthetic app captures, some NASA imagery; GSAP separate",
+      "license": "MIT first-party portions; NASA guidelines; GSAP custom terms for JS",
+      "evidence": "videos/*/assets/NOTICE.txt; video local README",
+      "verification": "directory-level declared provenance; frame-level review incomplete",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/navigation-sphere-2026-10-17/sphere-controls-dark.png",
+      "oid": "7b807088703c70d593073715dae6a377f7366062",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap Positron + 192 synthetic Events",
+      "license": "OpenFreeMap service terms + OpenMapTiles/OSM attribution",
+      "evidence": "8bfedf3ec5805d52f1a0de1cbf73c57452f5781f:docs/validation/navigation-sphere-2026-10-17/README.md:15-19",
+      "verification": "historical branch README explicitly identifies all five captures",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/navigation-sphere-2026-10-17/sphere-controls-light.png",
+      "oid": "935ab34bf7f6803cfb8237df83e7972d3cf910bf",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap Positron + 192 synthetic Events",
+      "license": "OpenFreeMap service terms + OpenMapTiles/OSM attribution",
+      "evidence": "8bfedf3ec5805d52f1a0de1cbf73c57452f5781f:docs/validation/navigation-sphere-2026-10-17/README.md:15-19",
+      "verification": "historical branch README explicitly identifies all five captures",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/navigation-sphere-2026-10-17/sphere-globe-dark.png",
+      "oid": "7748d78a339383b13217721fb7cc2931dffb8e31",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap Positron + 192 synthetic Events",
+      "license": "OpenFreeMap service terms + OpenMapTiles/OSM attribution",
+      "evidence": "8bfedf3ec5805d52f1a0de1cbf73c57452f5781f:docs/validation/navigation-sphere-2026-10-17/README.md:15-19",
+      "verification": "historical branch README explicitly identifies all five captures",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/navigation-sphere-2026-10-17/sphere-globe-light.png",
+      "oid": "9832d49c941ab51e69280dd437494fc8af0e8943",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap Positron + 192 synthetic Events",
+      "license": "OpenFreeMap service terms + OpenMapTiles/OSM attribution",
+      "evidence": "8bfedf3ec5805d52f1a0de1cbf73c57452f5781f:docs/validation/navigation-sphere-2026-10-17/README.md:15-19",
+      "verification": "historical branch README explicitly identifies all five captures",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/validation/navigation-sphere-2026-10-17/sphere-space-time.png",
+      "oid": "1c0c8d8607c14fe67db63b774fad7c38271fb9a6",
+      "current_path": false,
+      "current_blob": false,
+      "source": "OpenFreeMap Positron + 192 synthetic Events",
+      "license": "OpenFreeMap service terms + OpenMapTiles/OSM attribution",
+      "evidence": "8bfedf3ec5805d52f1a0de1cbf73c57452f5781f:docs/validation/navigation-sphere-2026-10-17/README.md:15-19",
+      "verification": "historical branch README explicitly identifies all five captures",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/src/assets/time-elevation.png",
+      "oid": "aafdcbfd059874d125e0cc8d11bc7b79ee1ffc2e",
+      "current_path": false,
+      "current_blob": false,
+      "source": "ImageGen-generated time-elevation mask",
+      "license": "first-party generated asset under repository MIT declaration; model output ownership not legally certified",
+      "evidence": "8bfedf3ec5805d52f1a0de1cbf73c57452f5781f:docs/validation/navigation-sphere-2026-10-17/README.md:9",
+      "verification": "historical source explicitly says generated for this purpose",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon-dark.png",
+      "oid": "579e3fd8f5dac5c91e79650b99fdfa6613c52231",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.icns",
+      "oid": "e62de94e18d5e809d592db6bb1d22bc65a8e000c",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/public/icon-dark.svg",
+      "oid": "e8f6fe627056b56c7f804cf4f91a3c4e2d60880e",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon-dark.svg",
+      "oid": "e8f6fe627056b56c7f804cf4f91a3c4e2d60880e",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/public/icon.svg",
+      "oid": "b63d18488c63fd0e66f4db53168d8cbbb6b3c9dc",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon-light.svg",
+      "oid": "b63d18488c63fd0e66f4db53168d8cbbb6b3c9dc",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.svg",
+      "oid": "b63d18488c63fd0e66f4db53168d8cbbb6b3c9dc",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/128x128.png",
+      "oid": "c6c7637ae8509c882ded73179a2dc8a455a46b4f",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/128x128@2x.png",
+      "oid": "59d18485f5bcb23d5e2b5533007e2a8d72d90fb2",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/32x32.png",
+      "oid": "cdc42f624db7e083b42a9e24d2e08c7782451b72",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon-dark.png",
+      "oid": "386b245b3f3a120fdd396600688aa119a08cafae",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon-light.png",
+      "oid": "2cbb07c6c4e81f45ec33fb43d6e1a61089d71c2d",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.png",
+      "oid": "2cbb07c6c4e81f45ec33fb43d6e1a61089d71c2d",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.icns",
+      "oid": "98c69f91aee3009a95ed62f6ac8b742b8a09940a",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.ico",
+      "oid": "36f1fac4ab65081285fd0acd7204680f94b0063b",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/public/icon.svg",
+      "oid": "7a3d352ab0d597a8d0398ba3f9cc50f0164661de",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.svg",
+      "oid": "7a3d352ab0d597a8d0398ba3f9cc50f0164661de",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/128x128.png",
+      "oid": "12831eaa9a32d3b5e058b90a8b2529a2de96a8df",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/128x128@2x.png",
+      "oid": "507e6696778e8ef65d45fc37468cfe76d15b69c1",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/32x32.png",
+      "oid": "defa744c58a2f75086992ea8345d57fd066723cd",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.icns",
+      "oid": "11dc1e084de9561e24e117e7bbaef2701c001c90",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.ico",
+      "oid": "0d4e7c72c4c11bc0c0474c856d8adcaee7024732",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.png",
+      "oid": "b8fd49b6377f2a1c548237468e49206f9dcf0158",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/public/icon.svg",
+      "oid": "9b677a33bf814f0ee0994d359bb85275027472b9",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.svg",
+      "oid": "9b677a33bf814f0ee0994d359bb85275027472b9",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/128x128.png",
+      "oid": "166feca4e906373956d2abdc88a27b9793e4b373",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/128x128@2x.png",
+      "oid": "69750b72d9057d146c0b8596b11faef16c4f2587",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/32x32.png",
+      "oid": "b4ead48bce7226e532119eee4e84d19365b17adc",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.icns",
+      "oid": "aeabde2c01222e8f6ddb93780e14d38f82b49eb0",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.ico",
+      "oid": "5d0ab23901e1954e5fb461bc5ace9b986f6600c0",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "src-tauri/icons/icon.png",
+      "oid": "dfe612405bf3f72ea0a84bd28b86a760801b9f03",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Chronoscope original branding",
+      "license": "MIT first-party",
+      "evidence": "scripts/generate_icons.mjs; src-tauri/icons/*.svg",
+      "verification": "declared first-party generation; authorship not certified",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-dark.png",
+      "oid": "022b45dd6d273949a771aa3edd786dd59793c729",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-light.png",
+      "oid": "d22c62a3fd32338108d511f801b39825a6dffe8f",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-dark.png",
+      "oid": "2973af9b7ba7e3de78687eb426443d893ef38611",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-light.png",
+      "oid": "6816bb2180a00da620c9ac08a6ea87e1f2eebfef",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-close-zoom-08.png",
+      "oid": "a1d91fb33e7f5ed2dc055a13d37df3eda60089d5",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Synthetic San Francisco study, close-up bundled NASA Blue Marble globe surface; no detailed external WMTS imagery",
+      "license": "NASA media guidelines; preserve NASA / Robert Simmon / Reto Stöckli credit, no endorsement",
+      "evidence": [
+        "2076486:frontend/scripts/hardening-qa.mjs:70-72 disables map",
+        "docs/VALIDATION.md:109",
+        "full-resolution visible Geography layer: WGS84 globe · NASA Blue Marble"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Historical earlier object matched visually but its exact generating run was not reconstructed. NASA exact legacy image record redirects; copyright exception review incomplete.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-light.png",
+      "oid": "9dde9eb56c871361b8359a99f92e5d32efc47d85",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:197",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-raster-test.png",
+      "oid": "5ac361dff293107f6295a464a471c849c3c78a1a",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:197",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/globe-webgpu-atlas.png",
+      "oid": "9c93298195a1ff27625fcf972c26d72d4c667bdc",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Generated #00ff00 GPU test atlas over bundled NASA Blue Marble, not a commercial satellite tile",
+      "license": "NASA media guidelines on underlying globe; synthetic atlas does not acquire imagery license",
+      "evidence": [
+        "177e4ff:frontend/scripts/qa.mjs:799-837; creates 128x128 green canvas, attribution Synthetic GPU atlas",
+        "3b4f229:frontend/scripts/qa.mjs:837 same capture logic",
+        "assets/NOTICE.md:10-16"
+      ],
+      "verification": "bounded visual + adjacent documentation; not ownership certification",
+      "remaining_gap": "Current and historical objects visually agree with exact retained capture code; NASA original-record exception review incomplete.",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/help-guide.png",
+      "oid": "fefa8bc31f5e97b3407504265743ae774e9f6342",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:207",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/map-2d.png",
+      "oid": "05f1bdf58499855a5201616196220ec66c7d09ac",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:197",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/portable-workspace.png",
+      "oid": "e8e9f8af053d882d0aec4f9688063f2311ab0ad7",
+      "current_path": false,
+      "current_blob": false,
+      "source": "NASA imagery with application/data overlays",
+      "license": "NASA media guidelines; data/source attribution retained",
+      "evidence": "docs/VALIDATION.md:207",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/terrain-wmts.png",
+      "oid": "a5963122e0df31c00f5468f4e67851da93bd910c",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-auto-gpu.png",
+      "oid": "d226e5d5f656666b9c6914a167e58e0d5f37f9e5",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/web-light.png",
+      "oid": "0fa40491d1b721bd82dd72a3ef90f657a5b63bf7",
+      "current_path": false,
+      "current_blob": false,
+      "source": "declared synthetic fixture/app capture; possible map background separate",
+      "license": "MIT first-party; background imagery needs independent classification",
+      "evidence": "docs/VALIDATION.md:249",
+      "verification": "capture name linked in source document; adjacent provenance (not pixel verification)",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/src/assets/earth-natural-earth.png",
+      "oid": "8e19bc30b4a965bcde90994758e586d05b24ade9",
+      "current_path": false,
+      "current_blob": false,
+      "source": "Natural Earth public-domain land polygons; original Chronoscope raster styling",
+      "license": "Public-domain geographic data; MIT styling/generator",
+      "evidence": "assets/provenance/NATURAL-EARTH.md",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "tests/fixtures/cesium/synthetic-grid-z13.png",
+      "oid": "f8502d503afb6802936714c14a135a173555981c",
+      "current_path": true,
+      "current_blob": true,
+      "source": "First-party generated synthetic diagnostic fixture",
+      "license": "MIT",
+      "evidence": "scripts/generate_commercial_fixtures.py",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "tests/fixtures/terrain/synthetic-n43.dt0",
+      "oid": "de8919c333b366c2949d0495e3347980b7472cb3",
+      "current_path": true,
+      "current_blob": true,
+      "source": "First-party generated synthetic diagnostic fixture",
+      "license": "MIT",
+      "evidence": "scripts/generate_commercial_fixtures.py",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "docs/screenshots/current/chart-comparison.png",
+      "oid": "6306a107c7869758192088d877aa336328057ce6",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/density.png",
+      "oid": "aafda3150e614ddc89afe3ba51be978908c20988",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/globe.png",
+      "oid": "27467de4185b8f6de23cc53249b42b6befadf9e7",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/heatmap.png",
+      "oid": "9b2921e48a37d7bf81fd127c709deeff9b59e144",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/hurricane-tracks.png",
+      "oid": "51048cc2a925f81876db00c847c869578bfd31fd",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/linked-workspace.png",
+      "oid": "32af4c190f17db0631b6e6adc30fb2ebe5d1b7e1",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/repeating-patterns.png",
+      "oid": "719caad478a65c1367efe28fb1b301a4053b5fc8",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/space-time.png",
+      "oid": "b0bd72b5bffcfe089474961bcf2c46b07e920879",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "frontend/src/assets/earth-natural-earth.jpg",
+      "oid": "44fe19b7b249c27e1d8c852a336d2f3fb9f5d4ea",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Natural Earth II shaded-relief artwork, public domain; downsampled without color alteration",
+      "license": "Public-domain geographic artwork; MIT generator",
+      "evidence": "assets/provenance/NATURAL-EARTH.md",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "docs/screenshots/current/chart-comparison.png",
+      "oid": "b47f1f4bf9980617292a234fa4d79c1b550b8a4b",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/density.png",
+      "oid": "be3af98f80b333a320166429da1c8db587e4f864",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/globe.png",
+      "oid": "e8c850041f7a75000c0105f8e141c402ce678693",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/heatmap.png",
+      "oid": "4923337adaaef6222566a876e479850a027a0df4",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/hurricane-tracks.png",
+      "oid": "f87c8d5f34834b6d9cd2b4f1d1169576cc4009f1",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "docs/screenshots/current/linked-workspace.png",
+      "oid": "8a3516f8d1f93268e369ccdb7f648007394c2381",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/repeating-patterns.png",
+      "oid": "6353e2aeef7a74925479d1d58faaa4c029b0b878",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/space-time.png",
+      "oid": "34349fdf30c32e50534185e5f2e2237df13cc389",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "docs/screenshots/current/chart-comparison.png",
+      "oid": "3c8623de5e6235088d9846c4c6163b28378dc1dc",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope UI and public AIS sample over credited OpenFreeMap Streets / OpenMapTiles / OpenStreetMap",
+      "license": "MIT application UI; public AIS data; commercial map use allowed with required provider/data attribution (OpenStreetMap ODbL)",
+      "evidence": "docs/screenshots/current/README.md; https://openfreemap.org/ ; https://www.openstreetmap.org/copyright",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/density.png",
+      "oid": "02f6da56587597896c70f7ed608921efd520d59c",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/linked-workspace.png",
+      "oid": "8e9152089b4942af391c3e81789dab42a91bb9be",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/repeating-patterns.png",
+      "oid": "32e32167d45015ca793f21123334d89410a57e92",
+      "current_path": true,
+      "current_blob": false,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified bundled demo data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement",
+      "status": "historical; not commercially cleared by removal"
+    },
+    {
+      "path": "docs/screenshots/current/density.png",
+      "oid": "bf6cd8eb7f5433f2e6554ea0f8f6f9048726ad12",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Native Chronoscope UI and credited CC0 HG_OOSTENDE gull GPS sample over OpenFreeMap Streets / OpenMapTiles / OpenStreetMap",
+      "license": "MIT application UI; CC0/public data as credited per capture; commercial map use allowed with required provider/data attribution (OpenStreetMap ODbL)",
+      "evidence": "docs/screenshots/current/README.md; https://openfreemap.org/ ; https://www.openstreetmap.org/copyright",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "docs/screenshots/current/globe.png",
+      "oid": "9da4f59e6417c64427431fb1cf02af345101553b",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified demo or fixed public earthquake data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "docs/screenshots/current/heatmap.png",
+      "oid": "b2ed59df7f3b83c95a2a9c218af213e6e5bb6d62",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Native Chronoscope UI; anonymised Police.uk London theft reports over credited OpenFreeMap Streets / OpenMapTiles / OpenStreetMap",
+      "license": "MIT application UI; Police.uk OGL v3.0 with attribution; commercial map use allowed with provider attribution (OpenStreetMap ODbL)",
+      "evidence": "docs/CRIME-HOTSPOTS.md; docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "docs/screenshots/current/chart-comparison.png",
+      "oid": "c37096c1dcb77d945203f5534904a18a0b655f01",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Native Chronoscope UI and credited public AIS sample over OpenFreeMap Streets / OpenMapTiles / OpenStreetMap",
+      "license": "MIT application UI; CC0/public data as credited per capture; commercial map use allowed with required provider/data attribution (OpenStreetMap ODbL)",
+      "evidence": "docs/screenshots/current/README.md; https://openfreemap.org/ ; https://www.openstreetmap.org/copyright",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "docs/screenshots/current/linked-workspace.png",
+      "oid": "abe50bf2d7ef6d9a9269bbfa6d1eebb2d48933a8",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified demo or fixed public earthquake data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    },
+    {
+      "path": "docs/screenshots/current/repeating-patterns.png",
+      "oid": "c3870b0e3f9093acd9ebabfc3fc878775b3d9ffc",
+      "current_path": true,
+      "current_blob": true,
+      "source": "Native Chronoscope 0.15.2 UI; Natural Earth public-domain map; identified demo or fixed public earthquake data",
+      "license": "MIT application UI; public-domain geography; CC0/public-domain or CC BY 4.0 datasets as credited per capture",
+      "evidence": "docs/screenshots/current/README.md; docs/screenshots/current/capture-report.json",
+      "verification": "Exact current Git object; source/provenance checked during commercial-media replacement"
+    }
+  ]
+}

@@ -1,0 +1,252 @@
+[
+  {
+    "service": "nasa",
+    "layer": "BlueMarble_ShadedRelief",
+    "matrix_set": "GoogleMapsCompatible_Level8",
+    "bounds": [
+      -80.1,
+      43.15,
+      -79.85,
+      43.35
+    ],
+    "level": 5,
+    "plan": [
+      {
+        "bounds": [
+          -90.00000000000007,
+          40.97989806962018,
+          -78.75000000000007,
+          48.922499263758304
+        ],
+        "col": 8,
+        "geographic": false,
+        "matrix": "5",
+        "row": 11,
+        "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief/default/default/GoogleMapsCompatible_Level8/5/11/8.jpeg"
+      }
+    ],
+    "status": "passed",
+    "tiles": 1,
+    "repeat_requests": 0,
+    "offline_requests": 0,
+    "dimensions": [
+      [
+        256,
+        256
+      ]
+    ],
+    "config": {
+      "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml",
+      "layer": "BlueMarble_ShadedRelief",
+      "matrix_set": "GoogleMapsCompatible_Level8",
+      "style": "default",
+      "format": "image/jpeg",
+      "time": "",
+      "enabled": true,
+      "level": 5
+    },
+    "raster_file": "QA_DIR/nasa-GoogleMapsCompatible_Level8-raster.json",
+    "request_counter_cumulative": 0,
+    "note": "Request counter is cumulative across this session, not per layer. Repeated and offline request deltas are measured."
+  },
+  {
+    "service": "usgs-imagery",
+    "layer": "USGSImageryOnly",
+    "matrix_set": "GoogleMapsCompatible",
+    "bounds": [
+      -122.45,
+      36.75,
+      -122.35,
+      36.83
+    ],
+    "level": 8,
+    "plan": [
+      {
+        "bounds": [
+          -123.75000000000006,
+          36.59788913307025,
+          -122.34375000000007,
+          37.71859032558818
+        ],
+        "col": 40,
+        "geographic": false,
+        "matrix": "8",
+        "row": 99,
+        "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/WMTS/tile/1.0.0/USGSImageryOnly/default/GoogleMapsCompatible/8/99/40"
+      }
+    ],
+    "status": "passed",
+    "tiles": 1,
+    "repeat_requests": 0,
+    "offline_requests": 0,
+    "dimensions": [
+      [
+        256,
+        256
+      ]
+    ],
+    "config": {
+      "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+      "layer": "USGSImageryOnly",
+      "matrix_set": "GoogleMapsCompatible",
+      "style": "default",
+      "format": "image/jpgpng",
+      "time": "",
+      "enabled": true,
+      "level": 8
+    },
+    "raster_file": "QA_DIR/usgs-imagery-GoogleMapsCompatible-raster.json",
+    "request_counter_cumulative": 1,
+    "note": "Request counter is cumulative across this session, not per layer. Repeated and offline request deltas are measured."
+  },
+  {
+    "service": "usgs-topo",
+    "layer": "USGSTopo",
+    "matrix_set": "GoogleMapsCompatible",
+    "bounds": [
+      -80.2,
+      28.48,
+      -80.17,
+      28.53
+    ],
+    "level": 8,
+    "plan": [
+      {
+        "bounds": [
+          -81.56250000000006,
+          28.304380682962808,
+          -80.15625000000006,
+          29.535229562948494
+        ],
+        "col": 70,
+        "geographic": false,
+        "matrix": "8",
+        "row": 106,
+        "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/WMTS/tile/1.0.0/USGSTopo/default/GoogleMapsCompatible/8/106/70"
+      }
+    ],
+    "status": "passed",
+    "tiles": 1,
+    "repeat_requests": 0,
+    "offline_requests": 0,
+    "dimensions": [
+      [
+        256,
+        256
+      ]
+    ],
+    "config": {
+      "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+      "layer": "USGSTopo",
+      "matrix_set": "GoogleMapsCompatible",
+      "style": "default",
+      "format": "image/jpgpng",
+      "time": "",
+      "enabled": true,
+      "level": 8
+    },
+    "raster_file": "QA_DIR/usgs-topo-GoogleMapsCompatible-raster.json",
+    "request_counter_cumulative": 2,
+    "note": "Request counter is cumulative across this session, not per layer. Repeated and offline request deltas are measured."
+  },
+  {
+    "service": "eox",
+    "layer": "s2cloudless-2024_3857",
+    "matrix_set": "GoogleMapsCompatible",
+    "bounds": [
+      -80.1,
+      43.15,
+      -79.85,
+      43.35
+    ],
+    "level": 5,
+    "plan": [
+      {
+        "bounds": [
+          -89.99999999999784,
+          40.9798980696185,
+          -78.74999999999784,
+          48.922499263756826
+        ],
+        "col": 8,
+        "geographic": false,
+        "matrix": "5",
+        "row": 11,
+        "url": "http://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/GoogleMapsCompatible/5/11/8.jpg"
+      }
+    ],
+    "status": "passed",
+    "tiles": 1,
+    "repeat_requests": 0,
+    "offline_requests": 0,
+    "dimensions": [
+      [
+        256,
+        256
+      ]
+    ],
+    "config": {
+      "url": "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+      "layer": "s2cloudless-2024_3857",
+      "matrix_set": "GoogleMapsCompatible",
+      "style": "default",
+      "format": "image/jpeg",
+      "time": "",
+      "enabled": true,
+      "level": 5
+    },
+    "raster_file": "QA_DIR/eox-GoogleMapsCompatible-raster.json",
+    "request_counter_cumulative": 2,
+    "note": "Request counter is cumulative across this session, not per layer. Repeated and offline request deltas are measured."
+  },
+  {
+    "service": "eox",
+    "layer": "s2cloudless-2024",
+    "matrix_set": "WGS84",
+    "bounds": [
+      -80.1,
+      43.15,
+      -79.85,
+      43.35
+    ],
+    "level": 5,
+    "plan": [
+      {
+        "bounds": [
+          -84.375,
+          39.375,
+          -78.75,
+          45.0
+        ],
+        "col": 17,
+        "geographic": true,
+        "matrix": "5",
+        "row": 8,
+        "url": "http://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024/default/WGS84/5/8/17.jpg"
+      }
+    ],
+    "status": "passed",
+    "tiles": 1,
+    "repeat_requests": 0,
+    "offline_requests": 0,
+    "dimensions": [
+      [
+        256,
+        256
+      ]
+    ],
+    "config": {
+      "url": "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+      "layer": "s2cloudless-2024",
+      "matrix_set": "WGS84",
+      "style": "default",
+      "format": "image/jpeg",
+      "time": "",
+      "enabled": true,
+      "level": 5
+    },
+    "raster_file": "QA_DIR/eox-WGS84-raster.json",
+    "request_counter_cumulative": 2,
+    "note": "Request counter is cumulative across this session, not per layer. Repeated and offline request deltas are measured."
+  }
+]

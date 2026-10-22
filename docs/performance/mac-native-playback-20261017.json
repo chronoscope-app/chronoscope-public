@@ -1,0 +1,582 @@
+{
+  "date": "2026-10-17",
+  "baseline_commit": "94cea68470433fc0d804164460ebaaea0490840c",
+  "platform": "native macOS 27.0.1, Tauri WKWebView, Apple M5/ANGLE Metal",
+  "dataset": {
+    "events": 100000,
+    "entities": 100,
+    "storage": "SQLite",
+    "synthetic": true,
+    "moving_time_window_fraction": 0.25,
+    "steady_drawn_events": 25100,
+    "render_budget": 100000
+  },
+  "quality_settings": {
+    "css_canvas": [
+      1062,
+      737
+    ],
+    "framebuffer": [
+      1593,
+      1105
+    ],
+    "resolution_scale": 1.5,
+    "antialias": true,
+    "bloom": true,
+    "bloom_radius": 0.1,
+    "bloom_strength": 1.3,
+    "bloom_threshold": 0.1,
+    "bloom_raster": [
+      512,
+      512
+    ],
+    "tracks": true,
+    "trails": true,
+    "point_scale": 1,
+    "fade_ms": 200,
+    "fade_easing": "smoothstep",
+    "imagery": "same bundled Blue Marble; public imagery and terrain disabled during paired performance tests"
+  },
+  "method": {
+    "observations_per_run": 3,
+    "status_read_spacing_seconds": 8,
+    "initial_warmup_seconds": 8,
+    "rolling_render_window_frames": 120,
+    "other_gpu_tests_during_fps_measurement": false,
+    "github_actions_used": false,
+    "autosave": "disabled during paired measurements; restored after native verification"
+  },
+  "native_runs": {
+    "baseline": {
+      "fps_median": 22.33389168062535,
+      "frame_p95_ms_median": 101,
+      "cpu_render_p95_ms_median": 13,
+      "query_ms_median": 0.6824169977335259,
+      "observations": [
+        {
+          "performance": {
+            "active": true,
+            "fps": 22.33389168062535,
+            "frameP95Ms": 100,
+            "renderCpuP95Ms": 13,
+            "renderedFrames": 9511,
+            "sampleFrames": 120
+          },
+          "statusMs": 116.7249999998603,
+          "queryMs": 0.891707997652702,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 22.748815165876778,
+            "frameP95Ms": 150,
+            "renderCpuP95Ms": 14,
+            "renderedFrames": 9672,
+            "sampleFrames": 24
+          },
+          "statusMs": 266.7653749958845,
+          "queryMs": 0.5920830008108169,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 16.36214889555495,
+            "frameP95Ms": 101,
+            "renderCpuP95Ms": 13,
+            "renderedFrames": 9818,
+            "sampleFrames": 120
+          },
+          "statusMs": 373.67387500125915,
+          "queryMs": 0.6824169977335259,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        }
+      ]
+    },
+    "baseline-repeat": {
+      "fps_median": 27.149321266968325,
+      "frame_p95_ms_median": 77,
+      "cpu_render_p95_ms_median": 12,
+      "query_ms_median": 0.6580409972229972,
+      "observations": [
+        {
+          "performance": {
+            "active": true,
+            "fps": 27.149321266968325,
+            "frameP95Ms": 78,
+            "renderCpuP95Ms": 12,
+            "renderedFrames": 1389,
+            "sampleFrames": 120
+          },
+          "statusMs": 44.29591698863078,
+          "queryMs": 0.6580409972229972,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 24.321037697608432,
+            "frameP95Ms": 77,
+            "renderCpuP95Ms": 12,
+            "renderedFrames": 1576,
+            "sampleFrames": 120
+          },
+          "statusMs": 267.26870899437927,
+          "queryMs": 0.581667001824826,
+          "visible": 25000,
+          "points": 25000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 34.24657534246575,
+            "frameP95Ms": 66,
+            "renderCpuP95Ms": 12,
+            "renderedFrames": 1817,
+            "sampleFrames": 120
+          },
+          "statusMs": 198.28108299407177,
+          "queryMs": 0.7072080043144524,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        }
+      ]
+    },
+    "candidate-a": {
+      "fps_median": 55.325034578146614,
+      "frame_p95_ms_median": 45,
+      "cpu_render_p95_ms_median": 11,
+      "query_ms_median": 0.7603330013807863,
+      "observations": [
+        {
+          "performance": {
+            "active": true,
+            "fps": 55.325034578146614,
+            "frameP95Ms": 45,
+            "renderCpuP95Ms": 11,
+            "renderedFrames": 2598,
+            "sampleFrames": 120
+          },
+          "statusMs": 107.20425000181422,
+          "queryMs": 0.7604579877806827,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 53.71530886302596,
+            "frameP95Ms": 46,
+            "renderCpuP95Ms": 11,
+            "renderedFrames": 3040,
+            "sampleFrames": 120
+          },
+          "statusMs": 2.0493750052992254,
+          "queryMs": 0.5782500084023923,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 56.52378709373528,
+            "frameP95Ms": 42,
+            "renderCpuP95Ms": 11,
+            "renderedFrames": 3496,
+            "sampleFrames": 120
+          },
+          "statusMs": 145.93891699041706,
+          "queryMs": 0.7603330013807863,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        }
+      ]
+    },
+    "final": {
+      "fps_median": 55.7361820715281,
+      "frame_p95_ms_median": 43,
+      "cpu_render_p95_ms_median": 11,
+      "query_ms_median": 0.580916996113956,
+      "observations": [
+        {
+          "performance": {
+            "active": true,
+            "fps": 55.7361820715281,
+            "frameP95Ms": 47,
+            "renderCpuP95Ms": 11,
+            "renderedFrames": 1931,
+            "sampleFrames": 120
+          },
+          "statusMs": 59.11545900744386,
+          "queryMs": 0.5475840007420629,
+          "visible": 25000,
+          "points": 25000,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 54.61993627674101,
+            "frameP95Ms": 43,
+            "renderCpuP95Ms": 11,
+            "renderedFrames": 2388,
+            "sampleFrames": 120
+          },
+          "statusMs": 187.09979200502858,
+          "queryMs": 0.580916996113956,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        },
+        {
+          "performance": {
+            "active": true,
+            "fps": 56.57708628005658,
+            "frameP95Ms": 43,
+            "renderCpuP95Ms": 11,
+            "renderedFrames": 2837,
+            "sampleFrames": 120
+          },
+          "statusMs": 2.0549999899230897,
+          "queryMs": 0.6127910019131377,
+          "visible": 25100,
+          "points": 25100,
+          "errors": 0,
+          "viewport": {
+            "height": 737,
+            "width": 1062
+          }
+        }
+      ]
+    }
+  },
+  "verification": {
+    "browser_checks": [
+      "Authenticated Rust bridge renders real hurricane data in native Cesium WebGL",
+      "Unchanged refreshes retain GPU resources; selection, style and camera invalidate them",
+      "Playback preserves point/triangle fades, IDs and selection with bounded GPU uploads",
+      "Independent WGS84 ECEF references agree at equator, hemispheres, poles and date line",
+      "Entity facets retain top-ten, show-all, clickable sorting and collapse controls",
+      "Globe, 2D, Columbus space-time and calendar have actual native modes and wheel/button zoom",
+      "Dragging brackets/window and keyboard scrubbing preview live events without reframing",
+      "Continuous attribute table supports click, Ctrl-click and inclusive Shift range; native view follows exact IDs",
+      "Actual native Cesium event picking updates the shared exact selection",
+      "Event search filters both native geographic display and continuous attribute table",
+      "Live time-height input, independent tracks and portable scene state persist",
+      "Time-only triangle interpolation remains display-only in all geographic modes",
+      "WKT geometry backend and native view retain six non-point features across map/globe/Columbus",
+      "Default dense display uses bounded native clusters with exact member counts",
+      "Native cluster picking opens exact member table and selects every member through app controls",
+      "Live Columbus viewport contracts on zoom, retains elevated evidence and declusters exact records",
+      "Native Columbus density creates native count cells",
+      "Native Columbus heatmap uses ground resources",
+      "Native Columbus bloom uses ground resources",
+      "Real DTED mesh is installed in Cesium's native terrain provider",
+      "Native imagery remains installed through repeated globe/map/Columbus transitions",
+      "Actual Excel import dialog detects worksheet and renders its located records",
+      "Unified Open routes native and legacy workspaces, imports Excel, preserves data on cancel/error and guards unsaved edits",
+      "Playback advances native focus smoothly while preserving the geographic frame",
+      "Pattern analysis selects exact evidence and Charts remains available",
+      "Saved selection group round-trips exact evidence through application controls",
+      "Inspector editing and undo/redo still operate the shared Rust store",
+      "Import UI recognizes separate clocks, second truncation and short/spaced MGRS without suffix padding",
+      "Manual date-order override is previewed and committed through the real import controls",
+      "Invalid coordinates require row review and do not replace data before explicit acceptance",
+      "Actual polar CSV import, initial fit and native marker picking retain \u00b189\u00b0 data across geographic modes",
+      "Light mode and keyboard-opened local help remain available"
+    ],
+    "browser_errors": [],
+    "context_recovery_passed": true,
+    "scale_rows": 100000,
+    "scale_passed": true,
+    "effects_pixel_modes": [
+      "map",
+      "space-time",
+      "globe"
+    ],
+    "effects_pixel_errors": [],
+    "native_modes": [
+      {
+        "mode": "globe",
+        "points": 100000,
+        "arriving": 0,
+        "render_errors": 0
+      },
+      {
+        "mode": "map",
+        "points": 100000,
+        "arriving": 0,
+        "render_errors": 0
+      },
+      {
+        "mode": "space-time",
+        "points": 100000,
+        "arriving": 0,
+        "render_errors": 0
+      }
+    ],
+    "native_bloom_pixels_changed": 29807,
+    "native_exact_selection_while_playing": 3,
+    "cli_snapshot_count": 100000,
+    "cli_png_capture": true,
+    "direct_platform_aware_integration_passed": true
+  },
+  "quality_comparisons": {
+    "fade_fixture": {
+      "half": {
+        "different_pixels": 0,
+        "bounds": null,
+        "extrema": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "settled": {
+        "different_pixels": 64,
+        "bounds": [
+          364,
+          77,
+          460,
+          409
+        ],
+        "extrema": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "negative-control": {
+        "bufferSubDataCalls": 1023,
+        "context": {
+          "alpha": false,
+          "antialias": true,
+          "depth": true,
+          "desynchronized": false,
+          "failIfMajorPerformanceCaveat": false,
+          "powerPreference": "high-performance",
+          "premultipliedAlpha": true,
+          "preserveDrawingBuffer": true,
+          "stencil": true,
+          "xrCompatible": false
+        }
+      },
+      "regressions": {
+        "bufferSubDataCalls": 44,
+        "context": {
+          "alpha": false,
+          "antialias": true,
+          "depth": true,
+          "desynchronized": false,
+          "failIfMajorPerformanceCaveat": false,
+          "powerPreference": "high-performance",
+          "premultipliedAlpha": true,
+          "preserveDrawingBuffer": false,
+          "stencil": true,
+          "xrCompatible": false
+        }
+      }
+    },
+    "matched_native_100k_capture": {
+      "size": [
+        1593,
+        1134
+      ],
+      "different_pixels": 0,
+      "bounds": null,
+      "extrema": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    "native_capture_after_mode_roundtrip": {
+      "pixels": 235,
+      "extrema": [
+        [
+          0,
+          75
+        ],
+        [
+          0,
+          86
+        ],
+        [
+          0,
+          118
+        ]
+      ],
+      "bounds": [
+        320,
+        144,
+        1074,
+        753
+      ]
+    },
+    "mode_roundtrip_camera_max_difference": 2.220446049250313e-16
+  },
+  "known_preexisting_terrain_failure": {
+    "cesium-terrain": {
+      "mode": "globe",
+      "levels": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "errors": [
+        50.97358709377551,
+        7.248984645209191,
+        47.50188948876365,
+        67.57172100733362,
+        21.775771910505057,
+        34.11283809460946,
+        84.16129975518567,
+        36.294048562685134,
+        44.441053031525826
+      ],
+      "painted": 189109
+    },
+    "terrain-baseline": {
+      "mode": "globe",
+      "levels": [
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "errors": [
+        50.97358709377551,
+        7.248984645209191,
+        47.50188948876365,
+        67.57172100733362,
+        21.775771910505057,
+        34.11283809460946,
+        84.16129975518567,
+        36.294048562685134,
+        44.441053031525826
+      ],
+      "painted": 189109
+    }
+  },
+  "native_profiles": {
+    "webkit_baseline": {
+      "sampled_main_stacks": 4661,
+      "prepare_for_display_stacks": 2843,
+      "seconds": 8
+    },
+    "webkit_final": {
+      "sampled_main_stacks": 2626,
+      "prepare_for_display_stacks": 227,
+      "seconds": 5
+    },
+    "gpu_baseline": {
+      "sampled_graphics_queue_stacks": 2172,
+      "buffer_sub_data_stacks": 1275,
+      "seconds": 5
+    },
+    "gpu_final": {
+      "sampled_graphics_queue_stacks": 2776,
+      "buffer_sub_data_stacks": 1,
+      "seconds": 5
+    },
+    "note": "Stack sample fractions include blocked/waiting time; they are not CPU utilization or precise GPU timings. Profiles were collected separately from FPS measurements."
+  },
+  "baseline_executable_sha256": "6a1f105468e6d97bf8c1a0f80bc6255b07e0e8fe37740015bd0f99a9906ff832",
+  "final_executable_sha256": "97d8b689ad6f7a7469f11dd12ca7843245924916dbebc6175cb144b7d22a1ef2"
+}

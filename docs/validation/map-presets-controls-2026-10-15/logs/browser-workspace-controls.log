@@ -1,0 +1,21 @@
+
+> chronoscope-ui@0.13.3 test:workspace-controls
+> node scripts/workspace-controls-qa.mjs
+
+PASS Entity/category quantities, name sorting, top ten, show all and independent collapse
+Failure state {"filter":{"bounds":null,"end":null,"hidden_categories":[],"hidden_entities":[],"hidden_sources":[],"located_only":false,"predicates":[],"search":"","selected_only":false,"start":null},"visible":24000,"count":"","rows":[],"scroll":0,"html":""}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Table close icon is on the left
+    at file:///workspace/chronoscope/frontend/scripts/workspace-controls-qa.mjs:185:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

@@ -1,0 +1,43 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Restoring a workspace with no terrain/map must retire previous geography
++ actual - expected
+
+  {
+    before: {
+      imagery: true,
+      terrain: true
+    },
++   imagery: true,
++   mesh: true,
+-   imagery: false,
+-   mesh: false,
+    rasterObjects: 0,
++   terrain: true
+-   terrain: false
+  }
+
+    at file:///workspace/chronoscope/frontend/scripts/gis-qa.mjs:244:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: {
+    before: { terrain: true, imagery: true },
+    terrain: true,
+    mesh: true,
+    imagery: true,
+    rasterObjects: 0
+  },
+  expected: {
+    before: { terrain: true, imagery: true },
+    terrain: false,
+    mesh: false,
+    imagery: false,
+    rasterObjects: 0
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

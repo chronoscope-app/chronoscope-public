@@ -1,0 +1,49 @@
+diff --git a/frontend/src/view.ts b/frontend/src/view.ts
+index 9ce7d5e..a0b4414 100644
+--- a/frontend/src/view.ts
++++ b/frontend/src/view.ts
+@@ -64,6 +64,7 @@ export class SpaceTimeView {
+   renderLOD = false;
+   selection?: THREE.InstancedMesh;
+   terrainMesh?: THREE.Mesh;
++  private terrainKey = "";
+   rasters = new THREE.Group();
+   stems = new THREE.Group();
+   focus?: THREE.Mesh;
+@@ -509,11 +510,16 @@ export class SpaceTimeView {
+     this.globeTerrainMask?.dispose();
+     this.globeTerrainMask = undefined;
+     this.globeMaterial = undefined;
++    const terrainKey = JSON.stringify([this.mode, this.bounds, this.theme, this.exaggeration]);
++    const retainedTerrain = this.mode !== "globe" && terrainKey === this.terrainKey ? this.terrainMesh : undefined;
++    if (retainedTerrain) this.root.remove(retainedTerrain);
+     this.clear(this.root);
+     this.clear(this.axes);
+     this.clear(this.stems);
+     this.clear(this.rasters);
+-    this.terrainMesh = undefined;
++    this.terrainMesh = retainedTerrain;
++    if(retainedTerrain)this.root.add(retainedTerrain);
++    this.terrainKey = terrainKey;
+     this.focus = undefined;
+     this.selection = undefined;
+     this.pointMesh = undefined;
+@@ -716,7 +722,8 @@ export class SpaceTimeView {
+     }
+     this.setSelection([...this.selected]);
+     this.updateGlobeGlyphs();
+-    if (this.terrain) this.buildTerrain();
++    if (this.terrain && !retainedTerrain) this.buildTerrain();
++    else if(retainedTerrain && this.plane)this.plane.visible=false;
+     this.draw();
+   }
+   setSelection(ids: string[]) {
+@@ -786,6 +793,8 @@ export class SpaceTimeView {
+   }
+   async setTerrain(terrain: Terrain | null) {
+     await this.ready;
++    if(this.terrain===terrain)return;
++    this.terrainKey="";
+     this.terrain = terrain;
+     this.rebuild();
+   }

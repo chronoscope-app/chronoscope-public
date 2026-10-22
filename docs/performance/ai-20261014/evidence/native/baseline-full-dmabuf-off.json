@@ -1,0 +1,1805 @@
+{
+  "hardwareGate": true,
+  "visualSampledColors": {
+    "accepted-100000-dispersed-100000.png": 1058,
+    "accepted-100000-dense-default20k.png": 1472,
+    "accepted-100000-dispersed-20000.png": 1526,
+    "accepted-100000-dense-20000.png": 1389,
+    "accepted-20000-dispersed-20000.png": 1302,
+    "accepted-100000-dense-100000.png": 963,
+    "accepted-20000-dispersed-default20k.png": 1264,
+    "expanded100k.png": 936,
+    "accepted-100000-dispersed-default20k.png": 1513,
+    "demo.png": 1278
+  },
+  "pssPeakMiB": 621.654296875,
+  "cpuMeanPercent": 39.46568435252444,
+  "gpuElapsedMs": null,
+  "reasonGpuElapsedNull": "WebKit does not expose EXT_disjoint_timer_query_webgl2",
+  "samples": [
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5540,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 366,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 40012,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 160005
+      },
+      "instances": 20000,
+      "interval": {
+        "mean": 35.12738853503185,
+        "n": 157,
+        "p50": 35,
+        "p95": 38,
+        "p99": 38.99999999999636
+      },
+      "label": "accepted-100000-dispersed-20000-r1",
+      "labels": {
+        "mean": 0.06962025316455696,
+        "n": 158,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 20000,
+      "submissionFPS": 28.51985559566787,
+      "submit": {
+        "mean": 1.0379746835443038,
+        "n": 158,
+        "p50": 1,
+        "p95": 2,
+        "p99": 2
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5544,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 684,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 40012,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 160005
+      },
+      "instances": 20000,
+      "interval": {
+        "mean": 35.10828025477709,
+        "n": 157,
+        "p50": 35,
+        "p95": 37.00000000000364,
+        "p99": 39
+      },
+      "label": "accepted-100000-dispersed-20000-r2",
+      "labels": {
+        "mean": 0.10126582278483315,
+        "n": 158,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.000000000003638
+      },
+      "points": 20000,
+      "submissionFPS": 28.4992784992785,
+      "submit": {
+        "mean": 0.9493670886075949,
+        "n": 158,
+        "p50": 1,
+        "p95": 1.000000000003638,
+        "p99": 2.000000000003638
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5555,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 1004,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 40012,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 160005
+      },
+      "instances": 20000,
+      "interval": {
+        "mean": 34.9746835443038,
+        "n": 158,
+        "p50": 35,
+        "p95": 37,
+        "p99": 38
+      },
+      "label": "accepted-100000-dispersed-20000-r3",
+      "labels": {
+        "mean": 0.12578616352208122,
+        "n": 159,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.000000000007276
+      },
+      "points": 20000,
+      "submissionFPS": 28.622862286228624,
+      "submit": {
+        "mean": 0.8238993710691137,
+        "n": 159,
+        "p50": 1,
+        "p95": 1.000000000007276,
+        "p99": 2
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5575,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 1156,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 78.15492957746478,
+        "n": 71,
+        "p50": 80,
+        "p95": 88,
+        "p99": 89
+      },
+      "label": "accepted-100000-dispersed-100000-r1",
+      "labels": {
+        "mean": 0.125,
+        "n": 72,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 100000,
+      "submissionFPS": 12.914798206278027,
+      "submit": {
+        "mean": 1.5833333333331312,
+        "n": 72,
+        "p50": 1.999999999992724,
+        "p95": 3,
+        "p99": 4
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5623,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 1304,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 77.70833333333323,
+        "n": 72,
+        "p50": 78,
+        "p95": 88,
+        "p99": 89
+      },
+      "label": "accepted-100000-dispersed-100000-r2",
+      "labels": {
+        "mean": 0.08219178082201747,
+        "n": 73,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.000000000007276
+      },
+      "points": 100000,
+      "submissionFPS": 12.982393739996443,
+      "submit": {
+        "mean": 1.602739726027497,
+        "n": 73,
+        "p50": 2,
+        "p95": 2.000000000007276,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5609.000000000007,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 1452,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 77.47222222222211,
+        "n": 72,
+        "p50": 78,
+        "p95": 86.00000000000728,
+        "p99": 89
+      },
+      "label": "accepted-100000-dispersed-100000-r3",
+      "labels": {
+        "mean": 0.09589041095880443,
+        "n": 73,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.000000000007276
+      },
+      "points": 100000,
+      "submissionFPS": 13.014797646639312,
+      "submit": {
+        "mean": 1.712328767123188,
+        "n": 73,
+        "p50": 2,
+        "p95": 2.000000000007276,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5560,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 1808,
+        "drawCalls": 7,
+        "frameCalls": 2,
+        "lines": 100009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 31.81609195402303,
+        "n": 174,
+        "p50": 32,
+        "p95": 35,
+        "p99": 36
+      },
+      "label": "no-stems-r1",
+      "labels": {
+        "mean": 0.1085714285712207,
+        "n": 175,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 100000,
+      "submissionFPS": 31.47482014388489,
+      "submit": {
+        "mean": 1.5657142857146182,
+        "n": 175,
+        "p50": 1.999999999992724,
+        "p95": 2.000000000007276,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5557,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 2158,
+        "drawCalls": 7,
+        "frameCalls": 2,
+        "lines": 100009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 31.936416184971097,
+        "n": 173,
+        "p50": 32,
+        "p95": 34.999999999992724,
+        "p99": 36
+      },
+      "label": "no-stems-r2",
+      "labels": {
+        "mean": 0.08620689655172414,
+        "n": 174,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.000000000007276
+      },
+      "points": 100000,
+      "submissionFPS": 31.31185891668166,
+      "submit": {
+        "mean": 1.4425287356318075,
+        "n": 174,
+        "p50": 1.000000000007276,
+        "p95": 2.000000000014552,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5539,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 2508,
+        "drawCalls": 7,
+        "frameCalls": 2,
+        "lines": 100009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 31.838150289017342,
+        "n": 173,
+        "p50": 32,
+        "p95": 34,
+        "p99": 35.00000000001455
+      },
+      "label": "no-stems-r3",
+      "labels": {
+        "mean": 0.05747126436781609,
+        "n": 174,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 100000,
+      "submissionFPS": 31.413612565445025,
+      "submit": {
+        "mean": 1.534482758620355,
+        "n": 174,
+        "p50": 1.000000000014552,
+        "p95": 2.000000000014552,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5568,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 2658,
+        "drawCalls": 7,
+        "frameCalls": 2,
+        "lines": 100029,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 75.93150684931507,
+        "n": 73,
+        "p50": 76,
+        "p95": 85,
+        "p99": 87
+      },
+      "label": "no-trails-r1",
+      "labels": {
+        "mean": 0.0540540540542507,
+        "n": 74,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.000000000014552
+      },
+      "points": 100000,
+      "submissionFPS": 13.290229885057471,
+      "submit": {
+        "mean": 1.5135135135129236,
+        "n": 74,
+        "p50": 1.999999999985448,
+        "p95": 2.000000000014552,
+        "p99": 2.000000000014552
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5623.000000000015,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 2810,
+        "drawCalls": 7,
+        "frameCalls": 2,
+        "lines": 100029,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 75.58108108108088,
+        "n": 74,
+        "p50": 77,
+        "p95": 85,
+        "p99": 86
+      },
+      "label": "no-trails-r2",
+      "labels": {
+        "mean": 0.13333333333294528,
+        "n": 75,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 100000,
+      "submissionFPS": 13.338075760270284,
+      "submit": {
+        "mean": 1.5466666666670548,
+        "n": 75,
+        "p50": 1.000000000014552,
+        "p95": 3,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5579,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 2960,
+        "drawCalls": 7,
+        "frameCalls": 2,
+        "lines": 100029,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 75.97260273972603,
+        "n": 73,
+        "p50": 77,
+        "p95": 83.00000000001455,
+        "p99": 84.99999999998545
+      },
+      "label": "no-trails-r3",
+      "labels": {
+        "mean": 0.09459459459439795,
+        "n": 74,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 100000,
+      "submissionFPS": 13.264025811077254,
+      "submit": {
+        "mean": 1.5675675675679608,
+        "n": 74,
+        "p50": 1.999999999985448,
+        "p95": 2.000000000014552,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5552,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 3328,
+        "drawCalls": 6,
+        "frameCalls": 2,
+        "lines": 29,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 30.324175824175825,
+        "n": 182,
+        "p50": 30,
+        "p95": 32.00000000001455,
+        "p99": 34
+      },
+      "label": "neither-r1",
+      "labels": {
+        "mean": 0.08743169398883248,
+        "n": 183,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 100000,
+      "submissionFPS": 32.961095100864554,
+      "submit": {
+        "mean": 1.469945355191416,
+        "n": 183,
+        "p50": 1.000000000014552,
+        "p95": 2.000000000014552,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5553.999999999985,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 3694,
+        "drawCalls": 6,
+        "frameCalls": 2,
+        "lines": 29,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 30.502762430939228,
+        "n": 181,
+        "p50": 30.999999999985448,
+        "p95": 33,
+        "p99": 34
+      },
+      "label": "neither-r2",
+      "labels": {
+        "mean": 0.08791208791208792,
+        "n": 182,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.000000000014552
+      },
+      "points": 100000,
+      "submissionFPS": 32.769175369103436,
+      "submit": {
+        "mean": 1.5054945054949054,
+        "n": 182,
+        "p50": 1.000000000014552,
+        "p95": 2.000000000014552,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5555.999999999985,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 4062,
+        "drawCalls": 6,
+        "frameCalls": 2,
+        "lines": 29,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 30.428571428571427,
+        "n": 182,
+        "p50": 30.000000000014552,
+        "p95": 33,
+        "p99": 34
+      },
+      "label": "neither-r3",
+      "labels": {
+        "mean": 0.07103825136596117,
+        "n": 183,
+        "p50": 0,
+        "p95": 0.9999999999854481,
+        "p99": 1.000000000014552
+      },
+      "points": 100000,
+      "submissionFPS": 32.93736501079922,
+      "submit": {
+        "mean": 1.4972677595618873,
+        "n": 183,
+        "p50": 1.000000000014552,
+        "p95": 2.000000000014552,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1920,
+        704
+      ],
+      "durationMs": 5600,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 4200,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 84.45454545454545,
+        "n": 66,
+        "p50": 85.00000000001455,
+        "p95": 93,
+        "p99": 95.99999999998545
+      },
+      "label": "expanded100k-r1",
+      "labels": {
+        "mean": 0.02985074626887391,
+        "n": 67,
+        "p50": 0,
+        "p95": 0,
+        "p99": 1.000000000014552
+      },
+      "points": 100000,
+      "submissionFPS": 11.964285714285714,
+      "submit": {
+        "mean": 1.6119402985057252,
+        "n": 67,
+        "p50": 1.999999999985448,
+        "p95": 2.000000000014552,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1920,
+        704
+      ],
+      "durationMs": 5615,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 4336,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 84.72727272727273,
+        "n": 66,
+        "p50": 86,
+        "p95": 93.00000000001455,
+        "p99": 95
+      },
+      "label": "expanded100k-r2",
+      "labels": {
+        "mean": 0.1044776119405157,
+        "n": 67,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.000000000014552
+      },
+      "points": 100000,
+      "submissionFPS": 11.932324131789848,
+      "submit": {
+        "mean": 1.4925373134337045,
+        "n": 67,
+        "p50": 1.000000000014552,
+        "p95": 2.000000000014552,
+        "p99": 2.000000000014552
+      }
+    },
+    {
+      "canvas": [
+        1920,
+        704
+      ],
+      "durationMs": 5601.000000000015,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 4472,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 84.53030303030303,
+        "n": 66,
+        "p50": 86,
+        "p95": 92,
+        "p99": 94
+      },
+      "label": "expanded100k-r3",
+      "labels": {
+        "mean": 0.08955223880618735,
+        "n": 67,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.000000000014552
+      },
+      "points": 100000,
+      "submissionFPS": 11.962149616139945,
+      "submit": {
+        "mean": 1.5671641791055635,
+        "n": 67,
+        "p50": 1.999999999985448,
+        "p95": 2.000000000014552,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5580.999999999985,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 4626,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 828009
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 78.32394366197204,
+        "n": 71,
+        "p50": 79,
+        "p95": 86,
+        "p99": 88
+      },
+      "label": "terrain100k-r1",
+      "labels": {
+        "mean": 0.125,
+        "n": 72,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 100000,
+      "submissionFPS": 12.900913814728577,
+      "submit": {
+        "mean": 1.4999999999993936,
+        "n": 72,
+        "p50": 1.9999999999708962,
+        "p95": 2.000000000014552,
+        "p99": 2.000000000029104
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5608,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 4776,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 828009
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 76.36986301369863,
+        "n": 73,
+        "p50": 77,
+        "p95": 86,
+        "p99": 88
+      },
+      "label": "terrain100k-r2",
+      "labels": {
+        "mean": 0.12162162162162163,
+        "n": 74,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.0000000000291038
+      },
+      "points": 100000,
+      "submissionFPS": 13.19543509272468,
+      "submit": {
+        "mean": 1.6756756756764624,
+        "n": 74,
+        "p50": 2,
+        "p95": 2.000000000029104,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5620,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 4926,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 828009
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 76.72602739726027,
+        "n": 73,
+        "p50": 77,
+        "p95": 86,
+        "p99": 86.9999999999709
+      },
+      "label": "terrain100k-r3",
+      "labels": {
+        "mean": 0.08108108108068779,
+        "n": 74,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 100000,
+      "submissionFPS": 13.167259786476869,
+      "submit": {
+        "mean": 1.662162162163342,
+        "n": 74,
+        "p50": 2,
+        "p95": 3,
+        "p99": 3
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5563,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 5246,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 40009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 160005
+      },
+      "instances": 20000,
+      "interval": {
+        "mean": 36.189542483660134,
+        "n": 153,
+        "p50": 36,
+        "p95": 39,
+        "p99": 42
+      },
+      "label": "accepted-20000-dispersed-20000-r1",
+      "labels": {
+        "mean": 0.09090909090871294,
+        "n": 154,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 20000,
+      "submissionFPS": 27.682904907424053,
+      "submit": {
+        "mean": 0.8701298701291141,
+        "n": 154,
+        "p50": 1,
+        "p95": 1.0000000000291038,
+        "p99": 2
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5538.999999999971,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 5556,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 40009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 160005
+      },
+      "instances": 20000,
+      "interval": {
+        "mean": 35.99346405228758,
+        "n": 153,
+        "p50": 36,
+        "p95": 39,
+        "p99": 40
+      },
+      "label": "accepted-20000-dispersed-20000-r2",
+      "labels": {
+        "mean": 0.0909090909092799,
+        "n": 154,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 20000,
+      "submissionFPS": 27.80285250045149,
+      "submit": {
+        "mean": 0.870129870131382,
+        "n": 154,
+        "p50": 1,
+        "p95": 1.0000000000291038,
+        "p99": 2
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5542,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 5866,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 40009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 160005
+      },
+      "instances": 20000,
+      "interval": {
+        "mean": 36.052287581699346,
+        "n": 153,
+        "p50": 36,
+        "p95": 39,
+        "p99": 41
+      },
+      "label": "accepted-20000-dispersed-20000-r3",
+      "labels": {
+        "mean": 0.07142857142857142,
+        "n": 154,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 20000,
+      "submissionFPS": 27.787802237459402,
+      "submit": {
+        "mean": 0.8246753246751357,
+        "n": 154,
+        "p50": 1,
+        "p95": 1.0000000000291038,
+        "p99": 2
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5559.000000000029,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 6212,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 40012,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 160005
+      },
+      "instances": 20000,
+      "interval": {
+        "mean": 33.33734939759036,
+        "n": 166,
+        "p50": 33.000000000029104,
+        "p95": 35.000000000029104,
+        "p99": 39
+      },
+      "label": "accepted-100000-dense-20000-r1",
+      "labels": {
+        "mean": 0.0718562874251497,
+        "n": 167,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 20000,
+      "submissionFPS": 30.041374347904142,
+      "submit": {
+        "mean": 0.8862275449105282,
+        "n": 167,
+        "p50": 1,
+        "p95": 1.0000000000291038,
+        "p99": 2
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5559,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 6548,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 40012,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 160005
+      },
+      "instances": 20000,
+      "interval": {
+        "mean": 33.283132530120305,
+        "n": 166,
+        "p50": 33,
+        "p95": 35,
+        "p99": 36.999999999970896
+      },
+      "label": "accepted-100000-dense-20000-r2",
+      "labels": {
+        "mean": 0.04191616766484493,
+        "n": 167,
+        "p50": 0,
+        "p95": 0,
+        "p99": 1
+      },
+      "points": 20000,
+      "submissionFPS": 30.0413743479043,
+      "submit": {
+        "mean": 0.9041916167678613,
+        "n": 167,
+        "p50": 1,
+        "p95": 1.0000000000291038,
+        "p99": 2.000000000029104
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5532,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 6882,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 40012,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 160005
+      },
+      "instances": 20000,
+      "interval": {
+        "mean": 33.333333333333336,
+        "n": 165,
+        "p50": 33,
+        "p95": 35,
+        "p99": 36
+      },
+      "label": "accepted-100000-dense-20000-r3",
+      "labels": {
+        "mean": 0.11445783132582718,
+        "n": 166,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.0000000000291038
+      },
+      "points": 20000,
+      "submissionFPS": 30.007230657989876,
+      "submit": {
+        "mean": 0.8313253012062218,
+        "n": 166,
+        "p50": 1,
+        "p95": 1.0000000000291038,
+        "p99": 1.0000000000291038
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5572,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 7048,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 71.1025641025641,
+        "n": 78,
+        "p50": 72,
+        "p95": 80,
+        "p99": 85
+      },
+      "label": "accepted-100000-dense-100000-r1",
+      "labels": {
+        "mean": 0.075949367088976,
+        "n": 79,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1.0000000000291038
+      },
+      "points": 100000,
+      "submissionFPS": 14.178033022254128,
+      "submit": {
+        "mean": 1.556962025317561,
+        "n": 79,
+        "p50": 1.9999999999708962,
+        "p95": 2.000000000029104,
+        "p99": 4
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5598,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 7208,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 71.39743589743627,
+        "n": 78,
+        "p50": 73,
+        "p95": 80,
+        "p99": 80.0000000000291
+      },
+      "label": "accepted-100000-dense-100000-r2",
+      "labels": {
+        "mean": 0.1139240506336482,
+        "n": 79,
+        "p50": 0,
+        "p95": 1.0000000000291038,
+        "p99": 1.0000000000291038
+      },
+      "points": 100000,
+      "submissionFPS": 14.11218292247231,
+      "submit": {
+        "mean": 1.4430379746839128,
+        "n": 79,
+        "p50": 1.0000000000291038,
+        "p95": 2,
+        "p99": 2.000000000029104
+      }
+    },
+    {
+      "canvas": [
+        1382,
+        704
+      ],
+      "durationMs": 5598.999999999971,
+      "event": "sample",
+      "gpuElapsedMs": null,
+      "info": {
+        "calls": 7368,
+        "drawCalls": 8,
+        "frameCalls": 2,
+        "lines": 200009,
+        "points": 0,
+        "timestamp": 0,
+        "triangles": 800005
+      },
+      "instances": 100000,
+      "interval": {
+        "mean": 71.34615384615384,
+        "n": 78,
+        "p50": 72,
+        "p95": 78,
+        "p99": 80
+      },
+      "label": "accepted-100000-dense-100000-r3",
+      "labels": {
+        "mean": 0.05063291139240506,
+        "n": 79,
+        "p50": 0,
+        "p95": 1,
+        "p99": 1
+      },
+      "points": 100000,
+      "submissionFPS": 14.109662439721452,
+      "submit": {
+        "mean": 1.4303797468365482,
+        "n": 79,
+        "p50": 1,
+        "p95": 2.000000000029104,
+        "p99": 3
+      }
+    }
+  ],
+  "construction": [
+    {
+      "buildMs": 61,
+      "decodeMs": 29,
+      "event": "construction",
+      "ids": [
+        "1",
+        "100000"
+      ],
+      "label": "accepted-100000-dispersed-20000",
+      "packetChars": 853336,
+      "packetMs": 126.99999999999636,
+      "pointCount": 20000,
+      "rebuilds": 7,
+      "segments": 19983,
+      "stems": 20000,
+      "storedCount": 100000,
+      "stride": 32
+    },
+    {
+      "buildMs": 253.99999999999272,
+      "decodeMs": 135.00000000000728,
+      "event": "construction",
+      "ids": [
+        "1",
+        "100000"
+      ],
+      "label": "accepted-100000-dispersed-100000",
+      "packetChars": 4266668,
+      "packetMs": 242,
+      "pointCount": 100000,
+      "rebuilds": 8,
+      "segments": 99980,
+      "stems": 100000,
+      "storedCount": 100000,
+      "stride": 32
+    },
+    {
+      "buildMs": 52,
+      "decodeMs": 31,
+      "event": "construction",
+      "ids": [
+        "1",
+        "20000"
+      ],
+      "label": "accepted-20000-dispersed-20000",
+      "packetChars": 853336,
+      "packetMs": 41,
+      "pointCount": 20000,
+      "rebuilds": 14,
+      "segments": 19980,
+      "stems": 20000,
+      "storedCount": 20000,
+      "stride": 32
+    },
+    {
+      "buildMs": 55,
+      "decodeMs": 25.000000000029104,
+      "event": "construction",
+      "ids": [
+        "1",
+        "100000"
+      ],
+      "label": "accepted-100000-dense-20000",
+      "packetChars": 853336,
+      "packetMs": 98,
+      "pointCount": 20000,
+      "rebuilds": 16,
+      "segments": 19983,
+      "stems": 20000,
+      "storedCount": 100000,
+      "stride": 32
+    },
+    {
+      "buildMs": 218,
+      "decodeMs": 137,
+      "event": "construction",
+      "ids": [
+        "1",
+        "100000"
+      ],
+      "label": "accepted-100000-dense-100000",
+      "packetChars": 4266668,
+      "packetMs": 207,
+      "pointCount": 100000,
+      "rebuilds": 17,
+      "segments": 99980,
+      "stems": 100000,
+      "storedCount": 100000,
+      "stride": 32
+    }
+  ],
+  "picking": [
+    {
+      "budget": 20000,
+      "event": "picking",
+      "fixture": "accepted-100000-dispersed",
+      "ms": [
+        15,
+        8,
+        9,
+        8,
+        10,
+        8
+      ],
+      "stats": {
+        "mean": 9.666666666666666,
+        "n": 6,
+        "p50": 9,
+        "p95": 15,
+        "p99": 15
+      }
+    },
+    {
+      "budget": 100000,
+      "event": "picking",
+      "fixture": "accepted-100000-dispersed",
+      "ms": [
+        43.000000000007276,
+        39.999999999992724,
+        39,
+        42,
+        34,
+        34.000000000007276
+      ],
+      "stats": {
+        "mean": 38.66666666666788,
+        "n": 6,
+        "p50": 39.999999999992724,
+        "p95": 43.000000000007276,
+        "p99": 43.000000000007276
+      }
+    },
+    {
+      "budget": 20000,
+      "event": "picking",
+      "fixture": "accepted-20000-dispersed",
+      "ms": [
+        9,
+        8,
+        8,
+        9.000000000029104,
+        6.999999999970896,
+        9
+      ],
+      "stats": {
+        "mean": 8.333333333333334,
+        "n": 6,
+        "p50": 9,
+        "p95": 9.000000000029104,
+        "p99": 9.000000000029104
+      }
+    },
+    {
+      "budget": 20000,
+      "event": "picking",
+      "fixture": "accepted-100000-dense",
+      "ms": [
+        9,
+        8,
+        9,
+        8.000000000029104,
+        7.999999999970896,
+        8
+      ],
+      "stats": {
+        "mean": 8.333333333333334,
+        "n": 6,
+        "p50": 8.000000000029104,
+        "p95": 9,
+        "p99": 9
+      }
+    },
+    {
+      "budget": 100000,
+      "event": "picking",
+      "fixture": "accepted-100000-dense",
+      "ms": [
+        41,
+        43,
+        40,
+        46,
+        42,
+        34
+      ],
+      "stats": {
+        "mean": 41,
+        "n": 6,
+        "p50": 42,
+        "p95": 46,
+        "p99": 46
+      }
+    }
+  ],
+  "timeline": [
+    {
+      "actual": 1750155660,
+      "event": "timeline",
+      "expected": 1750164180,
+      "lost": true,
+      "repeat": 1,
+      "slider": "199"
+    },
+    {
+      "actual": 1750155660,
+      "event": "timeline",
+      "expected": 1750164180,
+      "lost": true,
+      "repeat": 2,
+      "slider": "199"
+    },
+    {
+      "actual": 1750155660,
+      "event": "timeline",
+      "expected": 1750164180,
+      "lost": true,
+      "repeat": 3,
+      "slider": "199"
+    }
+  ],
+  "imports": [
+    {
+      "attributeExample": {
+        "attrs": {
+          "category": "synthetic-control",
+          "entity": "Track 00",
+          "evidence": "EVID-000001",
+          "label": "Observation 1",
+          "latitude": "43.100000000",
+          "longitude": "-79.900000000",
+          "timestamp": "2026-01-01T00:00:00+00:00",
+          "value": "0"
+        },
+        "category": "synthetic-control",
+        "end": null,
+        "entity": "Track 00",
+        "id": "1",
+        "label": "Observation 1",
+        "lat": 43.1,
+        "lon": -79.9,
+        "note": "",
+        "related_to": "",
+        "source": "accepted-100000-dispersed.csv / CSV",
+        "source_row": 2,
+        "tags": [],
+        "time": 1767225600,
+        "value": 0
+      },
+      "commitMs": 10582,
+      "committed": {
+        "accepted": 100000,
+        "reasons": [],
+        "rejected": 0,
+        "revision": 13,
+        "storage": "sqlite"
+      },
+      "count": 100000,
+      "defaultPoints": 20000,
+      "event": "import",
+      "exactCount": 100000,
+      "fixture": "accepted-100000-dispersed",
+      "previewMs": 76.00000000000091
+    },
+    {
+      "attributeExample": {
+        "attrs": {
+          "category": "synthetic-control",
+          "entity": "Track 00",
+          "evidence": "EVID-000001",
+          "label": "Observation 1",
+          "latitude": "43.100000000",
+          "longitude": "-79.900000000",
+          "timestamp": "2026-01-01T00:00:00+00:00",
+          "value": "0"
+        },
+        "category": "synthetic-control",
+        "end": null,
+        "entity": "Track 00",
+        "id": "1",
+        "label": "Observation 1",
+        "lat": 43.1,
+        "lon": -79.9,
+        "note": "",
+        "related_to": "",
+        "source": "accepted-20000-dispersed.csv / CSV",
+        "source_row": 2,
+        "tags": [],
+        "time": 1767225600,
+        "value": 0
+      },
+      "commitMs": 1736,
+      "committed": {
+        "accepted": 20000,
+        "reasons": [],
+        "rejected": 0,
+        "revision": 17,
+        "storage": "sqlite"
+      },
+      "count": 20000,
+      "defaultPoints": 20000,
+      "event": "import",
+      "exactCount": 20000,
+      "fixture": "accepted-20000-dispersed",
+      "previewMs": 138.0000000000291
+    },
+    {
+      "attributeExample": {
+        "attrs": {
+          "category": "synthetic-control",
+          "entity": "Track 00",
+          "evidence": "EVID-000001",
+          "label": "Observation 1",
+          "latitude": "43.100000000",
+          "longitude": "-79.900000000",
+          "timestamp": "2026-01-01T00:00:00+00:00",
+          "value": "0"
+        },
+        "category": "synthetic-control",
+        "end": null,
+        "entity": "Track 00",
+        "id": "1",
+        "label": "Observation 1",
+        "lat": 43.1,
+        "lon": -79.9,
+        "note": "",
+        "related_to": "",
+        "source": "accepted-100000-dense.csv / CSV",
+        "source_row": 2,
+        "tags": [],
+        "time": 1767225600,
+        "value": 0
+      },
+      "commitMs": 10579,
+      "committed": {
+        "accepted": 100000,
+        "reasons": [],
+        "rejected": 0,
+        "revision": 20,
+        "storage": "sqlite"
+      },
+      "count": 100000,
+      "defaultPoints": 20000,
+      "event": "import",
+      "exactCount": 100000,
+      "fixture": "accepted-100000-dense",
+      "previewMs": 79
+    }
+  ],
+  "terrainReuse": [],
+  "staticTerrain": [],
+  "complete": true,
+  "engineCounters": [
+    {
+      "pci": "0000:00:02.0",
+      "engineSecondsDelta": 0.0,
+      "maxResidentVRAMKiB": null
+    },
+    {
+      "pci": "0000:3a:00.0",
+      "engineSecondsDelta": 0.0,
+      "maxResidentVRAMKiB": 4248
+    },
+    {
+      "pci": "0000:3a:00.0",
+      "engineSecondsDelta": 139.920231717,
+      "maxResidentVRAMKiB": 317952
+    }
+  ],
+  "phaseEngineSecondsByDriver": {
+    "startup": {
+      "i915": 0.0,
+      "amdgpu": 0.421991265
+    },
+    "accepted-100000-dispersed-20000-r1": {
+      "i915": 0.0,
+      "amdgpu": 4.210699794
+    },
+    "accepted-100000-dispersed-20000-r2": {
+      "i915": 0.0,
+      "amdgpu": 4.227605313
+    },
+    "accepted-100000-dispersed-20000-r3": {
+      "i915": 0.0,
+      "amdgpu": 4.407178424
+    },
+    "accepted-100000-dispersed-100000-r1": {
+      "i915": 0.0,
+      "amdgpu": 4.89532384
+    },
+    "accepted-100000-dispersed-100000-r2": {
+      "i915": 0.0,
+      "amdgpu": 4.840929631
+    },
+    "accepted-100000-dispersed-100000-r3": {
+      "i915": 0.0,
+      "amdgpu": 5.089477005
+    },
+    "no-stems-r1": {
+      "i915": 0.0,
+      "amdgpu": 3.999158845
+    },
+    "no-stems-r2": {
+      "i915": 0.0,
+      "amdgpu": 3.987642531
+    },
+    "no-stems-r3": {
+      "i915": 0.0,
+      "amdgpu": 4.038975101
+    },
+    "no-trails-r1": {
+      "i915": 0.0,
+      "amdgpu": 5.001412484
+    },
+    "no-trails-r2": {
+      "i915": 0.0,
+      "amdgpu": 4.863131105
+    },
+    "no-trails-r3": {
+      "i915": 0.0,
+      "amdgpu": 4.943970131
+    },
+    "neither-r1": {
+      "i915": 0.0,
+      "amdgpu": 3.85389566
+    },
+    "neither-r2": {
+      "i915": 0.0,
+      "amdgpu": 3.851996011
+    },
+    "neither-r3": {
+      "i915": 0.0,
+      "amdgpu": 3.939495081
+    },
+    "expanded100k-r1": {
+      "i915": 0.0,
+      "amdgpu": 4.864990405
+    },
+    "expanded100k-r2": {
+      "i915": 0.0,
+      "amdgpu": 5.022471552
+    },
+    "expanded100k-r3": {
+      "i915": 0.0,
+      "amdgpu": 5.18085401
+    },
+    "terrain100k-r1": {
+      "i915": 0.0,
+      "amdgpu": 4.821572413
+    },
+    "terrain100k-r2": {
+      "i915": 0.0,
+      "amdgpu": 4.986597289
+    },
+    "terrain100k-r3": {
+      "i915": 0.0,
+      "amdgpu": 5.068593854
+    },
+    "accepted-20000-dispersed-20000-r1": {
+      "i915": 0.0,
+      "amdgpu": 4.242452762
+    },
+    "accepted-20000-dispersed-20000-r2": {
+      "i915": 0.0,
+      "amdgpu": 4.251341458
+    },
+    "accepted-20000-dispersed-20000-r3": {
+      "i915": 0.0,
+      "amdgpu": 4.410249211
+    },
+    "accepted-100000-dense-20000-r1": {
+      "i915": 0.0,
+      "amdgpu": 4.232934347
+    },
+    "accepted-100000-dense-20000-r2": {
+      "i915": 0.0,
+      "amdgpu": 4.22737436
+    },
+    "accepted-100000-dense-20000-r3": {
+      "i915": 0.0,
+      "amdgpu": 4.330386796
+    },
+    "accepted-100000-dense-100000-r1": {
+      "i915": 0.0,
+      "amdgpu": 4.949261552
+    },
+    "accepted-100000-dense-100000-r2": {
+      "i915": 0.0,
+      "amdgpu": 4.812794843
+    },
+    "accepted-100000-dense-100000-r3": {
+      "i915": 0.0,
+      "amdgpu": 5.035341587
+    }
+  }
+}

@@ -1,0 +1,33 @@
+diff --git a/src/store.rs b/src/store.rs
+index 04bb8a5..46f39ca 100644
+--- a/src/store.rs
++++ b/src/store.rs
+@@ -683,7 +683,7 @@ impl DataStore {
+     pub fn time_bounds(&self) -> Result<(i64, i64), String> {
+         self.connection
+             .query_row(
+-                "SELECT coalesce(min(time),0),coalesce(max(t_end),0) FROM events",
++                "SELECT coalesce((SELECT min(time) FROM events),0),coalesce((SELECT max(t_end) FROM events),0)",
+                 [],
+                 |r| {
+                     let lo = r.get::<_, i64>(0)?;
+@@ -860,6 +860,19 @@ impl DataStore {
+                 "mgrs_precision" => Some("mgrs_precision"),
+                 _ => None,
+             };
++            if matches!(p.field.as_str(), "entity" | "category" | "source" | "id") && matches!(p.op, Operator::Equals | Operator::NotEquals) {
++                parts.push(format!("e.{}{}?", p.field, if p.op == Operator::Equals { "=" } else { "<>" }));
++                args.push(SqlValue::Text(p.value.clone()));
++                continue;
++            }
++            if matches!(p.field.as_str(), "value" | "lat" | "lon") && matches!(p.op, Operator::Greater | Operator::Less | Operator::Equals | Operator::NotEquals) {
++                if let Some(value) = p.value.parse::<f64>().ok().filter(|v| v.is_finite()) {
++                    let op = match p.op { Operator::Greater => ">", Operator::Less => "<", Operator::Equals => "=", _ => "<>" };
++                    parts.push(if p.op == Operator::NotEquals { format!("(e.{} IS NULL OR e.{}<>?)",p.field,p.field) } else {format!("e.{}{op}?",p.field)});
++                    args.push(SqlValue::Real(value));
++                    continue;
++                }
++            }
+             let expr = if matches!(p.field.as_str(), "lat" | "lon" | "value") {
+                 format!("coalesce(rust_number(e.{}),'')", p.field)
+             } else if let Some(col) = column {

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "total_passed": 88,
+  "test_groups": {
+    "lib": 45,
+    "analytics_engine": 8,
+    "cesium_scene": 6,
+    "chart_shortcuts": 8,
+    "charts": 9,
+    "field_roles": 2,
+    "subsecond_precision": 5,
+    "views_layers": 5
+  }
+}

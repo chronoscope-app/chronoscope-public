@@ -1,0 +1,24 @@
+{
+  "bounds_s": 4.7179e-05,
+  "copy_into_s": 10.535995719,
+  "db_bytes": 238178304,
+  "ingest_s": 10.198187951,
+  "io": "rchar: 5378521995\nwchar: 2517862828\nsyscr: 1308945\nsyscw: 919130\nread_bytes: 10018816\nwrite_bytes: 2471153664\ncancelled_write_bytes: 242372608\n",
+  "numeric_order_s": 0.031654355,
+  "numeric_plan": [
+    "SCAN e USING INDEX events_time",
+    "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+  ],
+  "numeric_vm_steps": 194,
+  "open_database_s": 2.32320138,
+  "preview_s": 0.092276382,
+  "render_100k_s": 0.257532903,
+  "rows": 100000,
+  "save_database_s": 1.8749285150000001,
+  "selective_order_s": 0.031794589,
+  "smaps_rollup": "Rss:               86796 kB\nPss:               84700 kB\nPss_Dirty:         76296 kB\nPss_Anon:          76264 kB\nPss_File:           8436 kB\nPss_Shmem:             0 kB\nShared_Clean:       2116 kB\nShared_Dirty:          0 kB\nPrivate_Clean:      8384 kB\nPrivate_Dirty:     76296 kB\nReferenced:        86796 kB\nAnonymous:         76264 kB\nKSM:                   0 kB\nLazyFree:              0 kB\nAnonHugePages:         0 kB\nShmemPmdMapped:        0 kB\nFilePmdMapped:         0 kB\nShared_Hugetlb:        0 kB\nPrivate_Hugetlb:       0 kB\nSwap:                  0 kB\nSwapPss:               0 kB\nLocked:                0 kB",
+  "snapshot_compact_first_s": 0.403297991,
+  "snapshot_full_after_compact_s": 5.9381e-05,
+  "sqlite_version": "3.50.2",
+  "summary_full_s": 0.360007755
+}

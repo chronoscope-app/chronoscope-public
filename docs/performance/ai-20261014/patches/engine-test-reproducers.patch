@@ -1,0 +1,68 @@
+diff --git a/examples/ai_engine.rs b/examples/ai_engine.rs
+new file mode 100644
+index 0000000..7b37bf5
+--- /dev/null
++++ b/examples/ai_engine.rs
+@@ -0,0 +1,10 @@
++use chronoscope::{engine::Engine,model::*,project::Project,store::DataStore,stream_import::PendingImport,import::Mapping};
++use serde_json::{json,Value}; use std::{io::Write,time::Instant};
++fn timed<T>(m:&mut serde_json::Map<String,Value>,k:&str,f:impl FnOnce()->T)->T {let t=Instant::now();let v=f();m.insert(k.into(),json!(t.elapsed().as_secs_f64()));v}
++fn main(){let args:Vec<_>=std::env::args().collect();let n:usize=args[1].parse().unwrap();let root=std::path::PathBuf::from(&args[2]);std::fs::create_dir_all(&root).unwrap();let d=tempfile::tempdir_in(&root).unwrap();let csv=root.join(format!("fixture-{n}.csv"));if !csv.exists(){let mut f=std::io::BufWriter::new(std::fs::File::create(&csv).unwrap());writeln!(f,"entity,timestamp,latitude,longitude,category,value,label").unwrap();for i in 0..n{writeln!(f,"Track {},{},{:.6},{:.6},Class {},{},Evidence {} {}",i%100,1735689600+i as i64*60,35.+(i%1000) as f64/10000.,-120.+(i/1000%1000) as f64/10000.,i%5,i%10000,i,"x".repeat(80)).unwrap();}}
++let mut m=serde_json::Map::new();m.insert("rows".into(),json!(n));m.insert("sqlite_version".into(),json!(rusqlite::version()));let mut s=DataStore::new(&d.path().join("store")).unwrap();let p=timed(&mut m,"preview_s",||PendingImport::preview(&csv,0).unwrap());let mapping=Mapping::detect(&p.sample.tables[0]).mapping;let r=timed(&mut m,"ingest_s",||p.ingest(0,&mapping,&s,1).unwrap());assert_eq!(r.0,n);assert_eq!(s.count().unwrap(),n);s.changed().unwrap();
++let bounds=timed(&mut m,"bounds_s",||s.time_bounds().unwrap());assert_eq!(bounds.0,1735689600);assert_eq!(bounds.1,1735689600+(n-1) as i64*60);let f=Filter{predicates:vec![Predicate{field:"category".into(),op:Operator::Equals,value:"Class 2".into()}],..Default::default()};let t=timed(&mut m,"selective_order_s",||s.ordered(&f,None,"time",false).unwrap());assert_eq!(s.table_count(&t).unwrap(),n/5);let numeric=Filter{predicates:vec![Predicate{field:"value".into(),op:Operator::Greater,value:"9990".into()}],..Default::default()};let t=timed(&mut m,"numeric_order_s",||s.ordered(&numeric,None,"time",false).unwrap());assert_eq!(s.table_count(&t).unwrap(),n/10000*9);
++let (w,a)=DataStore::where_sql(&numeric,None);let mut q=s.connection.prepare(&format!("EXPLAIN QUERY PLAN SELECT e.r FROM events e WHERE {w} ORDER BY e.time,e.id_key")).unwrap();let plans=q.query_map(rusqlite::params_from_iter(a.clone()),|r|r.get::<_,String>(3)).unwrap().collect::<Result<Vec<_>,_>>().unwrap();m.insert("numeric_plan".into(),json!(plans));drop(q);let mut q=s.connection.prepare(&format!("SELECT count(*) FROM events e WHERE {w}")).unwrap();let _:usize=q.query_row(rusqlite::params_from_iter(a),|r|r.get(0)).unwrap();m.insert("numeric_vm_steps".into(),json!(q.get_status(rusqlite::StatementStatus::VmStep)));drop(q);
++let summary=timed(&mut m,"summary_full_s",||s.summary(&Filter::default()).unwrap());assert_eq!(summary["count"],n);let mut target=DataStore::new(&d.path().join("clone")).unwrap();timed(&mut m,"copy_into_s",||s.copy_into(&mut target).unwrap());assert_eq!(target.count().unwrap(),n);for id in [1,n as u64/2,n as u64]{assert_eq!(s.get(id).unwrap(),target.get(id).unwrap());}
++let metadata=Project::new(Dataset{name:"benchmark".into(),events:vec![]});let saved=d.path().join("portable.chronoscope");timed(&mut m,"save_database_s",||s.save_as(&saved,&metadata).unwrap());m.insert("db_bytes".into(),json!(saved.metadata().unwrap().len()));let (opened,_)=timed(&mut m,"open_database_s",||DataStore::open_copy(&saved,&d.path().join("open")).unwrap());assert_eq!(opened.count().unwrap(),n);drop(opened);drop(target);drop(s);
++let engine=Engine::from_path(&saved,d.path().join("engine"),None).unwrap();let compact=timed(&mut m,"snapshot_compact_first_s",||engine.invoke("snapshot",json!({"compact":true})).unwrap());let full=timed(&mut m,"snapshot_full_after_compact_s",||engine.invoke("snapshot",json!({})).unwrap());let mut oracle=full.clone();for k in ["histogram","selected_histogram","views","groups","workspace","imports"]{oracle.as_object_mut().unwrap().remove(k);}assert_eq!(compact,oracle);let render=timed(&mut m,"render_100k_s",||engine.invoke("render_data",json!({"max_points":100000})).unwrap());assert_eq!(render["located_count"],n);assert_eq!(render["rendered_count"],n.min(100000));m.insert("io".into(),json!(std::fs::read_to_string("/proc/self/io").unwrap()));m.insert("smaps_rollup".into(),json!(std::fs::read_to_string("/proc/self/smaps_rollup").unwrap()));println!("{}",serde_json::to_string_pretty(&m).unwrap());}
+diff --git a/tests/ai_engine_jobs.rs b/tests/ai_engine_jobs.rs
+new file mode 100644
+index 0000000..29d2a35
+--- /dev/null
++++ b/tests/ai_engine_jobs.rs
+@@ -0,0 +1,2 @@
++use chronoscope::{engine::Engine,project::Project,operation};use serde_json::json;use std::sync::{Arc,atomic::AtomicBool,mpsc};use std::time::Instant;
++#[test]fn job_status_cancel_bypass_occupied_workspace_gate(){let d=tempfile::tempdir().unwrap();let e=Engine::new(Project::new(chronoscope::demo::dataset()),d.path().into()).unwrap();let (entered,wait)=mpsc::channel();let (release,released)=mpsc::channel();let released=Arc::new(std::sync::Mutex::new(released));let worker=e.clone();let handle=std::thread::spawn(move||operation::with_context(operation::Context{cancelled:Arc::new(AtomicBool::new(false)),scope:None,progress:Some(Arc::new(move|_,_,message|{if message=="Running"{entered.send(()).unwrap();released.lock().unwrap().recv().unwrap();}}))},||worker.invoke("query",json!({"limit":1}))));wait.recv().unwrap();let j=e.invoke("job_start",json!({"command":"query","arguments":{"limit":1}})).unwrap();let start=Instant::now();let status=e.invoke("job_status",json!({"job_id":j["job_id"]})).unwrap();let status_ms=start.elapsed().as_secs_f64()*1000.;let start=Instant::now();e.invoke("job_cancel",json!({"job_id":j["job_id"]})).unwrap();let cancel_ms=start.elapsed().as_secs_f64()*1000.;let (done,completion)=mpsc::channel();let other=e.clone();let query=std::thread::spawn(move||{let t=Instant::now();let r=other.invoke("revision",json!({}));done.send((r,t.elapsed().as_secs_f64()*1000.)).unwrap();});assert!(completion.try_recv().is_err());release.send(()).unwrap();handle.join().unwrap().unwrap();let (r,queue_ms)=completion.recv().unwrap();r.unwrap();query.join().unwrap();eprintln!("GATE_RESPONSE status_ms={status_ms} cancel_ms={cancel_ms} state_query_wait_ms={queue_ms} status={status}");}
+diff --git a/tests/ai_engine_oracles.rs b/tests/ai_engine_oracles.rs
+new file mode 100644
+index 0000000..b31cb45
+--- /dev/null
++++ b/tests/ai_engine_oracles.rs
+@@ -0,0 +1,3 @@
++use chronoscope::{model::*,store::DataStore,engine::Engine,project::Project}; use serde_json::json;
++#[test] fn direct_predicates_match_domain_unicode_missing_numeric_whitespace(){let d=tempfile::tempdir().unwrap();let mut s=DataStore::new(d.path()).unwrap();let mut events=chronoscope::demo::dataset().events;for (i,e) in events.iter_mut().enumerate(){e.category=if i%2==0{"Évidence"}else{""}.into();e.value=match i%4{0=>None,1=>Some(0.),2=>Some(-2.5),_=>Some(10.)};e.attrs.insert("number".into(),if i%2==0{" 10 "}else{"banana"}.into());}s.load_events(events.clone()).unwrap();for field in ["category","entity","source","id","value","lat","lon","attribute:number"]{for op in [Operator::Equals,Operator::NotEquals,Operator::Greater,Operator::Less,Operator::Contains,Operator::IsEmpty]{for value in ["", "Évidence","évidence","10","1e1"," 10 ","NaN","-0","-2.5"]{if field=="attribute:number" && matches!(op,Operator::Greater|Operator::Less) && value.parse::<f64>().ok().filter(|v|v.is_finite()).is_none(){continue;}let f=Filter{predicates:vec![Predicate{field:field.into(),op:op.clone(),value:value.into()}],..Default::default()};let t=s.ordered(&f,None,"id",false).unwrap();let mut expected:Vec<_>=events.iter().filter(|e|f.matches(e,&Default::default())).map(|e|e.id).collect();expected.sort_unstable();assert_eq!(s.ids(&t).unwrap(),expected,"{field} {op:?} {value}");}}}}
++#[test] fn compact_then_full_snapshot_matches_full_projection(){let d=tempfile::tempdir().unwrap();let e=Engine::new(Project::new(chronoscope::demo::dataset()),d.path().into()).unwrap();let c=e.invoke("snapshot",json!({"compact":true})).unwrap();let mut f=e.invoke("snapshot",json!({})).unwrap();assert_eq!(f["histogram"].as_array().unwrap().iter().map(|v|v.as_u64().unwrap()).sum::<u64>(),192);for k in ["histogram","selected_histogram","views","groups","workspace","imports"]{f.as_object_mut().unwrap().remove(k);}assert_eq!(c,f);}
+diff --git a/tests/ai_engine_regressions.rs b/tests/ai_engine_regressions.rs
+new file mode 100644
+index 0000000..8bd3288
+--- /dev/null
++++ b/tests/ai_engine_regressions.rs
+@@ -0,0 +1,29 @@
++use chronoscope::{engine::Engine, model::*, project::Project};
++use serde_json::json;
++use std::io::Write;
++#[test]
++fn rejected_first_row_cross_batch_count_and_identity() {
++ let d=tempfile::tempdir().unwrap(); let path=d.path().join("boundary.csv");
++ let mut f=std::fs::File::create(&path).unwrap(); writeln!(f,"entity,timestamp,latitude,longitude,label").unwrap();
++ for i in 0..1001 { writeln!(f,"Track,{},{},{},row-{i}",if i==0 {"invalid".into()} else {(1735689600+i*60).to_string()},40,-75).unwrap(); }
++ drop(f); let e=Engine::new(Project::new(Dataset::default()),d.path().join("app")).unwrap();
++ let p=e.invoke("import_preview",json!({"path":path})).unwrap();
++ let r=e.invoke("import_commit",json!({"import_id":p["import_id"],"accept_rejected":true})).unwrap();
++ assert_eq!(r["accepted"],1000); assert_eq!(r["rejected"],1);
++ let q=e.invoke("query",json!({"limit":1000,"sort_by":"id"})).unwrap();
++ assert_eq!(q["count"],r["accepted"],"accepted must equal actual store count across rejected batch boundary");
++ let labels:std::collections::BTreeSet<_>=q["events"].as_array().unwrap().iter().map(|v|v["label"].as_str().unwrap()).collect();
++ assert!(labels.contains("row-999")); assert!(labels.contains("row-1000"));
++}
++#[test]
++fn failed_read_stale_cursor_preserves_metadata_and_store() {
++ let d=tempfile::tempdir().unwrap(); let mut p=Project::new(chronoscope::demo::dataset());
++ p.dataset.name="Important study".into(); p.selected.insert(1); p.filter.search="".into(); p.scene.time_height=Some(2.5);
++ let e=Engine::new(p,d.path().join("app")).unwrap();
++ let q=e.invoke("query",json!({"limit":1,"sort_by":"id"})).unwrap();
++ e.invoke("filter",json!({"filter":{"search":"not found"}})).unwrap();
++ let before=e.invoke("snapshot",json!({"compact":true})).unwrap();
++ let error=e.invoke("query",json!({"limit":1,"sort_by":"id","cursor":q["next_cursor"]})).unwrap_err();
++ assert!(error.contains("stale")); let after=e.invoke("snapshot",json!({"compact":true})).unwrap();
++ assert_eq!(after["count"],192); assert_eq!(after,before,"failed READ must preserve name/filter/selection/scene/revision/store");
++}

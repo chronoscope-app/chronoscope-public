@@ -1,0 +1,113 @@
+{
+  "date_utc": "2026-10-15",
+  "base_commit": "479c1f860513614c93b8e6d2dcbe24ee8ff4bccf",
+  "platform": "Linux; Chromium software WebGL2 and actual software WebGPU (Vulkan/SwiftShader)",
+  "rust": {
+    "tests_passed": 192,
+    "clippy_all_targets_warnings_denied": true,
+    "format": true,
+    "generated_contracts_current": true
+  },
+  "gis": {
+    "oracle": "Existing independent PROJ/GDAL/GEOTRANS fixtures",
+    "mercator_max_error_metres": 2.9802322387695312e-08,
+    "ecef_max_error_metres": 1.862645149230957e-09,
+    "terrain_error_scene_units": 1.4826174676851878e-08
+  },
+  "navigation_webgpu": {
+    "checks": [
+      "compass drag direction, north-up and mode restrictions",
+      "108 globe ENU orientation cases, centre retention and persisted camera roll; explicit rotating compass labels",
+      "entity colors, visibility and independent line strength persist",
+      "summary-layer exclusivity, heat smoothing and saved-view access",
+      "compact time-axis labels at study scale",
+      "12 bloom toggles with repeated imagery replacement retain basemap pixels",
+      "80% bloom dark: 345083 map pixels, 0 darkened, 225744 brightened; unaffected imagery retained",
+      "80% bloom light: 343868 map pixels, 0 darkened, 225431 brightened; unaffected imagery retained",
+      "strength 50/80/50 and repeated camera switches preserve empty background and isolated emission",
+      "zoomed time axis adds UTC hours/minutes",
+      "200ms incoming/outgoing point fades and exact paused frame",
+      "reduced motion bypasses transitions"
+    ],
+    "errors": [],
+    "backend": "WebGPU"
+  },
+  "navigation_webgl": {
+    "checks": [
+      "compass drag direction, north-up and mode restrictions",
+      "108 globe ENU orientation cases, centre retention and persisted camera roll; explicit rotating compass labels",
+      "entity colors, visibility and independent line strength persist",
+      "summary-layer exclusivity, heat smoothing and saved-view access",
+      "compact time-axis labels at study scale",
+      "12 bloom toggles with repeated imagery replacement retain basemap pixels",
+      "80% bloom dark: 345083 map pixels, 0 darkened, 225715 brightened; unaffected imagery retained",
+      "80% bloom light: 343868 map pixels, 0 darkened, 225402 brightened; unaffected imagery retained",
+      "strength 50/80/50 and repeated camera switches preserve empty background and isolated emission",
+      "zoomed time axis adds UTC hours/minutes",
+      "200ms incoming/outgoing point fades and exact paused frame",
+      "reduced motion bypasses transitions"
+    ],
+    "errors": [],
+    "backend": "WebGL2"
+  },
+  "display_webgl": {
+    "status": "passed",
+    "metrics": {
+      "count": 12000,
+      "cells": 39,
+      "raw": 0,
+      "mode": "auto",
+      "bloom": false
+    },
+    "checks": [
+      "default reversible clusters",
+      "exact member table",
+      "whole-cell box selection",
+      "density",
+      "heat map worker",
+      "light labels",
+      "bloom postprocessing",
+      "ground heat matches DTED vertices and voids",
+      "ground effects ignore time height while observations retain it",
+      "small ground bloom glyphs and repeated terrain atlas replacement",
+      "bloom failure restores ordinary rendering",
+      "zoom declusters to exact observations",
+      "empty density emits no zero-size GPU buffers",
+      "globe heat atlas",
+      "globe bloom follows displayed terrain depth bias",
+      "space-time slabs"
+    ],
+    "renderer": "WebGL2 on linux software test path; no physical GPU FPS claim",
+    "errors": []
+  },
+  "negative_control": {
+    "change": "Coverage clamp removed from the earlier mixed color/emission pipeline in an isolated test bundle",
+    "light_map_pixels_compared": 343844,
+    "darkened_pixels": 224109,
+    "expected_assertion_failure": true
+  },
+  "captures": {
+    "dataset": "NOAA NHC Atlantic hurricanes 2021\u20132025",
+    "source_records": 1604,
+    "storms": 38,
+    "heat_map": false,
+    "bloom": true,
+    "bloom_strength": 1.3,
+    "raster": "NASA GIBS BlueMarble_ShadedRelief, EPSG:3857 level 4",
+    "cached_tiles": 24,
+    "public_requests": 0,
+    "dted": false
+  },
+  "limitations": [
+    "No physical GPU FPS measurement.",
+    "Native macOS and Windows execution not performed in this Linux session.",
+    "Exact-pole heading is undefined; navigation uses a deterministic convention."
+  ],
+  "webgpu_fallback": {
+    "gpu": true,
+    "layers": 1,
+    "retainedFootprintPixels": 181876,
+    "expectedSyntheticErrors": 1,
+    "unexpectedErrors": []
+  }
+}

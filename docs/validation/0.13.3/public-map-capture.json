@@ -1,0 +1,26 @@
+{
+  "observations": 3000,
+  "data": "Synthetic display study.csv; four synthetic survey groups; UTC minutes in 2026",
+  "coordinates": "WGS84",
+  "terrain": "samples/public/n43.dt0",
+  "terrain_vertical_exaggeration": 1,
+  "bounds": [
+    -79.99,
+    43.22,
+    -79.91,
+    43.29
+  ],
+  "wmts": "NASA GIBS EPSG:3857",
+  "layer": "Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual",
+  "time": "2000-12-01",
+  "tile_level": 12,
+  "tiles": 4,
+  "capabilities_and_tile_cache_hits": 5,
+  "offline": true,
+  "public_network_requests": 0,
+  "renderer": "Chromium WebGL2 on Linux SwiftShader",
+  "bloom_error": "",
+  "bloom_captures": "automatic one-click parameters",
+  "heat_capture": "64 CSS pixel radius, count weights, view-relative colors",
+  "space_time_height": 1.8
+}

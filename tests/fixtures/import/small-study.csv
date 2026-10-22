@@ -1,0 +1,6 @@
+entity,timestamp,latitude,longitude,category,label,value,related_to
+Alpha,2025-06-17T08:00:00Z,37.7955,-122.3937,Arrival,Ferry terminal,10,Bravo
+Bravo,2025-06-17T08:01:00Z,37.7956,-122.3937,Arrival,Ferry terminal,20,Alpha
+Alpha,2025-06-17T08:15:00Z,37.7955,-122.3937,Dwell,Ferry terminal,30,
+Alpha,2025-06-17T09:00:00Z,37.7765,-122.417,Transit,Civic center,40,
+Bravo,2025-06-17T09:30:00Z,,,Message,No location event,50,Alpha

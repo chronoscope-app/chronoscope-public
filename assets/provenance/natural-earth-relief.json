@@ -1,0 +1,14 @@
+{
+  "source": "Natural Earth II with Shaded Relief and Water, 1:50m, version 3.2.0",
+  "source_page": "https://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-2/",
+  "archive_url": "https://naciscdn.org/naturalearth/50m/raster/NE2_50M_SR_W.zip",
+  "archive_sha256": "7e0e07089b699a3cccad98dd1b2446390d8e3f8c5006359d477a329cebcafaa9",
+  "archive_member": "NE2_50M_SR_W/NE2_50M_SR_W.tif",
+  "source_sha256": "02ae944d9ee8a64ccacbd4f535220aac10b5c95e874118b6db8d6f07cea48e71",
+  "license": "Public domain",
+  "terms": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "retrieved_utc": "2026-10-21",
+  "modifications": "Lanczos downsample to 4096x2048; JPEG quality92, 4:4:4; no color alteration",
+  "output_sha256": "ef6035a0b894723a82f767876eb619140c28dfa9b95ee318fd40811e4baa48f7",
+  "pillow_version": "12.3.0"
+}

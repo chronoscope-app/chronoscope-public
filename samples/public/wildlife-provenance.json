@@ -1,0 +1,69 @@
+[
+  {
+    "id": "animal-gps-black-rock-forest-2023-03",
+    "name": "Bobcats and fisher \u00b7 Black Rock Forest \u00b7 March 2023",
+    "records": 3439,
+    "entities": 3,
+    "source_url": "https://doi.org/10.5441/001/1.652",
+    "source_sha256": "5700142e5702cbf6680e5ee1cc0a3dce78980ffb67c9bc4f6c80b366a844d60e",
+    "selection": {
+      "individuals": [
+        "LYRU_0003",
+        "LYRU_0004",
+        "PEPE_0001"
+      ],
+      "start": "2023-03-01T00:00:00Z",
+      "end_exclusive": "2023-03-08T00:00:00Z",
+      "license": "CC BY 4.0",
+      "rule": "All visible, unflagged, located observations in this week; no thinning."
+    },
+    "csv_sha256": "40090a5622ef404d4cd2c95a8495a3d79162cbc232d5387b635b108d016fcab1",
+    "project_sha256": "dbf889c80495e5f8f5963c694af3e1c3da794e883e7fa210db23fd7305227dfc",
+    "first_timestamp": "2023-03-01T00:00:06Z",
+    "last_timestamp": "2023-03-07T23:58:06Z"
+  },
+  {
+    "id": "animal-gps-white-storks-2018",
+    "name": "White storks \u00b7 Europe to Africa \u00b7 2018",
+    "records": 6090,
+    "entities": 3,
+    "source_url": "https://doi.org/10.5441/001/1.ck04mn78",
+    "source_sha256": "930afdea6d079f6a3305e49bb84c15f10a7215ccadebdab718b1f7c6449b5cca",
+    "selection": {
+      "individuals": [
+        "Linus B",
+        "Mirabell",
+        "Wendelin"
+      ],
+      "license": "CC0 1.0",
+      "rule": "First original observation per individual per fixed UTC 30-minute bucket, from the moveVis example subset; no interpolation."
+    },
+    "csv_sha256": "378ceb675150cb64e5a3e707dc401cad26e1a8ec719456e0e54ab2fb938d3072",
+    "project_sha256": "a17078389c6b182c85d94f23d73fa81fdb881d90709800986524648a33766798",
+    "first_timestamp": "2018-07-30T02:00:23Z",
+    "last_timestamp": "2018-09-29T20:00:31Z"
+  },
+  {
+    "id": "animal-telemetry-elephant-seals-2004",
+    "name": "Elephant seals \u00b7 North Pacific dives \u00b7 2004",
+    "records": 15501,
+    "entities": 3,
+    "source_url": "https://doi.org/10.7291/D18D7W",
+    "source_sha256": "6f82ea93d64c574b183c150136f7e1060f64e2159f54c450bb594b34b33ce460",
+    "selection": {
+      "files": [
+        "2004001_TrackTDR_Processed.nc",
+        "2004004_TrackTDR_Processed.nc",
+        "2004005_TrackTDR_Processed.nc"
+      ],
+      "group": "TDR1",
+      "license": "CC0 1.0",
+      "excluded_rows": {},
+      "rule": "All finite, located primary-instrument dive summaries for three deployments; alternate 8-second and secondary instruments excluded to avoid duplicates."
+    },
+    "csv_sha256": "d8f36d988cc4d3a5e7cda770e0fa35662b8edfc6f869f1859da699ccf7d5732b",
+    "project_sha256": "31e94e09b75cbccb5c3732e599cfd0de9bac58dfa657274e05e039af19904176",
+    "first_timestamp": "2004-02-22T04:48:59Z",
+    "last_timestamp": "2004-06-03T03:22:35Z"
+  }
+]

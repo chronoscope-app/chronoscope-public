@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Polygon Events retain their shapes and tracks with a single-corner frame",
+      "evidence": {
+        "engine": "CesiumJS",
+        "globeTime": false,
+        "globeTimeScale": 1,
+        "timeHeightMeters": 386501.2720576001,
+        "contextRecoveries": 0,
+        "recovering": false,
+        "renderErrorCount": 0,
+        "sceneMode": 1,
+        "pointCount": 3,
+        "triangleCount": 0,
+        "triangleVisibleCount": 0,
+        "selectionCount": 0,
+        "geometryFeatures": 2,
+        "geometryPrimitives": 3,
+        "trackPolylines": 2,
+        "stemSegments": 3,
+        "trailInputEdges": 1,
+        "trailOutputEdges": 1,
+        "geodesicRendering": {
+          "geometry": {
+            "remainingSegments": 12,
+            "remainingInterpolation": 200000,
+            "interpolated": 0,
+            "coarsened": 0,
+            "sourceSegments": 12
+          },
+          "trails": {
+            "remainingSegments": 2,
+            "remainingInterpolation": 200000,
+            "interpolated": 0,
+            "coarsened": 0,
+            "sourceSegments": 2
+          },
+          "maximumAddedVertices": 400000,
+          "sourceEndpointBudget": 400000
+        },
+        "axisLabels": 3,
+        "orbitHandles": 4,
+        "requestRenderMode": true,
+        "terrain": {
+          "imageryLayers": 1,
+          "tileCount": 0,
+          "imageryRequestedTiles": 0,
+          "terrainActive": false,
+          "terrainCovered": 0,
+          "verticalDatum": "unresolved-msl",
+          "geoidModel": null,
+          "mode": "space-time"
+        },
+        "effectError": ""
+      }
+    },
+    {
+      "name": "Real hurricane tracks remain visible with sparse time guides",
+      "evidence": {
+        "points": 3568,
+        "axes": 5,
+        "handles": 4
+      }
+    }
+  ],
+  "errors": [],
+  "requests": [],
+  "screenshots": [
+    "single-corner-polygons-dark.png",
+    "single-corner-polygons-light.png",
+    "single-corner-hurricanes-dark.png"
+  ]
+}

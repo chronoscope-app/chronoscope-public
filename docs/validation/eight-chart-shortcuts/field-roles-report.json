@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "errors": [],
+  "timezones": [],
+  "publicRequests": 0,
+  "checks": [
+    "Charts is second; the searchable editor bounds large schemas and escapes original column names",
+    "Explicit measurements override name guesses, categories guide grouping, and roles leave all source records untouched",
+    "Cancel, per-field Automatic reset and undo/redo preserve other roles and update the live workspace",
+    "Concurrent edits to the same role are disclosed without overwriting another client or losing source data",
+    "Declaring text as Measurement never coerces data; numeric eligibility and disabled starters stay truthful",
+    "Roles survive portable save/open and a genuine page reload and continue to guide chart starters"
+  ]
+}

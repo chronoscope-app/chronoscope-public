@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Rabbit beside Play; all eight rates; keyboard, Escape and outside dismissal",
+      "evidence": {}
+    },
+    {
+      "name": "Actual playback runs at quarter, normal and double speed; live changes, pause and resume",
+      "evidence": {
+        "rates": [
+          {
+            "rate": 0.25,
+            "actual": 0.24832184325916218
+          },
+          {
+            "rate": 1,
+            "actual": 0.992928377165378
+          },
+          {
+            "rate": 2,
+            "actual": 1.9911070780507465
+          }
+        ],
+        "resume": 0.7430008154431431
+      }
+    },
+    {
+      "name": "Moving-window playback retains its width at 2×",
+      "evidence": {
+        "bounds": null,
+        "end": 1534847820,
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": 1472877420
+      }
+    },
+    {
+      "name": "Menu is visible above timeline in both themes and window sizes",
+      "evidence": {}
+    }
+  ],
+  "errors": []
+}

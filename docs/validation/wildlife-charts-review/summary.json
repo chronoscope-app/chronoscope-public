@@ -1,0 +1,64 @@
+{
+  "tested_commit": "4de556ae7d05c06e571882acedd041ddb7fa87fb",
+  "rust_tests": 315,
+  "browser_check_groups": 118,
+  "independent_source_records": 40727,
+  "github_runners_used": false,
+  "native_mac_tested": false,
+  "dedicated_gpu_tested": false,
+  "strict_clippy": "Existing too_many_arguments warning in src/pattern_scan.rs:236 (10 arguments; maximum 7)",
+  "reports": {
+    "rust-report.json": {
+      "passed": true,
+      "checks": 315
+    },
+    "charts-report.json": {
+      "passed": true,
+      "checks": 9
+    },
+    "timezones-report.json": {
+      "passed": true,
+      "checks": 4
+    },
+    "demos-report.json": {
+      "passed": true,
+      "checks": 21
+    },
+    "reference-report.json": {
+      "passed": true,
+      "checks": 6
+    },
+    "parity-report.json": {
+      "passed": true,
+      "checks": 34
+    },
+    "tables-report.json": {
+      "passed": true,
+      "checks": 14
+    },
+    "si-settings-report.json": {
+      "passed": true,
+      "checks": 5
+    },
+    "patterns-report.json": {
+      "passed": true,
+      "checks": 8
+    },
+    "sidebar-report.json": {
+      "passed": true,
+      "checks": 8
+    },
+    "empty-report.json": {
+      "passed": true,
+      "checks": 5
+    },
+    "playback-report.json": {
+      "passed": true,
+      "checks": 7
+    },
+    "maps-report.json": {
+      "passed": true,
+      "checks": 3
+    }
+  }
+}

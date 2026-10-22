@@ -1,0 +1,16 @@
+{"mode":"space-time","bounds":[-69.21000000000001,38.69999,-69.08999999999999,38.700010000000006],"viewBounds":[-74.02978199780921,38.4895199856164,-68.88366351195408,42.748853866086364],"points":9,"rasters":1,"sourceSize":[1877,2048],"sourceGreen":3844096,"camera":[3.5999999999999996,3.6000000000000005,4.800000000000001],"near":0.001,"far":100,"up":[0,1,0],"effectError":"","green":0,"file":"/workspace/chronoscope-ui-20261015/globe-transition-auto-final/0-space-time.png","requests":2}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Imagery missing after space-time: 0
+    at file:///workspace/chronoscope/frontend/scripts/globe-transition-qa.mjs:226:7 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

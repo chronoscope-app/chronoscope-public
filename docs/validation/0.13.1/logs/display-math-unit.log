@@ -1,0 +1,5 @@
+
+> chronoscope-ui@0.13.1 test:display-math
+> node scripts/display-math-test.mjs
+
+Display math: independent kernel oracle, bounds, protected evidence, full trails and discontinuities passed.

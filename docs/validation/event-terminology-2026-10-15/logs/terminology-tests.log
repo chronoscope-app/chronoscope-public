@@ -1,0 +1,11 @@
+   Compiling chronoscope v0.13.3 (/workspace/chronoscope)
+    Finished `test` profile [unoptimized] target(s) in 0.74s
+     Running tests/event_terminology.rs (target/debug/deps/event_terminology-f325f15d08a58d0a)
+
+running 3 tests
+test default_entity_is_events_but_legacy_source_headers_and_values_are_preserved ... ok
+test display_uses_event_bounds_and_reads_legacy_bounds_without_changing_coordinates ... ok
+test pre_rename_recovery_database_keeps_its_events_and_context ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+

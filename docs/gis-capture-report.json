@@ -1,0 +1,69 @@
+{
+  "source_dem": "https://s3.amazonaws.com/elevation-tiles-prod/skadi/N43/N43W080.hgt.gz",
+  "source_dem_documentation": "https://github.com/tilezen/joerd/blob/master/docs/formats.md",
+  "imagery": {
+    "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml",
+    "layer": "Landsat_WELD_CorrectedReflectance_TrueColor_Global_Annual",
+    "matrix_set": "GoogleMapsCompatible_Level12",
+    "style": "default",
+    "format": "image/jpeg",
+    "time": "2000-12-01",
+    "enabled": true
+  },
+  "tiles": [
+    {
+      "matrix": "12",
+      "row": 1500,
+      "col": 1137
+    },
+    {
+      "matrix": "12",
+      "row": 1500,
+      "col": 1138
+    },
+    {
+      "matrix": "12",
+      "row": 1501,
+      "col": 1137
+    },
+    {
+      "matrix": "12",
+      "row": 1501,
+      "col": 1138
+    }
+  ],
+  "requests": 0,
+  "cache_hits": 5,
+  "mesh": {
+    "bounds": [
+      -79.99,
+      43.22,
+      -79.91,
+      43.29
+    ],
+    "minimum": 70.99999237060547,
+    "maximum": 270.5,
+    "vertices": 16641,
+    "exaggeration": 4,
+    "texture": true
+  },
+  "projectionErrors": {
+    "mercator": 2.9802322387695312e-8,
+    "ecef": 1.862645149230957e-9
+  },
+  "terrainCheck": {
+    "error": 1.4826174676851878e-8,
+    "scaleAt60": 199.99999999999994,
+    "hole": null
+  },
+  "domainCheck": {
+    "flat": {
+      "drawn": 2,
+      "omitted": 2,
+      "notice": true,
+      "selectionDrawn": 0
+    },
+    "globeDrawn": 4,
+    "globeOmitted": 0
+  }
+}

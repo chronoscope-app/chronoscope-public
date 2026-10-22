@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "metrics": {
+    "count": 12000,
+    "cells": 39,
+    "raw": 0,
+    "mode": "auto",
+    "bloom": false
+  },
+  "checks": [
+    "default reversible clusters",
+    "exact member table",
+    "whole-cell box selection",
+    "density",
+    "heat map worker",
+    "light labels",
+    "bloom postprocessing",
+    "bloom failure restores ordinary rendering",
+    "zoom declusters to exact observations",
+    "globe heat atlas",
+    "space-time slabs"
+  ],
+  "renderer": "WebGL2 on Linux software GPU; no physical GPU FPS claim",
+  "errors": []
+}

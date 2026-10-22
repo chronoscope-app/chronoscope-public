@@ -1,0 +1,91 @@
+name: Desktop, CLI and MCP builds
+on:
+  # Manual only: ordinary pushes and pull requests must not consume runner allowance.
+  workflow_dispatch:
+concurrency:
+  group: chronoscope-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            artifact: chronoscope-linux-x86_64
+            binary: target/release/chronoscope
+          - os: windows-latest
+            artifact: chronoscope-windows-x86_64
+            binary: target/release/chronoscope.exe
+          - os: macos-15
+            artifact: chronoscope-macos-arm64
+            binary: target/release/chronoscope
+          - os: macos-15-intel
+            artifact: chronoscope-macos-x86_64
+            binary: target/release/chronoscope
+    timeout-minutes: 60
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable action; compiler below
+        with:
+          toolchain: '1.98.0'
+          components: rustfmt, clippy
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2
+      - name: Linux Tauri dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev patchelf xvfb libfuse2
+      - run: npm --prefix frontend ci
+      - run: cargo fmt --check
+      - run: cargo clippy --locked -p chronoscope --all-targets -- -D warnings
+      - run: cargo test --locked -p chronoscope
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        if: runner.os == 'macOS' || runner.os == 'Windows'
+        with:
+          python-version: '3.13'
+      - name: Native automatic client-certificate smoke test (ephemeral software identity)
+        timeout-minutes: 6
+        if: runner.os == 'macOS' || runner.os == 'Windows'
+        run: |
+          cargo build --locked -p chronoscope --bin chronoscope
+          python -m pip install cryptography
+          python scripts/test_native_pki.py --cli target/debug/chronoscope
+      - run: npm run build
+      - run: cargo clippy --locked -p chronoscope-desktop -- -D warnings
+      - run: python scripts/build_portable.py build --locked --release -p chronoscope --bin chronoscope
+      - name: Build platform desktop distribution
+        env:
+          APPIMAGE_EXTRACT_AND_RUN: '1'
+        run: python scripts/build_portable.py -- npm --prefix frontend run tauri -- build
+      - name: Finish Linux portable WebKit runtime
+        if: runner.os == 'Linux'
+        run: python3 scripts/package_linux.py
+      - name: Browser workflow and pixel QA (no public WMTS requests)
+        if: runner.os == 'Linux'
+        run: |
+          cargo build --locked -p chronoscope --bin chronoscope
+          cd frontend
+          npx playwright install --with-deps chromium
+          npm run test:ui
+          npm test
+          npm run test:assistant
+          npm run test:wkt-wmts
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: |
+            ${{ matrix.binary }}
+            target/release/bundle/**/*.AppImage
+            target/release/bundle/**/*.exe
+            target/release/bundle/**/*.dmg
+            target/release/bundle/**/*.app/**
+          if-no-files-found: error

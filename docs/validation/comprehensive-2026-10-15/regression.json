@@ -1,0 +1,242 @@
+{
+  "started_utc": "2026-10-15T17:10:16.549885+00:00",
+  "platform": "linux",
+  "offline_browser_fixtures": true,
+  "github_runners_used": false,
+  "checks": [
+    {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.551,
+      "log": "logs/rust-format.log"
+    },
+    {
+      "name": "core-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.376,
+      "log": "logs/core-clippy.log"
+    },
+    {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 26.724,
+      "log": "logs/rust-tests.log"
+    },
+    {
+      "name": "cli-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--bin",
+        "chronoscope"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 77.564,
+      "log": "logs/cli-build.log"
+    },
+    {
+      "name": "generated-contracts",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.227,
+      "log": "logs/generated-contracts.log"
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 8.447,
+      "log": "logs/frontend-build.log"
+    },
+    {
+      "name": "filter-intent-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:intent"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.659,
+      "log": "logs/filter-intent-unit.log"
+    },
+    {
+      "name": "display-math-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:display-math"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.734,
+      "log": "logs/display-math-unit.log"
+    },
+    {
+      "name": "packet-unit",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:packet"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.869,
+      "log": "logs/packet-unit.log"
+    },
+    {
+      "name": "browser-ui",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:ui"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 117.255,
+      "log": "logs/browser-ui.log"
+    },
+    {
+      "name": "browser-gis",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:gis"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 6.455,
+      "log": "logs/browser-gis.log"
+    },
+    {
+      "name": "browser-assistant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:assistant"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 40.145,
+      "log": "logs/browser-assistant.log"
+    },
+    {
+      "name": "browser-wkt-wmts",
+      "command": [
+        "node",
+        "frontend/scripts/wkt-wmts-qa.mjs"
+      ],
+      "exit_code": 0,
+      "elapsed_s": null,
+      "log": "logs/wmts-alias-final.log",
+      "prior_attempts": [
+        {
+          "name": "browser-wkt-wmts",
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+            "run",
+            "test:wkt-wmts"
+          ],
+          "exit_code": 1,
+          "elapsed_s": 44.212,
+          "log": "logs/browser-wkt-wmts-original.log"
+        }
+      ],
+      "rerun_reason": "Hold the compositing pixel oracle frame fixed, then restore camera callbacks before testing automatic zoom handoff."
+    },
+    {
+      "name": "browser-hardening",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:hardening"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 43.833,
+      "log": "logs/browser-hardening.log"
+    },
+    {
+      "name": "browser-display",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:display"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 55.352,
+      "log": "logs/browser-display.log"
+    },
+    {
+      "name": "browser-webmcp",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:webmcp"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 5.737,
+      "log": "logs/browser-webmcp.log"
+    },
+    {
+      "name": "browser-desktop-feel",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:desktop-feel"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 45.886,
+      "log": "logs/browser-desktop-feel.log"
+    },
+    {
+      "name": "browser-navigation-views",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/npm",
+        "run",
+        "test:navigation-views"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 145.781,
+      "log": "logs/browser-navigation-views.log"
+    }
+  ],
+  "limitations": [
+    "Physical GPU and smartcard hardware are not verified by this script.",
+    "Native checks apply only to the current operating system.",
+    "The archived extension bridge is disabled; the WebMCP suite verifies absence of its commands and interface.",
+    "Signing, notarization and paid SI-provider evaluation are separate checks."
+  ],
+  "finished_utc": "2026-10-15T17:20:37.409620+00:00",
+  "passed": true,
+  "base_commit": "65460ad86452290eb9487c1b03cf6173c28c7fe1",
+  "note": "Final aggregate of the full local run and the targeted WKT/WMTS rerun after fixing the pixel oracle geographic frame. The original attempt is preserved."
+}

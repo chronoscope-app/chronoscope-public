@@ -1,0 +1,188 @@
+   Compiling chronoscope v0.5.2 (<isolated-worktree>)
+    Finished `release` profile [optimized] target(s) in 5m 56s
+     Running unittests src/lib.rs (target/release/deps/chronoscope-f1ea15e6b2d7c684)
+
+running 18 tests
+test analysis::tests::great_circle_handles_dateline ... ok
+test analysis::tests::numeric_stats ... ok
+test coordinates::tests::rejects_ambiguous_hemisphere ... ok
+test coordinates::tests::published_empire_state_reference ... ok
+test coordinates::tests::south_roundtrip ... ok
+test import::tests::duplicate_headers_are_retained ... ok
+test import::tests::import_rejects_bad_coordinates_and_preserves_unlocated ... ok
+test model::tests::dateline_bounds ... ok
+test analysis::tests::chains_and_shortest_path ... ok
+test analysis::tests::analysis_reports_known_cases ... ok
+test model::tests::timestamp_offsets_and_custom_dates ... ok
+test wmts_auth::tests::origin_and_identity_validation ... ok
+test wmts_auth::tests::process_fixture ... ok
+test wmts_auth::tests::token_uris_cannot_supply_pins_or_code ... ok
+test project::tests::csv_formula_guard_and_attribute_preservation ... ok
+test wmts_auth::tests::local_profiles_are_atomic_scoped_and_rotate_cache_identity ... ok
+test project::tests::project_roundtrip_and_validation ... ok
+test wmts_auth::tests::native_process_has_hard_time_and_memory_bounds ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running unittests src/main.rs (target/release/deps/chronoscope-c479988984cf02d7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/agents_scale.rs (target/release/deps/agents_scale-92c59c63caaa04ce)
+
+running 29 tests
+test cas_and_retry_keys_prevent_duplicate_mutations ... ok
+test enforced_nested_contracts_and_dry_run_never_delete ... ok
+test cooperative_cancel_rolls_back_and_keeps_workspace_usable ... ok
+test asynchronous_jobs_report_completion_and_scope_without_blocking_status ... ok
+test cursor_is_bound_to_data_and_projection_is_bounded ... ok
+test advertised_output_schemas_match_actual_success_payloads ... ok
+test atomic_batch_rolls_back_partial_edits_and_has_one_undo ... ok
+test large_visibility_filters_keep_small_cursors_and_canonical_predicates ... ok
+test oversized_protocol_line_does_not_poison_next_message ... ok
+test live_agent_shares_engine_authenticates_and_respects_scope ... ok
+test nested_job_arguments_cannot_escape_mcp_scope ... ok
+test real_stdio_progress_cancellation_interrupts_import_and_ping_recovers ... ok
+test mcp_errors_are_structured_and_requests_are_validated ... ok
+test misplaced_mutation_controls_are_rejected_instead_of_ignored ... ok
+test cli_session_preserves_import_ticket_and_json_errors_have_stable_exit_codes ... ok
+test database_embeds_terrain_without_original_file ... ok
+test altered_database_payload_is_rejected_before_rendering ... ok
+test portable_database_excludes_unsaved_history_and_removed_payloads ... ok
+test scene_capture_returns_real_gui_response_and_standalone_is_explicit ... ok
+test scoped_domain_writes_cannot_overwrite_unrelated_control_files ... ok
+test preview_tickets_detect_file_changes_and_do_not_cross_imports ... ok
+test selection_and_filter_navigation_do_not_consume_data_undo ... ok
+test cancellation_inside_sql_write_never_leaves_partial_tags ... ok
+test sqlite_filters_match_domain_semantics_including_unicode_and_non_numeric ... ok
+test saved_terrain_canonical_paths_work_through_symlinked_data_directory ... ok
+test streaming_csv_handles_literal_quotes_and_bounds_multiline_records ... ok
+test portable_database_roundtrip_preserves_high_ids_and_rejects_wrong_format ... ok
+test selected_evidence_omitted_by_lod_is_brought_into_the_render_packet ... ok
+test render_budget_does_not_limit_exact_queries_or_selection ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+
+     Running tests/ai_engine_jobs.rs (target/release/deps/ai_engine_jobs-48481c2bd2b65ad5)
+
+running 1 test
+test job_status_cancel_bypass_occupied_workspace_gate ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/ai_engine_oracles.rs (target/release/deps/ai_engine_oracles-68fe35cfe63f6bd9)
+
+running 2 tests
+test compact_then_full_snapshot_matches_full_projection ... ok
+test direct_predicates_match_domain_unicode_missing_numeric_whitespace ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests/ai_engine_regressions.rs (target/release/deps/ai_engine_regressions-4e0afd12e1db112d)
+
+running 2 tests
+test failed_read_stale_cursor_preserves_metadata_and_store ... ok
+test rejected_first_row_cross_batch_count_and_identity ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests/geospatial.rs (target/release/deps/geospatial-28870be50071aab5)
+
+running 16 tests
+test coordinate_reference_vectors_include_special_zones_and_poles ... ok
+test csv_coordinate_mappings_canonicalize_and_preserve_source ... ok
+test public_dted_agrees_with_independent_gdal_sample ... ok
+test utm_csv_import_handles_southern_hemisphere ... ok
+test dted_corrupt_crc_and_truncation_are_errors ... ok
+test wmts_layer_matrix_limits_prevent_outside_requests ... ok
+test wmts_geographic_axis_order_is_respected ... ok
+test wmts_rejects_xml_entity_expansion_and_unsupported_schemes ... ok
+test wmts_uses_metadata_not_assumed_numeric_matrix_ids ... ok
+test wmts_crs_identifiers_are_exact_and_axis_order_is_authoritative ... ok
+test mcp_terrain_autoload_cannot_escape_its_scope ... ok
+test mcp_negotiates_lists_tools_and_enforces_root ... ok
+test engine_edit_undo_and_exact_string_ids ... ok
+test selecting_visible_includes_unlocated_events ... ok
+test real_mcp_stdio_has_protocol_only_stdout_and_persistent_state ... ok
+test wmts_cache_and_throttle_verified_without_public_requests ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+
+     Running tests/gis_accuracy.rs (target/release/deps/gis_accuracy-eacc3816ef960f47)
+
+running 8 tests
+test equator_signed_zero_antimeridian_and_unusual_utm_do_not_panic ... ok
+test dted_voids_are_not_filled_and_record_offsets_are_validated ... ok
+test unknown_or_wrong_terrain_datums_and_axes_are_rejected ... ok
+test ellipsoidal_distances_match_proj_including_antipodes ... ok
+test every_mgrs_precision_uses_independent_cell_centres ... ok
+test dted_posts_and_interpolation_match_gdal_without_half_pixel_shift ... ok
+test web_mercator_matches_epsg3857_oracle_without_axis_swap ... ok
+test coordinates_match_independent_proj_and_geotrans_vectors ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/import_workspace.rs (target/release/deps/import_workspace-8d0c8f21f26a0f9a)
+
+running 18 tests
+test ambiguity_and_manual_formats_are_explicit ... ok
+test broad_dates_clocks_and_seconds_are_floored_not_rounded ... ok
+test epoch_units_and_excel_systems_match ... ok
+test malformed_times_do_not_panic_or_get_silently_repaired ... ok
+test mgrs_precision_uses_independent_easting_and_northing_and_square_centre ... ok
+test timezone_offsets_and_pre_epoch_floor_are_consistent ... ok
+test content_based_timestamp_and_combined_coordinates ... ok
+test automatic_delimiter_separate_time_mgrs_and_decimal_commas ... ok
+test excel_native_separate_clocks_and_submillisecond_rollover_stay_in_original_minute ... ok
+test generic_headers_ambiguous_dates_and_clocks_are_detected_and_reviewable ... ok
+test separate_fields_and_time_only_require_a_date ... ok
+test utm_defaults_are_never_invented ... ok
+test legacy_project_seconds_migrate_and_invalid_scene_is_rejected ... ok
+test malformed_bundles_reject_traversal_unlisted_resources_and_future_versions ... ok
+test reopening_unchanged_bundles_reuses_extraction_and_json_keeps_external_terrain ... ok
+test new_install_has_enabled_nasa_map_and_minute_edits_keep_mgrs_accuracy ... ok
+test csv_reimport_uses_edited_coordinates_instead_of_original_mgrs_attributes ... ok
+test portable_workspace_restores_edited_data_context_and_terrain_without_originals ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/views_layers.rs (target/release/deps/views_layers-aba9bfc957671b49)
+
+running 3 tests
+test attribute_table_numeric_sort_pagination_and_exact_ids ... ok
+test layers_filter_render_analysis_and_keep_hidden_source_inspectable ... ok
+test globe_map_zoom_and_attribute_table_state_roundtrip_in_v3_bundle ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/wmts_auth.rs (target/release/deps/wmts_auth-e353e2fc55f9b3da)
+
+running 3 tests
+test remote_resource_urls_cannot_overflow_native_request_pipes ... ok
+test authenticated_capabilities_and_tiles_have_distinct_cache_namespaces ... ok
+test identities_stay_local_and_are_discoverable_without_pin_arguments ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/workflows.rs (target/release/deps/workflows-acbda46b607a6f05)
+
+running 9 tests
+test boundary_inputs_do_not_panic ... ok
+test clusters_are_explicitly_transitive ... ok
+test interval_filters_compose_with_attributes_and_selection ... ok
+test project_rejects_duplicate_ids_and_nonfinite_numbers ... ok
+test explicit_locale_and_rejection_report ... ok
+test stationary_requires_observed_samples_and_bounded_gaps ... ok
+test csv_and_excel_agree_including_native_dates_and_source_rows ... ok
+test unsafe_saved_context_is_rejected_before_it_reaches_ui ... ok
+test indexed_proximity_matches_brute_force_at_dateline_and_poles ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests chronoscope
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

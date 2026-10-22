@@ -1,0 +1,92 @@
+{
+  "passed": true,
+  "base_commit": "d7da26e5730ca83c67caaaa736ba684a190872ee",
+  "browser": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "Oldest events at top; newest events at ground level",
+        "evidence": {
+          "oldest": 13904906.674894098,
+          "newest": 6372826.420285582,
+          "span": 7532094.806633246,
+          "separation": 7532094.806633247
+        }
+      },
+      {
+        "name": "Hurricane playback fades across hemispheres without geometry failure",
+        "evidence": {
+          "fadingStems": 1,
+          "errors": 0
+        }
+      },
+      {
+        "name": "Heat map overlays events; Events checkbox independently hides/shows them",
+        "evidence": {
+          "shown": 3568
+        }
+      },
+      {
+        "name": "Heat slider updates before releasing mouse",
+        "evidence": {
+          "intermediateImages": 28,
+          "distinctImages": 28
+        }
+      },
+      {
+        "name": "Bloom slider updates before releasing mouse",
+        "evidence": {
+          "intermediateImages": 27,
+          "distinctImages": 27
+        }
+      },
+      {
+        "name": "Heat and bloom retain all events in map",
+        "evidence": {
+          "shown": 3568
+        }
+      },
+      {
+        "name": "Heat and bloom retain all events in globe",
+        "evidence": {
+          "shown": 3568
+        }
+      },
+      {
+        "name": "Heat and bloom retain all events in space-time",
+        "evidence": {
+          "shown": 3568
+        }
+      },
+      {
+        "name": "Automatic renderer recovery preserves hurricane workspace and camera",
+        "evidence": {
+          "count": 3568,
+          "recoveries": 1
+        }
+      },
+      {
+        "name": "Renderer indicator explicitly refreshes the map after prior recovery",
+        "evidence": {
+          "recoveries": 2
+        }
+      }
+    ],
+    "errors": []
+  },
+  "context_recovery": true,
+  "native": {
+    "hurricane_events": 3568,
+    "entities": 83,
+    "mode": "space-time",
+    "render_errors": 0,
+    "manual_refresh_count": 1,
+    "maximum_sampled_fading_stems": 417,
+    "loading": {
+      "effects": false,
+      "gis": 0,
+      "imagery": false
+    }
+  },
+  "hosted_workflows_dispatched": false
+}

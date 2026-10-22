@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "native_ui": {
+    "N_click": "42\u00b0 to 0\u00b0",
+    "eye_click": "48\u00b0 to 0\u00b0 tilt",
+    "pan_center_fit": "restores frame and 48\u00b0 tilt",
+    "N_key": "15\u00b0 to 0\u00b0",
+    "events_visible": 3568,
+    "mode": "space-time",
+    "render_errors": 0
+  },
+  "browser_groups": 9,
+  "globe_independent_ENU_cases": 24,
+  "existing_navigation_groups": 13,
+  "workflows_dispatched": false
+}

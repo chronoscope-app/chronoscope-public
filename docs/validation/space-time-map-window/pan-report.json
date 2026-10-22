@@ -1,0 +1,459 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Pan API and arrow keys move geography in the indicated screen direction at rotated headings",
+      "evidence": [
+        {
+          "mode": "space-time",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-left",
+          "dx": -69.69111886262601,
+          "dy": -1.7053025658242404e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-right",
+          "dx": 69.69111896849046,
+          "dy": 7.958078640513122e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-up",
+          "dx": 2.2737367544323206e-13,
+          "dy": -69.69111896849131
+        },
+        {
+          "mode": "space-time",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-down",
+          "dx": 3.410605131648481e-13,
+          "dy": 69.6911189684904
+        },
+        {
+          "mode": "space-time",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-left",
+          "dx": -69.69111896849029,
+          "dy": 1.9326762412674725e-12
+        },
+        {
+          "mode": "space-time",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-right",
+          "dx": 69.69111896849057,
+          "dy": 6.252776074688882e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-up",
+          "dx": 2.2737367544323206e-13,
+          "dy": -69.69111896849131
+        },
+        {
+          "mode": "space-time",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-down",
+          "dx": 4.547473508864641e-13,
+          "dy": 69.6911189684904
+        },
+        {
+          "mode": "space-time",
+          "heading": 90,
+          "input": "api",
+          "action": "pan-left",
+          "dx": -75.41516936701896,
+          "dy": 7.958078640513122e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 90,
+          "input": "api",
+          "action": "pan-right",
+          "dx": 75.41516936701964,
+          "dy": -1.1368683772161603e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 90,
+          "input": "api",
+          "action": "pan-up",
+          "dx": -1.1368683772161603e-13,
+          "dy": -75.41516936701868
+        },
+        {
+          "mode": "space-time",
+          "heading": 90,
+          "input": "api",
+          "action": "pan-down",
+          "dx": 0,
+          "dy": 75.41516936701919
+        },
+        {
+          "mode": "space-time",
+          "heading": 90,
+          "input": "keyboard",
+          "action": "pan-left",
+          "dx": -75.41516936701896,
+          "dy": 7.958078640513122e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 90,
+          "input": "keyboard",
+          "action": "pan-right",
+          "dx": 75.41516936701964,
+          "dy": -1.1368683772161603e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 90,
+          "input": "keyboard",
+          "action": "pan-up",
+          "dx": -1.1368683772161603e-13,
+          "dy": -75.41516936701868
+        },
+        {
+          "mode": "space-time",
+          "heading": 90,
+          "input": "keyboard",
+          "action": "pan-down",
+          "dx": 0,
+          "dy": 75.41516936701919
+        },
+        {
+          "mode": "space-time",
+          "heading": 215,
+          "input": "api",
+          "action": "pan-left",
+          "dx": -63.98318033866394,
+          "dy": 1.9326762412674725e-12
+        },
+        {
+          "mode": "space-time",
+          "heading": 215,
+          "input": "api",
+          "action": "pan-right",
+          "dx": 63.983180338665534,
+          "dy": 9.094947017729282e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 215,
+          "input": "api",
+          "action": "pan-up",
+          "dx": 1.1368683772161603e-13,
+          "dy": -63.98318033866474
+        },
+        {
+          "mode": "space-time",
+          "heading": 215,
+          "input": "api",
+          "action": "pan-down",
+          "dx": 0,
+          "dy": 63.983180338664965
+        },
+        {
+          "mode": "space-time",
+          "heading": 215,
+          "input": "keyboard",
+          "action": "pan-left",
+          "dx": -63.98318033866508,
+          "dy": -4.547473508864641e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 215,
+          "input": "keyboard",
+          "action": "pan-right",
+          "dx": 63.983180338665534,
+          "dy": 9.094947017729282e-13
+        },
+        {
+          "mode": "space-time",
+          "heading": 215,
+          "input": "keyboard",
+          "action": "pan-up",
+          "dx": 1.1368683772161603e-13,
+          "dy": -63.98318033866474
+        },
+        {
+          "mode": "space-time",
+          "heading": 215,
+          "input": "keyboard",
+          "action": "pan-down",
+          "dx": 0,
+          "dy": 63.983180338664965
+        },
+        {
+          "mode": "globe",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-left",
+          "dx": -6.530768813032523,
+          "dy": -3.353761712787673e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-right",
+          "dx": 6.530768813948384,
+          "dy": -3.348077370901592e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-up",
+          "dx": 1.383909875585232e-8,
+          "dy": -9.132798280787881
+        },
+        {
+          "mode": "globe",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-down",
+          "dx": -1.361195245408453e-8,
+          "dy": 9.325598656878412
+        },
+        {
+          "mode": "globe",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-left",
+          "dx": -6.530768813032523,
+          "dy": -3.353761712787673e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-right",
+          "dx": 6.530768813948384,
+          "dy": -3.348077370901592e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-up",
+          "dx": 1.383909875585232e-8,
+          "dy": -9.132798280787881
+        },
+        {
+          "mode": "globe",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-down",
+          "dx": -1.361195245408453e-8,
+          "dy": 9.325598656878412
+        },
+        {
+          "mode": "globe",
+          "heading": 90,
+          "input": "api",
+          "action": "pan-left",
+          "dx": -6.519210798568224,
+          "dy": 1.2789769243681803e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 90,
+          "input": "api",
+          "action": "pan-right",
+          "dx": 6.518599398270112,
+          "dy": 5.690026227966882e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 90,
+          "input": "api",
+          "action": "pan-up",
+          "dx": -2.8984118216612842e-8,
+          "dy": -9.115608691787884
+        },
+        {
+          "mode": "globe",
+          "heading": 90,
+          "input": "api",
+          "action": "pan-down",
+          "dx": 2.8515955818875227e-8,
+          "dy": 9.309271513451108
+        },
+        {
+          "mode": "globe",
+          "heading": 90,
+          "input": "keyboard",
+          "action": "pan-left",
+          "dx": -6.519210798568224,
+          "dy": 1.2789769243681803e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 90,
+          "input": "keyboard",
+          "action": "pan-right",
+          "dx": 6.518599398270226,
+          "dy": 5.701394911739044e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 90,
+          "input": "keyboard",
+          "action": "pan-up",
+          "dx": -2.8984118216612842e-8,
+          "dy": -9.115608691787884
+        },
+        {
+          "mode": "globe",
+          "heading": 90,
+          "input": "keyboard",
+          "action": "pan-down",
+          "dx": 2.8515955818875227e-8,
+          "dy": 9.309271513451108
+        },
+        {
+          "mode": "globe",
+          "heading": 215,
+          "input": "api",
+          "action": "pan-left",
+          "dx": -6.509011721497245,
+          "dy": 8.57767190609593e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 215,
+          "input": "api",
+          "action": "pan-right",
+          "dx": 6.509362114952637,
+          "dy": 4.035882739117369e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 215,
+          "input": "api",
+          "action": "pan-up",
+          "dx": 9.336872608400881e-9,
+          "dy": -9.101528645162603
+        },
+        {
+          "mode": "globe",
+          "heading": 215,
+          "input": "api",
+          "action": "pan-down",
+          "dx": -9.187942850985564e-9,
+          "dy": 9.295896346557072
+        },
+        {
+          "mode": "globe",
+          "heading": 215,
+          "input": "keyboard",
+          "action": "pan-left",
+          "dx": -6.509011721497245,
+          "dy": 8.57767190609593e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 215,
+          "input": "keyboard",
+          "action": "pan-right",
+          "dx": 6.509362114952751,
+          "dy": 4.0188297134591267e-11
+        },
+        {
+          "mode": "globe",
+          "heading": 215,
+          "input": "keyboard",
+          "action": "pan-up",
+          "dx": 9.336872608400881e-9,
+          "dy": -9.101528645162603
+        },
+        {
+          "mode": "globe",
+          "heading": 215,
+          "input": "keyboard",
+          "action": "pan-down",
+          "dx": -9.187942850985564e-9,
+          "dy": 9.295896346557072
+        },
+        {
+          "mode": "map",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-left",
+          "dx": -60,
+          "dy": 0
+        },
+        {
+          "mode": "map",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-right",
+          "dx": 60.00000000000006,
+          "dy": 0
+        },
+        {
+          "mode": "map",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-up",
+          "dx": 0,
+          "dy": -60
+        },
+        {
+          "mode": "map",
+          "heading": 0,
+          "input": "api",
+          "action": "pan-down",
+          "dx": 0,
+          "dy": 60.00000000000006
+        },
+        {
+          "mode": "map",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-left",
+          "dx": -60,
+          "dy": 0
+        },
+        {
+          "mode": "map",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-right",
+          "dx": 60.00000000000006,
+          "dy": 0
+        },
+        {
+          "mode": "map",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-up",
+          "dx": 0,
+          "dy": -60
+        },
+        {
+          "mode": "map",
+          "heading": 0,
+          "input": "keyboard",
+          "action": "pan-down",
+          "dx": 0,
+          "dy": 60.00000000000006
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

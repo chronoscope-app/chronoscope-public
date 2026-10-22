@@ -1,0 +1,169 @@
+{
+  "passed": true,
+  "policy": {
+    "inertia": false,
+    "free_look": false,
+    "automatic_zoom_tilt": false,
+    "gesture_tilt_max_degrees": 85,
+    "2d_north_up": true,
+    "keyboard_scope": "map surface; other controls keep their own shortcuts"
+  },
+  "browser": {
+    "checks": [
+      {
+        "name": "globe mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+        "evidence": {
+          "anchorErrorPixels": 1.6873343378453554e-07,
+          "fineZoomRatio": 0.2500013095472386,
+          "navigation": {
+            "inertia": false,
+            "freeLook": false,
+            "northUpOnly": false,
+            "gestureMaximumTiltDegrees": 85,
+            "keyboardFocus": "map",
+            "active": false
+          }
+        }
+      },
+      {
+        "name": "space-time mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+        "evidence": {
+          "anchorErrorPixels": 2.9608848599578428e-06,
+          "fineZoomRatio": 0.2500000000682251,
+          "navigation": {
+            "inertia": false,
+            "freeLook": false,
+            "northUpOnly": false,
+            "gestureMaximumTiltDegrees": 85,
+            "keyboardFocus": "map",
+            "active": false
+          }
+        }
+      },
+      {
+        "name": "map mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+        "evidence": {
+          "anchorErrorPixels": 3.03221919244138e-10,
+          "fineZoomRatio": 0.25000000000000067,
+          "navigation": {
+            "inertia": false,
+            "freeLook": false,
+            "northUpOnly": true,
+            "gestureMaximumTiltDegrees": 85,
+            "keyboardFocus": "map",
+            "active": false
+          }
+        }
+      },
+      {
+        "name": "calendar mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+        "evidence": {
+          "anchorErrorPixels": 7.17889208413952e-08,
+          "fineZoomRatio": 0.2499999999999837,
+          "navigation": {
+            "inertia": false,
+            "freeLook": false,
+            "northUpOnly": false,
+            "gestureMaximumTiltDegrees": 85,
+            "keyboardFocus": "map",
+            "active": false
+          }
+        }
+      },
+      {
+        "name": "Rapid additive map clicks retain both exact records",
+        "evidence": {
+          "ids": [
+            "136",
+            "37"
+          ]
+        }
+      },
+      {
+        "name": "Slower double-click restores selection after initial click feedback",
+        "evidence": {}
+      },
+      {
+        "name": "Escape cancels delayed picking without reselecting a record",
+        "evidence": {}
+      },
+      {
+        "name": "Extreme zoom/tilt remains bounded and never changes event time or Time height",
+        "evidence": {}
+      },
+      {
+        "name": "Select mode keeps Shift-drag box selection and camera position",
+        "evidence": {}
+      },
+      {
+        "name": "Focused O switches Globe/2D",
+        "evidence": {}
+      },
+      {
+        "name": "Space retains timeline play/pause",
+        "evidence": {}
+      },
+      {
+        "name": "Table Shift+Down selects rows without camera navigation",
+        "evidence": {}
+      },
+      {
+        "name": "Shared CLI/MCP view adapter retains full zoom factor semantics",
+        "evidence": {}
+      }
+    ],
+    "errors": [],
+    "public_requests": 0,
+    "renderer": "Chromium using Apple M5/Metal"
+  },
+  "scale": {
+    "events": 100000,
+    "bloom": true,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+    "minimum_drawn": 100000,
+    "maximum_drawn": 100000,
+    "animation_callback_fps": 60.00067039855193,
+    "rolling_render_fps": 53.782717819935336,
+    "render_cpu_p95_ms": 2.7000000029802322,
+    "render_callbacks": 185,
+    "elapsed_ms": 3361.9000000059605,
+    "query_ms": [
+      1.4093329999996058,
+      0.9682499999998981,
+      3.2638329999990674,
+      2.1505830000005517,
+      2.013542000000598,
+      1.8812089999992168,
+      1.864832999999635,
+      2.090374999999767,
+      1.847250000000713,
+      1.7666659999995318,
+      1.8041670000002341,
+      1.8498749999998836,
+      1.7307080000009591,
+      1.6450409999997646,
+      1.692124999999578
+    ],
+    "errors": [],
+    "public_requests": 0,
+    "note": "Short hardware browser regression; animation callback rate is not a native FPS claim or controlled before/after speedup comparison."
+  },
+  "native": {
+    "passed": true,
+    "bundle": "0.15.0; ad hoc seal verified",
+    "north_shortcut": "60\u00b0 \u2192 0\u00b0 in native accessibility display",
+    "top_down_alignment": 0.9999999999481033,
+    "keyboard_zoom_pan": true,
+    "left_drag_metres": 914.6565439455902,
+    "two_d_switch": true,
+    "native_double_click_zoom_ratio": 1.8,
+    "double_click_source_selected_count": 2,
+    "post_release_samples": 3,
+    "post_release_camera_drift_metres": 0.0,
+    "attached_mcp_tools": 90,
+    "render_errors": 0,
+    "scope": "Native Mac keyboard shortcuts, left drag, double-click, selection and live MCP; middle-drag/wheel modifiers covered by hardware browser input tests."
+  },
+  "windows_linux_runtime": "Not run on this Mac; input implementation is shared TypeScript/Cesium.",
+  "hosted_workflows_dispatched": false
+}

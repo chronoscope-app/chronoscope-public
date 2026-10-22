@@ -1,0 +1,1922 @@
+{
+  "source": "55133a993848749f04ccb2fdc83423acd8698929",
+  "captured": "2026-10-21T23:56:03.098099+00:00",
+  "renderer": "Native macOS Tauri / WebKit / Cesium WebGL2",
+  "version": "0.15.2",
+  "executable_sha256": "0b371fe875488843d15a81eb659502b1518d382c5dfaca77f0a793e6fbba5d3e",
+  "external_map_access": true,
+  "external_si_service": false,
+  "profile": "Isolated disposable profile; default exchange-folder scope only",
+  "captures": [
+    {
+      "file": "space-time.png",
+      "demo": "stork-migration",
+      "mode": "space-time",
+      "theme": "dark",
+      "display": {
+        "mode": "points",
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": false,
+        "point_scale": 0.5,
+        "track_opacity": 0.9,
+        "bloom": false,
+        "spatial_culling": false
+      },
+      "ui_framing": "Default scene framing",
+      "view": {
+        "inspector_tab": "views"
+      },
+      "navigation": "fit events",
+      "count": 6090,
+      "width": 2560,
+      "height": 1600,
+      "sha256": "710fd0b2ab4e2ec2b0163190ed9824237888d9eadac6aa26a1d85ae7a880b0ca",
+      "live_state": {
+        "backend": "WebGL2",
+        "diagnostics": {
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "axisLabels": 3,
+          "contextRecoveries": 0,
+          "displayTimeBounds": [
+            1532916000,
+            1538251200
+          ],
+          "effectError": "",
+          "engine": "CesiumJS",
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "fadingPointCount": 0,
+          "fadingStemSegments": 0,
+          "fadingTriangleCount": 0,
+          "geodesicRendering": {
+            "geometry": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000,
+            "trails": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 265,
+              "sourceSegments": 265
+            }
+          },
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "lastRenderError": "",
+          "navigation": {
+            "active": false,
+            "freeLook": false,
+            "gestureMaximumTiltDegrees": 85,
+            "inertia": false,
+            "keyboardFocus": "map",
+            "northUpOnly": false
+          },
+          "orbitHandles": 4,
+          "performance": {
+            "active": true,
+            "fps": 13.337779259753251,
+            "frameP95Ms": 85,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 691,
+            "sampleFrames": 120
+          },
+          "pointCount": 6090,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "requestRenderMode": true,
+          "sceneMode": 1,
+          "selectionCount": 0,
+          "spaceTimeFloor": {
+            "bounds": [
+              -19.093609393819136,
+              25.369002329321436,
+              19.35685245572883,
+              61.96398772041734
+            ],
+            "padding": {
+              "bottom": 62.440000000000005,
+              "left": 49.52,
+              "right": 37.14,
+              "top": 89.2
+            }
+          },
+          "stemSegments": 0,
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": null,
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "space-time",
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "tileCount": 0,
+            "verticalDatum": "unresolved-msl"
+          },
+          "timeHeightMeters": 1556608.517481759,
+          "trackPolylines": 174,
+          "trailInputEdges": 6087,
+          "trailOutputEdges": 265,
+          "triangleCount": 0,
+          "triangleVisibleCount": 0
+        },
+        "gis_layers": [],
+        "hardware_acceleration": "unknown",
+        "loading": {
+          "effects": false,
+          "gis": 0,
+          "imagery": false
+        },
+        "mode": "space-time",
+        "renderer": "cesium",
+        "revision": 18,
+        "scene": {
+          "bounds": [
+            -10.703938297999999,
+            29.185954046,
+            10.383358198,
+            49.162028654000004
+          ],
+          "cesium_camera": {
+            "direction": [
+              4.4001183355449927e-17,
+              0.7431448254773912,
+              -0.6691306063588615
+            ],
+            "position": [
+              -17843.406745228443,
+              725233.0226803101,
+              3818318.094915946
+            ],
+            "up": [
+              5.887682410738817e-17,
+              0.6691306063588551,
+              0.7431448254773971
+            ]
+          },
+          "chart": {
+            "aggregate": "count",
+            "bins": 20,
+            "group": "",
+            "kind": "bar",
+            "limit": 2000,
+            "period_a": null,
+            "period_b": null,
+            "scope": "visible",
+            "source": null,
+            "stacked": false,
+            "time_bucket": "day",
+            "title": "",
+            "trendline": false,
+            "x": "entity",
+            "x_axis": "category",
+            "x_label": "",
+            "y": "value",
+            "y2": "",
+            "y2_label": "",
+            "y_label": ""
+          },
+          "chart_presets": [],
+          "display": {
+            "bloom": false,
+            "bloom_radius": 0.1,
+            "bloom_strength": 1.3,
+            "bloom_threshold": 0.1,
+            "cluster_pixels": 48,
+            "heat_max": null,
+            "heat_radius": 32,
+            "heat_reference_zoom": null,
+            "heat_weight": "count",
+            "mode": "points",
+            "partition": "all",
+            "point_scale": 0.5,
+            "show_centroids": true,
+            "show_points": true,
+            "show_tracks": true,
+            "show_trails": false,
+            "spatial_culling": false,
+            "time_bin_minutes": 0,
+            "track_opacity": 0.9,
+            "trail_gap_minutes": 180,
+            "trail_opacity": 0.25,
+            "trail_pixels": 2
+          },
+          "entity_colors": {
+            "Linus B": "#65c4e8",
+            "Mirabell": "#ffb3a7",
+            "Wendelin": "#ffd166"
+          },
+          "expanded": false,
+          "focus": 0.45,
+          "gis_table": null,
+          "globe_time": false,
+          "globe_time_scale": 1,
+          "inspector_tab": "views",
+          "mode": "space-time",
+          "render_budget": 20000,
+          "renderer": "cesium",
+          "table_attributes": true,
+          "table_column_offset": 0,
+          "table_descending": false,
+          "table_open": false,
+          "table_respect_filters": true,
+          "table_sort": "time",
+          "table_source": null,
+          "time_height": 2.8
+        },
+        "viewport": {
+          "height": 892,
+          "width": 1238
+        },
+        "webgpu_api_available": true
+      },
+      "executable_sha256": "5e5832742438b3d518e5134e369174fcf4f3e3c21123533b33762f0d3ab97337",
+      "visually_reviewed": true,
+      "application_source": "a59ad07698e34f2b484790c0ce2a4fcf1d0542d1"
+    },
+    {
+      "file": "hurricane-tracks.png",
+      "demo": "hurricanes",
+      "mode": "globe",
+      "theme": "dark",
+      "display": {
+        "mode": "points",
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": false,
+        "point_scale": 0.4,
+        "track_opacity": 0.9,
+        "bloom": true,
+        "spatial_culling": false,
+        "bloom_strength": 0.3
+      },
+      "ui_framing": "Default scene framing",
+      "view": {
+        "inspector_tab": "views"
+      },
+      "navigation": "fit events",
+      "count": 3568,
+      "width": 2560,
+      "height": 1600,
+      "sha256": "3c7df4a14551fc45614fb19706e83b60d19425b60ff247ba408d4fb259b35688",
+      "live_state": {
+        "backend": "WebGL2",
+        "diagnostics": {
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "axisLabels": 0,
+          "contextRecoveries": 0,
+          "displayTimeBounds": [
+            1452124800,
+            1761976800
+          ],
+          "effectError": "",
+          "engine": "CesiumJS",
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "fadingPointCount": 0,
+          "fadingStemSegments": 0,
+          "fadingTriangleCount": 0,
+          "geodesicRendering": {
+            "geometry": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000,
+            "trails": {
+              "coarsened": 0,
+              "interpolated": 1320,
+              "remainingInterpolation": 198680,
+              "remainingSegments": 0,
+              "sourceSegments": 1865
+            }
+          },
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "lastRenderError": "",
+          "navigation": {
+            "active": false,
+            "freeLook": false,
+            "gestureMaximumTiltDegrees": 85,
+            "inertia": false,
+            "keyboardFocus": "map",
+            "northUpOnly": false
+          },
+          "orbitHandles": 0,
+          "performance": {
+            "active": true,
+            "fps": 31.746031746031747,
+            "frameP95Ms": 114,
+            "renderCpuP95Ms": 8,
+            "renderedFrames": 897,
+            "sampleFrames": 64
+          },
+          "pointCount": 3568,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "requestRenderMode": true,
+          "sceneMode": 3,
+          "selectionCount": 0,
+          "spaceTimeFloor": null,
+          "stemSegments": 0,
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": null,
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "globe",
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "tileCount": 0,
+            "verticalDatum": "unresolved-msl"
+          },
+          "timeHeightMeters": 50000,
+          "trackPolylines": 83,
+          "trailInputEdges": 3485,
+          "trailOutputEdges": 1865,
+          "triangleCount": 0,
+          "triangleVisibleCount": 0
+        },
+        "gis_layers": [],
+        "hardware_acceleration": "unknown",
+        "loading": {
+          "effects": false,
+          "gis": 0,
+          "imagery": false
+        },
+        "mode": "globe",
+        "renderer": "cesium",
+        "revision": 43,
+        "scene": {
+          "bounds": [
+            -106,
+            4,
+            12,
+            66
+          ],
+          "cesium_camera": {
+            "direction": [
+              -0.6521982752867594,
+              0.6993970231495821,
+              -0.2923717047227373
+            ],
+            "position": [
+              9175438.47697962,
+              -9839453.123469472,
+              6151990.465798944
+            ],
+            "up": [
+              -0.19939702314958332,
+              0.21382712849768062,
+              0.9563047559630355
+            ]
+          },
+          "chart": {
+            "aggregate": "count",
+            "bins": 20,
+            "group": "",
+            "kind": "bar",
+            "limit": 2000,
+            "period_a": null,
+            "period_b": null,
+            "scope": "visible",
+            "source": null,
+            "stacked": false,
+            "time_bucket": "day",
+            "title": "",
+            "trendline": false,
+            "x": "entity",
+            "x_axis": "category",
+            "x_label": "",
+            "y": "value",
+            "y2": "",
+            "y2_label": "",
+            "y_label": ""
+          },
+          "chart_presets": [],
+          "display": {
+            "bloom": true,
+            "bloom_radius": 0.1,
+            "bloom_strength": 0.3,
+            "bloom_threshold": 0.1,
+            "cluster_pixels": 48,
+            "heat_max": null,
+            "heat_radius": 64,
+            "heat_reference_zoom": null,
+            "heat_weight": "count",
+            "mode": "points",
+            "partition": "all",
+            "point_scale": 0.4,
+            "show_centroids": true,
+            "show_points": true,
+            "show_tracks": true,
+            "show_trails": false,
+            "spatial_culling": false,
+            "time_bin_minutes": 0,
+            "track_opacity": 0.9,
+            "trail_gap_minutes": 720,
+            "trail_opacity": 0.25,
+            "trail_pixels": 1
+          },
+          "entity_colors": {},
+          "expanded": false,
+          "focus": 0.45,
+          "gis_table": null,
+          "globe_time": false,
+          "globe_time_scale": 1,
+          "inspector_tab": "views",
+          "mode": "globe",
+          "render_budget": 20000,
+          "renderer": "cesium",
+          "table_attributes": true,
+          "table_column_offset": 0,
+          "table_descending": false,
+          "table_open": false,
+          "table_respect_filters": true,
+          "table_sort": "time",
+          "table_source": null,
+          "time_height": 2.8
+        },
+        "viewport": {
+          "height": 892,
+          "width": 1238
+        },
+        "webgpu_api_available": true
+      },
+      "executable_sha256": "5e5832742438b3d518e5134e369174fcf4f3e3c21123533b33762f0d3ab97337",
+      "visually_reviewed": true,
+      "application_source": "a59ad07698e34f2b484790c0ce2a4fcf1d0542d1"
+    },
+    {
+      "file": "globe.png",
+      "demo": "usgs-global-earthquakes-2025-01",
+      "mode": "globe",
+      "theme": "dark",
+      "application_source": "180a4ff1564ece1d0bc8be1e1e223ca82e2bb3d6",
+      "external_map_access": false,
+      "executable_sha256": "fb9f0ca2b06aef063d22eb2df1cfe018c9f4114352f5c9cbfef2138f6952d2b8",
+      "display": {
+        "mode": "points",
+        "show_points": true,
+        "show_tracks": false,
+        "show_trails": false,
+        "point_scale": 0.8,
+        "track_opacity": 0.9,
+        "bloom": false,
+        "spatial_culling": false
+      },
+      "ui_framing": "Normal UI; recorded camera; inspector visible; legend collapsed",
+      "view": {
+        "inspector_tab": "views"
+      },
+      "navigation": "Western Pacific globe, longitude 135, latitude 10, distance 13000000 m",
+      "count": 652,
+      "width": 2560,
+      "height": 1600,
+      "sha256": "c4deaf59e97fc91daac48a4d689d14d064beea27878cf92b1f983dccdb0e925a",
+      "live_state": {
+        "backend": "WebGL2",
+        "diagnostics": {
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "axisLabels": 0,
+          "contextRecoveries": 0,
+          "displayTimeBounds": [
+            1735696019.538,
+            1738367859.481
+          ],
+          "effectError": "",
+          "engine": "CesiumJS",
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "fadingPointCount": 0,
+          "fadingStemSegments": 0,
+          "fadingTriangleCount": 0,
+          "geodesicRendering": {
+            "geometry": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000,
+            "trails": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            }
+          },
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "lastRenderError": "",
+          "navigation": {
+            "active": false,
+            "freeLook": false,
+            "gestureMaximumTiltDegrees": 85,
+            "inertia": false,
+            "keyboardFocus": "map",
+            "northUpOnly": false
+          },
+          "orbitHandles": 0,
+          "performance": {
+            "active": false,
+            "fps": null,
+            "frameP95Ms": null,
+            "renderCpuP95Ms": 2,
+            "renderedFrames": 763,
+            "sampleFrames": 0
+          },
+          "pointCount": 652,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "requestRenderMode": true,
+          "sceneMode": 3,
+          "selectionCount": 0,
+          "spaceTimeFloor": null,
+          "stemSegments": 0,
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": null,
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "globe",
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "tileCount": 0,
+            "verticalDatum": "unresolved-msl"
+          },
+          "timeHeightMeters": 50000,
+          "trackPolylines": 0,
+          "trailInputEdges": 0,
+          "trailOutputEdges": 0,
+          "triangleCount": 0,
+          "triangleVisibleCount": 0
+        },
+        "gis_layers": [],
+        "hardware_acceleration": "unknown",
+        "loading": {
+          "effects": false,
+          "gis": 0,
+          "imagery": false
+        },
+        "mode": "globe",
+        "renderer": "cesium",
+        "revision": 27,
+        "scene": {
+          "bounds": null,
+          "cesium_camera": {
+            "direction": [
+              0.696364240320019,
+              -0.696364240320019,
+              -0.1736481776669301
+            ],
+            "position": [
+              -13494690.000524372,
+              13494690.000524376,
+              3357674.8574054525
+            ],
+            "up": [
+              0.12278780396897268,
+              -0.12278780396897272,
+              0.9848077530122081
+            ]
+          },
+          "chart": {
+            "aggregate": "count",
+            "bins": 20,
+            "group": "",
+            "kind": "bar",
+            "limit": 2000,
+            "period_a": null,
+            "period_b": null,
+            "scope": "visible",
+            "source": null,
+            "stacked": false,
+            "time_bucket": "day",
+            "title": "",
+            "trendline": false,
+            "x": "entity",
+            "x_axis": "category",
+            "x_label": "",
+            "y": "value",
+            "y2": "",
+            "y2_label": "",
+            "y_label": ""
+          },
+          "chart_presets": [],
+          "display": {
+            "bloom": false,
+            "bloom_radius": 0.1,
+            "bloom_strength": 1.3,
+            "bloom_threshold": 0.1,
+            "cluster_pixels": 48,
+            "heat_max": null,
+            "heat_radius": 32,
+            "heat_reference_zoom": null,
+            "heat_weight": "count",
+            "mode": "points",
+            "partition": "all",
+            "point_scale": 0.8,
+            "show_centroids": true,
+            "show_points": true,
+            "show_tracks": false,
+            "show_trails": false,
+            "spatial_culling": false,
+            "time_bin_minutes": 0,
+            "track_opacity": 0.9,
+            "trail_gap_minutes": 180,
+            "trail_opacity": 0.25,
+            "trail_pixels": 2
+          },
+          "entity_colors": {
+            "Earthquakes": "#ffd166"
+          },
+          "expanded": false,
+          "focus": 0.45,
+          "gis_table": null,
+          "globe_time": false,
+          "globe_time_scale": 1,
+          "inspector_tab": "views",
+          "mode": "globe",
+          "render_budget": 20000,
+          "renderer": "cesium",
+          "table_attributes": true,
+          "table_column_offset": 0,
+          "table_descending": false,
+          "table_open": false,
+          "table_respect_filters": true,
+          "table_sort": "time",
+          "table_source": null,
+          "time_height": 2.8
+        },
+        "viewport": {
+          "height": 892,
+          "width": 986
+        },
+        "webgpu_api_available": true
+      },
+      "visually_reviewed": true
+    },
+    {
+      "file": "density.png",
+      "demo": "animal-gps",
+      "mode": "map",
+      "theme": "dark",
+      "application_source": "180a4ff1564ece1d0bc8be1e1e223ca82e2bb3d6",
+      "external_map_access": true,
+      "executable_sha256": "fb9f0ca2b06aef063d22eb2df1cfe018c9f4114352f5c9cbfef2138f6952d2b8",
+      "display": {
+        "mode": "density",
+        "show_points": false,
+        "show_tracks": false,
+        "show_trails": false,
+        "point_scale": 0.5,
+        "track_opacity": 0.9,
+        "bloom": false,
+        "spatial_culling": false,
+        "cluster_pixels": 12
+      },
+      "ui_framing": "Normal UI; recorded camera; inspector visible; legend collapsed",
+      "view": {
+        "inspector_tab": "views"
+      },
+      "navigation": "fit events",
+      "count": 15697,
+      "width": 2560,
+      "height": 1600,
+      "sha256": "c8c3b9a43fc57fa9864a61761b041813f32ab3f59a1415d8bd854e157c4704fa",
+      "live_state": {
+        "backend": "WebGL2",
+        "diagnostics": {
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "axisLabels": 0,
+          "contextRecoveries": 0,
+          "displayTimeBounds": [
+            1622505960,
+            1624912860
+          ],
+          "effectError": "",
+          "engine": "CesiumJS",
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "fadingPointCount": 0,
+          "fadingStemSegments": 0,
+          "fadingTriangleCount": 0,
+          "geodesicRendering": {
+            "geometry": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000,
+            "trails": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            }
+          },
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "lastRenderError": "",
+          "navigation": {
+            "active": false,
+            "freeLook": false,
+            "gestureMaximumTiltDegrees": 85,
+            "inertia": false,
+            "keyboardFocus": "map",
+            "northUpOnly": true
+          },
+          "orbitHandles": 0,
+          "performance": {
+            "active": true,
+            "fps": 60.45340050377834,
+            "frameP95Ms": 19,
+            "renderCpuP95Ms": 2,
+            "renderedFrames": 1078,
+            "sampleFrames": 120
+          },
+          "pointCount": 0,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "requestRenderMode": true,
+          "sceneMode": 2,
+          "selectionCount": 0,
+          "spaceTimeFloor": null,
+          "stemSegments": 0,
+          "terrain": {
+            "basemap": "streets",
+            "basemapAlignmentErrorPixels": 5.184119800105691e-11,
+            "basemapError": "",
+            "basemapMaximumLevel": 10,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 63,
+            "geoidModel": null,
+            "imageryLayers": 2,
+            "imageryRequestedTiles": 0,
+            "mode": "map",
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "tileCount": 0,
+            "verticalDatum": "unresolved-msl"
+          },
+          "timeHeightMeters": 46754.186136000106,
+          "trackPolylines": 0,
+          "trailInputEdges": 0,
+          "trailOutputEdges": 0,
+          "triangleCount": 0,
+          "triangleVisibleCount": 0
+        },
+        "gis_layers": [],
+        "hardware_acceleration": "unknown",
+        "loading": {
+          "effects": false,
+          "gis": 0,
+          "imagery": false
+        },
+        "mode": "map",
+        "renderer": "cesium",
+        "revision": 35,
+        "scene": {
+          "bounds": [
+            2.7,
+            50.9,
+            3.3,
+            51.5
+          ],
+          "cesium_camera": {
+            "direction": [
+              0,
+              0,
+              -1
+            ],
+            "frustum_width": 75060.78579879217,
+            "position": [
+              333958.47237982065,
+              5699557.9286156045,
+              12756274
+            ],
+            "up": [
+              0,
+              1,
+              0
+            ]
+          },
+          "chart": {
+            "aggregate": "count",
+            "bins": 20,
+            "group": "",
+            "kind": "bar",
+            "limit": 2000,
+            "period_a": null,
+            "period_b": null,
+            "scope": "visible",
+            "source": null,
+            "stacked": false,
+            "time_bucket": "day",
+            "title": "",
+            "trendline": false,
+            "x": "entity",
+            "x_axis": "category",
+            "x_label": "",
+            "y": "value",
+            "y2": "",
+            "y2_label": "",
+            "y_label": ""
+          },
+          "chart_presets": [],
+          "display": {
+            "bloom": false,
+            "bloom_radius": 0.1,
+            "bloom_strength": 1.3,
+            "bloom_threshold": 0.1,
+            "cluster_pixels": 12,
+            "heat_max": null,
+            "heat_radius": 32,
+            "heat_reference_zoom": null,
+            "heat_weight": "count",
+            "mode": "density",
+            "partition": "all",
+            "point_scale": 0.5,
+            "show_centroids": true,
+            "show_points": false,
+            "show_tracks": false,
+            "show_trails": false,
+            "spatial_culling": false,
+            "time_bin_minutes": 0,
+            "track_opacity": 0.9,
+            "trail_gap_minutes": 180,
+            "trail_opacity": 0.25,
+            "trail_pixels": 2
+          },
+          "entity_colors": {
+            "H903183": "#65c4e8",
+            "H907928": "#ffb3a7",
+            "H907929": "#ffd166"
+          },
+          "expanded": false,
+          "focus": 0.45,
+          "gis_table": null,
+          "globe_time": false,
+          "globe_time_scale": 1,
+          "inspector_tab": "views",
+          "mode": "map",
+          "render_budget": 20000,
+          "renderer": "cesium",
+          "table_attributes": true,
+          "table_column_offset": 0,
+          "table_descending": false,
+          "table_open": false,
+          "table_respect_filters": true,
+          "table_sort": "time",
+          "table_source": null,
+          "time_height": 2.8
+        },
+        "viewport": {
+          "height": 892,
+          "width": 986
+        },
+        "webgpu_api_available": true
+      },
+      "visually_reviewed": true
+    },
+    {
+      "file": "heatmap.png",
+      "demo": "police-uk-london-theft-2025-01",
+      "mode": "map",
+      "theme": "dark",
+      "application_source": "180a4ff1564ece1d0bc8be1e1e223ca82e2bb3d6",
+      "external_map_access": true,
+      "executable_sha256": "fb9f0ca2b06aef063d22eb2df1cfe018c9f4114352f5c9cbfef2138f6952d2b8",
+      "display": {
+        "mode": "heatmap",
+        "show_points": false,
+        "show_tracks": false,
+        "show_trails": false,
+        "point_scale": 0.5,
+        "track_opacity": 0.9,
+        "bloom": false,
+        "spatial_culling": false,
+        "heat_radius": 28,
+        "heat_weight": "count"
+      },
+      "ui_framing": "Normal UI; central London camera; inspector visible; legend collapsed; no retouching",
+      "view": {
+        "inspector_tab": "views"
+      },
+      "navigation": "Central London, longitude -0.13, latitude 51.515, map width 8500 m",
+      "count": 4053,
+      "width": 2560,
+      "height": 1600,
+      "sha256": "c44f3d48086fe7a11c36c7b650627cc0509558cdbe89994ae0cd671f450911d8",
+      "live_state": {
+        "backend": "WebGL2",
+        "diagnostics": {
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "axisLabels": 0,
+          "contextRecoveries": 0,
+          "displayTimeBounds": [
+            1735689600,
+            1735689601
+          ],
+          "effectError": "",
+          "engine": "CesiumJS",
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "fadingPointCount": 0,
+          "fadingStemSegments": 0,
+          "fadingTriangleCount": 0,
+          "geodesicRendering": {
+            "geometry": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000,
+            "trails": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            }
+          },
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "lastRenderError": "",
+          "navigation": {
+            "active": false,
+            "freeLook": false,
+            "gestureMaximumTiltDegrees": 85,
+            "inertia": false,
+            "keyboardFocus": "map",
+            "northUpOnly": true
+          },
+          "orbitHandles": 0,
+          "performance": {
+            "active": true,
+            "fps": 60,
+            "frameP95Ms": 19,
+            "renderCpuP95Ms": 2,
+            "renderedFrames": 1835,
+            "sampleFrames": 120
+          },
+          "pointCount": 4053,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "requestRenderMode": true,
+          "sceneMode": 2,
+          "selectionCount": 0,
+          "spaceTimeFloor": null,
+          "stemSegments": 0,
+          "terrain": {
+            "basemap": "streets",
+            "basemapAlignmentErrorPixels": 3.1042191039887257e-10,
+            "basemapError": "",
+            "basemapMaximumLevel": 13,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 101,
+            "geoidModel": null,
+            "imageryLayers": 2,
+            "imageryRequestedTiles": 0,
+            "mode": "map",
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "tileCount": 0,
+            "verticalDatum": "unresolved-msl"
+          },
+          "timeHeightMeters": 5982.5413901310085,
+          "trackPolylines": 0,
+          "trailInputEdges": 0,
+          "trailOutputEdges": 0,
+          "triangleCount": 0,
+          "triangleVisibleCount": 0
+        },
+        "gis_layers": [],
+        "hardware_acceleration": "unknown",
+        "loading": {
+          "effects": false,
+          "gis": 0,
+          "imagery": false
+        },
+        "mode": "map",
+        "renderer": "cesium",
+        "revision": 53,
+        "scene": {
+          "bounds": null,
+          "cesium_camera": {
+            "direction": [
+              0,
+              0,
+              -1
+            ],
+            "frustum_width": 8500,
+            "position": [
+              -14471.533803125565,
+              5734623.568215488,
+              12756274
+            ],
+            "up": [
+              6.214168653832732e-08,
+              0.9999999999999981,
+              0
+            ]
+          },
+          "chart": {
+            "aggregate": "count",
+            "bins": 20,
+            "group": "",
+            "kind": "bar",
+            "limit": 2000,
+            "period_a": null,
+            "period_b": null,
+            "scope": "visible",
+            "source": null,
+            "stacked": false,
+            "time_bucket": "day",
+            "title": "",
+            "trendline": false,
+            "x": "entity",
+            "x_axis": "category",
+            "x_label": "",
+            "y": "value",
+            "y2": "",
+            "y2_label": "",
+            "y_label": ""
+          },
+          "chart_presets": [],
+          "display": {
+            "bloom": false,
+            "bloom_radius": 0.1,
+            "bloom_strength": 1.3,
+            "bloom_threshold": 0.1,
+            "cluster_pixels": 48,
+            "heat_max": null,
+            "heat_radius": 28,
+            "heat_reference_zoom": null,
+            "heat_weight": "count",
+            "mode": "heatmap",
+            "partition": "all",
+            "point_scale": 0.5,
+            "show_centroids": true,
+            "show_points": false,
+            "show_tracks": false,
+            "show_trails": false,
+            "spatial_culling": false,
+            "time_bin_minutes": 0,
+            "track_opacity": 0.9,
+            "trail_gap_minutes": 180,
+            "trail_opacity": 0.25,
+            "trail_pixels": 2
+          },
+          "entity_colors": {},
+          "expanded": false,
+          "focus": 0.45,
+          "gis_table": null,
+          "globe_time": false,
+          "globe_time_scale": 1,
+          "inspector_tab": "views",
+          "mode": "map",
+          "render_budget": 20000,
+          "renderer": "cesium",
+          "table_attributes": true,
+          "table_column_offset": 0,
+          "table_descending": false,
+          "table_open": false,
+          "table_respect_filters": true,
+          "table_sort": "time",
+          "table_source": null,
+          "time_height": 2.8
+        },
+        "viewport": {
+          "height": 892,
+          "width": 986
+        },
+        "webgpu_api_available": true
+      },
+      "visually_reviewed": true
+    },
+    {
+      "file": "chart-comparison.png",
+      "demo": "noaa-ais",
+      "mode": "map",
+      "theme": "light",
+      "application_source": "55133a993848749f04ccb2fdc83423acd8698929",
+      "external_map_access": true,
+      "executable_sha256": "0b371fe875488843d15a81eb659502b1518d382c5dfaca77f0a793e6fbba5d3e",
+      "display": {
+        "mode": "points",
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": false,
+        "point_scale": 0.5,
+        "track_opacity": 0.9,
+        "bloom": false,
+        "spatial_culling": false
+      },
+      "ui_framing": "Native Compact chart card, 360 CSS pixels wide; full map width; Chart notes collapsed; no retouching",
+      "view": {
+        "inspector_tab": "charts",
+        "chart": {
+          "kind": "bar",
+          "x": "category",
+          "y": "value",
+          "aggregate": "mean",
+          "scope": "all",
+          "title": "Mean recorded vessel speed by type",
+          "y_label": "Speed (knots)"
+        }
+      },
+      "navigation": "fit events",
+      "count": 8473,
+      "width": 2560,
+      "height": 1600,
+      "sha256": "251638a86254399ea347515df4bfe33026c4c483f8e4b4a96c00cd082e08fcb8",
+      "live_state": {
+        "backend": "WebGL2",
+        "diagnostics": {
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "axisLabels": 0,
+          "contextRecoveries": 0,
+          "displayTimeBounds": [
+            1704067200,
+            1704153540
+          ],
+          "effectError": "",
+          "engine": "CesiumJS",
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "fadingPointCount": 0,
+          "fadingStemSegments": 0,
+          "fadingTriangleCount": 0,
+          "geodesicRendering": {
+            "geometry": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000,
+            "trails": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 531,
+              "sourceSegments": 531
+            }
+          },
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "lastRenderError": "",
+          "navigation": {
+            "active": false,
+            "freeLook": false,
+            "gestureMaximumTiltDegrees": 85,
+            "inertia": false,
+            "keyboardFocus": "map",
+            "northUpOnly": true
+          },
+          "orbitHandles": 0,
+          "performance": {
+            "active": true,
+            "fps": 25.069637883008358,
+            "frameP95Ms": 183,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 1000,
+            "sampleFrames": 9
+          },
+          "pointCount": 8473,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "requestRenderMode": true,
+          "sceneMode": 2,
+          "selectionCount": 0,
+          "spaceTimeFloor": null,
+          "stemSegments": 0,
+          "terrain": {
+            "basemap": "streets",
+            "basemapAlignmentErrorPixels": 1.035687091643922e-10,
+            "basemapError": "",
+            "basemapMaximumLevel": 11,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 111,
+            "geoidModel": null,
+            "imageryLayers": 2,
+            "imageryRequestedTiles": 0,
+            "mode": "map",
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "tileCount": 0,
+            "verticalDatum": "unresolved-msl"
+          },
+          "timeHeightMeters": 54546.55049199967,
+          "trackPolylines": 13,
+          "trailInputEdges": 8463,
+          "trailOutputEdges": 531,
+          "triangleCount": 0,
+          "triangleVisibleCount": 0
+        },
+        "gis_layers": [],
+        "hardware_acceleration": "unknown",
+        "loading": {
+          "effects": false,
+          "gis": 0,
+          "imagery": false
+        },
+        "mode": "map",
+        "renderer": "cesium",
+        "revision": 25,
+        "scene": {
+          "bounds": [
+            -122.65,
+            37.45,
+            -122.05,
+            38.15
+          ],
+          "cesium_camera": {
+            "direction": [
+              0,
+              0,
+              -1
+            ],
+            "frustum_width": 113593.3037105984,
+            "position": [
+              -13619939.698557023,
+              4207876.751985741,
+              12756274
+            ],
+            "up": [
+              0,
+              1,
+              0
+            ]
+          },
+          "chart": {
+            "aggregate": "mean",
+            "bins": 20,
+            "group": "",
+            "kind": "bar",
+            "limit": 2000,
+            "period_a": null,
+            "period_b": null,
+            "scope": "all",
+            "source": null,
+            "stacked": false,
+            "time_bucket": "day",
+            "title": "Mean recorded vessel speed by type",
+            "trendline": false,
+            "x": "category",
+            "x_axis": "category",
+            "x_label": "",
+            "y": "value",
+            "y2": "",
+            "y2_label": "",
+            "y_label": "Speed (knots)"
+          },
+          "chart_presets": [],
+          "display": {
+            "bloom": false,
+            "bloom_radius": 0.1,
+            "bloom_strength": 1.3,
+            "bloom_threshold": 0.1,
+            "cluster_pixels": 48,
+            "heat_max": null,
+            "heat_radius": 32,
+            "heat_reference_zoom": null,
+            "heat_weight": "count",
+            "mode": "points",
+            "partition": "all",
+            "point_scale": 0.5,
+            "show_centroids": true,
+            "show_points": true,
+            "show_tracks": true,
+            "show_trails": false,
+            "spatial_culling": false,
+            "time_bin_minutes": 0,
+            "track_opacity": 0.9,
+            "trail_gap_minutes": 180,
+            "trail_opacity": 0.25,
+            "trail_pixels": 2
+          },
+          "entity_colors": {
+            "ARTHUR BRUSCO \u00b7 367008020": "#65c4e8",
+            "EMPRESS \u00b7 367533950": "#ffb3a7",
+            "ENHYDRA \u00b7 368052630": "#ffd166",
+            "HARBOR EMPEROR \u00b7 366985270": "#ad9feb",
+            "INTINTOLI \u00b7 366989360": "#8bd6bc",
+            "LASSEN \u00b7 367513170": "#f2a8d3",
+            "PS AUGUSTA \u00b7 215193000": "#85b1ff",
+            "PV GOLDEN GATE \u00b7 368302170": "#d9be89",
+            "STI VIRTUS \u00b7 538005171": "#b2d583",
+            "TRIFORCE \u00b7 338157873": "#d59dee"
+          },
+          "expanded": false,
+          "focus": 0.45,
+          "gis_table": null,
+          "globe_time": false,
+          "globe_time_scale": 1,
+          "inspector_tab": "charts",
+          "mode": "map",
+          "render_budget": 20000,
+          "renderer": "cesium",
+          "table_attributes": true,
+          "table_column_offset": 0,
+          "table_descending": false,
+          "table_open": false,
+          "table_respect_filters": true,
+          "table_sort": "time",
+          "table_source": null,
+          "time_height": 2.8
+        },
+        "viewport": {
+          "height": 892,
+          "width": 1282
+        },
+        "webgpu_api_available": true
+      },
+      "visually_reviewed": true,
+      "chart_presentation": "mini card over map; Widen chart restores full controls"
+    },
+    {
+      "file": "linked-workspace.png",
+      "demo": "elephant-seals",
+      "mode": "map",
+      "theme": "dark",
+      "application_source": "55133a993848749f04ccb2fdc83423acd8698929",
+      "external_map_access": false,
+      "executable_sha256": "0b371fe875488843d15a81eb659502b1518d382c5dfaca77f0a793e6fbba5d3e",
+      "display": {
+        "mode": "points",
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": false,
+        "point_scale": 0.5,
+        "track_opacity": 0.9,
+        "bloom": false,
+        "spatial_culling": false
+      },
+      "ui_framing": "Native Compact chart card, 360 CSS pixels wide; full map width; Chart notes collapsed; no retouching",
+      "view": {
+        "inspector_tab": "charts",
+        "table_open": true,
+        "chart": {
+          "kind": "bar",
+          "x": "entity",
+          "y": "value",
+          "aggregate": "max",
+          "scope": "all",
+          "title": "Deepest recorded dive by seal",
+          "x_label": "Seal",
+          "y_label": "Maximum dive depth (m)"
+        }
+      },
+      "navigation": "fit events",
+      "count": 15501,
+      "width": 2560,
+      "height": 1600,
+      "sha256": "a053631652b44964b5d95440ed6bc8d7f1276c7b68e37f590d042f4c07fc2fbc",
+      "live_state": {
+        "backend": "WebGL2",
+        "diagnostics": {
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "axisLabels": 0,
+          "contextRecoveries": 0,
+          "displayTimeBounds": [
+            1077425280,
+            1086233220
+          ],
+          "effectError": "",
+          "engine": "CesiumJS",
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "fadingPointCount": 0,
+          "fadingStemSegments": 0,
+          "fadingTriangleCount": 0,
+          "geodesicRendering": {
+            "geometry": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000,
+            "trails": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 156,
+              "sourceSegments": 156
+            }
+          },
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "lastRenderError": "",
+          "navigation": {
+            "active": false,
+            "freeLook": false,
+            "gestureMaximumTiltDegrees": 85,
+            "inertia": false,
+            "keyboardFocus": "map",
+            "northUpOnly": true
+          },
+          "orbitHandles": 0,
+          "performance": {
+            "active": false,
+            "fps": null,
+            "frameP95Ms": null,
+            "renderCpuP95Ms": 3,
+            "renderedFrames": 1062,
+            "sampleFrames": 0
+          },
+          "pointCount": 15501,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "requestRenderMode": true,
+          "sceneMode": 2,
+          "selectionCount": 5778,
+          "spaceTimeFloor": null,
+          "stemSegments": 0,
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": null,
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "map",
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "tileCount": 0,
+            "verticalDatum": "unresolved-msl"
+          },
+          "timeHeightMeters": 3136855.3510741848,
+          "trackPolylines": 18,
+          "trailInputEdges": 15498,
+          "trailOutputEdges": 156,
+          "triangleCount": 0,
+          "triangleVisibleCount": 0
+        },
+        "gis_layers": [],
+        "hardware_acceleration": "unknown",
+        "loading": {
+          "effects": false,
+          "gis": 0,
+          "imagery": false
+        },
+        "mode": "map",
+        "renderer": "cesium",
+        "revision": 38,
+        "scene": {
+          "bounds": [
+            -172.00226704953118,
+            33.01185038513336,
+            -117.41234657985582,
+            51.96456296349744
+          ],
+          "cesium_camera": {
+            "direction": [
+              0,
+              0,
+              -1
+            ],
+            "frustum_width": 6078035.344037496,
+            "position": [
+              -16108743.708677687,
+              4729765.5317041585,
+              12756274
+            ],
+            "up": [
+              0,
+              1,
+              0
+            ]
+          },
+          "chart": {
+            "aggregate": "max",
+            "bins": 20,
+            "group": "",
+            "kind": "bar",
+            "limit": 2000,
+            "period_a": null,
+            "period_b": null,
+            "scope": "all",
+            "source": null,
+            "stacked": false,
+            "time_bucket": "day",
+            "title": "Deepest recorded dive by seal",
+            "trendline": false,
+            "x": "entity",
+            "x_axis": "category",
+            "x_label": "Seal",
+            "y": "value",
+            "y2": "",
+            "y2_label": "",
+            "y_label": "Maximum dive depth (m)"
+          },
+          "chart_presets": [
+            {
+              "config": {
+                "aggregate": "max",
+                "bins": 20,
+                "group": "entity",
+                "kind": "line",
+                "limit": 2000,
+                "period_a": null,
+                "period_b": null,
+                "scope": "visible",
+                "source": null,
+                "stacked": false,
+                "time_bucket": "day",
+                "title": "",
+                "trendline": false,
+                "x": "time",
+                "x_axis": "time",
+                "x_label": "",
+                "y": "value",
+                "y2": "",
+                "y2_label": "",
+                "y_label": ""
+              },
+              "name": "Daily deepest dive (m)"
+            }
+          ],
+          "display": {
+            "bloom": false,
+            "bloom_radius": 0.1,
+            "bloom_strength": 1.3,
+            "bloom_threshold": 0.1,
+            "cluster_pixels": 48,
+            "heat_max": null,
+            "heat_radius": 32,
+            "heat_reference_zoom": null,
+            "heat_weight": "count",
+            "mode": "points",
+            "partition": "all",
+            "point_scale": 0.5,
+            "show_centroids": true,
+            "show_points": true,
+            "show_tracks": true,
+            "show_trails": false,
+            "spatial_culling": false,
+            "time_bin_minutes": 0,
+            "track_opacity": 0.9,
+            "trail_gap_minutes": 180,
+            "trail_opacity": 0.25,
+            "trail_pixels": 2
+          },
+          "entity_colors": {
+            "99AB": "#65c4e8",
+            "O176": "#ffb3a7",
+            "R881": "#ffd166"
+          },
+          "expanded": false,
+          "focus": 0.45,
+          "gis_table": null,
+          "globe_time": false,
+          "globe_time_scale": 1,
+          "inspector_tab": "charts",
+          "mode": "map",
+          "render_budget": 20000,
+          "renderer": "cesium",
+          "table_attributes": true,
+          "table_column_offset": 0,
+          "table_descending": false,
+          "table_open": true,
+          "table_respect_filters": true,
+          "table_sort": "time",
+          "table_source": null,
+          "time_height": 2.8
+        },
+        "viewport": {
+          "height": 635,
+          "width": 1282
+        },
+        "webgpu_api_available": true
+      },
+      "visually_reviewed": true,
+      "chart_presentation": "mini card over map; Widen chart restores full controls"
+    },
+    {
+      "file": "repeating-patterns.png",
+      "demo": "stork-migration",
+      "mode": "map",
+      "theme": "light",
+      "application_source": "55133a993848749f04ccb2fdc83423acd8698929",
+      "external_map_access": false,
+      "executable_sha256": "0b371fe875488843d15a81eb659502b1518d382c5dfaca77f0a793e6fbba5d3e",
+      "display": {
+        "mode": "points",
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": false,
+        "point_scale": 0.5,
+        "track_opacity": 0.9,
+        "bloom": false,
+        "spatial_culling": false
+      },
+      "ui_framing": "Native Compact chart card, 360 CSS pixels wide; full map width; Chart notes collapsed; no retouching",
+      "view": {
+        "inspector_tab": "charts",
+        "chart": {
+          "kind": "heatmap",
+          "x": "time",
+          "x_axis": "time",
+          "aggregate": "count",
+          "scope": "all",
+          "title": "Recorded events by UTC weekday and hour"
+        }
+      },
+      "navigation": "fit events",
+      "count": 6090,
+      "width": 2560,
+      "height": 1600,
+      "sha256": "2e0474022d27f2c886fe0e08c4b24d7a10a4b0758f0e3f68efadcda7cd10aaad",
+      "live_state": {
+        "backend": "WebGL2",
+        "diagnostics": {
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "axisLabels": 0,
+          "contextRecoveries": 0,
+          "displayTimeBounds": [
+            1532916000,
+            1538251200
+          ],
+          "effectError": "",
+          "engine": "CesiumJS",
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "fadingPointCount": 0,
+          "fadingStemSegments": 0,
+          "fadingTriangleCount": 0,
+          "geodesicRendering": {
+            "geometry": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 0,
+              "sourceSegments": 0
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000,
+            "trails": {
+              "coarsened": 0,
+              "interpolated": 0,
+              "remainingInterpolation": 200000,
+              "remainingSegments": 389,
+              "sourceSegments": 389
+            }
+          },
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "lastRenderError": "",
+          "navigation": {
+            "active": false,
+            "freeLook": false,
+            "gestureMaximumTiltDegrees": 85,
+            "inertia": false,
+            "keyboardFocus": "map",
+            "northUpOnly": true
+          },
+          "orbitHandles": 0,
+          "performance": {
+            "active": true,
+            "fps": 16.949152542372882,
+            "frameP95Ms": 130,
+            "renderCpuP95Ms": 2,
+            "renderedFrames": 1097,
+            "sampleFrames": 3
+          },
+          "pointCount": 6090,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "requestRenderMode": true,
+          "sceneMode": 2,
+          "selectionCount": 0,
+          "spaceTimeFloor": null,
+          "stemSegments": 0,
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": null,
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "map",
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "tileCount": 0,
+            "verticalDatum": "unresolved-msl"
+          },
+          "timeHeightMeters": 1556608.517481759,
+          "trackPolylines": 174,
+          "trailInputEdges": 6087,
+          "trailOutputEdges": 389,
+          "triangleCount": 0,
+          "triangleVisibleCount": 0
+        },
+        "gis_layers": [],
+        "hardware_acceleration": "unknown",
+        "loading": {
+          "effects": false,
+          "gis": 0,
+          "imagery": false
+        },
+        "mode": "map",
+        "renderer": "cesium",
+        "revision": 50,
+        "scene": {
+          "bounds": [
+            -10.703938297999999,
+            29.185954046,
+            10.383358198,
+            49.162028654000004
+          ],
+          "cesium_camera": {
+            "direction": [
+              0,
+              0,
+              -1
+            ],
+            "frustum_width": 3197583.440745377,
+            "position": [
+              -17843.406745228218,
+              4360828.769422105,
+              12756274
+            ],
+            "up": [
+              0,
+              1,
+              0
+            ]
+          },
+          "chart": {
+            "aggregate": "count",
+            "bins": 20,
+            "group": "",
+            "kind": "heatmap",
+            "limit": 2000,
+            "period_a": null,
+            "period_b": null,
+            "scope": "all",
+            "source": null,
+            "stacked": false,
+            "time_bucket": "day",
+            "title": "Recorded events by UTC weekday and hour",
+            "trendline": false,
+            "x": "time",
+            "x_axis": "time",
+            "x_label": "",
+            "y": "value",
+            "y2": "",
+            "y2_label": "",
+            "y_label": ""
+          },
+          "chart_presets": [],
+          "display": {
+            "bloom": false,
+            "bloom_radius": 0.1,
+            "bloom_strength": 1.3,
+            "bloom_threshold": 0.1,
+            "cluster_pixels": 48,
+            "heat_max": null,
+            "heat_radius": 32,
+            "heat_reference_zoom": null,
+            "heat_weight": "count",
+            "mode": "points",
+            "partition": "all",
+            "point_scale": 0.5,
+            "show_centroids": true,
+            "show_points": true,
+            "show_tracks": true,
+            "show_trails": false,
+            "spatial_culling": false,
+            "time_bin_minutes": 0,
+            "track_opacity": 0.9,
+            "trail_gap_minutes": 180,
+            "trail_opacity": 0.25,
+            "trail_pixels": 2
+          },
+          "entity_colors": {
+            "Linus B": "#65c4e8",
+            "Mirabell": "#ffb3a7",
+            "Wendelin": "#ffd166"
+          },
+          "expanded": false,
+          "focus": 0.45,
+          "gis_table": null,
+          "globe_time": false,
+          "globe_time_scale": 1,
+          "inspector_tab": "charts",
+          "mode": "map",
+          "render_budget": 20000,
+          "renderer": "cesium",
+          "table_attributes": true,
+          "table_column_offset": 0,
+          "table_descending": false,
+          "table_open": false,
+          "table_respect_filters": true,
+          "table_sort": "time",
+          "table_source": null,
+          "time_height": 2.8
+        },
+        "viewport": {
+          "height": 892,
+          "width": 1282
+        },
+        "webgpu_api_available": true
+      },
+      "visually_reviewed": true,
+      "chart_presentation": "mini card over map; Widen chart restores full controls"
+    }
+  ],
+  "passed": true,
+  "capture_set_complete": true,
+  "review_status": "All eight images visually reviewed; three chart scenes refreshed with native mini cards, full map width and verified source counts",
+  "application_source": "55133a993848749f04ccb2fdc83423acd8698929",
+  "application_source_note": "Each capture records its application build commit and executable hash; the gallery can contain captures from more than one local build.",
+  "reviewed_at": "2026-10-21T23:57:28.849214+00:00"
+}

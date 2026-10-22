@@ -1,0 +1,111 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Compact controls and shortcuts in space-time",
+      "evidence": {
+        "bearing": 0,
+        "tilt": 47.99999999999994
+      }
+    },
+    {
+      "name": "Compact controls and shortcuts in globe",
+      "evidence": {
+        "bearing": 0.00000198595148503955,
+        "tilt": 17.999999809982903
+      }
+    },
+    {
+      "name": "Compact controls and shortcuts in map",
+      "evidence": {
+        "bearing": 0,
+        "tilt": 0
+      }
+    },
+    {
+      "name": "24 globe heading/tilt cases match independent WGS84 ENU vectors",
+      "evidence": {
+        "cases": 24
+      }
+    },
+    {
+      "name": "Held pan repeats and stops on release without changing selection"
+    },
+    {
+      "name": "Light/dark controls have N, eye and fit shortcuts without footer duplicates"
+    },
+    {
+      "name": "Controls fit 1600×1000",
+      "evidence": {
+        "scene": {
+          "x": 248,
+          "y": 48,
+          "right": 1310,
+          "bottom": 817,
+          "width": 1062,
+          "height": 769
+        },
+        "nav": {
+          "x": 1100,
+          "y": 437,
+          "right": 1294,
+          "bottom": 741,
+          "width": 194,
+          "height": 304
+        },
+        "overlaps": [],
+        "clipping": [],
+        "short": false
+      }
+    },
+    {
+      "name": "Controls fit 1000×700",
+      "evidence": {
+        "scene": {
+          "x": 210,
+          "y": 48,
+          "right": 750,
+          "bottom": 542,
+          "width": 540,
+          "height": 494
+        },
+        "nav": {
+          "x": 540,
+          "y": 162,
+          "right": 734,
+          "bottom": 466,
+          "width": 194,
+          "height": 304
+        },
+        "overlaps": [],
+        "clipping": [],
+        "short": false
+      }
+    },
+    {
+      "name": "Controls fit 1000×700 with table",
+      "evidence": {
+        "scene": {
+          "x": 210,
+          "y": 48,
+          "right": 750,
+          "bottom": 382,
+          "width": 540,
+          "height": 334
+        },
+        "nav": {
+          "x": 484,
+          "y": 56,
+          "right": 734,
+          "bottom": 189,
+          "width": 250,
+          "height": 133
+        },
+        "overlaps": [],
+        "clipping": [],
+        "short": true
+      }
+    }
+  ],
+  "errors": []
+}

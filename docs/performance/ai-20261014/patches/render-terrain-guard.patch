@@ -1,0 +1,14 @@
+diff --git a/frontend/src/view.ts b/frontend/src/view.ts
+index 9ce7d5e..1a1abc4 100644
+--- a/frontend/src/view.ts
++++ b/frontend/src/view.ts
+@@ -786,6 +786,9 @@ export class SpaceTimeView {
+   }
+   async setTerrain(terrain: Terrain | null) {
+     await this.ready;
++    // Terrain objects are immutable snapshots from the backend; callers that
++    // mutate in place must explicitly rebuild or pass a new object.
++    if (this.terrain === terrain) return;
+     this.terrain = terrain;
+     this.rebuild();
+   }

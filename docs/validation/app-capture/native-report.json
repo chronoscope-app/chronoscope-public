@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Default MCP capture includes the full app viewport",
+      "width": 1600,
+      "height": 973
+    },
+    {
+      "name": "Explicit map export remains smaller and excludes app panels",
+      "width": 652,
+      "height": 514
+    },
+    {
+      "name": "Closed detached SI window returns an explicit UNAVAILABLE error"
+    },
+    {
+      "name": "CLI saves whole-app PNG atomically with a spaced path and overwrite protection"
+    },
+    {
+      "name": "Visible app dialog is present in native MCP capture"
+    },
+    {
+      "name": "Open detached SI chat can be captured separately",
+      "width": 860,
+      "height": 873
+    }
+  ],
+  "platform": "Linux native WebKitGTK / software rendering",
+  "native_macos_windows_tested": false,
+  "public_maps_enabled": false
+}

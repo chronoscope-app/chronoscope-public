@@ -1,0 +1,23 @@
+{
+  "platform": "Linux",
+  "github_runners_used": false,
+  "checks": [
+    {
+      "name": "rust-format",
+      "exit_code": 0,
+      "elapsed_s": 0.848
+    },
+    {
+      "name": "core-clippy",
+      "exit_code": 0,
+      "elapsed_s": 8.941
+    },
+    {
+      "name": "rust-tests",
+      "exit_code": 0,
+      "elapsed_s": 41.55
+    }
+  ],
+  "rust_tests_passed": 207,
+  "passed": true
+}

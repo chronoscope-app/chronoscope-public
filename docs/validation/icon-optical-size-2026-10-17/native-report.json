@@ -1,0 +1,54 @@
+{
+  "app_preference_overrides_system": true,
+  "app_preference_sequence": [
+    "Dark",
+    "Light",
+    "System"
+  ],
+  "dock_captures": [
+    "dock-Light.tiff",
+    "dock-Dark.tiff"
+  ],
+  "invalid_image_rejected": true,
+  "passed": true,
+  "system_preferences_changed": false,
+  "theme_events": [
+    "Light",
+    "Dark",
+    "Light"
+  ],
+  "worker_thread_rejected": true,
+  "pixel_checks": [
+    {
+      "theme": "Light",
+      "capture": "Light",
+      "mean_channel_error": 1.8245660151740062,
+      "opposite_theme_error": 223.38664048163955
+    },
+    {
+      "theme": "Dark",
+      "capture": "Dark",
+      "mean_channel_error": 1.1709030567703604,
+      "opposite_theme_error": 223.98417238660548
+    },
+    {
+      "theme": "Dark",
+      "capture": "app-Dark",
+      "mean_channel_error": 1.1709030567703604,
+      "opposite_theme_error": 223.98417238660548
+    },
+    {
+      "theme": "Light",
+      "capture": "app-Light",
+      "mean_channel_error": 1.8245660151740062,
+      "opposite_theme_error": 223.38664048163955
+    },
+    {
+      "theme": "Dark",
+      "capture": "override-Dark",
+      "mean_channel_error": 1.1709030567703604,
+      "opposite_theme_error": 223.98417238660548
+    }
+  ],
+  "dock_pixels_match": true
+}

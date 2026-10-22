@@ -1,0 +1,19 @@
+diff --git a/frontend/src/view.ts b/frontend/src/view.ts
+index 9ce7d5e..52afa72 100644
+--- a/frontend/src/view.ts
++++ b/frontend/src/view.ts
+@@ -614,7 +614,13 @@ export class SpaceTimeView {
+       );
+     }
+     if (this.renderPoints.length) {
+-      const geo = new THREE.OctahedronGeometry(0.018, 0);
++      // MeshBasicMaterial has no lighting/UV use: preserve exact triangles/winding
++      // while sharing the six coincident positions. Selection geometry unchanged.
++      const geo = new THREE.BufferGeometry();
++      geo.setAttribute("position", new THREE.Float32BufferAttribute([
++        .018,0,0, -.018,0,0, 0,.018,0, 0,-.018,0, 0,0,.018, 0,0,-.018,
++      ],3));
++      geo.setIndex([0,2,4, 0,4,3, 0,3,5, 0,5,2, 1,2,5, 1,5,3, 1,3,4, 1,4,2]);
+       const mat = new THREE.MeshBasicMaterial({ vertexColors: false });
+       this.pointMesh = new THREE.InstancedMesh(
+         geo,

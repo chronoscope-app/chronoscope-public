@@ -1,0 +1,128 @@
+
+> chronoscope-cesium-ui@0.13.3 test:cesium-terrain
+> node scripts/cesium-terrain-qa.mjs
+
+Beforewait space-time {
+  resources: {
+    imageryLayers: 4,
+    tileCount: 1,
+    imageryRequestedTiles: 0,
+    terrainActive: true,
+    terrainCovered: 66049,
+    verticalDatum: 'egm96',
+    geoidModel: 'NGA EGM96 15-minute; H+N',
+    mode: 'space-time'
+  },
+  height: undefined,
+  expected: 475.6118234258084,
+  tilesLoaded: false,
+  bounds: [
+    -79.96449609375,
+    43.2392006193824,
+    -79.95249609375,
+    43.2512006193824
+  ],
+  visible: [
+    -79.99876371566017,
+    43.233084036489835,
+    -79.91822847183983,
+    43.297033816533386
+  ],
+  camera: {
+    x: -8900939.069752203,
+    y: 4811849.742137566,
+    z: 2769.3466055658646
+  }
+}
+MeasurednativeLOD {"probes":[{"topHeight":504.8467244307342,"topAbsoluteError":0.028789718672214804,"westRayHeight":504.8257014378864,"eastRayHeight":504.8688458370492,"westRayError":0.028967346455999632,"eastRayError":0.027513677421097782,"lat":43.2432006193824,"lon":-79.96049609375,"renderedHeight":504.8472735932836,"expectedHeight":504.8755141494064,"absoluteError":0.02824055612279608,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":509.016387402292,"topAbsoluteError":0.027783733740932348,"westRayHeight":508.9878306300635,"eastRayHeight":509.0399869255443,"westRayError":0.03549715145305754,"eastRayError":0.02502957555265084,"lat":43.2432006193824,"lon":-79.95849609375,"renderedHeight":500.13993763532017,"expectedHeight":509.04417113603296,"absoluteError":8.904233500712792,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":525.6723597954951,"topAbsoluteError":0.027217135460773534,"westRayHeight":525.5857005800344,"eastRayHeight":525.7617701681136,"westRayError":0.025068553836604224,"eastRayError":0.026614559927338632,"lat":43.2432006193824,"lon":-79.95649609375,"renderedHeight":525.6737353301753,"expectedHeight":525.6995769309559,"absoluteError":0.025841600780609042,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":473.4928892712843,"topAbsoluteError":0.023910836261734403,"westRayHeight":473.4856249402088,"eastRayHeight":473.50576528016313,"westRayError":0.02069853832966828,"eastRayError":0.02151145639055585,"lat":43.2452006193824,"lon":-79.96049609375,"renderedHeight":473.49569506454674,"expectedHeight":473.51680010754603,"absoluteError":0.021105042999295165,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":475.5978912801588,"topAbsoluteError":0.013932145649562244,"westRayHeight":475.58912297068883,"eastRayHeight":475.60571343036247,"westRayError":0.01222386715102175,"eastRayError":0.01658666549269583,"lat":43.2452006193824,"lon":-79.95849609375,"renderedHeight":467.42780487010407,"expectedHeight":475.6118234258084,"absoluteError":8.184018555704313,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":488.0570905602675,"topAbsoluteError":0.019984588451904983,"westRayHeight":487.9819263147543,"eastRayHeight":488.1183713448154,"westRayError":0.028232977655250124,"eastRayError":0.025619660213806128,"lat":43.2452006193824,"lon":-79.95649609375,"renderedHeight":488.0501487825463,"expectedHeight":488.0770751487194,"absoluteError":0.026926366173142924,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":442.1390541119341,"topAbsoluteError":0.018938957603268136,"westRayHeight":442.135648802826,"eastRayHeight":442.1385373012588,"westRayError":0.02223667357014847,"eastRayError":0.019563361419955072,"lat":43.247200619382404,"lon":-79.96049609375,"renderedHeight":442.13709300951217,"expectedHeight":442.1579930695374,"absoluteError":0.020900060025212497,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":442.1416020320837,"topAbsoluteError":0.03782536566370709,"westRayHeight":442.1689905994597,"eastRayHeight":442.1760602214195,"westRayError":0.010330250315405465,"eastRayError":0.0034746497677247135,"lat":43.247200619382404,"lon":-79.95849609375,"renderedHeight":434.72271398535935,"expectedHeight":442.1794273977474,"absoluteError":7.456713412388069,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":450.4458805040548,"topAbsoluteError":0.008712447707011961,"westRayHeight":450.3944899486523,"eastRayHeight":450.48691218233074,"westRayError":0.015075671819602121,"eastRayError":0.012708100720828952,"lat":43.247200619382404,"lon":-79.95649609375,"renderedHeight":450.4407010219324,"expectedHeight":450.4545929517618,"absoluteError":0.013891929829412675,"loadedLevel":15,"declaredError":4.632547168798561}],"paintedGroundVegetationSamples":22757,"mode":"space-time","sceneMode":1,"terrain":{"imageryLayers":2,"tileCount":1,"imageryRequestedTiles":22,"terrainActive":true,"terrainCovered":66049,"verticalDatum":"egm96","geoidModel":"NGA EGM96 15-minute; H+N","mode":"space-time"},"nativeRayHeightAtExactSeam":467.42780487010407,"topSurfaceHeight":475.5978912801588,"expectedHeight":475.6118234258084,"bearing":0,"tilt":47.9999999999988,"frameBounds":[-79.99876371565793,43.23308403648919,-79.91822847184206,43.29703381652943]}
+PASS natural terrain transition space-time 475.5978912801588
+Beforewait globe {
+  resources: {
+    imageryLayers: 3,
+    tileCount: 1,
+    imageryRequestedTiles: 8,
+    terrainActive: true,
+    terrainCovered: 66049,
+    verticalDatum: 'egm96',
+    geoidModel: 'NGA EGM96 15-minute; H+N',
+    mode: 'globe'
+  },
+  height: 467.42780487010407,
+  expected: 475.6118234258084,
+  tilesLoaded: false,
+  bounds: [
+    -79.96449609375,
+    43.2392006193824,
+    -79.95249609375,
+    43.2512006193824
+  ],
+  visible: [
+    -79.98504430834817,
+    43.23530677370737,
+    -79.93194787923585,
+    43.261446486231705
+  ],
+  camera: { x: 811851.9142450877, y: -4584817.734563659, z: 4348871.55497535 }
+}
+MeasurednativeLOD {"probes":[{"topHeight":504.8467244307342,"topAbsoluteError":0.028789718672214804,"westRayHeight":504.8257014378864,"eastRayHeight":504.8688458370492,"westRayError":0.028967346455999632,"eastRayError":0.027513677421097782,"lat":43.2432006193824,"lon":-79.96049609375,"renderedHeight":504.8472735932836,"expectedHeight":504.8755141494064,"absoluteError":0.02824055612279608,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":509.016387402292,"topAbsoluteError":0.027783733740932348,"westRayHeight":508.9878306300635,"eastRayHeight":509.0399869255443,"westRayError":0.03549715145305754,"eastRayError":0.02502957555265084,"lat":43.2432006193824,"lon":-79.95849609375,"renderedHeight":500.13993763532017,"expectedHeight":509.04417113603296,"absoluteError":8.904233500712792,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":525.6723597954951,"topAbsoluteError":0.027217135460773534,"westRayHeight":525.5857005800344,"eastRayHeight":525.7617701681136,"westRayError":0.025068553836604224,"eastRayError":0.026614559927338632,"lat":43.2432006193824,"lon":-79.95649609375,"renderedHeight":525.6737353301753,"expectedHeight":525.6995769309559,"absoluteError":0.025841600780609042,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":473.4928892712843,"topAbsoluteError":0.023910836261734403,"westRayHeight":473.4856249402088,"eastRayHeight":473.50576528016313,"westRayError":0.02069853832966828,"eastRayError":0.02151145639055585,"lat":43.2452006193824,"lon":-79.96049609375,"renderedHeight":473.49569506454674,"expectedHeight":473.51680010754603,"absoluteError":0.021105042999295165,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":475.5978912801588,"topAbsoluteError":0.013932145649562244,"westRayHeight":475.58912297068883,"eastRayHeight":475.60571343036247,"westRayError":0.01222386715102175,"eastRayError":0.01658666549269583,"lat":43.2452006193824,"lon":-79.95849609375,"renderedHeight":467.42780487010407,"expectedHeight":475.6118234258084,"absoluteError":8.184018555704313,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":488.0570905602675,"topAbsoluteError":0.019984588451904983,"westRayHeight":487.9819263147543,"eastRayHeight":488.1183713448154,"westRayError":0.028232977655250124,"eastRayError":0.025619660213806128,"lat":43.2452006193824,"lon":-79.95649609375,"renderedHeight":488.0501487825463,"expectedHeight":488.0770751487194,"absoluteError":0.026926366173142924,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":442.1390541119341,"topAbsoluteError":0.018938957603268136,"westRayHeight":442.135648802826,"eastRayHeight":442.1385373012588,"westRayError":0.02223667357014847,"eastRayError":0.019563361419955072,"lat":43.247200619382404,"lon":-79.96049609375,"renderedHeight":442.13709300951217,"expectedHeight":442.1579930695374,"absoluteError":0.020900060025212497,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":442.1416020320837,"topAbsoluteError":0.03782536566370709,"westRayHeight":442.1689905994597,"eastRayHeight":442.1760602214195,"westRayError":0.010330250315405465,"eastRayError":0.0034746497677247135,"lat":43.247200619382404,"lon":-79.95849609375,"renderedHeight":434.72271398535935,"expectedHeight":442.1794273977474,"absoluteError":7.456713412388069,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":450.4458805040548,"topAbsoluteError":0.008712447707011961,"westRayHeight":450.3944899486523,"eastRayHeight":450.48691218233074,"westRayError":0.015075671819602121,"eastRayError":0.012708100720828952,"lat":43.247200619382404,"lon":-79.95649609375,"renderedHeight":450.4407010219324,"expectedHeight":450.4545929517618,"absoluteError":0.013891929829412675,"loadedLevel":15,"declaredError":4.632547168798561}],"paintedGroundVegetationSamples":36642,"mode":"globe","sceneMode":3,"terrain":{"imageryLayers":2,"tileCount":1,"imageryRequestedTiles":31,"terrainActive":true,"terrainCovered":66049,"verticalDatum":"egm96","geoidModel":"NGA EGM96 15-minute; H+N","mode":"globe"},"nativeRayHeightAtExactSeam":467.42780487010407,"topSurfaceHeight":475.5978912801588,"expectedHeight":475.6118234258084,"bearing":359.9999999999998,"tilt":17.992508315760958,"frameBounds":[-79.98504430834817,43.23530677370737,-79.93194787923585,43.261446486231705]}
+PASS natural terrain transition globe 475.5978912801588
+Beforewait map {
+  resources: {
+    imageryLayers: 3,
+    tileCount: 1,
+    imageryRequestedTiles: 22,
+    terrainActive: true,
+    terrainCovered: 66049,
+    verticalDatum: 'egm96',
+    geoidModel: 'NGA EGM96 15-minute; H+N',
+    mode: 'map'
+  },
+  height: 467.42780487010407,
+  expected: 475.6118234258084,
+  tilesLoaded: false,
+  bounds: [
+    -79.96449609375,
+    43.2392006193824,
+    -79.95249609375,
+    43.2512006193824
+  ],
+  visible: [
+    -79.97360165326032,
+    43.23420060938239,
+    -79.94339053423964,
+    43.256200629382406
+  ],
+  camera: { x: -8900939.069752201, y: 4814033.712202608, z: 12756274 }
+}
+MeasurednativeLOD {"probes":[{"topHeight":504.8467244307342,"topAbsoluteError":0.028789718672214804,"westRayHeight":504.8257014378864,"eastRayHeight":504.8688458370492,"westRayError":0.028967346455999632,"eastRayError":0.027513677421097782,"lat":43.2432006193824,"lon":-79.96049609375,"renderedHeight":504.8472735932836,"expectedHeight":504.8755141494064,"absoluteError":0.02824055612279608,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":509.016387402292,"topAbsoluteError":0.027783733740932348,"westRayHeight":508.9878306300635,"eastRayHeight":509.0399869255443,"westRayError":0.03549715145305754,"eastRayError":0.02502957555265084,"lat":43.2432006193824,"lon":-79.95849609375,"renderedHeight":500.13993763532017,"expectedHeight":509.04417113603296,"absoluteError":8.904233500712792,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":525.6723597954951,"topAbsoluteError":0.027217135460773534,"westRayHeight":525.5857005800344,"eastRayHeight":525.7617701681136,"westRayError":0.025068553836604224,"eastRayError":0.026614559927338632,"lat":43.2432006193824,"lon":-79.95649609375,"renderedHeight":525.6737353301753,"expectedHeight":525.6995769309559,"absoluteError":0.025841600780609042,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":473.4928892712843,"topAbsoluteError":0.023910836261734403,"westRayHeight":473.4856249402088,"eastRayHeight":473.50576528016313,"westRayError":0.02069853832966828,"eastRayError":0.02151145639055585,"lat":43.2452006193824,"lon":-79.96049609375,"renderedHeight":473.49569506454674,"expectedHeight":473.51680010754603,"absoluteError":0.021105042999295165,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":475.5978912801588,"topAbsoluteError":0.013932145649562244,"westRayHeight":475.58912297068883,"eastRayHeight":475.60571343036247,"westRayError":0.01222386715102175,"eastRayError":0.01658666549269583,"lat":43.2452006193824,"lon":-79.95849609375,"renderedHeight":467.42780487010407,"expectedHeight":475.6118234258084,"absoluteError":8.184018555704313,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":488.0570905602675,"topAbsoluteError":0.019984588451904983,"westRayHeight":487.9819263147543,"eastRayHeight":488.1183713448154,"westRayError":0.028232977655250124,"eastRayError":0.025619660213806128,"lat":43.2452006193824,"lon":-79.95649609375,"renderedHeight":488.0501487825463,"expectedHeight":488.0770751487194,"absoluteError":0.026926366173142924,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":442.1390541119341,"topAbsoluteError":0.018938957603268136,"westRayHeight":442.135648802826,"eastRayHeight":442.1385373012588,"westRayError":0.02223667357014847,"eastRayError":0.019563361419955072,"lat":43.247200619382404,"lon":-79.96049609375,"renderedHeight":442.13709300951217,"expectedHeight":442.1579930695374,"absoluteError":0.020900060025212497,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":442.1416020320837,"topAbsoluteError":0.03782536566370709,"westRayHeight":442.1689905994597,"eastRayHeight":442.1760602214195,"westRayError":0.010330250315405465,"eastRayError":0.0034746497677247135,"lat":43.247200619382404,"lon":-79.95849609375,"renderedHeight":434.72271398535935,"expectedHeight":442.1794273977474,"absoluteError":7.456713412388069,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":450.4458805040548,"topAbsoluteError":0.008712447707011961,"westRayHeight":450.3944899486523,"eastRayHeight":450.48691218233074,"westRayError":0.015075671819602121,"eastRayError":0.012708100720828952,"lat":43.247200619382404,"lon":-79.95649609375,"renderedHeight":450.4407010219324,"expectedHeight":450.4545929517618,"absoluteError":0.013891929829412675,"loadedLevel":15,"declaredError":4.632547168798561}],"paintedGroundVegetationSamples":43676,"mode":"map","sceneMode":2,"terrain":{"imageryLayers":2,"tileCount":1,"imageryRequestedTiles":22,"terrainActive":true,"terrainCovered":66049,"verticalDatum":"egm96","geoidModel":"NGA EGM96 15-minute; H+N","mode":"map"},"nativeRayHeightAtExactSeam":467.42780487010407,"topSurfaceHeight":475.5978912801588,"expectedHeight":475.6118234258084,"bearing":0,"tilt":0,"frameBounds":[-79.97360165326032,43.23420060938239,-79.94339053423964,43.256200629382406]}
+PASS natural terrain transition map 475.5978912801588
+Beforewait space-time {
+  resources: {
+    imageryLayers: 3,
+    tileCount: 1,
+    imageryRequestedTiles: 22,
+    terrainActive: true,
+    terrainCovered: 66049,
+    verticalDatum: 'egm96',
+    geoidModel: 'NGA EGM96 15-minute; H+N',
+    mode: 'space-time'
+  },
+  height: 467.42780487010407,
+  expected: 475.6118234258084,
+  tilesLoaded: false,
+  bounds: [
+    -79.96449609375,
+    43.2392006193824,
+    -79.95249609375,
+    43.2512006193824
+  ],
+  visible: [
+    -79.99876371527962,
+    43.23308403641416,
+    -79.91822847222035,
+    43.29703381685777
+  ],
+  camera: { x: -8900939.069752203, y: 4811849.742137566, z: 2769.346605561208 }
+}
+MeasurednativeLOD {"probes":[{"topHeight":504.8467244307342,"topAbsoluteError":0.028789718672214804,"westRayHeight":504.8257014378864,"eastRayHeight":504.8688458370492,"westRayError":0.028967346455999632,"eastRayError":0.027513677421097782,"lat":43.2432006193824,"lon":-79.96049609375,"renderedHeight":504.8472735932836,"expectedHeight":504.8755141494064,"absoluteError":0.02824055612279608,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":509.016387402292,"topAbsoluteError":0.027783733740932348,"westRayHeight":508.9878306300635,"eastRayHeight":509.0399869255443,"westRayError":0.03549715145305754,"eastRayError":0.02502957555265084,"lat":43.2432006193824,"lon":-79.95849609375,"renderedHeight":500.13993763532017,"expectedHeight":509.04417113603296,"absoluteError":8.904233500712792,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":525.6723597954951,"topAbsoluteError":0.027217135460773534,"westRayHeight":525.5857005800344,"eastRayHeight":525.7617701681136,"westRayError":0.025068553836604224,"eastRayError":0.026614559927338632,"lat":43.2432006193824,"lon":-79.95649609375,"renderedHeight":525.6737353301753,"expectedHeight":525.6995769309559,"absoluteError":0.025841600780609042,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":473.4928892712843,"topAbsoluteError":0.023910836261734403,"westRayHeight":473.4856249402088,"eastRayHeight":473.50576528016313,"westRayError":0.02069853832966828,"eastRayError":0.02151145639055585,"lat":43.2452006193824,"lon":-79.96049609375,"renderedHeight":473.49569506454674,"expectedHeight":473.51680010754603,"absoluteError":0.021105042999295165,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":475.5978912801588,"topAbsoluteError":0.013932145649562244,"westRayHeight":475.58912297068883,"eastRayHeight":475.60571343036247,"westRayError":0.01222386715102175,"eastRayError":0.01658666549269583,"lat":43.2452006193824,"lon":-79.95849609375,"renderedHeight":467.42780487010407,"expectedHeight":475.6118234258084,"absoluteError":8.184018555704313,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":488.0570905602675,"topAbsoluteError":0.019984588451904983,"westRayHeight":487.9819263147543,"eastRayHeight":488.1183713448154,"westRayError":0.028232977655250124,"eastRayError":0.025619660213806128,"lat":43.2452006193824,"lon":-79.95649609375,"renderedHeight":488.0501487825463,"expectedHeight":488.0770751487194,"absoluteError":0.026926366173142924,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":442.1390541119341,"topAbsoluteError":0.018938957603268136,"westRayHeight":442.135648802826,"eastRayHeight":442.1385373012588,"westRayError":0.02223667357014847,"eastRayError":0.019563361419955072,"lat":43.247200619382404,"lon":-79.96049609375,"renderedHeight":442.13709300951217,"expectedHeight":442.1579930695374,"absoluteError":0.020900060025212497,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":442.1416020320837,"topAbsoluteError":0.03782536566370709,"westRayHeight":442.1689905994597,"eastRayHeight":442.1760602214195,"westRayError":0.010330250315405465,"eastRayError":0.0034746497677247135,"lat":43.247200619382404,"lon":-79.95849609375,"renderedHeight":434.72271398535935,"expectedHeight":442.1794273977474,"absoluteError":7.456713412388069,"loadedLevel":15,"declaredError":4.632547168798561},{"topHeight":450.4458805040548,"topAbsoluteError":0.008712447707011961,"westRayHeight":450.3944899486523,"eastRayHeight":450.48691218233074,"westRayError":0.015075671819602121,"eastRayError":0.012708100720828952,"lat":43.247200619382404,"lon":-79.95649609375,"renderedHeight":450.4407010219324,"expectedHeight":450.4545929517618,"absoluteError":0.013891929829412675,"loadedLevel":15,"declaredError":4.632547168798561}],"paintedGroundVegetationSamples":22757,"mode":"space-time","sceneMode":1,"terrain":{"imageryLayers":2,"tileCount":1,"imageryRequestedTiles":22,"terrainActive":true,"terrainCovered":66049,"verticalDatum":"egm96","geoidModel":"NGA EGM96 15-minute; H+N","mode":"space-time"},"nativeRayHeightAtExactSeam":467.42780487010407,"topSurfaceHeight":475.5978912801588,"expectedHeight":475.6118234258084,"bearing":0,"tilt":47.99999999999898,"frameBounds":[-79.99876371527779,43.23308403641362,-79.9182284722222,43.29703381685453]}
+PASS natural terrain transition space-time 475.5978912801588

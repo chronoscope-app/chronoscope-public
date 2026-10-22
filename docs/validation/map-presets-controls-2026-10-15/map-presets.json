@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "Existing/empty saved libraries retain all built-ins; provider selections populate advertised layers and licenses without public traffic or activating maps",
+    "Canvas export/MCP screenshot includes provider credits in an appended footer without covering map pixels"
+  ],
+  "errors": [],
+  "public_tiles": [],
+  "public_wmts_enabled": false,
+  "passed": true
+}

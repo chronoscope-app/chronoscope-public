@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Repeated map failures produce one actionable alert and retain exact imagery pixels",
+      "evidence": {
+        "good": [
+          49,
+          139,
+          166,
+          255
+        ],
+        "jobs": 4
+      }
+    },
+    {
+      "name": "Retry loads imagery and clears the resolved alert; Map settings opens the layer configuration",
+      "evidence": {}
+    },
+    {
+      "name": "Stopping an in-flight load keeps imagery and does not report a false failure",
+      "evidence": {}
+    }
+  ],
+  "errors": []
+}

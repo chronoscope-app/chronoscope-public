@@ -1,0 +1,24 @@
+   Compiling chronoscope v0.13.3 (/workspace/chronoscope-cesium)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.81s
+     Running tests/cesium_scene.rs (target/debug/deps/cesium_scene-f79113b813edc481)
+
+running 4 tests
+test invalid_cesium_camera_is_rejected_and_agent_fit_clears_it ... ok
+test geographic_cesium_summary_retains_polar_events_in_flat_modes ... ok
+test terrain_datum_requires_explicit_choice_and_saves_with_workspace ... ok
+test cesium_camera_roundtrips_without_becoming_event_coordinates ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/display_lod.rs (target/debug/deps/display_lod-903c2f8e4cb84c28)
+
+running 6 tests
+test dateline_poles_negative_utc_boundaries_and_viewport_members_are_exact ... ok
+test dense_display_keeps_bounded_unselected_time_only_markers ... ok
+test weights_coarsening_temporal_limits_and_invalid_cell_contracts ... ok
+test bloom_keeps_bounded_unselected_events_in_every_geographic_view ... ok
+test ground_effects_combine_time_slabs_but_keep_time_filter_and_elevated_evidence ... ok
+test exact_bins_members_selection_cache_and_portable_defaults ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.94s
+

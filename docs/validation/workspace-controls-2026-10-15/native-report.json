@@ -1,0 +1,22 @@
+{
+  "platform": "Linux",
+  "native_macos_windows_tested": false,
+  "checks": [
+    {
+      "name": "native-clippy",
+      "exit_code": 0,
+      "elapsed_s": 1.513
+    },
+    {
+      "name": "native-build",
+      "exit_code": 0,
+      "elapsed_s": 5.112
+    },
+    {
+      "name": "native-cli-smoke",
+      "exit_code": 0,
+      "elapsed_s": 3.976
+    }
+  ],
+  "passed": true
+}

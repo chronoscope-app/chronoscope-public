@@ -1,0 +1,12 @@
+PASS compass drag direction, north-up and mode restrictions
+PASS 108 globe ENU orientation cases, centre retention and persisted camera roll; explicit rotating compass labels
+PASS entity colors, visibility and independent line strength persist
+PASS summary-layer exclusivity, heat smoothing and saved-view access
+PASS compact time-axis labels at study scale
+PASS 12 bloom toggles with repeated imagery replacement retain basemap pixels
+PASS 80% bloom dark: 345139 map pixels, 0 darkened, 225715 brightened; unaffected imagery retained
+PASS 80% bloom light: 343894 map pixels, 0 darkened, 225402 brightened; unaffected imagery retained
+PASS strength 50/80/50 and repeated camera switches preserve empty background and isolated emission
+PASS zoomed time axis adds UTC hours/minutes
+PASS 200ms incoming/outgoing point fades and exact paused frame
+PASS reduced motion bypasses transitions

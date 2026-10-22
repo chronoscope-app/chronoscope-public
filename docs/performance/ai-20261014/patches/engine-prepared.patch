@@ -1,0 +1,44 @@
+diff --git a/src/store.rs b/src/store.rs
+index 04bb8a5..ee6bec0 100644
+--- a/src/store.rs
++++ b/src/store.rs
+@@ -577,14 +577,13 @@ impl DataStore {
+         let payload = serde_json::to_string(e).map_err(err)?;
+         let existing = self
+             .connection
+-            .query_row("SELECT r FROM events WHERE id=?", [e.id.to_string()], |r| {
+-                r.get::<_, i64>(0)
+-            })
++            .prepare_cached("SELECT r FROM events WHERE id=?").map_err(err)?
++            .query_row([e.id.to_string()], |r| r.get::<_, i64>(0))
+             .ok();
+         if let Some(r) = existing {
+             self.remove_row(r)?
+         }
+-        self.connection.execute("INSERT INTO events(id,id_key,entity,time,t_end,lat,lon,category,label,value,related_to,source,source_row,end,tags,note,mgrs_precision,payload) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
++        self.connection.prepare_cached("INSERT INTO events(id,id_key,entity,time,t_end,lat,lon,category,label,value,related_to,source,source_row,end,tags,note,mgrs_precision,payload) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)").map_err(err)?.execute(
+         params![e.id.to_string(),format!("{:020}",e.id),e.entity,e.time,e.end.unwrap_or(e.time),e.lat,e.lon,e.category,e.label,e.value,e.related_to,e.source,e.source_row as i64,e.end,e.tags.iter().cloned().collect::<Vec<_>>().join(","),e.note,e.mgrs_precision,payload]).map_err(err)?;
+         let r = self.connection.last_insert_rowid();
+         let mut insert = self
+@@ -611,17 +610,13 @@ impl DataStore {
+         .join("\n")
+         .to_lowercase();
+         self.connection
+-            .execute(
+-                "INSERT INTO search(rowid,text) VALUES(?,?)",
+-                params![r, search],
+-            )
++            .prepare_cached("INSERT INTO search(rowid,text) VALUES(?,?)").map_err(err)?
++            .execute(params![r, search])
+             .map_err(err)?;
+         if let Some((lat, lon)) = e.location() {
+             self.connection
+-                .execute(
+-                    "INSERT INTO spatial VALUES(?,?,?,?,?)",
+-                    params![r, lat, lat, lon, lon],
+-                )
++                .prepare_cached("INSERT INTO spatial VALUES(?,?,?,?,?)").map_err(err)?
++                .execute(params![r, lat, lat, lon, lon])
+                 .map_err(err)?;
+         }
+         Ok(())

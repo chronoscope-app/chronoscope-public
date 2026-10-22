@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "errors": [],
+  "timezones": [],
+  "publicRequests": 0,
+  "checks": [
+    "Eight question shortcuts fit a compact 2\u00d74 grid with detailed controls collapsed",
+    "Original four starters and Compare spread use exact counts and explicit field roles",
+    "UTC weekday/hour cells retain correct hours in New York and click/Shift-click select exact source Events",
+    "Plot tooltips retain the one-second hover delay without uncancellable native callbacks",
+    "Pattern grids support exact measurement aggregation and keep missing measurements distinct from zero counts",
+    "Composition uses stacked counts with sparse groups aligned to common timestamp keys",
+    "Period defaults work immediately; fractional UTC windows apply, overlaps are blocked, and outside-window counts are disclosed",
+    "Switching charts cancels pending date validation without changing the new chart or touching detached controls",
+    "Comparison bars select their own time window and share selection with the attribute table",
+    "Both new Rust chart kinds survive named presets and portable workspace save/reopen",
+    "Pattern rendering supports light/dark themes and responsive two-column starters in compact panes",
+    "Pending chart tooltip callbacks are cancelled safely when the chart is disposed",
+    "All four additions render using the bundled 3,439-record public bobcat/fisher dataset; real screenshots captured"
+  ]
+}

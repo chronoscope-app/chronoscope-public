@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "native_build_and_launch": true,
+  "dataset_events": 3568,
+  "native_ui": {
+    "rabbit_menu_adjacent_to_play": true,
+    "eight_rates": true,
+    "live_change_0_25_to_2": true,
+    "final_state": "paused at 1\u00d7"
+  },
+  "measured_rates": [
+    {
+      "expected": 0.25,
+      "actual": 0.2518066631670124,
+      "before": {
+        "t": 0.07416043750000001,
+        "focus": 0.7250533081539735,
+        "errors": 0
+      },
+      "after": {
+        "t": 2.191856583,
+        "focus": 0.7463833081539735,
+        "errors": 0
+      }
+    },
+    {
+      "expected": 2,
+      "actual": 2.0193084141486892,
+      "before": {
+        "t": 0.06843389550000001,
+        "focus": 0.3555933081539735,
+        "errors": 0
+      },
+      "after": {
+        "t": 2.1820288125,
+        "focus": 0.5263133081539735,
+        "errors": 0
+      }
+    }
+  ],
+  "render_errors": 0,
+  "workflows_dispatched": false
+}

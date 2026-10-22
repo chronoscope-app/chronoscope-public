@@ -1,0 +1,33 @@
+NGA/NASA Earth Gravitational Model 1996 (EGM96), 15-minute global grid
+
+Original distribution: https://download.osgeo.org/proj/proj-datumgrid-1.8.zip
+File: egm96_15.gtx, also distributed by Debian proj-data as /usr/share/proj/egm96_15.gtx.
+Model origin: https://earth-info.nga.mil/ (EGM96)
+Source SHA-256: c02a6eb70a7a78efebe5adf3ade626eb75390e170bb8b3f36136a2c28f5326a0
+
+Derived asset egm96-15-cm.bin SHA-256:
+246249f1b6d0dd4da5d79572775a2d21dcf56fe0836aab512ffcf5a01737d194
+721 south-to-north rows (-90 to +90 inclusive), 1440 columns (-180 to
+179.75), 0.25 degree spacing. Signed little-endian int16 centimetres.
+Original big-endian float32 values rounded to nearest centimetre; encoding
+error is at most 0.005 m. This is not the model accuracy: 15-minute geoid
+interpolation is unsuitable for survey/engineering height certification.
+
+The original archive README.DATUMGRID identifies this exact grid as:
+
+Worldwide: EGM96 geoid model
+Source: NGA
+Format: GTX
+License: Public Domain
+15 minute worldwide geoid undulation grid that transforms WGS84
+ellipsoidal heights to physical heights.
+File: egm96_15.gtx
+
+Source and checksum were independently verified against the original OSGeo
+archive while implementing this adapter. No Cesium ion or remote geoid API
+is used at runtime. This display conversion is never written back into the
+original DTED records, and generic DTED "MSL" metadata alone is not evidence
+that the file uses EGM96. The user must select the known vertical datum.
+
+Reproduce from the repository root:
+python3 scripts/build_egm96_grid.py /path/to/egm96_15.gtx

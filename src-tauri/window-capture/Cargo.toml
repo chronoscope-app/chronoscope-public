@@ -1,0 +1,26 @@
+[package]
+name = "chronoscope-window-capture"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Small native WebView snapshot adapter for Chronoscope"
+
+[dependencies]
+tauri = { version = "2", default-features = false, features = ["wry"] }
+tokio = { version = "1", features = ["sync", "time"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+webkit2gtk = "=2.0.2"
+gio = "0.18"
+cairo-rs = { version = "0.18", features = ["png"] }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6.5"
+block2 = "0.6.2"
+objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSData", "NSDictionary", "NSError"] }
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSImage", "NSImageRep", "NSBitmapImageRep"] }
+objc2-web-kit = { version = "0.3.2", default-features = false, features = ["std", "WKWebView", "WKSnapshotConfiguration", "block2", "objc2-app-kit"] }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+webview2-com = "0.39.1"
+windows = { version = "0.62.2", features = ["Win32_System_Com", "Win32_UI_Shell"] }

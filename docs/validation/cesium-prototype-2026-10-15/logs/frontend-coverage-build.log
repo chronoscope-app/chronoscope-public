@@ -1,0 +1,32 @@
+
+> chronoscope-cesium-ui@0.13.3 prebuild
+> node scripts/prepare-cesium.mjs
+
+Prepared local Cesium assets and workers
+
+> chronoscope-cesium-ui@0.13.3 build
+> tsc && vite build
+
+vite v6.4.4 building for production...
+transforming...
+✓ 1667 modules transformed.
+rendering chunks...
+[plugin vite:reporter] 
+(!) /workspace/chronoscope-cesium/frontend/node_modules/@tauri-apps/api/core.js is dynamically imported by /workspace/chronoscope-cesium/frontend/src/main.ts, /workspace/chronoscope-cesium/frontend/src/main.ts, /workspace/chronoscope-cesium/frontend/src/main.ts, /workspace/chronoscope-cesium/frontend/src/main.ts, /workspace/chronoscope-cesium/frontend/src/main.ts but also statically imported by /workspace/chronoscope-cesium/frontend/node_modules/@tauri-apps/api/event.js, /workspace/chronoscope-cesium/frontend/node_modules/@tauri-apps/plugin-dialog/dist-js/index.js, /workspace/chronoscope-cesium/frontend/src/bridge.ts, dynamic import will not move module into another chunk.
+
+computing gzip size...
+dist/index.html                                    0.54 kB │ gzip:     0.32 kB
+dist/assets/cesium-effects-worker-C6w3FLCp.js      2.47 kB
+dist/assets/earth-blue-marble-BIjNooeF.jpg       266.60 kB
+dist/assets/egm96-15-cm-Bx-_aheZ.bin           2,076.48 kB
+dist/assets/index-mc2BWr5e.css                    51.86 kB │ gzip:    11.61 kB
+dist/assets/index-DjyJAYuo.js                      0.32 kB │ gzip:     0.20 kB
+dist/assets/event-DdKg9S8l.js                      1.15 kB │ gzip:     0.61 kB
+dist/assets/index-FqRUvHw8.js                    289.69 kB │ gzip:    99.11 kB
+dist/assets/cesium-C_vuNSAX.js                 4,230.90 kB │ gzip: 1,137.59 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 13.76s

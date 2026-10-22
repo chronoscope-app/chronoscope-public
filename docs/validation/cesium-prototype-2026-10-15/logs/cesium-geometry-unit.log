@@ -1,0 +1,9 @@
+
+> chronoscope-cesium-ui@0.13.3 test:cesium-geometry
+> node scripts/cesium-geometry-test.mjs
+
+Cesium geometry: hole-aware box selection, occlusion boundaries, independent WGS84 geodesic references and date-line arcs passed
+Karney geodesics: exact/near antipodes, both poles, date line and interpolated display elevation passed
+Columbus frustum: analytic corner-ray agreement, zoom-contracted bounds, horizon clipping and elevated time-prism visibility passed
+2D terrain frustum: geographic footprint, width-based zoom and independent one-level zoom contract passed
+Global arc budget: 10000 near-antipodal source segments bounded to 25002 rendering vertices; every source endpoint preserved, 10000 curves explicitly coarsened

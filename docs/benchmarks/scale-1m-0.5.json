@@ -1,0 +1,40 @@
+{
+  "version": "0.5.0",
+  "environment": {
+    "os": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "graphics": "not used by storage benchmark",
+    "build": "release, LTO=false, codegen-units=16",
+    "concurrent_work": "native packaging and software-GPU browser QA ran during import; shared virtual CPU/disk"
+  },
+  "measurements": {
+    "aggregate_s": 1.782099044,
+    "cached_next_page_s": 0.000614453,
+    "csv_bytes": 151677947,
+    "dry_run_delete_s": 1.6334853969999998,
+    "first_filtered_sort_s": 0.791223418,
+    "import_s": 136.013285006,
+    "preview_s": 0.743466586,
+    "render_20k_s": 1.051308204,
+    "reopen_s": 17.940233384,
+    "rows": 1000000,
+    "save_s": 16.142261516,
+    "select_exact_s": 0.333970828,
+    "snapshot_cached_s": 6.0231e-05,
+    "snapshot_first_s": 4.113073525,
+    "stream_export_s": 4.529645663,
+    "workspace_bytes": 2393919488
+  },
+  "process_resources": {
+    "exit_code": 0,
+    "elapsed_s": 187.17678111200075,
+    "max_rss_kib": 124536,
+    "user_s": 137.485617,
+    "system_s": 25.014356
+  },
+  "limits": [
+    "Single synthetic seven-column CSV workload; not maximum supported scale",
+    "RSS measured for benchmark process; excludes OS filesystem cache and unrelated GUI/browser/build processes",
+    "SQLite workspace includes original attributes, text/search and spatial indexes",
+    "Reopen drops original working engine first; disk headroom still required"
+  ]
+}

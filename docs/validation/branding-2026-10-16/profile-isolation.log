@@ -1,0 +1,20 @@
+   Compiling aws-lc-sys v0.46.0
+   Compiling chronoscope v0.13.3 (/workspace/chronoscope-cesium)
+   Compiling aws-lc-rs v1.18.2
+   Compiling rustls v0.23.45
+   Compiling rustls-webpki v0.103.15
+   Compiling tokio-rustls v0.26.6
+   Compiling rustls-platform-verifier v0.7.1
+   Compiling hyper-rustls v0.27.10
+   Compiling reqwest v0.13.5
+   Compiling reqwest v0.12.28
+   Compiling rmcp v3.5.1
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 45.42s
+     Running tests/prototype_isolation.rs (target/debug/deps/prototype_isolation-6e8618d2156a5fa7)
+
+running 2 tests
+test prototype_defaults_do_not_reuse_the_production_profile_or_client_registration ... ok
+test explicit_profiles_attach_to_their_own_live_engine ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+

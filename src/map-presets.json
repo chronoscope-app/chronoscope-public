@@ -1,0 +1,187 @@
+[
+  {
+    "id": "nasa-gibs",
+    "name": "NASA GIBS · global reference",
+    "config": {
+      "url": "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/1.0.0/WMTSCapabilities.xml",
+      "layer": "BlueMarble_ShadedRelief",
+      "matrix_set": "GoogleMapsCompatible_Level8",
+      "style": "default",
+      "format": "image/jpeg",
+      "time": "",
+      "enabled": true,
+      "level": null
+    },
+    "description": "Blue Marble reference imagery. Browse NASA layers for dated satellite imagery.",
+    "coverage": "Global; coarse reference imagery",
+    "license": "No API key; NASA data-use policy.",
+    "credits": [
+      {
+        "text": "NASA GIBS",
+        "url": "https://earthdata.nasa.gov/gibs"
+      }
+    ]
+  },
+  {
+    "id": "usgs-topo",
+    "name": "USGS · topographic map",
+    "config": {
+      "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+      "layer": "USGSTopo",
+      "matrix_set": "GoogleMapsCompatible",
+      "style": "default",
+      "format": "image/jpgpng",
+      "time": "",
+      "enabled": true,
+      "level": null
+    },
+    "description": "Roads, names, water, contours and shaded relief; best detail in the United States.",
+    "coverage": "United States detail; coverage and acquisition dates vary.",
+    "license": "No API key; USGS public-domain National Map service.",
+    "credits": [
+      {
+        "text": "USGS The National Map",
+        "url": "https://www.usgs.gov/programs/national-geospatial-program/national-map"
+      }
+    ]
+  },
+  {
+    "id": "usgs-imagery",
+    "name": "USGS · aerial imagery",
+    "config": {
+      "url": "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+      "layer": "USGSImageryOnly",
+      "matrix_set": "GoogleMapsCompatible",
+      "style": "default",
+      "format": "image/jpgpng",
+      "time": "",
+      "enabled": true,
+      "level": null
+    },
+    "description": "High-resolution aerial photography where available; best coverage in the United States.",
+    "coverage": "United States detail; coverage and acquisition dates vary.",
+    "license": "No API key; USGS public-domain National Map service.",
+    "credits": [
+      {
+        "text": "USGS The National Map",
+        "url": "https://www.usgs.gov/programs/national-geospatial-program/national-map"
+      }
+    ]
+  },
+  {
+    "id": "eox-streets",
+    "name": "EOX · OpenStreetMap streets",
+    "config": {
+      "url": "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+      "layer": "osm_3857",
+      "matrix_set": "GoogleMapsCompatible",
+      "style": "default",
+      "format": "image/jpeg",
+      "time": "",
+      "enabled": true,
+      "level": null
+    },
+    "description": "Global street cartography from OpenStreetMap, rendered by EOX / MapServer.",
+    "coverage": "Global; detail varies by region.",
+    "license": "No API key; EOX public service with attribution; OpenStreetMap data under ODbL.",
+    "credits": [
+      {
+        "text": "Data © OpenStreetMap contributors",
+        "url": "https://www.openstreetmap.org/copyright"
+      },
+      {
+        "text": "Other source data",
+        "url": "https://maps.eox.at/#data"
+      },
+      {
+        "text": "Rendering © EOX / MapServer · EOX::Maps",
+        "url": "https://maps.eox.at"
+      }
+    ]
+  },
+  {
+    "id": "eox-terrain",
+    "name": "EOX · terrain background",
+    "config": {
+      "url": "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+      "layer": "terrain-light_3857",
+      "matrix_set": "GoogleMapsCompatible",
+      "style": "default",
+      "format": "image/jpeg",
+      "time": "",
+      "enabled": true,
+      "level": null
+    },
+    "description": "Muted global topographic background for displaying events clearly.",
+    "coverage": "Global; detail varies by region.",
+    "license": "No API key; EOX public service with attribution; OpenStreetMap data under ODbL.",
+    "credits": [
+      {
+        "text": "Data © OpenStreetMap contributors",
+        "url": "https://www.openstreetmap.org/copyright"
+      },
+      {
+        "text": "Other source data",
+        "url": "https://maps.eox.at/#data"
+      },
+      {
+        "text": "Rendering © EOX / MapServer · EOX::Maps",
+        "url": "https://maps.eox.at"
+      }
+    ]
+  },
+  {
+    "id": "eox-sentinel-2025",
+    "name": "EOX · Sentinel-2 2025 (non-commercial)",
+    "config": {
+      "url": "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+      "layer": "s2cloudless-2025_3857",
+      "matrix_set": "GoogleMapsCompatible",
+      "style": "default",
+      "format": "image/jpeg",
+      "time": "",
+      "enabled": true,
+      "level": null
+    },
+    "description": "Cloud-reduced satellite mosaic with substantially more detail than Blue Marble. Not live imagery.",
+    "coverage": "Global land mosaic; approximately 10 m source pixels.",
+    "license": "Free for non-commercial use only · CC BY-NC-SA 4.0. Commercial use requires an EOX license.",
+    "credits": [
+      {
+        "text": "EOxCloudless by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2025)",
+        "url": "https://cloudless.eox.at"
+      },
+      {
+        "text": "CC BY-NC-SA 4.0 · non-commercial",
+        "url": "https://cloudless.eox.at/license-non-commercial"
+      }
+    ]
+  },
+  {
+    "id": "eox-sentinel-2024",
+    "name": "EOX · Sentinel-2 2024 (non-commercial)",
+    "config": {
+      "url": "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+      "layer": "s2cloudless-2024_3857",
+      "matrix_set": "GoogleMapsCompatible",
+      "style": "default",
+      "format": "image/jpeg",
+      "time": "",
+      "enabled": true,
+      "level": null
+    },
+    "description": "Cloud-reduced satellite mosaic with substantially more detail than Blue Marble. Not live imagery.",
+    "coverage": "Global land mosaic; approximately 10 m source pixels.",
+    "license": "Free for non-commercial use only · CC BY-NC-SA 4.0. Commercial use requires an EOX license.",
+    "credits": [
+      {
+        "text": "EOxCloudless by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024)",
+        "url": "https://cloudless.eox.at"
+      },
+      {
+        "text": "CC BY-NC-SA 4.0 · non-commercial",
+        "url": "https://cloudless.eox.at/license-non-commercial"
+      }
+    ]
+  }
+]

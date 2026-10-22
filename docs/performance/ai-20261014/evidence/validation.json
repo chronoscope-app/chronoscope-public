@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "heavy_tests_run": false,
+  "manifest_entries": 119,
+  "json_files": 82,
+  "source_anchors": 37,
+  "independent_patches_checked_against_frozen_index": 19,
+  "consolidated_tickets": 24,
+  "local_links": 191,
+  "full_rust_suite_logs": [
+    109,
+    109,
+    109,
+    109
+  ],
+  "native_matched_receipts": 12,
+  "model": "openai/gpt-6.1-sol",
+  "thinking": "high",
+  "historical_bytes_preserved": 80613,
+  "privacy_scan": "selected JSON credentials/host path/PID checks passed; no auth/token files read or copied",
+  "git_diff_check": "PASS; patch-only -whitespace attribute preserves exact unified-diff context bytes"
+}

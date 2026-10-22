@@ -1,0 +1,23 @@
+{
+  "nativeRuns": 12,
+  "allComplete": true,
+  "allRadeonHardwareGate": true,
+  "allInstances100000": true,
+  "scriptSHA256": "821e51f516edb9d7e487e90432037dcee42b1b813a8b07544cfef2ad2101b478",
+  "baseSHA": "7400b55220c25da714df93be1157f1ad3b990427",
+  "variants": [
+    "baseline-instrumented",
+    "indexed",
+    "terrain-guard",
+    "static-terrain"
+  ],
+  "repeatCount": 3,
+  "angleByElapsedSeconds": true,
+  "canvas": [
+    1382,
+    704
+  ],
+  "minimumSampleSeconds": 6.5,
+  "qualityUnchangedForTheseVariants": true,
+  "notes": "Independent verified raw JSON despite trailing shell orchestration127 after all12 completed"
+}

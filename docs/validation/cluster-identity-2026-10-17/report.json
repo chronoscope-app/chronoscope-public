@@ -1,0 +1,74 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Entity-colored clusters retain tracks in space-time",
+      "evidence": {
+        "clusters": 341,
+        "events": 3568,
+        "polylines": 166,
+        "stems": 3568
+      }
+    },
+    {
+      "name": "Entity-colored clusters retain tracks in map",
+      "evidence": {
+        "clusters": 1049,
+        "events": 3568,
+        "polylines": 166,
+        "stems": 0
+      }
+    },
+    {
+      "name": "Entity-colored clusters retain tracks in globe",
+      "evidence": {
+        "clusters": 334,
+        "events": 3568,
+        "polylines": 166,
+        "stems": 0
+      }
+    },
+    {
+      "name": "Cluster selection retains fill color and marks the outline",
+      "evidence": {
+        "selectedClusters": 1,
+        "selectedEvents": 17
+      }
+    },
+    {
+      "name": "Changing an entity color repaints cached clusters and tracks",
+      "evidence": {
+        "entity": "Barry 2019",
+        "color": "#d0549a"
+      }
+    },
+    {
+      "name": "Cluster palette matches events in light mode",
+      "evidence": {
+        "clusters": 341
+      }
+    },
+    {
+      "name": "Cluster palette matches events in dark mode",
+      "evidence": {
+        "clusters": 341
+      }
+    },
+    {
+      "name": "Tracks and vertical trails remain independent toggles under clustering",
+      "evidence": {
+        "tracks": 166,
+        "stems": 3568
+      }
+    },
+    {
+      "name": "Time filtering applies equally to clusters and retained track observations",
+      "evidence": {
+        "visible": 1964,
+        "count": 1964,
+        "events": 1964
+      }
+    }
+  ],
+  "errors": []
+}

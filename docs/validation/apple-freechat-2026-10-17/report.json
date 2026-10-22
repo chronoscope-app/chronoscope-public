@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "base_commit": "d7da26e5730ca83c67caaaa736ba684a190872ee",
+  "runtime": "macOS 27.0.1; Apple Foundation Models on device",
+  "context_tokens": 8192,
+  "native_attached": {
+    "passed": true,
+    "availability": {
+      "available": true,
+      "context_tokens": 8192,
+      "provider": "apple-local",
+      "reason": "Ready for on-device conversation"
+    },
+    "long_prompt_characters": 20931,
+    "first": {
+      "answer": "Amber Falcon",
+      "completed": true,
+      "context": {
+        "context_tokens": 8192,
+        "history_messages": 0,
+        "input_tokens": 5871,
+        "omitted_history_messages": 0,
+        "workspace_included": true
+      },
+      "steps": 1,
+      "tool_calls": []
+    },
+    "follow_up": {
+      "answer": "Amber Falcon",
+      "completed": true,
+      "context": {
+        "context_tokens": 8192,
+        "history_messages": 2,
+        "input_tokens": 5894,
+        "omitted_history_messages": 0,
+        "workspace_included": true
+      },
+      "steps": 1,
+      "tool_calls": []
+    },
+    "chat_cleared": true
+  },
+  "browser": {
+    "passed": true,
+    "provider": "actual Apple on-device Foundation Models",
+    "checks": [
+      "gear configures local provider; no API key, file grants, external tools or Tools shortcut",
+      "free-form creative chat replaces the analysis classifier; no local textarea character cap",
+      "messages longer than 400 characters and multi-turn follow-up memory work through the real Rust provider",
+      "free-form chat receives the current compact workspace summary",
+      "New chat clears the UI and model conversation memory",
+      "Stop cancels native conversational inference"
+    ],
+    "errors": [],
+    "publicRequests": 0
+  },
+  "native_bridge_cases": 7,
+  "long_reply_words": 458,
+  "targeted_rust_tests": 25,
+  "native_ui": "SI open, Apple Intelligence connected, empty chat focused; hurricane workspace retained",
+  "hosted_workflows_dispatched": false
+}

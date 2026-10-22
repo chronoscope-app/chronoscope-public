@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Real NOAA Excel observations: Stationary analysis selects its evidence",
+    "Analysis evidence/table selection and close button",
+    "USGS table single, Ctrl and Shift range selection",
+    "Regional globe fit and wheel zoom with real USGS observations",
+    "Real DTED terrain, Sentinel WMTS drape and 2D labels",
+    "Real hurricane tracks retained above separate ground heat and bloom layers",
+    "95,718 real VIIRS detections open with bounded automatic display cells",
+    "Light theme with real high-density data",
+    "Offline searchable help and F1"
+  ],
+  "screenshots": [
+    "noaa-excel-stationary.png",
+    "usgs-regional-globe.png",
+    "ontario-terrain-space-time.png",
+    "ontario-2d-imagery.png",
+    "atlantic-five-years-heat-tracks.png",
+    "atlantic-five-years-bloom-tracks.png",
+    "viirs-95718-automatic-clusters.png",
+    "viirs-light-mode.png"
+  ],
+  "errors": [],
+  "status": "passed"
+}

@@ -1,0 +1,33 @@
+
+> chronoscope-cesium-ui@0.13.3 test:cesium
+> node scripts/cesium-parity-qa.mjs
+
+PASS Authenticated Rust bridge renders real hurricane data in native Cesium WebGL
+PASS Independent WGS84 ECEF references agree at equator, hemispheres, poles and date line
+PASS Entity facets retain top-ten, show-all, clickable sorting and collapse controls
+PASS Globe, 2D, Columbus space-time and calendar have actual native modes and wheel/button zoom
+PASS Continuous attribute table supports click, Ctrl-click and inclusive Shift range; native view follows exact IDs
+PASS Actual native Cesium event picking updates the shared exact selection
+PASS Event search filters both native geographic display and continuous attribute table
+PASS Live time-height input, independent tracks and portable scene state persist
+PASS Time-only triangle interpolation remains display-only in all geographic modes
+PASS WKT geometry backend and native view retain six non-point features across map/globe/Columbus
+PASS Default dense display uses bounded native clusters with exact member counts
+PASS Native cluster picking opens exact member table and selects every member through app controls
+PASS Live Columbus viewport contracts on zoom, retains elevated evidence and declusters exact records
+PASS Native Columbus density creates native count cells
+PASS Native Columbus heatmap uses ground resources
+PASS Native Columbus bloom uses ground resources
+PASS Real DTED mesh is installed in Cesium's native terrain provider
+PASS Native imagery remains installed through repeated globe/map/Columbus transitions
+PASS Actual Excel import dialog detects worksheet and renders its located records
+PASS Playback advances native focus smoothly while preserving the geographic frame
+PASS Pattern analysis selects exact evidence and Charts remains available
+PASS Saved selection group round-trips exact evidence through application controls
+PASS Inspector editing and undo/redo still operate the shared Rust store
+PASS Import UI recognizes separate clocks, second truncation and short/spaced MGRS without suffix padding
+PASS Manual date-order override is previewed and committed through the real import controls
+PASS Invalid coordinates require row review and do not replace data before explicit acceptance
+PASS Actual polar CSV import, initial fit and native marker picking retain ±89° data across geographic modes
+PASS Light mode and keyboard-opened local help remain available
+Report: /workspace/chronoscope-cesium-qa/final-green/screenshots/cesium/report.json

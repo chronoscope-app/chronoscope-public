@@ -1,0 +1,9 @@
+   Compiling chronoscope v0.5.2 (<isolated-worktree>)
+    Finished `release` profile [optimized] target(s) in 1m 37s
+     Running tests/ai_engine_jobs.rs (target/release/deps/ai_engine_jobs-48481c2bd2b65ad5)
+
+running 1 test
+GATE_RESPONSE status_ms=0.021641 cancel_ms=0.015145 state_query_wait_ms=0.409575 status={"command":"query","created":"2026-10-14T16:26:55.410922889+00:00","error":null,"has_result":false,"job_id":"5df825b3bb470b7d2ada4df490f0995d","message":"Queued","progress":0,"status":"queued","total":null}
+test job_status_cancel_bypass_occupied_workspace_gate ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s

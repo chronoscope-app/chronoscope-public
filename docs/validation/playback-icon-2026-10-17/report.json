@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "native_bundle": "0.15.0; built, launched and ad hoc resource seal verified",
+  "icon": "11 o\u2019clock upper hand; pearl/slate SVGs and PNG/ICO/ICNS regenerated; format and Windows per-user privilege checks passed",
+  "map_credits": {
+    "browser_checks": [
+      "Map viewport has no info icon; Maps keeps NASA credits keyboard-accessible",
+      "Event search, count, attribute table and selected-event inspector use the new terminology",
+      "Existing/empty saved libraries retain all built-ins; provider selections populate advertised layers and licenses without public traffic or activating maps",
+      "Canvas export/MCP screenshot includes provider credits in an appended footer without covering map pixels",
+      "WMTS provider credits and exported attribution survive compact UI and theme changes"
+    ],
+    "errors": [],
+    "native": "Maps \u2192 Map credits opens NASA attribution; no map info button"
+  },
+  "fade": {
+    "durations_ms": {
+      "arrival": 550,
+      "departure": 2400
+    },
+    "history_limit": 100000,
+    "checks": [
+      "Authenticated Rust bridge renders real hurricane data in native Cesium WebGL",
+      "Unchanged refreshes retain GPU resources; selection, style and camera invalidate them",
+      "Playback preserves point/triangle fades, IDs and selection with bounded GPU uploads",
+      "Afterimages and vertical trails persist across refreshes, expire, clear on pause/hide and respect reduced motion"
+    ],
+    "batched_gpu_uploads": 44,
+    "errors": [],
+    "native_samples": 16,
+    "native_max_afterimages": 16,
+    "native_max_fading_stems": 16,
+    "native_render_errors": 0,
+    "native_rolling_fps_median": 60.0
+  },
+  "100k_hardware_browser": {
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+    "rows": 100000,
+    "bloom": true,
+    "minimum_drawn": 100000,
+    "maximum_drawn": 100000,
+    "animation_callback_fps": 60.00067039855193,
+    "render_callbacks": 186,
+    "elapsed_ms": 3418.199999988079,
+    "render_cpu_p95_ms": 2.2999999970197678,
+    "rolling_render_fps_at_end": 52.968439638049,
+    "exact_query_ms": [
+      1.3445000000010623,
+      0.9718749999992724,
+      2.1424170000009326,
+      2.6760420000009617,
+      0.7602079999996931,
+      1.6757909999996627,
+      1.746208000000479,
+      1.5820409999996627,
+      1.6754170000003796,
+      1.6865419999994629,
+      1.7712499999997817,
+      1.784458000000086,
+      1.6934169999985897,
+      1.8142919999991136,
+      1.882500000001528
+    ],
+    "public_requests": 0,
+    "errors": [],
+    "note": "Short single-run regression observation, not a native 100k FPS benchmark or controlled before/after performance comparison."
+  },
+  "broader_ui_run": "Reached nine passing groups including wheel/button zoom, timeline scrubbing and table ranges, then stopped during slow per-point picking search; not claimed as a complete suite pass. Focused fade and credits suites completed.",
+  "windows_linux_runtime": "Not run; shared renderer changes and Windows ICO assets updated; currentUser/asInvoker retained.",
+  "hosted_workflows_dispatched": false
+}

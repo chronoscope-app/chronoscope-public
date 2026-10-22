@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "negotiated_protocol": "2025-06-18",
+  "tool_count": 76,
+  "public_records": 1895,
+  "filtered_count": 118,
+  "root_escape_denied": true,
+  "protocol_only_stdout": true
+}

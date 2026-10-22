@@ -1,0 +1,105 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Entities starts the sidebar; imported-field groups filter/select exactly while preserving track identities",
+      "evidence": {
+        "counts": {
+          "DB": 59,
+          "EX": 554,
+          "HU": 1322,
+          "LO": 255,
+          "SD": 5,
+          "SS": 54,
+          "TD": 229,
+          "TS": 1078,
+          "WV": 12
+        }
+      }
+    },
+    {
+      "name": "Categories can group/filter an imported column independently",
+      "evidence": {
+        "seasons": {
+          "2016": 307,
+          "2017": 499,
+          "2018": 417,
+          "2019": 244,
+          "2020": 497,
+          "2021": 289,
+          "2022": 303,
+          "2023": 399,
+          "2024": 384,
+          "2025": 229
+        }
+      }
+    },
+    {
+      "name": "Selected UTC window and moving playback rescale the vertical axis while retaining the geographic camera",
+      "evidence": {
+        "narrow": {
+          "lo": 1566604800,
+          "hi": 1567900800,
+          "visible": 66,
+          "errors": 0,
+          "study": [
+            1452124800,
+            1761976800
+          ],
+          "focus": 1
+        },
+        "moving": {
+          "lo": 1566732660,
+          "hi": 1568028660,
+          "camera": {
+            "renderer": "cesium",
+            "cesium_camera": {
+              "position": [
+                -5232016.067283852,
+                -13695685.999439232,
+                18476022.435830146
+              ],
+              "direction": [
+                3.939052093222172e-15,
+                0.7431448254773834,
+                -0.6691306063588703
+              ],
+              "up": [
+                -3.84832613809891e-15,
+                0.6691306063588462,
+                0.743144825477405
+              ]
+            }
+          },
+          "errors": 0
+        }
+      }
+    },
+    {
+      "name": "Empty windows retain their UTC axis, other map modes retain study time, Full range restores the study"
+    },
+    {
+      "name": "Bracket and whole-window controls update the same space-time axis"
+    },
+    {
+      "name": "Pinned selection count/actions, visible navigation, descriptive slider units and year-aware ticks",
+      "evidence": {
+        "labels": [
+          "2016",
+          "2018",
+          "2020",
+          "2023",
+          "2025"
+        ],
+        "markerUnit": "102%"
+      }
+    },
+    {
+      "name": "Pane resizing supports keyboard, pointer and reload persistence"
+    },
+    {
+      "name": "Resizable table, pinned controls and bounded scene at 1600/1000px in both themes; expanded workspace"
+    }
+  ],
+  "errors": []
+}

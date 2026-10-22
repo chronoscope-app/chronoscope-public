@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "events": 3568,
+  "entities": 83,
+  "track_ground_polylines": 166,
+  "space_time_stems": 3568,
+  "native_views": [
+    "space-time",
+    "globe",
+    "map",
+    "space-time"
+  ],
+  "native_render_errors": 0,
+  "rust_tests": 13,
+  "browser_groups": 9,
+  "hosted_workflows_dispatched": false
+}

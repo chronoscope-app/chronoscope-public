@@ -1,0 +1,54 @@
+[
+  {
+    "id": "noaa-ais-san-francisco-2024-01-01",
+    "name": "NOAA AIS \u00b7 San Francisco Bay \u00b7 1 Jan 2024",
+    "records": 8473,
+    "entities": 10,
+    "source_url": "https://noaaocm.blob.core.windows.net/ais/csv2/csv2024/ais-2024-01-01.csv.zst",
+    "source_sha256": "04e80b2f2896f51a7623e098eb48503b95786c9badf06550ce9e7d418654cb2d",
+    "selection": {
+      "mmsi": [
+        "215193000",
+        "338157873",
+        "366985270",
+        "366989360",
+        "367008020",
+        "367513170",
+        "367533950",
+        "368052630",
+        "368302170",
+        "538005171"
+      ],
+      "bounds": [
+        -122.65,
+        37.45,
+        -122.05,
+        38.15
+      ],
+      "rule": "Every original observation inside the bounds for these ten vessels; no resampling."
+    },
+    "csv_sha256": "059ad8a31c97698bef1cba5887d563b06cba7928b5e8124095c3ae1497fa0c02",
+    "project_sha256": "496f8e22c189f98baface3b5302878c95b09bc2497ac91cd76242b4a98ac241d",
+    "first_timestamp": "2024-01-01T00:00:01Z",
+    "last_timestamp": "2024-01-01T23:59:59Z"
+  },
+  {
+    "id": "animal-gps-herring-gulls-2021-06",
+    "name": "Animal GPS \u00b7 Belgian herring gulls \u00b7 June 2021",
+    "records": 15697,
+    "entities": 3,
+    "source_url": "https://zenodo.org/records/6594838/files/HG_OOSTENDE-gps-2021.csv.gz",
+    "source_sha256": "cdfb143713be31631d1262fdb6feb86e907b563265118cf44ccfef61d3a6fb53",
+    "selection": {
+      "study": "HG_OOSTENDE",
+      "month": "2021-06",
+      "visible": true,
+      "exclude_flagged_outliers": true,
+      "rule": "All June observations meeting the flags; no interpolation or resampling."
+    },
+    "csv_sha256": "c04fc83697683ddab1632f92176391a4211ea81a761fc1a4ff79a22bbf0557a7",
+    "project_sha256": "c50daaf26b964c06c54a1d3130f6ac11090dcdf5bb78a37af27a6bf7098cf25e",
+    "first_timestamp": "2021-06-01T00:06:49.000Z",
+    "last_timestamp": "2021-06-28T20:41:39.000Z"
+  }
+]

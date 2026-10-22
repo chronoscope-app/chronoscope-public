@@ -1,0 +1,227 @@
+{
+  "base_sha": "7400b55220c25da714df93be1157f1ad3b990427",
+  "anchors": [
+    {
+      "file": "src/engine.rs",
+      "start": 397,
+      "end": 555,
+      "blob_sha256": "59f0cb8093001c1988ff0c8ac9916e69e755ea589dec3256e5e8e6219525129a"
+    },
+    {
+      "file": "src/stream_import.rs",
+      "start": 111,
+      "end": 130,
+      "blob_sha256": "b2aa258095d5f2da4b4b04933b741baffc0cdb1ff6175e92590d2185e6b6357c"
+    },
+    {
+      "file": "src/import.rs",
+      "start": 345,
+      "end": 350,
+      "blob_sha256": "004dc15d085b4e4b5c7420b84c061f3bdf4e1bfefd4895c7fe0a767a85e3c2ae"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 575,
+      "end": 588,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "frontend/src/main.ts",
+      "start": 142,
+      "end": 209,
+      "blob_sha256": "2031c63dc9bcfe8394f0641ba5ce6152af5488a99eac4903aeab8f1a77f1e211"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 575,
+      "end": 627,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 683,
+      "end": 920,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "src/engine.rs",
+      "start": 637,
+      "end": 704,
+      "blob_sha256": "59f0cb8093001c1988ff0c8ac9916e69e755ea589dec3256e5e8e6219525129a"
+    },
+    {
+      "file": "src/schema.rs",
+      "start": 342,
+      "end": 363,
+      "blob_sha256": "c32072c567a9e8c056ab7af767e7724b1cc0d7561a2c03687c12df7c9447801e"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 1314,
+      "end": 1403,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 348,
+      "end": 419,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "frontend/src/main.ts",
+      "start": 394,
+      "end": 495,
+      "blob_sha256": "2031c63dc9bcfe8394f0641ba5ce6152af5488a99eac4903aeab8f1a77f1e211"
+    },
+    {
+      "file": "frontend/src/view.ts",
+      "start": 787,
+      "end": 791,
+      "blob_sha256": "01e9cff846f7d38bc58ab5b4cd02b8ee0b7896f77b2d2508032369f1f530c63c"
+    },
+    {
+      "file": "frontend/src/view.ts",
+      "start": 502,
+      "end": 721,
+      "blob_sha256": "01e9cff846f7d38bc58ab5b4cd02b8ee0b7896f77b2d2508032369f1f530c63c"
+    },
+    {
+      "file": "frontend/src/view.ts",
+      "start": 722,
+      "end": 755,
+      "blob_sha256": "01e9cff846f7d38bc58ab5b4cd02b8ee0b7896f77b2d2508032369f1f530c63c"
+    },
+    {
+      "file": "frontend/src/types.ts",
+      "start": 58,
+      "end": 115,
+      "blob_sha256": "d0c594d55abd8e9daae8db9b5ce5b18c89819e0383bd1e4bba272eb8c873402b"
+    },
+    {
+      "file": "frontend/src/bridge.ts",
+      "start": 11,
+      "end": 30,
+      "blob_sha256": "d55ec285b7b6d20c2a6a02246e2fa33330bc0818f1e51baf9db384798814d5df"
+    },
+    {
+      "file": "src-tauri/src/main.rs",
+      "start": 8,
+      "end": 18,
+      "blob_sha256": "74938f7c68e4e8621f3d89ea946748d60f32c8a1353e98779c7c29a79e205c37"
+    },
+    {
+      "file": "frontend/src/view.ts",
+      "start": 238,
+      "end": 313,
+      "blob_sha256": "01e9cff846f7d38bc58ab5b4cd02b8ee0b7896f77b2d2508032369f1f530c63c"
+    },
+    {
+      "file": "src/jobs.rs",
+      "start": 14,
+      "end": 147,
+      "blob_sha256": "6ac43a383f261bac9b3b02025e29891439f3573c625fb04ad7f08c39b093b5da"
+    },
+    {
+      "file": "src/operation.rs",
+      "start": 1,
+      "end": 58,
+      "blob_sha256": "856350eb060ecd13bad164db714b87fc94e18f91a715703de8ee56628627c2c9"
+    },
+    {
+      "file": "src/engine.rs",
+      "start": 341,
+      "end": 379,
+      "blob_sha256": "59f0cb8093001c1988ff0c8ac9916e69e755ea589dec3256e5e8e6219525129a"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 110,
+      "end": 225,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 1065,
+      "end": 1120,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 236,
+      "end": 348,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "src/engine.rs",
+      "start": 1081,
+      "end": 1125,
+      "blob_sha256": "59f0cb8093001c1988ff0c8ac9916e69e755ea589dec3256e5e8e6219525129a"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 1121,
+      "end": 1165,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "src/analysis.rs",
+      "start": 69,
+      "end": 228,
+      "blob_sha256": "ae4fecf756e9dfd8c316bbb0747b7ac5e422d9fbf9ae433995c77cf23b6a0ac9"
+    },
+    {
+      "file": "src/terrain.rs",
+      "start": 148,
+      "end": 345,
+      "blob_sha256": "8d7a9515744b43d9816286ea3899cd7720050a169dc0e77a100523a49f6347d3"
+    },
+    {
+      "file": "frontend/src/view.ts",
+      "start": 109,
+      "end": 215,
+      "blob_sha256": "01e9cff846f7d38bc58ab5b4cd02b8ee0b7896f77b2d2508032369f1f530c63c"
+    },
+    {
+      "file": "src/engine.rs",
+      "start": 1587,
+      "end": 1653,
+      "blob_sha256": "59f0cb8093001c1988ff0c8ac9916e69e755ea589dec3256e5e8e6219525129a"
+    },
+    {
+      "file": "src/wmts.rs",
+      "start": 615,
+      "end": 755,
+      "blob_sha256": "af2d8a9f357d751653833828498c64cdcacee1ad8ce2ed08f9d7f900d9a43179"
+    },
+    {
+      "file": "src/wmts_native.rs",
+      "start": 94,
+      "end": 143,
+      "blob_sha256": "643408b4539116463b9f22a47db5af1e3f43031a00fbd59ff0451105e9342731"
+    },
+    {
+      "file": "src-tauri/src/main.rs",
+      "start": 59,
+      "end": 120,
+      "blob_sha256": "74938f7c68e4e8621f3d89ea946748d60f32c8a1353e98779c7c29a79e205c37"
+    },
+    {
+      "file": "frontend/src/view.ts",
+      "start": 1180,
+      "end": 1236,
+      "blob_sha256": "01e9cff846f7d38bc58ab5b4cd02b8ee0b7896f77b2d2508032369f1f530c63c"
+    },
+    {
+      "file": "src/store.rs",
+      "start": 851,
+      "end": 916,
+      "blob_sha256": "081b27fbbb90891b2440135694f1b3a9202513afe380f0764f4332de811fa6a5"
+    },
+    {
+      "file": "src/model.rs",
+      "start": 165,
+      "end": 225,
+      "blob_sha256": "f8b54e1be86a682c059c1dc26abc0648461d4b0660629491ecba1a93509bea18"
+    }
+  ]
+}

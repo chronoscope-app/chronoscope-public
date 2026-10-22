@@ -1,0 +1,267 @@
+{
+  "passed": true,
+  "tests": 268,
+  "targets": [
+    {
+      "target": "lib",
+      "passed": true,
+      "tests": 39,
+      "seconds": 28.75
+    },
+    {
+      "target": "agent_host",
+      "passed": true,
+      "tests": 4,
+      "seconds": 2.76
+    },
+    {
+      "target": "agent_setup",
+      "passed": true,
+      "tests": 4,
+      "seconds": 2.71
+    },
+    {
+      "target": "agents_scale",
+      "passed": true,
+      "tests": 29,
+      "seconds": 4.14
+    },
+    {
+      "target": "analysis_assist",
+      "passed": true,
+      "tests": 7,
+      "seconds": 1.65
+    },
+    {
+      "target": "analytics",
+      "passed": true,
+      "tests": 9,
+      "seconds": 5.05
+    },
+    {
+      "target": "app_identity",
+      "passed": true,
+      "tests": 2,
+      "seconds": 2.12
+    },
+    {
+      "target": "assistant_aggregation",
+      "passed": true,
+      "tests": 15,
+      "seconds": 5.26
+    },
+    {
+      "target": "autosave",
+      "passed": true,
+      "tests": 4,
+      "seconds": 2.25
+    },
+    {
+      "target": "basemap",
+      "passed": true,
+      "tests": 3,
+      "seconds": 1.72
+    },
+    {
+      "target": "cesium_agents",
+      "passed": true,
+      "tests": 7,
+      "seconds": 3.64
+    },
+    {
+      "target": "cesium_scene",
+      "passed": true,
+      "tests": 6,
+      "seconds": 2.29
+    },
+    {
+      "target": "display_lod",
+      "passed": true,
+      "tests": 8,
+      "seconds": 9.35
+    },
+    {
+      "target": "event_terminology",
+      "passed": true,
+      "tests": 3,
+      "seconds": 2.33
+    },
+    {
+      "target": "geospatial",
+      "passed": true,
+      "tests": 17,
+      "seconds": 3.24
+    },
+    {
+      "target": "gis_accuracy",
+      "passed": true,
+      "tests": 8,
+      "seconds": 1.51
+    },
+    {
+      "target": "gis_files",
+      "passed": true,
+      "tests": 7,
+      "seconds": 2.57
+    },
+    {
+      "target": "hardening",
+      "passed": true,
+      "tests": 18,
+      "seconds": 4.87
+    },
+    {
+      "target": "import_workspace",
+      "passed": true,
+      "tests": 21,
+      "seconds": 2.87
+    },
+    {
+      "target": "map_presets",
+      "passed": true,
+      "tests": 2,
+      "seconds": 1.91
+    },
+    {
+      "target": "map_servers",
+      "passed": true,
+      "tests": 2,
+      "seconds": 2.05
+    },
+    {
+      "target": "map_stack",
+      "passed": true,
+      "tests": 2,
+      "seconds": 2.11
+    },
+    {
+      "target": "mcp_clients",
+      "passed": true,
+      "tests": 2,
+      "seconds": 2.95
+    },
+    {
+      "target": "performance_analysis",
+      "passed": true,
+      "tests": 1,
+      "seconds": 1.26
+    },
+    {
+      "target": "performance_append",
+      "passed": true,
+      "tests": 1,
+      "seconds": 1.87
+    },
+    {
+      "target": "performance_display",
+      "passed": true,
+      "tests": 1,
+      "seconds": 1.89
+    },
+    {
+      "target": "performance_jobs",
+      "passed": true,
+      "tests": 2,
+      "seconds": 11.94
+    },
+    {
+      "target": "performance_persistence",
+      "passed": true,
+      "tests": 2,
+      "seconds": 1.48
+    },
+    {
+      "target": "performance_projection",
+      "passed": true,
+      "tests": 2,
+      "seconds": 1.72
+    },
+    {
+      "target": "performance_regressions",
+      "passed": true,
+      "tests": 9,
+      "seconds": 3.53
+    },
+    {
+      "target": "performance_sql",
+      "passed": true,
+      "tests": 1,
+      "seconds": 1.17
+    },
+    {
+      "target": "performance_terrain",
+      "passed": true,
+      "tests": 2,
+      "seconds": 1.72
+    },
+    {
+      "target": "table_selection",
+      "passed": true,
+      "tests": 1,
+      "seconds": 1.84
+    },
+    {
+      "target": "views_layers",
+      "passed": true,
+      "tests": 5,
+      "seconds": 2.23
+    },
+    {
+      "target": "webmcp",
+      "passed": true,
+      "tests": 0,
+      "seconds": 0.38
+    },
+    {
+      "target": "webmcp_disabled",
+      "passed": true,
+      "tests": 1,
+      "seconds": 1.68
+    },
+    {
+      "target": "wkt_wmts",
+      "passed": true,
+      "tests": 9,
+      "seconds": 2.6
+    },
+    {
+      "target": "wmts_auth",
+      "passed": true,
+      "tests": 3,
+      "seconds": 1.83
+    },
+    {
+      "target": "workflows",
+      "passed": true,
+      "tests": 9,
+      "seconds": 1.89
+    }
+  ],
+  "github_runners_used": false,
+  "base_commit": "4373e0e0948d710ee36035830592a57e85047bf6",
+  "direct_statistics_dependencies": {
+    "average": {
+      "version": "0.17.0",
+      "default_features": false,
+      "features": [
+        "std"
+      ]
+    },
+    "accurate": {
+      "version": "0.4.1",
+      "default_features": false
+    }
+  },
+  "clippy_all_targets": true,
+  "production_frontend": true,
+  "generated_contracts_unchanged": true,
+  "license_files_packaged": true,
+  "hosted_assistant_browser_regression": true,
+  "public_wmts_requests": 0,
+  "final_focused_after_range_guard": {
+    "library_tests": 39,
+    "analytics_tests": 9,
+    "passed": true
+  },
+  "native_mac_tests_run": false
+}

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checks": [
+    "Service and Tools share one fixed-size scrolling window; provider and transport changes keep close controls stationary",
+    "Real MCP discovery and inline grant saving preserve the service form, window bounds and explicit permissions",
+    "Review, disconnect and failed discovery remain inline and retain service drafts",
+    "Small windows scroll settings while keeping Done visible and clickable",
+    "Detached chat gear opens the same combined settings in the main workspace"
+  ],
+  "errors": [],
+  "toolExecutions": 0,
+  "unexpectedServiceConfigurations": 0,
+  "publicRequests": 0
+}

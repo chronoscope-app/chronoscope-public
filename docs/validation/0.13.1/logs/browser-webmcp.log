@@ -1,0 +1,5 @@
+
+> chronoscope-ui@0.13.1 test:webmcp
+> node scripts/webmcp-disabled-qa.mjs
+
+{"passed":true,"extension_bridge":"disabled","rejected_host_commands":5,"setup_interface":"absent","normal_mcp_transports":["stdio","streamable_http"]}

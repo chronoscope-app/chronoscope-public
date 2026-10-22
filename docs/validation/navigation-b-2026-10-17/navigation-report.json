@@ -1,0 +1,165 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "One sphere and vertical slider rail; obsolete buttons and bottom strip removed",
+      "evidence": {}
+    },
+    {
+      "name": "Compact generic sphere is centered above the slim rail without globe artwork",
+      "evidence": {
+        "width": 60,
+        "railWidth": 44,
+        "centered": true,
+        "stacked": true,
+        "globeDetails": 0
+      }
+    },
+    {
+      "name": "globe: sphere follows horizontal/vertical drag live, stops on release and preserves data/time/selection",
+      "evidence": {
+        "before": {
+          "bearing": 30.000000000057355,
+          "tilt": 35.00000000009154,
+          "distance": 3600.000005834211,
+          "height": 2.8,
+          "scale": 1,
+          "globeTime": false,
+          "range": [
+            1750147200,
+            1750189740
+          ],
+          "selected": [],
+          "count": 192
+        },
+        "during": {
+          "bearing": 13.200000000155114,
+          "tilt": 43.25000000008627,
+          "distance": 3600.0000050298104,
+          "height": 2.8,
+          "scale": 1,
+          "globeTime": false,
+          "range": [
+            1750147200,
+            1750189740
+          ],
+          "selected": [],
+          "count": 192
+        }
+      }
+    },
+    {
+      "name": "space-time: sphere follows horizontal/vertical drag live, stops on release and preserves data/time/selection",
+      "evidence": {
+        "before": {
+          "bearing": 29.999999999999886,
+          "tilt": 34.99999999999996,
+          "distance": 5199.999991672155,
+          "height": 2.8,
+          "scale": 1,
+          "globeTime": false,
+          "range": [
+            1750147200,
+            1750189740
+          ],
+          "selected": [],
+          "count": 192
+        },
+        "during": {
+          "bearing": 13.199999999999761,
+          "tilt": 43.24999999999996,
+          "distance": 5200.014694247277,
+          "height": 2.8,
+          "scale": 1,
+          "globeTime": false,
+          "range": [
+            1750147200,
+            1750189740
+          ],
+          "selected": [],
+          "count": 192
+        }
+      }
+    },
+    {
+      "name": "calendar: sphere follows horizontal/vertical drag live, stops on release and preserves data/time/selection",
+      "evidence": {
+        "before": {
+          "bearing": 29.999999999999886,
+          "tilt": 35.000000000000114,
+          "distance": 2285288.562816728,
+          "height": 2.8,
+          "scale": 1,
+          "globeTime": false,
+          "range": [
+            1750147200,
+            1750189740
+          ],
+          "selected": [],
+          "count": 192
+        },
+        "during": {
+          "bearing": 13.199999999999704,
+          "tilt": 43.25000000000026,
+          "distance": 2285288.5697858552,
+          "height": 2.8,
+          "scale": 1,
+          "globeTime": false,
+          "range": [
+            1750147200,
+            1750189740
+          ],
+          "selected": [],
+          "count": 192
+        }
+      }
+    },
+    {
+      "name": "Zoom and tilt sliders update before release and accept native keyboard input",
+      "evidence": {}
+    },
+    {
+      "name": "Time icon opens on hover/focus; globe switch and scale work; Escape closes popup",
+      "evidence": {}
+    },
+    {
+      "name": "Same popup controls space-time height, independently of globe scale and timestamps",
+      "evidence": {}
+    },
+    {
+      "name": "2D sphere pans; tilt/time controls hide; Events remain intact",
+      "evidence": {}
+    },
+    {
+      "name": "Rail selection/orbit modes and Fit retain their application handlers",
+      "evidence": {}
+    },
+    {
+      "name": "Sphere and rail fit large/small windows, with and without attribute table",
+      "evidence": {}
+    },
+    {
+      "name": "Light/dark screenshot captures; cached real street source only when explicitly supplied",
+      "evidence": {}
+    },
+    {
+      "name": "Stacked navigation also frames 1,604 public hurricane Events with tracks",
+      "evidence": {}
+    },
+    {
+      "name": "Strict desktop CSP, zero uncaught errors, zero browser requests to public services",
+      "evidence": {}
+    }
+  ],
+  "errors": [],
+  "csp": [],
+  "publicRequests": 0,
+  "screenshots": [
+    "sphere-globe-light.png",
+    "sphere-controls-light.png",
+    "sphere-globe-dark.png",
+    "sphere-controls-dark.png",
+    "sphere-space-time.png",
+    "stacked-controls-atlantic.png"
+  ]
+}

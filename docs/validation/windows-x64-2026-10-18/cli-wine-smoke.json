@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "binary": "chronoscope-cli.exe",
+  "runtime": "Wine 10 on Linux; not native Windows",
+  "checks": [
+    "Windows executable version and CLI help",
+    "Current command contracts including whole-app capture",
+    "Agent configuration uses the actual Windows executable",
+    "Real stdio MCP initialization and 1,604-row indexed hurricane workspace",
+    "Deterministic full-scope numeric statistics",
+    "Role edits, portable save/open and CSV export through Windows filesystem APIs",
+    "Bounded data query and explicit headless screenshot error"
+  ]
+}

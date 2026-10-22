@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Global earthquakes · January 2025 · magnitude ≥4.5",
+    "creator": "U.S. Geological Survey",
+    "source_url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=csv&starttime=2025-01-01&endtime=2025-02-01&minmagnitude=4.5&eventtype=earthquake&contributor=us&orderby=time-asc",
+    "license": "USGS-authored data: public domain in the United States; commercial reuse permitted",
+    "license_url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+    "changes": "Fixed catalog snapshot retrieved 2026-10-21. Retained only records whose net, locationSource and magSource are us (652 of 655). Original field values retained. Surface epicenters; depth remains an attribute. Tracks disabled; magnitudes retain their original type. Not a complete earthquake or hazard inventory."
+  }
+]

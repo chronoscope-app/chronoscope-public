@@ -1,0 +1,20 @@
+   Compiling chronoscope v0.5.2 (<isolated-worktree>)
+    Finished `release` profile [optimized] target(s) in 1m 06s
+     Running tests/ai_engine_oracles.rs (target/release/deps/ai_engine_oracles-68fe35cfe63f6bd9)
+
+running 2 tests
+test compact_then_full_snapshot_matches_full_projection ... ok
+
+thread 'direct_predicates_match_domain_unicode_missing_numeric_whitespace' panicked at tests/ai_engine_oracles.rs:2:913:
+called `Result::unwrap()` on an `Err` value: "Workspace database: Wrong number of parameters passed to query. Got 1, needed 0"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test direct_predicates_match_domain_unicode_missing_numeric_whitespace ... FAILED
+
+failures:
+
+failures:
+    direct_predicates_match_domain_unicode_missing_numeric_whitespace
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+error: test failed, to rerun pass `-p chronoscope --test ai_engine_oracles`
