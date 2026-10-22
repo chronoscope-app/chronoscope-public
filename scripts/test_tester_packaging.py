@@ -5,6 +5,8 @@ import json
 import os
 from pathlib import Path
 import struct
+import subprocess
+import tarfile
 import tempfile
 import unittest
 import zipfile
@@ -168,6 +170,301 @@ class WindowsInstallerStagingTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.stage(boundary - 1)
         self.assertEqual(len(list(self.output.iterdir())), 3)
+
+
+class MacBundleStagingTests(unittest.TestCase):
+    """Inert Mach-O fixtures; no codesign, otool, or native app is executed."""
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix='chronoscope-mac-test-')
+        self.addCleanup(self.temporary.cleanup)
+        self.base = Path(self.temporary.name)
+        self.repo = self.base / 'repo'
+        self.release = self.repo / 'target/release'
+        self.gui = self.put(self.release / 'chronoscope-desktop', self.macho() + b'raw build')
+        self.app = self.release / 'bundle/macos/Chronoscope.app'
+        self.bundled = self.put(self.app / 'Contents/MacOS/chronoscope-desktop', self.macho() + b'bundler signed GUI')
+        self.put(self.app / 'Contents/Resources/third-party/LICENSE', b'packaged fixture license')
+        self.metadata = self.put(self.app / 'Contents/Resources/Metadata.appintents/extract.actionsdata', b'inert metadata')
+        self.put(self.repo / 'frontend/dist/third-party/LICENSE', b'build fixture license')
+        self.output = self.base / 'output'
+        self.events = []
+        self.mode = 'valid'
+        self.copied_app = None
+        self.start_patch(patch.object(tester, 'ROOT', self.repo))
+        self.notices = self.start_patch(patch.object(tester, 'verify_notices', side_effect=self.verify_notices))
+        self.runs = self.start_patch(patch.object(tester.subprocess, 'run', side_effect=self.run_subprocess))
+        self.queries = self.start_patch(patch.object(tester.subprocess, 'check_output', side_effect=self.query_subprocess))
+
+    def start_patch(self, item):
+        result = item.start()
+        self.addCleanup(item.stop)
+        return result
+
+    @staticmethod
+    def put(path, content):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content)
+        return path
+
+    @staticmethod
+    def macho(machine=0x100000c):
+        data = bytearray(64)
+        data[:4] = b'\xcf\xfa\xed\xfe'
+        struct.pack_into('<I', data, 4, machine)
+        return bytes(data)
+
+    def verify_notices(self, directory, repository):
+        self.assertEqual(repository, self.repo)
+        self.events.append(('notices', directory))
+        if directory != self.repo / 'frontend/dist/third-party':
+            self.assertEqual(directory, self.copied_app / 'Contents/Resources/third-party')
+            self.assertTrue((directory / 'LICENSE').is_file())
+            if self.mode == 'bad_final_notices' and sum(e[0] == 'notices' for e in self.events) == 3:
+                raise ValueError('final copied notice refusal')
+            if self.mode == 'bad_notices':
+                raise ValueError('copied notice refusal')
+        return {'files': []}
+
+    def run_subprocess(self, args, **kwargs):
+        self.assertTrue(kwargs['check'])
+        if args[0] == 'codesign':
+            self.assertEqual(args[1:4], ['--verify', '--deep', '--strict'])
+            self.assertEqual(len(args), 5)
+            self.copied_app = Path(args[4])
+            self.assertNotEqual(self.copied_app, self.app)
+            self.assertEqual(self.copied_app.name, self.app.name)
+            self.assertEqual((self.copied_app / 'Contents/MacOS/chronoscope-desktop').read_bytes(), self.bundled.read_bytes())
+            self.events.append(('codesign', self.copied_app))
+            if self.mode == 'bad_final_codesign' and sum(e[0] == 'codesign' for e in self.events) == 2:
+                raise subprocess.CalledProcessError(1, args)
+            if self.mode == 'bad_codesign':
+                raise subprocess.CalledProcessError(1, args)
+            return
+        self.assertEqual(args[:3], ['python', str(self.repo / 'scripts/test_desktop_cli.py'), '--binary'])
+        self.assertEqual(len(args), 4)
+        self.assertEqual(kwargs['timeout'], 180)
+        binary = Path(args[3])
+        if binary == self.gui:
+            self.events.append(('build_smoke', binary))
+        else:
+            self.assertEqual(binary, self.copied_app / 'Contents/MacOS/chronoscope-desktop')
+            self.assertEqual(binary.read_bytes(), self.bundled.read_bytes())
+            self.events.append(('packaged_smoke', binary))
+            if self.mode == 'mutate_smoke_gui':
+                binary.write_bytes(binary.read_bytes() + b'changed during smoke')
+            if self.mode in ('mutate_smoke_resource', 'empty_smoke_metadata'):
+                metadata = self.copied_app / self.metadata.relative_to(self.app)
+                metadata.write_bytes(b'' if self.mode == 'empty_smoke_metadata' else b'changed resource')
+            if self.mode == 'mutate_smoke_mode':
+                binary.chmod(binary.stat().st_mode ^ 0o100)
+            if self.mode == 'bad_smoke':
+                raise subprocess.CalledProcessError(1, args)
+
+    def query_subprocess(self, args, **kwargs):
+        if args == ['git', 'rev-parse', 'HEAD']:
+            return 'fixture commit'
+        self.assertEqual(args, ['otool', '-L', str(self.copied_app / 'Contents/MacOS/chronoscope-desktop')])
+        self.events.append(('linkage', Path(args[-1])))
+        if self.mode == 'mutate_linkage_gui':
+            binary = Path(args[-1])
+            binary.write_bytes(binary.read_bytes() + b'changed during linkage')
+        return 'packaged GUI linkage fixture'
+
+    def stage(self):
+        with patch('builtins.print'):
+            tester.stage('macos-arm64', self.output, 60 * 1024 * 1024)
+
+    def test_actual_copied_gui_smoke_hash_linkage_and_archive(self):
+        self.stage()
+        evidence = json.loads((self.output / 'VALIDATION-macos-arm64.json').read_text())
+        self.assertEqual(evidence['gui_sha256'], hashlib.sha256(self.bundled.read_bytes()).hexdigest())
+        self.assertEqual(evidence['build_tree_gui_sha256'], hashlib.sha256(self.gui.read_bytes()).hexdigest())
+        self.assertNotEqual(evidence['gui_sha256'], evidence['build_tree_gui_sha256'])
+        self.assertEqual(evidence['linkage'], 'packaged GUI linkage fixture')
+        self.assertFalse(evidence['real_device_tests'])
+        self.assertIn('packaged desktop CLI/agent/MCP smoke', evidence['automated_tests'])
+        self.assertEqual([e[0] for e in self.events], ['notices', 'build_smoke', 'codesign', 'notices', 'packaged_smoke', 'linkage', 'codesign', 'notices'])
+        self.assertEqual(self.runs.call_count, 4)
+        self.assertEqual(self.notices.call_count, 3)
+        self.assertEqual(evidence['archived_gui_sha256'], evidence['gui_sha256'])
+        package = self.output / evidence['package']
+        with tarfile.open(package, 'r:xz') as archive:
+            base = 'Chronoscope/Chronoscope.app/Contents/'
+            data = archive.extractfile(base + 'MacOS/chronoscope-desktop').read()
+            self.assertEqual(data, self.bundled.read_bytes())
+            self.assertEqual(hashlib.sha256(data).hexdigest(), evidence['gui_sha256'])
+            self.assertEqual(archive.extractfile(base + 'Resources/Metadata.appintents/extract.actionsdata').read(), self.metadata.read_bytes())
+            self.assertEqual(archive.extractfile(base + 'Resources/third-party/LICENSE').read(), b'packaged fixture license')
+            self.assertNotIn('Chronoscope/chronoscope-desktop', archive.getnames())
+        self.assertEqual(evidence['package_sha256'], hashlib.sha256(package.read_bytes()).hexdigest())
+        for line in (self.output / 'SHA256SUMS-macos-arm64.txt').read_text().splitlines():
+            digest, name = line.split('  ', 1)
+            self.assertEqual(digest, hashlib.sha256((self.output / name).read_bytes()).hexdigest())
+
+    def test_codesign_refusal_fails_closed_before_packaged_smoke(self):
+        self.mode = 'bad_codesign'
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.stage()
+        self.assertEqual([e[0] for e in self.events], ['notices', 'build_smoke', 'codesign'])
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_packaged_smoke_refusal_fails_closed(self):
+        self.mode = 'bad_smoke'
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.stage()
+        self.assertEqual(self.events[-1][0], 'packaged_smoke')
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_copied_notice_refusal_fails_closed(self):
+        self.mode = 'bad_notices'
+        with self.assertRaisesRegex(ValueError, 'copied notice refusal'):
+            self.stage()
+        self.assertNotIn('packaged_smoke', [e[0] for e in self.events])
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_missing_metadata_fails_closed(self):
+        self.metadata.unlink()
+        self.metadata.parent.rmdir()
+        with self.assertRaisesRegex(ValueError, 'App Intents metadata missing'):
+            self.stage()
+        self.assertNotIn('packaged_smoke', [e[0] for e in self.events])
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_empty_metadata_fails_closed(self):
+        self.metadata.unlink()
+        with self.assertRaisesRegex(ValueError, 'App Intents metadata missing'):
+            self.stage()
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_metadata_checked_in_copy_not_source(self):
+        real_copytree = tester.shutil.copytree
+        def copytree(source, destination, *args, **kwargs):
+            result = real_copytree(source, destination, *args, **kwargs)
+            if Path(source) == self.app:
+                copied_metadata = Path(destination) / self.metadata.relative_to(self.app)
+                copied_metadata.unlink()
+            return result
+        with patch.object(tester.shutil, 'copytree', side_effect=copytree):
+            with self.assertRaisesRegex(ValueError, 'App Intents metadata missing'):
+                self.stage()
+        self.assertTrue(self.metadata.is_file())
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_wrong_bundled_architecture_fails_closed(self):
+        self.bundled.write_bytes(self.macho(0x1000007))
+        with self.assertRaisesRegex(ValueError, 'Bundled GUI architecture mismatch'):
+            self.stage()
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def assert_refused_empty(self, message):
+        with self.assertRaisesRegex(ValueError, message):
+            self.stage()
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_gui_mutated_during_smoke_rejected(self):
+        self.mode = 'mutate_smoke_gui'
+        self.assert_refused_empty('GUI changed during smoke')
+
+    def test_gui_mutated_during_linkage_rejected(self):
+        self.mode = 'mutate_linkage_gui'
+        self.assert_refused_empty('GUI changed during linkage')
+
+    def test_resource_mutated_after_initial_seal_rejected(self):
+        self.mode = 'mutate_smoke_resource'
+        self.assert_refused_empty('Sealed Mac app changed during validation')
+        self.assertEqual(sum(e[0] == 'codesign' for e in self.events), 2)
+
+    def test_metadata_emptied_after_initial_seal_rejected(self):
+        self.mode = 'empty_smoke_metadata'
+        self.assert_refused_empty('App Intents metadata missing or empty')
+        self.assertEqual(sum(e[0] == 'codesign' for e in self.events), 2)
+
+    def test_gui_mode_mutated_after_initial_seal_rejected(self):
+        self.mode = 'mutate_smoke_mode'
+        self.assert_refused_empty('Sealed Mac app changed during validation')
+
+    def test_final_strict_seal_refusal_rejected(self):
+        self.mode = 'bad_final_codesign'
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.stage()
+        self.assertEqual(list(self.output.iterdir()), [])
+        self.assertEqual(sum(e[0] == 'codesign' for e in self.events), 2)
+
+    def test_final_notice_refusal_rejected(self):
+        self.mode = 'bad_final_notices'
+        self.assert_refused_empty('final copied notice refusal')
+
+    def test_zero_byte_metadata_file_rejected(self):
+        self.metadata.write_bytes(b'')
+        self.assert_refused_empty('App Intents metadata missing or empty')
+
+    def test_metadata_directory_entry_is_not_metadata(self):
+        self.metadata.unlink()
+        self.metadata.mkdir()
+        self.assert_refused_empty('App Intents metadata missing or empty')
+
+    def test_archive_write_boundary_gui_resource_mode_symlink_mutations(self):
+        real_add = tarfile.TarFile.add
+        for mode in ('gui', 'resource', 'mode', 'symlink'):
+            with self.subTest(mode=mode):
+                self.output = self.base / ('archive-mutation-' + mode)
+                def add(archive, name, *args, **kwargs):
+                    # Inject after final checks, immediately before tar reads it.
+                    if kwargs.get('arcname') == 'Chronoscope':
+                        gui = self.copied_app / 'Contents/MacOS/chronoscope-desktop'
+                        if mode == 'gui':
+                            gui.write_bytes(gui.read_bytes() + b'archive boundary mutation')
+                        elif mode == 'resource':
+                            (self.copied_app / self.metadata.relative_to(self.app)).write_bytes(b'changed at archive')
+                        elif mode == 'mode':
+                            gui.chmod(gui.stat().st_mode ^ 0o100)
+                        else:
+                            (self.copied_app / 'Contents/Resources/new-link').symlink_to('third-party/LICENSE')
+                    return real_add(archive, name, *args, **kwargs)
+                with patch.object(tarfile.TarFile, 'add', new=add):
+                    self.assert_refused_empty('Archived Mac GUI differs|Sealed Mac app changed at archive boundary')
+
+    def test_archived_only_gui_mutation_rejected_even_if_staged_copy_restored(self):
+        real_add = tarfile.TarFile.add
+        def add(archive, name, *args, **kwargs):
+            if kwargs.get('arcname') != 'Chronoscope':
+                return real_add(archive, name, *args, **kwargs)
+            gui = self.copied_app / 'Contents/MacOS/chronoscope-desktop'
+            original = gui.read_bytes()
+            try:
+                gui.write_bytes(original + b'archive only')
+                return real_add(archive, name, *args, **kwargs)
+            finally:
+                gui.write_bytes(original)
+        with patch.object(tarfile.TarFile, 'add', new=add):
+            self.assert_refused_empty('Archived Mac GUI differs from smoked GUI')
+
+    def test_symlink_and_mode_inventory_survive_archive(self):
+        self.bundled.chmod(0o755)
+        (self.app / 'Contents/Resources/license-link').symlink_to('third-party/LICENSE')
+        self.stage()
+        with tarfile.open(self.output / 'chronoscope-macos-arm64.tar.xz') as archive:
+            prefix = 'Chronoscope/Chronoscope.app/Contents/'
+            self.assertEqual(archive.getmember(prefix + 'MacOS/chronoscope-desktop').mode, 0o755)
+            link = archive.getmember(prefix + 'Resources/license-link')
+            self.assertTrue(link.issym())
+            self.assertEqual(link.linkname, 'third-party/LICENSE')
+
+    def test_inventory_limits_fail_closed(self):
+        with patch.object(tester, 'MAC_MAX_ENTRIES', 1):
+            self.assert_refused_empty('inventory entry cap exceeded')
+        self.output = self.base / 'byte-cap'
+        with patch.object(tester, 'MAC_MAX_BYTES', 1):
+            self.assert_refused_empty('inventory byte cap exceeded')
+
+    def test_mac_config_changes_only_ad_hoc_identity(self):
+        # Compare against the retained resource/target configuration, not a mock.
+        config = json.loads((Path(__file__).resolve().parent.parent / 'src-tauri/tauri.macos.conf.json').read_text())
+        self.assertEqual(config, {'bundle': {
+            'targets': ['app', 'dmg'],
+            'macOS': {'signingIdentity': '-'},
+            'resources': {'resources/Metadata.appintents/': 'Metadata.appintents/',
+                          '../frontend/dist/third-party/': 'third-party/'}}})
 
 
 if __name__=='__main__': unittest.main()

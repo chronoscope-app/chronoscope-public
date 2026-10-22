@@ -4,6 +4,9 @@
       "app",
       "dmg"
     ],
+    "macOS": {
+      "signingIdentity": "-"
+    },
     "resources": {
       "resources/Metadata.appintents/": "Metadata.appintents/",
       "../frontend/dist/third-party/": "third-party/"
