@@ -82,6 +82,21 @@ jobs:
           test -e "$SDK/System/Library/Frameworks/AppIntents.framework/AppIntents.tbd"
           find "$SDK" -name '_AppIntents_AppKit.tbd' -print | grep .
           xcrun --find appintentsmetadataprocessor
+      - name: Compile App Intents metadata before Rust checks
+        if: runner.os == 'macOS'
+        working-directory: src-tauri/apple-intents
+        env:
+          CARGO_CFG_TARGET_OS: macos
+          CARGO_CFG_TARGET_ARCH: aarch64
+          OUT_DIR: ${{ runner.temp }}/chronoscope-app-intents-probe
+        run: |
+          mkdir -p "$OUT_DIR"
+          rustc --edition=2021 build.rs -o "$RUNNER_TEMP/chronoscope-intents-probe"
+          "$RUNNER_TEMP/chronoscope-intents-probe"
+          test -s "$OUT_DIR/libChronoscopeIntents.a"
+          test -s "$OUT_DIR/Intents.swiftconstvalues"
+          test -d "$OUT_DIR/metadata/Metadata.appintents"
+          find "$OUT_DIR/metadata/Metadata.appintents" -type f -size +0c -print | grep .
       - run: npm --prefix frontend ci
       # The offline GLib guard inspects Linux GTK even on Windows/macOS.
       # No --target: fetch the locked workspace for every platform, without
