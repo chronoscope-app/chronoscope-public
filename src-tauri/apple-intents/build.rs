@@ -40,8 +40,10 @@ fn main() {
             "ChronoscopeIntents",
             "-target",
             &target,
-            "-const-gather-protocols-list",
+            "-Xfrontend",
+            "-const-gather-protocols-file",
         ])
+        .arg("-Xfrontend")
         .arg(&protocols)
         .arg("-emit-const-values-path")
         .arg(&values)
