@@ -33,6 +33,10 @@ jobs:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         run: test "$GITHUB_SHA" = "$EXPECTED_SHA" && test "${#EXPECTED_SHA}" = 40
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        env:
+          GIT_CONFIG_COUNT: '1'
+          GIT_CONFIG_KEY_0: core.autocrlf
+          GIT_CONFIG_VALUE_0: 'false'
         with:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec
