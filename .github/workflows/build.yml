@@ -77,6 +77,11 @@ jobs:
           find "$SDK" -name '_AppIntents_AppKit.tbd' -print | grep .
           xcrun --find appintentsmetadataprocessor
       - run: npm --prefix frontend ci
+      # The offline GLib guard inspects Linux GTK even on Windows/macOS.
+      # No --target: fetch the locked workspace for every platform, without
+      # compiling or requiring a foreign Rust standard library/toolchain.
+      - name: Prefetch locked Cargo dependencies
+        run: cargo fetch --locked --manifest-path Cargo.toml
       - name: Static packaging tests
         run: |
           python -B scripts/test_publication_cleanup.py

@@ -66,6 +66,23 @@ class PublicationCleanup(unittest.TestCase):
         self.assertIn("['count'] == 0", text)
         self.assertNotIn("== 192", text)
 
+    def test_offline_graph_has_locked_cross_platform_prefetch(self):
+        import re
+        workflow = (ROOT/".github/workflows/build.yml").read_text()
+        prefetch = re.search(
+            r"(?ms)^      - name: Prefetch locked Cargo dependencies\n(.*?)(?=^      - )",
+            workflow)
+        self.assertIsNotNone(prefetch, "Cold runners need Cargo dependencies before offline guards")
+        # Unconditional, fail-closed, root workspace; no --target restriction:
+        # the Linux GLib graph must also resolve on Windows/macOS hosts.
+        self.assertEqual(prefetch.group(1).strip(),
+                         "run: cargo fetch --locked --manifest-path Cargo.toml")
+        static = workflow.index("      - name: Static packaging tests\n")
+        self.assertLess(prefetch.start(), static)
+        self.assertIn("python -B scripts/test_glib_backport.py", workflow[static:])
+        guard = (ROOT/"scripts/test_glib_backport.py").read_text()
+        self.assertIn("['cargo', 'tree', '--offline', '--locked', *args]", guard)
+
     def test_manual_workflow_is_pinned_and_bounded(self):
         import re
         text = (ROOT/".github/workflows/build.yml").read_text()
