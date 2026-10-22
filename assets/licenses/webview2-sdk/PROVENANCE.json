@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-22",
+  "scope": "Microsoft SDK loader provenance and redistribution notice evidence only; not WebView2 browser runtime or full release clearance",
+  "crate": {
+    "name": "webview2-com-sys",
+    "version": "0.39.1",
+    "url": "https://static.crates.io/crates/webview2-com-sys/webview2-com-sys-0.39.1.crate",
+    "bytes": 5768930,
+    "sha256": "b3a07132775117d6065853d9d1178157b8c90e228de47129d6bce2c7edebedfb",
+    "cargo_lock_checksum_matched": true,
+    "vcs": {
+      "git": {
+        "sha1": "edc2caf886175ccaebe86078c9cfe1ae2a187328"
+      },
+      "path_in_vcs": "crates/bindings"
+    },
+    "metadata_members": {
+      ".cargo_vcs_info.json": {
+        "bytes": 109,
+        "sha256": "d4137410068017c3f66fe98578f2fd40f0e76d3fd628fa361c758f3b262351c7"
+      },
+      "Cargo.toml": {
+        "bytes": 1514,
+        "sha256": "1a3e5684710cb1d2e7e7afdd32af011a4a8038c259f6592ade3f871ca31cad7d"
+      },
+      "build.rs": {
+        "bytes": 2742,
+        "sha256": "deafb36ba38083bd048fadb28b2266a94322bb5a793e85f4c50a040cf3da5c8a"
+      },
+      "src/lib.rs": {
+        "bytes": 1866,
+        "sha256": "9e8ead3a21710d872bcc1d6ed214af1b91eca24e158733305bb77b1199247ea1"
+      }
+    }
+  },
+  "upstream_sdk_selection": {
+    "repository": "https://github.com/wravery/webview2-rs",
+    "commit": "edc2caf886175ccaebe86078c9cfe1ae2a187328",
+    "url": "https://raw.githubusercontent.com/wravery/webview2-rs/edc2caf886175ccaebe86078c9cfe1ae2a187328/crates/update-bindings/src/main.rs",
+    "bytes": 12116,
+    "sha256": "69ff64b5d3612d94a19c4aed43aa923f941e9c947776021ffa9beb2ff8ce0325",
+    "constant_name": "WEBVIEW2_VERSION",
+    "constant_value": "1.0.3800.47",
+    "copy_routine": "webview2_nuget::update_libs copies build/native/{architecture}/{library} to crates/bindings/{architecture}/{library}",
+    "executed": false
+  },
+  "sdk": {
+    "package": "Microsoft.Web.WebView2",
+    "version": "1.0.3800.47",
+    "url": "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.3800.47/microsoft.web.webview2.1.0.3800.47.nupkg",
+    "bytes": 8973762,
+    "sha256": "56c9f26bdd07916a2d1949fb58a5c7e434dfa1173577dca879206050c4e718db",
+    "publisher_declared_by_nuspec": "Microsoft",
+    "nuspec_license_type": "file",
+    "nuspec_license_file": "LICENSE.txt",
+    "nuget_license_url": "https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.3800.47/License",
+    "signature_member_present": true,
+    "signature_validated": false
+  },
+  "loader_comparisons": [
+    {
+      "architecture": "x64",
+      "crate_member": "webview2-com-sys-0.39.1/x64/WebView2LoaderStatic.lib",
+      "nuget_member": "build/native/x64/WebView2LoaderStatic.lib",
+      "bytes": 10500472,
+      "sha256": "89c6b872783b8f6c3cedbff618adb42082d455c615453ae10cfc753f1e8f25d8",
+      "byte_equal": true
+    },
+    {
+      "architecture": "x64",
+      "crate_member": "webview2-com-sys-0.39.1/x64/WebView2Loader.dll",
+      "nuget_member": "build/native/x64/WebView2Loader.dll",
+      "bytes": 160880,
+      "sha256": "86545b66cdb0603bc26b626fb9ad610cb6e71f28d468f5ea66df23b03dda96d5",
+      "byte_equal": true
+    },
+    {
+      "architecture": "x64",
+      "crate_member": "webview2-com-sys-0.39.1/x64/WebView2Loader.dll.lib",
+      "nuget_member": "build/native/x64/WebView2Loader.dll.lib",
+      "bytes": 2916,
+      "sha256": "bfc8ccaaa056be95243a5b66a827e5849d2bb39676fca4dcc2053796d8e15c6d",
+      "byte_equal": true
+    },
+    {
+      "architecture": "x86",
+      "crate_member": "webview2-com-sys-0.39.1/x86/WebView2LoaderStatic.lib",
+      "nuget_member": "build/native/x86/WebView2LoaderStatic.lib",
+      "bytes": 10465074,
+      "sha256": "0513f7e61304321f2d91e1851475be07e091042aa3640597e660608f72521e6c",
+      "byte_equal": true
+    },
+    {
+      "architecture": "x86",
+      "crate_member": "webview2-com-sys-0.39.1/x86/WebView2Loader.dll",
+      "nuget_member": "build/native/x86/WebView2Loader.dll",
+      "bytes": 121448,
+      "sha256": "161dc6673084a31f64670ace8e61cb0e1b55af815b6c7c8217a0cdd8503454e2",
+      "byte_equal": true
+    },
+    {
+      "architecture": "x86",
+      "crate_member": "webview2-com-sys-0.39.1/x86/WebView2Loader.dll.lib",
+      "nuget_member": "build/native/x86/WebView2Loader.dll.lib",
+      "bytes": 2998,
+      "sha256": "a3ec0ee539d58fe72391f2e89cb814f96fab721c6d8d30953d152ea95dffad49",
+      "byte_equal": true
+    },
+    {
+      "architecture": "arm64",
+      "crate_member": "webview2-com-sys-0.39.1/arm64/WebView2LoaderStatic.lib",
+      "nuget_member": "build/native/arm64/WebView2LoaderStatic.lib",
+      "bytes": 10505262,
+      "sha256": "4a1ca4b518337c508aa0d778b220c6e59558fce21f4fd0d79a6ea944dd9d5208",
+      "byte_equal": true
+    },
+    {
+      "architecture": "arm64",
+      "crate_member": "webview2-com-sys-0.39.1/arm64/WebView2Loader.dll",
+      "nuget_member": "build/native/arm64/WebView2Loader.dll",
+      "bytes": 146536,
+      "sha256": "a0de1844933a10c898f833771a85f0ab9a0e3c745d4715f63d2d9730f9416025",
+      "byte_equal": true
+    },
+    {
+      "architecture": "arm64",
+      "crate_member": "webview2-com-sys-0.39.1/arm64/WebView2Loader.dll.lib",
+      "nuget_member": "build/native/arm64/WebView2Loader.dll.lib",
+      "bytes": 2916,
+      "sha256": "d70271daa44507865ca0696cd1c1ede5e58e694eec74cb2d06e17dbbe205e9a2",
+      "byte_equal": true
+    }
+  ],
+  "retained_original_files": [
+    {
+      "path": "LICENSE.txt",
+      "origin_url": "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.3800.47/microsoft.web.webview2.1.0.3800.47.nupkg",
+      "archive_member": "LICENSE.txt",
+      "bytes": 1487,
+      "sha256": "0af8f1b807512aae39c2ac1aa4d0cae65cabecb6fd554b8439a5162a0d6eca55",
+      "unmodified": true
+    },
+    {
+      "path": "NOTICE.txt",
+      "origin_url": "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.3800.47/microsoft.web.webview2.1.0.3800.47.nupkg",
+      "archive_member": "NOTICE.txt",
+      "bytes": 3894,
+      "sha256": "106423785c5b7eba0a8e61d1837f2132e9c828e20ad530f565d981c1df60dd90",
+      "unmodified": true
+    },
+    {
+      "path": "Microsoft.Web.WebView2.nuspec",
+      "origin_url": "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.3800.47/microsoft.web.webview2.1.0.3800.47.nupkg",
+      "archive_member": "Microsoft.Web.WebView2.nuspec",
+      "bytes": 1367,
+      "sha256": "31e49576d10d4a5abf4318850e6d3fde457800e6228610a5854a4251af56b5ff",
+      "unmodified": true
+    }
+  ],
+  "redistribution": {
+    "permitted": true,
+    "license_identification": "BSD-3-Clause text, Microsoft copyright; package license for this exact SDK",
+    "grant_excerpt": "Redistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are\nmet:",
+    "binary_condition_excerpt": "Redistributions in binary form must reproduce the above\ncopyright notice, this list of conditions and the following disclaimer\nin the documentation and/or other materials provided with the\ndistribution.",
+    "obligations": [
+      "Retain original LICENSE.txt with binary distribution documentation/materials, including copyright, conditions and disclaimer.",
+      "Preserve NOTICE.txt unchanged as conservative full SDK third-party notice coverage; do not translate or localize it.",
+      "Do not use Microsoft or contributor names to endorse/promote without specific prior written permission.",
+      "If redistributing source, retain copyright, conditions and disclaimer."
+    ],
+    "source_offer_required_by_loader_license": false,
+    "note": "NOTICE.txt contains package-wide third-party material (ANTLR/StringTemplate) and generic LGPL/source language; retention does not assert those build tools are linked into the loader."
+  },
+  "release_gates_not_proven": [
+    "Actual Windows build selects this locked crate and unmodified loader.",
+    "Final installer/application resources carry LICENSE.txt and NOTICE.txt, accessible to recipients.",
+    "Final PE imports/payload inventory and all other dependency obligations.",
+    "Separate WebView2 browser runtime terms for any runtime/bootstrapper actually redistributed."
+  ],
+  "verification_method": "HTTPS public archives loaded in memory; archive SHA-256, Cargo.lock checksum, crate VCS metadata, immutable upstream constant, nuspec license pointer, byte-for-byte comparison; no downloaded code executed or installed."
+}

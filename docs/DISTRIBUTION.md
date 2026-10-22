@@ -149,3 +149,38 @@ exported; the manifest does not clear it. The source ZIP preserves mixed-license
 fixtures/media and their notices; it is not an all-MIT or unrestricted-use ZIP.
 It is not automatically complete corresponding source for native dependencies.
 Do not modify the checkout concurrently with export/staging.
+
+## Checked tester prereleases
+
+The manual tester workflow selects one standard public runner at a time and
+requires the exact reviewed main SHA. No caches are saved; artifacts expire
+after one day and each upload is capped at60MiB. Before dispatch, the release
+coordinator verifies shared Actions/Packages usage and existing $0 hard-stop
+budgets; a budget or storage denial is a stop, not permission for paid usage.
+Intel macOS is deferred. macOS26 Apple Silicon uses installed Xcode26.6;
+actual build/link results, not a claimed Xcode27 prerequisite, decide support.
+
+`scripts/package_tester.py` requires a GUI installer/app/AppImage and validates
+its executable architecture, desktop CLI/agent/MCP smoke behavior, and notice
+payload. These checks run on hosted runners only. They do not claim real-device
+acceptance or full GUI interaction coverage. Package validation records and
+SHA256 sums accompany downloads. Windows installers do not bundle WebView2;
+the user-installed Microsoft runtime is a prerequisite. macOS apps are ad-hoc
+signed, not notarized.
+
+Before publishing any executable, run `scripts/package_dependency_sources.py
+--output ../chronoscope-dependency-sources.tar.xz` and attach that archive,
+matching clean application source ZIP, selected notices and checksums to the
+same prerelease. Every locked Cargo registry and frontend npm source archive
+is hash-verified against its lockfile, including conservative optional/build
+extras. Original license/copyright/NOTICE files remain within those archives;
+SOURCE-ACCESS.json records exact public URLs, versions and hashes. The app
+source ZIP supplies complete patched GLib and the Knockout transformation.
+Covered MPL source is thus delivered alongside the executable rather than
+relying on a generic upstream homepage. Apache alternatives are selected where
+available; mandatory AND and data/media notices remain applicable.
+
+Linux is not releasable until the exact extracted AppImage's native component
+source/replacement gate above passes, including distro revisions and helpers.
+Registry sources alone do not satisfy that gate. No Linux executable is cleared
+merely because a build or hash check succeeds.

@@ -280,7 +280,6 @@ struct RunAnalytics: Tool {
 
 @available(macOS 26.0, *)
 func contextExceeded(_ error: Error) -> Bool {
-    if #available(macOS 27.0, *), case LanguageModelError.contextSizeExceeded = error { return true }
     if case LanguageModelSession.GenerationError.exceededContextWindowSize = error { return true }
     return false
 }
@@ -288,7 +287,6 @@ func contextExceeded(_ error: Error) -> Bool {
 @available(macOS 26.0, *)
 func toolArgumentsFailed(_ error: Error) -> Bool {
     let cause = (error as? LanguageModelSession.ToolCallError)?.underlyingError ?? error
-    if #available(macOS 27.0, *), cause is GeneratedContent.ParsingError { return true }
     if case LanguageModelSession.GenerationError.decodingFailure = cause { return true }
     return false
 }
@@ -343,10 +341,6 @@ func chat(_ req: [String: Any], model: SystemLanguageModel, channel: NativeChann
             } else if message["role"] == "assistant" {
                 entries.append(.response(.init(assetIDs: [], segments: [.text(.init(content: content))])))
             }
-        }
-        if #available(macOS 27.0, *) {
-            result.transcript = Transcript(entries: entries)
-            return result
         }
         return LanguageModelSession(model: model, tools: tools, transcript: Transcript(entries: entries))
     }

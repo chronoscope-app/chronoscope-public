@@ -5,7 +5,7 @@ Chronoscope uses CesiumJS WebGL2 for its geographic views. The installed app is
 
 ## Build locally
 
-Install Xcode 27 or newer, Rust 1.90 or newer and Node.js 22 or newer. From this
+Tester builds select full Xcode26.6 (macOS SDK26.5), Rust1.98.0 and Node.js22 on standard macos-26 Apple Silicon runners. SDK27-only branches have been removed while retaining the existing26.x fallbacks. Native compilation, overlay linkage and App Intents metadata remain required checks; no old-macOS or real-device acceptance is implied. From this
 repository:
 
 ```sh
