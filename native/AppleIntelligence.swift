@@ -366,7 +366,7 @@ func chat(_ req: [String: Any], model: SystemLanguageModel, channel: NativeChann
     }
     while true {
         do {
-            let options = generationRetries == 0 ? GenerationOptions() : GenerationOptions(samplingMode: .greedy)
+            let options = generationRetries == 0 ? GenerationOptions() : GenerationOptions(sampling: .greedy)
             let response = try await session().respond(to: currentPrompt(), options: options)
             return ["answer": response.content, "context": [
                 "context_tokens": capacity, "input_tokens": inputTokens as Any? ?? NSNull(),
