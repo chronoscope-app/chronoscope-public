@@ -5,7 +5,8 @@
       "dmg"
     ],
     "resources": {
-      "resources/Metadata.appintents/": "Metadata.appintents/"
+      "resources/Metadata.appintents/": "Metadata.appintents/",
+      "../frontend/dist/third-party/": "third-party/"
     }
   }
 }

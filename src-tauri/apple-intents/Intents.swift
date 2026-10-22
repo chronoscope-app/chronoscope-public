@@ -147,5 +147,5 @@ func verify()->UnsafeMutablePointer<CChar> {
 }
 @_cdecl("chronoscope_intents_free") func release(_ pointer:UnsafeMutablePointer<CChar>){free(pointer)}
 
-@available(macOS 13.0, *)
+@available(macOS 14.0, *)
 struct ChronoscopeIntentPackage: AppIntentsPackage {}

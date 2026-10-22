@@ -15,7 +15,7 @@ No cross-platform native acceptance, signed-binary availability or complete bina
 
 Desktop: **Rust 1.90+**, **Node 22+**, and [Tauri v2 platform prerequisites](https://v2.tauri.app/start/prerequisites/). CLI-only core declares Rust **1.89+** and needs neither Node nor a window system. Locked dependencies can impose newer compiler requirements; the local verification compiler is recorded separately, not a minimum-version test.
 
-- macOS: Xcode 27+ for this project’s Swift bridges; see [Mac handoff](MAC_HANDOFF.md).
+- macOS: full Xcode26.6 / macOS SDK26.5 for the tester build configuration (native compilation remains the gate); see [Mac handoff](MAC_HANDOFF.md).
 - Windows: MSVC C++ build tools/Windows SDK and WebView2, as described by Tauri.
 - Linux: WebKitGTK 4.1/GTK3 development prerequisites and platform linker tools; consult Tauri and the manual workflow package list. Do not install packages merely to run the CLI.
 

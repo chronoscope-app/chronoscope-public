@@ -1,0 +1,1300 @@
+[
+  {
+    "name": "@cesium/core",
+    "version": "0.1.0",
+    "archive_sha256": "d8f222fbbdd13649c36a84238e46230fbade449238567ca20e4a5361b648673e",
+    "notices": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "0600f0d85e600431f65b25a4b1b4fc108ad8219b4ee537f36fdca1652d796f7e"
+      }
+    ]
+  },
+  {
+    "name": "@cesium/engine",
+    "version": "26.4.0",
+    "archive_sha256": "cdd281e213e920c0fee783041aa82e536fd3113177943b2b7877ac3b2648d864",
+    "notices": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "1a1e0a70642c277baabd897794193ed0755accaa2bfe6b7b496f5dfa8d3b1c48"
+      }
+    ]
+  },
+  {
+    "name": "@tweenjs/tween.js",
+    "version": "25.0.0",
+    "archive_sha256": "3adc6badf9071b9ad70df0e3771ebf6ef2c4d7e0850fbd1249f853893a5ad6b2",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c95fecd88f2709bfc34e4d1f1ccc36d17048990e6ba26c283cfecdef0432936b"
+      }
+    ]
+  },
+  {
+    "name": "meshoptimizer",
+    "version": "1.3.0",
+    "archive_sha256": "6c3e8d653702333ce392cfa377065a9e38531285b74721d7ceffea53e025252b",
+    "notices": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "f03037ca7bad1e3eb7f4a63fa6084a8baabd5ba30d3c239a9a7f35705d873e26"
+      }
+    ]
+  },
+  {
+    "name": "@cesium/wasm-splats",
+    "version": "0.1.0-alpha.2",
+    "archive_sha256": "21968397eb28ef243451e9e66f10ed529c3467784f6542ea5c0681f0618e79e0",
+    "notices": []
+  },
+  {
+    "name": "@cesium/widgets",
+    "version": "16.3.0",
+    "archive_sha256": "b20363a3cb0e5ea34685b66ebded67fa2adb134e5bdc132719869b9e7a13e061",
+    "notices": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "7054709eda4c65e03647f6d9d4dcecb08bc68087c68611c45799f11959775784"
+      }
+    ]
+  },
+  {
+    "name": "@esbuild/aix-ppc64",
+    "version": "0.25.12",
+    "archive_sha256": "6f36448f31d26425773b80985184f3bfb5661acede70c503b201c823836a10e8",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/android-arm",
+    "version": "0.25.12",
+    "archive_sha256": "5aea75886f091b07287ac357a492bcbbf633532381b31ba71611955faada3c7e",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/android-arm64",
+    "version": "0.25.12",
+    "archive_sha256": "9cb49d434b501e232ec60de75d2bc7e0206477cdc7f38f5f1a8b531ab77e6921",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/android-x64",
+    "version": "0.25.12",
+    "archive_sha256": "1b1fb12cc646f4b641503116c52d9503ba479f00f8eeba3553e5045fd5b3e808",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/darwin-arm64",
+    "version": "0.25.12",
+    "archive_sha256": "2e0d011f852e45046ca5c107db54cfc56338f77aca49d227a063696d958451d7",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/darwin-x64",
+    "version": "0.25.12",
+    "archive_sha256": "bf56cdf7b330a8605395ee13de805c784c7346d0802c7cced8490b4bfac2291a",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/freebsd-arm64",
+    "version": "0.25.12",
+    "archive_sha256": "3d140ffd2d7e3d8f747a9dcb8abdbec9505ab795ba6e55a8a9dd4f23378c5d31",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/freebsd-x64",
+    "version": "0.25.12",
+    "archive_sha256": "8bf2618e0ff33e342c68f5c9f56dde969551daaea3c89dd30d5859abe066b2a2",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/linux-arm",
+    "version": "0.25.12",
+    "archive_sha256": "318df2dc59ce5d2f0768fb0721fdcf20e639e2cd9d47765c6ddf4ae36f4a1142",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/linux-arm64",
+    "version": "0.25.12",
+    "archive_sha256": "d5e01d210e026823d559e2b82554cdcdab6fd87c4a57b519b392ef183c1f87fd",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/linux-ia32",
+    "version": "0.25.12",
+    "archive_sha256": "d9a45a87621f08f3be3017c95283fb5e4f48bdb3808daedd7c57c755a9c9f83b",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/linux-loong64",
+    "version": "0.25.12",
+    "archive_sha256": "45bee0343b63121ca9ff6e424bada69711bf959bcb649a81c2c0ac9c22ad91fb",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/linux-mips64el",
+    "version": "0.25.12",
+    "archive_sha256": "0840450dc4fe6b79cf2390c627f111c61b04266d9b5f0f7b0f291071a70a4825",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/linux-ppc64",
+    "version": "0.25.12",
+    "archive_sha256": "1cd2f06d19e650b31d01474f82d72ff0a2cd4b15e901a83c22e9678c7958a10a",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/linux-riscv64",
+    "version": "0.25.12",
+    "archive_sha256": "64738a7389ebf341216c634916d8eef90f0cf57636f8de2c117f7ee89fdefa91",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/linux-s390x",
+    "version": "0.25.12",
+    "archive_sha256": "35818fadf6809a5617d8533c2f91d2e321daeaf445729274d22213e831895bc7",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/linux-x64",
+    "version": "0.25.12",
+    "archive_sha256": "f7efc127658a108dcda9d4210b01804ee8f5d6b3acbd6d63f20aa51d3b50bd5f",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/netbsd-arm64",
+    "version": "0.25.12",
+    "archive_sha256": "f746c1aa0f4dc86c6484dae61114ecc9155327cd4a1b0e9d234e32bc7a018858",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/netbsd-x64",
+    "version": "0.25.12",
+    "archive_sha256": "d706a08a052577e74474036f51604b9c19dff434c1e14b8465ccd452fb225f95",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/openbsd-arm64",
+    "version": "0.25.12",
+    "archive_sha256": "ad09e31e1a86a5a12fd57304acc7472e59a55ae05385b1770e24b3a3670f7f99",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/openbsd-x64",
+    "version": "0.25.12",
+    "archive_sha256": "0ce2f4f74522d3b09e249a1ee240179bde15766660a43b772a60cba4781e300b",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/openharmony-arm64",
+    "version": "0.25.12",
+    "archive_sha256": "79828e6d55f5155ca81e55e04717aecb9125fd8b5202ba8b6e9e78cc8943a62d",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/sunos-x64",
+    "version": "0.25.12",
+    "archive_sha256": "6b2185ee71e7102c4ab07247769afb6ab84c8e550a51c65324f1455844183e3f",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/win32-arm64",
+    "version": "0.25.12",
+    "archive_sha256": "01979ffafb4bb6a63d824cd57ed76bd257d1e3eed804c3e47fdfd80005dcfa66",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/win32-ia32",
+    "version": "0.25.12",
+    "archive_sha256": "a0b88687c8262d88922c08f9aa70f5a8d2d5bf38309046a1b718fc8eb7ad4872",
+    "notices": []
+  },
+  {
+    "name": "@esbuild/win32-x64",
+    "version": "0.25.12",
+    "archive_sha256": "c77076b48f96323cae6257bd515e5ea96ecf38ab8f7fa34364d4fc4ae5905b74",
+    "notices": []
+  },
+  {
+    "name": "@mapbox/jsonlint-lines-primitives",
+    "version": "2.0.3",
+    "archive_sha256": "a6be7b423dafaf19ff46c6b3587d3ac8ce01d666087a84a79aac6052046593ec",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5dcae6b71018b5454d00228bd08ccbcd9801ee27b19959b88ebcb55602604e6d"
+      }
+    ]
+  },
+  {
+    "name": "@mapbox/point-geometry",
+    "version": "1.1.0",
+    "archive_sha256": "9bf202082ba414ef99d82ca466445bfeddff3631922cfa74f9b4ce5caafde038",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "0c0ede0036a425ff8b2d49341ea9aa8eccbeeae1ac4eb59874c9dd8bcf5186d3"
+      }
+    ]
+  },
+  {
+    "name": "@mapbox/tiny-sdf",
+    "version": "2.3.0",
+    "archive_sha256": "df88dd624bb2c525b8449d5252cba6a7535c5b5ff7374e8423c64b6175e42ea2",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "4f78063c6c0757df950aa3440cef9a2a6bd1c552c994c32237c3acc283e72ee6"
+      }
+    ]
+  },
+  {
+    "name": "@mapbox/unitbezier",
+    "version": "1.0.0",
+    "archive_sha256": "040cdc8400a3949a2764db4a4c68e59758c8cbca94e5ccb9df58c28dd9ad1a76",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "f0dc305ad097eddbc66eebb79288c92d8a5043818ace81206383a4c1a3268fe3"
+      }
+    ]
+  },
+  {
+    "name": "@mapbox/vector-tile",
+    "version": "3.0.0",
+    "archive_sha256": "08f01e39d143cad5b106a7561394663b0a020d6a068acac6fa74de465739edb6",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "5b09a507df6f21d6c2112c46dcaf2927b9dbd8b580a08b542d8ec2f9191d783d"
+      }
+    ]
+  },
+  {
+    "name": "@maplibre/geojson-vt",
+    "version": "6.3.0",
+    "archive_sha256": "504ff00fedc73ab6d6aa359cea8c52242766fed013cd3b8d96277eb0d15fea45",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9eb90e1c920aeccc6d630bd48c1512683d454c669701d46ff8c4c41f922dc4f3"
+      }
+    ]
+  },
+  {
+    "name": "@maplibre/maplibre-gl-style-spec",
+    "version": "26.4.4",
+    "archive_sha256": "a91a2c7553837daaef41893f9ffe8d3feac046ae68b9340cc626715e7eada7ac",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "bfd4cb919eec574e9213e1e61f880831eb5fc372d467be429fd0a8d51d1df890"
+      }
+    ]
+  },
+  {
+    "name": "@maplibre/mlt",
+    "version": "1.3.0",
+    "archive_sha256": "31e1081edc4491a39c6e4f7ac715fe424aac31ec20d326a414b1cc1eb989af3e",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "3c0a2cc8dfe44b856c2577b4d6fe30a999557c795686d52b159a6e1659ea8023"
+      }
+    ]
+  },
+  {
+    "name": "@maplibre/vt-pbf",
+    "version": "4.3.2",
+    "archive_sha256": "837fe7a668cd0280af6a38b8e9ed81e299dd51f4571d4eb9f6f9de859e9f13f7",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4c61c5753d4b021bc3b07f21d2a830506974ce200c19cfadf3d4a25e747fc853"
+      }
+    ]
+  },
+  {
+    "name": "@napi-rs/lzma-linux-x64-gnu",
+    "version": "1.5.1",
+    "archive_sha256": "e69ca2a96510be330953f5b04b1d74617e7ce5d4487db4876c4b02b8364ef7e7",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-android-arm-eabi",
+    "version": "4.64.6",
+    "archive_sha256": "088b39bfb4004f7ffae3cf6fe535c8aead0dfc418ddcb94c9126d8bf3c219362",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-android-arm64",
+    "version": "4.64.6",
+    "archive_sha256": "777f4a00e597a179ab4192beb4f6a69a542abe2f46575fe2cf36fd49bc7e6569",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-darwin-arm64",
+    "version": "4.64.6",
+    "archive_sha256": "f9f5421ffdfe4fc7e466103e6d3fc0c681c075b9106efa5769a16aa6c1766502",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-darwin-x64",
+    "version": "4.64.6",
+    "archive_sha256": "65b5d15a6f50a5a0d1f845a15f6cc3769d448a76ddef9b9076f691b80614430f",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-freebsd-arm64",
+    "version": "4.64.6",
+    "archive_sha256": "307225adaf0047bb8d4914ad1db1833e443bad3531539b9fa6a50045fb3a7794",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-freebsd-x64",
+    "version": "4.64.6",
+    "archive_sha256": "91694a445585b128e84a0ad3cd3dce548cd2a25cdf9d3070fa36e9e7d4f090b5",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-arm-gnueabihf",
+    "version": "4.64.6",
+    "archive_sha256": "11abd63ead064b8b637d870ab498fe0e0c833335330d6a61ff94feedd4c679c6",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-arm-musleabihf",
+    "version": "4.64.6",
+    "archive_sha256": "024ca3b21717ae090c148a1a302e036c026c90c9706065b94f979d7b340a568d",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-arm64-gnu",
+    "version": "4.64.6",
+    "archive_sha256": "2d9e012bc3da8708fe48788c5f65f0b592dc9f0556f1049f8c490e4e10f0d4e6",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-arm64-musl",
+    "version": "4.64.6",
+    "archive_sha256": "f1a93181d672b9bf388e455f9316fedb876a5c1a4afeb65e140c7a3cc0596dcc",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-loong64-gnu",
+    "version": "4.64.6",
+    "archive_sha256": "a907ba7765e5f39dbfb5fde47aa0e97c421ec8bb6bec37229b467612167d5d1e",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-loong64-musl",
+    "version": "4.64.6",
+    "archive_sha256": "14d7c2b7e1f9c6b9392a9b22e8926d62c811d1e512a78e76ced1c58c9a9a340e",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-ppc64-gnu",
+    "version": "4.64.6",
+    "archive_sha256": "46acda96fd5a28fabfd1815578ff7873665be77f25dfed23bb99f0f739828d8e",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-ppc64-musl",
+    "version": "4.64.6",
+    "archive_sha256": "19e679678a5f7a0f756fc52599b89502cc69964f63e532e65998bb0a471d8a0f",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-riscv64-gnu",
+    "version": "4.64.6",
+    "archive_sha256": "90becffb0179b72161ca343d6c648744059882ae4238736d466589729e46cdb1",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-riscv64-musl",
+    "version": "4.64.6",
+    "archive_sha256": "27d0abebb05da2c8dcc2f5ac6b268dc4fde83878eca0d914ee5d16203e120396",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-s390x-gnu",
+    "version": "4.64.6",
+    "archive_sha256": "d068ed39adf2070ccbaa2f00b8497104527532a8a7c6bf5580b65ee11f78470c",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-x64-gnu",
+    "version": "4.64.6",
+    "archive_sha256": "c85933881e9463e90175f3be21339821a57be2f49aea0ec413f053c6a2e467cd",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-linux-x64-musl",
+    "version": "4.64.6",
+    "archive_sha256": "242f23f80e73cdb99f8cf0a4ad94847b429fe09bee758e6227e4d95b6291af0f",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-openbsd-x64",
+    "version": "4.64.6",
+    "archive_sha256": "5a4053a0466938619af2abc6e5a582d284a8d6512cd83376809ae8ab6bc55843",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-openharmony-arm64",
+    "version": "4.64.6",
+    "archive_sha256": "a749542cf7a6ee10aaa63da189ea9e01298569d60d8325c8c0c5d444e7adc531",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-win32-arm64-msvc",
+    "version": "4.64.6",
+    "archive_sha256": "d2fd06991980d1c4c11f133003eb46383583e017d56a6d10d6e7897e545928b0",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-win32-ia32-msvc",
+    "version": "4.64.6",
+    "archive_sha256": "44474f1369514043b72ba88347c5291641ad8be9c4194d661665ca4c63794694",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-win32-x64-gnu",
+    "version": "4.64.6",
+    "archive_sha256": "4de017299334d1802b37c881387f02980b4f186c3c8a16efddf513bae64d97fb",
+    "notices": []
+  },
+  {
+    "name": "@rollup/rollup-win32-x64-msvc",
+    "version": "4.64.6",
+    "archive_sha256": "d2d798f80102ecc2cafa2eba12ddb58995d84d1802c187a94427735188bcd8d5",
+    "notices": []
+  },
+  {
+    "name": "@spz-loader/core",
+    "version": "0.3.1",
+    "archive_sha256": "c11fa0c71f2276ce414d62920116196fffeb1d7f445c185d3643a02586a64e78",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "4f1d9e0a474cd5c813d40d77465dfd0187d44a748b84b8d87a7a87817e14ac9e"
+      }
+    ]
+  },
+  {
+    "name": "@tauri-apps/api",
+    "version": "2.12.3",
+    "archive_sha256": "ccbd78474191de2beda977ca86cd763f0a9032c869734050f7a6eca1b5f72cc3",
+    "notices": [
+      {
+        "path": "package/LICENSE-APACHE-2.0",
+        "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+      },
+      {
+        "path": "package/LICENSE-MIT",
+        "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+      },
+      {
+        "path": "package/LICENSE.spdx",
+        "sha256": "5e834fe9788c524210deda859c46a550ffa5aa0cba9ea0572f0d81120e97c008"
+      }
+    ]
+  },
+  {
+    "name": "@tauri-apps/cli",
+    "version": "2.12.2",
+    "archive_sha256": "94c934381505c1599ca5f02a630896bf724fae53243d1def2c18e9e5c672992a",
+    "notices": [
+      {
+        "path": "package/LICENSE-MIT",
+        "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+      },
+      {
+        "path": "package/LICENSE-APACHE-2.0",
+        "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+      }
+    ]
+  },
+  {
+    "name": "@tauri-apps/cli-darwin-arm64",
+    "version": "2.12.2",
+    "archive_sha256": "fe455ca0c0fd6aeac9b29b649d0121a0e9ced559f799c3f54af075c97b39368a",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-darwin-x64",
+    "version": "2.12.2",
+    "archive_sha256": "6905952da0337c8a2697c3c00a0feb66d7a77d2702607cb55e413fead2ff6ead",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-linux-arm-gnueabihf",
+    "version": "2.12.2",
+    "archive_sha256": "587664505518dd2dd8fcdc8a6d0aab4f001e63eab0c94c669fe38efa29f63871",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-linux-arm64-gnu",
+    "version": "2.12.2",
+    "archive_sha256": "2a4d22bad71e51c376fa47fd3a5fa921a4c338dd2c19a47db55dbff216efe358",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-linux-arm64-musl",
+    "version": "2.12.2",
+    "archive_sha256": "f2b505f8b57421dc097dc2f552414bb567e2287b11d362ab0f39c59ba6b2316f",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-linux-riscv64-gnu",
+    "version": "2.12.2",
+    "archive_sha256": "a1a2b9cc47e22c38407aa51c85cb769c008870323d13976d275ca6b69c5558cc",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-linux-x64-gnu",
+    "version": "2.12.2",
+    "archive_sha256": "6ae18e84c297ce3da05f8eef96f9c95d12686fa73beed13458c2f68ae2471e4b",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-linux-x64-musl",
+    "version": "2.12.2",
+    "archive_sha256": "87b4de87a3745359346012f051ec76776f9691bf4a0801c2c3878ca27c7e119f",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-win32-arm64-msvc",
+    "version": "2.12.2",
+    "archive_sha256": "c79c78e0bca49bcd74d97d69f31cc780eb63ee5b8609c51811b7ac16eff0e469",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-win32-ia32-msvc",
+    "version": "2.12.2",
+    "archive_sha256": "f495cfa45cfaaaf4104cb4d1a3da5ba898686f7598170930f4e1b49b6c3ad8c8",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/cli-win32-x64-msvc",
+    "version": "2.12.2",
+    "archive_sha256": "779096ced783f2592706d0725bf5e52e2f5b54a79549a05c8125126b80effc72",
+    "notices": []
+  },
+  {
+    "name": "@tauri-apps/plugin-dialog",
+    "version": "2.8.2",
+    "archive_sha256": "0385b39a04d291464e83cbdef42007252c392fa9158a0efc101de6f47978de1d",
+    "notices": [
+      {
+        "path": "package/LICENSE.spdx",
+        "sha256": "eb8a6c84630461b352badcab1dbe5d0168c56d377358b2b8c86b51003272d5ef"
+      }
+    ]
+  },
+  {
+    "name": "@types/estree",
+    "version": "1.0.9",
+    "archive_sha256": "ec8f3c0dfb21497db5a3480c45a6cf6f9b18d3b337b2ea4d03e3ef2a9c2bb358",
+    "notices": [
+      {
+        "path": "estree/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+      }
+    ]
+  },
+  {
+    "name": "@types/geojson",
+    "version": "7946.0.16",
+    "archive_sha256": "5275058028351e9656972a31295f81b61637c641df6cc13766f48a5fdab1b39e",
+    "notices": [
+      {
+        "path": "geojson/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+      }
+    ]
+  },
+  {
+    "name": "@types/katex",
+    "version": "0.16.8",
+    "archive_sha256": "f9f54494b75d6c89ed93baf96d0d73d659e52a4318d67cbc6b99671772c4be96",
+    "notices": [
+      {
+        "path": "katex/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+      }
+    ]
+  },
+  {
+    "name": "@types/trusted-types",
+    "version": "2.0.7",
+    "archive_sha256": "28521d6d9bcb45f9527cf45b9346e9e2142e81b17c6518229973df04044941d3",
+    "notices": [
+      {
+        "path": "trusted-types/LICENSE",
+        "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+      }
+    ]
+  },
+  {
+    "name": "@zip.js/zip.js",
+    "version": "2.23.0",
+    "archive_sha256": "f19393bfefb5a232635ec48bc3650b846af49f30eb2f139bde540d1ce79b06cb",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "1b7ebc8d7889ed25491484ab2b102370742ca6c0b26650a0c62cc2269b579b84"
+      }
+    ]
+  },
+  {
+    "name": "autolinker",
+    "version": "4.1.5",
+    "archive_sha256": "c8591a5d0299ea50752c118022d49549d0c7f8640a873fb159c3536de496a334",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a75c69d29e268b13a47b3948afff8aff69475129f9058e3c951a585eb77150aa"
+      }
+    ]
+  },
+  {
+    "name": "bidi-js",
+    "version": "1.1.0",
+    "archive_sha256": "8a89fce4e2b00c5141929ecde8336e955901e8fa2c7f01c6b5c9732639dd4175",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "49d4d143fed599deb502a0fe6e02f49832f87e9a3a4cd0502e469596d50faa6d"
+      }
+    ]
+  },
+  {
+    "name": "bitmap-sdf",
+    "version": "1.0.4",
+    "archive_sha256": "2f27e16f9402592d596a5cc191c858aa48e87f285630a4c842494dadefc5be82",
+    "notices": []
+  },
+  {
+    "name": "cesium",
+    "version": "1.146.0",
+    "archive_sha256": "9e4166f2d61e1088c94c1161ab92493750959160e5a37893a8b8c50c494048d5",
+    "notices": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "721844bc0cdaa9b1a9a145dbca1f981e2de15a7e200a5d1fd9f5f1eed8e5d030"
+      }
+    ]
+  },
+  {
+    "name": "commander",
+    "version": "2.20.3",
+    "archive_sha256": "3c02903de017a98d4dc3fe2bed4900beb0d04cf7b679dca0915fd8c759652b55",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b"
+      }
+    ]
+  },
+  {
+    "name": "dompurify",
+    "version": "3.4.17",
+    "archive_sha256": "056cbdae276897208b88c21d1d779adfa09ad7be488a2f510a28e900d3bbffe7",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "path": "package/src/license_header",
+        "sha256": "5803fa925ae1703b9c752921c95a321570e6cabf06fcf2de895ddaf1687cebef"
+      },
+      {
+        "path": "package/LICENSE-MPL",
+        "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85"
+      }
+    ]
+  },
+  {
+    "name": "draco3d",
+    "version": "1.5.8",
+    "archive_sha256": "9cfcc38f18bf4dab1cb3ef5302b4bc5d2d646f9a9e7d07054e8933681047edd1",
+    "notices": []
+  },
+  {
+    "name": "earcut",
+    "version": "3.0.2",
+    "archive_sha256": "546b92493d021b05b5c3832edbae292ad3686848a3f434697b6338d4d74c8253",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "324139c19d87af03fda38afea1590e00ca354c4159bdb2ae9e9cec070cfa46a8"
+      }
+    ]
+  },
+  {
+    "name": "echarts",
+    "version": "6.1.0",
+    "archive_sha256": "681aff88cc1038c3fa941a3a53d1b177a52250b05335efc607d6105ae13be481",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "634293835b43a6dd2094fa39182a3d9a6b9ca43b7fdb9ac354e8037af2a3093a"
+      },
+      {
+        "path": "package/licenses/LICENSE-d3",
+        "sha256": "e1211892da0b0e0585b7aebe8f98c1274fba15bafe47fa1f4ee8a7a502c06304"
+      },
+      {
+        "path": "package/NOTICE",
+        "sha256": "d491d358344f842685c1b1585970999db65fe30ecf7ef3867af8814f4016c016"
+      }
+    ]
+  },
+  {
+    "name": "tslib",
+    "version": "2.3.0",
+    "archive_sha256": "ae285639feff7e3c39de4626352181a5d73b815725e42639b411c43848abffdb",
+    "notices": [
+      {
+        "path": "package/CopyrightNotice.txt",
+        "sha256": "dd835e67a9a297da32f9467d7677a5d02c8e50e10f15da43b810147c79c04b9b"
+      },
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751"
+      }
+    ]
+  },
+  {
+    "name": "esbuild",
+    "version": "0.25.12",
+    "archive_sha256": "227584145829e5c4782734b3fb7b91b49c6aa12876d6cf070e6a3d9d4de543f9",
+    "notices": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681"
+      }
+    ]
+  },
+  {
+    "name": "fdir",
+    "version": "6.5.0",
+    "archive_sha256": "241ddcd9f31e2a1fca405326017dbb8333ce174198e887f0f96387c29f0d365e",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "9a39f2aadab11a3697edd668ff2d8ad885b649737b7ab4d3bf12b34e5ada0c86"
+      }
+    ]
+  },
+  {
+    "name": "fsevents",
+    "version": "2.3.3",
+    "archive_sha256": "c77e7a5d5ff31dd7acea7c44d4a0455e0528cdacbd24a8cb6c82b66d239b587e",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2a8a5d6197bb97a018b8a190dd3ed853d750ca87c8e80c17aad41d6c6ff448e1"
+      }
+    ]
+  },
+  {
+    "name": "geographiclib-geodesic",
+    "version": "2.2.0",
+    "archive_sha256": "e35a1033b30873278880bd30faa37570502d1d5803d78bf7f45372d53cabec76",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "8df0455c90f6bb3efbabf3e225122654c438a09c2be5635cdd79472a0970247e"
+      }
+    ]
+  },
+  {
+    "name": "gl-matrix",
+    "version": "3.4.4",
+    "archive_sha256": "e08f1f9fc56d91d2aa1392e51cbc3db00d3eb9572dcb352acd9e187fc1a7e63a",
+    "notices": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "af62d31a0cdc1bf95d5e19428c3e0de368b727d9d5b6b6cdb466f8a52e68ad06"
+      }
+    ]
+  },
+  {
+    "name": "grapheme-splitter",
+    "version": "1.0.4",
+    "archive_sha256": "7615f25fb6d0196bf7c407423de690e2d379cf26542b09b40c5eddadb2321931",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "80420e1ac2df657805043343290631f7f709e821c5f6c97fb7699dc362fcd049"
+      }
+    ]
+  },
+  {
+    "name": "jsep",
+    "version": "1.6.0",
+    "archive_sha256": "39e947f4764789bf9ccc81e62a2fdce73f3788a2f5f73eeeed7483c58b9edb35",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4a4cffde4afd302689cd6aad9b05463a798d3dbe4cb2488bda45af1977affe33"
+      }
+    ]
+  },
+  {
+    "name": "json-stringify-pretty-compact",
+    "version": "4.0.0",
+    "archive_sha256": "f15336163c9de2e2d9b820516be061235f4eed93a0a4d5bc9593700799c25f4f",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "2d51145876dda3dd13253463b852aa83b78aa598b90fca1709f39f1740ff9a2f"
+      }
+    ]
+  },
+  {
+    "name": "katex",
+    "version": "0.19.0",
+    "archive_sha256": "d8e49f2fea6eeed7cdae2cf4fd48e2f1d348758aa9e5740715e4533c2c96d1ee",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3"
+      }
+    ]
+  },
+  {
+    "name": "commander",
+    "version": "15.0.0",
+    "archive_sha256": "632c1e039b31e98fa79c4fae5b10a5ffbbf9df0f21c9ffb3d74e95734b30696f",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "04512a63dce4d2d506ad612dc0bd7681ccf6e3655f7b6eaef7dfac8323d1ec0b"
+      }
+    ]
+  },
+  {
+    "name": "kdbush",
+    "version": "4.1.0",
+    "archive_sha256": "ffa16406d8b2f856c9b550c2c6c611a9775392c3791d42a37d131d745c66842b",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "0aba693a2c2e5b1b1465f9e06d29c21769450add9dbb7dc915b41a60e900196f"
+      }
+    ]
+  },
+  {
+    "name": "ktx-parse",
+    "version": "2.0.0",
+    "archive_sha256": "608908d207488fb8500ed001aab046e78fc677238e4f867023a75f2d248baba1",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "79847431f9ecef9cf399085cb863452e71a6dab99738f4f0c1ea06c6484b5692"
+      }
+    ]
+  },
+  {
+    "name": "lerc",
+    "version": "2.0.0",
+    "archive_sha256": "d774dc5172a7ee1f47326114e27c10c2b13564255a83fd11eafe816e6d257674",
+    "notices": []
+  },
+  {
+    "name": "long",
+    "version": "5.3.2",
+    "archive_sha256": "68033e466773df7d52c9e59341bb729d83716cd920c56460395724456d646b26",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      }
+    ]
+  },
+  {
+    "name": "maplibre-gl",
+    "version": "6.14.0",
+    "archive_sha256": "f799682e7a2d189e43d18ccf6889d09d1e8547e2cab4ba79d7360cc96630207e",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "ee5fc05a0677eaf69601d2c7db0d9ecd6cc27c3abc1d0733bc9ed34707cf8ef2"
+      }
+    ]
+  },
+  {
+    "name": "earcut",
+    "version": "3.2.4",
+    "archive_sha256": "2f63624cc056e4f2f8109a84d10fff3daeea37581af14af0f612ff387cc2534a",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "0b348fff56384b43dbb37593906904e56d0f9deb51eae590d4dc6d427fbf1808"
+      }
+    ]
+  },
+  {
+    "name": "marked",
+    "version": "18.1.1",
+    "archive_sha256": "c05b3cff890d35e1208805a01fd0501571d09a81e725de0559b10bdfae90adad",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "8e3a3f82f59a60958f56ca08f445647c32a4733dc7ca6c2c46f6eb898471ab9c"
+      }
+    ]
+  },
+  {
+    "name": "mersenne-twister",
+    "version": "1.1.0",
+    "archive_sha256": "4d2981ae4cd92a0f7c980f46adb9a89cc0b7c602ef1f15737ebec3614d653b1a",
+    "notices": []
+  },
+  {
+    "name": "minimist",
+    "version": "1.2.8",
+    "archive_sha256": "350a76c115b393c19d24654834261e5dc9f0e8cc5e08f3937fa80140f3e4ce83",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "435a6722c786b0a56fbe7387028f1d9d3f3a2d0fb615bb8fee118727c3f59b7b"
+      }
+    ]
+  },
+  {
+    "name": "murmurhash-js",
+    "version": "1.0.0",
+    "archive_sha256": "0807f0738886929c36e3274e6bf0721efe9ba81d6edbe5ad9ec11ab5cb8ecc12",
+    "notices": []
+  },
+  {
+    "name": "nanoid",
+    "version": "3.3.20",
+    "archive_sha256": "5ae134779aa22c2c04b691d361bc1f3c004c354e81c7ee166ea1c6e848eedc4f",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "da4db1480d9beea3483a2eda5c53b22238d0827d57da162b48f122e04d2d9987"
+      }
+    ]
+  },
+  {
+    "name": "nosleep.js",
+    "version": "0.12.0",
+    "archive_sha256": "8083971ff9a9044b127ead9890803d6ccc0cdd5800d3a85397f2cfaa8d3bec80",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "175c95ad096cc498fc1dd017fba6cb36cbc9b3c8b01aff55d8e175fd053c5501"
+      }
+    ]
+  },
+  {
+    "name": "pako",
+    "version": "3.0.2",
+    "archive_sha256": "719368da5207e3c181887351e71be836e4c61e52fad0eeeed7fe7441af34480e",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a04665b3b2de56c66730c1f720f528175739e4104f79073614aa611da1e85539"
+      }
+    ]
+  },
+  {
+    "name": "pbf",
+    "version": "5.1.2",
+    "archive_sha256": "3b3dc3c096a3a264ae68722d1e380893d89d56161093f8e90b1910020fbdb5d7",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "fdf1d5279107d760c7df8c6edab1faab2b72ba17528273a8b417b08f1e12ebbe"
+      }
+    ]
+  },
+  {
+    "name": "picocolors",
+    "version": "1.1.1",
+    "archive_sha256": "d3aedb2807967b7eb37fd11b03b7e3701e725af79c650d0812ff7213f8f882d9",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "6582629e2979466878f6014313dcc2f3756c9616148682227ce3063dde310750"
+      }
+    ]
+  },
+  {
+    "name": "picomatch",
+    "version": "4.0.7",
+    "archive_sha256": "697b463be3cdbd9ffc8f4194fd5019a69ddf95875fb703d78b2b115cc9e740a8",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "d0cd141b0c322fded5dfad1d4645bb2fedfc05b7321fe1009469638190d59ef9"
+      }
+    ]
+  },
+  {
+    "name": "playwright",
+    "version": "1.64.0",
+    "archive_sha256": "55cf2db31a1d9037b050ac272bec7a824c3c9ed3ef75a6e26d6e9e89d104f155",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb"
+      },
+      {
+        "path": "package/NOTICE",
+        "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d"
+      }
+    ]
+  },
+  {
+    "name": "playwright-core",
+    "version": "1.64.0",
+    "archive_sha256": "90c8b6b19da0a1b1e9a004cd6ff3e49e82668a0856e01efcc0e2d9c2b4466bb6",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb"
+      },
+      {
+        "path": "package/NOTICE",
+        "sha256": "6d602191187b35b9b01d2cffa01c8469c2c8d9de8a96f1bf868e0f264f51c81d"
+      }
+    ]
+  },
+  {
+    "name": "pngjs",
+    "version": "7.0.0",
+    "archive_sha256": "c4b71873d48a692dd5eeb1dcb62185c7aafe40f2180c7cc7f30ec71e89a080be",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "be75ef59c5cf59715588a17a82dff7dd3e83c4dba3c458676bb9311e05fbedc5"
+      }
+    ]
+  },
+  {
+    "name": "postcss",
+    "version": "8.5.30",
+    "archive_sha256": "495f29b8717b6afb646986cf8dbb92364de5139905c7651c1a5f5ef6181c42c1",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "5be1f3465bba68a626777f984878814aaf35e7ef8e9fd314d469bcf887050fb8"
+      }
+    ]
+  },
+  {
+    "name": "potpack",
+    "version": "2.1.0",
+    "archive_sha256": "dac2dd4009e2fad0862b723423c8333162e8a6f4d87604af1de23fdec490587c",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "cfec0482fb785fe27e3b368a2d9e84bf7a61b275e83ec582bf288e98cd530bb0"
+      }
+    ]
+  },
+  {
+    "name": "prettier",
+    "version": "3.9.10",
+    "archive_sha256": "9dc72045591793dff972432fb78722f7ab91aaa90a7fa8c1261ede55969246b7",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "b0f2417199889f1c0d28ec4e0244eacf1a15de5819d61f641dd7d8f45153ac9c"
+      }
+    ]
+  },
+  {
+    "name": "protobufjs",
+    "version": "8.8.1",
+    "archive_sha256": "1e32c0bc7535f2d5e82b56e59b40be340d08a1eeb751db6cb8b8f8db9e5b345a",
+    "notices": [
+      {
+        "path": "package/google/LICENSE",
+        "sha256": "4ab87e6e3c0c0b78e47c77d49ec10c048f8a519fb8062e6e3217e3e6e9b0c6e9"
+      },
+      {
+        "path": "package/LICENSE",
+        "sha256": "49d6a1c9a623784c61c6cb70f773f3457faceb1914a13c8560a9823b7631950c"
+      }
+    ]
+  },
+  {
+    "name": "protocol-buffers-schema",
+    "version": "3.6.1",
+    "archive_sha256": "907f8fd7d60cc2a96875b128e161b0013bdef8c2523012d3041a0f72f20de852",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "3fe8d55a98dbf260eace67c00cf9bc53edb46234e840098a0b93df3096b97fb6"
+      }
+    ]
+  },
+  {
+    "name": "quickselect",
+    "version": "3.0.0",
+    "archive_sha256": "2cf90a3c6f9eb7ccb618bc31e362a615f9f46de593b8465176d883e66b5f8c84",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "238ddb00e12a420a54e060afa19bdab4f70bf49e0e2a8ebb1a5e851f9ef447df"
+      }
+    ]
+  },
+  {
+    "name": "rbush",
+    "version": "4.0.1",
+    "archive_sha256": "a014b9d13d72b4cb657badb2961fc24429324b9db0dc1aa13f83d8dde81da410",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "bf20b07b8e41f306d22b73bfa6b0e248e81ee8caaa6a04285acb0b8e963c01ec"
+      }
+    ]
+  },
+  {
+    "name": "require-from-string",
+    "version": "2.0.2",
+    "archive_sha256": "cb694a4965908f7775a0c757f00cf4e624d193cd71d77988fbcca0f597b88d82",
+    "notices": [
+      {
+        "path": "package/license",
+        "sha256": "6ee0feb1f6ef996ff5a68600f8cf98909cf412d39ef3cdceaefd87d636fa1b7f"
+      }
+    ]
+  },
+  {
+    "name": "resolve-protobuf-schema",
+    "version": "2.1.0",
+    "archive_sha256": "3e80010114da31a6f2a09345c62b7b9d67640d816df0f5099cecdeb9342517c5",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "c0993ca46cd47c09710a977d3a3d51602cff96f19e8d2eb8d5887aa20a7beead"
+      }
+    ]
+  },
+  {
+    "name": "rollup",
+    "version": "4.64.6",
+    "archive_sha256": "85b859609fb6e48c50edc8f83c70efc60dc329b76e38e69eb5c245bd2160f272",
+    "notices": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "fa1bd040c5bdeefe65b3821cebf474f2733ce65df13089bd151dda1778e62fe8"
+      }
+    ]
+  },
+  {
+    "name": "source-map-js",
+    "version": "1.2.2",
+    "archive_sha256": "05c8cf8e7c3a6b56cada7668fe9342b10f4b625efc92aba9ba05b9e8fe4d71a3",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd"
+      }
+    ]
+  },
+  {
+    "name": "tinyglobby",
+    "version": "0.2.17",
+    "archive_sha256": "afb4afae9175f8b873ac13e1d21cea0997a0bcb40c3598613a834490058cb562",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "22c68811e174cbbfb3813d4135918df4f540959c14d872e601d9abe83d3cde8f"
+      }
+    ]
+  },
+  {
+    "name": "tinyqueue",
+    "version": "3.0.0",
+    "archive_sha256": "64d0414e61332c1ee6a2a99a26d42e847d8650d32b2bea232b563e01bbe643ae",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "780453e05abdc22307ee01c706a2e73f508d3e484fc4c804485ebf6fe0964694"
+      }
+    ]
+  },
+  {
+    "name": "topojson-client",
+    "version": "3.1.0",
+    "archive_sha256": "889fadb422f6236d0f8337a236ce6499f258b75e44b81733b13bd971067322bf",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "4c4d15b635e04e691825a76db7d33f7f2033b55669a7430011694f31e6c65999"
+      }
+    ]
+  },
+  {
+    "name": "tslib",
+    "version": "2.8.1",
+    "archive_sha256": "66f635d5eeabae44807534976913a102cf615b9a045368359c9f79ae6ee2119e",
+    "notices": [
+      {
+        "path": "package/CopyrightNotice.txt",
+        "sha256": "da16ddb65f8ca390998fb99223d0112498b56b45784d00afd77ff8ce1ac4de8b"
+      },
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751"
+      }
+    ]
+  },
+  {
+    "name": "typescript",
+    "version": "5.9.3",
+    "archive_sha256": "10e108c9cf7d5f2879053dff18515fb405abf2ccef63eaaf017d9c571687a1d3",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "a7d00bfd54525bc694b6e32f64c7ebcf5e6b7ae3657be5cc12767bce74654a47"
+      }
+    ]
+  },
+  {
+    "name": "urijs",
+    "version": "1.19.11",
+    "archive_sha256": "b146d0ea58c319cb615df5975c643bddc2630d9909705d0b638dcaa0488a6bf9",
+    "notices": [
+      {
+        "path": "package/LICENSE.txt",
+        "sha256": "b5b3bf9d3cf72a31b84dac19028c818e980ac91c2f0384cbe210fd31b9585a5e"
+      }
+    ]
+  },
+  {
+    "name": "vite",
+    "version": "6.4.4",
+    "archive_sha256": "09242e9a1f45c17ef96402dc1b39cfcf93b6a65a5bc965622641be50830fa71b",
+    "notices": [
+      {
+        "path": "package/LICENSE.md",
+        "sha256": "008938a3441801ca3960f8e3ccb4c0738e7996442a53063141d57d3769a7344d"
+      }
+    ]
+  },
+  {
+    "name": "zrender",
+    "version": "6.1.0",
+    "archive_sha256": "38f2fb722a638be016ca0175b139c40c886ef47fc2afdb741b2e7e7ae9683f9c",
+    "notices": [
+      {
+        "path": "package/LICENSE",
+        "sha256": "a681e9d183c72b4af4856935893805eb48c08f0f5a3f260203db7444c20fb98a"
+      }
+    ]
+  }
+]

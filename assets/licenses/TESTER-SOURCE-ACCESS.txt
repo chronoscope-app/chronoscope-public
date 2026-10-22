@@ -1,0 +1,25 @@
+Chronoscope tester source access
+
+Exact application and dependency source archives accompany the executable on:
+https://github.com/chronoscope-app/chronoscope-public/releases/tag/tester-20261022
+
+Download chronoscope-source.zip (complete application/local crates/patched GLib)
+and chronoscope-dependency-sources.tar.xz (exact checksum-verified Cargo and npm
+registry archives with original license/copyright/NOTICE files). SHA256SUMS.txt
+and SOURCE-ACCESS.json identify the matching revisions. Extract .crate/.tgz
+archives with tar. MPL-covered files remain under MPL-2.0; their exact sources
+are provided in the dependency archive, including conservative extra platform
+packages. Apache-2.0 alternatives are selected where offered; combined/AND
+obligations and independent data/media terms remain applicable.
+
+The application source includes frontend/vite.config.ts modification replacing
+Knockout global eval lookup with globalThis and vendor/glib/BACKPORT.md.
+Build/replacement commands and exact toolchain are in .github/workflows/build.yml
+and docs/DISTRIBUTION.md. You may modify covered libraries and reverse-engineer
+for debugging those modifications to the extent required by their licenses.
+Linux native source/replacement records are separately required for Linux
+redistribution; registry archives do not stand in for distro source packages.
+
+No executable may be published at that tag until both source archives are
+attached and anonymously retrievable. Preserve this notice with redistributed
+installers/apps, along with all applicable upstream texts.

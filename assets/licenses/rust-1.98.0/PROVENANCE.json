@@ -1,0 +1,23 @@
+[
+  {
+    "path": "LICENSE-APACHE",
+    "url": "https://raw.githubusercontent.com/rust-lang/rust/1.98.0/LICENSE-APACHE",
+    "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+  },
+  {
+    "path": "LICENSE-MIT",
+    "url": "https://raw.githubusercontent.com/rust-lang/rust/1.98.0/LICENSE-MIT",
+    "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1"
+  },
+  {
+    "path": "COPYRIGHT",
+    "url": "https://raw.githubusercontent.com/rust-lang/rust/1.98.0/COPYRIGHT",
+    "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af"
+  },
+  {
+    "path": "COPYRIGHT-library.html",
+    "origin": "Official installed rustup toolchain rustc1.98.0 (88d9e12ae 2026-08-18) generated stdlib notice subset",
+    "sha256": "68129500b616d5838629e68f55ff3aed5e096dacf60ce9eb41bbe599a563afa6",
+    "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.0\nLLVM version: 22.1.8\n"
+  }
+]
