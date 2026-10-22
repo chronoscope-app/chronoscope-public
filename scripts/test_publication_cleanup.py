@@ -4,6 +4,7 @@ import importlib.util
 import json
 from pathlib import Path
 import unittest
+from unittest import mock
 import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -30,6 +31,47 @@ class PublicationCleanup(unittest.TestCase):
             self.assertTrue(flags[-1].endswith("=/chronoscope"))
             self.assertTrue(flags[-2].endswith("=/cargo"))
             self.assertTrue(flags[-3].endswith("=/build-home"))
+
+    def test_windows_npm_launcher_resolves_without_shell_or_argument_rewriting(self):
+        command = ['npm', '--prefix', 'frontend', 'run', 'tauri', '--', 'build', '--', '--locked']
+        environment = portable.build_environment({'PATH': r'C:\Program Files\nodejs',
+            'CARGO_ENCODED_RUSTFLAGS': '-C\x1f' + r'link-arg=C:\sdk folder\foo.lib'})
+        with mock.patch.object(portable.sys, 'platform', 'win32'), \
+             mock.patch.object(portable.shutil, 'which', return_value=r'C:\Program Files\nodejs\npm.cmd') as lookup, \
+             mock.patch.object(portable.subprocess, 'run', return_value=mock.Mock(returncode=7)) as run:
+            self.assertEqual(portable.run_command(command, environment), 7)
+        lookup.assert_called_once_with('npm', path=environment['PATH'])
+        run.assert_called_once_with([r'C:\Program Files\nodejs\npm.cmd', *command[1:]],
+                                    cwd=portable.root, env=environment)
+        self.assertEqual(command[0], 'npm')  # Do not mutate caller arguments.
+        self.assertTrue(environment['CARGO_ENCODED_RUSTFLAGS'].startswith('-C\x1f' + r'link-arg=C:\sdk folder\foo.lib' + '\x1f'))
+
+    def test_windows_cargo_launcher_preserves_locked_flags(self):
+        command = ['cargo', 'build', '--locked', '--release', '-p', 'chronoscope']
+        with mock.patch.object(portable.sys, 'platform', 'win32'), \
+             mock.patch.object(portable.shutil, 'which', return_value=r'C:\Rust tools\cargo.exe'), \
+             mock.patch.object(portable.subprocess, 'run', return_value=mock.Mock(returncode=0)) as run:
+            self.assertEqual(portable.run_command(command, {}), 0)
+        run.assert_called_once_with([r'C:\Rust tools\cargo.exe', *command[1:]], cwd=portable.root, env={})
+
+    def test_missing_windows_launcher_fails_before_subprocess(self):
+        with mock.patch.object(portable.sys, 'platform', 'win32'), \
+             mock.patch.object(portable.shutil, 'which', return_value=None), \
+             mock.patch.object(portable.subprocess, 'run') as run:
+            with self.assertRaises(FileNotFoundError):
+                portable.run_command(['npm', 'run', 'build'], {'PATH': ''})
+        run.assert_not_called()
+
+    def test_posix_launcher_and_literal_arguments_are_unchanged(self):
+        command = ['./tool with spaces', '--locked', 'literal & text', '%PATH%', '"quoted"']
+        for platform in ['linux', 'darwin']:
+            with self.subTest(platform=platform), \
+                 mock.patch.object(portable.sys, 'platform', platform), \
+                 mock.patch.object(portable.shutil, 'which') as lookup, \
+                 mock.patch.object(portable.subprocess, 'run', return_value=mock.Mock(returncode=0)) as run:
+                self.assertEqual(portable.run_command(command, {}), 0)
+                lookup.assert_not_called()
+                run.assert_called_once_with(command, cwd=portable.root, env={})
 
     def test_sample_credit_and_records(self):
         with zipfile.ZipFile(ROOT/"samples/animal-gps-black-rock-forest-2023-03.chronoscope") as archive:
