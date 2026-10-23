@@ -226,14 +226,37 @@ pub fn command_schema(command: &str) -> Option<Value> {
             json!({"plan":crate::analysis_assist::plan_schema()}),
             vec!["plan"],
         ),
+        "assist_ui" => (
+            json!({"action":choice(&["open-explain","open-tags","generate","cancel","status","close"]),"provider":choice(&["apple-local","connected"]),"field":string(),"source":object(json!({"result_id":string(),"scan_id":string(),"finding_id":string()}),&[])}),
+            vec!["action"],
+        ),
+        "assist_status" => (json!({}), vec![]),
+        "assist_explain" => (
+            json!({"provider":choice(&["apple-local","connected"]),"source":{"oneOf":[object(json!({"kind":{"const":"analysis"},"result_id":string()}),&["kind","result_id"]),object(json!({"kind":{"const":"pattern"},"scan_id":string(),"finding_id":string()}),&["kind","scan_id","finding_id"])]}}),
+            vec!["provider", "source"],
+        ),
+        "assist_tags" => (
+            json!({"provider":choice(&["apple-local","connected"]),"ids":{"type":"array","items":id(),"minItems":1,"maxItems":25},"field":string(),"expected_revision":integer(0,i64::MAX),"expected_workspace":string()}),
+            vec![
+                "provider",
+                "ids",
+                "field",
+                "expected_revision",
+                "expected_workspace",
+            ],
+        ),
+        "assist_tags_apply" => (
+            json!({"items":{"type":"array","minItems":1,"maxItems":25,"items":object(json!({"id":id(),"tags":{"type":"array","minItems":1,"maxItems":5,"items":{"type":"string","minLength":1,"maxLength":64}}}),&["id","tags"])}}),
+            vec!["items", "expected_revision", "expected_workspace"],
+        ),
         "si_apple_status" => (json!({}), vec![]),
         "si_status" | "si_disconnect" | "si_cancel" | "si_history" | "si_clear" => {
             (json!({}), vec![])
         }
         "si_permissions" => (json!({"root":nullable(string())}), vec!["root"]),
         "si_configure" => (
-            json!({"provider":choice(&["openai-compatible","apple-local"]),"url":{"type":"string","maxLength":2048},"model":{"type":"string","minLength":1,"maxLength":256},"api_key":{"type":"string","maxLength":8192},"root":nullable(string()),"client_certificate":nullable(object(json!({"origin":string(),"kind":choice(&["disabled","macos-keychain","windows-store","pkcs11"]),"identity":string()}), &["origin","kind","identity"]))}),
-            vec![],
+            json!({"provider":choice(&["openai-compatible"]),"url":{"type":"string","maxLength":2048},"model":{"type":"string","minLength":1,"maxLength":256},"api_key":{"type":"string","maxLength":8192},"root":nullable(string()),"client_certificate":nullable(object(json!({"origin":string(),"kind":choice(&["disabled","macos-keychain","windows-store","pkcs11"]),"identity":string()}), &["origin","kind","identity"]))}),
+            vec!["url", "model"],
         ),
         "si_chat_draft" => (
             json!({"text":{"type":"string","maxLength":1048576},"session_id":nullable(string())}),
@@ -522,12 +545,6 @@ pub fn command_schema(command: &str) -> Option<Value> {
             "idempotency_key".into(),
             json!({"type":"string","minLength":1,"maxLength":128}),
         );
-    }
-    if command == "si_configure" {
-        schema["oneOf"] = json!([
-          {"properties":{"provider":{"const":"apple-local"}},"required":["provider"]},
-          {"properties":{"provider":{"const":"openai-compatible"}},"required":["url","model"]}
-        ]);
     }
     if command == "attribute_table" {
         let properties = schema["properties"].as_object_mut().unwrap();

@@ -1,6 +1,6 @@
 # SI analytics engine
 
-Chronoscope calculates structured-data answers in Rust and SQLite. SI chooses a capability, submits a validated plan and explains evidence. It does not need to read thousands of Events into its context or calculate their statistics. The same engine is available to the UI, CLI, MCP server, hosted SI and Apple Intelligence.
+Chronoscope calculates structured-data answers in Rust and SQLite. SI chooses a capability, submits a validated plan and explains evidence. It does not need to read thousands of Events into its context or calculate their statistics. The same engine is available to the UI, CLI, MCP server and connected SI model services.
 
 ## In the app
 
@@ -96,7 +96,7 @@ Chart previews currently cover the displayed result page, with explicit labels. 
 
 `cargo test --test analytics_engine` covers all nineteen operations with known-answer fixtures, exact large IDs, save/reopen, stale results, selection/filter semantics, validation, isolation from concurrent edits and a 200,001-Event full-scope/budget fixture. `tests/assistant_aggregation.rs` exercises real SI discovery/describe/run through a mocked service and the actual Rust executor. The mock tests orchestration, not an LLM's reasoning quality.
 
-`scripts/test_analytics_engine.py` uses NumPy/SciPy/scikit-learn as independent QA oracles against the bundled public Atlantic hurricane data and actual CLI/MCP. They are optional development dependencies, not application runtimes. `frontend/scripts/analytics-qa.mjs` exercises the real Rust service and browser Results UI offline. `npm --prefix frontend run test:apple-local` remains the opt-in real Apple Foundation Models test on supported macOS; Linux cannot validate native model behavior or Swift SDK compilation.
+`scripts/test_analytics_engine.py` uses NumPy/SciPy/scikit-learn as independent QA oracles against the bundled public Atlantic hurricane data and actual CLI/MCP. They are optional development dependencies, not application runtimes. `frontend/scripts/analytics-qa.mjs` exercises the real Rust service and browser Results UI offline. Apple Intelligence is retired as an SI Chat provider; its historical model tests are archived as earlier-version evidence.
 
 
 Canonical Event clocks retain seconds and fractions as binary64 UTC Unix seconds. Trajectory elapsed times and speed calculations use stable duration subtraction; encounter/dwell/gap thresholds can be fractional seconds. Comparison boundaries need not align to minutes. Calendar series offer second buckets, Charts offers millisecond/second/minute intervals, and FFT permits explicit fractional-second widths. Finer output does not improve the original source's measurement precision; inspect timestamp granularity and gaps before interpreting high-frequency results. See the temporal precision section in ARCHITECTURE.md for numeric limits and old-workspace migration.

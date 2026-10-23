@@ -3,8 +3,8 @@
 use crate::engine::Engine;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
-mod apple;
 mod chat;
+pub(crate) mod features;
 mod transport;
 use std::{
     path::PathBuf,
@@ -34,6 +34,8 @@ struct Connection {
 #[derive(Default)]
 pub struct Assistant {
     chat: Mutex<chat::Chat>,
+    feature_worker: Mutex<()>,
+    feature_http: Arc<AtomicBool>,
     connection: Mutex<Option<Connection>>,
     running: Mutex<Option<Arc<AtomicBool>>>,
     session: std::sync::atomic::AtomicU64,
@@ -137,9 +139,12 @@ impl Assistant {
                             .filter(|b| b.len() < 16384)
                             .and_then(|b| serde_json::from_slice(&b).ok())
                     })
+                    .filter(|s: &Settings| {
+                        s.provider.is_empty() || s.provider == "openai-compatible"
+                    })
                     .unwrap_or_default();
                 Ok(
-                    json!({"provider":if settings.provider=="apple-local" {"apple-local"}else{"openai-compatible"},"url":settings.url,"model":settings.model,"root":settings.root,"connected":connection.is_some(),"key_present":connection.as_ref().is_some_and(|c|!c.key.is_empty()),"running":running.is_some(),"protocol":if settings.provider=="apple-local" {"Apple Foundation Models; on-device tool calling"}else{"OpenAI-compatible Chat Completions with tool calling"},"key_storage":"memory only; reconnect after restart","client_certificate":settings.client_certificate,"client_certificate_kind":crate::wmts_auth::platform_kind(),"automatic_client_certificate":cfg!(any(target_os="macos",target_os="windows"))}),
+                    json!({"provider":"openai-compatible","url":settings.url,"model":settings.model,"root":settings.root,"connected":connection.is_some(),"key_present":connection.as_ref().is_some_and(|c|!c.key.is_empty()),"running":running.is_some(),"protocol":"OpenAI-compatible Chat Completions with tool calling","key_storage":"memory only; reconnect after restart","client_certificate":settings.client_certificate,"client_certificate_kind":crate::wmts_auth::platform_kind(),"automatic_client_certificate":cfg!(any(target_os="macos",target_os="windows"))}),
                 )
             }
             "si_configure" => {
@@ -154,32 +159,15 @@ impl Assistant {
                     .as_str()
                     .unwrap_or("openai-compatible")
                     .to_string();
-                let local = provider == "apple-local";
-                if local {
-                    let status = crate::apple_intelligence::status()?;
-                    if status["available"] != true {
-                        return Err(format!(
-                            "UNAVAILABLE: {}",
-                            status["reason"]
-                                .as_str()
-                                .unwrap_or("Apple Intelligence unavailable")
-                        ));
-                    }
+                if provider != "openai-compatible" {
+                    return Err("INVALID_ARGUMENT: SI Chat requires an OpenAI-compatible model service; Apple Intelligence chat has been retired".into());
                 }
-                let url = if local {
-                    String::new()
-                } else {
-                    endpoint(args["url"].as_str().ok_or("Provide an SI service URL")?)?
-                };
-                let model = if local {
-                    "Apple on-device".into()
-                } else {
-                    args["model"]
-                        .as_str()
-                        .ok_or("Provide an SI model")?
-                        .trim()
-                        .to_string()
-                };
+                let url = endpoint(args["url"].as_str().ok_or("Provide an SI service URL")?)?;
+                let model = args["model"]
+                    .as_str()
+                    .ok_or("Provide an SI model")?
+                    .trim()
+                    .to_string();
                 if model.is_empty() {
                     return Err("Invalid SI model name".into());
                 }
@@ -194,7 +182,7 @@ impl Assistant {
                     };
                 if let Some(profile) = client_certificate.as_mut() {
                     profile.validate()?;
-                    if local || crate::wmts_auth::origin(&url)? != profile.origin {
+                    if crate::wmts_auth::origin(&url)? != profile.origin {
                         return Err(
                             "SI client certificate must match the service's exact HTTPS origin"
                                 .into(),
@@ -223,9 +211,6 @@ impl Assistant {
                     .transpose()?;
                 if root.as_ref().is_some_and(|r| !r.is_dir()) {
                     return Err("SI file-access root must be a folder".into());
-                }
-                if local && (!key.is_empty() || root.is_some()) {
-                    return Err("Local SI does not accept API keys or file grants".into());
                 }
                 *self.analysis_report.lock().map_err(|_| "SI unavailable")? = None;
                 let settings = Settings {
@@ -277,11 +262,8 @@ impl Assistant {
                     }
                     self.chat_clear()?;
                 }
-                let local = connection
-                    .as_ref()
-                    .is_some_and(|c| c.settings.provider == "apple-local");
                 Ok(
-                    json!({"messages":connection.as_ref().map(|c| c.history.clone()).unwrap_or_default(),"limit_messages":if local {Value::Null}else{json!(32)},"limit_bytes":if local {Value::Null}else{json!(98304)}}),
+                    json!({"messages":connection.as_ref().map(|c| c.history.clone()).unwrap_or_default(),"limit_messages":32,"limit_bytes":98304}),
                 )
             }
             "si_permissions" => {
@@ -304,9 +286,6 @@ impl Assistant {
                 }
                 let mut connection = self.connection.lock().map_err(|_| "SI unavailable")?;
                 let c = connection.as_mut().ok_or("Connect an SI service first")?;
-                if c.settings.provider == "apple-local" && root.is_some() {
-                    return Err("Local SI uses workspace tools without file grants".into());
-                }
                 c.settings.root = root.clone();
                 // Grants last only for this connection, and do not require resending a key.
                 Ok(json!({"root":root}))
@@ -359,7 +338,6 @@ impl Assistant {
         prompt: &Value,
         answer: &str,
         cancelled: &AtomicBool,
-        retained_history: Option<usize>,
     ) -> Result<(), String> {
         let mut connection = self.connection.lock().map_err(|_| "SI unavailable")?;
         if cancelled.load(Ordering::Relaxed) {
@@ -368,15 +346,8 @@ impl Assistant {
         if let Some(c) = connection.as_mut().filter(|c| c.session == session) {
             // Keep complete turn pairs. Large service responses are bounded in history,
             // with an explicit truncation marker; full answers still reach the caller.
-            let local = c.settings.provider == "apple-local";
-            if local {
-                if let Some(retained) = retained_history {
-                    let remove = c.history.len() - retained.min(c.history.len()) / 2 * 2;
-                    c.history.drain(..remove);
-                }
-            }
             let bounded = |value: &str| {
-                if local || value.len() <= 32768 {
+                if value.len() <= 32768 {
                     value.to_string()
                 } else {
                     let mut end = 32768;
@@ -390,8 +361,7 @@ impl Assistant {
                 .push(json!({"role":"user","content":bounded(prompt.as_str().unwrap_or(""))}));
             c.history
                 .push(json!({"role":"assistant","content":bounded(answer)}));
-            while !local
-                && c.history.len() > 2
+            while c.history.len() > 2
                 && (c.history.len() > 32
                     || serde_json::to_vec(&c.history)
                         .map_err(|_| "Invalid SI history")?
@@ -403,61 +373,6 @@ impl Assistant {
             self.chat_record_direct(c.session, prompt.as_str().unwrap_or(""), answer)?;
         }
         Ok(())
-    }
-    fn run_local(&self, engine: &Engine, args: &Value, history: &[Value]) -> Result<Value, String> {
-        let snapshot = engine.invoke(
-            "snapshot",
-            json!({"compact":true,"include_statistics":false,"selection_limit":0}),
-        )?;
-        let tools = apple::Tools::new(
-            engine,
-            args["allow_edits"].as_bool().unwrap_or(false),
-            args["allow_external_actions"].as_bool().unwrap_or(false),
-        )?;
-        // Live facts and a compact, grant-aware inventory orient broad questions.
-        // Column metadata and raw rows remain available on demand through tools.
-        let workspace = json!({
-            "name":snapshot["name"],
-            "event_count":snapshot["count"],
-            "visible_count":snapshot["visible"],
-            "selected_count":snapshot["selected_count"],
-            "time_bounds_utc_epoch_seconds":snapshot["time_bounds"],
-            "view":snapshot["scene"]["mode"],
-            "time_filter_utc_epoch_seconds":{"start":snapshot["filter"]["start"],"end":snapshot["filter"]["end"]},
-            "summary_only":true,
-            "data_access": "Actual records can be queried, profiled, grouped and analyzed with the available tools.",
-            "available_operations":tools.overview()
-        });
-        let mut audit = vec![];
-        let response = crate::apple_intelligence::request_with_tools(
-            json!({
-                "operation":"chat", "prompt":args["prompt"],
-                "history":history, "workspace":workspace.to_string(),
-                "tools_available":!tools.names().is_empty(),
-                "max_tool_calls":crate::apple_intelligence::MAX_TOOL_CALLS
-            }),
-            |name, arguments| {
-                let result = tools.execute(engine, name, arguments);
-                audit.push(audit_entry(name, &result));
-                result.map(apple::bounded)
-            },
-        )
-        .map_err(|error| {
-            if audit.is_empty() {
-                error
-            } else {
-                format!(
-                    "{error}. Completed tool log (inspect before retrying): {}",
-                    json!(audit)
-                )
-            }
-        })?;
-        let answer = response["answer"]
-            .as_str()
-            .ok_or("Missing native SI response")?;
-        Ok(
-            json!({"answer":answer,"steps":1,"completed":true,"tool_calls":audit,"context":response["context"]}),
-        )
     }
     fn cancel(&self) {
         if let Ok(running) = self.running.lock() {
@@ -524,19 +439,6 @@ impl Assistant {
             return Err(
                 "CONFLICT: SI connection or conversation changed before the request started".into(),
             );
-        }
-        if settings.provider == "apple-local" {
-            let result = self.run_local(engine, &args, &history)?;
-            self.remember(
-                session,
-                &args["prompt"],
-                result["answer"].as_str().unwrap_or(""),
-                &cancelled,
-                result["context"]["history_messages"]
-                    .as_u64()
-                    .map(|n| n as usize),
-            )?;
-            return Ok(result);
         }
         let scope =
             crate::operation::intersect_scopes(crate::operation::scope(), settings.root.clone())?;
@@ -639,7 +541,7 @@ impl Assistant {
                 let answer = message["content"]
                     .as_str()
                     .ok_or("SI service returned no answer or tool calls")?;
-                self.remember(session, &args["prompt"], answer, &cancelled, None)?;
+                self.remember(session, &args["prompt"], answer, &cancelled)?;
                 return Ok(
                     json!({"answer":answer,"steps":step+1,"tool_calls":audit,"completed":true}),
                 );
@@ -763,14 +665,13 @@ mod presentation_tests {
 }
 
 #[cfg(test)]
-mod local_history_tests {
+mod history_tests {
     use super::*;
-    #[test]
-    fn local_history_uses_the_model_window_instead_of_the_hosted_turn_cap() {
+    fn assistant() -> Assistant {
         let assistant = Assistant::default();
         *assistant.connection.lock().unwrap() = Some(Connection {
             settings: Settings {
-                provider: "apple-local".into(),
+                provider: "openai-compatible".into(),
                 ..Default::default()
             },
             key: String::new(),
@@ -778,65 +679,46 @@ mod local_history_tests {
             session: 1,
             transport: Arc::new(transport::Client::default()),
         });
-        let cancelled = AtomicBool::new(false);
+        assistant
+    }
+    #[test]
+    fn history_retains_complete_recent_turns() {
+        let assistant = assistant();
         for i in 0..25 {
             assistant
                 .remember(
                     1,
                     &json!(format!("turn {i}")),
                     "answer",
-                    &cancelled,
-                    Some(i * 2),
+                    &AtomicBool::new(false),
                 )
                 .unwrap();
         }
-        {
-            let c = assistant.connection.lock().unwrap();
-            let history = &c.as_ref().unwrap().history;
-            assert_eq!(history.len(), 50);
-            crate::schema::validate_output(
-                "si_history",
-                &json!({"messages":history,"limit_messages":null,"limit_bytes":null}),
-            )
-            .unwrap();
-        }
-        assistant
-            .remember(1, &json!("newest"), "new answer", &cancelled, Some(4))
-            .unwrap();
         let c = assistant.connection.lock().unwrap();
         let history = &c.as_ref().unwrap().history;
-        assert_eq!(history.len(), 6);
-        assert_eq!(history[0]["content"], "turn 23");
-        assert_eq!(history[4]["content"], "newest");
+        assert_eq!(history.len(), 32);
+        assert_eq!(history[0]["content"], "turn 9");
+        assert_eq!(history[30]["content"], "turn 24");
     }
     #[test]
-    fn local_messages_are_not_excerpted_and_cancelled_turns_are_not_saved() {
-        let assistant = Assistant::default();
-        *assistant.connection.lock().unwrap() = Some(Connection {
-            settings: Settings {
-                provider: "apple-local".into(),
-                ..Default::default()
-            },
-            key: String::new(),
-            history: vec![],
-            session: 1,
-            transport: Arc::new(transport::Client::default()),
-        });
-        let text = "a".repeat(40000);
+    fn long_unicode_history_is_bounded_and_cancelled_turns_are_not_saved() {
+        let assistant = assistant();
         assistant
-            .remember(1, &json!(text), "reply", &AtomicBool::new(false), Some(0))
-            .unwrap();
-        assert!(assistant
             .remember(
                 1,
-                &json!("cancelled"),
+                &json!("🌍".repeat(10000)),
                 "reply",
-                &AtomicBool::new(true),
-                Some(0)
+                &AtomicBool::new(false),
             )
+            .unwrap();
+        assert!(assistant
+            .remember(1, &json!("cancelled"), "reply", &AtomicBool::new(true))
             .is_err());
         let c = assistant.connection.lock().unwrap();
-        assert_eq!(c.as_ref().unwrap().history.len(), 2);
-        assert_eq!(c.as_ref().unwrap().history[0]["content"], text);
+        let history = &c.as_ref().unwrap().history;
+        assert_eq!(history.len(), 2);
+        let excerpt = history[0]["content"].as_str().unwrap();
+        assert!(excerpt.ends_with("[History excerpt truncated]"));
+        assert!(excerpt.len() < 33000);
     }
 }

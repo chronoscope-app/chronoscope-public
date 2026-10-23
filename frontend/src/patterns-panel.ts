@@ -1,3 +1,4 @@
+import { explainResult } from "./focused-ai";
 import { call } from "./bridge";
 import { escape as esc, type Snapshot } from "./types";
 import { fieldLabel } from "./charts-panel";
@@ -34,7 +35,18 @@ export class PatternsPanel {
   constructor(
     private host: HTMLElement,
     private actions: Actions,
-  ) {}
+  ) {
+    this.host.addEventListener("click", (event) => {
+      const button = (event.target as Element).closest<HTMLButtonElement>(
+        "[data-pattern-explain]",
+      );
+      if (button && this.result)
+        void explainResult({
+          scan_id: this.result.scan_id,
+          finding_id: button.dataset.patternExplain!,
+        }).catch(this.actions.error);
+    });
+  }
   private get visible() {
     return !!this.host.querySelector(".pattern-scan");
   }
@@ -290,7 +302,9 @@ export class PatternsPanel {
           ? `${this.result.report?.input_count.toLocaleString()} scoped records · ${this.result.report?.findings.length} candidates · cached on this computer`
           : this.message;
     this.host
-      .querySelectorAll<HTMLButtonElement>("[data-pattern-evidence]")
+      .querySelectorAll<HTMLButtonElement>(
+        "[data-pattern-evidence],[data-pattern-explain]",
+      )
       .forEach((e) => (e.disabled = stale || this.running || this.selecting));
   }
   private draw() {
@@ -348,7 +362,7 @@ export class PatternsPanel {
           ? `${format(f.count)} of ${format(f.denominator)} positive recording intervals exceed ${duration(Number(metrics.threshold_seconds))}.`
           : f.summary;
 
-    return `<article class="pattern-card" data-pattern-kind="${esc(f.kind)}"><h4>${esc(f.title)}</h4><p>${esc(summary)}</p><button type="button" data-pattern-evidence="${esc(f.id)}" title="Select every supporting source record and open its attribute table. Shift-click adds to selection.">Select supporting records</button><details><summary>Method and examples</summary><p>${esc(f.method)}</p><dl>${Object.entries(
+    return `<article class="pattern-card" data-pattern-kind="${esc(f.kind)}"><h4>${esc(f.title)}</h4><p>${esc(summary)}</p><button type="button" data-pattern-evidence="${esc(f.id)}" title="Select every supporting source record and open its attribute table. Shift-click adds to selection.">Select supporting records</button><button type="button" class="secondary pattern-ai-action" data-pattern-explain="${esc(f.id)}">Explain result</button><details><summary>Method and examples</summary><p>${esc(f.method)}</p><dl>${Object.entries(
       f.metrics as Record<string, unknown>,
     )
       .map(
