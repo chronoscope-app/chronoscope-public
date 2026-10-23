@@ -25,7 +25,7 @@ Chronoscope is an experimental desktop application. Open your own data or start 
 - [Privacy and connections](https://github.com/chronoscope-app/chronoscope-public/blob/main/PRIVACY.md)
 - [Contribute](https://github.com/chronoscope-app/chronoscope-public/blob/main/CONTRIBUTING.md)
 
-No binaries have been published in this clean repository yet; build from source and read the platform limitations. Independent application code is MIT-licensed; datasets, maps, media and dependencies retain their own terms and credits.
+Experimental [Windows x64 and Apple Silicon macOS previews](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.15.2) are available. Read the platform limitations: Windows is unsigned; macOS is ad hoc signed and not notarized. Independent application code is MIT-licensed; datasets, maps, media and dependencies retain their own terms and credits.
 ```
 
 Before enabling the introduction, confirm that every link is accessible to a signed-out visitor and that the platform/release statements are still current.

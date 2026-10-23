@@ -2,7 +2,7 @@
 
 This checklist covers the new standalone `chronoscope-app/chronoscope-public` source snapshot only. Keep the original development repository private. Earlier history/tags/releases are excluded, not migrated. Only the owner-authorized new repository may be published; organization-profile and binary releases remain separate decisions.
 
-Current evidence and limitations: [publication status](PUBLICATION-STATUS.md). Future executable releases have their own [release checklist](RELEASE-CHECKLIST.md).
+This records the initial source-publication checklist. The owner subsequently authorized [0.15.2 experimental preview downloads](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.15.2); signing, notarization and broad native acceptance remain limited. Current evidence and limitations: [publication status](PUBLICATION-STATUS.md). Future executable releases have their own [release checklist](RELEASE-CHECKLIST.md).
 
 ## Before changing visibility
 
@@ -13,7 +13,7 @@ Current evidence and limitations: [publication status](PUBLICATION-STATUS.md). F
 - [x] Owner selected GitHub private vulnerability reporting at publication. It remains unavailable while private. Update [SECURITY.md](../SECURITY.md) when the route actually works.
 - [ ] Review organization owners/recovery, two-factor authentication, collaborators, Apps/OAuth access, inherited secrets/hooks/runners and Actions settings. Keep permissions minimal, workflow tokens read-only, fork approvals appropriate and workflows manual-only. Uninspected or permission-blocked settings are unknown, not empty.
 - [x] Run initial locked Rust and JavaScript dependency/security audits and apply the reviewed security updates. Six Rust maintenance warnings remain documented in [security checks](SECURITY-CHECKS.md). Re-audit the exact launch source/target graphs, including the Linux GLib backport.
-- [ ] Decide the launch scope: experimental public source or a broader downloadable-app launch. Signing/notarization and native fresh-download acceptance remain necessary before stronger installation/support claims. No binaries are included or advertised in this clean repository.
+- [x] Owner authorized experimental public source and 0.15.2 preview downloads. Signing/notarization and native fresh-download acceptance remain necessary before stronger installation/support claims. The previews are described in installation status; they do not establish those stronger claims.
 
 ## At the owner-authorized publication step
 

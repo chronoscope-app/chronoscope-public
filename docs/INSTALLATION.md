@@ -1,19 +1,27 @@
 # Installation and platform status
 
-Current source: **0.15.2 (unreleased)**. **No binaries have been published in this clean repository yet; build from source.** This is a standalone source snapshot, not a fork or a copy of earlier history, tags or release attachments. Older preview executables are not included and are not cleared by current-source tests or security fixes.
+Current release: **[0.15.2 experimental desktop preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.15.2)**, published 2026-10-23. Both packages use application source `ece70335d254c2b09437975c82434ca969f30739` and were built and checked on manually dispatched GitHub-hosted runners. Older previews remain separate historical builds.
 
-## Platform limitations
+## Preview downloads
 
-- macOS: broad distribution still needs Developer ID signing/notarization and native fresh-download acceptance. Earlier ad hoc development launches do not establish those gates. The Apple model readiness diagnostic requires macOS 26+; Apple Intelligence is not an SI Chat provider.
-- Windows: native installer, GUI/WebView2 and hardware/card acceptance remain separate release gates; Wine console/engine tests do not prove them. A future portable distribution must retain its DLLs and notices and document the required WebView2 Runtime.
-- Linux: source builds and historical local evidence do not establish supported-distro binary acceptance.
-- Intel macOS: a source/CI target is not a native-tested download.
+| Platform | Download | Installation and trust status |
+| --- | --- | --- |
+| Windows x64 | [ZIP with current-user installer](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.15.2/chronoscope-windows-x86_64.zip) | Extract the complete ZIP and run its installer. Unsigned. Microsoft Edge WebView2 Evergreen Runtime must already be installed; it is not bundled. |
+| Apple Silicon macOS | [App archive](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.15.2/chronoscope-macos-arm64.tar.xz) | Extract the complete archive and copy Chronoscope.app to Applications. Ad hoc signed, not notarized. Fresh quarantined-download acceptance on a user's Mac remains unverified. |
 
-No cross-platform native acceptance, signed-binary availability or complete binary-license/source-access clearance is claimed. See the [release checklist](RELEASE-CHECKLIST.md), [distribution obligations](DISTRIBUTION.md), [changelog](../CHANGELOG.md) and [local security checks](SECURITY-CHECKS.md).
+Keep the accompanying third-party notices and source-access instructions. The release includes exact application and locked dependency sources, license notices, `SHA256SUMS.txt`, `RELEASE-MANIFEST.json` and per-platform native validation receipts.
+
+## Verification and limitations
+
+Native runners checked the exact downloaded packages: hashes, architecture, physical notices, actual packaged desktop CLI/agent/MCP smoke tests, GUI launch and an attached engine query. Mac checks also verified the strict bundle seal, App Intents metadata and weak-linked frameworks. These are narrow automated checks, not real-device, GPU, manual installer, smart-card or production acceptance. Back up projects before preview testing.
+
+Windows remains unsigned. Broad Mac distribution still needs Developer ID signing/notarization and fresh-download acceptance. The Apple model readiness diagnostic requires macOS 26+; Apple Intelligence is not an SI Chat provider. No Linux or Intel Mac binary is included in this release; source builds do not establish native acceptance on those platforms.
+
+See the [release checklist](RELEASE-CHECKLIST.md), [distribution obligations](DISTRIBUTION.md), [changelog](../CHANGELOG.md) and [local security checks](SECURITY-CHECKS.md).
 
 ## Build from source
 
-Desktop: **Rust 1.90+**, **Node 22+**, and [Tauri v2 platform prerequisites](https://v2.tauri.app/start/prerequisites/). CLI-only core declares Rust **1.89+** and needs neither Node nor a window system. Locked dependencies can impose newer compiler requirements; the local verification compiler is recorded separately, not a minimum-version test.
+Desktop: **Rust 1.96+**, **Node 22+**, and [Tauri v2 platform prerequisites](https://v2.tauri.app/start/prerequisites/). CLI-only core declares Rust **1.96+** and needs neither Node nor a window system. Locked dependencies can impose newer compiler requirements; the local verification compiler is recorded separately, not a minimum-version test.
 
 - macOS: full Xcode26.6 / macOS SDK26.5 for the tester build configuration (native compilation remains the gate); see [Mac handoff](MAC_HANDOFF.md).
 - Windows: MSVC C++ build tools/Windows SDK and WebView2, as described by Tauri.
