@@ -1,0 +1,195 @@
+{
+  "platform": "Linux, Chromium, Cesium WebGL2 with SwiftShader",
+  "github_runners_used": false,
+  "checks": [
+    {
+      "name": "Rust CLI built locally from chronoscope-next",
+      "command": "CARGO_TARGET_DIR=/home/claw/Documents/Codex/chronoscope/target CARGO_PROFILE_DEV_DEBUG=0 cargo build --locked -p chronoscope --bin chronoscope",
+      "exit_code": 0
+    },
+    {
+      "name": "TypeScript and Vite production build",
+      "command": "npm --prefix frontend run build",
+      "exit_code": 0
+    },
+    {
+      "name": "Frontend tests",
+      "command": "npm --prefix frontend test",
+      "exit_code": 0,
+      "test_entries": 18
+    },
+    {
+      "name": "Held drag with continuous camera changes and delayed local event/map responses",
+      "result": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "events and imagery load and publish during a held continuous drag, including slow responses",
+            "evidence": {
+              "initial": {
+                "bounds": [
+                  -91.22894157381863,
+                  17.178300893867554,
+                  -68.77105842618136,
+                  42.82169910613243
+                ],
+                "points": 575
+              },
+              "requestsHeld": 13,
+              "resultsHeld": 13,
+              "added": 250,
+              "newTiles": 16,
+              "newImageryPixels": true,
+              "peakViewportQueries": 1,
+              "firstQuery": [
+                -91.84653372050765,
+                17.178300918545062,
+                -69.38865057287035,
+                42.82169913080993
+              ],
+              "lastQuery": [
+                -102.96318506984426,
+                17.1783013627401,
+                -80.50530192220695,
+                42.821699575004985
+              ]
+            }
+          },
+          {
+            "name": "final viewport settles with data after release",
+            "evidence": {
+              "bounds": [
+                -103.58077721653329,
+                17.17830138741762,
+                -81.12289406889599,
+                42.8216995996825
+              ],
+              "points": 550,
+              "dragging": false,
+              "errors": 0
+            }
+          }
+        ],
+        "errors": [],
+        "platform": "linux"
+      }
+    },
+    {
+      "name": "Original main.ts and view.ts from HEAD fail the same continuous-drag regression as expected",
+      "expected_failure": true,
+      "result": {
+        "passed": false,
+        "checks": [],
+        "errors": [
+          "AssertionError [ERR_ASSERTION]: only 0 viewport queries while dragging\n    at file:///home/claw/Documents/Codex/chronoscope-next/frontend/scripts/viewport-pan-qa.mjs:301:3"
+        ],
+        "platform": "linux"
+      }
+    },
+    {
+      "name": "Existing pan-direction regression",
+      "passed": true,
+      "scenarios": 56,
+      "errors": []
+    },
+    {
+      "name": "Existing Streets basemap regression",
+      "passed": true,
+      "checks": [
+        {
+          "name": "one default Streets basemap; no built-in WMTS catalog",
+          "evidence": {}
+        },
+        {
+          "name": "2D native street tiles; WGS84/mercator pixel alignment",
+          "evidence": {
+            "basemap": "streets",
+            "basemapPending": 0,
+            "basemapError": "",
+            "basemapRenderedTiles": 51,
+            "basemapAlignmentErrorPixels": 8.278675522888079e-10,
+            "basemapMaximumLevel": 15,
+            "imageryLayers": 2,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "verticalDatum": "unresolved-msl",
+            "geoidModel": null,
+            "mode": "map"
+          }
+        },
+        {
+          "name": "simple Map dialog shows Streets; custom servers are advanced",
+          "evidence": {}
+        },
+        {
+          "name": "Streets toggle persists and releases/recreates the vector renderer",
+          "evidence": {}
+        },
+        {
+          "name": "space-time imagery stays on the ground",
+          "evidence": {
+            "basemap": "streets",
+            "basemapPending": 0,
+            "basemapError": "",
+            "basemapRenderedTiles": 75,
+            "basemapAlignmentErrorPixels": 8.278675522888079e-10,
+            "basemapMaximumLevel": 15,
+            "imageryLayers": 2,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "verticalDatum": "unresolved-msl",
+            "geoidModel": null,
+            "mode": "space-time"
+          }
+        },
+        {
+          "name": "globe uses the same native tiled street basemap",
+          "evidence": {
+            "basemap": "streets",
+            "basemapPending": 0,
+            "basemapError": "",
+            "basemapRenderedTiles": 110,
+            "basemapAlignmentErrorPixels": 8.278675522888079e-10,
+            "basemapMaximumLevel": 15,
+            "imageryLayers": 2,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": false,
+            "terrainCovered": 0,
+            "verticalDatum": "unresolved-msl",
+            "geoidModel": null,
+            "mode": "globe"
+          }
+        },
+        {
+          "name": "fresh vector renderer reloads style, tiles and fonts from private disk cache offline",
+          "evidence": {
+            "bytes": 0
+          }
+        },
+        {
+          "name": "custom WMTS connection editor remains available without provider catalog",
+          "evidence": {}
+        },
+        {
+          "name": "strict desktop CSP and both renderers produce no uncaught errors",
+          "evidence": {}
+        }
+      ],
+      "errors": [],
+      "csp_violations": []
+    },
+    {
+      "name": "Local suite inventory and git diff whitespace checks",
+      "exit_code": 0
+    }
+  ],
+  "limitations": [
+    "Software rendering does not establish physical GPU performance or native Mac/Windows behavior.",
+    "Continuous camera notifications are supplied during the real pointer drag so slow software GPU frames cannot trigger artificial idle gaps."
+  ]
+}

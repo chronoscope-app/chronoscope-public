@@ -34,6 +34,7 @@
     "test:cluster-identity": "node scripts/cluster-identity-qa.mjs",
     "test:playback-speed": "node scripts/playback-speed-qa.mjs",
     "test:pan-direction": "node scripts/pan-direction-qa.mjs",
+    "test:viewport-pan": "node scripts/viewport-pan-qa.mjs",
     "test:navigation-sphere": "node scripts/navigation-sphere-qa.mjs",
     "test:analytics": "node scripts/analytics-qa.mjs",
     "test:si-rich-chat": "node scripts/si-rich-chat-qa.mjs",
