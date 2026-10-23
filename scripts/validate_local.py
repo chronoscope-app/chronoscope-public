@@ -19,7 +19,6 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--browser', action='store_true', help='Run every current offline Chromium regression in validation-suites.json.')
 parser.add_argument('--browser-jobs', type=int, default=1, choices=range(1, 5), help='Independent browser workers; default 1 for reproducible software rendering.')
 parser.add_argument('--performance', action='store_true', help='Also run the opt-in performance suites serially (requires --browser).')
-parser.add_argument('--apple-local', action='store_true', help='Also run real Apple Intelligence suites on a ready Mac.')
 parser.add_argument('--list', action='store_true', help='List suite groups and requirements without running checks.')
 parser.add_argument('--native', action='store_true', help='Check/build Tauri using the current OS SDK; no packaging or trust-store changes.')
 parser.add_argument('--chromium', help='Installed Chromium path; otherwise use CHRONOSCOPE_CHROMIUM or system chromium.')
@@ -34,8 +33,6 @@ if args.list:
     sys.exit(0)
 if args.performance and not args.browser:
     parser.error('--performance requires --browser')
-if args.apple_local and sys.platform != 'darwin':
-    parser.error('--apple-local requires macOS with a ready Apple Intelligence model')
 report_path = args.report.resolve()
 report_path.parent.mkdir(parents=True, exist_ok=True)
 logs = report_path.parent/'logs'
@@ -105,8 +102,6 @@ if args.browser and built and frontend:
     selected.add('browser')
 if args.performance and built and frontend:
     selected.add('performance')
-if args.apple_local and built and frontend:
-    selected.add('apple')
 for group, suites in inventory['groups'].items():
     if group not in selected:
         report['skipped'].extend({'suite': suite, 'reason': inventory['requirements'][group]} for suite in suites)

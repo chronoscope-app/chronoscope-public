@@ -345,6 +345,50 @@ pub fn domain_output_schema(command: &str) -> Value {
             ];
             json!({"count":{"type":"integer","minimum":0},"limited":{"type":"boolean"},"input_count":{"type":"integer","minimum":0},"evaluated_count":{"type":"integer","minimum":0},"input_limited":{"type":"boolean"},"findings":{"type":"array","maxItems":1000,"items":{"type":"object","properties":{"ids":{"type":"array","maxItems":10000,"items":id()},"summary":{"type":"string"},"metric":{"type":"string"}},"required":["ids","summary","metric"],"additionalProperties":true}}})
         }
+        "assist_ui" => {
+            required = vec![
+                "open",
+                "busy",
+                "status",
+                "provider",
+                "field",
+                "explanation",
+                "tag_rows",
+            ];
+            json!({"open":{"type":"boolean"},"busy":{"type":"boolean"},"status":string(),"provider":string(),"field":string(),"explanation":string(),"tag_rows":{"type":"integer","minimum":0}})
+        }
+        "assist_status" => {
+            required = vec!["providers", "max_tag_events", "running"];
+            json!({"providers":{"type":"array","items":object(json!({"id":{"enum":["apple-local","connected"]},"label":string(),"available":{"type":"boolean"},"reason":string()}),&["id","label","available","reason"])},"max_tag_events":{"type":"integer"},"running":{"type":"boolean"}})
+        }
+        "assist_explain" => {
+            required = vec![
+                "provider",
+                "text",
+                "workspace_id",
+                "source_revision",
+                "current_revision",
+                "source_changed",
+                "evidence",
+            ];
+            json!({"provider":string(),"text":string(),"workspace_id":string(),"source_revision":{"type":"integer"},"current_revision":{"type":"integer"},"source_changed":{"type":"boolean"},"evidence":{"type":"object"}})
+        }
+        "assist_tags" => {
+            required = vec![
+                "provider",
+                "revision",
+                "workspace_id",
+                "field",
+                "records",
+                "processed_count",
+                "skipped_count",
+            ];
+            json!({"provider":string(),"revision":{"type":"integer"},"workspace_id":string(),"field":string(),"records":{"type":"array","items":object(json!({"id":id(),"text":string(),"tags":{"type":"array","items":string()},"existing_tags":{"type":"array","items":string()},"skipped":{"type":"boolean"}}),&["id","text","tags","existing_tags","skipped"])},"processed_count":{"type":"integer"},"skipped_count":{"type":"integer"}})
+        }
+        "assist_tags_apply" => {
+            required = vec!["ok", "changed", "revision"];
+            json!({"ok":{"type":"boolean"},"changed":{"type":"integer"},"revision":{"type":"integer"}})
+        }
         "si_apple_status" => {
             required = vec!["available", "reason", "provider", "context_tokens"];
             json!({"available":{"type":"boolean"},"reason":{"type":"string"},"provider":{"const":"apple-local"},"context_tokens":{"type":"integer"}})
@@ -395,7 +439,7 @@ pub fn domain_output_schema(command: &str) -> Value {
                 "protocol",
                 "key_storage",
             ];
-            json!({"provider":{"enum":["openai-compatible","apple-local"]},"url":{"type":"string"},"model":{"type":"string"},"connected":{"type":"boolean"},"running":{"type":"boolean"},"key_present":{"type":"boolean"},"root":{"type":["string","null"]},"protocol":{"type":"string"},"key_storage":{"type":"string"},"client_certificate":{"type":["object","null"]},"client_certificate_kind":{"enum":["macos-keychain","windows-store","pkcs11"]},"automatic_client_certificate":{"type":"boolean"}})
+            json!({"provider":{"const":"openai-compatible"},"url":{"type":"string"},"model":{"type":"string"},"connected":{"type":"boolean"},"running":{"type":"boolean"},"key_present":{"type":"boolean"},"root":{"type":["string","null"]},"protocol":{"type":"string"},"key_storage":{"type":"string"},"client_certificate":{"type":["object","null"]},"client_certificate_kind":{"enum":["macos-keychain","windows-store","pkcs11"]},"automatic_client_certificate":{"type":"boolean"}})
         }
         "space_time_aggregate" => {
             required = vec![
@@ -480,6 +524,7 @@ pub fn domain_output_schema(command: &str) -> Value {
         .extend(fields.as_object().unwrap().clone());
     let versioned = command == "analyze"
         || crate::command::Command::parse(command).is_some_and(|c| !c.effects().detached)
+            && !command.starts_with("assist_")
             && !command.starts_with("si_")
             && !command.starts_with("client_")
             && !command.starts_with("job_")

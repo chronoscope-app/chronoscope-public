@@ -12,7 +12,7 @@ The detached entry is `si.html`; it does not create or load another Cesium viewe
 - **Capture map** adds a snapshot of the current main view. SI can also request a map snapshot through its presentation tool when attached to a live desktop. Captions retain workspace, capture time and source revision; these are snapshots, not live map widgets. Images retain renderer/map credit text. They are reduced to at most 1600 × 1200 pixels for inline display.
 - Existing query, aggregate, descriptive-statistics and pattern tools can attach compact read-only evidence previews. These previews show up to 20 rows. Large or wide previews are omitted explicitly; use projected queries or the original analysis tools for detail.
 
-Pixels are stored in Rust, outside the model's conversation context. Showing a picture in chat does **not** give Apple Intelligence or another text-only model visual perception. Capturing a view does not send its pixels to the SI service. Requested source records/tool results still follow the existing provider and external-tool grants.
+Pixels are stored in Rust, outside the model's conversation context. Showing a picture in chat does **not** give the configured model visual perception. Capturing a view does not send its pixels to the SI service. Requested source records/tool results still follow the existing provider and external-tool grants.
 
 ## Agent interface
 
@@ -26,7 +26,7 @@ Pixels are stored in Rust, outside the model's conversation context. Showing a p
 {"kind":"map","title":"Current Atlantic tracks"}
 ```
 
-Analysis charts support `auto`, `table`, `bar`, `line` and `scatter`. Explicit chart types require actual `x`/`y` columns; scatter requires numeric coordinates. Empty, absent or unsuitable columns fail validation. Auto/table presentations use engine metadata and do not accept replacement axes. Map presentation requires an attached desktop renderer. Tool output carries a compact presentation reference, not raw image bytes. The same operation is discoverable by Apple’s native tool bridge and hosted SI. Analytic runs attach their own result cards automatically.
+Analysis charts support `auto`, `table`, `bar`, `line` and `scatter`. Explicit chart types require actual `x`/`y` columns; scatter requires numeric coordinates. Empty, absent or unsuitable columns fail validation. Auto/table presentations use engine metadata and do not accept replacement axes. Map presentation requires an attached desktop renderer. Tool output carries a compact presentation reference, not raw image bytes. The same operation is discoverable by connected SI model services. Analytic runs attach their own result cards automatically.
 
 To put a result in the running app from the CLI, use its attached engine: `chronoscope --attach call present_result --args '{"kind":"map","title":"Current view"}'`. A standalone CLI process has its own session and does not add cards to an unrelated desktop session. During an active chat request, explicit presentations are queued for its reply; completed cards remain available even if the service subsequently fails to write its explanation.
 
@@ -50,4 +50,4 @@ Formatting uses Marked, DOMPurify and KaTeX. Charts use modular Apache ECharts w
 
 After building the CLI/frontend, `npm --prefix frontend run test:si-rich-chat` runs two actual browser windows against the Rust engine with a deterministic local mock service and bundled hurricane data. It exercises dock/pop-out/reload/close while work is running, rich results, equations and hostile formatting, live map capture, linked Event selection, both themes, cancellation and clearing. It applies the desktop content-security policy and asserts no public HTTP requests and no Cesium resources in the detached page.
 
-Browser tests do not establish native macOS WindowServer behavior or Foundation Models planning quality. On a supported Mac, run the existing `test:apple-local` workflow and manually check native pop-out/dock, closing with unsaved project changes, moving to another display and system-browser links.
+Browser tests do not establish native macOS WindowServer behavior or a connected model’s planning quality. On a supported Mac, manually check native pop-out/dock, closing with unsaved project changes, moving to another display and system-browser links. Apple Intelligence is retired as an SI Chat provider.

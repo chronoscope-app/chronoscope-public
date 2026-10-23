@@ -272,17 +272,16 @@ All platforms expose the following shared operations through `call` and matching
 chronoscope --attach call analysis_context --args '{"scope":"selected"}'
 chronoscope --attach call analysis_prepare --args '{"pattern":"Gaps","scope":"visible","parameters":{"gap_s":21600}}'
 chronoscope --attach call si_apple_status
-chronoscope --attach call si_configure --args '{"provider":"apple-local"}'
+chronoscope --attach call si_configure --args '{"url":"https://api.openai.com/v1","model":"YOUR_TOOL_CAPABLE_MODEL"}'
 chronoscope --attach ask 'Recommend analyses for this scope'
 chronoscope --attach ask 'Find gaps longer than 6 hours'
 ```
 
 To execute a plan, copy the reviewed result into `{"plan":{...}}` and pass it to `call analysis_execute --args-file reviewed-plan.json`, using the returned plan. Do not use `call --output` to write a plan: that flag saves the workspace. Configure and ask within one persistent `session`/MCP connection or attach to the desktop; independent standalone CLI processes do not share SI connections.
 
-`si_configure` defaults to `provider:"openai-compatible"` and requires URL/model for that provider. `provider:"apple-local"` requires a ready Apple model and accepts no API key or arbitrary file grant. Local SI now uses native Foundation Models tool calling: real Event queries, schema discovery, exact Rust statistics/aggregates, filters, selections, views, existing spatial/temporal analyses and permissioned edits. Explicitly granted external MCP tools use the same execution-time checks as hosted SI. External services may receive requested data; model inference stays on device with no cloud fallback.
+`si_configure` accepts only `provider:"openai-compatible"` (the default) and requires a service URL and model. Apple Intelligence is retired from SI Chat, including CLI/MCP configuration; `provider:"apple-local"` is rejected. Previously saved Apple chat preferences are treated as unconfigured. Configure and connect a model service explicitly. API keys remain in session memory, and granted external tools retain their existing permission checks. `si_apple_status` remains a readiness diagnostic and does not connect a chat model. Focused explanations and reviewed tag suggestions have their own `assist_*` commands and explicit provider choice; see [focused AI assistance](APPLE-SI-ANALYTICS.md).
 
-Local `si_run` returns `tool_calls` plus `context` metadata (`context_tokens`, estimated `input_tokens`, included/omitted history counts and workspace inclusion). Local history follows the model window, with null `si_history.limit_messages`/`limit_bytes`, rather than the hosted provider’s fixed caps. Old turns and optional summary can be dropped; current messages are not excerpted. Tool schemas count toward the context. Tool output is explicitly bounded, and context exhaustion after execution does not automatically replay actions. Requests remain cancellable, limited to 32 calls/five minutes, and completed actions remain. App Intents stay separate. See [Apple SI analytics](APPLE-SI-ANALYTICS.md) for commands, permissions and native Mac checks.
-
+SI conversation history retains at most 32 messages/98,304 bytes, with explicit excerpts for long messages. The existing tool loop, cancellation, per-message edit permissions and external-action permissions continue to apply to connected model services. Completed actions remain after cancellation.
 
 macOS App Intents expose workspace summary, view switching, additive entity selection/deselection, analysis recommendations and gap analysis. They run the same engine commands with typed parameters and require local device authentication. The built bundle contains compiled Swift intent code and `Metadata.appintents`; CLI builds alone do not register Siri actions. App Intents do not embed Siri inside SI or grant direct PCC access. The unsigned/ad hoc build exposes the actions but macOS rejects execution on the test Mac because it cannot obtain an Apple signing team ID. System handoff needs an Apple team signing identity; local Apple Intelligence and CLI/MCP do not.
 

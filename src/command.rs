@@ -59,6 +59,11 @@ commands! {
     AnalysisContext => "analysis_context", Never, false, false, false, true, false;
     AnalysisPrepare => "analysis_prepare", Never, false, false, false, true, false;
     AnalysisExecute => "analysis_execute", Never, false, false, false, true, false;
+    AssistUi => "assist_ui", Never, false, false, false, true, false;
+    AssistStatus => "assist_status", Never, false, false, false, true, false;
+    AssistExplain => "assist_explain", Never, false, false, false, true, false;
+    AssistTags => "assist_tags", Never, false, false, false, true, false;
+    AssistTagsApply => "assist_tags_apply", Always, true, true, true, true, false;
     SiAppleStatus => "si_apple_status", Never, false, false, false, true, false;
     SiHistory => "si_history", Never, false, false, false, true, false;
     SiClear => "si_clear", Never, false, false, false, true, false;

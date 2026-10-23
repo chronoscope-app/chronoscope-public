@@ -1,0 +1,114 @@
+{
+  "passed": true,
+  "repository": "chronoscope-app/chronoscope-next",
+  "base": "148cdb9d687e4195114b6a10698d95099d329bfb",
+  "public_promotion": false,
+  "github_hosted_runners_used": false,
+  "computer_control_used": false,
+  "rust": {
+    "passed": 92,
+    "library": 50,
+    "analytics_engine": 8,
+    "assistant_aggregation": 18,
+    "focused_ai": 4,
+    "pattern_scan": 6,
+    "si_chat": 6,
+    "focused_tests_rerun_after_final_refinement": true
+  },
+  "frontend": {
+    "production_build": true,
+    "generated_contracts": true,
+    "generated_help": true,
+    "suite_inventory": true
+  },
+  "browser": {
+    "focused": {
+      "passed": true,
+      "checks": [
+        "Generic AI indicator and Cancel AI are visible while generating; suggestions do not edit records",
+        "Review supports editable tags, per-record acceptance, blank skipping, additive apply and one Undo",
+        "Explain result has indeterminate AI progress and cancellation without edits",
+        "Pattern explanations show the engine evidence and do not enter SI Chat history",
+        "Stale tag previews fail safely instead of applying to changed records"
+      ],
+      "errors": [],
+      "publicRequests": 0,
+      "modelCalls": 6
+    },
+    "patterns_checks": 8,
+    "patterns_passed": true,
+    "si_chat_checks": 9,
+    "si_chat_passed": true,
+    "live_external_provider_tested": false
+  },
+  "native": {
+    "passed": true,
+    "computer_control_used": false,
+    "transport": "actual stdio MCP attached to the native Mac app",
+    "checks": [
+      "Native MCP discovers all focused-feature commands and actual Apple Intelligence is available",
+      "Actual on-device tagging through MCP returns reviewable suggestions; additive apply and Undo preserve existing tags",
+      "MCP opens the native explanation dialog, sees its busy state and captures a real Apple-generated explanation",
+      "MCP cancels native generation and the real dialog reports cancellation",
+      "MCP opens native tag suggestions, observes processing, and verifies per-Event review with blank records skipped"
+    ],
+    "provider_status": {
+      "max_tag_events": 25,
+      "providers": [
+        {
+          "available": true,
+          "id": "apple-local",
+          "label": "Apple Intelligence \u00b7 On this Mac",
+          "reason": "On-device model available"
+        },
+        {
+          "available": false,
+          "id": "connected",
+          "label": "Connected SI model",
+          "reason": "Connect a model in SI settings"
+        }
+      ],
+      "running": false
+    },
+    "actual_model_tags": {
+      "field": "note",
+      "processed_count": 1,
+      "provider": "apple-local",
+      "records": [
+        {
+          "existing_tags": [
+            "reviewed"
+          ],
+          "id": "1",
+          "skipped": false,
+          "tags": [
+            "nesting seabirds",
+            "rocky coastline",
+            "surveys"
+          ],
+          "text": "Survey recorded nesting seabirds beside a rocky coastline."
+        }
+      ],
+      "revision": 9,
+      "skipped_count": 0,
+      "workspace_id": "2145573c504de7fa870310c40812026f3591b6d161207dfc0c806f926e5b94c4:2"
+    },
+    "actual_model_explanation": "The median value is 55, based on the numeric count of 3568. No missing count or exclusions are present, and no warnings apply."
+  },
+  "native_build": {
+    "bundled": true,
+    "ad_hoc_signature_verified": true,
+    "launched": true,
+    "profile": "disposable local QA profile"
+  },
+  "clippy": {
+    "passed_with_existing_baseline_exemptions": true,
+    "unchanged_baseline_file": "src/gis/vector.rs",
+    "lint_categories": [
+      "manual_is_multiple_of",
+      "chunks_exact_to_as_chunks",
+      "byte_char_slices",
+      "manual_ignore_case_cmp"
+    ]
+  }
+}

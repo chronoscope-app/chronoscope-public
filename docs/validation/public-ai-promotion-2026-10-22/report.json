@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "repository": "chronoscope-app/chronoscope-public",
+  "base_sha": "3c1a8766abf14f2b9c2b9536e741da71ae57e8df",
+  "promoted_next_sha": "ee83f5ca008b156a4abe863aa9e501a4a33f5947",
+  "scope": "Focused AI explanations, reviewed tag suggestions and Apple chat retirement only",
+  "rust_tests_passed": 87,
+  "strict_clippy": true,
+  "frontend_production_build": true,
+  "generated_contracts": true,
+  "generated_help": true,
+  "suite_inventory": {
+    "unit": 14,
+    "browser": 40,
+    "performance": 3,
+    "experimental": 1
+  },
+  "focused_browser": {
+    "passed": true,
+    "checks": [
+      "Generic AI indicator and Cancel AI are visible while generating; suggestions do not edit records",
+      "Review supports editable tags, per-record acceptance, blank skipping, additive apply and one Undo",
+      "Explain result has indeterminate AI progress and cancellation without edits",
+      "Pattern explanations show the engine evidence and do not enter SI Chat history",
+      "Stale tag previews fail safely instead of applying to changed records"
+    ],
+    "errors": [],
+    "publicRequests": 0,
+    "modelCalls": 6
+  },
+  "public_files_preserved_byte_for_byte": [
+    "scripts/package_tester.py",
+    "scripts/test_tester_packaging.py",
+    "src-tauri/tauri.macos.conf.json",
+    ".github/workflows/build.yml",
+    ".github/workflows/validate-tester.yml",
+    "Cargo.toml",
+    "Cargo.lock",
+    "src-tauri/Cargo.toml"
+  ],
+  "github_hosted_runners_used": false,
+  "binary_release_created": false
+}
