@@ -1027,7 +1027,10 @@ pub fn raw_from_layer(layer: &Layer) -> Result<RawImport, String> {
     Ok(RawImport {
         source: layer.name.clone(),
         tables: vec![RawTable {
-            sheet: layer.source_format.as_ref().map(|f| format!("{f:?}"))
+            sheet: layer
+                .source_format
+                .as_ref()
+                .map(|f| format!("{f:?}"))
                 .unwrap_or_else(|| format!("{:?}", layer.format)),
             headers,
             rows,

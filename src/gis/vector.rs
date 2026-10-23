@@ -315,7 +315,7 @@ fn dbf_preflight(b: &[u8], count: usize) -> Result<(), String> {
     let row = u16::from_le_bytes(b[10..12].try_into().unwrap()) as usize;
     if u32le(b, 4) as usize != count
         || header < 33
-        || (header - 33) % 32 != 0
+        || !(header - 33).is_multiple_of(32)
         || (header - 33) / 32 > 498
         || header > b.len()
         || b[header - 1] != 13
@@ -333,13 +333,13 @@ fn dbf_preflight(b: &[u8], count: usize) -> Result<(), String> {
     }
     let mut fields = 1usize;
     let mut names = std::collections::BTreeSet::new();
-    for f in b[32..header - 1].chunks_exact(32) {
+    for f in b[32..header - 1].as_chunks::<32>().0 {
         let name = &f[..11];
         let end = name.iter().position(|b| *b == 0).unwrap_or(11);
         if end == 0
             || !name[..end].is_ascii()
             || !names.insert(name[..end].to_vec())
-            || ![b'C', b'N', b'F', b'D', b'L'].contains(&f[11])
+            || !b"CNFDL".contains(&f[11])
             || f[16] == 0
             || f[11] == b'D' && f[16] != 8
             || f[11] == b'L' && f[16] != 1
@@ -433,7 +433,7 @@ fn shapefile(
     let dbf_row = u16::from_le_bytes(dbf[10..12].try_into().unwrap()) as usize;
     for i in 0..records.len() {
         let mut offset = dbf_header + i * dbf_row + 1;
-        for field in dbf[32..dbf_header - 1].chunks_exact(32) {
+        for field in dbf[32..dbf_header - 1].as_chunks::<32>().0 {
             let end = offset + field[16] as usize;
             if field[11] == b'C'
                 && encoding
@@ -963,7 +963,7 @@ fn geopackage(
             .enumerate()
             .filter(|(_, (_, pk, _))| *pk > 0)
             .collect();
-        if keys.len() != 1 || keys[0].1 .2.to_ascii_uppercase() != "INTEGER" {
+        if keys.len() != 1 || !keys[0].1 .2.eq_ignore_ascii_case("INTEGER") {
             return Err("GeoPackage feature table requires one INTEGER primary key".into());
         }
         let key_index = keys[0].0;
