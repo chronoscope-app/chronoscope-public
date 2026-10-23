@@ -2,7 +2,13 @@
 
 Chronoscope is experimental. Source versions and downloadable builds can differ; [installation status](docs/INSTALLATION.md) records current availability and verification limits. No production-ready release is currently advertised.
 
-## 0.15.2 — unreleased
+## 0.15.2 — experimental preview, 2026-10-23
+
+[Windows x64 and Apple Silicon macOS downloads](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.15.2) use `ece70335d254c2b09437975c82434ca969f30739`. Both exact packages passed narrow native hosted validation; Windows is unsigned and macOS is ad hoc signed, not notarized. Source archives, notices, checksums and receipts accompany the downloads. See [installation status](docs/INSTALLATION.md) for limits.
+
+- Refresh data and imagery continuously during 2D panning, with bounded viewport queries instead of waiting for mouse release.
+- Add focused AI explanations and reviewed, additive tag suggestions.
+- Validate the actual packaged executables, including Tauri's NSIS bundle marker and the sealed Mac app archive.
 
 - Add bounded WGS84 XY Shapefile and vector GeoPackage imports through Open, reference layers, Events, CLI/MCP, and portable saves. Preserve original files, polygon holes, multipart geometry, exact source IDs and GeoPackage table names. See [supported inputs and limits](docs/VECTOR-IMPORTS.md).
 - Pin reviewed Rust vector readers with minimal features and retained dependency licenses. Align the declared Rust minimum with the existing locked dependency requirement (1.96).
@@ -12,9 +18,9 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 - Preserve fractional-second timestamp bounds in the CLI/MCP snapshot output contract, including global earthquake catalogs.
 
 - Replace uncertain/noncommercial media with public-domain Natural Earth shaded relief and generated synthetic GIS fixtures. Refresh the concise README with eight native Mac screenshots and per-capture credits; retire outdated promo compositions and imagery.
-- Security: update Rand to 0.8.6, Calamine to 0.37.0, ZIP to 9.0.5 and locked TLS/certificate dependencies to patched releases. Archive names and stored-data offsets now handle the newer ZIP API explicitly, retaining path, symlink and size checks. Existing preview binaries are unchanged.
+- Security: update Rand to 0.8.6, Calamine to 0.37.0, ZIP to 9.0.5 and locked TLS/certificate dependencies to patched releases. Archive names and stored-data offsets now handle the newer ZIP API explicitly, retaining path, symlink and size checks. Older 0.15.1 preview binaries remain unchanged.
 - Publication preparation: privacy documentation, guided bug and feature forms, a pull-request checklist, and explicit owner/publication gates.
-- Current source includes export-pair/provenance fixes, updated distribution notices and the documented GLib security backport. Existing preview executables have not been rebuilt by these source changes.
+- Current source includes export-pair/provenance fixes, updated distribution notices and the documented GLib security backport. The 0.15.2 preview downloads include these changes; older previews remain unchanged.
 
 ## 0.15.1 — historical development previews (not included)
 
