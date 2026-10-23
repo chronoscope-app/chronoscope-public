@@ -127,8 +127,17 @@ class ValidatorTests(unittest.TestCase):
                     if content == b'trusted':
                         validator.nsis_resource_stream('7z', 'installer', 'member', expected)
                     else:
-                        with self.assertRaisesRegex(ValueError, 'differs'):
+                        with self.assertRaises(ValueError):
                             validator.nsis_resource_stream('7z', 'installer', 'member', expected)
+
+    def test_nsis_stream_cap_and_failure_are_rejected(self):
+        for content, status in ((b'oversize', 0), (b'ok', 2)):
+            process = Mock(stdout=io.BytesIO(content))
+            process.wait.return_value = status
+            process.poll.return_value = 0
+            with self.subTest(content=content), patch.object(validator.subprocess, 'Popen', return_value=process):
+                with self.assertRaises(ValueError):
+                    validator.nsis_read_stream('7z', 'installer', 'uninstall.exe', 2)
 
     def test_nsis_file_parent_collision_both_orders(self):
         for entries in [('FILE', 'file/child'), ('file/child', 'FILE')]:

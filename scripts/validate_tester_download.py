@@ -331,10 +331,9 @@ def nsis_listing(listing, trusted_sizes=None):
 
 
 
-def nsis_resource_stream(tool, installer, member, expected):
-    """Verify an unreported solid member without unbounded disk extraction."""
-    limit = expected.stat().st_size
-    require(limit <= 16 * 1024 * 1024, 'Unknown-size NSIS resource too large')
+def nsis_read_stream(tool, installer, member, limit):
+    """Read one solid NSIS member with bounded memory and execution time."""
+    require(0 <= limit <= 16 * 1024 * 1024, 'Unknown-size NSIS resource too large')
     clean_env = {k: v for k, v in os.environ.items() if k not in
                  ('GH_TOKEN', 'GITHUB_TOKEN', 'GH_ENTERPRISE_TOKEN', 'GITHUB_ENTERPRISE_TOKEN')}
     process = subprocess.Popen([str(tool), 'x', '-so', '-bd', '-y', str(installer), member],
@@ -343,9 +342,9 @@ def nsis_resource_stream(tool, installer, member, expected):
         reader = pool.submit(process.stdout.read, limit + 1)
         try:
             data = reader.result(timeout=90)
-            require(len(data) == limit and hashlib.sha256(data).hexdigest() == digest(expected),
-                    'Unknown-size NSIS resource differs from trusted resource')
+            require(len(data) <= limit, 'Unknown-size NSIS stream exceeds byte cap')
             require(process.wait(timeout=10) == 0, 'NSIS resource stream failed')
+            return data
         except FutureTimeout as error:
             raise ValueError('NSIS resource stream timed out') from error
         finally:
@@ -353,6 +352,12 @@ def nsis_resource_stream(tool, installer, member, expected):
                 process.kill()
             process.wait()
             process.stdout.close()
+
+
+def nsis_resource_stream(tool, installer, member, expected):
+    data = nsis_read_stream(tool, installer, member, expected.stat().st_size)
+    require(len(data) == expected.stat().st_size and hashlib.sha256(data).hexdigest() == digest(expected),
+            'Unknown-size NSIS resource differs from trusted resource')
 
 
 def windows_gui(installed, root, evidence):
@@ -475,6 +480,20 @@ def validate(args, receipt):
             listing = command([tool, 'l', '-slt', installers[0]])
             trusted_resources = {'third-party/' + p.relative_to(root / 'third-party').as_posix(): p
                                  for p in (root / 'third-party').rglob('*') if p.is_file()}
+            # Newer 7-Zip versions also expose NSIS's generated uninstaller,
+            # with no listed size. Measure only that literal member through a
+            # capped pipe before any filesystem extraction. Never execute it.
+            generated_uninstaller = None
+            for block in listing.split('----------', 1)[-1].strip().split('\n\n'):
+                fields = dict(line.split(' = ', 1) for line in block.splitlines() if ' = ' in line)
+                if fields.get('Path') == 'uninstall.exe' and not fields.get('Size'):
+                    require(generated_uninstaller is None and fields.get('Solid') == '+', 'Invalid NSIS uninstaller record')
+                    data = nsis_read_stream(tool, installers[0], 'uninstall.exe', 16 * 1024 * 1024)
+                    require(bool(data), 'Empty generated NSIS uninstaller')
+                    generated_uninstaller = temporary / 'reviewed-uninstaller.exe'
+                    generated_uninstaller.write_bytes(data)
+                    trusted_resources['uninstall.exe'] = generated_uninstaller
+                    receipt['generated_uninstaller'] = {'bytes': len(data), 'sha256': digest(generated_uninstaller), 'bounded_stream_verified': True}
             receipt['installer_payload_listing'] = nsis_listing(listing, {name: p.stat().st_size for name, p in trusted_resources.items()})
             for member in receipt['installer_payload_listing']:
                 if member.get('requires_stream_check'):
@@ -482,6 +501,9 @@ def validate(args, receipt):
                     member['trusted_resource_stream_verified'] = True
             installed = temporary / 'NSIS extracted'
             command([tool, 'x', '-y', '-o' + str(installed), installers[0]], timeout=90)
+            if generated_uninstaller is not None:
+                require((installed / 'uninstall.exe').is_file() and digest(installed / 'uninstall.exe') == digest(generated_uninstaller),
+                        'Extracted NSIS uninstaller differs from bounded stream')
             binary = windows_gui(installed, root, evidence)
             manifests = list(installed.rglob('NOTICE-MANIFEST.json'))
             require(bool(manifests), 'Installer physical notices missing')
