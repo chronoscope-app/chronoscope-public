@@ -976,7 +976,7 @@ function layers() {
     ((snapshot.gis_layers || []) as GisLayer[])
       .map(
         (layer) =>
-          `<div class="layer-card ${layer.enabled ? "" : "muted"}" data-gis-id="${esc(layer.id)}" tabindex="0" role="group" aria-label="${esc(layer.name)}"><input type="checkbox" data-gis-toggle="${esc(layer.id)}" ${layer.enabled ? "checked" : ""} aria-label="Show ${esc(layer.name)}"><div><strong>${esc(layer.name)}</strong><small>${esc(layer.format.toUpperCase())} · ${layer.feature_count.toLocaleString()} features${view.gis?.errors.has(layer.id) ? " · load error" : ""}</small></div><button class="icon" data-gis-options="${esc(layer.id)}" aria-label="GIS layer options">⋯</button></div>`,
+          `<div class="layer-card ${layer.enabled ? "" : "muted"}" data-gis-id="${esc(layer.id)}" tabindex="0" role="group" aria-label="${esc(layer.name)}"><input type="checkbox" data-gis-toggle="${esc(layer.id)}" ${layer.enabled ? "checked" : ""} aria-label="Show ${esc(layer.name)}"><div><strong>${esc(layer.name)}</strong><small>${esc((layer.source_format || layer.format).toUpperCase())} · ${layer.feature_count.toLocaleString()} features${view.gis?.errors.has(layer.id) ? " · load error" : ""}</small></div><button class="icon" data-gis-options="${esc(layer.id)}" aria-label="GIS layer options">⋯</button></div>`,
       )
       .join("") +
     `<div class="layer-heading">Geography</div><div class="layer-card" data-layer-kind="reference" tabindex="0" role="group">${icon("layers")}<div><strong>${mode === "globe" ? "WGS84 globe" : "Coordinate reference plane"}</strong><small>${mode === "globe" ? "Bundled Earth image · offline" : `WGS84 · ${preferences.coordinates.toUpperCase()}`}</small></div><button class="icon" data-geography-options="reference" aria-label="Coordinate reference settings">⋯</button></div>` +
@@ -1022,7 +1022,7 @@ function showTablesMenu() {
       .filter((layer) => layer.feature_count > 0)
       .map(
         (layer) =>
-          `<button role="menuitem" data-table-gis-id="${esc(layer.id)}"><strong>${esc(layer.name)}</strong><small>${layer.feature_count.toLocaleString()} features · ${esc(layer.format.toUpperCase())}${layer.enabled ? "" : " · hidden"}</small></button>`,
+          `<button role="menuitem" data-table-gis-id="${esc(layer.id)}"><strong>${esc(layer.name)}</strong><small>${layer.feature_count.toLocaleString()} features · ${esc((layer.source_format || layer.format).toUpperCase())}${layer.enabled ? "" : " · hidden"}</small></button>`,
       )
       .join("");
   if (!menu.childElementCount)
@@ -1668,14 +1668,15 @@ async function fitGisLayer(id: string) {
 }
 async function openGisFile(path: string, format: string) {
   const model = ["gltf", "glb"].includes(format),
-    asset = model || format === "tiles3d";
+    asset = model || format === "tiles3d",
+    binaryVector = ["shapefile", "geopackage"].includes(format);
   const center = [
     (view.bounds[0] + view.bounds[2]) / 2,
     (view.bounds[1] + view.bounds[3]) / 2,
     0,
   ];
   modal(
-    `${head("Open GIS file")}<p class="description">${esc(path.split(/[\\/]/).pop())} · ${esc(format.toUpperCase())}</p><p class="description">Add a reference layer to retain native shapes, styling and animation. ${asset ? "3D assets use their physical dimensions and placement." : "Import as Events to map timestamps and use Chronoscope filters, tracks and analysis. Timeless features can remain reference layers."}</p>${model ? `<label class="field">Model location · longitude, latitude, ellipsoidal height (metres)<input id="gis-model-position" value="${center.join(", ")}"></label><label class="field">Model scale<input id="gis-model-scale" type="number" min="0.000001" max="1000000" value="1" step="any"></label>` : ""}<p class="description">Local companion assets are included in the workspace. External links and KML NetworkLinks are disabled.</p><footer><button data-close>Cancel</button><span class="spacer"></span>${asset ? "" : '<button id="gis-open-events">Import as Events…</button>'}<button class="primary" id="gis-open-reference">Add reference layer</button></footer>`,
+    `${head("Open GIS file")}<p class="description">${esc(path.split(/[\\/]/).pop())} · ${esc(format.toUpperCase())}</p><p class="description">${binaryVector ? "Add a reference layer to display WGS84 XY shapes and attributes. " : "Add a reference layer to retain native shapes, styling and animation. "}${format === "geopackage" ? "Vector tables are combined, with their names retained in the source_layer attribute. " : ""}${asset ? "3D assets use their physical dimensions and placement." : "Import as Events to map timestamps and use Chronoscope filters, tracks and analysis. Timeless features can remain reference layers."}</p>${model ? `<label class="field">Model location · longitude, latitude, ellipsoidal height (metres)<input id="gis-model-position" value="${center.join(", ")}"></label><label class="field">Model scale<input id="gis-model-scale" type="number" min="0.000001" max="1000000" value="1" step="any"></label>` : ""}<p class="description">Local companion assets are included in the workspace. External links and KML NetworkLinks are disabled.</p><footer><button data-close>Cancel</button><span class="spacer"></span>${asset ? "" : '<button id="gis-open-events">Import as Events…</button>'}<button class="primary" id="gis-open-reference">Add reference layer</button></footer>`,
   );
   if (!asset)
     on("#gis-open-events", async () => {
@@ -1713,7 +1714,7 @@ async function gisLayerMenu(id: string) {
   if (!layer) return;
   const model = ["gltf", "glb"].includes(layer.format);
   modal(
-    `${head("GIS layer")}<label class="field">Name<input id="gis-layer-name" value="${esc(layer.name)}"></label><p class="description">${esc(layer.format.toUpperCase())} · ${layer.feature_count.toLocaleString()} features · ${layer.resource_count.toLocaleString()} packaged files · ${(layer.bytes / 1048576).toFixed(1)} MiB</p><label class="check-row"><input id="gis-layer-enabled" type="checkbox" ${layer.enabled ? "checked" : ""}> Show layer</label>${model ? `<label class="field">Location · longitude, latitude, ellipsoidal height (metres)<input id="gis-layer-position" value="${layer.position!.join(", ")}"></label><label class="field">Scale<input id="gis-layer-scale" type="number" step="any" min="0.000001" max="1000000" value="${layer.scale}"></label>` : ""}${layer.warnings.map((w) => `<p class="description">${esc(w)}</p>`).join("")}${view.gis.errors.has(id) ? `<p class="error">${esc(view.gis.errors.get(id))}</p>` : ""}<div class="row"><button id="gis-layer-fit">Fit layer</button>${layer.feature_count ? '<button id="gis-layer-table">Attribute table</button><button id="gis-layer-events">Import as Events…</button>' : ""}</div><footer><button class="danger" id="gis-layer-remove">Remove layer</button><span class="spacer"></span><button data-close>Cancel</button><button class="primary" id="gis-layer-apply">Apply</button></footer>`,
+    `${head("GIS layer")}<label class="field">Name<input id="gis-layer-name" value="${esc(layer.name)}"></label><p class="description">${esc((layer.source_format || layer.format).toUpperCase())} · ${layer.feature_count.toLocaleString()} features · ${layer.resource_count.toLocaleString()} packaged files · ${(layer.bytes / 1048576).toFixed(1)} MiB</p><label class="check-row"><input id="gis-layer-enabled" type="checkbox" ${layer.enabled ? "checked" : ""}> Show layer</label>${model ? `<label class="field">Location · longitude, latitude, ellipsoidal height (metres)<input id="gis-layer-position" value="${layer.position!.join(", ")}"></label><label class="field">Scale<input id="gis-layer-scale" type="number" step="any" min="0.000001" max="1000000" value="${layer.scale}"></label>` : ""}${layer.warnings.map((w) => `<p class="description">${esc(w)}</p>`).join("")}${view.gis.errors.has(id) ? `<p class="error">${esc(view.gis.errors.get(id))}</p>` : ""}<div class="row"><button id="gis-layer-fit">Fit layer</button>${layer.feature_count ? '<button id="gis-layer-table">Attribute table</button><button id="gis-layer-events">Import as Events…</button>' : ""}</div><footer><button class="danger" id="gis-layer-remove">Remove layer</button><span class="spacer"></span><button data-close>Cancel</button><button class="primary" id="gis-layer-apply">Apply</button></footer>`,
   );
   on("#gis-layer-fit", async () => {
     closeModal();
@@ -3874,6 +3875,8 @@ async function openFile() {
           "xlsx",
           "xls",
           "xlsb",
+          "shp",
+          "gpkg",
           "geojson",
           "topojson",
           "kml",
@@ -3892,6 +3895,8 @@ async function openFile() {
       {
         name: "GIS data and 3D assets",
         extensions: [
+          "shp",
+          "gpkg",
           "geojson",
           "topojson",
           "json",
@@ -3907,11 +3912,10 @@ async function openFile() {
     ],
   });
   if (!path) return;
-  const probe = /\.(json|geojson|topojson|kml|kmz|czml|gpx|gltf|glb)$/i.test(
-    path,
-  )
-    ? await task("Identifying file…", () => call("file_probe", { path }))
-    : null;
+  const probe =
+    /\.(json|geojson|topojson|kml|kmz|czml|gpx|gltf|glb|shp|gpkg)$/i.test(path)
+      ? await task("Identifying file…", () => call("file_probe", { path }))
+      : null;
   const isWorkspace =
     /\.chronoscope$/i.test(path) || probe?.kind === "workspace";
   await filterIntent.flush();

@@ -81,7 +81,9 @@ impl Engine {
                     }
                 }
                 Ok(match crate::gis::format(path, &probe) {
-                    Ok(format) => json!({"kind":"gis","format":format}),
+                    Ok(format) => json!({"kind":"gis","format":match ext.as_str() {
+                        "shp" => json!("shapefile"), "gpkg" => json!("geopackage"), _ => json!(format),
+                    }}),
                     Err(_) => json!({"kind":"data","format":null}),
                 })
             }

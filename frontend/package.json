@@ -24,6 +24,7 @@
     "test:performance": "node scripts/performance-qa.mjs",
     "test:performance:100k": "node scripts/performance-100k-qa.mjs",
     "test:gis-files": "node scripts/gis-files-qa.mjs",
+    "test:vector-gis": "node scripts/vector-gis-qa.mjs",
     "test:notifications": "node scripts/notifications-qa.mjs",
     "test:spectrum": "node scripts/spectrum-qa.mjs",
     "test:event-table": "node scripts/event-table-qa.mjs",
