@@ -9,7 +9,7 @@ use std::{
 const ALLOWED: &[&str] = &[
     "kml", "kmz", "czml", "geojson", "topojson", "gpx", "json", "gltf", "glb", "bin", "png", "jpg",
     "jpeg", "gif", "webp", "svg", "ktx", "ktx2", "basis", "b3dm", "i3dm", "pnts", "cmpt",
-    "subtree", "terrain", "vctr", "geom",
+    "subtree", "terrain", "vctr", "geom", "shp", "shx", "dbf", "prj", "cpg", "gpkg",
 ];
 fn bounded(path: &Path, limit: u64) -> Result<Vec<u8>, String> {
     let mut bytes = vec![];
@@ -261,12 +261,24 @@ pub fn load(
         bounded(&path, MAX_SOURCE)?
     };
     let format = super::format(&path, &probe)?;
+    let prepared = if matches!(ext.as_str(), "shp" | "gpkg") {
+        Some(super::vector::prepare(&path, &probe)?)
+    } else {
+        None
+    };
+    let document = prepared
+        .as_ref()
+        .map(|p| p.document.as_slice())
+        .unwrap_or(&probe);
     let root = data_dir.join("gis-assets");
     std::fs::create_dir_all(&root).map_err(|e| e.to_string())?;
     let mut tmp = tempfile::NamedTempFile::new_in(&root).map_err(|e| e.to_string())?;
     let mut entrypoint;
     let features;
-    let mut warnings = vec![];
+    let mut warnings = prepared
+        .as_ref()
+        .map(|p| p.warnings.clone())
+        .unwrap_or_default();
     let count;
     {
         let mut zip = zip::ZipWriter::new(&mut tmp);
@@ -326,16 +338,22 @@ pub fn load(
             if !safe_name(&entrypoint) {
                 return Err("Invalid GIS filename".into());
             }
-            features = normalize::parse(&format, &probe, &mut warnings)?;
-            let files = if format.is_3d() || matches!(format, Format::Czml | Format::Kml) {
+            features = normalize::parse(&format, document, &mut warnings)?;
+            let files = if prepared.is_some() {
+                BTreeMap::new()
+            } else if format.is_3d() || matches!(format, Format::Czml | Format::Kml) {
                 collect(&path, &mut warnings)?
             } else {
                 BTreeMap::from([(entrypoint.clone(), path.clone())])
             };
-            if !files.contains_key(&entrypoint) {
+            if !files.contains_key(&entrypoint)
+                && !prepared
+                    .as_ref()
+                    .is_some_and(|p| p.sources.contains_key(&entrypoint))
+            {
                 return Err("GIS entrypoint is missing from its package".into());
             }
-            let normalized = normalize::render_json(&format, &probe, &features)?;
+            let normalized = normalize::render_json(&format, document, &features)?;
             let render_name = format!(
                 "_chronoscope_render.{}",
                 if format == Format::Topojson {
@@ -350,7 +368,19 @@ pub fn load(
                         .into(),
                 );
             }
-            count = files.len() + usize::from(normalized.is_some());
+            count = files.len()
+                + prepared.as_ref().map_or(0, |p| p.sources.len())
+                + usize::from(normalized.is_some());
+            if let Some(prepared) = &prepared {
+                for (name, bytes) in &prepared.sources {
+                    if !safe_name(name) || name == &render_name {
+                        return Err("Invalid or reserved vector companion filename".into());
+                    }
+                    crate::operation::check()?;
+                    zip.start_file(name, opts).map_err(|e| e.to_string())?;
+                    zip.write_all(bytes).map_err(|e| e.to_string())?;
+                }
+            }
             for (name, file) in files {
                 crate::operation::check()?;
                 zip.start_file(&name, opts).map_err(|e| e.to_string())?;
@@ -390,6 +420,11 @@ pub fn load(
         id: random.iter().map(|b| format!("{b:02x}")).collect(),
         name: path.file_name().unwrap().to_string_lossy().into(),
         format,
+        source_format: match ext.as_str() {
+            "shp" => Some(SourceFormat::Shapefile),
+            "gpkg" => Some(SourceFormat::Geopackage),
+            _ => None,
+        },
         enabled: true,
         selected: Vec::new(),
         bytes: asset.metadata().map_err(|e| e.to_string())?.len(),

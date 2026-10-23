@@ -1,0 +1,23 @@
+{
+  "implementation_commit": "ebf25d127a5c5eea2d7e2962abbf2c7f6080a7fc",
+  "platform": "Linux x86_64; Chromium with software WebGL2",
+  "scope": "Real Rust engine, Open flow, native Cesium layers, Events conversion and portable reopening; not a native macOS/Windows installer test.",
+  "passed": true,
+  "browser_checks": [
+    "Open SHAPEFILE: native reference geometry and 2 source features",
+    "Open SHAPEFILE: native reference geometry and 2 source features",
+    "Open GEOPACKAGE: native reference geometry and 5 source features",
+    "GeoPackage table provenance and exact 64-bit source IDs",
+    "New reference layers persist across all three views",
+    "Packaged GeoPackage converts into timestamped Events in the running UI",
+    "Portable vector workspace reopens with original layer IDs and attributes"
+  ],
+  "page_errors": [],
+  "external_requests": [],
+  "desktop_csp_enforced": true,
+  "screenshots": {
+    "before-import.png": "Empty workspace immediately before importing the synthetic files.",
+    "after-import.png": "After importing events.shp, zones.shp and features.gpkg; source-format labels are visible."
+  },
+  "attribution": "First-party synthetic MIT fixtures and UI. Natural Earth background is public domain, from the existing bundled texture. No external map tiles or private records."
+}
