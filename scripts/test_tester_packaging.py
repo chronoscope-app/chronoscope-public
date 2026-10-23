@@ -379,6 +379,7 @@ class MacBundleStagingTests(unittest.TestCase):
         self.assert_refused_empty('App Intents metadata missing or empty')
         self.assertEqual(sum(e[0] == 'codesign' for e in self.events), 2)
 
+    @unittest.skipIf(os.name == 'nt', 'Windows does not implement POSIX executable permission bits')
     def test_gui_mode_mutated_after_initial_seal_rejected(self):
         self.mode = 'mutate_smoke_mode'
         self.assert_refused_empty('Sealed Mac app changed during validation')
@@ -407,6 +408,8 @@ class MacBundleStagingTests(unittest.TestCase):
         real_add = tarfile.TarFile.add
         for mode in ('gui', 'resource', 'mode', 'symlink'):
             with self.subTest(mode=mode):
+                if mode == 'mode' and os.name == 'nt':
+                    self.skipTest('Windows does not implement POSIX executable permission bits')
                 self.output = self.base / ('archive-mutation-' + mode)
                 def add(archive, name, *args, **kwargs):
                     # Inject after final checks, immediately before tar reads it.
@@ -441,11 +444,14 @@ class MacBundleStagingTests(unittest.TestCase):
 
     def test_symlink_and_mode_inventory_survive_archive(self):
         self.bundled.chmod(0o755)
+        # Windows chmod cannot set execute bits. Verify preservation of the
+        # host's actual mode; the macOS runner also exercises the 0755 fixture.
+        expected_mode = self.bundled.stat().st_mode & 0o7777
         (self.app / 'Contents/Resources/license-link').symlink_to('third-party/LICENSE')
         self.stage()
         with tarfile.open(self.output / 'chronoscope-macos-arm64.tar.xz') as archive:
             prefix = 'Chronoscope/Chronoscope.app/Contents/'
-            self.assertEqual(archive.getmember(prefix + 'MacOS/chronoscope-desktop').mode, 0o755)
+            self.assertEqual(archive.getmember(prefix + 'MacOS/chronoscope-desktop').mode, expected_mode)
             link = archive.getmember(prefix + 'Resources/license-link')
             self.assertTrue(link.issym())
             self.assertEqual(link.linkname, 'third-party/LICENSE')
