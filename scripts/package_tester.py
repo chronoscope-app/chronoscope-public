@@ -26,6 +26,19 @@ def architecture(path):
         return {0x1000007: 'x86_64', 0x100000c: 'arm64'}[struct.unpack_from('<I', data, 4)[0]]
     raise ValueError('Unknown executable header')
 
+def verify_nsis_gui(build_data, installed_data):
+    # Tauri replaces exactly the first bundle marker while creating NSIS, then
+    # restores the loose binary. Reject every other byte difference.
+    # https://github.com/tauri-apps/tauri/blob/tauri-bundler-v2.9.2/crates/tauri-bundler/src/bundle.rs
+    unknown = b"__TAURI_BUNDLE_TYPE_VAR_UNK"
+    nsis = b"__TAURI_BUNDLE_TYPE_VAR_NSS"
+    if installed_data == build_data:
+        return 'identical'
+    index = build_data.find(unknown)
+    if index < 0 or installed_data != build_data[:index] + nsis + build_data[index + len(unknown):]:
+        raise ValueError('Actual installer GUI differs beyond the Tauri NSIS bundle marker')
+    return 'Tauri NSIS bundle marker only'
+
 # Mac-only seal-to-archive identity guards. Never follow bundle symlinks while
 # inventorying; reject special files and bound both traversal and hashed bytes.
 MAC_MAX_ENTRIES = 20000
@@ -152,14 +165,21 @@ def stage(target, output, max_bytes):
             if len(installed) != 1 or architecture(installed[0]) != expected:
                 raise ValueError('Actual installer GUI executable missing or wrong architecture')
             installed_hash = hashlib.sha256(installed[0].read_bytes()).hexdigest()
-            if installed_hash != evidence['gui_sha256']:
-                raise ValueError('Actual installer GUI differs from tested release executable')
+            evidence['installer_binary_difference'] = verify_nsis_gui(gui.read_bytes(), installed[0].read_bytes())
+            # Smoke the actual installer payload after validating its exact,
+            # narrowly allowed difference from the source-tree executable.
+            subprocess.run(['python', str(ROOT / 'scripts/test_desktop_cli.py'), '--binary', str(installed[0])], check=True, timeout=180)
+            if hashlib.sha256(installed[0].read_bytes()).hexdigest() != installed_hash:
+                raise ValueError('Installer GUI changed during smoke')
+            evidence['build_tree_gui_sha256'] = evidence['gui_sha256']
+            evidence['gui_sha256'] = installed_hash
             evidence['installer_gui_sha256'] = installed_hash
+            evidence['automated_tests'].extend(['installer GUI byte identity except Tauri NSIS marker', 'installer desktop CLI/agent/MCP smoke'])
             # Ship the complete installer once, not duplicate GUI/CLI binaries.
             # The installed desktop executable also exposes the tested CLI/MCP.
             shutil.copy2(packages[0], root / packages[0].name)
             inspect = shutil.which('llvm-objdump') or str(Path('C:/Program Files/LLVM/bin/llvm-objdump.exe'))
-            evidence['linkage'] = subprocess.check_output([inspect, '-p', str(gui)], text=True)
+            evidence['linkage'] = subprocess.check_output([inspect, '-p', str(installed[0])], text=True)
             (root / 'INSTALL.txt').write_text('Experimental builds for testing; you may encounter bugs.\n\nWindows x64: use the included current-user installer. The installed Chronoscope executable also supports CLI/MCP commands. Unsigned; Windows may display a publisher warning. Microsoft Edge WebView2 Evergreen Runtime must already be installed (not redistributed). Get it at https://developer.microsoft.com/microsoft-edge/webview2/ .\n')
         elif target == 'macos-arm64':
             apps = list((release / 'bundle/macos').glob('*.app'))
