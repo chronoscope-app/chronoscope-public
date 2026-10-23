@@ -100,7 +100,10 @@ class WindowsInstallerStagingTests(unittest.TestCase):
     def run_subprocess(self, args, **kwargs):
         if args[0] == 'python':
             self.assertEqual(args[1:3], [str(self.repo / 'scripts/test_desktop_cli.py'), '--binary'])
-            self.assertEqual(args[3], str(self.gui))
+            binary = Path(args[3])
+            self.assertTrue(binary == self.gui or binary.name == 'chronoscope-desktop.exe' and 'installer-extracted' in binary.parts)
+            if binary != self.gui and self.mode == 'smoke_mutation':
+                binary.write_bytes(binary.read_bytes() + b'changed during smoke')
             return
         # The only other process is 7-Zip extraction; never execute a fixture.
         self.assertEqual(args[1:3], ['x', '-y'])
@@ -112,6 +115,8 @@ class WindowsInstallerStagingTests(unittest.TestCase):
             data = self.pe(0xaa64) if self.mode == 'wrong_arch' else self.gui.read_bytes()
             if self.mode == 'changed_gui':
                 data += b'not the tested executable'
+            if self.mode == 'nsis_marker':
+                data = data.replace(b'__TAURI_BUNDLE_TYPE_VAR_UNK', b'__TAURI_BUNDLE_TYPE_VAR_NSS', 1)
             self.put(extracted / 'app/chronoscope-desktop.exe', data)
         if self.mode == 'duplicate_gui':
             self.put(extracted / 'other/chronoscope-desktop.exe', self.pe())
@@ -142,17 +147,35 @@ class WindowsInstallerStagingTests(unittest.TestCase):
             digest, name = line.split('  ', 1)
             self.assertEqual(digest, self.real_sha256((self.output / name).read_bytes()).hexdigest())
         self.assertEqual(self.notice_checks.call_count, 2)
-        self.assertEqual(self.runs.call_count, 2)  # Mandatory smoke + inert extraction.
+        self.assertEqual(self.runs.call_count, 3)  # Build smoke, extraction, actual installer smoke.
 
     def test_bad_installer_or_notices_reject_before_output(self):
         for mode in ['missing_gui', 'duplicate_gui', 'wrong_arch', 'changed_gui',
-                     'missing_notice', 'bad_notices']:
+                     'missing_notice', 'bad_notices', 'smoke_mutation']:
             with self.subTest(mode=mode):
                 self.mode = mode
                 self.output = self.base / ('output-' + mode)
                 with self.assertRaises(ValueError):
                     self.stage()
                 self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_nsis_marker_change_tests_and_hashes_actual_installer_gui(self):
+        self.gui.write_bytes(self.gui.read_bytes() + b'__TAURI_BUNDLE_TYPE_VAR_UNK')
+        self.mode = 'nsis_marker'
+        self.stage()
+        evidence = json.loads((self.output / 'VALIDATION-windows-x86_64.json').read_text())
+        self.assertNotEqual(evidence['build_tree_gui_sha256'], evidence['gui_sha256'])
+        self.assertEqual(evidence['installer_gui_sha256'], evidence['gui_sha256'])
+        self.assertEqual(evidence['installer_binary_difference'], 'Tauri NSIS bundle marker only')
+        self.assertEqual(self.runs.call_count, 3)
+
+    def test_nsis_marker_guard_rejects_other_differences(self):
+        original = b'prefix__TAURI_BUNDLE_TYPE_VAR_UNKsuffix'
+        patched = original.replace(b'_UNK', b'_NSS')
+        self.assertEqual(tester.verify_nsis_gui(original, patched), 'Tauri NSIS bundle marker only')
+        for altered in [patched + b'x', patched[:-1], patched.replace(b'prefix', b'Prefix'), original.replace(b'_UNK', b'_MSI')]:
+            with self.subTest(altered=altered), self.assertRaises(ValueError):
+                tester.verify_nsis_gui(original, altered)
 
     def test_changed_sdk_loader_rejected(self):
         self.loader.write_bytes(b'altered loader')
