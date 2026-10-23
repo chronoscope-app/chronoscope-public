@@ -2,7 +2,7 @@
 name = "chronoscope-desktop"
 version = "0.15.2"
 edition = "2021"
-rust-version = "1.90"
+rust-version = "1.96"
 license = "MIT"
 [features]
 default = ["custom-protocol"]

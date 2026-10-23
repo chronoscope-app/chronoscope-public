@@ -4,6 +4,9 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## 0.15.2 — unreleased
 
+- Add bounded WGS84 XY Shapefile and vector GeoPackage imports through Open, reference layers, Events, CLI/MCP, and portable saves. Preserve original files, polygon holes, multipart geometry, exact source IDs and GeoPackage table names. See [supported inputs and limits](docs/VECTOR-IMPORTS.md).
+- Pin reviewed Rust vector readers with minimal features and retained dependency licenses. Align the declared Rust minimum with the existing locked dependency requirement (1.96).
+
 - Compact charts now float over the map, with readable small-chart axes and expandable chart notes. Widen chart restores editing controls.
 
 - Preserve fractional-second timestamp bounds in the CLI/MCP snapshot output contract, including global earthquake catalogs.

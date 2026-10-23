@@ -2,6 +2,7 @@
 //! are addressed by hash and fetched in bounded chunks without a listening proxy.
 mod assets;
 mod normalize;
+mod vector;
 pub(crate) use assets::validate_scoped_package;
 pub use assets::{features, load, read, validate_package};
 pub use normalize::{raw_from_layer, raw_import, Feature};
@@ -36,11 +37,20 @@ impl Format {
         self.is_model() || *self == Self::Tiles3d
     }
 }
+#[derive(Clone, Debug, Serialize, Deserialize, schemars::JsonSchema, PartialEq)]
+#[serde(rename_all = "lowercase")]
+pub enum SourceFormat {
+    Shapefile,
+    Geopackage,
+}
 #[derive(Clone, Debug, Serialize, Deserialize, schemars::JsonSchema)]
 pub struct Layer {
     pub id: String,
     pub name: String,
     pub format: Format,
+    /// Original binary format; presentation and portable geometry remain GeoJSON.
+    #[serde(default)]
+    pub source_format: Option<SourceFormat>,
     pub enabled: bool,
     #[serde(default)]
     pub selected: Vec<String>,
@@ -76,6 +86,7 @@ impl Layer {
             || self.feature_count > MAX_FEATURES
             || self.warnings.len() > 64
             || self.warnings.iter().any(|w| w.len() > 8192)
+            || self.source_format.is_some() && self.format != Format::Geojson
             || !self.scale.is_finite()
             || !(0.000001..=1e6).contains(&self.scale)
         {
@@ -143,6 +154,7 @@ pub fn format(path: &Path, bytes: &[u8]) -> Result<Format, String> {
         .unwrap_or("")
         .to_ascii_lowercase();
     match ext.as_str() {
+        "shp" | "gpkg" => Ok(Format::Geojson), // Bounded readers produce portable GeoJSON.
         "geojson" => Ok(Format::Geojson), "topojson"=>Ok(Format::Topojson),
         "kml"=>Ok(Format::Kml),"kmz"=>Ok(Format::Kmz),"gpx"=>Ok(Format::Gpx),
         "czml"=>Ok(Format::Czml),"gltf"=>Ok(Format::Gltf),"glb"=>Ok(Format::Glb),
@@ -150,7 +162,7 @@ pub fn format(path: &Path, bytes: &[u8]) -> Result<Format, String> {
             match v["type"].as_str() { Some("Topology")=>Ok(Format::Topojson),Some("Feature"|"FeatureCollection"|"Point"|"MultiPoint"|"LineString"|"MultiLineString"|"Polygon"|"MultiPolygon"|"GeometryCollection")=>Ok(Format::Geojson),_=>{
                 if v.is_array() && v[0]["id"]=="document" {Ok(Format::Czml)} else if v["asset"].is_object() && v["root"].is_object() {Ok(Format::Tiles3d)} else if v["asset"]["version"]=="2.0" {Ok(Format::Gltf)} else {Err("JSON is not a supported GIS document".into())}
             }}
-        }, _=>Err("Unsupported GIS format; use GeoJSON, TopoJSON, KML/KMZ, CZML, GPX, tileset.json or glTF/GLB".into())
+        }, _=>Err("Unsupported GIS format; use Shapefile, vector GeoPackage, GeoJSON, TopoJSON, KML/KMZ, CZML, GPX, tileset.json or glTF/GLB".into())
     }
 }
 pub fn mime(name: &str) -> &'static str {

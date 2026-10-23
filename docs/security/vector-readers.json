@@ -1,0 +1,86 @@
+{
+  "review_date": "2026-10-22",
+  "direct_features": {
+    "shapefile": [
+      "geo-types",
+      "encoding_rs"
+    ],
+    "geozero": [
+      "with-wkb",
+      "with-geo"
+    ]
+  },
+  "default_features": false,
+  "excluded_native_integrations": [
+    "GDAL",
+    "PROJ",
+    "GEOS"
+  ],
+  "excluded_database_framework": "SQLx",
+  "sqlite": "Reuses existing bundled rusqlite/libsqlite3-sys; SQLite is C.",
+  "packages": [
+    {
+      "name": "bufrw",
+      "version": "0.2.0",
+      "registry": "crates.io",
+      "sha256": "394c22b416e3981206df472c3bcbbf9ae130883619aefc2199e6087517af1bba",
+      "repository": "https://github.com/tmontaigu/bufrw",
+      "publisher": "tmontaigu",
+      "license": "MIT",
+      "review_notes": "Published source matched recorded upstream commit during review."
+    },
+    {
+      "name": "dbase",
+      "version": "0.8.0",
+      "registry": "crates.io",
+      "sha256": "abde818b4b82df61e01348c2b4610c221bcecb97cb7f567da086edf295d8d126",
+      "repository": "https://github.com/tmontaigu/dbase-rs",
+      "publisher": "tmontaigu",
+      "license": "MIT",
+      "review_notes": "Published source matched recorded upstream commit during review."
+    },
+    {
+      "name": "geozero",
+      "version": "0.15.1",
+      "registry": "crates.io",
+      "sha256": "db5eda63aa99ac06160fd53328ed75c34f14e3196d3f56a3649e247ed796e54b",
+      "repository": "https://github.com/georust/geozero",
+      "publisher": "nyurik",
+      "license": "MIT OR Apache-2.0",
+      "review_notes": "Published source matched recorded upstream commit during review."
+    },
+    {
+      "name": "scroll",
+      "version": "0.13.0",
+      "registry": "crates.io",
+      "sha256": "c1257cd4248b4132760d6524d6dda4e053bc648c9070b960929bf50cfb1e7add",
+      "repository": "https://github.com/m4b/scroll",
+      "publisher": "m4b",
+      "license": "MIT",
+      "review_notes": "Recorded release commit unavailable; runtime implementation matches upstream 0df8bd0dc007461fad128b1a2a05ed7daefbe85d; observed differences only README example and test lint annotation."
+    },
+    {
+      "name": "shapefile",
+      "version": "0.9.0",
+      "registry": "crates.io",
+      "sha256": "92fedc0c44dc53a02655cd8dccd2fdf3159c372c0f6eb59115e889f11325e4f0",
+      "repository": "https://github.com/tmontaigu/shapefile-rs",
+      "publisher": "tmontaigu",
+      "license": "MIT",
+      "review_notes": "Published source matched recorded upstream commit during review."
+    }
+  ],
+  "review_scope": [
+    "Registry owners/publishers and release history",
+    "Registry SHA-256 checksums",
+    "Published source versus upstream",
+    "Selected runtime source, build scripts, enabled feature graph and unsafe-code inspection",
+    "Focused deterministic malformed-file tests and real-engine import/portable round trips",
+    "RustSec lockfile advisory scan; not a malware-free guarantee or comprehensive manual audit"
+  ],
+  "maintenance": "No automatic upgrades of the pinned readers. Recheck source, features, advisories and license notices before changing versions.",
+  "licenses": {
+    "geozero": "LICENSE-MIT and LICENSE-APACHE copied from upstream release commit 6889c5dcaa116fb46b2fa95dbcb9fb71512838be because published crate omits license files. Other new notices are copied from checksummed registry archives."
+  },
+  "advisory_baseline": "Existing lockfile has six unmaintained-package warnings, separately tracked from the new reader set."
+}
