@@ -139,6 +139,25 @@ class ValidatorTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     validator.nsis_read_stream('7z', 'installer', 'uninstall.exe', 2)
 
+    def test_gui_launch_uses_environment_profile_and_no_cli_arguments(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            process = Mock()
+            process.poll.return_value = None
+            receipt = {}
+            with patch.object(validator, 'hosted_guard'), \
+                 patch.object(validator, 'command', return_value='{"connected":true}'), \
+                 patch.object(validator, 'mcp_smoke') as smoke, \
+                 patch.object(validator, 'cleanup_posix_group'), \
+                 patch.object(validator, 'cleanup_windows_process'), \
+                 patch.object(validator.subprocess, 'Popen', return_value=process) as launch:
+                self.assertTrue(validator.gui_launch(base / 'desktop', base, {}, receipt))
+            self.assertEqual(launch.call_args.args[0], [str(base / 'desktop')])
+            self.assertEqual(launch.call_args.kwargs['env']['CHRONOSCOPE_DATA_DIR'],
+                             str((base / 'isolated GUI profile').resolve()))
+            self.assertTrue(receipt['gui']['attached_mcp_query'])
+            smoke.assert_called_once()
+
     def test_nsis_file_parent_collision_both_orders(self):
         for entries in [('FILE', 'file/child'), ('file/child', 'FILE')]:
             listing = '----------\n' + '\n\n'.join('Path = ' + name + '\nSize = 1' for name in entries)
