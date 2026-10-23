@@ -377,6 +377,9 @@ export class SpaceTimeView {
       this.cameraDirty = true;
       this.controls.dispatchEvent(new Event("change"));
       this.displayLayer.cameraChanged();
+      // Viewport loading is throttled separately and must follow a held drag.
+      // Keep expensive scene bookkeeping on the trailing idle timer.
+      this.onViewportChange();
       clearTimeout(this.idleTimer);
       this.idleTimer = setTimeout(() => {
         if (!this.disposed) {

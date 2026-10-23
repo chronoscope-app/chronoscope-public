@@ -15,7 +15,8 @@
       "time-axis-test.mjs",
       "timeline-labels-test.mjs",
       "chart-guidance-test.mjs",
-      "publication-attribution-test.mjs"
+      "publication-attribution-test.mjs",
+      "viewport-refresh-test.mjs"
     ],
     "browser": [
       "analytics-qa.mjs",
@@ -41,6 +42,7 @@
       "navigation-sphere-qa.mjs",
       "notifications-qa.mjs",
       "pan-direction-qa.mjs",
+      "viewport-pan-qa.mjs",
       "patterns-qa.mjs",
       "playback-speed-qa.mjs",
       "playback-transitions-qa.mjs",

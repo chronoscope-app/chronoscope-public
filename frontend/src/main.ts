@@ -20,6 +20,7 @@ import { SIChat } from "./si-chat";
 import { SIWindowHost, workspaceHost } from "./si-windows";
 import { RendererStatus } from "./renderer-status";
 import { FilterIntent } from "./filter-intent";
+import { ViewportRefresh } from "./viewport-refresh";
 import { TimeRange } from "./time-range";
 import { TimeRail } from "./time-rail";
 import { installWorkspaceLayout } from "./workspace-layout";
@@ -2344,7 +2345,22 @@ async function authenticationMenu(
 }
 let mapLoadGeneration = 0;
 const activeMapJobs = new Set<string>();
-let viewportTimer: ReturnType<typeof setTimeout> | undefined;
+const viewportDataRefresh = new ViewportRefresh(
+  async () => {
+    if (restoringScene) return;
+    const bounds = view.visibleDataBounds() || view.visibleBounds();
+    if (bounds) await refreshViewportData(bounds);
+  },
+  (e) => toast(String(e), true),
+);
+const viewportResourceRefresh = new ViewportRefresh(
+  refreshViewportResources,
+  (e) => toast(String(e), true),
+);
+function cancelViewportRefresh() {
+  viewportDataRefresh.cancel();
+  viewportResourceRefresh.cancel();
+}
 let terrainLoadGeneration = 0;
 const cancelMap = async () => {
   mapLoadGeneration++;
@@ -2402,7 +2418,10 @@ function mapStackKey() {
   }
   return cachedMapKey;
 }
-async function loadRasters(regionOverride?: Bounds) {
+async function loadRasters(
+  regionOverride?: Bounds,
+  superseded?: () => boolean,
+) {
   if (restoringScene) return;
   const rawRegion = regionOverride || view.visibleBounds() || [...view.bounds];
   // Rust raster composition uses a Mercator grid, including geographic WMTS
@@ -2497,6 +2516,9 @@ async function loadRasters(regionOverride?: Bounds) {
           `${loaded.toLocaleString()} map tiles · ${visible.length} active layers · progressive imagery`,
         );
         offset = next!.next_offset ?? null;
+        // Publish this page before following newer camera bounds. Finishing an
+        // entire old viewport can otherwise delay a pan by hundreds of tiles.
+        if (superseded?.()) return;
       }
       if (current()) notifications.replace(`map:${layer.id}`, []);
     } catch (error) {
@@ -2520,7 +2542,11 @@ async function loadRasters(regionOverride?: Bounds) {
     }
   };
   const worker = async () => {
-    while (cursor < visible.length && current())
+    while (
+      cursor < visible.length &&
+      current() &&
+      (!superseded?.() || loaded === 0)
+    )
       await loadLayer(visible[cursor++]);
   };
   try {
@@ -2529,13 +2555,18 @@ async function loadRasters(regionOverride?: Bounds) {
     if (current()) {
       $("#cancel-map").hidden = true;
       status(
-        `${loaded.toLocaleString()} map tiles · ${visible.length - failures} layers loaded${failures ? ` · ${failures} failed` : ""}`,
+        superseded?.()
+          ? `${loaded.toLocaleString()} map tiles · following viewport`
+          : `${loaded.toLocaleString()} map tiles · ${visible.length - failures} layers loaded${failures ? ` · ${failures} failed` : ""}`,
       );
     }
   }
 }
 
-async function rebuildTerrain(cameraBounds?: Bounds) {
+async function rebuildTerrain(
+  cameraBounds?: Bounds,
+  superseded?: () => boolean,
+) {
   if (!terrainInfo) return;
   const generation = ++terrainLoadGeneration;
   const region = cameraBounds || view.bounds;
@@ -2544,7 +2575,7 @@ async function rebuildTerrain(cameraBounds?: Bounds) {
     preferences.terrain_vertical_datum === "unresolved-msl"
   ) {
     await view.setTerrain(null);
-    await loadRasters(region);
+    await loadRasters(region, superseded);
     return;
   }
   const coverage = terrainInfo.bounds as number[];
@@ -2561,7 +2592,7 @@ async function rebuildTerrain(cameraBounds?: Bounds) {
   ];
   if (bounds[0] >= bounds[2] || bounds[1] >= bounds[3]) {
     await view.setTerrain(null);
-    await loadRasters(region);
+    await loadRasters(region, superseded);
     return;
   }
   let t;
@@ -2581,7 +2612,7 @@ async function rebuildTerrain(cameraBounds?: Bounds) {
   Object.freeze(t);
   await view.setTerrain(t, () => generation === terrainLoadGeneration);
   if (generation !== terrainLoadGeneration) return;
-  await loadRasters(region);
+  await loadRasters(region, superseded);
 }
 function displayLevel() {
   return Math.max(
@@ -2704,7 +2735,12 @@ async function runViewportData(bounds: Bounds) {
   }
 }
 function scheduleViewportResources() {
-  clearTimeout(viewportTimer);
+  if (restoringScene) return;
+  // Slow imagery must not hold up event/cluster updates during navigation.
+  viewportDataRefresh.request();
+  viewportResourceRefresh.request();
+}
+async function refreshViewportResources(superseded: () => boolean) {
   if (restoringScene) return;
   if (preferences) {
     const zoom = currentMapZoom();
@@ -2737,17 +2773,10 @@ function scheduleViewportResources() {
       layers();
     }
   }
-  viewportTimer = setTimeout(() => {
-    if (restoringScene) return;
-    const bounds = view.visibleBounds();
-    if (!bounds) return;
-    refreshViewportData(view.visibleDataBounds() || bounds).catch((e) =>
-      toast(String(e), true),
-    );
-    if (terrainInfo)
-      rebuildTerrain(bounds).catch((e) => toast(String(e), true));
-    else loadRasters(bounds).catch((e) => toast(String(e), true));
-  }, 180);
+  const bounds = view.visibleBounds();
+  if (!bounds) return;
+  if (terrainInfo) await rebuildTerrain(bounds, superseded);
+  else await loadRasters(bounds, superseded);
 }
 async function loadTerrain(folder = false) {
   const path = await chooseFile({
@@ -3519,7 +3548,7 @@ let viewModeWork: Promise<void> = Promise.resolve();
 document.querySelectorAll<HTMLElement>("[data-view]").forEach((b) =>
   b.addEventListener("click", () => {
     const generation = ++viewModeGeneration;
-    clearTimeout(viewportTimer);
+    cancelViewportRefresh();
     void cancelMap();
     mode = b.dataset.view! as ViewMode;
     document
@@ -3536,7 +3565,7 @@ document.querySelectorAll<HTMLElement>("[data-view]").forEach((b) =>
         if (generation !== viewModeGeneration) return;
         await refreshViewportData(view.visibleDataBounds() || [...view.bounds]);
         if (generation !== viewModeGeneration) return;
-        clearTimeout(viewportTimer);
+        cancelViewportRefresh();
         if (terrainInfo) await rebuildTerrain();
         else await loadRasters();
       })().catch((e) => toast(String(e), true));
@@ -3664,7 +3693,7 @@ let restoringScene = false;
 async function restoreScene(scene: any = {}) {
   restoringScene = true;
   try {
-    clearTimeout(viewportTimer);
+    cancelViewportRefresh();
     await cancelMap();
     terrainLoadGeneration++;
     terrainInfo = await call("terrain_info");
