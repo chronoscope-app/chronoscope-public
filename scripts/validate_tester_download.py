@@ -28,7 +28,8 @@ REPO = 'chronoscope-app/chronoscope-public'
 ROOT = Path(__file__).resolve().parent.parent
 MAX_ARCHIVE = 60 * 1024 * 1024
 MAX_EXPANDED = 1024 * 1024 * 1024
-NOTICE_COUNT = 1492
+# Reviewed GIS additions: bufrw, dbase, geozero (two licenses), scroll, shapefile.
+NOTICE_COUNT = 1498
 
 
 def require(condition, message):
