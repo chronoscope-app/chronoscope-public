@@ -385,6 +385,7 @@ def windows_gui(installed, root, evidence):
 def gui_launch(binary, temporary, env, receipt):
     hosted_guard('windows-x86_64' if os.name == 'nt' else 'macos-arm64')
     profile = temporary / 'isolated GUI profile'
+    gui_env = dict(env, CHRONOSCOPE_DATA_DIR=str(profile.resolve()))
     result = {'attempted': False, 'isolated_profile': True, 'real_device': False,
               'window_rendering_verified': False, 'interaction_tested': False,
               'startup_engine_ready': False, 'attached_mcp_query': False,
@@ -395,8 +396,10 @@ def gui_launch(binary, temporary, env, receipt):
     log = temporary / 'gui-private.log'
     with log.open('wb') as output:
         result['attempted'] = True
-        process = subprocess.Popen([str(binary), '--data-dir', str(profile)], stdout=output,
-                                   stderr=output, env=env, start_new_session=os.name != 'nt')
+        # Any desktop argument selects CLI mode. GUI profiles use the existing
+        # absolute environment override, with no launch arguments.
+        process = subprocess.Popen([str(binary)], stdout=output,
+                                   stderr=output, env=gui_env, start_new_session=os.name != 'nt')
         result['extent'] = 'launch-attempt-only-not-GUI-pass'
         try:
             deadline = time.monotonic() + 45
