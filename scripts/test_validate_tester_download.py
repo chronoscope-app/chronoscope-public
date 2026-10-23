@@ -102,6 +102,34 @@ class ValidatorTests(unittest.TestCase):
         self.assertEqual(validator.nsis_listing(listing),
                          [{'path': 'folder', 'bytes': 0}, {'path': 'folder/child', 'bytes': 7}])
 
+    def test_nsis_unknown_solid_size_requires_trusted_resource(self):
+        listing = '----------\nPath = third-party/last.txt\nSize = \nSolid = +\nAttributes = A'
+        with self.assertRaisesRegex(ValueError, 'trusted size'):
+            validator.nsis_listing(listing)
+        self.assertEqual(validator.nsis_listing(listing, {'third-party/last.txt': 17}),
+                         [{'path': 'third-party/last.txt', 'bytes': 17, 'requires_stream_check': True}])
+        with self.assertRaisesRegex(ValueError, 'trusted size'):
+            validator.nsis_listing(listing.replace('Solid = +', 'Solid = -'), {'third-party/last.txt': 17})
+        with patch.object(validator, 'MAX_EXPANDED', 10), self.assertRaisesRegex(ValueError, 'expansion'):
+            validator.nsis_listing(listing, {'third-party/last.txt': 17})
+        self.assertEqual(validator.nsis_listing('----------\nPath = folder\nFolder = +\nSize = '),
+                         [{'path': 'folder', 'bytes': 0}])
+
+    def test_nsis_resource_stream_bounded_and_hash_checked(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            expected = Path(temporary) / 'expected.txt'
+            expected.write_bytes(b'trusted')
+            for content in (b'trusted', b'changed', b'trusted-plus-one'):
+                process = Mock(stdout=io.BytesIO(content))
+                process.wait.return_value = 0
+                process.poll.return_value = 0
+                with self.subTest(content=content), patch.object(validator.subprocess, 'Popen', return_value=process):
+                    if content == b'trusted':
+                        validator.nsis_resource_stream('7z', 'installer', 'member', expected)
+                    else:
+                        with self.assertRaisesRegex(ValueError, 'differs'):
+                            validator.nsis_resource_stream('7z', 'installer', 'member', expected)
+
     def test_nsis_file_parent_collision_both_orders(self):
         for entries in [('FILE', 'file/child'), ('file/child', 'FILE')]:
             listing = '----------\n' + '\n\n'.join('Path = ' + name + '\nSize = 1' for name in entries)
