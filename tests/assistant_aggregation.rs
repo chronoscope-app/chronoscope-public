@@ -788,3 +788,66 @@ fn assistant_discovers_and_executes_analytics_without_paging_raw_events() {
         500.5
     );
 }
+
+#[test]
+fn retired_apple_provider_cannot_replace_a_connected_si_service() {
+    let dir = tempfile::tempdir().unwrap();
+    let e = engine(dir.path(), vec![event(1, 0, Some(0.), Some(0.))]);
+    e.invoke(
+        "si_configure",
+        json!({"url":"http://127.0.0.1:9/v1","model":"capable-model"}),
+    )
+    .unwrap();
+    let before = e.invoke("si_status", json!({})).unwrap();
+    let saved = std::fs::read(dir.path().join("si-connection.json")).unwrap();
+    for args in [
+        json!({"provider":"apple-local"}),
+        json!({"provider":"apple-local","url":"http://127.0.0.1:9/v1","model":"test"}),
+    ] {
+        assert!(e.invoke("si_configure", args).is_err());
+    }
+    assert_eq!(e.invoke("si_status", json!({})).unwrap(), before);
+    assert_eq!(
+        std::fs::read(dir.path().join("si-connection.json")).unwrap(),
+        saved
+    );
+    let capabilities = e.invoke("capabilities", json!({})).unwrap();
+    assert_eq!(
+        capabilities["assistant"]["providers"],
+        json!(["openai-compatible"])
+    );
+    assert!(capabilities["assistant"].get("apple_local").is_none());
+    for args in [
+        json!({}),
+        json!({"url":"https://example.com/v1"}),
+        json!({"model":"test"}),
+    ] {
+        assert!(chronoscope::schema::validate("si_configure", &args).is_err());
+    }
+}
+
+#[test]
+fn legacy_apple_chat_preferences_open_as_an_unconfigured_service() {
+    for filename in ["si-connection.json", "ai-connection.json"] {
+        let dir = tempfile::tempdir().unwrap();
+        let saved = br#"{"provider":"apple-local","url":"","model":"Apple on-device","root":null,"client_certificate":null}"#;
+        std::fs::write(dir.path().join(filename), saved).unwrap();
+        let e = engine(dir.path(), vec![]);
+        let status = e.invoke("si_status", json!({})).unwrap();
+        assert_eq!(status["provider"], "openai-compatible");
+        assert_eq!(status["connected"], false);
+        assert_eq!(status["url"], "");
+        assert_eq!(status["model"], "");
+        assert!(e.invoke("si_run", json!({"prompt":"hello"})).is_err());
+        assert_eq!(std::fs::read(dir.path().join(filename)).unwrap(), saved);
+        e.invoke(
+            "si_configure",
+            json!({"url":"http://127.0.0.1:9/v1","model":"new-model"}),
+        )
+        .unwrap();
+        assert_eq!(
+            e.invoke("si_status", json!({})).unwrap()["model"],
+            "new-model"
+        );
+    }
+}

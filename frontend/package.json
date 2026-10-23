@@ -26,8 +26,6 @@
     "test:gis-files": "node scripts/gis-files-qa.mjs",
     "test:notifications": "node scripts/notifications-qa.mjs",
     "test:spectrum": "node scripts/spectrum-qa.mjs",
-    "test:apple-local": "node scripts/apple-local-qa.mjs",
-    "test:apple-fields": "node scripts/apple-fields-qa.mjs",
     "test:event-table": "node scripts/event-table-qa.mjs",
     "test:navigation": "node scripts/navigation-qa.mjs",
     "test:basemap": "node scripts/basemap-qa.mjs",
@@ -45,7 +43,6 @@
     "test:charts-timezone": "node scripts/charts-timezone-qa.mjs",
     "test:sidebar-time": "node scripts/sidebar-time-qa.mjs",
     "test:patterns": "node scripts/patterns-qa.mjs",
-    "test:apple-discovery": "node scripts/apple-discovery-qa.mjs",
     "test:empty-workspace": "node scripts/empty-workspace-qa.mjs",
     "test:real-demos": "node scripts/real-demos-qa.mjs",
     "test:chart-workflow": "node scripts/chart-workflow-qa.mjs",
@@ -55,7 +52,8 @@
     "test:space-time-window": "node scripts/space-time-window-qa.mjs",
     "test:workspace-boundaries": "node scripts/workspace-boundaries-qa.mjs",
     "test:time-rail": "node scripts/time-rail-qa.mjs",
-    "test:toolbar-dialogs": "node scripts/toolbar-dialogs-qa.mjs"
+    "test:toolbar-dialogs": "node scripts/toolbar-dialogs-qa.mjs",
+    "test:focused-ai": "node scripts/focused-ai-qa.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

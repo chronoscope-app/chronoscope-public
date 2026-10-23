@@ -13,9 +13,12 @@ pub fn request(input: Value) -> Result<Value, String> {
 }
 #[cfg(not(target_os = "macos"))]
 pub fn request_with_tools(
-    _: Value,
+    input: Value,
     _: impl FnMut(&str, Value) -> Result<Value, String>,
 ) -> Result<Value, String> {
+    if input["operation"] != "status" {
+        return Err("UNAVAILABLE: Apple Intelligence requires a supported Mac".into());
+    }
     Ok(
         json!({"available":false,"reason":"Apple Intelligence requires macOS","provider":"apple-local","context_tokens":4096}),
     )
@@ -205,8 +208,13 @@ fn exchange(
                 "OPERATION_FAILED: {error}; completed tool actions, if any, remain"
             ));
         }
-        if frame.get("answer").is_none() && frame.get("available").is_none() {
-            return Err("Invalid native SI final response".into());
+        let valid = match input["operation"].as_str() {
+            Some("explain") => frame["text"].is_string(),
+            Some("tags") => frame["tags"].is_array(),
+            _ => frame.get("answer").is_some() || frame.get("available").is_some(),
+        };
+        if !valid {
+            return Err("Invalid native AI final response for this task".into());
         }
         drop(input_tx);
         loop {
@@ -232,6 +240,7 @@ pub fn status() -> Result<Value, String> {
 mod tests {
     use super::*;
     use std::process::{Command, Stdio};
+    use std::time::Duration;
     #[cfg(target_os = "macos")]
     #[test]
     fn real_swift_helper_reads_status_frames_without_waiting_for_stdin_eof() {
@@ -253,6 +262,26 @@ mod tests {
             .stderr(Stdio::null())
             .spawn()
             .unwrap()
+    }
+    #[test]
+    fn focused_responses_use_the_requested_task_shape() {
+        for (task, result) in [
+            ("explain", json!({"text":"Recorded values only."})),
+            ("tags", json!({"tags":["coast"]})),
+        ] {
+            let code = format!(
+                "import json,sys;json.loads(sys.stdin.readline());print({},flush=True)",
+                serde_json::to_string(&result.to_string()).unwrap()
+            );
+            let actual = exchange(
+                helper(&code),
+                json!({"operation":task}),
+                |_, _| Err("No tools".into()),
+                Duration::from_secs(5),
+            )
+            .unwrap();
+            assert_eq!(actual, result);
+        }
     }
     #[test]
     fn private_pipe_roundtrip_retains_caller_and_reports_tool_errors() {

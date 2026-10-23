@@ -4,7 +4,7 @@ Current source: **0.15.2 (unreleased)**. **No binaries have been published in th
 
 ## Platform limitations
 
-- macOS: broad distribution still needs Developer ID signing/notarization and native fresh-download acceptance. Earlier ad hoc development launches do not establish those gates. Optional Apple Intelligence requires macOS 26+ and a ready on-device model.
+- macOS: broad distribution still needs Developer ID signing/notarization and native fresh-download acceptance. Earlier ad hoc development launches do not establish those gates. The Apple model readiness diagnostic requires macOS 26+; Apple Intelligence is not an SI Chat provider.
 - Windows: native installer, GUI/WebView2 and hardware/card acceptance remain separate release gates; Wine console/engine tests do not prove them. A future portable distribution must retain its DLLs and notices and document the required WebView2 Runtime.
 - Linux: source builds and historical local evidence do not establish supported-distro binary acceptance.
 - Intel macOS: a source/CI target is not a native-tested download.

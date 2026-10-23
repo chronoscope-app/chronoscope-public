@@ -228,6 +228,7 @@ try {
     ).length,
     jobsBefore,
   );
+  await page.locator("#time-rail-range").press("Enter");
   await page.locator("#full-range").click();
   await page.evaluate(() => window.__chronoscope.filterIdle());
   await page.waitForFunction(() =>
