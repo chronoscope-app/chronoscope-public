@@ -14,7 +14,7 @@ fn config(args: &Value) -> Result<Config, String> {
     c.validate()?;
     Ok(c)
 }
-fn key(s: &State, c: &Config) -> Result<String, String> {
+pub(super) fn key(s: &State, c: &Config) -> Result<String, String> {
     let mut filter = query_filter(
         &s.project,
         &json!({"selected_only":c.scope=="selected"}),

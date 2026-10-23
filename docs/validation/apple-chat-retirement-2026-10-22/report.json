@@ -1,0 +1,66 @@
+{
+  "repository": "chronoscope-app/chronoscope-next",
+  "base_commit": "148cdb9d687e4195114b6a10698d95099d329bfb",
+  "date": "2026-10-22",
+  "rust_tests": {
+    "library": 49,
+    "analysis_assist": 7,
+    "assistant_aggregation": 18,
+    "si_chat": 6,
+    "total": 80,
+    "failed": 0
+  },
+  "frontend_build": "passed",
+  "generated_contracts": "passed",
+  "suite_inventory": "passed; includes existing vector GIS suite previously missing from manifest",
+  "native_mac_bundle": "debug build and ad hoc signature verification passed; not installed or launched",
+  "browser": {
+    "si-settings-recheck": {
+      "passed": true,
+      "checks": [
+        "SI settings offers connected model services without an Apple Intelligence provider",
+        "Service and Tools share one fixed-size scrolling window; transport changes keep close controls stationary",
+        "Real MCP discovery and inline grant saving preserve the service form, window bounds and explicit permissions",
+        "Review, disconnect and failed discovery remain inline and retain service drafts",
+        "Small windows scroll settings while keeping Done visible and clickable",
+        "Detached chat gear opens the same combined settings in the main workspace"
+      ],
+      "errors": [],
+      "publicRequests": 0
+    },
+    "si-certificate": {
+      "passed": true,
+      "checks": [
+        "SI Connect accepts a platform certificate identity without an API key or network login probe",
+        "Changing service origin clears the prior server's selected certificate",
+        "Explicit no-certificate override restores, and returning to default removes it",
+        "Certificate controls and Connect remain reachable in a small settings window"
+      ],
+      "errors": [],
+      "publicRequests": 0
+    },
+    "si-rich-chat": {
+      "passed": true,
+      "checks": [
+        "Pop out and dock preserve the draft and share one Rust conversation",
+        "A stale idle poll cannot overwrite a newly submitted request's working state",
+        "A running request survives pop out, page reload, close and reopen without duplicate SI requests; replies retain one typed inline chart",
+        "Markdown headings, emphasis, tables, source links and equations render; raw HTML, scripts, JavaScript links and remote images are blocked",
+        "Detached Capture map uses the original main renderer, stores a bounded PNG in Rust and displays it inline without sending pixels to the service",
+        "An inline evidence row selects the exact source Event through the shared workspace",
+        "Docking restores rich cards and snapshots from Rust without repeating calculations or service calls; both themes render",
+        "Stop cancels the Rust-owned request and preserves earlier results",
+        "New chat clears session text, rich references, drafts and images without altering source Events"
+      ],
+      "errors": [],
+      "publicRequests": 0
+    }
+  },
+  "assistant_browser": "passed with actual Rust engine and local model/MCP fixtures; zero public requests",
+  "strict_clippy": "blocked by five existing warnings in unchanged src/gis/vector.rs",
+  "clippy_with_baseline_lint_exemptions": "passed; manual_is_multiple_of, chunks_exact_to_as_chunks, byte_char_slices, manual_ignore_case_cmp",
+  "initial_settings_popup_failure": "one run closed the popup before its controls appeared; isolated rerun and separate rich-chat popup/reload/dock suite passed",
+  "hosted_workflows_dispatched": false,
+  "public_repository_modified": false,
+  "tag_suggestions_implemented": false
+}

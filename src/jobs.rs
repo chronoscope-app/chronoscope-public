@@ -13,6 +13,8 @@ pub const COMMANDS: &[&str] = &[
     "wmts_rasters",
     "terrain_mesh",
     "si_run",
+    "assist_explain",
+    "assist_tags",
     "client_call",
     "open",
     "import_preview",

@@ -181,7 +181,22 @@ try {
     await page.locator(".si-settings-tabs,[data-si-section]").count(),
     0,
   );
-  assert.equal(await page.locator("#si-provider,#client-kind").count(), 2);
+  assert.equal(await page.locator("#client-kind").count(), 1);
+  assert.equal(await page.locator("#si-provider,#si-local-info").count(), 0);
+  assert.equal(
+    await page
+      .locator(".si-settings-content")
+      .getByText(/Apple Intelligence/)
+      .count(),
+    0,
+  );
+  assert.equal(
+    (await api("capabilities")).assistant.providers.join(","),
+    "openai-compatible",
+  );
+  pass(
+    "SI settings offers connected model services without an Apple Intelligence provider",
+  );
   const bounds = await page.locator(".si-settings-dialog").boundingBox(),
     close = await page
       .locator(".si-settings-dialog > .modal-head [data-close]")
@@ -198,14 +213,6 @@ try {
       close,
     );
   }
-  const appleEnabled = await page
-    .locator("#si-provider option[value=apple-local]")
-    .isEnabled();
-  if (appleEnabled) {
-    await page.selectOption("#si-provider", "apple-local");
-    await stable();
-    await page.selectOption("#si-provider", "openai-compatible");
-  }
   await page.fill("#si-url", "http://127.0.0.1:7777/v1");
   await page.fill("#si-model", "unsaved-model-draft");
   await page.fill("#si-key", "draft-secret");
@@ -218,7 +225,7 @@ try {
     .evaluate((e) => ({ scroll: e.scrollHeight, height: e.clientHeight }));
   assert(scroll.scroll > scroll.height);
   pass(
-    "Service and Tools share one fixed-size scrolling window; provider and transport changes keep close controls stationary",
+    "Service and Tools share one fixed-size scrolling window; transport changes keep close controls stationary",
   );
   await page.fill("#client-name", "Settings fixture");
   await page.fill(

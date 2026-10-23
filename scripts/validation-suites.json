@@ -56,17 +56,13 @@
       "cesium-parity-qa.mjs",
       "toolbar-dialogs-qa.mjs",
       "si-certificate-qa.mjs",
-      "time-rail-qa.mjs"
+      "time-rail-qa.mjs",
+      "focused-ai-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
       "performance-100k-qa.mjs",
       "performance-qa.mjs"
-    ],
-    "apple": [
-      "apple-discovery-qa.mjs",
-      "apple-fields-qa.mjs",
-      "apple-local-qa.mjs"
     ],
     "experimental": [
       "webmcp-qa.mjs"
@@ -76,7 +72,6 @@
     "unit": "Node and installed frontend dependencies",
     "browser": "Built CLI/frontend and installed Chromium; local fixtures only",
     "performance": "Opt-in controlled performance run; requires --browser --performance",
-    "apple": "Opt-in macOS with actual Apple Intelligence; requires --apple-local",
     "experimental": "Non-default experimental-browser-webmcp build; not part of standard releases"
   },
   "serial_browser": [

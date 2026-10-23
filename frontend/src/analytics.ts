@@ -1,3 +1,4 @@
+import { explainResult } from "./focused-ai";
 import { call } from "./bridge";
 
 /** Persistent derived evidence, rendered as ordinary app controls. */
@@ -102,6 +103,10 @@ export async function openAnalytics(
             : String(v);
     const label = (key: string) =>
       key.replaceAll("_", " ").replace(/\butc\b/gi, "UTC");
+    const explain = text("button", "Explain result") as HTMLButtonElement;
+    explain.className = "secondary";
+    explain.onclick = () => void explainResult({ result_id: id });
+    content.append(explain);
     const findings = document.createElement("dl");
     findings.className = "analytics-findings";
     for (const [key, value] of Object.entries(details.summary))

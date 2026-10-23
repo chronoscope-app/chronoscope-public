@@ -1,3 +1,4 @@
+import { suggestTags, focusedUI } from "./focused-ai";
 import { version as appVersion } from "../package.json";
 import { EditorController } from "./editor-controller";
 import { WorkspaceController } from "./workspace-controller";
@@ -1471,7 +1472,7 @@ async function inspector(preloaded?: any, parentGeneration = serial) {
   }
   if (snapshot.selected_count !== 1) {
     editor.deactivate();
-    el.innerHTML = `<div class="empty-inspector"><h3>${snapshot.selected_count ? `${snapshot.selected_count} events selected` : "No event selected"}</h3><p>Select an event in the scene or table to inspect its details. Every view shares the same selection.</p><div class="tip"><kbd>Click</kbd><span>Inspect an event and its source values.</span></div><div class="tip"><kbd>Shift</kbd><span>Add events to the current selection.</span></div><div class="tip"><kbd>Box</kbd><span>Draw a region to select events in the scene.</span></div></div><div class="divider"></div><div class="caps">Selected events</div><label class="field">Entity name<input id="reassign-name" placeholder="Merge or split into an entity"></label><button id="reassign" class="secondary" ${snapshot.selected_count ? "" : "disabled"}>Reassign selection</button><label class="field" style="margin-top:15px">Tag<input id="tag-value" placeholder="Add an analyst tag"></label><button id="tag" class="secondary" ${snapshot.selected_count ? "" : "disabled"}>Add tag</button><button id="delete" ${snapshot.selected_count ? "" : "disabled"}>Remove selected</button><div class="divider"></div>${history()}`;
+    el.innerHTML = `<div class="empty-inspector"><h3>${snapshot.selected_count ? `${snapshot.selected_count} events selected` : "No event selected"}</h3><p>Select an event in the scene or table to inspect its details. Every view shares the same selection.</p><div class="tip"><kbd>Click</kbd><span>Inspect an event and its source values.</span></div><div class="tip"><kbd>Shift</kbd><span>Add events to the current selection.</span></div><div class="tip"><kbd>Box</kbd><span>Draw a region to select events in the scene.</span></div></div><div class="divider"></div><div class="caps">Selected events</div><label class="field">Entity name<input id="reassign-name" placeholder="Merge or split into an entity"></label><button id="reassign" class="secondary" ${snapshot.selected_count ? "" : "disabled"}>Reassign selection</button><label class="field" style="margin-top:15px">Tag<input id="tag-value" placeholder="Add an analyst tag"></label><button id="tag" class="secondary" ${snapshot.selected_count ? "" : "disabled"}>Add tag</button><button id="suggest-tags" class="secondary" ${snapshot.selected_count ? "" : "disabled"}>Suggest tags…</button><button id="delete" ${snapshot.selected_count ? "" : "disabled"}>Remove selected</button><div class="divider"></div>${history()}`;
     return;
   }
   const r =
@@ -1527,7 +1528,7 @@ async function inspector(preloaded?: any, parentGeneration = serial) {
     )
     .join(
       "",
-    )}<label class="field">WKT geometry / WGS84 X Y<textarea id="edit-wkt" rows="3">${esc(fields.wkt)}</textarea></label><label class="field">Analyst note<textarea id="edit-note" rows="3">${esc(fields.note)}</textarea></label><label class="field">Tags<input id="edit-tags" value="${esc(fields.tags)}"></label><button id="apply-edit" class="primary">Apply changes</button><details><summary>Original source attributes</summary>${Object.entries(
+    )}<label class="field">WKT geometry / WGS84 X Y<textarea id="edit-wkt" rows="3">${esc(fields.wkt)}</textarea></label><label class="field">Analyst note<textarea id="edit-note" rows="3">${esc(fields.note)}</textarea></label><label class="field">Tags<input id="edit-tags" value="${esc(fields.tags)}"></label><button id="suggest-tags" class="secondary">Suggest tags…</button><button id="apply-edit" class="primary">Apply changes</button><details><summary>Original source attributes</summary>${Object.entries(
     e.attrs,
   )
     .map(
@@ -2885,21 +2886,14 @@ void workspaceHost({
 
 async function siConnection() {
   const connection = await call("si_status");
-  const apple = await call("si_apple_status").catch(() => ({
-    available: false,
-    reason:
-      "On-device availability could not be checked; other services remain available.",
-  }));
   modal(
-    `${head("SI settings")}<div class="si-settings-content"><section aria-labelledby="si-service-heading"><h3 id="si-service-heading">SI service</h3><p class="description">Choose the SI service and model that power SI chat. Requested workspace data and tool results are sent to this service. The Tools section below connects other apps and manages which tools SI may use.</p>
-    <label class="field">Provider<select id="si-provider"><option value="openai-compatible" ${connection.provider !== "apple-local" ? "selected" : ""}>OpenAI-compatible service</option><option value="apple-local" ${connection.provider === "apple-local" ? "selected" : ""} ${apple.available ? "" : "disabled"}>Apple Intelligence · On-device</option></select></label>
-    <p id="si-local-info" class="description" ${connection.provider === "apple-local" ? "" : "hidden"}>On-device conversation with project queries, analysis, filtering, selection, view controls and permissioned record changes. Discover and grant connected tools in the Tools section below. Apple’s context limit still applies; large datasets are processed by the tools. Inference has no cloud fallback. External tools use their own granted services. ${esc(apple.reason)}</p><small class="description">Apple Intelligence: ${esc(apple.reason)}</small><div id="si-service-fields" ${connection.provider === "apple-local" ? "hidden" : ""}>
+    `${head("SI settings")}<div class="si-settings-content"><section aria-labelledby="si-service-heading"><h3 id="si-service-heading">SI service</h3><p class="description">Connect an OpenAI-compatible model with tool support to power SI chat. Requested workspace data and tool results are sent to this service. The Tools section below connects other apps and manages which tools SI may use.</p>
     <label class="field">Service URL<input id="si-url" value="${esc(connection.url || "https://api.openai.com/v1")}" placeholder="https://api.openai.com/v1"></label>
     <label class="field">Model<input id="si-model" value="${esc(connection.model)}" placeholder="Model with tool support"></label>
     <label class="field">API key<input id="si-key" type="password" autocomplete="off" placeholder="Session only; optional if the service allows it"></label>
     <p class="description">The key and chat stay in memory until disconnect or app exit. URL/model settings stay on this computer. File access is optional and managed separately in chat permissions.</p>
     <details id="si-certificate-settings"><summary>Client certificate · ${connection.client_certificate ? (connection.client_certificate.kind === "disabled" ? "disabled" : "specific identity") : connection.automatic_client_certificate ? "automatic" : "no override"}</summary><p class="description">${connection.automatic_client_certificate ? "If this HTTPS service requests a user certificate, the OS selects an eligible identity and your card provider handles PIN prompts." : "Linux protected services need compatible PKCS#11 middleware and an explicit certificate identity. Automatic card selection is unavailable."}</p><label class="field">Certificate authentication<select id="si-certificate-mode"><option value="automatic" ${!connection.client_certificate ? "selected" : ""}>${connection.automatic_client_certificate ? "Automatic (default)" : "No override (default)"}</option><option value="identity" ${connection.client_certificate && connection.client_certificate.kind !== "disabled" ? "selected" : ""}>Specific identity</option><option value="disabled" ${connection.client_certificate?.kind === "disabled" ? "selected" : ""}>No client certificate</option></select></label><label class="field" id="si-certificate-identity-field">${esc(connection.client_certificate_kind === "pkcs11" ? "PKCS#11 certificate URI (type=cert)" : connection.client_certificate_kind === "windows-store" ? "CurrentUser\\MY\\ + certificate thumbprint" : "Keychain certificate subject name")}<input id="si-certificate-identity" value="${esc(connection.client_certificate?.identity || "")}" autocomplete="off" spellcheck="false"></label><p class="description">Certificate choices apply only to this HTTPS server and stay on this computer. PINs and private keys stay with the OS/card provider. Reconnect to forget this SI session’s certificate choices.</p></details>
-    </div><div class="row si-service-actions"><button id="si-disconnect" ${connection.connected ? "" : "disabled"}>Disconnect</button><span class="spacer"></span><button id="si-connect" class="primary" ${connection.running ? "disabled" : ""}>Connect</button></div></section><section aria-labelledby="si-tools-heading"><h3 id="si-tools-heading">Tools</h3><div id="si-tools-settings"></div></section></div><footer><span class="spacer"></span><button data-close>Done</button></footer>`,
+    <div class="row si-service-actions"><button id="si-disconnect" ${connection.connected ? "" : "disabled"}>Disconnect</button><span class="spacer"></span><button id="si-connect" class="primary" ${connection.running ? "disabled" : ""}>Connect</button></div></section><section aria-labelledby="si-tools-heading"><h3 id="si-tools-heading">Tools</h3><div id="si-tools-settings"></div></section></div><footer><span class="spacer"></span><button data-close>Done</button></footer>`,
   );
   const updateCertificate = () => {
     $("#si-certificate-identity-field").hidden =
@@ -2932,38 +2926,30 @@ async function siConnection() {
     dialog.querySelector<HTMLElement>("#si-tools-settings")!,
     (error) => toast(String(error), true),
   ).catch((error) => toast(String(error), true));
-  $("#si-provider").addEventListener("change", () => {
-    const local = input("#si-provider") === "apple-local";
-    $("#si-local-info").hidden = !local;
-    $("#si-service-fields").hidden = local;
-  });
   on("#si-connect", async () => {
     const key = $("#si-key") as HTMLInputElement;
-    const args =
-      input("#si-provider") === "apple-local"
-        ? { provider: "apple-local" as const }
-        : {
-            provider: "openai-compatible" as const,
-            url: input("#si-url"),
-            model: input("#si-model"),
-            api_key: key.value,
-            client_certificate:
-              input("#si-certificate-mode") === "automatic" ||
-              (input("#si-certificate-mode") === "disabled" &&
-                input("#si-url").startsWith("http:"))
-                ? null
-                : {
-                    origin: new URL(input("#si-url")).origin,
-                    kind:
-                      input("#si-certificate-mode") === "disabled"
-                        ? "disabled"
-                        : connection.client_certificate_kind,
-                    identity:
-                      input("#si-certificate-mode") === "disabled"
-                        ? ""
-                        : input("#si-certificate-identity"),
-                  },
-          };
+    const args: EngineContracts["si_configure"]["args"] = {
+      provider: "openai-compatible",
+      url: input("#si-url"),
+      model: input("#si-model"),
+      api_key: key.value,
+      client_certificate:
+        input("#si-certificate-mode") === "automatic" ||
+        (input("#si-certificate-mode") === "disabled" &&
+          input("#si-url").startsWith("http:"))
+          ? null
+          : {
+              origin: new URL(input("#si-url")).origin,
+              kind:
+                input("#si-certificate-mode") === "disabled"
+                  ? "disabled"
+                  : connection.client_certificate_kind!,
+              identity:
+                input("#si-certificate-mode") === "disabled"
+                  ? ""
+                  : input("#si-certificate-identity"),
+            },
+    };
     key.value = "";
     await call("si_configure", args);
     if (modalNode === owner) closeModal();
@@ -3411,6 +3397,9 @@ $("#inspector-content").addEventListener("click", async (event) => {
       case "redo":
         await call(b.id);
         await refresh();
+        break;
+      case "suggest-tags":
+        await suggestTags(snapshot, () => refresh());
         break;
       case "reassign":
       case "tag":
@@ -4512,7 +4501,11 @@ async function initialize() {
     await listen<any>("engine-event", (e) => {
       const event = e.payload;
       if (event.command === "scene_sync") return;
-      if (["capture", "view_status", "view_navigate"].includes(event.kind)) {
+      if (
+        ["capture", "view_status", "view_navigate", "assist_ui"].includes(
+          event.kind,
+        )
+      ) {
         if (eventTimer) flushChanges();
         desktopRequests = desktopRequests
           .catch(() => {})
@@ -4524,6 +4517,17 @@ async function initialize() {
                 throw Error(
                   "UNAVAILABLE: desktop request expired before execution",
                 );
+              if (event.kind === "assist_ui") {
+                await refresh(false, false);
+                const result = await focusedUI(event.arguments, snapshot, () =>
+                  refresh(),
+                );
+                await call("view_response", {
+                  request_id: event.request_id,
+                  result,
+                });
+                return;
+              }
               if (event.kind === "capture") {
                 const target = event.arguments?.target || "app";
                 const label = event.arguments?.window || "main";

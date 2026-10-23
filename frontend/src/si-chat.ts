@@ -15,7 +15,6 @@ export class SIChat {
   private submitting = false;
   private stopping = false;
   private connected = false;
-  private local = false;
   private root: string | null = null;
   private revision: number | undefined;
   private session: string | null | undefined;
@@ -188,14 +187,6 @@ export class SIChat {
     const status = await call("si_status");
     this.connected = status.connected;
     this.root = status.root;
-    this.local = status.provider === "apple-local";
-    this.host.querySelector(".si-chat-note")!.textContent = this.local
-      ? "Apple Intelligence · On-device chat with workspace tools. Granted external tools may send requested data to their service."
-      : "Super Intelligence · Session-only conversation. Requested data is sent to your service.";
-    (this.host.querySelector(".si-file-permissions") as HTMLElement).hidden =
-      this.local;
-    if (this.local) this.prompt.removeAttribute("maxlength");
-    else this.prompt.maxLength = 16384;
     this.host.querySelector("#si-folder")!.textContent = this.root
       ? `File access: ${this.root}. Used only when record changes are allowed. Ends on disconnect.`
       : "No file access. A folder is optional, for importing and saving files.";

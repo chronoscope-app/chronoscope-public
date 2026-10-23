@@ -97,6 +97,7 @@ struct State {
     previous_store: Option<crate::store::DataStore>,
 }
 mod analytics;
+mod assist;
 mod charts;
 mod desktop;
 mod fields;
@@ -403,6 +404,16 @@ impl Engine {
         }
         crate::operation::check()?;
         let identity = crate::command::Command::parse(command).ok_or("Unknown command")?;
+        if matches!(command, "assist_status" | "assist_explain" | "assist_tags") {
+            let workspace = crate::operation::workspace()
+                .map(Ok)
+                .unwrap_or_else(|| self.workspace_identity())?;
+            return crate::operation::with_workspace(workspace, || {
+                crate::operation::with_deadline(std::time::Duration::from_secs(300), || {
+                    self.assistant.assist_invoke(self, command, args)
+                })
+            });
+        }
         if command == "pattern_scan" {
             return crate::operation::with_deadline(std::time::Duration::from_secs(300), || {
                 self.pattern_scan(args)
@@ -470,7 +481,10 @@ impl Engine {
         if command.starts_with("si_") || command == "present_result" {
             return self.assistant.invoke(self, command, args);
         }
-        if matches!(command, "view_capture" | "view_status" | "view_navigate") {
+        if matches!(
+            command,
+            "view_capture" | "view_status" | "view_navigate" | "assist_ui"
+        ) {
             let started = std::time::Instant::now();
             let result = self.desktop_request(command, args);
             crate::diagnostics::record(
@@ -836,7 +850,7 @@ impl Engine {
             "file_probe" | "gis_layers" | "gis_load" | "gis_set" | "gis_remove" | "gis_read"
             | "gis_table" => self.invoke_gis(command, args),
             "capabilities" => Ok(
-                json!({"version":env!("CARGO_PKG_VERSION"),"commands":crate::schema::COMMANDS,"storage":"indexed_sqlite","renderer":{"engine":"CesiumJS","backend":"WebGL2","webgpu_backend":false,"modes":["space-time","map","globe"],"attached_tools":["view_status","view_navigate","view_capture"],"capture":{"default_target":"app","targets":["app","map"],"windows":["main","si-chat"],"app_snapshot":"native WebView visible content; desktop only"},"navigation":["fit","fit_layer","look_at","zoom","north_up"],"geographic_input":"WGS84 longitude, latitude, ellipsoid metres; heading clockwise from north; tilt zero=nadir","hardware_acceleration":"inspect on the target host; not inferred from API availability"},"max_csv_bytes":2147483648u64,"max_events":50000000u64,"render_budget":20000,"render_budget_options":[20000,100000],"display":{"default_mode":"auto","cluster_threshold":2000,"ui_max_cells":4000,"max_time_slabs":32,"heatmap_default":false,"bloom_default":false,"spatial_culling_default":true,"trail_tolerance_pixels":2,"exact_membership":true,"cold_query":"proportional to matching rows; cached base grids"},"page_limit":1000,"exact_ids":"decimal_u64_strings","time_resolution":"fractional_second","time_storage":"IEEE 754 binary64 Unix seconds; approximately 0.24 microsecond spacing near 2026; finer source strings retained","mutation_controls":["expected_revision","expected_workspace","dry_run","idempotency_key"],"batch":"atomic workspace operations","excel":"bounded workbook ingestion","analytics":{"discovery":"analytics_discover","describe":"analytics_describe","run":"analytics_run","result":"analytics_result","list":"analytics_list","remove":"analytics_remove","capabilities":crate::analytics::registry::NAMES,"sampling":"none","result_storage":"portable project database","max_results":32,"timeout_seconds":300},"analysis":"explicit bounded input budget","mcp_client":{"transports":["stdio","streamable_http"],"session_only":true,"explicit_tool_grants":true,"max_connections":16,"max_tools_per_connection":256,"max_response_bytes":2097152,"operation_timeout_seconds":60,"oauth":false,"browser_webmcp":cfg!(feature = "experimental-browser-webmcp")},"assistant":{"name":"Super Intelligence","commands_prefix":"si_","protocol":"OpenAI-compatible Chat Completions tools","providers":["openai-compatible","apple-local"],"apple_local":{"minimum_macos":"26.0","context_tokens":null,"context_tokens_source":"si_apple_status","capabilities":["conversation","tool_discovery","event_queries","exact_aggregates","numeric_statistics","spatial_temporal_analysis","presentation_actions","permissioned_record_edits"],"external_tools":true,"cloud_fallback":false},"analysis_commands":["analysis_context","analysis_prepare","analysis_execute"],"app_intents":{"minimum_macos":"13.0","packaged_desktop":true,"actions":["workspace_summary","show_view","select_entity","recommend_analyses","find_track_gaps"]},"max_steps":16,"max_tool_calls":32,"key_storage":"session memory","file_access":"optional connection-scoped root","history":{"storage":"session memory","max_messages":32,"max_bytes":98304,"clear_command":"si_clear"}},"aggregation":{"method":"fixed UTC windows and WGS84 anchored radius","streaming_import":true,"lossy":true,"partitions":["entity","category","source"]},"time_only_markers":"display-only geodesic triangles; source coordinates remain null","gis":{"formats":["geojson","topojson","kml","kmz","czml","gpx","tiles3d","gltf","glb"],"native_reference_layers":true,"event_import":true,"portable_assets":true,"max_layers":64,"max_reference_features":50000,"external_links":false},"geometry":{"polygon_anchor":"derived area-weighted WGS84 authalic surface centroid; holes subtract, multipart adds; can lie outside polygon", "format":"OGC WKT / EWKT SRID=4326","topology":"GeoRust validation and exact rectangle intersection","z_m":"preserved, not used as height/time"},"wmts":{"multiple_sources":true,"max_layers":64,"layer_preferences":"map_layers","layer_properties":["enabled","opacity","order","min_zoom","max_zoom"],"zoom":"view-centre projected camera resolution, minimum inclusive and maximum exclusive","transport":"direct disk cache, no proxy required","tile_plan":"paged full requested coverage","default_concurrency":8,"default_interval_ms":0}}),
+                json!({"version":env!("CARGO_PKG_VERSION"),"commands":crate::schema::COMMANDS,"storage":"indexed_sqlite","renderer":{"engine":"CesiumJS","backend":"WebGL2","webgpu_backend":false,"modes":["space-time","map","globe"],"attached_tools":["view_status","view_navigate","view_capture"],"capture":{"default_target":"app","targets":["app","map"],"windows":["main","si-chat"],"app_snapshot":"native WebView visible content; desktop only"},"navigation":["fit","fit_layer","look_at","zoom","north_up"],"geographic_input":"WGS84 longitude, latitude, ellipsoid metres; heading clockwise from north; tilt zero=nadir","hardware_acceleration":"inspect on the target host; not inferred from API availability"},"max_csv_bytes":2147483648u64,"max_events":50000000u64,"render_budget":20000,"render_budget_options":[20000,100000],"display":{"default_mode":"auto","cluster_threshold":2000,"ui_max_cells":4000,"max_time_slabs":32,"heatmap_default":false,"bloom_default":false,"spatial_culling_default":true,"trail_tolerance_pixels":2,"exact_membership":true,"cold_query":"proportional to matching rows; cached base grids"},"page_limit":1000,"exact_ids":"decimal_u64_strings","time_resolution":"fractional_second","time_storage":"IEEE 754 binary64 Unix seconds; approximately 0.24 microsecond spacing near 2026; finer source strings retained","mutation_controls":["expected_revision","expected_workspace","dry_run","idempotency_key"],"batch":"atomic workspace operations","excel":"bounded workbook ingestion","analytics":{"discovery":"analytics_discover","describe":"analytics_describe","run":"analytics_run","result":"analytics_result","list":"analytics_list","remove":"analytics_remove","capabilities":crate::analytics::registry::NAMES,"sampling":"none","result_storage":"portable project database","max_results":32,"timeout_seconds":300},"analysis":"explicit bounded input budget","mcp_client":{"transports":["stdio","streamable_http"],"session_only":true,"explicit_tool_grants":true,"max_connections":16,"max_tools_per_connection":256,"max_response_bytes":2097152,"operation_timeout_seconds":60,"oauth":false,"browser_webmcp":cfg!(feature = "experimental-browser-webmcp")},"assistant":{"name":"Super Intelligence","commands_prefix":"si_","protocol":"OpenAI-compatible Chat Completions tools","providers":["openai-compatible"],"analysis_commands":["analysis_context","analysis_prepare","analysis_execute"],"app_intents":{"minimum_macos":"13.0","packaged_desktop":true,"actions":["workspace_summary","show_view","select_entity","recommend_analyses","find_track_gaps"]},"max_steps":16,"max_tool_calls":32,"key_storage":"session memory","file_access":"optional connection-scoped root","history":{"storage":"session memory","max_messages":32,"max_bytes":98304,"clear_command":"si_clear"}},"focused_ai":{"commands":["assist_status","assist_explain","assist_tags","assist_tags_apply"],"desktop_ui":"assist_ui","providers":["apple-local","connected"],"chat_history":false,"action_tools":false,"max_tag_events":25,"max_text_bytes_per_event":4000,"apply":"explicit additive review, expected workspace and revision, one Undo","cancellation":"job_cancel"},"aggregation":{"method":"fixed UTC windows and WGS84 anchored radius","streaming_import":true,"lossy":true,"partitions":["entity","category","source"]},"time_only_markers":"display-only geodesic triangles; source coordinates remain null","gis":{"formats":["geojson","topojson","kml","kmz","czml","gpx","tiles3d","gltf","glb"],"native_reference_layers":true,"event_import":true,"portable_assets":true,"max_layers":64,"max_reference_features":50000,"external_links":false},"geometry":{"polygon_anchor":"derived area-weighted WGS84 authalic surface centroid; holes subtract, multipart adds; can lie outside polygon", "format":"OGC WKT / EWKT SRID=4326","topology":"GeoRust validation and exact rectangle intersection","z_m":"preserved, not used as height/time"},"wmts":{"multiple_sources":true,"max_layers":64,"layer_preferences":"map_layers","layer_properties":["enabled","opacity","order","min_zoom","max_zoom"],"zoom":"view-centre projected camera resolution, minimum inclusive and maximum exclusive","transport":"direct disk cache, no proxy required","tile_plan":"paged full requested coverage","default_concurrency":8,"default_interval_ms":0}}),
             ),
             "diagnostics" => {
                 let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
@@ -1882,7 +1896,7 @@ impl Engine {
                     json!({"revision":revision,"count":report.findings.len(),"limited":report.limited||events.len()<count,"input_count":count,"evaluated_count":events.len(),"candidate_visits":report.candidate_visits,"input_limited":events.len()<count,"offset":offset,"limit":limit,"findings":findings}),
                 )
             }
-            "edit" | "edit_many" | "reassign" | "tag" | "delete" => {
+            "edit" | "edit_many" | "reassign" | "tag" | "assist_tags_apply" | "delete" => {
                 let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
                 let ids: Vec<u64> = if command == "edit" {
                     vec![args["id"]
@@ -1895,6 +1909,20 @@ impl Engine {
                         .iter()
                         .map(|id| id.parse().map_err(|_| "Invalid ID"))
                         .collect::<Result<_, _>>()?
+                } else if command == "assist_tags_apply" {
+                    let mut ids = BTreeSet::new();
+                    for item in args["items"].as_array().unwrap() {
+                        let id = item["id"]
+                            .as_str()
+                            .unwrap()
+                            .parse()
+                            .map_err(|_| "Invalid Event ID")?;
+                        if !ids.insert(id) {
+                            return Err("INVALID_ARGUMENT: duplicate Event IDs".into());
+                        }
+                        crate::si::features::clean_tags(&item["tags"])?;
+                    }
+                    ids.into_iter().collect()
                 } else {
                     s.project.selected.iter().copied().collect()
                 };
@@ -1915,6 +1943,21 @@ impl Engine {
                             next.entity = text.into()
                         } else if command == "tag" {
                             next.tags.insert(text.into());
+                        } else if command == "assist_tags_apply" {
+                            let item = args["items"]
+                                .as_array()
+                                .unwrap()
+                                .iter()
+                                .find(|item| {
+                                    item["id"].as_str().and_then(|id| id.parse::<u64>().ok())
+                                        == Some(id)
+                                })
+                                .unwrap();
+                            for tag in crate::si::features::clean_tags(&item["tags"])? {
+                                if !next.tags.iter().any(|old| old.to_lowercase() == tag) {
+                                    next.tags.insert(tag);
+                                }
+                            }
                         } else {
                             let mut value =
                                 serde_json::to_value(&old).map_err(|e| e.to_string())?;

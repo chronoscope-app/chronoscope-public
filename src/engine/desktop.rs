@@ -3,6 +3,19 @@ use super::*;
 impl Engine {
     pub(super) fn desktop_request(&self, command: &str, args: Value) -> Result<Value, String> {
         let mut args = args;
+        if command == "assist_ui" {
+            if args["action"] == "open-explain" {
+                crate::schema::validate(
+                    "assist_explain",
+                    &json!({"provider":"apple-local","source":if args["source"].get("result_id").is_some(){json!({"kind":"analysis","result_id":args["source"]["result_id"]})}else{json!({"kind":"pattern","scan_id":args["source"]["scan_id"],"finding_id":args["source"]["finding_id"]})}}),
+                )?;
+            }
+            if args["action"] == "generate" && args.get("provider").is_none() {
+                return Err(
+                    "INVALID_ARGUMENT: choose an explicit provider before AI generation".into(),
+                );
+            }
+        }
         if command == "view_capture" {
             if args.get("target").is_none() {
                 args["target"] = json!("app");
@@ -122,7 +135,14 @@ impl Engine {
             if result.to_string().len() > 512 * 1024 {
                 return Err("RESOURCE_LIMIT: live view response exceeds 512 KiB".into());
             }
-            crate::schema::validate_output("view_status", result)?;
+            crate::schema::validate_output(
+                if pending.command == "assist_ui" {
+                    "assist_ui"
+                } else {
+                    "view_status"
+                },
+                result,
+            )?;
             Ok(result.clone())
         })();
         let _ = pending.sender.try_send(result.clone());
