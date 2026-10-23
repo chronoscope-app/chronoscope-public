@@ -94,7 +94,7 @@ Open a bundled demo from **Help → Demo datasets**, or import CSV, TSV, Excel o
 
 **Source: 0.15.2, unreleased.** This standalone repository starts with one fresh source-snapshot commit; earlier Git history, pull requests, tags and releases are not included. **No binaries have been published in this clean repository yet; build from source.** [Platform status](docs/INSTALLATION.md) · [Changes](CHANGELOG.md).
 
-Build with Rust 1.90+, Node 22+ and [platform prerequisites](docs/INSTALLATION.md):
+Build with Rust 1.96+, Node 22+ and [platform prerequisites](docs/INSTALLATION.md):
 
 ```sh
 npm --prefix frontend ci

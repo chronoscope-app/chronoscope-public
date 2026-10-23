@@ -181,9 +181,11 @@ pub(crate) fn unique_headers(raw: Vec<String>) -> Vec<String> {
 }
 pub fn read_file(path: &Path, delimiter: u8) -> Result<RawImport, String> {
     if path.extension().and_then(|e| e.to_str()).is_some_and(|e| {
-        ["geojson", "topojson", "json", "kml", "kmz", "czml", "gpx"]
-            .iter()
-            .any(|x| e.eq_ignore_ascii_case(x))
+        [
+            "geojson", "topojson", "json", "kml", "kmz", "czml", "gpx", "shp", "gpkg",
+        ]
+        .iter()
+        .any(|x| e.eq_ignore_ascii_case(x))
     }) {
         return crate::gis::raw_import(path);
     }

@@ -57,7 +57,7 @@ const tips: Record<string, string> = {
   "aggregate-radius":
     "Maximum WGS84 ellipsoidal distance to the group's first anchor, in metres. Separate entity/category/source groups.",
 
-  open: "Open a workspace, CSV/Excel, GeoJSON/TopoJSON, KML/KMZ, CZML, GPX, local tileset.json or glTF/GLB. JSON content is detected automatically. Ctrl/Cmd+O (Ctrl/Cmd+I also works).",
+  open: "Open a workspace, CSV/Excel, Shapefile, vector GeoPackage, GeoJSON/TopoJSON, KML/KMZ, CZML, GPX, local tileset.json or glTF/GLB. JSON content is detected automatically. Ctrl/Cmd+O (Ctrl/Cmd+I also works).",
   "display-centroids":
     "Show derived polygon centroid circles and track anchors. Full polygon shapes remain visible; centroids can lie outside a polygon or inside a hole.",
   save: "Save data and display setup to the current workspace, or choose a file on first save. Ctrl/Cmd+S.",

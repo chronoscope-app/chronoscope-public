@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "repository": "chronoscope-app/chronoscope-public",
+  "base_sha": "3e83a5848ebc86aedd28034ba64056ce71095456",
+  "validated_next_sha": "ee83f5ca008b156a4abe863aa9e501a4a33f5947",
+  "all_validated_next_updates_included": true,
+  "source_parity": "All tracked next files match; only public-specific packaging safeguards and promotion records differ.",
+  "preserved_public_files": [
+    "scripts/package_tester.py",
+    "scripts/test_tester_packaging.py",
+    "src-tauri/tauri.macos.conf.json",
+    "docs/validation/public-ai-promotion-2026-10-22/README.md",
+    "docs/validation/public-ai-promotion-2026-10-22/report.json"
+  ],
+  "local_platform": "Darwin arm64",
+  "rust_tests_passed": 131,
+  "frontend_tests_passed": 15,
+  "packaging_tests_passed": 32,
+  "distribution_tests_passed": 23,
+  "ui_production_build": true,
+  "generated_contracts": true,
+  "generated_help": true,
+  "validation_suite_inventory": true,
+  "notice_files_verified": 1498,
+  "vector_browser": {
+    "passed": true,
+    "checks": [
+      "Open SHAPEFILE: native reference geometry and 2 source features",
+      "Open SHAPEFILE: native reference geometry and 2 source features",
+      "Open GEOPACKAGE: native reference geometry and 5 source features",
+      "GeoPackage table provenance and exact 64-bit source IDs",
+      "New reference layers persist across all three views",
+      "Packaged GeoPackage converts into timestamped Events in the running UI",
+      "Portable vector workspace reopens with original layer IDs and attributes"
+    ],
+    "errors": [],
+    "externalRequests": [],
+    "screenshots": [
+      "before-vector-import.png",
+      "vector-reference-layers.png"
+    ]
+  },
+  "focused_ai_browser": {
+    "passed": true,
+    "checks": [
+      "Generic AI indicator and Cancel AI are visible while generating; suggestions do not edit records",
+      "Review supports editable tags, per-record acceptance, blank skipping, additive apply and one Undo",
+      "Explain result has indeterminate AI progress and cancellation without edits",
+      "Pattern explanations show the engine evidence and do not enter SI Chat history",
+      "Stale tag previews fail safely instead of applying to changed records"
+    ],
+    "errors": [],
+    "publicRequests": 0,
+    "modelCalls": 6
+  },
+  "clippy": {
+    "passed_with_existing_baseline_exemptions": true,
+    "baseline_unique_diagnostics": 5,
+    "baseline_file": "src/gis/vector.rs",
+    "baseline_categories": [
+      "manual_is_multiple_of",
+      "chunks_exact_to_as_chunks",
+      "byte_char_slices",
+      "manual_ignore_case_cmp"
+    ]
+  },
+  "github_hosted_runners_used": false,
+  "binary_release_created": false
+}

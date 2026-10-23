@@ -35,6 +35,7 @@
       "event-table-qa.mjs",
       "field-roles-qa.mjs",
       "gis-files-qa.mjs",
+      "vector-gis-qa.mjs",
       "map-notifications-qa.mjs",
       "navigation-qa.mjs",
       "navigation-sphere-qa.mjs",

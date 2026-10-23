@@ -70,7 +70,7 @@ pub fn tools() -> Vec<Value> {
  "import_preview"=>"Stream CSV or inspect bounded Excel/GIS data; autodetect mapping. Returns import_id. Pass the ticket to validate and commit. Files stay within root.",
  "file_probe"=>"Identify workspace, tabular data or native GIS document, including JSON content discrimination. Scoped local files only.",
  "gis_layers"=>"List native GIS reference layers, bounds, time ranges, warnings and packaged resource metadata. Raw payloads stay outside snapshots.",
- "gis_load"=>"Add a local GeoJSON/TopoJSON/KML/KMZ/CZML/GPX, 3D Tiles tileset or glTF/GLB reference layer. Model placement requires explicit WGS84 [longitude,latitude,ellipsoid_height]. Companion assets remain local and portable; external requests are blocked.",
+ "gis_load"=>"Add a local WGS84 XY Shapefile/vector GeoPackage, GeoJSON/TopoJSON/KML/KMZ/CZML/GPX, 3D Tiles tileset or glTF/GLB reference layer. Model placement requires explicit WGS84 [longitude,latitude,ellipsoid_height]. Companion assets remain local and portable; external requests are blocked.",
  "gis_set"=>"Select reference rows by exact source IDs, rename, enable/disable or change model placement/scale of a GIS reference layer. Original geometry and source data remain unchanged.",
  "gis_remove"=>"Remove a GIS reference layer from the workspace; undoable. Does not delete the source file.",
  "gis_read"=>"Read a packaged GIS resource by layer ID and relative resource name, at most 1 MiB per chunk. No arbitrary filesystem or network access.",
