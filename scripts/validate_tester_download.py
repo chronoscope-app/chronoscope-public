@@ -5,6 +5,7 @@ Read-only Actions API/download; no uploads or publication. A receipt is not lega
 clearance, a real-device result, or a claim that a window rendered correctly.
 """
 import argparse
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeout
 import hashlib
 import json
 import os
@@ -289,7 +290,7 @@ def cleanup_windows_process(process, env):
     return result
 
 
-def nsis_listing(listing):
+def nsis_listing(listing, trusted_sizes=None):
     """Preflight member names, file ancestors and per-member expansion bounds."""
     require('----------' in listing, 'Cannot inspect NSIS member listing')
     seen, files, payload = set(), set(), []
@@ -303,18 +304,55 @@ def nsis_listing(listing):
         require(name.casefold() not in seen, 'Duplicate NSIS path')
         seen.add(name.casefold())
         require(not any('link' in key.lower() for key in fields), 'NSIS link refused')
-        size = int(fields.get('Size', '0'))
+        directory = fields.get('Folder') == '+' or fields.get('Attributes', '').startswith('D')
+        raw_size = fields.get('Size', '')
+        missing_size = not raw_size and not directory
+        if missing_size:
+            # 7-Zip cannot report the final solid NSIS member's size. Only a
+            # previously verified resource can supply it; stream-check below.
+            require(fields.get('Solid') == '+' and name in (trusted_sizes or {}),
+                    'NSIS member missing trusted size')
+            size = trusted_sizes[name]
+        else:
+            size = int(raw_size or '0')
         require(0 <= size <= MAX_EXPANDED, 'NSIS member expansion cap exceeded')
         expanded += size
         require(len(seen) <= 25000 and expanded <= MAX_EXPANDED, 'NSIS expansion cap exceeded')
-        if fields.get('Folder') != '+' and not fields.get('Attributes', '').startswith('D'):
+        if not directory:
             files.add(name.casefold())
         payload.append({'path': name, 'bytes': size})
+        if missing_size:
+            payload[-1]['requires_stream_check'] = True
     require(bool(seen), 'NSIS expansion cap exceeded')
     for entry in payload:
         require(not any(str(p).casefold() in files for p in PurePosixPath(entry['path']).parents
                         if str(p) != '.'), 'NSIS file/directory collision')
     return payload
+
+
+
+def nsis_resource_stream(tool, installer, member, expected):
+    """Verify an unreported solid member without unbounded disk extraction."""
+    limit = expected.stat().st_size
+    require(limit <= 16 * 1024 * 1024, 'Unknown-size NSIS resource too large')
+    clean_env = {k: v for k, v in os.environ.items() if k not in
+                 ('GH_TOKEN', 'GITHUB_TOKEN', 'GH_ENTERPRISE_TOKEN', 'GITHUB_ENTERPRISE_TOKEN')}
+    process = subprocess.Popen([str(tool), 'x', '-so', '-bd', '-y', str(installer), member],
+                               stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, env=clean_env)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        reader = pool.submit(process.stdout.read, limit + 1)
+        try:
+            data = reader.result(timeout=90)
+            require(len(data) == limit and hashlib.sha256(data).hexdigest() == digest(expected),
+                    'Unknown-size NSIS resource differs from trusted resource')
+            require(process.wait(timeout=10) == 0, 'NSIS resource stream failed')
+        except FutureTimeout as error:
+            raise ValueError('NSIS resource stream timed out') from error
+        finally:
+            if process.poll() is None:
+                process.kill()
+            process.wait()
+            process.stdout.close()
 
 
 def windows_gui(installed, root, evidence):
@@ -435,7 +473,13 @@ def validate(args, receipt):
             tool = shutil.which('7z') or 'C:/Program Files/7-Zip/7z.exe'
             # Preflight installed 7-Zip listing before extraction of known-hash NSIS.
             listing = command([tool, 'l', '-slt', installers[0]])
-            receipt['installer_payload_listing'] = nsis_listing(listing)
+            trusted_resources = {'third-party/' + p.relative_to(root / 'third-party').as_posix(): p
+                                 for p in (root / 'third-party').rglob('*') if p.is_file()}
+            receipt['installer_payload_listing'] = nsis_listing(listing, {name: p.stat().st_size for name, p in trusted_resources.items()})
+            for member in receipt['installer_payload_listing']:
+                if member.get('requires_stream_check'):
+                    nsis_resource_stream(tool, installers[0], member['path'], trusted_resources[member['path']])
+                    member['trusted_resource_stream_verified'] = True
             installed = temporary / 'NSIS extracted'
             command([tool, 'x', '-y', '-o' + str(installed), installers[0]], timeout=90)
             binary = windows_gui(installed, root, evidence)
