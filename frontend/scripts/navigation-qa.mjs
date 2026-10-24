@@ -115,7 +115,7 @@ try {
         tilt: v.tilt(),
         height: v.camera.positionCartographic.height,
         width: v.captureCamera().cesium_camera.frustum_width,
-        selected: [...v.selected].sort(),
+        selected: [...c.snapshot.selected].sort(),
         nav: v.diagnostics().navigation,
         timeHeight: v.timeHeight,
         time: [v.lo, v.hi],
@@ -299,10 +299,10 @@ try {
     const d = await location();
     await page.mouse.dblclick(d.x, d.y);
     await page.waitForTimeout(350);
-    // Camera refinement can publish an interim representative packet before
-    // the shared selection is reconciled; assert the completed view state.
+    // Zoom can cull selected markers. Assert the shared selection, including
+    // off-screen Events, rather than the current packet's highlight subset.
     await page.waitForFunction((ids) => {
-      const selected = window.__chronoscope.view.selected;
+      const selected = new Set(window.__chronoscope.snapshot.selected);
       return (
         selected.size === ids.length && ids.every((id) => selected.has(id))
       );
@@ -320,7 +320,7 @@ try {
     await page.mouse.click(d.x, d.y, { button: "right", clickCount: 2 });
     await page.waitForTimeout(80);
     await page.waitForFunction((ids) => {
-      const selected = window.__chronoscope.view.selected;
+      const selected = new Set(window.__chronoscope.snapshot.selected);
       return (
         selected.size === ids.length && ids.every((id) => selected.has(id))
       );

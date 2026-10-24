@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "repository": "chronoscope-app/chronoscope-public",
+  "base_public_commit": "bcb8e8fb4f9beef7c07dfc75bde4d0b5d1ff32ba",
+  "promoted_next_commit": "59a0e0b3516ab51e595d133fd50619804b506535",
+  "source_tree_before_promotion_metadata": "397160697f72db25aa454bc73101501c21cfe543",
+  "source_parity": "Every tracked Next file is identical; public adds only the two promotion receipts listed below.",
+  "public_only_promotion_files": [
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json"
+  ],
+  "public_history_preserved": true,
+  "private_next_commit_ancestry_imported": false,
+  "local_platform": "Linux x86_64",
+  "verification": {
+    "frontend_test_cases_passed": 24,
+    "frontend_production_build": true,
+    "tester_packaging_tests_passed": 34,
+    "distribution_tests_passed": 23,
+    "publication_cleanup_tests_passed": 10,
+    "generated_contracts": "match; checked with previously built release CLI from identical Rust source",
+    "suite_inventory": {
+      "unit_files": 16,
+      "browser": 42,
+      "performance": 3,
+      "experimental": 1
+    },
+    "roundoff_probe": {
+      "cesium": "1.146.0",
+      "engine": "26.4.0",
+      "node": "v24.22.1",
+      "reproduced": true,
+      "limitation": "Change-detector calls, not rendered frames or FPS. One 3D pose.",
+      "control": {
+        "changedListener": false,
+        "stabilized": false,
+        "iterations": 600,
+        "falseCameraUpdates": 0,
+        "positionUnchanged": true,
+        "maximumFinalBasisDelta": 0
+      },
+      "baseline": {
+        "changedListener": true,
+        "stabilized": false,
+        "iterations": 600,
+        "falseCameraUpdates": 93,
+        "positionUnchanged": true,
+        "maximumFinalBasisDelta": 1.020433737508597e-13
+      },
+      "stabilized": {
+        "changedListener": true,
+        "stabilized": true,
+        "iterations": 600,
+        "falseCameraUpdates": 0,
+        "positionUnchanged": true,
+        "maximumFinalBasisDelta": 0
+      }
+    }
+  },
+  "security_scan": {
+    "tool": "Gitleaks 8.30.1",
+    "tool_archive_sha256": "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb",
+    "canary_detected": true,
+    "tracked_source_snapshot_findings": 0,
+    "config_changed": false,
+    "history_scope": "Shallow public base plus the new promotion commit; older public history is not rescanned."
+  },
+  "preserved_files_sha256": {
+    "scripts/package_tester.py": "a89ca0ec09511ebd85d0a0fb02b294e835c59d0f2678e24e44cf2305127f45fc",
+    "scripts/test_tester_packaging.py": "207159db1bc58d533df9df4f60cd25e967a8b07594e3a8a99f21ad9680ec1b08",
+    "src-tauri/tauri.macos.conf.json": "c679452078715f7006fb323ebc9af5e837518bb6929ab3c3431f091df3013225",
+    ".github/workflows/build.yml": "1e5b0467c610d825df12bc48235c8980b1a3a90c5b45a6af5244f06f321e6778",
+    ".github/workflows/validate-tester.yml": "4ba3a336cac10e738a1cd40db042d9b98fbe798a206f065b741f710d1924f8a5",
+    "docs/INSTALLATION.md": "5975590b13ac91308a33ce38f17c91d2b2ea452c57443251e827f07c6fc10ece"
+  },
+  "github_hosted_runners_used": false,
+  "binary_release_created": false,
+  "release_assets_or_tags_changed": false,
+  "limitations": [
+    "Fresh validation here is local Linux source/build/unit/packaging validation. Native and browser performance evidence is inherited through exact source parity with the separately documented Next run.",
+    "No new macOS/Windows binaries were built. Existing 0.15.2 downloads retain their original source commit and limitations.",
+    "The late Radeon runtime-suspend failure in the Next performance investigation remains documented; no GPU recovery was attempted during promotion."
+  ]
+}

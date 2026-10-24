@@ -151,13 +151,20 @@ try {
   );
   const span = bounds[1] - bounds[0];
   const sample = () =>
-    page.evaluate(() => ({
-      focus: window.__chronoscope.view.focusFraction,
-      now: performance.now(),
-      count: window.__chronoscope.view.renderPoints.length,
-      filter: window.__chronoscope.snapshot.filter,
-      errors: window.__chronoscope.view.diagnostics().renderErrorCount,
-    }));
+    page.evaluate(
+      () =>
+        new Promise((resolve) =>
+          requestAnimationFrame((now) =>
+            resolve({
+              focus: window.__chronoscope.view.focusFraction,
+              now,
+              count: window.__chronoscope.view.renderPoints.length,
+              filter: window.__chronoscope.snapshot.filter,
+              errors: window.__chronoscope.view.diagnostics().renderErrorCount,
+            }),
+          ),
+        ),
+    );
   assert.equal(await trigger.innerText(), "1×");
   assert(await trigger.locator("svg").count());
   assert(

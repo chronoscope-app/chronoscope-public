@@ -1,0 +1,36 @@
+{
+  "cesium": "1.146.0",
+  "engine": "26.4.0",
+  "node": "v24.22.1",
+  "reproduced": true,
+  "limitation": "Change-detector calls, not rendered frames or FPS. One 3D pose.",
+  "control": {
+    "changedListener": false,
+    "stabilized": false,
+    "iterations": 600,
+    "falseCameraUpdates": 0,
+    "positionUnchanged": true,
+    "maximumFinalBasisDelta": 0
+  },
+  "baseline": {
+    "changedListener": true,
+    "stabilized": false,
+    "iterations": 600,
+    "falseCameraUpdates": 93,
+    "positionUnchanged": true,
+    "maximumFinalBasisDelta": 1.020433737508597e-13
+  },
+  "stabilized": {
+    "changedListener": true,
+    "stabilized": true,
+    "iterations": 600,
+    "falseCameraUpdates": 0,
+    "positionUnchanged": true,
+    "maximumFinalBasisDelta": 0
+  },
+  "upstream_checked_commit": "ad366f071293b28bdf330c822965b8bd0bdeb781",
+  "upstream_matching_blobs": {
+    "Camera.js": "7be63a530914c9f353bc66c498c2a849e8e8d6b5",
+    "View.js": "8c2ec658f789d67ec5ef2a0d03258e0ee7b29b4a"
+  }
+}

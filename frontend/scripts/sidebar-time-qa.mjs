@@ -327,6 +327,8 @@ try {
       c.view.mode === "space-time" && c.view.lo === c.snapshot.filter.start
     );
   });
+  if (await page.locator("#full-range").isHidden())
+    await page.locator("#time-rail-range").click();
   await page.locator("#full-range").click();
   await idle();
   await page.waitForFunction(() => {
@@ -364,6 +366,8 @@ try {
     return v.lo > lo && v.hi > hi;
   }, brackets);
   check("Bracket and whole-window controls update the same space-time axis");
+  if (await page.locator("#full-range").isHidden())
+    await page.locator("#time-rail-range").click();
   await page.locator("#full-range").click();
   await idle();
   await page.locator("#entity-field").selectOption("entity");
@@ -394,13 +398,13 @@ try {
       .evaluate((e) => getComputedStyle(e).opacity),
     "1",
   );
-  const labels = await page.locator("#timeline-labels span").allTextContents();
-  assert(
-    labels.every((label) => /^20\d{2}$/.test(label)),
-    labels.join(","),
-  );
-  assert.equal(labels[0], "2016");
-  assert.equal(labels.at(-1), "2025");
+  // The vertical rail exposes date context in its range popup.
+  await page.locator("#time-rail-range").click();
+  const rangeLabel = await page.locator("#range-label").innerText();
+  assert.match(rangeLabel, /2016/);
+  assert.match(rangeLabel, /2025/);
+  assert(rangeLabel.indexOf("2016") < rangeLabel.indexOf("2025"));
+  await page.keyboard.press("Escape");
   for (const label of [
     "Marker size",
     "Track opacity",
@@ -425,11 +429,12 @@ try {
   );
   assert.equal(Number.parseInt(markerUnit), Math.round(renderedScale * 100));
   check(
-    "Pinned selection count/actions, visible navigation, descriptive slider units and year-aware ticks",
-    { labels, markerUnit },
+    "Pinned selection count/actions, visible navigation, descriptive slider units and year-aware range",
+    { rangeLabel, markerUnit },
   );
 
   const size = (selector) => page.locator(selector).boundingBox();
+  const railBefore = await size("#time-rail");
   const leftBefore = await size(".sidebar");
   await page.locator("#resize-sidebar").press("Shift+ArrowRight");
   assert.equal(
@@ -453,11 +458,10 @@ try {
     Math.round((await size(".inspector")).width - rightBefore.width),
     60,
   );
-  const timeBefore = await size(".timeline");
-  await drag("#resize-timeline", 0, -35);
   assert.equal(
-    Math.round((await size(".timeline")).height - timeBefore.height),
-    35,
+    Math.round((await size("#time-rail")).width),
+    Math.round(railBefore.width),
+    "The fixed-width time rail is independent of resizable side panes",
   );
   const persisted = await page.evaluate(() =>
     localStorage.getItem("chronoscope.workspace-layout.v1"),
@@ -522,11 +526,16 @@ try {
   }
   await page.locator("#close-table").click();
   await page.locator("#fullscreen").click();
-  assert.equal(Math.round((await size(".center")).width), 1000);
+  assert.equal(
+    Math.round(
+      (await size(".center")).width + (await size(".time-rail")).width,
+    ),
+    1000,
+  );
   assert(await page.locator("#resize-sidebar").isHidden());
   await page.locator("#fullscreen").click();
   await page.setViewportSize({ width: 1600, height: 1000 });
-  for (const pane of ["sidebar", "inspector", "timeline", "table"]) {
+  for (const pane of ["sidebar", "inspector", "table"]) {
     if (pane !== "table") await page.locator(`#resize-${pane}`).press("Enter");
   }
   check(

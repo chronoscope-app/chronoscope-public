@@ -28,7 +28,12 @@ const server = spawn(
   ],
   { stdio: ["ignore", "ignore", "pipe"] },
 );
-const report = { passed: false, checks: [], errors: [] };
+const report = {
+  passed: false,
+  checks: [],
+  errors: [],
+  rustBuildProfile: process.env.CHRONOSCOPE_QA_RUST_PROFILE || "unspecified",
+};
 let browser;
 const check = (name, evidence) => {
   report.checks.push({ name, evidence });
@@ -134,6 +139,13 @@ try {
     window.__chronoscope.view.onViewportChange = () => {};
     window.__chronoscope.view.onSceneChange = () => {};
   });
+  report.renderer = await page.evaluate(() => {
+    const gl = window.__chronoscope.view.viewer.canvas.getContext("webgl2");
+    const info = gl.getExtension("WEBGL_debug_renderer_info");
+    return gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER);
+  });
+  if (process.env.CHRONOSCOPE_QA_HARDWARE === "1")
+    assert(!/SwiftShader|llvmpipe|software/i.test(report.renderer));
   const times = await page.evaluate(
     () => window.__chronoscope.snapshot.time_bounds,
   );

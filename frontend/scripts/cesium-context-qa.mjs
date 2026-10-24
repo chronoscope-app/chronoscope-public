@@ -272,6 +272,8 @@ try {
   });
   await page.waitForFunction(() => window.__lossIndicator);
   const lost = await page.evaluate(() => window.__lossIndicator);
+  report.lossIndicator = lost;
+  write();
   assert.equal(lost.recovering, true);
   assert.equal(lost.warning, "true");
   assert.match(lost.label, /context lost/);
