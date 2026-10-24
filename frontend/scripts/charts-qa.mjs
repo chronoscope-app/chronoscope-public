@@ -435,8 +435,14 @@ try {
     );
     await page.screenshot({ path: path.join(dir, "charts-" + width + ".png") });
   }
+  // Finish the compact-size layout assertions, then exercise both chart sizes.
+  await page.setViewportSize({ width: 1600, height: 1000 });
   await page.locator("#chart-expand").click();
   assert.equal(await page.locator(".workspace.chart-docked").count(), 0);
+  assert.equal(await page.locator("#chart-controls").isVisible(), false);
+  // Compact charts intentionally hide editing controls. Widen before editing.
+  await page.locator("#chart-expand").click();
+  assert.equal(await page.locator("#chart-controls").isVisible(), true);
   await page.locator("#chart-presets").evaluate((e) => (e.open = true));
   await page.locator('[data-chart-remove="0"]').click();
   await idle();
@@ -453,6 +459,7 @@ try {
     /0 scoped records/,
   );
   await config("scope", "visible");
+  await page.locator("#time-rail-range").click();
   await page.locator("#full-range").click();
   await page.waitForFunction(() => !window.__chronoscope.busy);
   await page.evaluate(async () => {

@@ -4,6 +4,10 @@
 
 This repository replaces the geographic renderer with CesiumJS WebGL2. Earlier reports below describe the upstream Chronoscope renderer and retain their original evidence; they do not establish Cesium rendering correctness. Current Cesium evidence is tracked in [the parity report](CESIUM-PARITY.md).
 
+## Idle render and Radeon performance — 24 October 2026
+
+The [idle-camera explanation and upstream Cesium handoff](CESIUM-IDLE-RENDER.md) documents the rounding mechanism, application workaround and CPU-only reproduction. The [local validation and performance report](validation/radeon-performance-2026-10-24/README.md) includes the native/Chrome measurements, targeted QA repairs, scale checks and the later Radeon power-management failure. The original software throughput failure is retained alongside its passing hardware rerun.
+
 # Event terminology — 15 October 2026
 
 The app now calls timestamped records **Events**. All 24 consolidated local checks and 201 Rust tests pass, including legacy import/recovery compatibility. See the [rename and compatibility report](validation/event-terminology-2026-10-15/README.md). Historical validation logs, benchmark evidence, screenshots and video captures below retain the wording shown when they were produced.

@@ -1,4 +1,5 @@
 import { TOOLTIP_DELAY_MS } from "./tooltips";
+import { cameraStabilizer } from "./camera-stability";
 import { GisLayers } from "./gis";
 import {
   Viewer,
@@ -390,6 +391,8 @@ export class SpaceTimeView {
         }
       }, 160);
     });
+    const stabilizeCamera = cameraStabilizer(this.camera);
+    scene.preUpdate.addEventListener(() => stabilizeCamera(scene.mode));
     scene.preRender.addEventListener(() => {
       this.constrainCamera();
       if (this.updateSpaceTimeFloor()) this.updateAxes();

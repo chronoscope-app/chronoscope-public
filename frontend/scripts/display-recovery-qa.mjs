@@ -157,12 +157,18 @@ try {
     const points = [...v.points];
     v.setPlayback(true);
     await v.setData(points.slice(0, 100), v.names, v.bounds, [v.lo, v.hi]);
+    // Check creation before software shader compilation can consume the
+    // entire 2.4-second fade lifetime; presentation must still render cleanly.
+    const fadingStems = v.fadeTrails.length;
+    v.requestRender();
+    v.viewer.render();
     await new Promise((resolve) =>
       requestAnimationFrame(() => requestAnimationFrame(resolve)),
     );
     const result = {
       diagnostics: v.diagnostics(),
-      fadingStems: v.fadeTrails.length,
+      fadingStems,
+      remainingFadingStems: v.fadeTrails.length,
     };
     v.setPlayback(false);
     await v.setData(points, v.names, v.bounds, [v.lo, v.hi]);

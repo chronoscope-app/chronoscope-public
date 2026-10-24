@@ -29,6 +29,7 @@ const report = {
   passed: false,
   rows: count,
   synthetic: true,
+  rustBuildProfile: process.env.CHRONOSCOPE_QA_RUST_PROFILE || "unspecified",
   renderer: "CesiumJS WebGL2",
   softwareRenderer: true,
   publicRequests: 0,
@@ -40,7 +41,7 @@ const report = {
   memory: {},
   disk: { initialFreeBytes: free() },
   limitations: [
-    "Debug Rust build on Linux VM; ingestion wall times are not release throughput.",
+    "Caller-selected Rust build; ingestion wall times include validation and persistence.",
     "SwiftShader software rendering is not dedicated-GPU FPS or native macOS/Windows validation.",
     "RSS sums can double-count shared pages; Chromium renderer RSS is reported separately.",
     "No map downloads, portable million-row copy, or arbitrary budget increases.",

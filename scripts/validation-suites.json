@@ -2,6 +2,7 @@
   "version": 1,
   "groups": {
     "unit": [
+      "camera-stability-test.mjs",
       "cesium-effects-math-test.mjs",
       "cesium-geometry-test.mjs",
       "cesium-resource-test.mjs",
@@ -67,9 +68,7 @@
       "performance-100k-qa.mjs",
       "performance-qa.mjs"
     ],
-    "experimental": [
-      "webmcp-qa.mjs"
-    ]
+    "experimental": ["webmcp-qa.mjs"]
   },
   "requirements": {
     "unit": "Node and installed frontend dependencies",

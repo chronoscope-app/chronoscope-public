@@ -275,6 +275,7 @@ try {
           .getAnimations()
           .some((animation) => animation.playState === "running"),
     );
+    await page.locator("#time-rail-range").click();
     const contrast = await page.evaluate(() => {
       const rgb = (c) => {
         const x = document.createElement("canvas").getContext("2d");
@@ -304,7 +305,7 @@ try {
         "#play",
         '[data-tab="views"]',
         ".range-label",
-        ".time-range-hint",
+        "#time-rail-range-popup header strong",
       ].map((selector) => {
         const e = document.querySelector(selector),
           background = bg(e),

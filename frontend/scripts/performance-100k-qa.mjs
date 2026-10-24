@@ -34,6 +34,7 @@ const report = {
   rows: 100000,
   synthetic: true,
   platform: process.platform,
+  rustBuildProfile: process.env.CHRONOSCOPE_QA_RUST_PROFILE || "unspecified",
   started: new Date().toISOString(),
   samples: [],
   errors: [],

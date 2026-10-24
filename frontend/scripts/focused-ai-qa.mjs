@@ -39,6 +39,8 @@ const report = {
 };
 let pending = 0,
   browser;
+let holdReplies = false;
+const heldReplies = new Set();
 const model = createServer(async (req, res) => {
   let body = "";
   for await (const part of req) body += part;
@@ -47,7 +49,8 @@ const model = createServer(async (req, res) => {
   assert.equal(input.messages.length, 2);
   report.modelCalls++;
   pending++;
-  await new Promise((r) => setTimeout(r, 750));
+  if (holdReplies) await new Promise((resolve) => heldReplies.add(resolve));
+  else await new Promise((r) => setTimeout(r, 750));
   const tags = input.messages[0].content.includes("topic labels");
   const content = tags
     ? { tags: ["coastal survey", "seabirds"] }
@@ -163,11 +166,15 @@ try {
     await page.selectOption("#focused-ai-provider", "connected");
   };
   await openTags();
+  holdReplies = true;
   await page.click("#focused-ai-generate");
   await page.waitForSelector("#focused-ai-generate[aria-busy=true]");
   assert(await page.locator(".focused-ai-spinner").isVisible());
   assert.equal(await page.textContent("#focused-ai-cancel"), "Cancel AI");
   await page.screenshot({ path: path.join(out, "tags-processing.png") });
+  holdReplies = false;
+  for (const release of heldReplies) release();
+  heldReplies.clear();
   await page.waitForSelector("#focused-ai-apply:visible");
   assert.equal(await page.locator("tr[data-event-id]").count(), 3);
   assert.equal(
@@ -206,10 +213,22 @@ try {
     () => !document.querySelector("#focused-ai-provider")?.disabled,
   );
   await page.selectOption("#focused-ai-provider", "connected");
+  // Hold this fixture response until cancellation is acknowledged. Taking a
+  // software-rendered screenshot can exceed a fixed model-response delay.
+  holdReplies = true;
   await page.click("#focused-ai-generate");
   await page.waitForSelector("#focused-ai-generate[aria-busy=true]");
   await page.screenshot({ path: path.join(out, "explain-processing.png") });
+  const cancellation = page.waitForResponse(
+    (response) =>
+      response.url().endsWith("/api/invoke") &&
+      response.request().postDataJSON()?.command === "job_cancel",
+  );
   await page.click("#focused-ai-cancel");
+  assert((await cancellation).ok());
+  holdReplies = false;
+  for (const release of heldReplies) release();
+  heldReplies.clear();
   await page.waitForFunction(
     () =>
       !document
@@ -256,6 +275,8 @@ try {
   assert.equal(report.publicRequests, 0);
   report.passed = true;
 } finally {
+  for (const release of heldReplies) release();
+  heldReplies.clear();
   fs.writeFileSync(
     path.join(out, "report.json"),
     JSON.stringify(report, null, 2) + "\n",
