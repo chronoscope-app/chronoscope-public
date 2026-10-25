@@ -1,0 +1,216 @@
+{
+  "date": "2026-10-25",
+  "platform": "macOS 27.0.1 arm64",
+  "base_revision": "e72171379e21d851e5ced03f4c4367bf08a1b3e6",
+  "passed": true,
+  "github_runners_used": false,
+  "local_gate_run": "20261025T123435Z-f624dfcc",
+  "local_gate_checks": [
+    {
+      "name": "validation-runner-tests",
+      "exit_code": 0,
+      "elapsed_s": 2.828
+    },
+    {
+      "name": "rust-format",
+      "exit_code": 0,
+      "elapsed_s": 0.44
+    },
+    {
+      "name": "glib-backport-integrity",
+      "exit_code": 0,
+      "elapsed_s": 0.718
+    },
+    {
+      "name": "core-clippy",
+      "exit_code": 0,
+      "elapsed_s": 11.891
+    },
+    {
+      "name": "rust-tests",
+      "exit_code": 0,
+      "elapsed_s": 221.323
+    },
+    {
+      "name": "cli-build",
+      "exit_code": 0,
+      "elapsed_s": 0.459
+    },
+    {
+      "name": "frontend-build",
+      "exit_code": 0,
+      "elapsed_s": 8.045
+    },
+    {
+      "name": "generated-contracts",
+      "exit_code": 0,
+      "elapsed_s": 0.887
+    },
+    {
+      "name": "frontend-unit-tests",
+      "exit_code": 0,
+      "elapsed_s": 1.382
+    },
+    {
+      "name": "integration-smoke-qa",
+      "exit_code": 0,
+      "elapsed_s": 2.356
+    },
+    {
+      "name": "welcome-qa",
+      "exit_code": 0,
+      "elapsed_s": 5.081
+    },
+    {
+      "name": "native-clippy",
+      "exit_code": 0,
+      "elapsed_s": 8.222
+    },
+    {
+      "name": "native-build",
+      "exit_code": 0,
+      "elapsed_s": 20.15
+    },
+    {
+      "name": "native-cli-smoke",
+      "exit_code": 0,
+      "elapsed_s": 4.632
+    },
+    {
+      "name": "native-bundle-launch",
+      "exit_code": 0,
+      "elapsed_s": 18.15
+    },
+    {
+      "name": "native-terrain-gui",
+      "exit_code": 0,
+      "elapsed_s": 124.088
+    },
+    {
+      "name": "native-video-gui",
+      "exit_code": 0,
+      "elapsed_s": 56.504
+    }
+  ],
+  "final_video_evidence": ".qa/video-recording/final-three-views",
+  "clips": [
+    {
+      "mode": "map",
+      "codec": "h264",
+      "dimensions": [
+        1728,
+        1080
+      ],
+      "decoded_frames": 336,
+      "duration_seconds": 5.923333333333333,
+      "max_frame_interval_seconds": 0.03666666666666707,
+      "candidate_flashes": [],
+      "navigation_samples": 40,
+      "render_errors": 0,
+      "provider_change_counts": [
+        3
+      ],
+      "video_sha256": "92ca40cf057ad22a00b85f607df56359f5c0badb03a07a47133355a4125bcc0e",
+      "final_metadata": {
+        "backend": "screencapturekit",
+        "bytes": 8385610,
+        "duration_seconds": 5.948333333333333,
+        "error": null,
+        "fps": 60,
+        "height": 1080,
+        "max_seconds": 60,
+        "mime_type": "video/mp4",
+        "path": "/Users/user/Documents/Codex/chronoscope mac/.qa/video-recording/runs/20261025T123435Z-f624dfcc/native-profile/agent-files/video-qa/map-1792932488377423000.mp4",
+        "started_unix_ms": 1792932488378.254,
+        "state": "complete",
+        "uri": "file:///Users/user/Documents/Codex/chronoscope%20mac/.qa/video-recording/runs/20261025T123435Z-f624dfcc/native-profile/agent-files/video-qa/map-1792932488377423000.mp4",
+        "width": 1728,
+        "window": "main"
+      }
+    },
+    {
+      "mode": "globe",
+      "codec": "h264",
+      "dimensions": [
+        1728,
+        1080
+      ],
+      "decoded_frames": 338,
+      "duration_seconds": 5.965,
+      "max_frame_interval_seconds": 0.0349999999999997,
+      "candidate_flashes": [],
+      "navigation_samples": 40,
+      "render_errors": 0,
+      "provider_change_counts": [
+        4
+      ],
+      "video_sha256": "b715f48044b080679fa1f0a8114515c2ecfc1b501398ceecad1d882f8b7c3331",
+      "final_metadata": {
+        "backend": "screencapturekit",
+        "bytes": 9833737,
+        "duration_seconds": 5.988333333333333,
+        "error": null,
+        "fps": 60,
+        "height": 1080,
+        "max_seconds": 60,
+        "mime_type": "video/mp4",
+        "path": "/Users/user/Documents/Codex/chronoscope mac/.qa/video-recording/runs/20261025T123435Z-f624dfcc/native-profile/agent-files/video-qa/globe-1792932501254258000.mp4",
+        "started_unix_ms": 1792932501255.4988,
+        "state": "complete",
+        "uri": "file:///Users/user/Documents/Codex/chronoscope%20mac/.qa/video-recording/runs/20261025T123435Z-f624dfcc/native-profile/agent-files/video-qa/globe-1792932501254258000.mp4",
+        "width": 1728,
+        "window": "main"
+      }
+    },
+    {
+      "mode": "space-time",
+      "codec": "h264",
+      "dimensions": [
+        1728,
+        1080
+      ],
+      "decoded_frames": 340,
+      "duration_seconds": 5.956666666666667,
+      "max_frame_interval_seconds": 0.03000000000000025,
+      "candidate_flashes": [],
+      "navigation_samples": 40,
+      "render_errors": 0,
+      "provider_change_counts": [
+        5
+      ],
+      "video_sha256": "336005a85929fc34d01b0156cfb38ddf7fb13d2ddaa260daf98ffff0702e986e",
+      "final_metadata": {
+        "backend": "screencapturekit",
+        "bytes": 10328135,
+        "duration_seconds": 5.983333333333333,
+        "error": null,
+        "fps": 60,
+        "height": 1080,
+        "max_seconds": 60,
+        "mime_type": "video/mp4",
+        "path": "/Users/user/Documents/Codex/chronoscope mac/.qa/video-recording/runs/20261025T123435Z-f624dfcc/native-profile/agent-files/video-qa/space-time-1792932517289870000.mp4",
+        "started_unix_ms": 1792932517292.495,
+        "state": "complete",
+        "uri": "file:///Users/user/Documents/Codex/chronoscope%20mac/.qa/video-recording/runs/20261025T123435Z-f624dfcc/native-profile/agent-files/video-qa/space-time-1792932517289870000.mp4",
+        "width": 1728,
+        "window": "main"
+      }
+    }
+  ],
+  "negative_controls": {
+    "encoded_black_frame": 8,
+    "encoded_white_frame": 16,
+    "background_brightness": [
+      130,
+      230
+    ],
+    "detected_exactly": true
+  },
+  "source_sha256": {
+    "src-tauri/window-capture/Recording.swift": "a312d118babdca8c63a79d7a121c3f4e5f9e5735260dfc0fb00d40c2d34287ce",
+    "src-tauri/window-capture/src/lib.rs": "b1ce1db8464856dc91574c5b247976dbcdba7d634d1bff134df4a4527e3d1cac",
+    "scripts/native_video_qa.py": "52a908e105ce6f298546a0279f49f66368b2eadc138e81aef008634eaa5c9d82",
+    "scripts/native_mcp.py": "a7e27ce69a7af5d5d8f4dab9bb8148ca68195b2e23178261aaa7940ebc68de01"
+  },
+  "native_binary_sha256": "b62868af272c556bc01e00e874433a9b4660849d254c82b9a0555cdf587eea77"
+}

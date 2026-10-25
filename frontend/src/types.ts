@@ -69,6 +69,7 @@ export interface Preferences {
   map: MapConfig;
   map_layers?: MapLayer[] | null;
   terrain_path: string | null;
+  terrain_builtin: boolean;
   terrain_exaggeration: number;
   terrain_vertical_datum: "unresolved-msl" | "egm96" | "ellipsoid";
 }
@@ -116,6 +117,8 @@ export interface Point {
   value: number;
 }
 export interface Terrain {
+  geographic?: boolean;
+  attribution?: string | null;
   bounds: number[];
   width: number;
   height: number;

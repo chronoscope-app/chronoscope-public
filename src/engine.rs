@@ -40,7 +40,11 @@ pub struct Preferences {
     /// None preserves the legacy single-map setting. Some([]) explicitly disables the stack.
     pub map_layers: Option<Vec<crate::map_layers::MapLayer>>,
     pub terrain_path: Option<PathBuf>,
+    /// Missing in older preferences means retain their previous terrain choice.
+    #[serde(default)]
+    pub terrain_builtin: bool,
     pub terrain_exaggeration: f32,
+    #[serde(default)]
     pub terrain_vertical_datum: TerrainVerticalDatum,
     pub auto_save_unsaved: bool,
 }
@@ -53,8 +57,9 @@ impl Default for Preferences {
             map: MapConfig::default(),
             map_layers: Some(Vec::new()),
             terrain_path: None,
+            terrain_builtin: true,
             terrain_exaggeration: 1.,
-            terrain_vertical_datum: TerrainVerticalDatum::UnresolvedMsl,
+            terrain_vertical_datum: TerrainVerticalDatum::Egm96,
             auto_save_unsaved: true,
         }
     }
@@ -71,6 +76,15 @@ impl Preferences {
         if let Some(layers) = &self.map_layers {
             crate::map_layers::validate(layers)?;
         }
+        if self.terrain_builtin
+            && (self.terrain_path.is_some()
+                || !matches!(self.terrain_vertical_datum, TerrainVerticalDatum::Egm96))
+        {
+            return Err(
+                "Bundled Balanced terrain requires its EGM96 datum and no external terrain path"
+                    .into(),
+            );
+        }
         if !self.map.url.is_empty() {
             crate::wmts::capability_url(&self.map.url)?;
         }
@@ -86,6 +100,15 @@ struct History {
     store_id: String,
     replacement: Option<crate::store::DataStore>,
 }
+/// One short-lived canvas pick rollback, never serialized or exposed as IDs.
+struct PickRestore {
+    revision: u64,
+    workspace: String,
+    selection_version: u64,
+    data_version: u64,
+    expires: std::time::Instant,
+    selected: BTreeSet<u64>,
+}
 struct State {
     project: Project,
     store: crate::store::DataStore,
@@ -95,14 +118,17 @@ struct State {
     pending: Vec<crate::stream_import::PendingImport>,
     preferences: Preferences,
     previous_store: Option<crate::store::DataStore>,
+    pick_restore: Option<PickRestore>,
 }
 mod analytics;
 mod assist;
 mod charts;
 mod desktop;
 mod fields;
+mod imports;
 mod patterns;
 mod recovery;
+mod scenarios;
 mod view_snapshot;
 mod workspace;
 
@@ -114,6 +140,7 @@ struct DesktopReply {
 }
 #[derive(Clone)]
 pub struct Engine {
+    resource_epoch: Arc<std::sync::atomic::AtomicU64>,
     revision_counter: Arc<std::sync::atomic::AtomicU64>,
     document_epoch: Arc<std::sync::atomic::AtomicU64>,
     lifecycle: Arc<recovery::Lifecycle>,
@@ -288,6 +315,21 @@ fn query_filter(p: &Project, args: &Value, default: bool) -> Result<Filter, Stri
     Ok(f)
 }
 impl Engine {
+    fn validate_pick_restore(&self, s: &State, revision: u64) -> Result<(), String> {
+        let pick = s
+            .pick_restore
+            .as_ref()
+            .ok_or("CONFLICT: canvas pick expired or superseded")?;
+        if pick.revision != revision
+            || pick.selection_version != s.store.selection_version()
+            || pick.data_version != s.store.query_stamp(true).0
+            || pick.workspace != self.workspace_identity_locked(s)
+            || pick.expires <= std::time::Instant::now()
+        {
+            return Err("CONFLICT: canvas pick expired or superseded".into());
+        }
+        Ok(())
+    }
     pub fn new(project: Project, data_dir: PathBuf) -> Result<Self, String> {
         Self::new_with_terrain_scope(project, data_dir, None)
     }
@@ -325,6 +367,7 @@ impl Engine {
             #[cfg(feature = "experimental-browser-webmcp")]
             browser: Arc::new(crate::webmcp::Browser::default()),
             jobs: Arc::new(Mutex::new(BTreeMap::new())),
+            resource_epoch: Arc::new(std::sync::atomic::AtomicU64::new(0)),
             observer: Arc::new(Mutex::new(None)),
             captures: Arc::new(Mutex::new(BTreeMap::new())),
             state: Arc::new(Mutex::new(State {
@@ -336,6 +379,7 @@ impl Engine {
                 pending: vec![],
                 preferences,
                 previous_store: None,
+                pick_restore: None,
             })),
             operation: Arc::new(Mutex::new(())),
             analytics_worker: Arc::new(Mutex::new(())),
@@ -361,12 +405,37 @@ impl Engine {
         *self.observer.lock().map_err(|_| "Observer unavailable")? = Some(observer);
         Ok(())
     }
+    /// Cheap change token for MCP subscriptions; never acquires the workspace gate.
+    pub fn resource_version(&self) -> Value {
+        let jobs = self
+            .jobs
+            .lock()
+            .map(|jobs| {
+                jobs.iter()
+                    .map(|(id, j)| json!([id, j.status, j.progress, j.sequence]))
+                    .collect::<Vec<_>>()
+            })
+            .unwrap_or_default();
+        json!([
+            self.revision_counter
+                .load(std::sync::atomic::Ordering::Acquire),
+            self.document_epoch
+                .load(std::sync::atomic::Ordering::Acquire),
+            self.resource_epoch
+                .load(std::sync::atomic::Ordering::Acquire),
+            jobs
+        ])
+    }
     pub fn clear_observer(&self) {
         if let Ok(mut observer) = self.observer.lock() {
             *observer = None;
         }
     }
     fn notify(&self, value: Value) {
+        if value["kind"] == "changed" {
+            self.resource_epoch
+                .fetch_add(1, std::sync::atomic::Ordering::AcqRel);
+        }
         if let Ok(observer) = self.observer.lock() {
             if let Some(observer) = observer.as_ref() {
                 observer(value)
@@ -466,6 +535,10 @@ impl Engine {
             let revision = self
                 .revision_counter
                 .load(std::sync::atomic::Ordering::Acquire);
+            if result.is_ok() && matches!(command, "analytics_run" | "analytics_remove") {
+                self.resource_epoch
+                    .fetch_add(1, std::sync::atomic::Ordering::AcqRel);
+            }
             crate::diagnostics::record(
                 &self.data_dir,
                 command,
@@ -483,8 +556,19 @@ impl Engine {
         }
         if matches!(
             command,
-            "view_capture" | "view_status" | "view_navigate" | "assist_ui"
+            "view_capture"
+                | "view_status"
+                | "view_navigate"
+                | "view_recording"
+                | "view_profile"
+                | "view_wait"
+                | "view_playback"
+                | "view_scenario"
+                | "assist_ui"
         ) {
+            if command == "view_scenario" {
+                return self.scenario_request(args);
+            }
             let started = std::time::Instant::now();
             let result = self.desktop_request(command, args);
             crate::diagnostics::record(
@@ -597,9 +681,20 @@ impl Engine {
             }
         }
         let (revision, before, prefs) = {
-            let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+            let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
             if let Some(expected) = crate::operation::workspace() {
                 self.check_workspace_state(&s, &expected)?;
+            }
+            if s.pick_restore.as_ref().is_some_and(|pick| {
+                pick.expires <= std::time::Instant::now()
+                    || pick.workspace != self.workspace_identity_locked(&s)
+            }) {
+                s.pick_restore = None;
+            }
+            // Reject stale receipts before a SQL savepoint is opened, so an
+            // old double-click cannot invalidate the newest pick's data stamp.
+            if command == "selection_restore" {
+                self.validate_pick_restore(&s, arg(&args, "pick_revision")?)?;
             }
             (
                 s.revision,
@@ -625,7 +720,10 @@ impl Engine {
             a.remove("expected_workspace");
             a.remove("idempotency_key");
         }
-        if dry && !transactional(command) {
+        if dry
+            && (!transactional(command)
+                || matches!(command, "selection_pick" | "selection_restore"))
+        {
             return Ok(
                 json!({"dry_run":true,"executed":false,"revision":revision,"command":command,"plan":args,"note":"External I/O, import, history and terrain operations are planned without execution."}),
             );
@@ -652,7 +750,12 @@ impl Engine {
         let file_commit = (mutation
             && matches!(
                 command,
-                "save" | "export" | "preferences" | "terrain_load" | "terrain_unload"
+                "save"
+                    | "export"
+                    | "import_rejections_export"
+                    | "preferences"
+                    | "terrain_load"
+                    | "terrain_unload"
             ))
         .then(crate::operation::track_file_commit);
         let lifecycle_path = args["path"].as_str().map(str::to_owned);
@@ -850,7 +953,7 @@ impl Engine {
             "file_probe" | "gis_layers" | "gis_load" | "gis_set" | "gis_remove" | "gis_read"
             | "gis_table" => self.invoke_gis(command, args),
             "capabilities" => Ok(
-                json!({"version":env!("CARGO_PKG_VERSION"),"commands":crate::schema::COMMANDS,"storage":"indexed_sqlite","renderer":{"engine":"CesiumJS","backend":"WebGL2","webgpu_backend":false,"modes":["space-time","map","globe"],"attached_tools":["view_status","view_navigate","view_capture"],"capture":{"default_target":"app","targets":["app","map"],"windows":["main","si-chat"],"app_snapshot":"native WebView visible content; desktop only"},"navigation":["fit","fit_layer","look_at","zoom","north_up"],"geographic_input":"WGS84 longitude, latitude, ellipsoid metres; heading clockwise from north; tilt zero=nadir","hardware_acceleration":"inspect on the target host; not inferred from API availability"},"max_csv_bytes":2147483648u64,"max_events":50000000u64,"render_budget":20000,"render_budget_options":[20000,100000],"display":{"default_mode":"auto","cluster_threshold":2000,"ui_max_cells":4000,"max_time_slabs":32,"heatmap_default":false,"bloom_default":false,"spatial_culling_default":true,"trail_tolerance_pixels":2,"exact_membership":true,"cold_query":"proportional to matching rows; cached base grids"},"page_limit":1000,"exact_ids":"decimal_u64_strings","time_resolution":"fractional_second","time_storage":"IEEE 754 binary64 Unix seconds; approximately 0.24 microsecond spacing near 2026; finer source strings retained","mutation_controls":["expected_revision","expected_workspace","dry_run","idempotency_key"],"batch":"atomic workspace operations","excel":"bounded workbook ingestion","analytics":{"discovery":"analytics_discover","describe":"analytics_describe","run":"analytics_run","result":"analytics_result","list":"analytics_list","remove":"analytics_remove","capabilities":crate::analytics::registry::NAMES,"sampling":"none","result_storage":"portable project database","max_results":32,"timeout_seconds":300},"analysis":"explicit bounded input budget","mcp_client":{"transports":["stdio","streamable_http"],"session_only":true,"explicit_tool_grants":true,"max_connections":16,"max_tools_per_connection":256,"max_response_bytes":2097152,"operation_timeout_seconds":60,"oauth":false,"browser_webmcp":cfg!(feature = "experimental-browser-webmcp")},"assistant":{"name":"Super Intelligence","commands_prefix":"si_","protocol":"OpenAI-compatible Chat Completions tools","providers":["openai-compatible"],"analysis_commands":["analysis_context","analysis_prepare","analysis_execute"],"app_intents":{"minimum_macos":"13.0","packaged_desktop":true,"actions":["workspace_summary","show_view","select_entity","recommend_analyses","find_track_gaps"]},"max_steps":16,"max_tool_calls":32,"key_storage":"session memory","file_access":"optional connection-scoped root","history":{"storage":"session memory","max_messages":32,"max_bytes":98304,"clear_command":"si_clear"}},"focused_ai":{"commands":["assist_status","assist_explain","assist_tags","assist_tags_apply"],"desktop_ui":"assist_ui","providers":["apple-local","connected"],"chat_history":false,"action_tools":false,"max_tag_events":25,"max_text_bytes_per_event":4000,"apply":"explicit additive review, expected workspace and revision, one Undo","cancellation":"job_cancel"},"aggregation":{"method":"fixed UTC windows and WGS84 anchored radius","streaming_import":true,"lossy":true,"partitions":["entity","category","source"]},"time_only_markers":"display-only geodesic triangles; source coordinates remain null","gis":{"formats":["shapefile","geopackage","geojson","topojson","kml","kmz","czml","gpx","tiles3d","gltf","glb"],"native_reference_layers":true,"event_import":true,"portable_assets":true,"max_layers":64,"max_reference_features":50000,"external_links":false},"geometry":{"polygon_anchor":"derived area-weighted WGS84 authalic surface centroid; holes subtract, multipart adds; can lie outside polygon", "format":"OGC WKT / EWKT SRID=4326","topology":"GeoRust validation and exact rectangle intersection","z_m":"preserved, not used as height/time"},"wmts":{"multiple_sources":true,"max_layers":64,"layer_preferences":"map_layers","layer_properties":["enabled","opacity","order","min_zoom","max_zoom"],"zoom":"view-centre projected camera resolution, minimum inclusive and maximum exclusive","transport":"direct disk cache, no proxy required","tile_plan":"paged full requested coverage","default_concurrency":8,"default_interval_ms":0}}),
+                json!({"version":env!("CARGO_PKG_VERSION"),"commands":crate::schema::COMMANDS,"storage":"indexed_sqlite","renderer":{"engine":"CesiumJS","backend":"WebGL2","webgpu_backend":false,"modes":["space-time","map","globe"],"attached_tools":["view_status","view_navigate","view_capture","view_recording","view_profile","view_wait","view_playback","view_scenario"],"profiling":{"maximum_samples":6000,"maximum_active":2,"cpu_only":true,"video_companion":true},"scenarios":{"maximum_recipes":16,"maximum_steps":80,"maximum_seconds":120,"persistent_recipes":true},"playback_actions":["status","play","pause","configure","seek","step"],"capture":{"default_target":"app","targets":["app","map"],"windows":["main","si-chat"],"app_snapshot":"native WebView visible content; desktop only","video":{"command":"view_recording","platform":"macOS 15+","backend":"ScreenCaptureKit app window","format":"H.264 MP4","audio":false,"maximum_seconds":120,"maximum_bytes":268435456,"maximum_dimensions":[1920,1080]}},"navigation":["fit","fit_layer","look_at","zoom","north_up"],"geographic_input":"WGS84 longitude, latitude, ellipsoid metres; heading clockwise from north; tilt zero=nadir","hardware_acceleration":"inspect on the target host; not inferred from API availability"},"max_csv_bytes":2147483648u64,"max_events":50000000u64,"render_budget":20000,"render_budget_options":[20000,100000],"display":{"default_mode":"auto","cluster_threshold":2000,"ui_max_cells":4000,"max_time_slabs":32,"heatmap_default":false,"bloom_default":false,"spatial_culling_default":true,"trail_tolerance_pixels":2,"exact_membership":true,"cold_query":"proportional to matching rows; cached base grids"},"page_limit":1000,"exact_ids":"decimal_u64_strings","time_resolution":"fractional_second","time_storage":"IEEE 754 binary64 Unix seconds; approximately 0.24 microsecond spacing near 2026; finer source strings retained","mutation_controls":["expected_revision","expected_workspace","dry_run","idempotency_key"],"batch":"atomic workspace operations","excel":"bounded workbook ingestion","analytics":{"discovery":"analytics_discover","describe":"analytics_describe","run":"analytics_run","result":"analytics_result","list":"analytics_list","remove":"analytics_remove","capabilities":crate::analytics::registry::NAMES,"sampling":"none","result_storage":"portable project database","max_results":32,"timeout_seconds":300},"analysis":"explicit bounded input budget","mcp_client":{"transports":["stdio","streamable_http"],"session_only":true,"explicit_tool_grants":true,"max_connections":16,"max_tools_per_connection":256,"max_response_bytes":2097152,"operation_timeout_seconds":60,"oauth":false,"browser_webmcp":cfg!(feature = "experimental-browser-webmcp")},"assistant":{"name":"Super Intelligence","commands_prefix":"si_","protocol":"OpenAI-compatible Chat Completions tools","providers":["openai-compatible"],"analysis_commands":["analysis_context","analysis_prepare","analysis_execute"],"app_intents":{"minimum_macos":"13.0","packaged_desktop":true,"actions":["workspace_summary","show_view","select_entity","recommend_analyses","find_track_gaps"]},"max_steps":16,"max_tool_calls":32,"key_storage":"session memory","file_access":"optional connection-scoped root","history":{"storage":"session memory","max_messages":32,"max_bytes":98304,"clear_command":"si_clear"}},"focused_ai":{"commands":["assist_status","assist_explain","assist_tags","assist_tags_apply"],"desktop_ui":"assist_ui","providers":["apple-local","connected"],"chat_history":false,"action_tools":false,"max_tag_events":25,"max_text_bytes_per_event":4000,"apply":"explicit additive review, expected workspace and revision, one Undo","cancellation":"job_cancel"},"aggregation":{"method":"fixed UTC windows and WGS84 anchored radius","streaming_import":true,"lossy":true,"partitions":["entity","category","source"]},"time_only_markers":"display-only geodesic triangles; source coordinates remain null","gis":{"formats":["shapefile","geopackage","geojson","topojson","kml","kmz","czml","gpx","tiles3d","gltf","glb"],"native_reference_layers":true,"event_import":true,"portable_assets":true,"max_layers":64,"max_reference_features":50000,"external_links":false},"geometry":{"polygon_anchor":"derived area-weighted WGS84 authalic surface centroid; holes subtract, multipart adds; can lie outside polygon", "format":"OGC WKT / EWKT SRID=4326","topology":"GeoRust validation and exact rectangle intersection","z_m":"preserved, not used as height/time"},"wmts":{"multiple_sources":true,"max_layers":64,"layer_preferences":"map_layers","layer_properties":["enabled","opacity","order","min_zoom","max_zoom"],"zoom":"view-centre projected camera resolution, minimum inclusive and maximum exclusive","transport":"direct disk cache, no proxy required","tile_plan":"paged full requested coverage","default_concurrency":8,"default_interval_ms":0}}),
             ),
             "diagnostics" => {
                 let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
@@ -1550,6 +1653,37 @@ impl Engine {
                 })
                 .map_err(|e| e.to_string())
             }
+            "selection_pick" => {
+                let selected = self
+                    .state
+                    .lock()
+                    .map_err(|_| "Workspace unavailable")?
+                    .project
+                    .selected
+                    .clone();
+                let mut result = self.invoke_raw("select", args)?;
+                let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+                let revision = s.revision + 1;
+                s.pick_restore = Some(PickRestore {
+                    revision,
+                    workspace: self.workspace_identity_locked(&s),
+                    selection_version: s.store.selection_version(),
+                    data_version: s.store.query_stamp(true).0,
+                    expires: std::time::Instant::now() + std::time::Duration::from_secs(5),
+                    selected,
+                });
+                result["pick_revision"] = json!(revision);
+                Ok(result)
+            }
+            "selection_restore" => {
+                let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+                let revision: u64 = arg(&args, "pick_revision")?;
+                self.validate_pick_restore(&s, revision)?;
+                s.project.selected = s.pick_restore.take().unwrap().selected;
+                let selected = s.project.selected.clone();
+                s.store.selection_changed(&selected)?;
+                Ok(json!({"selected":selected.len()}))
+            }
             "select" | "select_visible" | "select_query" => {
                 let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
                 let ids: BTreeSet<u64> = if command == "select" {
@@ -1668,6 +1802,7 @@ impl Engine {
                 }
                 let selected = s.project.selected.clone();
                 s.store.selection_changed(&selected)?;
+                s.pick_restore = None;
                 Ok(json!({"selected":s.project.selected.len()}))
             }
             "filter" => {
@@ -1695,152 +1830,12 @@ impl Engine {
                 state.project.filter = f;
                 Ok(json!({"ok":true}))
             }
-            "import_preview" | "gis_import_preview" => {
-                let delimiter = args["delimiter"]
-                    .as_str()
-                    .filter(|s| *s != "auto")
-                    .unwrap_or("")
-                    .as_bytes()
-                    .first()
-                    .copied()
-                    .unwrap_or(0);
-                let pending = if command == "gis_import_preview" {
-                    let id: String = arg(&args, "id")?;
-                    let layer = self.gis_layer(&id)?;
-                    let raw = crate::gis::raw_from_layer(&layer)?;
-                    crate::stream_import::PendingImport::from_raw(&layer.asset, raw)?
-                } else {
-                    let path: String = arg(&args, "path")?;
-                    crate::stream_import::PendingImport::preview(Path::new(&path), delimiter)?
-                };
-                let sheets:Vec<_>=pending.sample.tables.iter().enumerate().map(|(i,t)|{let detection=Mapping::detect(t);let sample=RawTable{sheet:t.sheet.clone(),headers:t.headers.clone(),rows:t.rows.iter().take(6).cloned().collect(),row_numbers:t.row_numbers.iter().take(6).copied().collect()};let normalized=import::convert(&sample,&detection.mapping,&pending.sample.source,1).ok().map(|r|json!({"events":r.events.into_iter().map(preview_event).collect::<Vec<_>>(),"rejected":r.rejected,"sample_only":true,"text_limit_bytes":256}));json!({"sheet":t.sheet,"headers":t.headers,"count":pending.counts[i],"preview":sample.rows.iter().map(|row|row.iter().map(|v|preview_text(v)).collect::<Vec<_>>()).collect::<Vec<_>>(),"preview_text_limit_bytes":256,"mapping":detection.mapping,"notes":detection.notes,"warnings":detection.warnings,"normalized":normalized})}).collect();
-                let result = json!({"import_id":pending.id,"source":pending.sample.source,"delimiter":pending.sample.delimiter.map(|b|char::from(b).to_string()),"sheets":sheets,"storage":"disk","streaming":pending.streaming});
-                let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
-                if !pending.streaming {
-                    s.pending.retain(|p| p.streaming);
-                }
-                if s.pending.len() >= 4 {
-                    s.pending.remove(0);
-                }
-                s.pending.push(pending);
-                Ok(result)
-            }
-            "import_validate" => {
-                let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
-                let pending = if let Some(id) = args["import_id"].as_str() {
-                    s.pending.iter().find(|p| p.id == id)
-                } else {
-                    s.pending.last()
-                }
-                .ok_or("Preview a file first (import ticket missing or expired)")?;
-                pending.check()?;
-                let table = pending
-                    .sample
-                    .tables
-                    .get(args["sheet"].as_u64().unwrap_or(0) as usize)
-                    .ok_or("Invalid sheet")?;
-                let sample = RawTable {
-                    sheet: table.sheet.clone(),
-                    headers: table.headers.clone(),
-                    rows: table.rows.iter().take(6).cloned().collect(),
-                    row_numbers: table.row_numbers.iter().take(6).copied().collect(),
-                };
-                let mapping: Mapping = arg(&args, "mapping")?;
-                let r = import::convert(&sample, &mapping, &pending.sample.source, 1)?;
-                Ok(
-                    json!({"events":r.events.into_iter().map(preview_event).collect::<Vec<_>>(),"rejected":r.rejected,"import_id":pending.id,"sample_only":true,"text_limit_bytes":256}),
-                )
-            }
-            "import_commit" => {
-                let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
-                let pending = if let Some(id) = args["import_id"].as_str() {
-                    s.pending.iter().find(|p| p.id == id)
-                } else {
-                    s.pending.last()
-                }
-                .ok_or("Preview a file first (import ticket missing or expired)")?
-                .clone();
-                let sheet = args["sheet"].as_u64().unwrap_or(0) as usize;
-                let table = pending.sample.tables.get(sheet).ok_or("Invalid sheet")?;
-                let mapping = args
-                    .get("mapping")
-                    .map(|m| {
-                        serde_json::from_value::<Mapping>(m.clone()).map_err(|e| e.to_string())
-                    })
-                    .transpose()?
-                    .unwrap_or_else(|| Mapping::detect(table).mapping);
-                let mut staged = crate::store::DataStore::new(&self.data_dir)?;
-                let append = args["append"].as_bool().unwrap_or(false);
-                let previous_count = if append { s.store.count()? } else { 0 };
-                if append
-                    && args.get("aggregation").is_none()
-                    && previous_count.saturating_add(pending.counts[sheet]) > 50_000_000
-                {
-                    return Err("RESOURCE_LIMIT: append exceeds the 50 million event budget".into());
-                }
-                let first = if append {
-                    s.store
-                        .max_id()?
-                        .checked_add(1)
-                        .ok_or("Event ID capacity exhausted")?
-                } else {
-                    1
-                };
-                if append {
-                    s.store.clone_empty_into(&mut staged)?;
-                }
-                let (accepted, rejected, reasons) = pending.ingest_aggregated(
-                    sheet,
-                    &mapping,
-                    &staged,
-                    first,
-                    args.get("aggregation")
-                        .map(|v| serde_json::from_value(v.clone()).map_err(|e| e.to_string()))
-                        .transpose()?,
-                )?;
-                if rejected > 0 && !args["accept_rejected"].as_bool().unwrap_or(false) {
-                    return Ok(
-                        json!({"needs_review":true,"accepted":accepted,"rejected":rejected,"reasons":reasons,"import_id":pending.id}),
-                    );
-                }
-                if accepted == 0 {
-                    return Err("No valid rows to import".into());
-                }
-                let retained = staged.count()?.saturating_sub(previous_count);
-                if append {
-                    if staged.count()? > 50_000_000 {
-                        return Err(
-                            "RESOURCE_LIMIT: append exceeds the 50 million event budget".into()
-                        );
-                    }
-                } else {
-                    let gis_layers = std::mem::take(&mut s.project.gis_layers);
-                    s.project = Project::new(Dataset {
-                        name: pending.sample.source.clone(),
-                        events: vec![],
-                    });
-                    s.project.gis_layers = gis_layers;
-                    if !s.project.gis_layers.is_empty() {
-                        s.project.version = 5;
-                    }
-                }
-                let old = std::mem::replace(&mut s.store, staged);
-                s.previous_store = Some(old);
-                if s.store.has_centroids()? {
-                    s.project.version = 5;
-                }
-                s.project.imports.push(ImportRecipe {
-                    source: pending.sample.source.clone(),
-                    sheet: table.sheet.clone(),
-                    mapping,
-                });
-                s.project.filter = Filter::default();
-                s.project.selected.clear();
-                s.pending.retain(|p| p.id != pending.id);
-                Ok(
-                    json!({"accepted":accepted,"retained":retained,"aggregated":accepted-retained,"aggregation":args.get("aggregation"),"rejected":rejected,"reasons":reasons,"storage":"sqlite"}),
-                )
-            }
+            "import_preview"
+            | "gis_import_preview"
+            | "import_validate"
+            | "import_commit"
+            | "import_review"
+            | "import_rejections_export" => self.import_invoke(command, args),
             "demo_catalog" => Ok(json!({"demos":crate::demos::DEMOS})),
             "demo_open" => {
                 let mut project = crate::demos::load(&arg::<String>(&args, "id")?, &self.data_dir)?;
@@ -2037,11 +2032,10 @@ impl Engine {
                 } else {
                     history.after_preferences.clone()
                 };
-                *self.terrain.lock().map_err(|_| "Terrain unavailable")? = s
-                    .preferences
-                    .terrain_path
-                    .as_ref()
-                    .and_then(|path| TerrainCatalog::load(path).ok());
+                *self.terrain.lock().map_err(|_| "Terrain unavailable")? =
+                    TerrainCatalog::from_preferences(&s.preferences)
+                        .ok()
+                        .flatten();
                 if undo {
                     s.redo.push(history)
                 } else {
@@ -2106,6 +2100,7 @@ impl Engine {
                     s.project.mode = v.mode;
                     s.project.scene = v.scene;
                 }
+                s.pick_restore = None;
                 Ok(json!({"ok":true,"scene":s.project.scene}))
             }
             "scene_sync" | "view_set" => {
@@ -2189,6 +2184,9 @@ impl Engine {
                             _ => {}
                         }
                     }
+                    if args.get("fit").and_then(Value::as_bool) == Some(true) {
+                        scene.view_states.remove(&scene.mode);
+                    }
                     scene.validate()?;
                 }
                 Ok(json!({"scene":s.project.scene}))
@@ -2222,7 +2220,7 @@ impl Engine {
                     .lock()
                     .map_err(|_| "Terrain unavailable")?
                     .as_ref()
-                    .map(|c| c.tiles.iter().map(|t| t.path.clone()).collect())
+                    .map(|c| c.resource_files())
                     .unwrap_or_default();
                 let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
                 if let Some(scene) = args.get("scene") {
@@ -2463,7 +2461,18 @@ impl Engine {
                 } else {
                     Value::Null
                 };
-                self.update_preferences(json!({"terrain_path":path}), command == "terrain_load")?;
+                let mut updates = json!({"terrain_path":path,"terrain_builtin":false});
+                if command == "terrain_load"
+                    && self
+                        .state
+                        .lock()
+                        .map_err(|_| "Workspace unavailable")?
+                        .preferences
+                        .terrain_builtin
+                {
+                    updates["terrain_vertical_datum"] = json!("unresolved-msl");
+                }
+                self.update_preferences(updates, command == "terrain_load")?;
                 if command == "terrain_load" {
                     self.invoke_raw("terrain_info", json!({}))
                 } else {
@@ -2505,7 +2514,15 @@ impl Engine {
                     .as_mut()
                     .ok_or("Load DTED first")?
                     .sample(latitude, longitude)?;
-                Ok(json!({"elevation_m":value,"datum":"DTED MSL"}))
+                let builtin = self
+                    .state
+                    .lock()
+                    .map_err(|_| "Workspace unavailable")?
+                    .preferences
+                    .terrain_builtin;
+                Ok(
+                    json!({"elevation_m":value,"datum":if builtin { "EGM96 MSL" } else { "DTED MSL" }}),
+                )
             }
             _ => Err(format!("Unknown engine command: {command}")),
         }

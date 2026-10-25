@@ -1,7 +1,7 @@
+import { chromium, spawn, localServerUrl } from "./qa-runtime.mjs";
 // Archived opt-in bridge QA. Requires a CLI built with experimental-browser-webmcp.
-import { chromium } from "playwright";
 import { createServer } from "node:http";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -31,19 +31,7 @@ const server = spawn(
 );
 let browser, fixture;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const t = setTimeout(() => reject(Error("startup " + log)), 15000);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(t);
-        resolve(m[0]);
-      }
-    });
-    server.once("exit", (c) => reject(Error("server exit " + c + log)));
-  });
+  const url = await localServerUrl(server);
   const api = async (command, args = {}, success = true) => {
     const r = await fetch(url + "/api/invoke", {
       method: "POST",
@@ -78,10 +66,8 @@ try {
     browser = await chromium.launchPersistentContext(
       path.join(dir, "profile"),
       {
-        executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-        headless: true,
         ignoreDefaultArgs: ["--disable-extensions"],
-        args: ["--no-sandbox", "--enable-unsafe-extension-debugging"],
+        args: ["--enable-unsafe-extension-debugging"],
       },
     );
     const cdp = await browser.browser().newBrowserCDPSession();
@@ -102,11 +88,7 @@ try {
   } else {
     // Managed VM Chromium forbids extension installation. Exercise the shipped
     // background/adapter scripts using Chrome API shims and a REAL browser page.
-    browser = await chromium.launch({
-      executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-      headless: true,
-      args: ["--no-sandbox"],
-    });
+    browser = await chromium.launch();
     page = await browser.newPage();
     await page.goto("http://127.0.0.1:" + fixture.address().port);
     await page.evaluate(() => window.fixtureReady);

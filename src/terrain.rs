@@ -156,6 +156,7 @@ pub struct TerrainCatalog {
     mesh_cache_hits: u64,
     file_versions: Vec<(u64, Option<std::time::SystemTime>)>,
     meshes: VecDeque<([u64; 5], Arc<TerrainMesh>)>,
+    balanced: Option<crate::balanced_terrain::BalancedTerrain>,
 }
 #[derive(Debug, Serialize, JsonSchema)]
 pub struct TerrainMesh {
@@ -168,8 +169,58 @@ pub struct TerrainMesh {
     pub covered: usize,
     pub tiles: usize,
     pub decoded_tiles: u64,
+    pub attribution: Option<String>,
+    pub geographic: bool,
 }
 impl TerrainCatalog {
+    pub fn from_preferences(
+        preferences: &crate::engine::Preferences,
+    ) -> Result<Option<Self>, String> {
+        if preferences.terrain_builtin {
+            Self::balanced().map(Some)
+        } else {
+            preferences
+                .terrain_path
+                .as_ref()
+                .map(|p| Self::load(p))
+                .transpose()
+        }
+    }
+    pub fn balanced() -> Result<Self, String> {
+        let path = crate::balanced_terrain::resource_path()?;
+        let balanced = crate::balanced_terrain::BalancedTerrain::open(&path)?;
+        let metadata = path.metadata().map_err(|e| e.to_string())?;
+        Ok(Self {
+            tiles: vec![TerrainTile {
+                path,
+                west: -180.,
+                south: -90.,
+                east: 180.,
+                north: 90.,
+                width: 21600,
+                height: 10800,
+                longitude_step: 1. / 60.,
+                latitude_step: 1. / 60.,
+                datum: "WGS84".into(),
+                vertical_datum: "EGM96".into(),
+            }],
+            file_versions: vec![(metadata.len(), metadata.modified().ok())],
+            balanced: Some(balanced),
+            ..Self::default()
+        })
+    }
+    pub fn is_balanced(&self) -> bool {
+        self.balanced.is_some()
+    }
+    /// The app-owned default is referenced by identity, never copied into every
+    /// portable workspace. User DTED continues to be embedded as before.
+    pub fn resource_files(&self) -> Vec<PathBuf> {
+        if self.is_balanced() {
+            Vec::new()
+        } else {
+            self.tiles.iter().map(|t| t.path.clone()).collect()
+        }
+    }
     pub fn load(path: &Path) -> Result<Self, String> {
         fn scan(path: &Path, files: &mut Vec<PathBuf>, depth: usize) -> Result<(), String> {
             crate::operation::check()?;
@@ -289,6 +340,12 @@ impl TerrainCatalog {
         Ok(mesh)
     }
     pub fn sample(&mut self, mut lat: f64, mut lon: f64) -> Result<Option<f32>, String> {
+        if self.balanced.is_some() {
+            self.check_file(0)?;
+        }
+        if let Some(balanced) = self.balanced.as_mut() {
+            return balanced.sample(lat, lon, 0);
+        }
         if (lat - lat.round()).abs() < 1e-9 {
             lat = lat.round();
         }
@@ -379,15 +436,19 @@ impl TerrainCatalog {
     }
     pub fn mesh(&mut self, bounds: [f64; 4], resolution: usize) -> Result<TerrainMesh, String> {
         let n = resolution.clamp(8, 257);
+        let latitude_limit = if self.is_balanced() { 90. } else { 85.05112878 };
         if !bounds.iter().all(|n| n.is_finite())
             || bounds[0] >= bounds[2]
             || bounds[1] >= bounds[3]
             || bounds[0] < -180.
             || bounds[2] > 180.
-            || bounds[1] < -85.05112878
-            || bounds[3] > 85.05112878
+            || bounds[1] < -latitude_limit
+            || bounds[3] > latitude_limit
         {
-            return Err("Terrain mesh requires non-crossing WGS84 bounds within the Web Mercator latitude range".into());
+            return Err(
+                "Terrain mesh requires non-crossing WGS84 bounds within the source latitude range"
+                    .into(),
+            );
         }
         let sw = crate::coordinates::mercator(bounds[1], bounds[0]);
         let ne = crate::coordinates::mercator(bounds[3], bounds[2]);
@@ -395,6 +456,43 @@ impl TerrainCatalog {
         let (mut minimum, mut maximum) = (f32::MAX, f32::MIN);
         let mut covered = 0;
         let decoded_before = self.decoded_tiles;
+        if let Some(balanced) = self.balanced.as_mut() {
+            let lat_step = (bounds[3] - bounds[1]) / (n - 1) as f64;
+            let spacing = ((bounds[2] - bounds[0]) / (n - 1) as f64).min(lat_step);
+            let level = ((spacing * 60.).log2().floor().max(0.) as usize).min(7);
+            let before = balanced.decoded;
+            let mut positions = Vec::with_capacity(n * n);
+            for row in 0..n {
+                crate::operation::check()?;
+                for col in 0..n {
+                    let lat = bounds[3] - (bounds[3] - bounds[1]) * row as f64 / (n - 1) as f64;
+                    let lon = bounds[0] + (bounds[2] - bounds[0]) * col as f64 / (n - 1) as f64;
+                    positions.push((lat, lon));
+                }
+            }
+            elevations = balanced.sample_many(&positions, level)?;
+            for value in elevations.iter().flatten() {
+                minimum = minimum.min(*value);
+                maximum = maximum.max(*value);
+                covered += 1;
+            }
+            if covered == 0 {
+                return Err("No terrain coverage in this area".into());
+            }
+            return Ok(TerrainMesh {
+                bounds,
+                width: n,
+                height: n,
+                elevations,
+                minimum,
+                maximum,
+                covered,
+                tiles: balanced.tile_count(),
+                decoded_tiles: balanced.decoded - before,
+                attribution: Some(crate::balanced_terrain::CREDIT.into()),
+                geographic: true,
+            });
+        }
         let mut batches: BTreeMap<usize, Vec<(usize, f64, f64)>> = BTreeMap::new();
         // Visit all samples for a tile together. A broad viewport must not
         // repeatedly decode >4 intersecting DTED tiles on every mesh row.
@@ -444,6 +542,8 @@ impl TerrainCatalog {
             covered,
             tiles: self.tiles.len(),
             decoded_tiles: self.decoded_tiles - decoded_before,
+            attribution: None,
+            geographic: false,
         })
     }
 }

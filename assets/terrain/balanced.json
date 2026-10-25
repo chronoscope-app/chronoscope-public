@@ -1,0 +1,23 @@
+{
+  "bytes": 88778304,
+  "sha256": "f93cdd806f477ebf73edb20212cd54089ea8b024cb2e4ba78e488554aa9377f8",
+  "levels": 8,
+  "tiles": 2721,
+  "source_url": "https://zenodo.org/records/14537811",
+  "source_md5": "5b6c47502ae8d03b8718349655d5cd95",
+  "source_sha256": "5aef5bbaa5373d530752ad648c63aa2cc2b14d5a854fe5acf0a61fb8bacca7f8",
+  "land_sha256": "1ac90796408bc6ad6911d69448485d3c4dbf2190370080368a09976e1c9f7416",
+  "source_bounds": [
+    -180.0001388888889,
+    -90.0001388888889,
+    179.99985967111158,
+    83.99986041511131
+  ],
+  "source_dimensions": [
+    43200,
+    20880
+  ],
+  "resampling": "Cell-overlap-weighted mean of valid source cells; periodic longitude; nearest even integer metre",
+  "registration": "Cell centres, south-to-north; 1 arc-minute",
+  "voids": "Missing source land stays void; masked ocean is zero; no bathymetry"
+}

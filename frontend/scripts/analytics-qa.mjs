@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Offline integration test of actual Rust analytics, persistence and Results UI.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -35,29 +35,8 @@ const server = spawn(
 let browser;
 const report = { passed: false, publicRequests: 0, checks: [], errors: [] };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) resolve(m[0]);
-    });
-    server.on("error", reject);
-    setTimeout(() => reject(Error("Startup timeout")), 15000).unref();
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const data = await r.json();
-    assert(r.ok, JSON.stringify(data));
-    return data.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const preferences = await api("preferences");
   await api("preferences", {
     preferences: {
@@ -90,19 +69,7 @@ try {
     section: "rows",
   });
   assert(pageRows.rows.length > 0);
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1500, height: 1000 },
   });

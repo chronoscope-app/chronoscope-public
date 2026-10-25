@@ -870,8 +870,12 @@ impl DataStore {
             for file in &mut workspace.terrain_files {
                 *file = root.join(&*file);
             }
-            workspace.preferences.terrain_path =
-                (!workspace.terrain_files.is_empty()).then(|| root.join("terrain"));
+            if !workspace.terrain_files.is_empty() {
+                workspace.preferences.terrain_builtin = false;
+                workspace.preferences.terrain_path = Some(root.join("terrain"));
+            } else {
+                workspace.preferences.terrain_path = None;
+            }
         }
         for layer in &mut project.gis_layers {
             layer.asset = root.join(&layer.asset);
@@ -1663,6 +1667,9 @@ impl DataStore {
             .execute_batch("DELETE FROM resources")
             .map_err(err)?;
         if let Some(workspace) = &mut portable.workspace {
+            if !workspace.terrain_files.is_empty() {
+                workspace.preferences.terrain_builtin = false;
+            }
             let mut total = 0u64;
             for (index, file) in workspace.terrain_files.iter_mut().enumerate() {
                 let size = file.metadata().map_err(err)?.len();

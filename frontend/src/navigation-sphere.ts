@@ -8,6 +8,7 @@ const icons = {
   orbit:
     "M21 12a9 9 0 1 1-3-6.7M21 3v6h-6M4 12h16M12 3c4 4 4 14 0 18-4-4-4-14 0-18",
   select: "M5 3v16l4-4 4 7 3-2-4-7h7L5 3z",
+  sync: "M3 8h16m-4-4 4 4-4 4M21 16H5m4-4-4 4 4 4",
   fit: "M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M9 12h6m-3-3v6",
   zoom: "M16 16l5 5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0M6 10h8m-4-4v8",
   tilt: "M3 19h18M5 16l5-11 9 11zM10 5v11",
@@ -20,7 +21,7 @@ const tool = (id: string, label: string, name: keyof typeof icons) =>
 /** Rendered with the app so the existing mode/time/terrain handlers retain ownership. */
 export function navigationTools() {
   return `<div class="navigation-toolbar" id="navigation-tools" role="group" aria-label="View tools">
-    <div class="navigation-core">${tool("navigate", "Orbit", "orbit")}${tool("box-select", "Select events", "select")}
+    <div class="navigation-core">${tool("navigate", "Orbit", "orbit")}${tool("box-select", "Select events", "select")}${tool("sync-views", "Sync views · copy bounds and orientation to the other views", "sync")}
     <span class="navigation-divider"></span>
     ${tool("fit", "Fit visible events · F", "fit")}
     <button type="button" id="fit-terrain" class="navigation-tool" aria-label="Fit terrain" title="Fit terrain" hidden>${glyph(icons.terrain)}</button>
@@ -131,18 +132,13 @@ export class NavigationSphere {
       event.preventDefault();
       event.stopPropagation();
       view.cancelNavigation();
-      if (view.mode === "map") {
-        if (event.key !== "Home")
-          view.panPixels(
-            event.key === "ArrowLeft"
-              ? -30
-              : event.key === "ArrowRight"
-                ? 30
-                : 0,
-            event.key === "ArrowUp" ? -30 : event.key === "ArrowDown" ? 30 : 0,
-          );
-      } else if (event.key === "Home") view.setBearing(0);
-      else
+      if (event.key === "Home") view.setBearing(0);
+      else if (view.mode === "map") {
+        view.panPixels(
+          event.key === "ArrowLeft" ? -30 : event.key === "ArrowRight" ? 30 : 0,
+          event.key === "ArrowUp" ? -30 : event.key === "ArrowDown" ? 30 : 0,
+        );
+      } else
         view.orbitPixels(
           event.key === "ArrowLeft" ? -20 : event.key === "ArrowRight" ? 20 : 0,
           event.key === "ArrowUp" ? -20 : event.key === "ArrowDown" ? 20 : 0,

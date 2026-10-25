@@ -8,11 +8,14 @@ use std::{
 };
 fn tool_input_schema(command: &str) -> Value {
     let mut schema = crate::schema::command_schema(command).unwrap();
-    if matches!(command, "import_validate" | "import_commit") {
-        schema["required"]
-            .as_array_mut()
-            .unwrap()
-            .push(json!("import_id"));
+    if matches!(
+        command,
+        "import_validate" | "import_commit" | "import_review" | "import_rejections_export"
+    ) {
+        let required = schema["required"].as_array_mut().unwrap();
+        if !required.contains(&json!("import_id")) {
+            required.push(json!("import_id"));
+        }
     }
     if command == "job_start" {
         let commands = crate::jobs::COMMANDS;
@@ -78,6 +81,8 @@ pub fn tools() -> Vec<Value> {
  "gis_import_preview"=>"Prepare Events import from an already packaged GIS layer. Returns the standard import_id and mapping. Review timestamp mapping before import_commit; use append:true to preserve events.",
  "import_commit"=>"Commit the ticketed import into indexed storage. Rejected rows require accept_rejected:true. append:true preserves existing events.",
  "import_validate"=>"Validate a manual mapping against six sample events without committing.",
+ "import_review"=>"Validate the complete source into a disposable disk store without publishing Events. Reports rejection counts, missing locations and canonical duplicate candidates; bounded reason examples are disclosed.",
+ "import_rejections_export"=>"Revalidate an import ticket and atomically export every rejected source row number and reason as formula-protected CSV within the file root. Does not commit Events. Existing files require overwrite:true.",
  "select_query"=>"Select every exact backend match, including events omitted by rendering LOD. mode replace/add/subtract/toggle.",
  "edit_many"=>"Atomically apply typed canonical field changes to up to 10000 exact string IDs; retains source attributes.",
  "batch"=>"Atomically apply up to 100 workspace operations as one revision and one undo entry. File I/O, imports, nested batches and history operations are excluded. Any failure rolls back all changes.",
@@ -94,6 +99,11 @@ pub fn tools() -> Vec<Value> {
  "view_set"=>"Configure chart fields, scopes, chart types and portable chart_presets, as well as map presentation. chart merges partial settings; null restores the default chart. Set semantic display state (space-time/map/globe), display options (automatic clusters/points/density/heatmap, trail simplification, optional bloom), fit, bounds, time height, Globe time elevation/scale, focus and GIS attribute panels. Partial display objects merge into current settings. Attached desktop applies the change; use view_status to inspect the live result.",
  "view_status"=>"Inspect the actual attached Cesium WebView: current camera/scene, mode, backend, WebGPU API exposure, loading state, GIS readiness and rendering diagnostics. Hardware acceleration is explicitly unknown; API presence is not backend selection. Requires a responsive desktop.",
  "view_navigate"=>"Navigate the attached desktop: fit Events, fit an enabled native GIS layer, look_at WGS84 [longitude,latitude,ellipsoid_height_m], zoom (factor>1 in), or north_up. look_at distance_m is eye-to-target range except 2D Map where it is map width; heading clockwise from north, tilt 0=nadir. Use view_set to choose the mode. Returns live state after camera persistence, not a promise that assets finished streaming. No batch/dry_run/idempotency controls; after timeout inspect view_status before retrying relative zoom.",
+ "view_profile"=>"Start/status/stop a bounded per-render CPU and loading diagnostic trace. Relative sample timestamps align with started_unix_ms and video metadata. CPU submission is not GPU time. At most 6000 samples, two active traces and eight retained sessions. Video recordings start a companion trace automatically. Requires attached desktop.",
+ "view_wait"=>"Wait up to 10 seconds for imagery, terrain, effects and enabled GIS layers to settle, with a stable interval. Per-condition flags may opt out. Fails on timeout; does not assert every visual artifact is absent. Requires attached desktop.",
+ "view_playback"=>"Control the real desktop timeline: status, play, pause, configure speed/increment_seconds, seek to UTC Unix seconds, or step by signed increments. Seek/step pause first; seek rejects times outside the dataset. Same controls and clock as the UI, no data edits. Requires attached desktop.",
+ "view_scenario"=>"Save/list/remove named bounded navigation recipes in this profile; run/status/cancel them asynchronously in the desktop. Recipes allow only view_set/view_navigate/view_wait/view_playback and bounded waits, at most 80 steps and 120 seconds. One active run; telemetry and per-step trace included. Workspace changes abort a run; cancellation preserves completed actions. Recipes are persistent, run handles session-local; list returns portable steps for cross-build replay. No arbitrary scripts or shell.",
+ "view_recording"=>"Record the native Chronoscope window to H.264 MP4 on macOS 15+. action:start begins asynchronously (path required, fps 15-60 default 60, max_seconds 1-120 default 30, window main/si-chat). action:status inspects the same path; action:stop finalizes it and is repeatable. One recording at a time; no audio; 1920x1080 maximum, 256 MiB size limit, automatic stop. Existing files are never replaced. Output is confined to the MCP root; completed results include a video resource link. Requires attached desktop; other platforms return UNAVAILABLE. After a timeout inspect status before retrying start.",
  "view_capture"=>"Capture the whole visible Chronoscope app window as PNG (default target:app, window:main), including panels, charts, tables and app dialogs. Use target:map for an attributed map-only export, or window:si-chat for the open detached SI chat. Captures app content, excluding native OS menus/file pickers and window decorations. Requires an attached, responsive desktop; app capture is unavailable in browser preview. Returns MCP image content and scope metadata, not a desktop-control session.",
  "delete"=>"Delete selected events and remove their references from saved context. Undoable. Preview with dry_run:true; guard with expected_revision.",
  "save"=>"Atomically save a portable .chronoscope workspace, including resources; indexed database for large datasets. overwrite defaults false for agent calls.",
@@ -127,7 +137,7 @@ pub fn tools() -> Vec<Value> {
  _=>"Typed Chronoscope domain operation; use its enforced schema. Mutations support dry_run, expected_revision and idempotency_key."
  }
     };
-    crate::schema::COMMANDS.iter().filter(|name|crate::command::Command::parse(name).is_some_and(|c|c.effects().public_mcp)).map(|name|{let readonly=!crate::schema::is_mutation(name,&json!({}))&&!matches!(*name,"assist_ui"|"client_call"|"si_run"|"si_configure"|"si_disconnect"|"si_cancel"|"si_clear"|"si_permissions"|"wmts_access"|"wmts_servers"|"preferences"|"job_start"|"job_cancel"|"job_release"|"analytics_run"|"analytics_remove"|"present_result");json!({"name":format!("chronoscope_{name}"),"description":description(name),"inputSchema":tool_input_schema(name),"outputSchema":tool_output_schema(name),"annotations":{"readOnlyHint":readonly,"destructiveHint":matches!(*name,"client_call"|"aggregate_apply"|"si_run"|"delete"|"edit"|"edit_many"|"reassign"|"open"|"demo_open"|"import_commit"|"batch"|"job_start"|"save"|"export"|"wmts_auth_set"|"wmts_auth_remove"),"idempotentHint":readonly,"openWorldHint":name.starts_with("wmts_")||*name=="basemap_resource"||matches!(*name,"si_run"|"client_call"|"assist_explain"|"assist_tags")}})}).collect()
+    crate::schema::COMMANDS.iter().filter(|name|crate::command::Command::parse(name).is_some_and(|c|c.effects().public_mcp)).map(|name|{let readonly=!crate::schema::is_mutation(name,&json!({}))&&!matches!(*name,"view_recording"|"view_profile"|"view_playback"|"view_scenario"|"assist_ui"|"client_call"|"si_run"|"si_configure"|"si_disconnect"|"si_cancel"|"si_clear"|"si_permissions"|"wmts_access"|"wmts_servers"|"preferences"|"job_start"|"job_cancel"|"job_release"|"analytics_run"|"analytics_remove"|"present_result");json!({"name":format!("chronoscope_{name}"),"description":description(name),"inputSchema":tool_input_schema(name),"outputSchema":tool_output_schema(name),"annotations":{"readOnlyHint":readonly,"destructiveHint":matches!(*name,"client_call"|"aggregate_apply"|"si_run"|"delete"|"edit"|"edit_many"|"reassign"|"open"|"demo_open"|"import_commit"|"batch"|"job_start"|"save"|"export"|"import_rejections_export"|"wmts_auth_set"|"wmts_auth_remove"),"idempotentHint":readonly,"openWorldHint":name.starts_with("wmts_")||*name=="basemap_resource"||matches!(*name,"si_run"|"client_call"|"assist_explain"|"assist_tags")}})}).collect()
 }
 pub fn error_code(message: &str) -> &'static str {
     crate::error::ErrorCode::classify(message).as_str()
@@ -168,7 +178,11 @@ pub(crate) fn scope_arguments(command: &str, args: &mut Value, root: &Path) -> R
         }
     }
     crate::schema::validate(command, args)?;
-    if matches!(command, "import_validate" | "import_commit") && args.get("import_id").is_none() {
+    if matches!(
+        command,
+        "import_validate" | "import_commit" | "import_review" | "import_rejections_export"
+    ) && args.get("import_id").is_none()
+    {
         return Err("Invalid arguments: MCP imports require import_id from import_preview".into());
     }
     if matches!(command, "si_configure" | "si_permissions") {
@@ -177,27 +191,42 @@ pub(crate) fn scope_arguments(command: &str, args: &mut Value, root: &Path) -> R
         }
     }
     if let Some(path) = args["path"].as_str() {
-        if matches!(command, "save" | "export") {
+        if matches!(
+            command,
+            "save" | "export" | "import_rejections_export" | "view_recording"
+        ) {
             let extension = Path::new(path)
                 .extension()
                 .and_then(|e| e.to_str())
                 .unwrap_or("")
                 .to_ascii_lowercase();
+            if command == "view_recording" && extension != "mp4" {
+                return Err("Invalid video extension: use .mp4".into());
+            }
             if command == "save" && !matches!(extension.as_str(), "chronoscope" | "json")
-                || command == "export" && extension != "csv"
+                || matches!(command, "export" | "import_rejections_export") && extension != "csv"
             {
                 return Err("Invalid output extension: MCP save accepts .chronoscope/.json and export accepts .csv".into());
             }
         }
     }
     if let Some(path) = args["path"].as_str() {
-        let path = scoped(path, root, matches!(command, "save" | "export"))?;
+        let path = scoped(
+            path,
+            root,
+            matches!(
+                command,
+                "save" | "export" | "import_rejections_export" | "view_recording"
+            ),
+        )?;
         args["path"] = json!(path);
     }
     if let Some(path) = args["preferences"]["terrain_path"].as_str() {
         args["preferences"]["terrain_path"] = json!(scoped(path, root, false)?);
     }
-    if matches!(command, "save" | "export") && args.get("overwrite").is_none() {
+    if matches!(command, "save" | "export" | "import_rejections_export")
+        && args.get("overwrite").is_none()
+    {
         args["overwrite"] = json!(false);
     }
     if command == "snapshot" && args.get("compact").is_none() {
@@ -276,25 +305,36 @@ pub fn handle(engine: &Engine, root: &Path, request: Value) -> Option<Value> {
                     "2025-06-18"
                 };
             Ok(
-                json!({"protocolVersion":version,"capabilities":{"tools":{"listChanged":false},"resources":{"listChanged":false},"prompts":{"listChanged":false}},"serverInfo":{"name":crate::platform::MCP_SERVER_NAME,"version":env!("CARGO_PKG_VERSION")},"instructions":"Discover dataset_schema, then query with bounded projections/cursors. Query and select_query examine full indexed data; rendering may use representative LOD. Inspect analysis input_limited. Mutations support expected_revision, dry_run and idempotency_key; batch is atomic. Files are confined to root; relative paths resolve there. Read chronoscope://connection for the effective root. Preview tickets persist only within this server/session. Cancellation is cooperative; inspect revision after interrupted operations. For native GIS reference content discover gis_layers/gis_table; convert via gis_import_preview for Event analysis. view_set controls display and Globe time elevation; view_navigate uses geographic camera inputs, view_status inspects the live Cesium view, view_capture defaults to the whole app window as a PNG; use target:map for a map-only export or window:si-chat for the detached chat. Live tools need an attached desktop. WebGL2 is the Cesium backend; WebGPU API presence does not mean it is used. WMTS uses a direct local cache with configurable concurrency and no default request delay."}),
+                json!({"protocolVersion":version,"capabilities":{"tools":{"listChanged":false},"resources":{"listChanged":false,"subscribe":true},"prompts":{"listChanged":false}},"serverInfo":{"name":crate::platform::MCP_SERVER_NAME,"version":env!("CARGO_PKG_VERSION")},"instructions":"Discover dataset_schema, then query with bounded projections/cursors. Query and select_query examine full indexed data; rendering may use representative LOD. Inspect analysis input_limited. Mutations support expected_revision, dry_run and idempotency_key; batch is atomic. Files are confined to root; relative paths resolve there. Read chronoscope://connection for the effective root. Preview tickets persist only within this server/session. Cancellation is cooperative; inspect revision after interrupted operations. For native GIS reference content discover gis_layers/gis_table; convert via gis_import_preview for Event analysis. view_set controls display and Globe time elevation; view_navigate uses geographic camera inputs, view_status inspects the live Cesium view, view_capture defaults to the whole app window as a PNG; use target:map for a map-only export or window:si-chat for the detached chat. view_recording starts/statuses/stops a bounded native app-window MP4 on macOS 15+; use a new .mp4 path within the file root. Live tools need an attached desktop. WebGL2 is the Cesium backend; WebGPU API presence does not mean it is used. WMTS uses a direct local cache with configurable concurrency and no default request delay."}),
             )
         }
         "ping" => Ok(json!({})),
+        "chronoscope/resource-version" => Ok(engine.resource_version()),
         "tools/list" => Ok(json!({"tools":tools()})),
         "resources/templates/list" => Ok(json!({"resourceTemplates":[]})),
         "resources/list" => Ok(
-            json!({"resources":[{"uri":"chronoscope://workspace","name":"Current workspace","mimeType":"application/json"},{"uri":"chronoscope://schema","name":"Dataset schema","mimeType":"application/json"},{"uri":"chronoscope://capabilities","name":"Engine capabilities","mimeType":"application/json"},{"uri":"chronoscope://view","name":"Live Cesium view (attached desktop required)","mimeType":"application/json"},{"uri":"chronoscope://connection","name":"Connection and file scope","mimeType":"application/json"}]}),
+            json!({"resources":[{"uri":"ui://chronoscope/explorer","name":"Interactive Chronoscope results","mimeType":"text/html;profile=mcp-app"},{"uri":"chronoscope://results","name":"Saved analytic results","mimeType":"application/json"},{"uri":"chronoscope://jobs","name":"Asynchronous jobs","mimeType":"application/json"},{"uri":"chronoscope://workspace","name":"Current workspace","mimeType":"application/json"},{"uri":"chronoscope://schema","name":"Dataset schema","mimeType":"application/json"},{"uri":"chronoscope://capabilities","name":"Engine capabilities","mimeType":"application/json"},{"uri":"chronoscope://view","name":"Live Cesium view (attached desktop required)","mimeType":"application/json"},{"uri":"chronoscope://connection","name":"Connection and file scope","mimeType":"application/json"}]}),
         ),
         "resources/read" => {
+            if request["params"]["uri"] == apps::URI {
+                return Some(
+                    json!({"jsonrpc":"2.0","id":id,"result":{"contents":[apps::resource()]}}),
+                );
+            }
             let command = match request["params"]["uri"].as_str() {
                 Some("chronoscope://workspace") => Some("snapshot"),
                 Some("chronoscope://schema") => Some("dataset_schema"),
                 Some("chronoscope://capabilities") => Some("capabilities"),
                 Some("chronoscope://view") => Some("view_status"),
+                Some("chronoscope://results") => Some("analytics_list"),
                 _ => None,
             };
             if let Some(command) = command {
                 engine.invoke(command,if command=="snapshot"{json!({"compact":true})}else{json!({})}).map(|v|json!({"contents":[{"uri":request["params"]["uri"],"mimeType":"application/json","text":v.to_string()}]})).map_err(|e|(-32603,e))
+            } else if request["params"]["uri"] == "chronoscope://jobs" {
+                Ok(
+                    json!({"contents":[{"uri":"chronoscope://jobs","mimeType":"application/json","text":engine.resource_version()[3].to_string()}]}),
+                )
             } else if request["params"]["uri"] == "chronoscope://connection" {
                 Ok(
                     json!({"contents":[{"uri":"chronoscope://connection","mimeType":"application/json","text":json!({"file_root":root,"relative_paths":true,"file_scope":"read/write within this root; embedded validated terrain remains readable"}).to_string()}]}),
@@ -345,9 +385,23 @@ pub fn handle(engine: &Engine, root: &Path, request: Value) -> Option<Value> {
                     .unwrap_or(json!({}));
                 let action = (|| -> Result<Value, String> {
                     scope_arguments(command, &mut args, root)?;
+                    let workspace = if matches!(command, "query" | "chart_data") {
+                        Some(engine.workspace_identity()?)
+                    } else {
+                        None
+                    };
                     let mut value = crate::operation::with_scope(root.to_path_buf(), || {
-                        engine.invoke(command, args.clone())
+                        if let Some(workspace) = &workspace {
+                            crate::operation::with_workspace(workspace.clone(), || {
+                                engine.invoke(command, args.clone())
+                            })
+                        } else {
+                            engine.invoke(command, args.clone())
+                        }
                     })?;
+                    if let Some(workspace) = workspace {
+                        value["workspace_id"] = json!(workspace);
+                    }
                     let raster_job = command == "job_result" && value["command"] == "wmts_rasters";
                     if (command == "wmts_rasters" || raster_job)
                         && !args["include_data"].as_bool().unwrap_or(false)
@@ -373,6 +427,9 @@ pub fn handle(engine: &Engine, root: &Path, request: Value) -> Option<Value> {
                             }
                         }
                         value.as_object_mut().unwrap().remove("data_url");
+                    }
+                    if command == "view_recording" && value["state"] == "complete" {
+                        content.push(json!({"type":"resource_link","uri":value["uri"],"name":std::path::Path::new(value["path"].as_str().unwrap_or("recording.mp4")).file_name().unwrap_or_default().to_string_lossy(),"mimeType":"video/mp4","size":value["bytes"],"description":"Native Chronoscope app-window recording"}));
                     }
                     let structured = if value.is_object() {
                         value
@@ -457,15 +514,26 @@ pub fn serve(engine: Arc<Engine>, root: PathBuf) -> Result<(), String> {
         writeln!(out).map_err(|e| e.to_string())?;
         out.flush().map_err(|e| e.to_string())
     };
+    let subscriptions = Arc::new(subscriptions::Subscriptions::default());
+    let subscription_engine = engine.clone();
+    let subscription_output = output.clone();
+    subscriptions.start(
+        move || Ok(subscription_engine.resource_version()),
+        move |value| write(&value, &subscription_output),
+    );
+    let worker_subscriptions = subscriptions.clone();
     let worker_output = output.clone();
     let worker_cancel = cancellations.clone();
     let worker_engine = engine.clone();
     let worker_root = root.clone();
     let worker = std::thread::spawn(move || -> Result<(), String> {
         let mut initialized = false;
+        let mut ui = apps::Session::default();
         for (request, cancelled) in queue {
             let id = request.get("id").cloned().unwrap_or(Value::Null);
             let key = id.to_string();
+            let method = request["method"].as_str().unwrap_or("").to_owned();
+            ui.initialize(&request);
             let token = request["params"]["_meta"]["progressToken"].clone();
             let progress_output = worker_output.clone();
             let progress = if token.is_string() || token.is_number() {
@@ -492,6 +560,14 @@ pub fn serve(engine: Arc<Engine>, root: PathBuf) -> Result<(), String> {
             {
                 Some(rpc_error(id.clone(), -32002, "Initialize the server first"))
             } else {
+                if let Some(response) = worker_subscriptions.handle(&request) {
+                    write(&response, &worker_output)?;
+                    worker_cancel
+                        .lock()
+                        .map_err(|_| "Request registry unavailable")?
+                        .remove(&key);
+                    continue;
+                }
                 let is_initialize = request["method"] == "initialize";
                 let response = crate::operation::with_context(
                     crate::operation::Context {
@@ -507,7 +583,7 @@ pub fn serve(engine: Arc<Engine>, root: PathBuf) -> Result<(), String> {
                 response
             };
             if let Some(response) = response {
-                write(&response, &worker_output)?;
+                write(&ui.decorate(&method, response), &worker_output)?;
             }
             worker_cancel
                 .lock()
@@ -592,7 +668,10 @@ pub fn serve(engine: Arc<Engine>, root: PathBuf) -> Result<(), String> {
         }
         Ok(())
     })();
+    subscriptions.stop();
     drop(sender);
     let worker = worker.join().map_err(|_| "Protocol worker failed")?;
     result.and(worker)
 }
+pub mod apps;
+pub mod subscriptions;

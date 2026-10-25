@@ -1,0 +1,1423 @@
+{
+  "passed": true,
+  "scope": "Aggregate of full local checks and focused reruns after test fixes; not a claim that the first full invocation passed.",
+  "base_revision": "38141cb20577104c10b4ca46ab2e8a175ea85ff8",
+  "platform": "macOS arm64",
+  "github_runners_used": false,
+  "counts": {
+    "rust_full": 402,
+    "frontend_unit": 29,
+    "runner_regressions": 8,
+    "browser_suites": 48,
+    "packaging_python_tests": 103,
+    "independent_oracle_suites": 4,
+    "native_gui_checks": 10
+  },
+  "runs": [
+    {
+      "run_id": "20261025T110306Z-74359e7e",
+      "report": ".qa/test-streamlining/fast.json",
+      "passed": true,
+      "initial_failures": []
+    },
+    {
+      "run_id": "20261025T110735Z-c7b5706e",
+      "report": ".qa/test-streamlining/full.json",
+      "passed": false,
+      "initial_failures": [
+        "cesium-effects-pixels-qa",
+        "charts-qa",
+        "navigation-sphere-qa",
+        "space-time-window-qa"
+      ]
+    },
+    {
+      "run_id": "20261025T112152Z-91491b54",
+      "report": ".qa/test-streamlining/focused.json",
+      "passed": false,
+      "initial_failures": [
+        "cesium-effects-pixels-qa",
+        "charts-qa"
+      ]
+    },
+    {
+      "run_id": "20261025T112628Z-225d9938",
+      "report": ".qa/test-streamlining/final-focused.json",
+      "passed": true,
+      "initial_failures": []
+    }
+  ],
+  "resolved_failures": {
+    "cesium-effects-pixels-qa": "Reproduced headless Chrome/Metal closure after repeated framebuffer readbacks across modes. Fresh browser per mode passes every original pixel assertion; continuous transitions retain separate coverage.",
+    "charts-qa": "Reopen the collapsed preset controls after reload; wait for the responsive dock clamp before asserting viewport bounds.",
+    "navigation-sphere-qa": "Use a circular bearing tolerance for Cartesian floating-point round trips at north.",
+    "space-time-window-qa": "Wait for tile work and trailing camera callbacks to settle, then require <=2 frames over a full second; continuous rendering times out."
+  },
+  "latest_checks": {
+    "validation-runner-tests": {
+      "name": "validation-runner-tests",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "scripts/test_validation_runner.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112628Z-225d9938/logs/validation-runner-tests.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.833,
+      "run_id": "20261025T112628Z-225d9938"
+    },
+    "rust-format": {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/rust-format.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.57,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "glib-backport-integrity": {
+      "name": "glib-backport-integrity",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_glib_backport.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/glib-backport-integrity.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.619,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "core-clippy": {
+      "name": "core-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/core-clippy.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.344,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "rust-tests": {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--",
+        "--include-ignored"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/rust-tests.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 144.535,
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "cli-build": {
+      "name": "cli-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--bin",
+        "chronoscope"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/cli-build.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.291,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "frontend-build": {
+      "name": "frontend-build",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "build",
+        "--",
+        "--configLoader",
+        "runner"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/frontend-build.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 7.847,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "generated-contracts": {
+      "name": "generated-contracts",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112628Z-225d9938/logs/generated-contracts.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.187,
+      "run_id": "20261025T112628Z-225d9938"
+    },
+    "frontend-unit-tests": {
+      "name": "frontend-unit-tests",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+        "--prefix",
+        "frontend",
+        "test"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112628Z-225d9938/logs/frontend-unit-tests.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.419,
+      "run_id": "20261025T112628Z-225d9938"
+    },
+    "integration-smoke-qa": {
+      "name": "integration-smoke-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/integration-smoke-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/integration-smoke-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.272,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "27829853d7fd27f6167148480312896e3d86c677e947de65a0c90243efed495a",
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "welcome-qa": {
+      "name": "welcome-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/welcome-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/welcome-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 4.336,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "528e00c6ab8ab9469573d3974f1fea4a07683efa32bddd38aa4ce9214e7a09d7",
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "analytics-qa": {
+      "name": "analytics-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/analytics-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/analytics-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.22,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "e93b4406f080588745ab2dc80e9cb31e932bf872fa48416ed6f30475c691d8d0",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "assistant-qa": {
+      "name": "assistant-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/assistant-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/assistant-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 11.35,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "5b37585c2134908778d3aecdd05065c1fbf712f87353f3aa1352175b38def62d",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "basemap-qa": {
+      "name": "basemap-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/basemap-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/basemap-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 24.881,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "bd1309a8b6dad8226122e9a11343fef2532ecd877ced408fe15a1369f81d006e",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "balanced-terrain-qa": {
+      "name": "balanced-terrain-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/balanced-terrain-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/balanced-terrain-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 21.106,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "7bf2140e0a3621125cac5817c2c4479815f6b44cbcaba98f3535f58cbe6fc0e0",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "cesium-context-qa": {
+      "name": "cesium-context-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/cesium-context-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/cesium-context-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 6.766,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "3f74cb292e0f982511d5ef41da2a7419c2841aa2bb303a15d1e0bc4998082539",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "cesium-effects-pixels-qa": {
+      "name": "cesium-effects-pixels-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/cesium-effects-pixels-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112628Z-225d9938/logs/cesium-effects-pixels-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 38.592,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "8f091a39192f223e5ca73f6ad26ea752d1176e293881e51b30549c8cc2cebdb2",
+      "run_id": "20261025T112628Z-225d9938"
+    },
+    "cesium-globe-time-qa": {
+      "name": "cesium-globe-time-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/cesium-globe-time-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/cesium-globe-time-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.939,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "4eeaf3b1256a7faeaba3bc5fa851a69eaace426e4202e7a0eb6f49a7bf4f8235",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "cesium-terrain-qa": {
+      "name": "cesium-terrain-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/cesium-terrain-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/cesium-terrain-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 5.7,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "ed0322d06e5bfc203074bee5760a2cdd953248de33697895ca259f4637e93681",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "chart-shortcuts-qa": {
+      "name": "chart-shortcuts-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/chart-shortcuts-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/chart-shortcuts-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 11.336,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "7fd29b3500ffb4f42c7c55a346b935d2b3052fbbcf046e27cccbfa3c30626b7d",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "chart-workflow-qa": {
+      "name": "chart-workflow-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/chart-workflow-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/chart-workflow-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 33.585,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "d88160aa9b3bdfea67481b423eff823af416793b711f9429e350fc68a0906747",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "charts-qa": {
+      "name": "charts-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/charts-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112628Z-225d9938/logs/charts-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 12.601,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "6578c0902061ff6dbfdfc2b0afb16abf53d164a410c3c647312eafa6bf95d49d",
+      "run_id": "20261025T112628Z-225d9938"
+    },
+    "charts-timezone-qa": {
+      "name": "charts-timezone-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/charts-timezone-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/charts-timezone-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 9.559,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "79399dbd65eb58464a244d57b2f1e06e38c3fe3b4c2f15cbc894d97b7358224d",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "cluster-identity-qa": {
+      "name": "cluster-identity-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/cluster-identity-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/cluster-identity-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 3.783,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "ad44d57b87ef7f01079316824a7a823d0981f1c9fc2b3613205f8b3c6329c127",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "display-recovery-qa": {
+      "name": "display-recovery-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/display-recovery-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/display-recovery-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 8.24,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "0ac83c02da452fc14465388df3dc0a1da4eea51ae32e15dea79a1f68a12ae9e2",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "empty-workspace-qa": {
+      "name": "empty-workspace-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/empty-workspace-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/empty-workspace-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.143,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "093e9687522e8b0a0ec4bde08354e01d581fd7bdd3447a1208863606f2859d42",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "event-table-qa": {
+      "name": "event-table-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/event-table-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/event-table-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 8.639,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "5cd437bb364e4e76a23cc75eb9190dc9b29855cb70d1e9ee281b026bda7b6078",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "field-roles-qa": {
+      "name": "field-roles-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/field-roles-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/field-roles-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 3.301,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "c0409f927c216e3ea399d991754d7cd85803cacaf718d032bfa252c8a125d4c0",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "gis-files-qa": {
+      "name": "gis-files-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/gis-files-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/gis-files-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 5.741,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "fb1b34de8aa66102ca34499cdd71076c0929d84e4adc1f8157c622c44f2e006f",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "vector-gis-qa": {
+      "name": "vector-gis-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/vector-gis-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/vector-gis-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.332,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "7bbd1fb52bc7fea2552fcf81e1362b22232c213732f1aaa9f180a924f1a3534d",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "map-notifications-qa": {
+      "name": "map-notifications-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/map-notifications-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/map-notifications-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.989,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "545599bbad3b7d46557d48455c25e0898d2f8653689f73ee1fca4ad8b77267d0",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "navigation-sphere-qa": {
+      "name": "navigation-sphere-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/navigation-sphere-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/navigation-sphere-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 12.809,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "10f4280b5d4e7c39dbac90238cab5b591bb9777122f232bb8b2e3462086cf8d9",
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "notifications-qa": {
+      "name": "notifications-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/notifications-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/notifications-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 5.779,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "890b6fbe5a994a9cabb09be43e4a5aa2905a93d285edb18aab47c8ac8c0f4f70",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "pan-direction-qa": {
+      "name": "pan-direction-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/pan-direction-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/pan-direction-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.302,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "352c0d970dcb665ae1b375ed237404fd4ad2b2c1e8b612a60ac27eaa24356d05",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "viewport-pan-qa": {
+      "name": "viewport-pan-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/viewport-pan-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/viewport-pan-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 10.113,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "1c23ff1b49b3c55ac51ab68903363d59655c698ce06ab1860ded85bf91af1917",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "patterns-qa": {
+      "name": "patterns-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/patterns-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/patterns-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 9.914,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "cf1bd9d018200bb3dd02eca86dc44aea649125d9aba867cef29f436befa6be19",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "real-demos-qa": {
+      "name": "real-demos-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/real-demos-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/real-demos-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 29.033,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "396a05a56936e1cee1bf5a9fad1ff124feb67a38eff403ce524cb55ba53227c4",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "si-rich-chat-qa": {
+      "name": "si-rich-chat-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/si-rich-chat-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/si-rich-chat-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 8.776,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "085041e7ad400d10ddf318a82632fb89f9f6fe4826982d96d32cd6e525c0c4a5",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "si-settings-qa": {
+      "name": "si-settings-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/si-settings-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/si-settings-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 8.792,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "a217c8082383763c5e1dd6fb37c7cd66fb36a1724e0bd1887466b3ba9e8ede1e",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "sidebar-time-qa": {
+      "name": "sidebar-time-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/sidebar-time-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/sidebar-time-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 18.061,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "a99c7bdc7810bda99b715bfd60bbd14b36072a8693da47ee519e5a264bd9520f",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "space-time-window-qa": {
+      "name": "space-time-window-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/space-time-window-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/space-time-window-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 24.106,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        },
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "5b66b9aec8338da6cbc78c318e6880a029622d39a9528fde4f78888360e4669e",
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "spectrum-qa": {
+      "name": "spectrum-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/spectrum-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/spectrum-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.992,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "fd8a6a37b00d7ef8b63bdfc292655977645e26deb3002a19df62e1174cec8f54",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "subsecond-qa": {
+      "name": "subsecond-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/subsecond-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/subsecond-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.186,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "1a33378f53beaa75dd6a62fa25d8046d2044c22a8b626166bcde135f34225e0d",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "webmcp-disabled-qa": {
+      "name": "webmcp-disabled-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/webmcp-disabled-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/webmcp-disabled-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.261,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "a7a69f747c04088954d660340b4ebae06e4d0de11a589f5257815416c2a1ecd8",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "wkt-wmts-qa": {
+      "name": "wkt-wmts-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/wkt-wmts-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/wkt-wmts-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 9.166,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "91b053d801b11731347ec6be35fd2ff8af9cd3dc1315eb01be0e84332a3efdd0",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "workspace-boundaries-qa": {
+      "name": "workspace-boundaries-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/workspace-boundaries-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/workspace-boundaries-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.683,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "9213c91a12665b45a1e30ba06741443328c6db4cf902aa95b0d3d624eaa982bc",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "cesium-parity-qa": {
+      "name": "cesium-parity-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/cesium-parity-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/cesium-parity-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 32.189,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "1b0d772c1683b8375b01b03a49f1fb2ca2340973d637cff11548afb9081bce32",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "toolbar-dialogs-qa": {
+      "name": "toolbar-dialogs-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/toolbar-dialogs-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/toolbar-dialogs-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 6.029,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "2141cc1a9fcaacbf9c8110634c82452e3a07ed1bb07cef0f02836bb36c77fc66",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "si-certificate-qa": {
+      "name": "si-certificate-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/si-certificate-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/si-certificate-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.802,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "7ee6ec3e313ddd2b78a0b3fa20899e1f5f2a1edcd6414a046954d1d759d1db7f",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "time-rail-qa": {
+      "name": "time-rail-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/time-rail-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/time-rail-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 7.038,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "23220143a99bd70d2a776556527b3caea5844a8b826e240aee3055e601608f07",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "focused-ai-qa": {
+      "name": "focused-ai-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/focused-ai-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/focused-ai-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 7.977,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "f203c5986e7917fc7371507034352a5b7ca19f9f84e287d069b5cb4a8ed7f0c7",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "guided-workflows-qa": {
+      "name": "guided-workflows-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/guided-workflows-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/guided-workflows-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 5.407,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "7933a3aacf312c1e5e360cb62e61e3fd2f990581efa275a788170b35d405301a",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "presentation-ui-qa": {
+      "name": "presentation-ui-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/presentation-ui-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/presentation-ui-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 7.439,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "00495f94d65de35fd26398e3e51fb1a0b8fb6521a6fa286733929c0a49169b04",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "view-sync-qa": {
+      "name": "view-sync-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/view-sync-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/view-sync-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 8.157,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "4c71438713b20f6400776de530405def323d8f9ac4a5e66a12b7f6d127e5bbbe",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "navigation-qa": {
+      "name": "navigation-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/navigation-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/navigation-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 17.306,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "4eebc114ffc23dedd6c948a3b94d6a9cab8ecc74dbec5ca1da74bf5d582f89d6",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "playback-speed-qa": {
+      "name": "playback-speed-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/playback-speed-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/playback-speed-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 25.281,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "97b5141904966add066af9fa5e980c8316f726c7ce6450e3c6e458c9dce0cb9a",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "playback-transitions-qa": {
+      "name": "playback-transitions-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/playback-transitions-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T110735Z-c7b5706e/logs/playback-transitions-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 7.281,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "3cfe2aba35cccc0dd07731916406f01b855ac37a0b4059f47b4df8540454a879",
+      "run_id": "20261025T110735Z-c7b5706e"
+    },
+    "test_publication_cleanup": {
+      "name": "test_publication_cleanup",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_publication_cleanup.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/test_publication_cleanup.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.297,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "test_package_distribution": {
+      "name": "test_package_distribution",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_package_distribution.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/test_package_distribution.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.435,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "test_tester_packaging": {
+      "name": "test_tester_packaging",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_tester_packaging.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/test_tester_packaging.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.239,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "test_validate_tester_download": {
+      "name": "test_validate_tester_download",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_validate_tester_download.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/test_validate_tester_download.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.075,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "test_analytics": {
+      "name": "test_analytics",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_analytics.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/test_analytics.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.169,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "test_analytics_engine": {
+      "name": "test_analytics_engine",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_analytics_engine.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/test_analytics_engine.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.354,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "test_chart_shortcuts_protocol": {
+      "name": "test_chart_shortcuts_protocol",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_chart_shortcuts_protocol.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/test_chart_shortcuts_protocol.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.994,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "test_subsecond_protocol": {
+      "name": "test_subsecond_protocol",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_subsecond_protocol.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/test_subsecond_protocol.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.949,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "native-clippy": {
+      "name": "native-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope-desktop",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/native-clippy.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 3.931,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "native-build": {
+      "name": "native-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope-desktop"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/native-build.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 6.372,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "native-cli-smoke": {
+      "name": "native-cli-smoke",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/test_desktop_cli.py",
+        "--binary",
+        "/Users/user/Documents/Codex/chronoscope mac/target/debug/chronoscope-desktop"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/native-cli-smoke.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 4.594,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "native-bundle-launch": {
+      "name": "native-bundle-launch",
+      "command": [
+        "bash",
+        "script/build_and_run.sh",
+        "--verify"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/native-bundle-launch.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 17.309,
+      "run_id": "20261025T112152Z-91491b54"
+    },
+    "native-terrain-gui": {
+      "name": "native-terrain-gui",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+        "scripts/native_terrain_qa.py",
+        "--cli",
+        "/Users/user/Documents/Codex/chronoscope mac/target/debug/bundle/macos/Chronoscope.app/Contents/MacOS/chronoscope-desktop",
+        "--data-dir",
+        "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/native-profile",
+        "--output",
+        "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/artifacts/native-terrain-gui"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/runs/20261025T112152Z-91491b54/logs/native-terrain-gui.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 107.864,
+      "run_id": "20261025T112152Z-91491b54"
+    }
+  },
+  "persistent_browser_runtime": {
+    "run_id": "d38fa5c3-ca31-4f6e-84dd-dc78d82c6ac5",
+    "source_revision": null,
+    "suite": "browser",
+    "started": "2026-10-25T11:27:52.894Z",
+    "platform": "darwin",
+    "paths": {
+      "out": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/persistent-runtime",
+      "data": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/persistent-runtime/profile",
+      "screenshots": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/persistent-runtime"
+    },
+    "browser_launches": [
+      {
+        "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "version": "155.0.8059.85",
+        "angle": "metal",
+        "persistent_profile": "/Users/user/Documents/Codex/chronoscope mac/.qa/test-streamlining/persistent-runtime/profile/extension-profile"
+      }
+    ],
+    "child_processes": [],
+    "exit_code": 0,
+    "finished": "2026-10-25T11:27:53.300Z"
+  },
+  "test_infrastructure_sha256": {
+    "scripts/validate_local.py": "809a0356c8784810bc8f52d7d25f7e50c46322dd016e331667ebe7925612786c",
+    "scripts/validation_runtime.py": "3061019312a2a82405a9a6f64591f2ca5805eef0297e4827823a3b757fa55830",
+    "scripts/validation_suites.py": "57d21ce2a55cf093d55f4cc6e0d17203a4d6d6dad81de9f6ed24c07db94c9c2c",
+    "scripts/validation-suites.json": "33715442b3a1c3e9ea882d8c566c9995a702cf7fdbbbb2765b6d008d70278359",
+    "frontend/scripts/qa-runtime.mjs": "962c0ce1ea75f0210ad3ae22f99b11f6cb685cce63d9e8232049e92b47fc0b90",
+    "frontend/scripts/qa-config.mjs": "027e643620c5f2d6623c18c48115f677d61745c8af36ff5b993453c784477abb",
+    "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+    "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+  },
+  "not_run": [
+    "Resource-intensive optional performance benchmarks",
+    "Experimental WebMCP feature/extension integration (persistent runtime smoke only)",
+    "On-device model quality and smartcard/keychain hardware acceptance",
+    "Linux/Windows native verification",
+    "Downloaded release signing/notarization acceptance"
+  ]
+}

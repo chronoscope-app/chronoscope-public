@@ -358,6 +358,17 @@ pub fn convert(
     source: &str,
     first_id: u64,
 ) -> Result<ImportReport, String> {
+    convert_reporting(table, mapping, source, first_id, &mut |_, _, _| Ok(()))
+}
+pub type RejectedRow<'a> = dyn FnMut(usize, &[String], &str) -> Result<(), String> + 'a;
+/// Report every rejection while retaining only a bounded set of UI examples.
+pub fn convert_reporting(
+    table: &RawTable,
+    mapping: &Mapping,
+    source: &str,
+    first_id: u64,
+    rejected_row: &mut RejectedRow<'_>,
+) -> Result<ImportReport, String> {
     let time_col = mapping.time.ok_or("Map a timestamp column")?;
     first_id
         .checked_add(table.rows.len().saturating_sub(1) as u64)
@@ -578,6 +589,11 @@ pub fn convert(
             Ok(e) => events.push(e),
             Err(reason) => {
                 rejected_count += 1;
+                rejected_row(
+                    table.row_numbers.get(index).copied().unwrap_or(index + 2),
+                    row,
+                    &reason,
+                )?;
                 if rejected.len() < 100 {
                     rejected.push((
                         table.row_numbers.get(index).copied().unwrap_or(index + 2),

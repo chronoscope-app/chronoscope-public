@@ -27,6 +27,39 @@ impl Engine {
                 return Err("INVALID_ARGUMENT: map capture requires window:main".into());
             }
         }
+        if command == "view_recording" {
+            let path = std::path::PathBuf::from(args["path"].as_str().unwrap());
+            if path
+                .extension()
+                .and_then(|e| e.to_str())
+                .is_none_or(|e| !e.eq_ignore_ascii_case("mp4"))
+            {
+                return Err("INVALID_ARGUMENT: video output requires .mp4".into());
+            }
+            let parent = path
+                .parent()
+                .filter(|p| !p.as_os_str().is_empty())
+                .unwrap_or(std::path::Path::new("."));
+            let path = parent
+                .canonicalize()
+                .map_err(|e| format!("INVALID_ARGUMENT: video output directory unavailable ({e})"))?
+                .join(path.file_name().ok_or("Invalid video filename")?);
+            if args["action"] == "start" {
+                if path.symlink_metadata().is_ok() {
+                    return Err("CONFLICT: video output exists; choose a new path".into());
+                }
+                if args.get("window").is_none() {
+                    args["window"] = json!("main");
+                }
+                if args.get("fps").is_none() {
+                    args["fps"] = json!(60);
+                }
+                if args.get("max_seconds").is_none() {
+                    args["max_seconds"] = json!(30);
+                }
+            }
+            args["path"] = json!(path);
+        }
         if command == "view_navigate" {
             let action = args["action"].as_str().unwrap();
             let allowed: &[&str] = match action {
@@ -134,6 +167,26 @@ impl Engine {
             let result = args.get("result").ok_or("Missing live view result")?;
             if result.to_string().len() > 512 * 1024 {
                 return Err("RESOURCE_LIMIT: live view response exceeds 512 KiB".into());
+            }
+            if pending.command == "view_recording" {
+                crate::schema::validate_output("view_recording", result)?;
+                if result["path"] != pending.arguments["path"] {
+                    return Err("Invalid recording output path".into());
+                }
+                let mut result = result.clone();
+                result["uri"] = json!(reqwest::Url::from_file_path(
+                    pending.arguments["path"].as_str().unwrap()
+                )
+                .map_err(|_| "Invalid recording file URI")?
+                .to_string());
+                return Ok(result);
+            }
+            if matches!(
+                pending.command.as_str(),
+                "view_profile" | "view_wait" | "view_playback" | "view_scenario"
+            ) {
+                crate::schema::validate_output(&pending.command, result)?;
+                return Ok(result.clone());
             }
             crate::schema::validate_output(
                 if pending.command == "assist_ui" {

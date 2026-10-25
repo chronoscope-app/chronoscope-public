@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real Rust engine + two browser windows + a deterministic mock SI service.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { createServer } from "node:http";
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
@@ -141,29 +141,8 @@ const server = spawn(
 );
 let browser;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) resolve(m[0]);
-    });
-    server.on("error", reject);
-    setTimeout(() => reject(Error("Startup timeout")), 15000).unref();
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const d = await r.json();
-    assert(r.ok, JSON.stringify(d));
-    return d.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const prefs = await api("preferences");
   await api("preferences", {
     preferences: {
@@ -178,15 +157,7 @@ try {
     url: `http://127.0.0.1:${service.address().port}/v1`,
     model: "deterministic-qa",
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const context = await browser.newContext({
     viewport: { width: 1600, height: 1050 },
   });

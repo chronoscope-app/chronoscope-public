@@ -1,0 +1,594 @@
+        Info Looking up installed tauri packages to check mismatched versions...
+     Running beforeBuildCommand `npm run build`
+
+> chronoscope-workspace@0.15.2 build
+> npm --prefix frontend run build
+
+
+> chronoscope-ui@0.15.2 prebuild
+> node scripts/prepare-cesium.mjs
+
+Verified Balanced terrain: 88,778,304 compressed bytes
+Prepared local Cesium assets, workers and verified notice manifest
+
+> chronoscope-ui@0.15.2 build
+> tsc && vite build
+
+vite v6.4.4 building for production...
+transforming...
+✓ 2302 modules transformed.
+rendering chunks...
+[plugin vite:reporter]
+(!) /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/node_modules/@tauri-apps/api/core.js is dynamically imported by /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/main.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/main.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/main.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/main.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/main.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/main.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/si-markdown.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/si-windows.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/si-windows.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/si-windows.ts but also statically imported by /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/node_modules/@tauri-apps/api/dpi.js, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/node_modules/@tauri-apps/api/event.js, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/node_modules/@tauri-apps/api/image.js, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/node_modules/@tauri-apps/api/window.js, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/node_modules/@tauri-apps/plugin-dialog/dist-js/index.js, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/app-capture.ts, /home/claw/Documents/Codex/chronoscope-balanced-clawcomp/frontend/src/bridge.ts, dynamic import will not move module into another chunk.
+
+computing gzip size...
+dist/si.html                                              0.84 kB │ gzip:     0.44 kB
+dist/index.html                                           1.30 kB │ gzip:     0.49 kB
+dist/assets/cesium-effects-worker-CgphEXhH.js             2.88 kB
+dist/assets/KaTeX_Size3-Regular-CTq5MqoE.woff             4.42 kB
+dist/assets/KaTeX_Size4-Regular-Dl5lxZxV.woff2            4.93 kB
+dist/assets/KaTeX_Size2-Regular-Dy4dx90m.woff2            5.21 kB
+dist/assets/KaTeX_Size1-Regular-mCD8mA8B.woff2            5.47 kB
+dist/assets/KaTeX_Size4-Regular-BF-4gkZK.woff             5.98 kB
+dist/assets/KaTeX_Size2-Regular-oD1tc_U0.woff             6.19 kB
+dist/assets/KaTeX_Size1-Regular-C195tn64.woff             6.50 kB
+dist/assets/KaTeX_Caligraphic-Regular-Di6jR-x-.woff2      6.91 kB
+dist/assets/KaTeX_Caligraphic-Bold-Dq_IR9rO.woff2         6.91 kB
+dist/assets/KaTeX_Size3-Regular-DgpXs0kz.ttf              7.59 kB
+dist/assets/KaTeX_Caligraphic-Regular-CTRA-rTL.woff       7.66 kB
+dist/assets/KaTeX_Caligraphic-Bold-BEiXGLvX.woff          7.72 kB
+dist/assets/KaTeX_Script-Regular-D3wIWfF6.woff2           9.64 kB
+dist/assets/KaTeX_SansSerif-Regular-DDBCnlJ7.woff2       10.34 kB
+dist/assets/KaTeX_Size4-Regular-DWFBv043.ttf             10.36 kB
+dist/assets/KaTeX_Script-Regular-D5yQViql.woff           10.59 kB
+dist/assets/KaTeX_Fraktur-Regular-CTYiF6lA.woff2         11.32 kB
+dist/assets/KaTeX_Fraktur-Bold-CL6g_b3V.woff2            11.35 kB
+dist/assets/KaTeX_Size2-Regular-B7gKUWhC.ttf             11.51 kB
+dist/assets/KaTeX_SansSerif-Italic-C3H0VqGB.woff2        12.03 kB
+dist/assets/KaTeX_SansSerif-Bold-D1sUS0GD.woff2          12.22 kB
+dist/assets/KaTeX_Size1-Regular-Dbsnue_I.ttf             12.23 kB
+dist/assets/KaTeX_SansSerif-Regular-CS6fqUqJ.woff        12.32 kB
+dist/assets/KaTeX_Caligraphic-Regular-wX97UBjC.ttf       12.34 kB
+dist/assets/KaTeX_Caligraphic-Bold-ATXxdsX0.ttf          12.37 kB
+dist/assets/KaTeX_Fraktur-Regular-Dxdc4cR9.woff          13.21 kB
+dist/assets/KaTeX_Fraktur-Bold-BsDP51OF.woff             13.30 kB
+dist/assets/KaTeX_Typewriter-Regular-CO6r4hn1.woff2      13.57 kB
+dist/assets/KaTeX_SansSerif-Italic-DN2j7dab.woff         14.11 kB
+dist/assets/KaTeX_SansSerif-Bold-DbIhKOiC.woff           14.41 kB
+dist/assets/KaTeX_Typewriter-Regular-C0xS9mPB.woff       16.03 kB
+dist/assets/KaTeX_Math-BoldItalic-CZnvNsCZ.woff2         16.40 kB
+dist/assets/KaTeX_Math-Italic-t53AETM-.woff2             16.44 kB
+dist/assets/KaTeX_Script-Regular-C5JkGWo-.ttf            16.65 kB
+dist/assets/KaTeX_Main-BoldItalic-DxDJ3AOS.woff2         16.78 kB
+dist/assets/KaTeX_Main-Italic-NWA7e6Wa.woff2             16.99 kB
+dist/assets/KaTeX_Math-BoldItalic-iY-2wyZ7.woff          18.67 kB
+dist/assets/KaTeX_Math-Italic-DA0__PXp.woff              18.75 kB
+dist/assets/KaTeX_Main-BoldItalic-SpSLRI95.woff          19.41 kB
+dist/assets/KaTeX_SansSerif-Regular-BNo7hRIc.ttf         19.44 kB
+dist/assets/KaTeX_Fraktur-Regular-CB_wures.ttf           19.57 kB
+dist/assets/KaTeX_Fraktur-Bold-BdnERNNW.ttf              19.58 kB
+dist/assets/KaTeX_Main-Italic-BMLOBm91.woff              19.68 kB
+dist/assets/KaTeX_SansSerif-Italic-YYjJ1zSn.ttf          22.36 kB
+dist/assets/KaTeX_SansSerif-Bold-CFMepnvq.ttf            24.50 kB
+dist/assets/KaTeX_Main-Bold-Cx986IdX.woff2               25.32 kB
+dist/assets/KaTeX_Main-Regular-B22Nviop.woff2            26.27 kB
+dist/assets/KaTeX_Typewriter-Regular-D3Ib7_Hf.ttf        27.56 kB
+dist/assets/KaTeX_AMS-Regular-BQhdFMY1.woff2             28.08 kB
+dist/assets/KaTeX_Main-Bold-Jm3AIy58.woff                29.91 kB
+dist/assets/KaTeX_Main-Regular-Dr94JaBh.woff             30.77 kB
+dist/assets/KaTeX_Math-BoldItalic-B3XSjfu4.ttf           31.20 kB
+dist/assets/KaTeX_Math-Italic-flOr_0UB.ttf               31.31 kB
+dist/assets/KaTeX_Main-BoldItalic-DzxPMmG6.ttf           32.97 kB
+dist/assets/KaTeX_AMS-Regular-DMm9YOAa.woff              33.52 kB
+dist/assets/KaTeX_Main-Italic-3WenGoN9.ttf               33.58 kB
+dist/assets/KaTeX_Main-Bold-waoOVXN0.ttf                 51.34 kB
+dist/assets/KaTeX_Main-Regular-ypZvNtVU.ttf              53.58 kB
+dist/assets/KaTeX_AMS-Regular-DRggAlZN.ttf               63.63 kB
+dist/assets/maplibre-gl-worker-D__1xl0s.js              508.90 kB
+dist/assets/egm96-15-cm-Bx-_aheZ.bin                  2,076.48 kB
+dist/assets/earth-natural-earth-DfHaXyGq.jpg          2,307.65 kB
+dist/assets/tooltips-7x-HRXMv.css                         2.18 kB │ gzip:     0.83 kB
+dist/assets/main-BFoWyfYb.css                            19.06 kB │ gzip:     4.33 kB
+dist/assets/cesium-CGNOqgEs.css                          24.45 kB │ gzip:     5.49 kB
+dist/assets/si-markdown-Dunj6YD1.css                     29.90 kB │ gzip:     8.08 kB
+dist/assets/style-DBHhH3T9.css                           42.44 kB │ gzip:     9.26 kB
+dist/assets/streets-MG_XUJyD.css                         83.12 kB │ gzip:    10.53 kB
+dist/assets/index-CMjh7KgS.js                             0.33 kB │ gzip:     0.21 kB
+dist/assets/si-DL3GMQit.js                                1.38 kB │ gzip:     0.74 kB
+dist/assets/event-6TfD1CDU.js                             1.45 kB │ gzip:     0.70 kB
+dist/assets/runtime-helpers-H1N_o3d7.js                   1.49 kB │ gzip:     0.84 kB
+dist/assets/si-rich-Cx3IcbMF.js                           7.53 kB │ gzip:     3.18 kB
+dist/assets/window-C-8PDoHs.js                           14.33 kB │ gzip:     3.54 kB
+dist/assets/style-BNkzoSDR.js                            19.25 kB │ gzip:     6.85 kB
+dist/assets/tooltips-Bb0NIxyU.js                         29.61 kB │ gzip:    10.80 kB
+dist/assets/purify.es-DowdsyMd.js                        30.46 kB │ gzip:    11.72 kB
+dist/assets/chart-renderer-Cclhlpf3.js                  126.13 kB │ gzip:    43.38 kB
+dist/assets/si-markdown-DA6A242C.js                     311.60 kB │ gzip:    93.45 kB
+dist/assets/main-2YAmBBFW.js                            454.76 kB │ gzip:   149.47 kB
+dist/assets/index-DJ1oaEDP.js                           511.22 kB │ gzip:   198.04 kB
+dist/assets/installCanvasRenderer-B6otOJ3u.js           567.65 kB │ gzip:   193.10 kB
+dist/assets/streets-C5MUZBvi.js                       1,041.85 kB │ gzip:   285.50 kB
+dist/assets/cesium-DFFpKRnJ.js                        3,960.32 kB │ gzip: 1,028.13 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 14.03s
+warning: unnecessary parentheses around type
+  --> vendor/glib/src/value_array.rs:90:42
+   |
+90 |             let func = func as *mut &mut (dyn FnMut(&Value, &Value) -> Ordering);
+   |                                          ^                                     ^
+   |
+   = note: `#[warn(unused_parens)]` (part of `#[warn(unused)]`) on by default
+help: remove these parentheses
+   |
+90 -             let func = func as *mut &mut (dyn FnMut(&Value, &Value) -> Ordering);
+90 +             let func = func as *mut &mut dyn FnMut(&Value, &Value) -> Ordering;
+   |
+
+warning: unnecessary parentheses around type
+  --> vendor/glib/src/value_array.rs:99:32
+   |
+99 |             let func_obj: &mut (dyn FnMut(&Value, &Value) -> Ordering) = &mut func;
+   |                                ^                                     ^
+   |
+help: remove these parentheses
+   |
+99 -             let func_obj: &mut (dyn FnMut(&Value, &Value) -> Ordering) = &mut func;
+99 +             let func_obj: &mut dyn FnMut(&Value, &Value) -> Ordering = &mut func;
+   |
+
+warning: unnecessary parentheses around type
+   --> vendor/glib/src/value_array.rs:101:42
+    |
+101 |                 &func_obj as *const &mut (dyn FnMut(&Value, &Value) -> Ordering) as ffi::gpointer;
+    |                                          ^                                     ^
+    |
+help: remove these parentheses
+    |
+101 -                 &func_obj as *const &mut (dyn FnMut(&Value, &Value) -> Ordering) as ffi::gpointer;
+101 +                 &func_obj as *const &mut dyn FnMut(&Value, &Value) -> Ordering as ffi::gpointer;
+    |
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/object.rs:1606:34
+     |
+1606 |     fn interface<T: IsInterface>(&self) -> Option<InterfaceRef<T>>;
+     |                                  ^^^^^            ^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                                  |
+     |                                  the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+     = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default
+help: use `'_` for type paths
+     |
+1606 |     fn interface<T: IsInterface>(&self) -> Option<InterfaceRef<'_, T>>;
+     |                                                                +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/object.rs:2223:34
+     |
+2223 |     fn interface<U: IsInterface>(&self) -> Option<InterfaceRef<U>> {
+     |                                  ^^^^^            ^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                                  |
+     |                                  the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+2223 |     fn interface<U: IsInterface>(&self) -> Option<InterfaceRef<'_, U>> {
+     |                                                                +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/object.rs:3961:19
+     |
+3961 |     pub fn parent(&self) -> Option<ClassRef<T>> {
+     |                   ^^^^^            ^^^^^^^^^^^ the same lifetime is hidden here
+     |                   |
+     |                   the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+3961 |     pub fn parent(&self) -> Option<ClassRef<'_, T>> {
+     |                                             +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/object.rs:4100:42
+     |
+4100 |     pub fn from_class<U: IsClass>(klass: &Class<U>) -> Option<InterfaceRef<T>> {
+     |                                          ^^^^^^^^^            ^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                                          |
+     |                                          the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+4100 |     pub fn from_class<U: IsClass>(klass: &Class<U>) -> Option<InterfaceRef<'_, T>> {
+     |                                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/object.rs:4170:19
+     |
+4170 |     pub fn parent(&self) -> Option<InterfaceRef<T>> {
+     |                   ^^^^^            ^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                   |
+     |                   the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+4170 |     pub fn parent(&self) -> Option<InterfaceRef<'_, T>> {
+     |                                                 +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/collections/list.rs:104:17
+    |
+104 |     pub fn iter(&self) -> Iter<T> {
+    |                 ^^^^^     ^^^^^^^ the same lifetime is hidden here
+    |                 |
+    |                 the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+104 |     pub fn iter(&self) -> Iter<'_, T> {
+    |                                +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/collections/list.rs:111:21
+    |
+111 |     pub fn iter_mut(&mut self) -> IterMut<T> {
+    |                     ^^^^^^^^^     ^^^^^^^^^^ the same lifetime is hidden here
+    |                     |
+    |                     the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+111 |     pub fn iter_mut(&mut self) -> IterMut<'_, T> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/collections/slist.rs:104:17
+    |
+104 |     pub fn iter(&self) -> Iter<T> {
+    |                 ^^^^^     ^^^^^^^ the same lifetime is hidden here
+    |                 |
+    |                 the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+104 |     pub fn iter(&self) -> Iter<'_, T> {
+    |                                +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/collections/slist.rs:111:21
+    |
+111 |     pub fn iter_mut(&mut self) -> IterMut<T> {
+    |                     ^^^^^^^^^     ^^^^^^^^^^ the same lifetime is hidden here
+    |                     |
+    |                     the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+111 |     pub fn iter_mut(&mut self) -> IterMut<'_, T> {
+    |                                           +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/enums.rs:682:20
+    |
+682 |     pub fn builder(&self) -> FlagsBuilder {
+    |                    ^^^^^     ^^^^^^^^^^^^ the same lifetime is hidden here
+    |                    |
+    |                    the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+682 |     pub fn builder(&self) -> FlagsBuilder<'_> {
+    |                                          ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/enums.rs:689:31
+    |
+689 |     pub fn builder_with_value(&self, value: Value) -> Option<FlagsBuilder> {
+    |                               ^^^^^                          ^^^^^^^^^^^^ the same lifetime is hidden here
+    |                               |
+    |                               the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+689 |     pub fn builder_with_value(&self, value: Value) -> Option<FlagsBuilder<'_>> {
+    |                                                                          ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/enums.rs:830:25
+    |
+830 |     fn new(flags_class: &FlagsClass) -> FlagsBuilder {
+    |                         ^^^^^^^^^^^     ^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+830 |     fn new(flags_class: &FlagsClass) -> FlagsBuilder<'_> {
+    |                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/enums.rs:835:32
+    |
+835 |     fn with_value(flags_class: &FlagsClass, value: Value) -> FlagsBuilder {
+    |                                ^^^^^^^^^^^                   ^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                |
+    |                                the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+835 |     fn with_value(flags_class: &FlagsClass, value: Value) -> FlagsBuilder<'_> {
+    |                                                                          ++++
+
+warning: hiding a lifetime that's named elsewhere is confusing
+   --> vendor/glib/src/translate.rs:467:42
+    |
+467 |     fn to_glib_none_mut(&'a mut self) -> StashMut<P, Self>;
+    |                          --              ^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                          |
+    |                          the lifetime is named here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: consistently use `'a`
+    |
+467 |     fn to_glib_none_mut(&'a mut self) -> StashMut<'a, P, Self>;
+    |                                                   +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/main_context.rs:164:20
+    |
+164 |     pub fn acquire(&self) -> Result<MainContextAcquireGuard, crate::BoolError> {
+    |                    ^^^^^            ^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                    |
+    |                    the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+164 |     pub fn acquire(&self) -> Result<MainContextAcquireGuard<'_>, crate::BoolError> {
+    |                                                            ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/main_context.rs:192:17
+    |
+192 |     fn new(ctx: &MainContext) -> ThreadDefaultContext {
+    |                 ^^^^^^^^^^^^     ^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                 |
+    |                 the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+192 |     fn new(ctx: &MainContext) -> ThreadDefaultContext<'_> {
+    |                                                      ++++
+
+warning: hiding a lifetime that's named elsewhere is confusing
+   --> vendor/glib/src/value.rs:545:47
+    |
+545 |     pub fn get<'a, T>(&'a self) -> Result<T, <<T as FromValue>::Checker as ValueTypeChecker>::Error>
+    |                        --                     ^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                        |
+    |                        the lifetime is named here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: consistently use `'a`
+    |
+545 |     pub fn get<'a, T>(&'a self) -> Result<T, <<T as FromValue<'a>>::Checker as ValueTypeChecker>::Error>
+    |                                                              ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/value.rs:558:25
+    |
+558 |     pub fn get_owned<T>(&self) -> Result<T, <<T as FromValue>::Checker as ValueTypeChecker>::Error>
+    |                         ^^^^^                ^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                         |
+    |                         the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+558 |     pub fn get_owned<T>(&self) -> Result<T, <<T as FromValue<'_>>::Checker as ValueTypeChecker>::Error>
+    |                                                             ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/variant.rs:843:27
+    |
+843 |     pub fn array_iter_str(&self) -> Result<VariantStrIter, VariantTypeMismatchError> {
+    |                           ^^^^^            ^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                           |
+    |                           the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+843 |     pub fn array_iter_str(&self) -> Result<VariantStrIter<'_>, VariantTypeMismatchError> {
+    |                                                          ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/variant_type.rs:592:24
+    |
+592 |     pub fn tuple_types(&self) -> VariantTyIterator {
+    |                        ^^^^^     ^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                        |
+    |                        the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+592 |     pub fn tuple_types(&self) -> VariantTyIterator<'_> {
+    |                                                   ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/param_spec.rs:1060:15
+     |
+1060 |         name: &str,
+     |               ^^^^ the lifetime is elided here
+1061 |         default_value: T,
+1062 |     ) -> ParamSpecEnumBuilder<T> {
+     |          ^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+1062 |     ) -> ParamSpecEnumBuilder<'_, T> {
+     |                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/param_spec.rs:1067:15
+     |
+1067 |         name: &str,
+     |               ^^^^ the lifetime is elided here
+1068 |     ) -> ParamSpecEnumBuilder<T> {
+     |          ^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+1068 |     ) -> ParamSpecEnumBuilder<'_, T> {
+     |                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/param_spec.rs:1208:15
+     |
+1208 |         name: &str,
+     |               ^^^^ the lifetime is elided here
+1209 |     ) -> ParamSpecFlagsBuilder<T> {
+     |          ^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+1209 |     ) -> ParamSpecFlagsBuilder<'_, T> {
+     |                                +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/param_spec.rs:1350:26
+     |
+1350 |     pub fn builder(name: &str) -> ParamSpecStringBuilder {
+     |                          ^^^^     ^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                          |
+     |                          the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+1350 |     pub fn builder(name: &str) -> ParamSpecStringBuilder<'_> {
+     |                                                         ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/param_spec.rs:1492:41
+     |
+1492 |     pub fn builder<T: StaticType>(name: &str) -> ParamSpecBoxedBuilder<T> {
+     |                                         ^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                                         |
+     |                                         the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+1492 |     pub fn builder<T: StaticType>(name: &str) -> ParamSpecBoxedBuilder<'_, T> {
+     |                                                                        +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/param_spec.rs:1645:26
+     |
+1645 |     pub fn builder(name: &str) -> ParamSpecValueArrayBuilder {
+     |                          ^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                          |
+     |                          the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+1645 |     pub fn builder(name: &str) -> ParamSpecValueArrayBuilder<'_> {
+     |                                                             ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+    --> vendor/glib/src/param_spec.rs:1743:55
+     |
+1743 |     pub fn builder<T: StaticType + IsA<Object>>(name: &str) -> ParamSpecObjectBuilder<T> {
+     |                                                       ^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+     |                                                       |
+     |                                                       the lifetime is elided here
+     |
+     = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+     |
+1743 |     pub fn builder<T: StaticType + IsA<Object>>(name: &str) -> ParamSpecObjectBuilder<'_, T> {
+     |                                                                                       +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/subclass/types.rs:710:17
+    |
+710 |     fn instance(&self) -> crate::BorrowedObject<Self::Type>;
+    |                 ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                 |
+    |                 the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+710 |     fn instance(&self) -> crate::BorrowedObject<'_, Self::Type>;
+    |                                                 +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/subclass/types.rs:722:12
+    |
+722 |     fn obj(&self) -> crate::BorrowedObject<Self::Type>;
+    |            ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |            |
+    |            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+722 |     fn obj(&self) -> crate::BorrowedObject<'_, Self::Type>;
+    |                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/subclass/types.rs:744:17
+    |
+744 |     fn instance(&self) -> crate::BorrowedObject<Self::Type> {
+    |                 ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                 |
+    |                 the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+744 |     fn instance(&self) -> crate::BorrowedObject<'_, Self::Type> {
+    |                                                 +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> vendor/glib/src/subclass/types.rs:754:12
+    |
+754 |     fn obj(&self) -> crate::BorrowedObject<Self::Type> {
+    |            ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |            |
+    |            the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+754 |     fn obj(&self) -> crate::BorrowedObject<'_, Self::Type> {
+    |                                            +++
+
+warning: `glib` (lib) generated 34 warnings (run `cargo fix --lib -p glib` to apply 34 suggestions)
+   Compiling chronoscope-desktop v0.15.2 (/home/claw/Documents/Codex/chronoscope-balanced-clawcomp/src-tauri)
+    Finished `release` profile [optimized] target(s) in 4m 05s
+       Built application at: /home/claw/Documents/Codex/chronoscope-next/target/release/chronoscope-desktop

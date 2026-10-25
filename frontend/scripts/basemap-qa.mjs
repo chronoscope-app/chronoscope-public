@@ -1,7 +1,7 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real Rust + Cesium + MapLibre. Offline synthetic vector fixture by default;
 // CHRONOSCOPE_BASEMAP_LIVE=1 explicitly enables the public-provider showcase.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
@@ -52,29 +52,8 @@ const server = spawn(
 );
 let browser;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    server.once("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) resolve(match[0]);
-    });
-    setTimeout(() => reject(Error(log)), 20000).unref();
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const body = await response.json();
-    assert(response.ok, JSON.stringify(body));
-    return body.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const defaults = await api("preferences");
   assert.equal(defaults.basemap, "streets");
   assert.deepEqual(defaults.map_layers, []);
@@ -163,22 +142,7 @@ try {
       request_interval_ms: live ? 200 : 0,
     },
   });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : process.platform === "win32"
-          ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-          : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--disable-dev-shm-usage",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1720, height: 1080 },
   });

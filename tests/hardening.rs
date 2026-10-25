@@ -19,7 +19,7 @@ fn failed_reads_preserve_the_entire_workspace_and_revision() {
             "coordinates",
             json!({"coordinate":{"system":"mgrs","reference":"invalid"}}),
         ),
-        ("terrain_sample", json!({"latitude":0,"longitude":0})),
+        ("terrain_sample", json!({"latitude":91,"longitude":0})),
         ("query", json!({"cursor":"broken"})),
         ("query", json!({"fields":["unknown_field"]})),
     ] {

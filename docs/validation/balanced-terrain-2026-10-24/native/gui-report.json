@@ -1,0 +1,245 @@
+{
+  "passed": true,
+  "preferences": {
+    "auto_save_unsaved": true,
+    "basemap": "none",
+    "coordinates": "dd",
+    "map": {
+      "enabled": false,
+      "format": "",
+      "layer": "",
+      "level": null,
+      "matrix_set": "",
+      "style": "",
+      "time": "",
+      "url": ""
+    },
+    "map_layers": [],
+    "terrain_builtin": true,
+    "terrain_exaggeration": 1.0,
+    "terrain_path": null,
+    "terrain_vertical_datum": "egm96",
+    "theme": "dark"
+  },
+  "terrain_info": {
+    "bounds": [
+      -180.0,
+      -90.0,
+      180.0,
+      90.0
+    ],
+    "tiles": [
+      {
+        "datum": "WGS84",
+        "east": 180.0,
+        "height": 10800,
+        "latitude_step": 0.016666666666666666,
+        "longitude_step": 0.016666666666666666,
+        "north": 90.0,
+        "path": "/tmp/appimage_extracted_6afcead9b88c185e478b4fa04a4fa874/usr/lib/Chronoscope/terrain/balanced.cterrain",
+        "south": -90.0,
+        "vertical_datum": "EGM96",
+        "west": -180.0,
+        "width": 21600
+      }
+    ]
+  },
+  "view_status": {
+    "backend": "WebGL2",
+    "diagnostics": {
+      "arrivingPointCount": 0,
+      "arrivingTriangleCount": 0,
+      "axisLabels": 0,
+      "contextRecoveries": 0,
+      "displayTimeBounds": [
+        0,
+        1
+      ],
+      "effectError": "",
+      "engine": "CesiumJS",
+      "fadeDurationsMs": {
+        "arrival": 550,
+        "departure": 2400
+      },
+      "fadingPointCount": 0,
+      "fadingStemSegments": 0,
+      "fadingTriangleCount": 0,
+      "geodesicRendering": {
+        "geometry": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        },
+        "maximumAddedVertices": 400000,
+        "sourceEndpointBudget": 400000,
+        "trails": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        }
+      },
+      "geometryFeatures": 0,
+      "geometryPrimitives": 2,
+      "globeTime": false,
+      "globeTimeScale": 1,
+      "lastRenderError": "",
+      "navigation": {
+        "active": false,
+        "freeLook": false,
+        "gestureMaximumTiltDegrees": 85,
+        "inertia": false,
+        "keyboardFocus": "map",
+        "northUpOnly": false
+      },
+      "orbitHandles": 0,
+      "performance": {
+        "active": false,
+        "fps": null,
+        "frameP95Ms": 122,
+        "renderCpuP95Ms": 93,
+        "renderedFrames": 97,
+        "sampleFrames": 66
+      },
+      "pointCount": 0,
+      "recovering": false,
+      "renderErrorCount": 0,
+      "requestRenderMode": true,
+      "sceneMode": 3,
+      "selectionCount": 0,
+      "spaceTimeFloor": null,
+      "stemSegments": 0,
+      "terrain": {
+        "basemap": "none",
+        "basemapAlignmentErrorPixels": 0,
+        "basemapError": "",
+        "basemapMaximumLevel": 0,
+        "basemapPending": 0,
+        "basemapRenderedTiles": 0,
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "imageryLayers": 1,
+        "imageryRequestedTiles": 0,
+        "mode": "globe",
+        "terrainActive": true,
+        "terrainCovered": 66049,
+        "tileCount": 0,
+        "verticalDatum": "egm96"
+      },
+      "timeHeightMeters": 47178.85269126791,
+      "trackPolylines": 0,
+      "trailInputEdges": 0,
+      "trailOutputEdges": 0,
+      "triangleCount": 0,
+      "triangleVisibleCount": 0
+    },
+    "gis_layers": [],
+    "hardware_acceleration": "unknown",
+    "loading": {
+      "effects": false,
+      "gis": 0,
+      "imagery": false
+    },
+    "mode": "globe",
+    "renderer": "cesium",
+    "revision": 5,
+    "scene": {
+      "bounds": [
+        85,
+        27,
+        89,
+        29
+      ],
+      "cesium_camera": {
+        "direction": [
+          -0.05312233807275969,
+          -0.9888659891502438,
+          -0.1390038585780746
+        ],
+        "position": [
+          316019.44885914575,
+          5882664.359742484,
+          3014175.401059159
+        ],
+        "up": [
+          -0.007456599837106508,
+          -0.13880371687553125,
+          0.9902918394596648
+        ]
+      },
+      "chart": {
+        "aggregate": "count",
+        "bins": 20,
+        "group": "",
+        "kind": "bar",
+        "limit": 2000,
+        "period_a": null,
+        "period_b": null,
+        "scope": "visible",
+        "source": null,
+        "stacked": false,
+        "time_bucket": "day",
+        "title": "",
+        "trendline": false,
+        "x": "entity",
+        "x_axis": "category",
+        "x_label": "",
+        "y": "value",
+        "y2": "",
+        "y2_label": "",
+        "y_label": ""
+      },
+      "chart_presets": [],
+      "display": {
+        "bloom": false,
+        "bloom_radius": 0.1,
+        "bloom_strength": 1.3,
+        "bloom_threshold": 0.1,
+        "cluster_pixels": 48,
+        "heat_max": null,
+        "heat_radius": 32,
+        "heat_reference_zoom": null,
+        "heat_weight": "count",
+        "mode": "auto",
+        "partition": "all",
+        "point_scale": 1,
+        "show_centroids": true,
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": true,
+        "spatial_culling": true,
+        "time_bin_minutes": 0,
+        "track_opacity": 0.25,
+        "trail_gap_minutes": 180,
+        "trail_opacity": 0.25,
+        "trail_pixels": 2
+      },
+      "entity_colors": {},
+      "expanded": false,
+      "focus": 0.45,
+      "gis_table": null,
+      "globe_time": false,
+      "globe_time_scale": 1,
+      "inspector_tab": "inspect",
+      "mode": "globe",
+      "render_budget": 20000,
+      "renderer": "cesium",
+      "table_attributes": true,
+      "table_column_offset": 0,
+      "table_descending": false,
+      "table_open": false,
+      "table_respect_filters": true,
+      "table_sort": "time",
+      "table_source": null,
+      "time_height": 2.8
+    },
+    "viewport": {
+      "height": 897,
+      "width": 986
+    },
+    "webgpu_api_available": false
+  },
+  "capture": "/home/claw/Documents/Codex/chronoscope-balanced-clawcomp/docs/validation/balanced-terrain-2026-10-24/native/appimage-globe.png"
+}

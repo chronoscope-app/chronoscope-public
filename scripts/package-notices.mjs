@@ -9,6 +9,7 @@ export const requiredFiles = [
   "vendor/glib/LICENSE", "vendor/glib/COPYRIGHT", "vendor/glib/BACKPORT.md",
   "LICENSE", "THIRD_PARTY.md", "docs/DATA-ATTRIBUTION.md", "docs/DISTRIBUTION.md",
   "assets/NOTICE.md", "frontend/src/assets/egm96-15-NOTICE.txt",
+  "assets/terrain/README.md",
   "samples/README.md", "samples/public/SOURCES.md",
   "samples/public/demo-provenance.json", "samples/public/wildlife-provenance.json",
   "docs/NOAA-HURRICANE-DEMO.md", "docs/REAL-WORLD-DEMOS.md", "docs/WILDLIFE-DEMOS.md",

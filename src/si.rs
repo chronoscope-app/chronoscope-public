@@ -108,7 +108,7 @@ fn tools(allow_edits: bool, files: bool) -> Vec<Value> {
         let name = tool["name"].as_str().unwrap_or("").trim_start_matches("chronoscope_");
         matches!(name, "gis_set"|"capabilities"|"view_status"|"view_navigate"|"gis_layers"|"gis_table"|"snapshot"|"revision"|"dataset_schema"|"field_profile"|"chart_data"|"pattern_scan"|"query"|"events"|"attribute_table"|"render_geometries"|"display_data"|"aggregate"|"statistics"|"analytics_discover"|"analytics_describe"|"analytics_run"|"analytics_result"|"analytics_list"|"present_result"|"time_parse"|"space_time_aggregate"|"analyze"|"analysis_context"|"analysis_prepare"|"analysis_execute"|"coordinates"|"terrain_info"|"terrain_sample"|"filter"|"select"|"select_visible"|"select_query"|"selection_contains"|"view_set"|"save_view"|"save_group"|"restore_view"|"restore_group")
         || allow_edits && matches!(name,"gis_set"|"gis_remove"|"gis_import_preview"|"import_validate"|"import_commit"|"edit"|"edit_many"|"tag"|"delete"|"reassign"|"undo"|"redo"|"aggregate_apply"|"field_roles_set")
-        || allow_edits && files && matches!(name,"file_probe"|"gis_load"|"open"|"save"|"export"|"import_preview"|"import_validate"|"import_commit"|"terrain_load"|"terrain_unload")
+        || allow_edits && files && matches!(name,"file_probe"|"gis_load"|"open"|"save"|"export"|"import_preview"|"import_validate"|"import_commit"|"import_review"|"import_rejections_export"|"terrain_load"|"terrain_unload")
     }).map(|mut tool| {
         if tool["name"] == "chronoscope_gis_set" && !allow_edits {
             tool["inputSchema"]["properties"].as_object_mut().unwrap().retain(|key,_| GIS_PRESENTATION_FIELDS.contains(&key.as_str()));

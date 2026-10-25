@@ -38,3 +38,27 @@ pub async fn capture_app_window(
         base64::engine::general_purpose::STANDARD.encode(png)
     ))
 }
+
+/// Native compositor video; intentionally limited to this app's own windows.
+#[tauri::command]
+pub async fn record_app_window(
+    app: tauri::AppHandle,
+    window: tauri::WebviewWindow,
+    args: serde_json::Value,
+) -> Result<serde_json::Value, String> {
+    if window.label() != "main" {
+        return Err("INVALID_ARGUMENT: recording requests require the main window".into());
+    }
+    chronoscope::schema::validate("view_recording", &args)?;
+    let label = args["window"].as_str().unwrap_or("main");
+    let target = app
+        .get_webview_window(label)
+        .ok_or("UNAVAILABLE: requested app window is not open")?;
+    if args["action"] == "start"
+        && (!target.is_visible().map_err(|e| e.to_string())?
+            || target.is_minimized().map_err(|e| e.to_string())?)
+    {
+        return Err("UNAVAILABLE: recording window must be visible and not minimized".into());
+    }
+    chronoscope_window_capture::recording(target, args).await
+}

@@ -32,6 +32,10 @@ class PlaybackChoice {
   value: number;
   private trigger: HTMLButtonElement;
   private menu: HTMLElement;
+  private choose!: (value: number) => void;
+  setValue(value: number) {
+    this.choose(value);
+  }
   constructor(
     after: HTMLElement,
     changed: (value: number) => void,
@@ -115,20 +119,26 @@ class PlaybackChoice {
         open();
       }
     });
+    this.choose = (value) => {
+      if (!config.values.includes(value))
+        throw Error("INVALID_ARGUMENT: unsupported playback choice");
+      this.value = value;
+      changed(value);
+      this.trigger.querySelector("span")!.textContent = config.label(value);
+      this.trigger.setAttribute(
+        "aria-label",
+        `${config.name}: ${config.label(value)}`,
+      );
+      items.forEach((item) =>
+        item.setAttribute(
+          "aria-checked",
+          String(Number(item.dataset.speed) === value),
+        ),
+      );
+    };
     items.forEach((item) =>
       item.addEventListener("click", () => {
-        this.value = Number(item.dataset.speed);
-        changed(this.value);
-        this.trigger.querySelector("span")!.textContent = config.label(
-          this.value,
-        );
-        this.trigger.setAttribute(
-          "aria-label",
-          `${config.name}: ${config.label(this.value)}`,
-        );
-        items.forEach((other) =>
-          other.setAttribute("aria-checked", String(other === item)),
-        );
+        this.choose(Number(item.dataset.speed));
         close(true);
       }),
     );

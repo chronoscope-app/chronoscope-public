@@ -26,6 +26,9 @@ export function layerVisible(layer: MapLayer, zoom: number): boolean {
 }
 /** Compose ordered sources in one bounded viewport texture, before terrain/globe draping. */
 export class MapStack {
+  get hasContent() {
+    return [...this.streams.values()].some((stream) => stream.hasContent);
+  }
   readonly streams = new Map<string, RasterStream>();
   readonly canvas: HTMLCanvasElement;
   readonly result: Raster;

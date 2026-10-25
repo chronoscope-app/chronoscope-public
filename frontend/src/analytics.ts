@@ -6,6 +6,7 @@ export async function openAnalytics(
   after: () => Promise<void>,
   error: (e: unknown) => void,
   initial?: string,
+  create?: () => Promise<void>,
 ) {
   document.querySelector("#analytics-dialog")?.remove();
   const dialog = document.createElement("dialog");
@@ -18,7 +19,20 @@ export async function openAnalytics(
   close.textContent = "×";
   close.setAttribute("aria-label", "Close analysis results");
   close.onclick = () => dialog.close();
-  header.append(title, close);
+  const actions = document.createElement("div");
+  actions.className = "row";
+  if (create) {
+    const add = document.createElement("button");
+    add.textContent = "New analysis";
+    add.className = "primary";
+    add.onclick = () => {
+      dialog.close();
+      void create().catch(error);
+    };
+    actions.append(add);
+  }
+  actions.append(close);
+  header.append(title, actions);
   const layout = document.createElement("div"),
     list = document.createElement("nav"),
     content = document.createElement("section");
@@ -39,7 +53,7 @@ export async function openAnalytics(
     content.append(
       text(
         "p",
-        "Ask SI to analyze your data. Results will appear here and are included when you save the project.",
+        "Choose New analysis to profile data, find duplicates or outliers, or summarize trajectories. Analyses run locally and are included when you save the project.",
       ),
     );
   let request = 0;
@@ -215,9 +229,13 @@ export async function openAnalytics(
         td.title = String(row[key] ?? "");
         tr.append(td);
       }
-      if (typeof row.event_id === "string" && !details.data_stale) {
+      const linkedId =
+        typeof row.event_id === "string" ? row.event_id : row.example_event_id;
+      if (typeof linkedId === "string" && !details.data_stale) {
         tr.tabIndex = 0;
-        tr.title = "Select this Event on the map and in its attribute table";
+        tr.title = row.event_id
+          ? "Select this Event on the map and in its attribute table"
+          : "Select one example Event from this group";
         const select = async (add: boolean) => {
           const observed = await call("revision");
           const fresh = await call("analytics_result", { result_id: id });
@@ -226,7 +244,7 @@ export async function openAnalytics(
               "Source data changed; rerun this analysis before selecting Events",
             );
           await call("select", {
-            ids: [row.event_id],
+            ids: [linkedId],
             mode: add ? "toggle" : "replace",
             expected_revision: observed.revision,
           });
@@ -264,7 +282,7 @@ export async function openAnalytics(
         .then(async () => {
           dialog.close();
           await after();
-          await openAnalytics(after, error);
+          await openAnalytics(after, error, undefined, create);
         })
         .catch((e) => {
           remove.disabled = false;

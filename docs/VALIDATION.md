@@ -1,5 +1,11 @@
 # Chronoscope validation
 
+Latest Next integration on this Mac: [25 October 2026 report](validation/next-integration-mac-2026-10-25/README.md). Restores the previously unmerged workflow/navigation work alongside Balanced terrain and the idle-camera fix. All 401 Rust tests, 27 frontend cases, 15 selected browser suites and 10 attached native checks pass locally.
+
+Map double-click follow-up: the original renderer/full-selection test mismatch and a related slow-double-click app bug are resolved. The complete navigation suite now passes locally. [Investigation and verification — 24 October 2026](validation/map-double-click-2026-10-24.md).
+
+Current Next workflow changes and local verification: [Next workflows, demo previews and synchronized views — 24 October 2026](validation/next-workflows-2026-10-24.md). The report distinguishes passing source/native/workflow checks from reproduced baseline map-QA failures. These changes have not been promoted to Public.
+
 > Historical validation context: earlier source identifiers, runs and package measurements below are not new tests of this one-commit snapshot. Earlier Git history and hosted run logs are not included. See [current platform status](INSTALLATION.md).
 
 This repository replaces the geographic renderer with CesiumJS WebGL2. Earlier reports below describe the upstream Chronoscope renderer and retain their original evidence; they do not establish Cesium rendering correctness. Current Cesium evidence is tracked in [the parity report](CESIUM-PARITY.md).

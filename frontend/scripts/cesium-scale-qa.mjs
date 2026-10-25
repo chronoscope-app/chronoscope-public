@@ -1,12 +1,12 @@
+import { chromium, spawn, localServerUrl } from "./qa-runtime.mjs";
 // Opt-in scale proof: a real million-row Rust import and bounded Cesium display.
 // Inputs/private databases stay outside Git; no public services or paid APIs.
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
-import { spawn, execFileSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { once } from "node:events";
-import { chromium } from "playwright";
 import { PNG } from "pngjs";
 const root = path.resolve(import.meta.dirname, "../..");
 const dir = path.resolve(
@@ -120,22 +120,7 @@ try {
     ],
     { stdio: ["ignore", "ignore", "pipe"] },
   );
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timeout = setTimeout(
-      () => reject(Error("Bridge startup timeout")),
-      20000,
-    );
-    server.on("error", reject);
-    server.stderr.on("data", (d) => {
-      log = (log + d).slice(-8000);
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timeout);
-        resolve(m[0]);
-      }
-    });
-  });
+  const url = await localServerUrl(server);
   report.memory.rustPeakObservedRssBytes = 0;
   report.disk.minimumFreeBytes = free();
   monitor = setInterval(() => {
@@ -180,6 +165,7 @@ try {
       basemap: "none",
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
   const preview = await timed("importPreview", () =>
@@ -282,16 +268,7 @@ try {
     },
   );
   report.memory.rustAfterImportAndQueries = processMemory(server.pid);
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-      "--ignore-gpu-blocklist",
-    ],
-  });
+  browser = await chromium.launch();
   page = await browser.newPage({ viewport: { width: 1800, height: 1100 } });
   page.setDefaultTimeout(120000);
   page.on("pageerror", (e) => report.errors.push(e.message));

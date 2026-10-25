@@ -8,6 +8,7 @@ const y = (latitude: number) =>
 export class RasterStream {
   readonly canvas = document.createElement("canvas");
   readonly result: Raster;
+  hasContent = false;
   private context: CanvasRenderingContext2D;
   constructor(
     readonly bounds: number[],
@@ -48,8 +49,16 @@ export class RasterStream {
   }
   /** Reproject a bounded prior viewport canvas into this viewport in Mercator. */
   seed(previous: RasterStream) {
+    if (!previous.hasContent) return;
     const b = previous.bounds,
       target = this.bounds;
+    if (
+      b[2] <= target[0] ||
+      b[0] >= target[2] ||
+      b[3] <= target[1] ||
+      b[1] >= target[3]
+    )
+      return;
     const width = target[2] - target[0],
       height = y(target[3]) - y(target[1]);
     this.context.drawImage(
@@ -60,6 +69,7 @@ export class RasterStream {
       ((y(b[3]) - y(b[1])) / height) * this.canvas.height,
     );
     this.result.attribution = previous.result.attribution;
+    this.hasContent = true;
   }
   async append(page: Raster, current: () => boolean) {
     const west = ((this.bounds[0] * Math.PI) / 180) * R,
@@ -115,6 +125,7 @@ export class RasterStream {
           );
         }
       } else this.context.drawImage(image, x, top, w, h);
+      this.hasContent = true;
       image.src = "";
       tile.data_url = "";
     }

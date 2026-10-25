@@ -1,7 +1,7 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real Rust bridge + native Cesium WebGL integration. No public map requests.
-import { chromium } from "playwright";
 import { PNG } from "pngjs";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -62,35 +62,8 @@ const check = (name, evidence) => {
   console.log("PASS", name);
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(
-      () => reject(Error("Bridge startup: " + log)),
-      20000,
-    );
-    server.once("error", reject);
-    server.stderr.on("data", (data) => {
-      log += data;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const body = await r.json();
-    assert(r.ok, JSON.stringify(body));
-    return body.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const prefs = await api("preferences");
   await api("preferences", {
     preferences: {
@@ -100,6 +73,7 @@ try {
       basemap: "none",
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
   await api("open", {
@@ -113,6 +87,7 @@ try {
       basemap: "none",
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
   await api("view_set", {
@@ -124,17 +99,7 @@ try {
       trail_gap_minutes: 0,
     },
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-      "--ignore-gpu-blocklist",
-    ],
-  });
+  browser = await chromium.launch();
   page = await browser.newPage({ viewport: { width: 1800, height: 1100 } });
   page.setDefaultTimeout(60000);
   await page.addInitScript(() => {
@@ -1337,8 +1302,13 @@ try {
   // Return to an ordinary workspace for import and save/open integration.
   await api("view_set", {
     mode: "space-time",
-    display: { mode: "points", bloom: false, show_points: true,
-      show_tracks: true, show_trails: true },
+    display: {
+      mode: "points",
+      bloom: false,
+      show_points: true,
+      show_tracks: true,
+      show_trails: true,
+    },
   });
   await refresh();
   await page.evaluate(() => {
@@ -1348,9 +1318,11 @@ try {
   async function importDialog(file) {
     page.once("dialog", (dialog) => dialog.accept(file));
     await page.click("#open");
-    await page.waitForSelector("#commit-import");
+    await page.click("#import-next");
+    await page.waitForSelector("#review-import");
   }
   async function commitImport(count) {
+    await page.click("#review-import");
     await page.click("#commit-import");
     await page.waitForFunction(
       (n) =>
@@ -1362,7 +1334,10 @@ try {
     await idle();
   }
   await importDialog(path.join(root, "tests/fixtures/import/small-study.xlsx"));
-  assert((await page.locator("#import-sheet option").count()) > 0);
+  assert.match(
+    await page.locator(".workflow-steps [aria-current]").textContent(),
+    /Map fields/,
+  );
   await commitImport(5);
   assert.equal(
     await page.evaluate(() => window.__chronoscope.view.points.length),
@@ -1433,7 +1408,7 @@ try {
   page.once("dialog", (dialog) => dialog.accept(source));
   await page.keyboard.press("Control+i");
   assert((await previewed).ok());
-  await page.waitForSelector("#commit-import");
+  await page.waitForSelector("#import-next");
   await page.keyboard.press("Escape");
   assert.equal(
     (await api("snapshot")).count,
@@ -1477,6 +1452,9 @@ try {
   page.once("dialog", (dialog) => dialog.accept(unsupported));
   await page.click("#open");
   assert.equal((await rejectedSource).ok(), false);
+  await page.waitForSelector("#import-dialog [role=alert]");
+  await page.keyboard.press("Escape");
+  await page.locator("#import-dialog").waitFor({ state: "detached" });
   await idle();
   assert.deepEqual(fileRoutes.at(-1), {
     command: "import_preview",
@@ -1606,37 +1584,8 @@ try {
     { expectedUTC: "2026-03-04 08:15" },
   );
 
-  const rejected = path.join(dir, "rejected.csv");
-  fs.writeFileSync(
-    rejected,
-    "entity,timestamp,latitude,longitude\nValid,2026-10-15T10:20:34Z,43.24,-79.97\nInvalid,2026-10-15T10:20:34Z,95,-79.97\n",
-  );
-  const beforeReject = await api("query", { limit: 10 });
-  await importDialog(rejected);
-  await page.click("#commit-import");
-  await page.waitForSelector("#accept-import");
-  assert.match(
-    await page.locator(".modal").innerText(),
-    /1 valid events.*1 rejected rows/s,
-  );
-  assert.deepEqual(
-    (await api("query", { limit: 10 })).events,
-    beforeReject.events,
-    "Rejected import must leave previous study intact until reviewed",
-  );
-  await page.click("#accept-import");
-  await page.waitForFunction(
-    () =>
-      window.__chronoscope.snapshot.count === 1 &&
-      window.__chronoscope.snapshot.entities.Valid === 1 &&
-      !document.querySelector("#accept-import") &&
-      !window.__chronoscope.busy,
-  );
-  assert.equal((await api("events", { limit: 10 })).events[0].entity, "Valid");
-  check(
-    "Invalid coordinates require row review and do not replace data before explicit acceptance",
-    { accepted: 1, rejected: 1 },
-  );
+  // Rejected-row review/acceptance belongs to guided-workflows-qa.mjs,
+  // including rows beyond the preview and full rejection-report export.
 
   const polarFile = path.join(dir, "polar-events.csv");
   fs.writeFileSync(

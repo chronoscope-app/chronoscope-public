@@ -1,5 +1,5 @@
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -35,32 +35,8 @@ const check = (name, evidence) => {
   console.log("PASS", name);
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.on("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timer);
-        resolve(match[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const result = await response.json();
-    assert(response.ok, JSON.stringify(result));
-    return result.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   await api("open", {
     path: path.join(root, "samples/atlantic-hurricanes-2016-2025.chronoscope"),
   });
@@ -72,6 +48,7 @@ try {
       map: { ...prefs.map, enabled: false },
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
   await api("view_set", {
@@ -90,20 +67,7 @@ try {
       trail_opacity: 0.25,
     },
   });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1600, height: 1000 },
   });
@@ -226,12 +190,16 @@ try {
         c.getContext("2d").getImageData(c.width / 2, c.height / 2, 1, 1).data,
       );
     });
-  const waitForPixels = (expected) => page.waitForFunction((expected) => {
-    const c = window.__chronoscope.view.resources.currentRaster?.tiles[0]?.image;
-    if (!c) return false;
-    const actual = c.getContext("2d").getImageData(c.width / 2, c.height / 2, 1, 1).data;
-    return expected.every((value, index) => actual[index] === value);
-  }, expected);
+  const waitForPixels = (expected) =>
+    page.waitForFunction((expected) => {
+      const c =
+        window.__chronoscope.view.resources.currentRaster?.tiles[0]?.image;
+      if (!c) return false;
+      const actual = c
+        .getContext("2d")
+        .getImageData(c.width / 2, c.height / 2, 1, 1).data;
+      return expected.every((value, index) => actual[index] === value);
+    }, expected);
   await waitForPixels([49, 139, 166, 255]);
   const good = await pixels();
   assert.deepEqual(good, [49, 139, 166, 255]);

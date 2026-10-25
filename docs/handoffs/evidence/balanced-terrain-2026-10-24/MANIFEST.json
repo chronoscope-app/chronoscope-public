@@ -1,0 +1,40 @@
+{
+  "description": "Local verification receipts; failed broad/strict/build invocations retained as failed. Trailing blank lines normalized for Git; original logs remain in cloud scratch.",
+  "files": [
+    {
+      "path": "balanced-targeted-tests.log",
+      "bytes": 7548,
+      "sha256": "2734b11ae26982560d5d5fee39d9630413c70c54aeaf88d3de4040e8443c9b01"
+    },
+    {
+      "path": "balanced-frontend-tests.log",
+      "bytes": 4095,
+      "sha256": "a3192f44bbc5af58714d4c4d17e4ae8a2a09d95f33f07860cd2c85ea207b0e59"
+    },
+    {
+      "path": "balanced-packaging-tests.log",
+      "bytes": 3176,
+      "sha256": "1d2ea7a5587da2789b1b4370aff699a1f8072568a0a43fba7a9233b5919168a1"
+    },
+    {
+      "path": "balanced-clippy-final.log",
+      "bytes": 9238,
+      "sha256": "77389caba1c039929c882b339b88f13caec91151a0e3e42712b03ff5fff67a9b"
+    },
+    {
+      "path": "balanced-clippy.log",
+      "bytes": 2414,
+      "sha256": "d512cf956e6dac981fc54b3cfe02e080733d3603e94b0c57b6724396b6ec6fba"
+    },
+    {
+      "path": "balanced-all-rust-tests.log",
+      "bytes": 42843,
+      "sha256": "60cf9a57a424b62527f95805650d1fb703ab4d0eeb0f057ffab491569a8df474"
+    },
+    {
+      "path": "balanced-build.log",
+      "bytes": 649,
+      "sha256": "8b6c5cef597d66e0ce17bcb3777b3e6dcbac12bba77413ca2a95f645091ef01b"
+    }
+  ]
+}

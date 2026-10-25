@@ -2,6 +2,25 @@
 
 Chronoscope is experimental. Source versions and downloadable builds can differ; [installation status](docs/INSTALLATION.md) records current availability and verification limits. No production-ready release is currently advertised.
 
+## Unreleased — Next
+
+- Bundle offline Balanced world terrain with explicit unload/restore and custom-DTED replacement. Preserve its identity in portable workspaces without copying the world pack. Retain the idle-camera roundoff workaround and integrate the completed workflow/navigation changes below into Next main.
+
+- Preserve the complete Event selection during slower double-click zoom, including off-screen Events and selections beyond UI limits. Guard restoration against newer selections, edits and workspace changes. Correct navigation QA to distinguish full selection from renderer evidence, and add delayed-click/query/export regressions.
+
+- Add clickable Time and Map hero thumbnails for all six offline demos, captured from the actual saved views with source attribution. Add Sync views below the selection arrow: fit the active geographic area and heading into the other views, share tilt between Time and Globe, and let Map rotate while remaining flat. Preserve independent view cameras in portable workspaces and named views.
+
+- Extend Time-view geography across the visible ground without moving the existing time-axis reference. Place four pickable grab spheres at viewport edges, clear of navigation overlays, and request imagery for the expanded footprint. Show the packaged version beside Chronoscope in native window titles.
+
+- Improve demo-picker contrast and readability; arrange New analysis as suggested analyses on the left and task details/options on the right. Rename toolbar views to Time and Map. Add light/dark contrast and responsive master/detail regression checks.
+
+- Add the welcome workspace with Open data, offline demos, actual recent saved workspaces, keyboard hints and an empty-workspace escape. Modal dialogs retain keyboard focus and return it when dismissed.
+- Coalesce identical in-flight WMTS viewport requests and retain loaded imagery instead of publishing unseeded empty canvases. Use the native Metal backend for macOS map QA; both complete offline map suites pass locally.
+- Add local guided profiles, duplicate groups, outliers and trajectory summaries, with explicit scope/layer/field choices, job progress/cancellation and persistent linked results. No SI connection is required.
+- Stage imports through source selection, mapping and full-file quality review. Preserve drafts when returning to mapping, disclose location gaps and canonical duplicate candidates, require explicit rejection acceptance, and export complete rejected-row reports without publishing Events.
+- Separate frontend import, analysis, map settings, table gestures, document file routing and operation jobs into focused modules; keep save/close serialization in the existing workspace controller.
+- Add full-review, report-export, guided workflow and extracted-table regression coverage. These changes are development source in Next and have not been promoted to Public.
+
 ## 0.15.2 — experimental preview, 2026-10-23
 
 [Windows x64 and Apple Silicon macOS downloads](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.15.2) use `ece70335d254c2b09437975c82434ca969f30739`. Both exact packages passed narrow native hosted validation; Windows is unsigned and macOS is ad hoc signed, not notarized. Source archives, notices, checksums and receipts accompany the downloads. See [installation status](docs/INSTALLATION.md) for limits.

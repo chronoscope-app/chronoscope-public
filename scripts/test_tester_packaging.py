@@ -448,7 +448,7 @@ class MacBundleStagingTests(unittest.TestCase):
                             (self.copied_app / 'Contents/Resources/new-link').symlink_to('third-party/LICENSE')
                     return real_add(archive, name, *args, **kwargs)
                 with patch.object(tarfile.TarFile, 'add', new=add):
-                    self.assert_refused_empty('Archived Mac GUI differs|Sealed Mac app changed at archive boundary')
+                    self.assert_refused_empty('Archived Mac GUI differs|Sealed Mac app changed at archive boundary|Mac app changed during inventory')
 
     def test_archived_only_gui_mutation_rejected_even_if_staged_copy_restored(self):
         real_add = tarfile.TarFile.add
@@ -492,7 +492,8 @@ class MacBundleStagingTests(unittest.TestCase):
         self.assertEqual(config, {'bundle': {
             'targets': ['app', 'dmg'],
             'macOS': {'signingIdentity': '-'},
-            'resources': {'resources/Metadata.appintents/': 'Metadata.appintents/',
+            'resources': {'../assets/terrain/': 'terrain/',
+                          'resources/Metadata.appintents/': 'Metadata.appintents/',
                           '../frontend/dist/third-party/': 'third-party/'}}})
 
 

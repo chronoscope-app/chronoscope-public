@@ -27,7 +27,8 @@ from package_tester import architecture
 
 REPO = 'chronoscope-app/chronoscope-public'
 ROOT = Path(__file__).resolve().parent.parent
-MAX_ARCHIVE = 60 * 1024 * 1024
+# The measured offline Balanced pack alone is 84.7 MiB; retain a bounded cap.
+MAX_ARCHIVE = 256 * 1024 * 1024
 MAX_EXPANDED = 1024 * 1024 * 1024
 # Reviewed GIS additions: bufrw, dbase, geozero (two licenses), scroll, shapefile.
 NOTICE_COUNT = 1498

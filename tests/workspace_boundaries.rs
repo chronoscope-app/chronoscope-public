@@ -88,8 +88,9 @@ fn failed_terrain_load_and_unload_preserve_catalog_preferences_and_revision() {
     let prefs = e.data_dir.join("preferences.json");
     std::fs::create_dir(&prefs).unwrap();
     let before = e.invoke("snapshot", json!({})).unwrap();
+    let before_terrain = e.invoke("terrain_info", json!({})).unwrap();
     assert!(e.invoke("terrain_load", json!({"path":tile})).is_err());
-    assert!(e.invoke("terrain_info", json!({})).unwrap().is_null());
+    assert_eq!(e.invoke("terrain_info", json!({})).unwrap(), before_terrain);
     assert_eq!(before, e.invoke("snapshot", json!({})).unwrap());
     std::fs::remove_dir(&prefs).unwrap();
     e.invoke("terrain_load", json!({"path":tile})).unwrap();

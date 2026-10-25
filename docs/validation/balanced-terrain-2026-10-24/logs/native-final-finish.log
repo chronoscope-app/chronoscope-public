@@ -1,0 +1,54 @@
+Found appimagetool: /tmp/appimage_extracted_3e47bb3598c757625f89e196368f9fc3/usr/bin/appimagetool
+Running command: /tmp/appimage_extracted_3e47bb3598c757625f89e196368f9fc3/usr/bin/appimagetool "/home/claw/Documents/Codex/chronoscope-next/target/release/bundle/appimage/Chronoscope.AppDir"
+
+
+appimagetool, continuous build (git version 8c8c91f), build 295 built on 2025-12-04 17:56:36 UTC
+Using architecture x86_64
+/home/claw/Documents/Codex/chronoscope-next/target/release/bundle/appimage/Chronoscope.AppDir should be packaged as Chronoscope-x86_64.AppImage
+WARNING: AppStream upstream metadata is missing, please consider creating it
+         in usr/share/metainfo/Chronoscope.appdata.xml
+         Please see https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html#sect-Quickstart-DesktopApps
+         for more information or use the generator at
+         https://docs.appimage.org/packaging-guide/optional/appstream.html#using-the-appstream-generator
+Generating squashfs...
+Downloading runtime file from https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-x86_64
+Downloaded runtime binary of size 944632
+Parallel mksquashfs: Using 12 processors
+Creating 4.0 filesystem on Chronoscope-x86_64.AppImage, block size 131072.
+
+[=============================================================\] 6445/6445 100%
+
+Exportable Squashfs 4.0 filesystem, zstd compressed, data block size 131072
+	compressed data, compressed metadata, compressed fragments,
+	compressed xattrs, compressed ids
+	duplicates are removed
+Filesystem size 194922.85 Kbytes (190.35 Mbytes)
+	47.16% of uncompressed filesystem size (413299.49 Kbytes)
+Inode table size 38816 bytes (37.91 Kbytes)
+	20.27% of uncompressed inode table size (191491 bytes)
+Directory table size 50049 bytes (48.88 Kbytes)
+	32.96% of uncompressed directory table size (151843 bytes)
+Number of duplicate files found 2473
+Number of inodes 5551
+Number of files 3457
+Number of fragments 97
+Number of symbolic links 35
+Number of device nodes 0
+Number of fifo nodes 0
+Number of socket nodes 0
+Number of directories 2059
+Number of hard-links 0
+Number of ids (unique uids + gids) 1
+Number of uids 1
+	root (0)
+Number of gids 1
+	root (0)
+Embedding ELF...
+Marking the AppImage as executable...
+Embedding MD5 digest
+Success
+
+Please consider submitting your AppImage to AppImageHub, the crowd-sourced
+central directory of available AppImages, by opening a pull request
+at https://github.com/AppImage/appimage.github.io
+/home/claw/Documents/Codex/chronoscope-next/target/release/bundle/appimage/Chronoscope_0.15.2_amd64.AppImage

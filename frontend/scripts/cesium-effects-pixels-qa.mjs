@@ -1,7 +1,7 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Native WebGL framebuffer regression: isolate ground effects from evidence and UI.
-import { chromium } from "playwright";
 import { PNG } from "pngjs";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -36,28 +36,8 @@ const server = spawn(
 );
 let browser;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) resolve(m[0]);
-    });
-    setTimeout(() => reject(Error(log)), 15000).unref();
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const body = await response.json();
-    assert(response.ok, JSON.stringify(body));
-    return body.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const prefs = await api("preferences");
   await api("preferences", {
     preferences: {
@@ -66,6 +46,7 @@ try {
       basemap: "none",
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
       theme: "dark",
     },
   });
@@ -91,43 +72,40 @@ try {
       show_trails: false,
     },
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
-  const page = await browser.newPage({
-    viewport: { width: 1800, height: 1100 },
-  });
+  browser = await chromium.launch();
+  let page;
   const errors = [];
   let publicRequests = 0;
-  page.on("pageerror", (error) => errors.push(error.message));
-  await page.route("**/*", async (route) => {
-    const target = route.request().url();
-    if (/^https?:/.test(target) && !target.startsWith(url + "/")) {
-      publicRequests++;
-      await route.abort("blockedbyclient");
-    } else await route.continue();
-  });
-  await page.goto(url + "/#token=" + token);
-  await page.waitForFunction(
-    () =>
-      window.__chronoscope?.snapshot?.count === 3000 &&
-      !window.__chronoscope.busy,
-  );
-  await page.evaluate(async () => {
-    const c = window.__chronoscope;
-    await c.ready;
-    c.view.onViewportChange = () => {};
-    c.view.onSceneChange = () => {};
-    await c.restoreScene(c.snapshot.scene);
-    c.view.fit();
-    window.__effectsCamera = c.view.captureCamera();
-  });
+  const newPage = async () => {
+    const page = await browser.newPage({
+      viewport: { width: 1800, height: 1100 },
+    });
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.route("**/*", async (route) => {
+      const target = route.request().url();
+      if (/^https?:/.test(target) && !target.startsWith(url + "/")) {
+        publicRequests++;
+        await route.abort("blockedbyclient");
+      } else await route.continue();
+    });
+    await page.goto(url + "/#token=" + token);
+    await page.waitForFunction(
+      () =>
+        window.__chronoscope?.snapshot?.count === 3000 &&
+        !window.__chronoscope.busy,
+    );
+    await page.evaluate(async () => {
+      const c = window.__chronoscope;
+      await c.ready;
+      c.view.onViewportChange = () => {};
+      c.view.onSceneChange = () => {};
+      await c.restoreScene(c.snapshot.scene);
+      c.view.fit();
+      window.__effectsCamera = c.view.captureCamera();
+    });
+    return page;
+  };
+  page = await newPage();
   const capture = async (name) => {
     // Give geographic tile requests several actual render frames to settle.
     for (let i = 0; i < 15; i++) {
@@ -220,6 +198,15 @@ try {
         show_trails: false,
       },
     });
+    // Pixel comparisons share one renderer within each mode. Start the next
+    // mode with fresh GPU resources: repeated framebuffer readbacks across
+    // scene morphs close headless Chrome/Metal on this Mac. Continuous mode
+    // switching remains covered by integration-smoke and cesium-parity.
+    if (sceneMode !== "map") {
+      await browser.close();
+      browser = await chromium.launch();
+      page = await newPage();
+    }
     await page.evaluate(async () => {
       const c = window.__chronoscope;
       await c.refresh();
@@ -451,6 +438,9 @@ try {
   );
   assert.equal(publicRequests, 0);
   assert.deepEqual(errors, []);
+} catch (error) {
+  console.error(error);
+  throw error;
 } finally {
   await browser?.close();
   server.kill();

@@ -20,6 +20,7 @@
     "test:cesium-context": "node scripts/cesium-context-qa.mjs",
     "test:effects-pixels": "node scripts/cesium-effects-pixels-qa.mjs",
     "test:cesium-terrain": "node scripts/cesium-terrain-qa.mjs",
+    "test:balanced-terrain": "node scripts/balanced-terrain-qa.mjs",
     "test:cesium-scale": "node scripts/cesium-scale-qa.mjs",
     "test:performance": "node scripts/performance-qa.mjs",
     "test:performance:100k": "node scripts/performance-100k-qa.mjs",
@@ -55,7 +56,12 @@
     "test:workspace-boundaries": "node scripts/workspace-boundaries-qa.mjs",
     "test:time-rail": "node scripts/time-rail-qa.mjs",
     "test:toolbar-dialogs": "node scripts/toolbar-dialogs-qa.mjs",
-    "test:focused-ai": "node scripts/focused-ai-qa.mjs"
+    "test:focused-ai": "node scripts/focused-ai-qa.mjs",
+    "test:guided-workflows": "node scripts/guided-workflows-qa.mjs",
+    "test:welcome": "node scripts/welcome-qa.mjs",
+    "test:presentation-ui": "node scripts/presentation-ui-qa.mjs",
+    "test:view-sync": "node scripts/view-sync-qa.mjs",
+    "capture:demo-thumbnails": "node scripts/capture-demo-thumbnails.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

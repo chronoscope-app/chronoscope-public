@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl } from "./qa-runtime.mjs";
 // Standard-build regression: no extension bridge in the engine or app interface.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -32,27 +32,7 @@ const server = spawn(
 );
 let browser;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timeout = setTimeout(
-      () => reject(Error("Startup timeout: " + log)),
-      15000,
-    );
-    const fail = (error) => {
-      clearTimeout(timeout);
-      reject(error);
-    };
-    server.once("error", fail);
-    server.once("exit", (code) => fail(Error("Server exited: " + code)));
-    server.stderr.on("data", (data) => {
-      log += data;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timeout);
-        resolve(match[0]);
-      }
-    });
-  });
+  const url = await localServerUrl(server);
   async function api(command, args = {}, success = true) {
     const response = await fetch(url + "/api/invoke", {
       method: "POST",
@@ -95,15 +75,7 @@ try {
       map_layers: [],
     },
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1600, height: 1000 },
   });

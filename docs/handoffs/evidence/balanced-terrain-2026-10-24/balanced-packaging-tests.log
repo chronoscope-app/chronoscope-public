@@ -1,0 +1,28 @@
+test_appdir_native_doc_tamper_and_missing_fail (__main__.NoticePackagingTests.test_appdir_native_doc_tamper_and_missing_fail) ... ok
+test_appdir_output_symlink_refused (__main__.NoticePackagingTests.test_appdir_output_symlink_refused) ... ok
+test_appdir_stages_and_preserves_existing_distro_copyrights (__main__.NoticePackagingTests.test_appdir_stages_and_preserves_existing_distro_copyrights) ... ok
+test_generated_payload_prunes_stale_files (__main__.NoticePackagingTests.test_generated_payload_prunes_stale_files) ... ok
+test_missing_required_source_fails_without_replacing_bundle (__main__.NoticePackagingTests.test_missing_required_source_fails_without_replacing_bundle) ... ok
+test_new_license_or_optional_notice_requires_rebuild (__main__.NoticePackagingTests.test_new_license_or_optional_notice_requires_rebuild) ... ok
+test_notice_payload_has_root_provenance_and_hashes (__main__.NoticePackagingTests.test_notice_payload_has_root_provenance_and_hashes) ... ok
+test_prepare_cesium_runs_with_tiny_fake_vendor_tree (__main__.NoticePackagingTests.test_prepare_cesium_runs_with_tiny_fake_vendor_tree) ... ok
+test_stale_built_notices_refuse_staging (__main__.NoticePackagingTests.test_stale_built_notices_refuse_staging) ... ok
+test_symlink_input_and_destination_fail (__main__.NoticePackagingTests.test_symlink_input_and_destination_fail) ... ok
+test_tampering_extra_missing_and_symlink_fail_both_verifiers (__main__.NoticePackagingTests.test_tampering_extra_missing_and_symlink_fail_both_verifiers) ... ok
+test_allowlist_excludes_untracked_and_tracked_generated_secrets (__main__.SourceArchiveTests.test_allowlist_excludes_untracked_and_tracked_generated_secrets) ... ok
+test_archive_bytes_are_reproducible_for_same_inputs (__main__.SourceArchiveTests.test_archive_bytes_are_reproducible_for_same_inputs) ... ok
+test_archive_permissions_follow_index_not_worktree (__main__.SourceArchiveTests.test_archive_permissions_follow_index_not_worktree) ... ok
+test_archive_preserves_explicit_crlf_bytes (__main__.SourceArchiveTests.test_archive_preserves_explicit_crlf_bytes) ... ok
+test_manifest_detects_tamper_extra_and_unsafe_entries (__main__.SourceArchiveTests.test_manifest_detects_tamper_extra_and_unsafe_entries) ... ok
+test_missing_tracked_file_rejected (__main__.SourceArchiveTests.test_missing_tracked_file_rejected) ... ok
+test_output_cannot_overwrite_checkout_or_follow_links (__main__.SourceArchiveTests.test_output_cannot_overwrite_checkout_or_follow_links) ... ok
+test_symlink_ancestor_rejected (__main__.SourceArchiveTests.test_symlink_ancestor_rejected) ... ok
+test_tracked_symlink_rejected (__main__.SourceArchiveTests.test_tracked_symlink_rejected) ... ok
+test_unmerged_and_submodule_index_rejected (__main__.SourceArchiveTests.test_unmerged_and_submodule_index_rejected) ... ok
+test_unsafe_and_case_colliding_paths_rejected (__main__.SourceArchiveTests.test_unsafe_and_case_colliding_paths_rejected) ... ok
+test_worktree_symlink_cannot_replace_tracked_regular_file (__main__.SourceArchiveTests.test_worktree_symlink_cannot_replace_tracked_regular_file) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 4.570s
+
+OK

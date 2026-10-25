@@ -17,3 +17,11 @@ export async function captureAppWindow(label: "main" | "si-chat" = "main") {
   ]);
   return invoke<string>("capture_app_window", { label });
 }
+
+export async function recordAppWindow(args: Record<string, unknown>) {
+  if (!native)
+    throw Error(
+      "UNAVAILABLE: video recording requires the native macOS desktop",
+    );
+  return invoke<Record<string, unknown>>("record_app_window", { args });
+}

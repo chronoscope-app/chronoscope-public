@@ -1,0 +1,1051 @@
+{
+  "date": "2026-10-25",
+  "updated_utc": "2026-10-25T19:24:51.439825+00:00",
+  "repository": "chronoscope-app/chronoscope-next",
+  "branch": "codex/linux-release-regressions",
+  "tested_source_revision": "08871720a0a4000762d63970efeb467735af4a8f",
+  "application_source_revision": "163ae43",
+  "passed": false,
+  "status": "Application fixes verified; Intel playback pacing gate remains unmet.",
+  "public_promoted": false,
+  "github_runners_used": false,
+  "cargo_jobs_max": 2,
+  "browser_jobs": 1,
+  "release_profile_run": {
+    "run_id": "20261025T190247Z-e67fc3a8",
+    "source_revision": "08871720a0a4000762d63970efeb467735af4a8f",
+    "dirty": false,
+    "passed": false,
+    "cli_build_profile": "release",
+    "native_build_profile": "debug",
+    "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9",
+    "started_utc": "2026-10-25T19:02:47.891486+00:00",
+    "finished_utc": "2026-10-25T19:13:57.286049+00:00",
+    "evidence_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8",
+    "checks": [
+      {
+        "name": "validation-runner-tests",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_validation_runner.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/validation-runner-tests.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 2.872
+      },
+      {
+        "name": "rust-format",
+        "command": [
+          "cargo",
+          "fmt",
+          "--all",
+          "--check"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/rust-format.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.816
+      },
+      {
+        "name": "glib-backport-integrity",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_glib_backport.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/glib-backport-integrity.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.765
+      },
+      {
+        "name": "core-clippy",
+        "command": [
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "chronoscope",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/core-clippy.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.465
+      },
+      {
+        "name": "cli-build",
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "-p",
+          "chronoscope",
+          "--bin",
+          "chronoscope",
+          "--release"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/cli-build.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 423.328
+      },
+      {
+        "name": "frontend-build",
+        "command": [
+          "/home/claw/.local/bin/npm",
+          "--prefix",
+          "frontend",
+          "run",
+          "build",
+          "--",
+          "--configLoader",
+          "runner"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/frontend-build.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 48.096
+      },
+      {
+        "name": "generated-contracts",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "scripts/generate_contracts.mjs",
+          "--check"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/generated-contracts.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.419
+      },
+      {
+        "name": "frontend-unit-tests",
+        "command": [
+          "/home/claw/.local/bin/npm",
+          "--prefix",
+          "frontend",
+          "test"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/frontend-unit-tests.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 8.737
+      },
+      {
+        "name": "balanced-terrain-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/balanced-terrain-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/balanced-terrain-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 60.285,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "546b3d27a6470fdc2addf797cc466fc7e8d38a319b8ad642617c7023d47174ef"
+      },
+      {
+        "name": "real-demos-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/real-demos-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/real-demos-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 69.768,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "d624e9a99456c1f1fd051a4a3d5712c656233d9d71e95f1479f108772a75c827"
+      },
+      {
+        "name": "view-sync-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/view-sync-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/view-sync-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 13.524,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "13b5c1df8255ad188e162f25d375077b47708f7fa0481b784f930b5e23da5076"
+      },
+      {
+        "name": "mcp-live-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/mcp-live-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/mcp-live-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 6.635,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201"
+      },
+      {
+        "name": "playback-transitions-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/playback-transitions-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/playback-transitions-qa.log",
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_s": 7.897,
+        "suite_sha256": "a02a9f446bd158cc39e7df0f8df2655d54f8790439e4a6a9f3177696c54c26d1"
+      },
+      {
+        "name": "test_publication_cleanup",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_publication_cleanup.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/test_publication_cleanup.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.365
+      },
+      {
+        "name": "test_package_distribution",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_package_distribution.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/test_package_distribution.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 1.417
+      },
+      {
+        "name": "test_tester_packaging",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_tester_packaging.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/test_tester_packaging.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.265
+      },
+      {
+        "name": "test_validate_tester_download",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_validate_tester_download.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/test_validate_tester_download.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.165
+      },
+      {
+        "name": "test_analytics",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_analytics.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/test_analytics.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.515
+      },
+      {
+        "name": "test_analytics_engine",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_analytics_engine.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/test_analytics_engine.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 1.869
+      },
+      {
+        "name": "test_chart_shortcuts_protocol",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_chart_shortcuts_protocol.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/test_chart_shortcuts_protocol.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.365
+      },
+      {
+        "name": "test_subsecond_protocol",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_subsecond_protocol.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/test_subsecond_protocol.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.415
+      },
+      {
+        "name": "native-clippy",
+        "command": [
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "chronoscope-desktop",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/native-clippy.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 4.975
+      },
+      {
+        "name": "native-build",
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "-p",
+          "chronoscope-desktop"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/native-build.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 10.14
+      },
+      {
+        "name": "native-cli-smoke",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_desktop_cli.py",
+          "--binary",
+          "/home/claw/Documents/Codex/chronoscope-next/target/debug/chronoscope-desktop"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel/runs/20261025T190247Z-e67fc3a8/logs/native-cli-smoke.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 3.983
+      }
+    ]
+  },
+  "headed_playback_comparison": {
+    "run_id": "20261025T191502Z-b79cfe32",
+    "source_revision": "08871720a0a4000762d63970efeb467735af4a8f",
+    "dirty": false,
+    "passed": false,
+    "cli_build_profile": "release",
+    "native_build_profile": null,
+    "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9",
+    "started_utc": "2026-10-25T19:15:02.800847+00:00",
+    "finished_utc": "2026-10-25T19:15:16.691129+00:00",
+    "evidence_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel-headed-playback/runs/20261025T191502Z-b79cfe32",
+    "checks": [
+      {
+        "name": "validation-runner-tests",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_validation_runner.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel-headed-playback/runs/20261025T191502Z-b79cfe32/logs/validation-runner-tests.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 2.88
+      },
+      {
+        "name": "generated-contracts",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "scripts/generate_contracts.mjs",
+          "--check"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel-headed-playback/runs/20261025T191502Z-b79cfe32/logs/generated-contracts.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.165
+      },
+      {
+        "name": "frontend-unit-tests",
+        "command": [
+          "/home/claw/.local/bin/npm",
+          "--prefix",
+          "frontend",
+          "test"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel-headed-playback/runs/20261025T191502Z-b79cfe32/logs/frontend-unit-tests.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 3.075
+      },
+      {
+        "name": "playback-transitions-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/playback-transitions-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/release-intel-headed-playback/runs/20261025T191502Z-b79cfe32/logs/playback-transitions-qa.log",
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_s": 7.245,
+        "suite_sha256": "a02a9f446bd158cc39e7df0f8df2655d54f8790439e4a6a9f3177696c54c26d1"
+      }
+    ]
+  },
+  "original_full_rust": {
+    "source_revision": "8bfe37b9b16ccb16cc5e5cb5a25a77fe6c08470d",
+    "passed": 408,
+    "failed": 0,
+    "ignored": 0,
+    "count_basis": "Sum of per-binary test result summaries; the earlier 407 per-test-line count missed one case.",
+    "rust_sources_unchanged": true,
+    "rerun_for_this_focused_stage": false
+  },
+  "counts": {
+    "frontend_tests": 42,
+    "runner_tests": 11,
+    "packaging_tests": 103,
+    "independent_oracle_suites": 4,
+    "release_checks_passed": 23,
+    "release_checks_total": 24
+  },
+  "remaining_gate": {
+    "suite": "playback-transitions-qa",
+    "minimum_updates_in_3_5_seconds": 20,
+    "intel_release_headless_updates": 16,
+    "intel_release_visible_window_updates": 17,
+    "thresholds_lowered": false,
+    "no_further_performance_experiments_requested": true
+  },
+  "verified_fixes": [
+    "Terrain-free Globe footprint corners now use the exact ellipsoid rather than LOD-dependent globe triangles.",
+    "View-sync and demo mode assertions wait for a newly rendered requested-mode frame within the original timeout.",
+    "Data/DOM readiness uses timer polling; every predicate, original timeout and real click remains.",
+    "Pause assertions await final filter and coalesced effect work, then require exactly one actual atlas.",
+    "Pinned Cesium TerrainPicker patch isolates old workers after reset and retains source triangles on refused, rejected or synchronously thrown worker tasks.",
+    "Patch application verifies dependency versions and both source hashes, clears only generated Vite cache on first application, and is included in build fingerprints.",
+    "Patch regressions load both versions in isolation and test file application only in temporary fixtures.",
+    "Hardware benchmarks select native backends and reject software renderers; explicit window/backend overrides remain available.",
+    "The validator labels and verifies debug/release CLI receipts and reports; native checks remain separately labelled debug."
+  ],
+  "terrain_patch": {
+    "cesium": "1.146.0",
+    "engine": "26.4.0",
+    "original_sha256": "24907bf36a1e67500aaf5213a59ef02f74941c920928bbc7ab134db7beaa55cc",
+    "patched_sha256": "198f7ed298ee6e97f6e1a625f12f8b8391079c859a0f929c63d20bcaf7385568",
+    "deterministic_regressions": 5
+  },
+  "terrain_final_scenes": [
+    {
+      "scene": "himalayas-globe",
+      "painted_height_m": 5440.363557699982,
+      "idle_frames": 0,
+      "tiles_loaded": true,
+      "rendered_tiles": 6,
+      "pending_tiles": 0,
+      "render_errors": 0
+    },
+    {
+      "scene": "himalayas-map",
+      "painted_height_m": 5440.363557699982,
+      "idle_frames": 0,
+      "tiles_loaded": true,
+      "rendered_tiles": 4,
+      "pending_tiles": 0,
+      "render_errors": 0
+    },
+    {
+      "scene": "himalayas-space-time",
+      "painted_height_m": 5676.647407358592,
+      "idle_frames": 0,
+      "tiles_loaded": true,
+      "rendered_tiles": 17,
+      "pending_tiles": 0,
+      "render_errors": 0
+    },
+    {
+      "scene": "himalayas-refined",
+      "painted_height_m": 6730.736690862148,
+      "idle_frames": 0,
+      "tiles_loaded": true,
+      "rendered_tiles": 5,
+      "pending_tiles": 0,
+      "render_errors": 0
+    },
+    {
+      "scene": "antarctic-polar",
+      "painted_height_m": 2662.4594128751232,
+      "idle_frames": 0,
+      "tiles_loaded": true,
+      "rendered_tiles": 95,
+      "pending_tiles": 0,
+      "render_errors": 0
+    },
+    {
+      "scene": "greenland-polar",
+      "painted_height_m": 1731.7725694150674,
+      "idle_frames": 0,
+      "tiles_loaded": true,
+      "rendered_tiles": 32,
+      "pending_tiles": 0,
+      "render_errors": 0
+    }
+  ],
+  "demo_readiness_proof": {
+    "first_ready_ms": 16900.29999999702,
+    "timer_ready_samples_before_timeout": 132,
+    "raf_ready_samples": 0,
+    "last_raf_sample_ms": 16520.199999999255,
+    "original_timeout_ms": 30000,
+    "evidence": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/demo-readiness-proof/profile/report.json"
+  },
+  "earlier_radeon_checkpoint": {
+    "source_revision": "a424f41f828f71324d1acdc536f4dde1d27b6e79",
+    "final_source_certification": false,
+    "updates": 60,
+    "median_interval_ms": 55,
+    "raf_samples": 214,
+    "all_four_playback_checks_passed": true,
+    "pause_settled_ms": 502.6000000014901,
+    "evidence": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-playback/pause-readiness/summary.json"
+  },
+  "hardware": {
+    "intel_probe": {
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "vendor": "Google Inc. (Intel)"
+    },
+    "earlier_radeon_probe": {
+      "renderer": "ANGLE (AMD, Vulkan 1.4.335 (AMD Radeon 550X Series (RADV POLARIS12) (0x00006987)), radv)",
+      "vendor": "Google Inc. (AMD)"
+    },
+    "driver_state": {
+      "recorded_utc": "2026-10-25T18:51:56.731029+00:00",
+      "driver_reset_attempted": false,
+      "pci_rebind_attempted": false,
+      "reboot_attempted": false,
+      "selected_intel_environment": {
+        "VK_DRIVER_FILES": "/usr/share/vulkan/icd.d/intel_icd.json"
+      },
+      "devices": {
+        "renderD128": {
+          "runtime_status": "active",
+          "render_node_open": "ok"
+        },
+        "renderD129": {
+          "runtime_status": "error",
+          "render_node_open": "failed",
+          "errno": 22,
+          "error": "Invalid argument"
+        }
+      }
+    },
+    "interrupted_after_driver_error": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/final-hardware/report.json",
+    "user_decision": "Leave running and document the hardware limit; no reboot/reset/rebind."
+  },
+  "hardware_benchmarks": {
+    "performance-qa": {
+      "status": "passed",
+      "samples": 27,
+      "renderer": {
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "width": 1186,
+        "height": 1024,
+        "resolutionScale": 1,
+        "points": 3568,
+        "diagnostics": {
+          "engine": "CesiumJS",
+          "navigation": {
+            "inertia": false,
+            "freeLook": false,
+            "northUpOnly": false,
+            "flatOnly": false,
+            "gestureMaximumTiltDegrees": 85,
+            "keyboardFocus": "map",
+            "active": false
+          },
+          "spaceTimeFloor": {
+            "bounds": [
+              -160.47992132230362,
+              22.379345543465508,
+              69.29727827171362,
+              89.31695550444954
+            ],
+            "role": "time-axis-reference",
+            "mapBounds": [
+              -180,
+              -57.63758492237331,
+              108.52086419255502,
+              90
+            ],
+            "grabHandleAnchor": "viewport-edge",
+            "padding": {
+              "left": 47.44,
+              "right": 35.58,
+              "top": 102.4,
+              "bottom": 71.68
+            }
+          },
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "timeHeightMeters": 7532094.806633246,
+          "displayTimeBounds": [
+            1452124800,
+            1761976800
+          ],
+          "contextRecoveries": 0,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "lastRenderError": "",
+          "sceneMode": 1,
+          "pointCount": 3568,
+          "triangleCount": 0,
+          "fadingPointCount": 0,
+          "fadingTriangleCount": 0,
+          "fadingStemSegments": 0,
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "triangleVisibleCount": 0,
+          "selectionCount": 0,
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "trackPolylines": 166,
+          "stemSegments": 3568,
+          "trailInputEdges": 3485,
+          "trailOutputEdges": 1102,
+          "geodesicRendering": {
+            "geometry": {
+              "remainingSegments": 0,
+              "remainingInterpolation": 200000,
+              "interpolated": 0,
+              "coarsened": 0,
+              "sourceSegments": 0
+            },
+            "trails": {
+              "remainingSegments": 2204,
+              "remainingInterpolation": 200000,
+              "interpolated": 0,
+              "coarsened": 0,
+              "sourceSegments": 2204
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000
+          },
+          "axisLabels": 4,
+          "orbitHandles": 4,
+          "requestRenderMode": true,
+          "performance": {
+            "renderedFrames": 32,
+            "active": false,
+            "sampleFrames": 31,
+            "fps": null,
+            "frameP95Ms": 112.40000000223517,
+            "renderCpuP95Ms": 93
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapPending": 0,
+            "basemapError": "",
+            "basemapRenderedTiles": 0,
+            "basemapAlignmentErrorPixels": 0,
+            "basemapMaximumLevel": 0,
+            "imageryLayers": 1,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": false,
+            "terrainProviderChanges": 0,
+            "terrainPendingTiles": 0,
+            "terrainCovered": 0,
+            "verticalDatum": "unresolved-msl",
+            "geoidModel": null,
+            "mode": "space-time"
+          },
+          "effectError": ""
+        }
+      },
+      "errors": [],
+      "public_requests": 0,
+      "check": {
+        "name": "performance-qa",
+        "command": [
+          "node",
+          "frontend/scripts/performance-qa.mjs"
+        ],
+        "suite_sha256": "5552ec17b05f9bb4cfec697960e411dff38e52342e05c2b736a769463a04d3da",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 95.045
+      },
+      "runtime": {
+        "run_id": "linux-hardware-2b03ddf4-51ec-4b6f-8969-6b799e27bdeb",
+        "source_revision": "08871720a0a4000762d63970efeb467735af4a8f",
+        "suite": "performance-qa",
+        "started": "2026-10-25T19:17:25.378Z",
+        "platform": "linux",
+        "paths": {
+          "out": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-qa",
+          "data": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-qa/profile",
+          "screenshots": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-qa/screenshots"
+        },
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "child_processes": [
+          {
+            "executable": "/home/claw/Documents/Codex/chronoscope-next/target/release/chronoscope",
+            "pid": 310354,
+            "profile": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-qa/profile"
+          }
+        ],
+        "exit_code": 0,
+        "finished": "2026-10-25T19:19:00.092Z"
+      },
+      "evidence_path": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-qa/report.json",
+      "cwd": "/home/claw/Documents/Codex/chronoscope-next",
+      "active_callback_fps_medians": {
+        "3568-event fixture/focus": 41.31,
+        "3568-event fixture/orbit": 39.49,
+        "3568-event fixture/playback": 40.23
+      },
+      "scene_counts": [],
+      "environment": {
+        "VK_DRIVER_FILES": "/usr/share/vulkan/icd.d/intel_icd.json",
+        "CHRONOSCOPE_QA_HARDWARE": "1",
+        "CHRONOSCOPE_QA_HEADLESS": "1",
+        "CHRONOSCOPE_QA_RUST_PROFILE": "release",
+        "CHRONOSCOPE_CLI": "/home/claw/Documents/Codex/chronoscope-next/target/release/chronoscope"
+      }
+    },
+    "performance-100k-qa": {
+      "status": "passed",
+      "samples": 36,
+      "renderer": {
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "width": 1186,
+        "height": 1024,
+        "resolutionScale": 1,
+        "points": 20000,
+        "diagnostics": {
+          "engine": "CesiumJS",
+          "navigation": {
+            "inertia": false,
+            "freeLook": false,
+            "northUpOnly": false,
+            "flatOnly": false,
+            "gestureMaximumTiltDegrees": 85,
+            "keyboardFocus": "map",
+            "active": false
+          },
+          "spaceTimeFloor": {
+            "bounds": [
+              -102.47063711252396,
+              9.483435393255258,
+              -57.919635326353486,
+              60.19634902377027
+            ],
+            "role": "time-axis-reference",
+            "mapBounds": [
+              -139.88014445320147,
+              6.110181867446598,
+              -21.223361546798614,
+              90
+            ],
+            "grabHandleAnchor": "viewport-edge",
+            "padding": {
+              "left": 47.44,
+              "right": 35.58,
+              "top": 102.4,
+              "bottom": 71.68
+            }
+          },
+          "globeTime": false,
+          "globeTimeScale": 1,
+          "timeHeightMeters": 1906802.332155123,
+          "displayTimeBounds": [
+            1735689600,
+            1735749540
+          ],
+          "contextRecoveries": 0,
+          "recovering": false,
+          "renderErrorCount": 0,
+          "lastRenderError": "",
+          "sceneMode": 1,
+          "pointCount": 20000,
+          "triangleCount": 0,
+          "fadingPointCount": 0,
+          "fadingTriangleCount": 0,
+          "fadingStemSegments": 0,
+          "fadeDurationsMs": {
+            "arrival": 550,
+            "departure": 2400
+          },
+          "arrivingPointCount": 0,
+          "arrivingTriangleCount": 0,
+          "triangleVisibleCount": 0,
+          "selectionCount": 0,
+          "geometryFeatures": 0,
+          "geometryPrimitives": 2,
+          "trackPolylines": 160,
+          "stemSegments": 20000,
+          "trailInputEdges": 19919,
+          "trailOutputEdges": 460,
+          "geodesicRendering": {
+            "geometry": {
+              "remainingSegments": 0,
+              "remainingInterpolation": 200000,
+              "interpolated": 0,
+              "coarsened": 0,
+              "sourceSegments": 0
+            },
+            "trails": {
+              "remainingSegments": 920,
+              "remainingInterpolation": 200000,
+              "interpolated": 0,
+              "coarsened": 0,
+              "sourceSegments": 920
+            },
+            "maximumAddedVertices": 400000,
+            "sourceEndpointBudget": 400000
+          },
+          "axisLabels": 2,
+          "orbitHandles": 4,
+          "requestRenderMode": true,
+          "performance": {
+            "renderedFrames": 110,
+            "active": false,
+            "sampleFrames": 5,
+            "fps": null,
+            "frameP95Ms": 156.40000000223517,
+            "renderCpuP95Ms": 10.400000002235174
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapPending": 0,
+            "basemapError": "",
+            "basemapRenderedTiles": 0,
+            "basemapAlignmentErrorPixels": 0,
+            "basemapMaximumLevel": 0,
+            "imageryLayers": 1,
+            "tileCount": 0,
+            "imageryRequestedTiles": 0,
+            "terrainActive": false,
+            "terrainProviderChanges": 0,
+            "terrainPendingTiles": 0,
+            "terrainCovered": 0,
+            "verticalDatum": "unresolved-msl",
+            "geoidModel": null,
+            "mode": "space-time"
+          },
+          "effectError": ""
+        }
+      },
+      "errors": [],
+      "public_requests": 0,
+      "check": {
+        "name": "performance-100k-qa",
+        "command": [
+          "node",
+          "frontend/scripts/performance-100k-qa.mjs"
+        ],
+        "suite_sha256": "f8ea395dddedb9f91bb3cbe15320525c05443841ee5b3b42d58304eada8a50b2",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 260.522
+      },
+      "runtime": {
+        "run_id": "linux-hardware-26a2e172-cb76-473e-8d45-90c0c4b2ac9c",
+        "source_revision": "08871720a0a4000762d63970efeb467735af4a8f",
+        "suite": "performance-100k-qa",
+        "started": "2026-10-25T19:19:00.440Z",
+        "platform": "linux",
+        "paths": {
+          "out": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-100k-qa",
+          "data": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-100k-qa/profile",
+          "screenshots": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-100k-qa/screenshots"
+        },
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "child_processes": [
+          {
+            "executable": "/home/claw/Documents/Codex/chronoscope-next/target/release/chronoscope",
+            "pid": 311393,
+            "profile": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-100k-qa/profile"
+          }
+        ],
+        "exit_code": 0,
+        "finished": "2026-10-25T19:23:20.601Z"
+      },
+      "evidence_path": "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/benchmarks/performance-100k-qa/report.json",
+      "cwd": "/home/claw/Documents/Codex/chronoscope-next",
+      "active_callback_fps_medians": {
+        "20000/focus": 30.77,
+        "20000/orbit": 30.17,
+        "20000/playback": 30.0,
+        "100000/focus": 14.3,
+        "100000/orbit": 12.53,
+        "100000/playback": 14.28
+      },
+      "scene_counts": [
+        {
+          "budget": 20000,
+          "count": 100000,
+          "visible": 100000,
+          "points": 20000,
+          "packetCount": 100000,
+          "cellSum": 100000
+        },
+        {
+          "budget": 100000,
+          "count": 100000,
+          "visible": 100000,
+          "points": 100000,
+          "packetCount": 100000,
+          "cellSum": 100000
+        }
+      ],
+      "environment": {
+        "VK_DRIVER_FILES": "/usr/share/vulkan/icd.d/intel_icd.json",
+        "CHRONOSCOPE_QA_HARDWARE": "1",
+        "CHRONOSCOPE_QA_HEADLESS": "1",
+        "CHRONOSCOPE_QA_RUST_PROFILE": "release",
+        "CHRONOSCOPE_CLI": "/home/claw/Documents/Codex/chronoscope-next/target/release/chronoscope"
+      }
+    }
+  },
+  "benchmark_summary": {
+    "source_revision": "08871720a0a4000762d63970efeb467735af4a8f",
+    "rust_build_profile": "release",
+    "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9",
+    "github_runners_used": false,
+    "checks": [
+      {
+        "name": "performance-qa",
+        "command": [
+          "node",
+          "frontend/scripts/performance-qa.mjs"
+        ],
+        "suite_sha256": "5552ec17b05f9bb4cfec697960e411dff38e52342e05c2b736a769463a04d3da",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 95.045
+      },
+      {
+        "name": "performance-100k-qa",
+        "command": [
+          "node",
+          "frontend/scripts/performance-100k-qa.mjs"
+        ],
+        "suite_sha256": "f8ea395dddedb9f91bb3cbe15320525c05443841ee5b3b42d58304eada8a50b2",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 260.522
+      }
+    ],
+    "passed": true,
+    "started_utc": "2026-10-25T19:17:25.070313+00:00",
+    "finished_utc": "2026-10-25T19:23:20.639254+00:00"
+  },
+  "retained_failure_reports": [
+    "/home/claw/Documents/Codex/chronoscope-next/.qa/public-promotion-2026-10-25/report.json",
+    "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/software/report.json",
+    "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/software-final/report.json",
+    "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/hardware-final/report.json",
+    "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/patched-hardware/report.json",
+    "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/final-hardware/report.json",
+    "/home/claw/Documents/Codex/chronoscope-next/.qa/linux-release-fixes/final-intel/report.json"
+  ],
+  "commands": {
+    "release_acceptance": "VK_DRIVER_FILES=/usr/share/vulkan/icd.d/intel_icd.json CARGO_BUILD_JOBS=2 RUST_TEST_THREADS=1 CHRONOSCOPE_QA_HARDWARE=1 python3 scripts/validate_local.py --tier full --release-cli --suite balanced-terrain --suite view-sync --suite real-demos --suite mcp-live --suite playback-transitions --native --chromium /usr/bin/google-chrome --report .qa/linux-release-fixes/release-intel/report.json",
+    "visible_playback_comparison": "VK_DRIVER_FILES=/usr/share/vulkan/icd.d/intel_icd.json CHRONOSCOPE_QA_HARDWARE=1 CHRONOSCOPE_QA_HEADLESS=0 python3 scripts/validate_local.py --release-cli --skip-build --suite playback-transitions --chromium /usr/bin/google-chrome",
+    "benchmarks": "VK_DRIVER_FILES=/usr/share/vulkan/icd.d/intel_icd.json CHRONOSCOPE_QA_HEADLESS=1 python3 .qa/linux-release-fixes/run-hardware-benchmarks.py"
+  },
+  "limitations": [
+    "This is focused verification of five app suites, not a new 49-suite release sweep.",
+    "The release Intel run remains failed because the unchanged pacing gate was not met.",
+    "Radeon driver runtime_status=error and render-node EINVAL prevent final-source Radeon certification; earlier successful checkpoints remain distinct.",
+    "Original SwiftShader and debug-profile failures are retained; optimized/hardware passes do not relabel them.",
+    "Benchmarks measure this shared workstation and browser callback cadence, not GPU elapsed time or controlled comparative speedups.",
+    "Native Linux verification here is compilation/lint and headless CLI/MCP smoke; native Mac results are owned by the coordinating report."
+  ]
+}

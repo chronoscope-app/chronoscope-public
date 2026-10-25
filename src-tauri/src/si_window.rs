@@ -33,7 +33,7 @@ pub async fn si_window(
                     "si-chat",
                     tauri::WebviewUrl::App("si.html".into()),
                 )
-                .title("SI — Chronoscope")
+                .title(format!("SI — Chronoscope {}", app.package_info().version))
                 .inner_size(860., 900.)
                 .min_inner_size(480., 460.)
                 .on_navigation(move |url| {

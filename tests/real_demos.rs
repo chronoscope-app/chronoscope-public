@@ -1,21 +1,13 @@
 use chronoscope::{engine::Engine, project::Project};
 use serde_json::json;
 
-#[test]
-fn bundled_demos_are_editable_copies_with_original_attributes_and_saved_views() {
+fn check_demos(cases: &[(&str, usize, usize, &str)]) {
     let data = tempfile::tempdir().unwrap();
     let engine = Engine::new(Project::empty(), data.path().into()).unwrap();
     let catalog = engine.invoke("demo_catalog", json!({})).unwrap();
     assert_eq!(catalog["demos"].as_array().unwrap().len(), 6);
     assert_eq!(engine.invoke("snapshot", json!({})).unwrap()["count"], 0);
-    for (id, count, entities, attribute) in [
-        ("noaa-ais", 8473, 10, "mmsi"),
-        ("animal-gps", 15697, 3, "event-id"),
-        ("hurricanes", 3568, 83, "storm_id"),
-        ("local-wildlife", 3439, 3, "event-id"),
-        ("stork-migration", 6090, 3, "individual-local-identifier"),
-        ("elephant-seals", 15501, 3, "MAXDEPTH"),
-    ] {
+    for &(id, count, entities, attribute) in cases {
         let opened = engine.invoke("demo_open", json!({"id":id})).unwrap();
         assert!(opened["scene"].is_object());
         let snapshot = engine.invoke("snapshot", json!({"compact":false})).unwrap();
@@ -38,6 +30,24 @@ fn bundled_demos_are_editable_copies_with_original_attributes_and_saved_views() 
             count
         );
     }
+}
+
+#[test]
+fn representative_demo_is_an_editable_portable_copy() {
+    check_demos(&[("local-wildlife", 3439, 3, "event-id")]);
+}
+
+#[test]
+#[ignore = "full bundled-data matrix; run validate_local.py --tier full"]
+fn bundled_demos_are_editable_copies_with_original_attributes_and_saved_views() {
+    check_demos(&[
+        ("noaa-ais", 8473, 10, "mmsi"),
+        ("animal-gps", 15697, 3, "event-id"),
+        ("hurricanes", 3568, 83, "storm_id"),
+        ("local-wildlife", 3439, 3, "event-id"),
+        ("stork-migration", 6090, 3, "individual-local-identifier"),
+        ("elephant-seals", 15501, 3, "MAXDEPTH"),
+    ]);
 }
 
 #[test]

@@ -1,5 +1,5 @@
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -40,32 +40,8 @@ const check = (name, evidence) => {
   console.log("PASS", name);
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.on("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timer);
-        resolve(match[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const result = await response.json();
-    assert(response.ok, JSON.stringify(result));
-    return result.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   await api("open", {
     path: path.join(root, "samples/atlantic-hurricanes-2016-2025.chronoscope"),
   });
@@ -77,6 +53,7 @@ try {
       map: { ...prefs.map, enabled: false },
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
   await api("view_set", {
@@ -95,20 +72,7 @@ try {
       trail_opacity: 0.25,
     },
   });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1600, height: 1000 },
   });
@@ -238,10 +202,55 @@ try {
     "Bloom crossfades with at most two real imagery layers and no renderer errors",
     { frames: samples.frames.length },
   );
-  await page.waitForFunction(
-    () => !window.__chronoscope.view.displayLayer.diagnostics.pending,
-  );
-  await page.waitForTimeout(150);
+  // Pausing commits the final time window asynchronously. Worker readiness is
+  // only one stage: a coalesced replacement can still be installing its atlas.
+  await page.evaluate(() => {
+    const state = (window.pauseSettlement = {
+      started: performance.now(),
+      filterSettled: false,
+      filterError: null,
+      samples: [],
+    });
+    window.__chronoscope.filterIdle().then(
+      () => (state.filterSettled = true),
+      (error) => (state.filterError = String(error)),
+    );
+  });
+  try {
+    await page.waitForFunction(
+      () => {
+        const state = window.pauseSettlement,
+          v = window.__chronoscope.view,
+          display = v.displayLayer,
+          imagery = v.viewer.imageryLayers;
+        let layers = 0;
+        for (let i = 0; i < imagery.length; i++)
+          if (imagery.get(i).chronoscopeEffects) layers++;
+        state.samples.push({
+          elapsedMs: performance.now() - state.started,
+          filterSettled: state.filterSettled,
+          playback: v.playback,
+          updating: display.updating,
+          pending: display.diagnostics.pending,
+          layers,
+          error: display.diagnostics.error,
+        });
+        if (state.filterError) throw Error(state.filterError);
+        if (display.diagnostics.error) throw Error(display.diagnostics.error);
+        return (
+          state.filterSettled &&
+          !v.playback &&
+          !display.updating &&
+          !display.diagnostics.pending &&
+          layers === 1
+        );
+      },
+      null,
+      { polling: 100, timeout: 30000 },
+    );
+  } finally {
+    report.pauseSettlement = await page.evaluate(() => window.pauseSettlement);
+  }
   const layers = await page.evaluate(() => {
     const v = window.__chronoscope.view,
       a = v.viewer.imageryLayers;
@@ -269,6 +278,7 @@ try {
   await page.click("#play");
   await page.waitForTimeout(700);
   await page.click("#play");
+  await page.evaluate(() => window.__chronoscope.filterIdle());
   page.off("request", listener);
   assert.equal(
     filters,

@@ -129,6 +129,24 @@ impl PendingImport {
         first_id: u64,
         aggregation: Option<crate::aggregation::Options>,
     ) -> Result<IngestReport, String> {
+        self.ingest_reporting(
+            sheet,
+            mapping,
+            store,
+            first_id,
+            aggregation,
+            &mut |_, _, _| Ok(()),
+        )
+    }
+    pub fn ingest_reporting(
+        &self,
+        sheet: usize,
+        mapping: &Mapping,
+        store: &DataStore,
+        first_id: u64,
+        aggregation: Option<crate::aggregation::Options>,
+        rejected_row: &mut import::RejectedRow<'_>,
+    ) -> Result<IngestReport, String> {
         self.check()?;
         let mut accumulator = aggregation
             .map(|o| crate::aggregation::Accumulator::new(store.directory(), o))
@@ -139,13 +157,14 @@ impl PendingImport {
         let mut reasons = vec![];
         let mut raw_seen = 0u64;
         let mut flush = |batch: &RawTable| -> Result<(), String> {
-            let report = import::convert(
+            let report = import::convert_reporting(
                 batch,
                 mapping,
                 &self.sample.source,
                 first_id
                     .checked_add(raw_seen)
                     .ok_or("Event ID capacity exhausted")?,
+                rejected_row,
             )?;
             raw_seen = raw_seen
                 .checked_add(batch.rows.len() as u64)

@@ -78,6 +78,14 @@ fn agent_status(
 }
 
 fn main() {
+    let context = tauri::generate_context!();
+    if let Ok(directory) =
+        tauri::utils::platform::resource_dir(context.package_info(), &tauri::utils::Env::default())
+    {
+        chronoscope::balanced_terrain::set_resource_path(
+            directory.join("terrain/balanced.cterrain"),
+        );
+    }
     // The bundled executable is also the CLI/MCP launcher. Finder's legacy
     // process-serial argument is not a CLI request.
     if std::env::args().skip(1).any(|a| !a.starts_with("-psn_")) {
@@ -129,6 +137,7 @@ fn main() {
             si_window::si_window,
             si_window::si_open_link,
             window_capture::capture_app_window,
+            window_capture::record_app_window,
             icon_appearance::desktop_icon_theme
         ])
         .on_window_event(|window, event| {
@@ -176,6 +185,9 @@ fn main() {
             }
         })
         .setup(move |app| {
+            if let Some(main) = app.get_webview_window("main") {
+                main.set_title(&format!("Chronoscope {}", app.package_info().version))?;
+            }
             #[cfg(target_os = "macos")]
             {
                 let intent_engine = engine.clone();
@@ -240,7 +252,7 @@ fn main() {
             }
             Ok(())
         })
-        .build(tauri::generate_context!())
+        .build(context)
         .expect("Desktop runtime failed")
         .run(|app, event| {
             if matches!(event, tauri::RunEvent::Ready) {

@@ -1,11 +1,11 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real Rust jobs and UI; deterministic loopback model, no external requests.
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import { createServer } from "node:http";
-import { chromium } from "playwright";
 const root = path.resolve(import.meta.dirname, "../.."),
   out = path.resolve(
     process.env.CHRONOSCOPE_QA_OUT || path.join(root, ".qa/focused-ai/browser"),
@@ -71,32 +71,8 @@ const pass = (name) => {
   console.log("PASS " + name);
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.on("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const b = await r.json();
-    assert(r.ok, JSON.stringify(b));
-    return b.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   await api("open", {
     path: path.join(root, "samples/atlantic-hurricanes-2016-2025.chronoscope"),
   });
@@ -108,6 +84,7 @@ try {
       map: { ...prefs.map, enabled: false },
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
   await new Promise((r) => model.listen(0, "127.0.0.1", r));
@@ -131,18 +108,7 @@ try {
     });
   await api("select", { ids, mode: "replace" });
   await api("view_set", { inspector_tab: "inspect" });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1440, height: 1000 },
   });

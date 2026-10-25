@@ -44,6 +44,7 @@
       "minimumSystemVersion": "11.0"
     },
     "resources": {
+      "../assets/terrain/": "terrain/",
       "../frontend/dist/third-party/": "third-party/"
     }
   }

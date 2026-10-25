@@ -1,0 +1,19 @@
+
+> chronoscope-ui@0.15.2 prebuild
+> node scripts/prepare-cesium.mjs
+
+node:fs:484
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open '/workspace/chronoscope-next/assets/terrain/balanced.json'
+    at Object.readFileSync (node:fs:484:20)
+    at verifyBalancedTerrain (file:///workspace/chronoscope-next/scripts/verify-balanced-terrain.mjs:9:33)
+    at file:///workspace/chronoscope-next/frontend/scripts/prepare-cesium.mjs:7:7 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/workspace/chronoscope-next/assets/terrain/balanced.json'
+}
+
+Node.js v24.19.0

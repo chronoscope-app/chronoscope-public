@@ -156,7 +156,11 @@ pub fn domain_output_schema(command: &str) -> Value {
             required = vec!["ok"];
             json!({"ok":{"const":true}})
         }
-        "select" | "select_visible" | "select_query" => {
+        "selection_pick" => {
+            required = vec!["selected", "pick_revision"];
+            json!({"selected":{"type":"integer","minimum":0},"pick_revision":{"type":"integer","minimum":1}})
+        }
+        "select" | "select_visible" | "select_query" | "selection_restore" => {
             required = vec!["selected"];
             json!({"selected":{"type":"integer","minimum":0}})
         }
@@ -175,6 +179,55 @@ pub fn domain_output_schema(command: &str) -> Value {
         "view_response" => {
             required = vec!["ok"];
             json!({"ok":{"const":true}})
+        }
+        "view_wait" => {
+            required = vec!["ready", "elapsed_ms", "status"];
+            json!({"ready":{"const":true},"elapsed_ms":{"type":"number","minimum":0},"status":{"type":"object"}})
+        }
+        "view_playback" => {
+            required = vec![
+                "playing",
+                "speed",
+                "increment_seconds",
+                "time",
+                "window",
+                "workspace_id",
+            ];
+            json!({"playing":{"type":"boolean"},"speed":{"type":"number"},"increment_seconds":{"type":"number"},"time":{"type":"number"},"window":{"type":"array","items":{"type":["number","null"]},"minItems":2,"maxItems":2},"workspace_id":{"type":"string"}})
+        }
+        "view_profile" => {
+            required = vec![
+                "id",
+                "state",
+                "started_unix_ms",
+                "columns",
+                "samples",
+                "summary",
+            ];
+            json!({"id":{"type":"string"},"state":{"enum":["recording","complete"]},"started_unix_ms":{"type":"number"},"columns":{"type":"array","items":{"type":"string"}},"samples":{"type":"array","maxItems":6000,"items":{"type":"array","items":{"type":"number"},"maxItems":10}},"summary":{"type":"object"}})
+        }
+        "view_scenario" => {
+            // Library replies and asynchronous run replies are distinct shapes.
+            json!({"id":{"type":"string"},"state":{"enum":["running","complete","failed","cancelled"]},"scenarios":{"type":"object"},"steps":{"type":"array"},"profile_id":{"type":"string"},"completed_steps":{"type":"integer","minimum":0},"error":{"type":["string","null"]}})
+        }
+        "view_recording" => {
+            required = vec![
+                "path",
+                "uri",
+                "state",
+                "backend",
+                "mime_type",
+                "window",
+                "fps",
+                "max_seconds",
+                "width",
+                "height",
+                "duration_seconds",
+                "bytes",
+                "started_unix_ms",
+                "error",
+            ];
+            json!({"path":{"type":"string"},"uri":{"type":"string"},"state":{"enum":["starting","recording","stopping","complete","failed"]},"backend":{"const":"screencapturekit"},"mime_type":{"const":"video/mp4"},"window":{"enum":["main","si-chat"]},"fps":{"type":"integer","minimum":15,"maximum":60},"max_seconds":{"type":"number","minimum":1,"maximum":120},"width":{"type":"integer","minimum":0,"maximum":1920},"height":{"type":"integer","minimum":0,"maximum":1080},"duration_seconds":{"type":"number","minimum":0},"bytes":{"type":"integer","minimum":0},"started_unix_ms":{"type":"number"},"error":{"type":["string","null"]}})
         }
         "view_capture" => {
             required = vec!["data_url", "mime_type", "target", "window"];
@@ -275,6 +328,17 @@ pub fn domain_output_schema(command: &str) -> Value {
         "import_commit" => {
             required = vec!["accepted", "rejected"];
             json!({"accepted":{"type":"integer","minimum":0},"rejected":{"type":"integer","minimum":0},"retained":{"type":"integer","minimum":0},"aggregated":{"type":"integer","minimum":0},"needs_review":{"type":"boolean"},"reasons":{"type":"array"}})
+        }
+        "import_review" | "import_rejections_export" => {
+            required = vec![
+                "import_id",
+                "accepted",
+                "rejected",
+                "missing_locations",
+                "duplicate_candidates",
+                "reasons",
+            ];
+            json!({"import_id":{"type":"string"},"accepted":{"type":"integer"},"rejected":{"type":"integer"},"missing_locations":{"type":"integer"},"duplicate_candidates":{"type":"integer"},"reasons":{"type":"array"},"reasons_limited":{"type":"boolean"},"path":{"type":"string"},"exported":{"type":"integer"}})
         }
         "capabilities" => {
             required = vec!["version", "commands", "storage"];
@@ -528,7 +592,16 @@ pub fn domain_output_schema(command: &str) -> Value {
             && !command.starts_with("si_")
             && !command.starts_with("client_")
             && !command.starts_with("job_")
-            && !matches!(command, "view_capture" | "view_response");
+            && !matches!(
+                command,
+                "view_capture"
+                    | "view_response"
+                    | "view_recording"
+                    | "view_profile"
+                    | "view_wait"
+                    | "view_playback"
+                    | "view_scenario"
+            );
     if versioned && !required.contains(&"revision") {
         required.push("revision");
     }

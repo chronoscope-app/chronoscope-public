@@ -36,3 +36,10 @@ Renderer test imagery and terrain are first-party generated synthetic fixtures, 
 Structured-data analytics additionally incorporates statrs 0.19.1, Linfa and its linear/clustering/reduction crates 0.8.1, ndarray 0.16.1, RustFFT 6.4.1, petgraph 0.8.3, strsim 0.11.1, rand 0.8.6 and rand_xoshiro 0.6.0. Upstream license texts are reproduced in assets/licenses with each crate name. Cargo.lock pins all dependencies; see docs/STATISTICS-CRATES.md for roles and correctness adapters. No native BLAS or Python runtime is required.
 
 Rich SI chat uses Marked 18.1.1 (MIT), DOMPurify 3.4.17 (MPL-2.0 OR Apache-2.0), KaTeX 0.19.0 (MIT), Apache ECharts 6.1.0 (Apache-2.0, with its NOTICE and incorporated d3 notice), and zrender (BSD-3-Clause). Native source links use tauri-plugin-opener 2.7.2 (MIT OR Apache-2.0). Their upstream licenses/notices are bundled in assets/licenses and copied into the app. Formatting/chart modules load on demand; chat captures and rich artifacts remain session-scoped Rust data.
+
+## Bundled Balanced world terrain
+
+The default world terrain is derived from public-domain USGS/NGA GMTED2010 and
+Natural Earth land polygons. Source, processing, height reference and measured
+pack receipt are documented in `assets/terrain/README.md`. Terrain data remains
+separate from event coordinates and measured elevations.

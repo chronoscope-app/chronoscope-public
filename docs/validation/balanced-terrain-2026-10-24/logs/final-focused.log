@@ -1,0 +1,41 @@
+   Compiling chronoscope v0.15.2 (/home/claw/Documents/Codex/chronoscope-balanced-clawcomp)
+    Finished `test` profile [unoptimized] target(s) in 2.44s
+     Running tests/balanced_terrain.rs (/home/claw/Documents/Codex/chronoscope-next/target/debug/deps/balanced_terrain-3a76e2ab4cc97e4e)
+
+running 3 tests
+test compressed_samples_preserve_registration_negative_heights_voids_and_seams ... ok
+test corrupt_compressed_blocks_fail_without_substituting_flat_land ... ok
+test defaults_unload_restart_restore_custom_replacement_and_portable_save ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.80s
+
+     Running tests/balanced_terrain_real.rs (/home/claw/Documents/Codex/chronoscope-next/target/debug/deps/balanced_terrain_real-dad13527fc89fb04)
+
+running 1 test
+test real_pack_matches_independent_source_probes_and_all_overview_registrations ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.87s
+
+     Running tests/hardening.rs (/home/claw/Documents/Codex/chronoscope-next/target/debug/deps/hardening-0e7946b34c9f646e)
+
+running 18 tests
+test nested_filesystem_capabilities_always_choose_the_narrower_root ... ok
+test explicit_error_codes_are_not_reclassified_by_message_words ... ok
+test dense_single_entity_proximity_is_exact_without_pair_work ... ok
+test automatic_authentication_cache_rotates_on_reset_and_online_restart ... ok
+test cancelled_http_reads_stop_without_waiting_for_the_server_timeout ... ok
+test nested_commands_are_validated_before_jobs_or_batches_start ... ok
+test every_advertised_mcp_output_schema_resolves_its_resource_definitions ... ok
+test render_viewport_intersects_workspace_filters_instead_of_replacing_them ... ok
+test failed_reads_preserve_the_entire_workspace_and_revision ... ok
+test all_exposed_saved_context_ids_are_exact_strings ... ok
+test selecting_does_not_rebuild_dataset_statistics_and_compact_reads_skip_them ... ok
+test slow_map_io_does_not_hold_the_workspace_operation_lock ... ok
+test preferences_dry_run_has_a_valid_output_contract_and_does_not_change_state ... ok
+test active_recovery_checkpoints_cannot_be_recovered_or_deleted_by_another_engine ... ok
+test recovery_keeps_unsaved_rows_and_context_without_a_portable_copy ... ok
+test recovery_reconciles_context_when_deletions_commit_after_its_checkpoint ... ok
+test database_open_rejects_modified_derived_indexes_without_touching_source ... ok
+test entity_selection_summary_is_exact_beyond_id_limits_and_tracks_edits ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.96s

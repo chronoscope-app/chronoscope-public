@@ -1,0 +1,3 @@
+# Safe local default for the 16 GB development Mac. Override with cargo -j N.
+[build]
+jobs = 1

@@ -1,0 +1,1902 @@
+{
+  "renderer": "CesiumJS",
+  "basemap": "Bundled Natural Earth, public domain",
+  "capture": "Actual saved demo hero views, rendered offline",
+  "images": [
+    {
+      "file": "hurricanes-time.jpg",
+      "demo": "hurricanes",
+      "source_url": "https://www.nhc.noaa.gov/data/#hurdat",
+      "license": "NOAA public data",
+      "saved_view_index": 0,
+      "events": 3568,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -5232016.067283858,
+            3896182.1777645736,
+            1726859.0191766275
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 13136813.108514212
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -46.99999999999999,
+              34.99999999999999,
+              0
+            ],
+            "ground_width": 13136813.108514212,
+            "heading": 359.99999751088365,
+            "tilt": 0,
+            "footprint": [
+              [
+                -105.91923691860462,
+                72.82151889534885,
+                1.0477378964424133e-9
+              ],
+              [
+                11.919236918604643,
+                72.8215188953488,
+                9.313225746154785e-10
+              ],
+              [
+                11.919236918604629,
+                -2.8215188953488526,
+                -9.617483966202885e-10
+              ],
+              [
+                -105.91923691860465,
+                -2.8215188953488264,
+                5.820766091346741e-11
+              ]
+            ],
+            "camera": {
+              "position": [
+                -5232016.067283858,
+                3896182.177764574,
+                1726859.0191766275
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446181599211e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 13136813.108514212
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 1,
+          "trail_gap_minutes": 720,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -106,
+          4,
+          12,
+          66
+        ],
+        "table_open": false,
+        "inspector_tab": "inspect",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "4f9e068e34aa105f4886616810adc8b344fdb9bdc8b92fa85e48ce8c7ec1d760"
+    },
+    {
+      "file": "hurricanes-map.jpg",
+      "demo": "hurricanes",
+      "source_url": "https://www.nhc.noaa.gov/data/#hurdat",
+      "license": "NOAA public data",
+      "saved_view_index": 1,
+      "events": 3568,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -5232016.067283858,
+            3896182.1777645736,
+            1726859.0191766275
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 13136813.108514212
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -46.99999999999999,
+              34.99999999999998,
+              -0.002700816195550759
+            ],
+            "ground_width": 13136813.108514212,
+            "heading": 359.99999751088365,
+            "tilt": 0,
+            "footprint": [
+              [
+                -105.91923691860462,
+                72.82151889534885,
+                0.0025351567459008556
+              ],
+              [
+                11.919236918604643,
+                72.82151889534882,
+                -0.001534828718493289
+              ],
+              [
+                11.91923691860463,
+                -2.8215188953488526,
+                0.00006763438413560432
+              ],
+              [
+                -105.91923691860465,
+                -2.8215188953488264,
+                0.0036485336784281602
+              ]
+            ],
+            "camera": {
+              "position": [
+                -5232016.067283858,
+                3896182.177764574,
+                1726859.0191766275
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446181599211e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 13136813.108514212
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "heatmap",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 1,
+          "trail_gap_minutes": 720,
+          "heat_radius": 64,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -106,
+          4,
+          12,
+          66
+        ],
+        "table_open": false,
+        "inspector_tab": "inspect",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "826a9427e651254498cd0444c96ea74e271a4de4eb232747521ab15c109b3068"
+    },
+    {
+      "file": "noaa-ais-time.jpg",
+      "demo": "noaa-ais",
+      "source_url": "https://coast.noaa.gov/digitalcoast/data/vesseltraffic.html",
+      "license": "NOAA public data",
+      "saved_view_index": 0,
+      "events": 8473,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -13619939.698557021,
+            4080478.4981916705,
+            133801.19562486187
+          ],
+          "direction": [
+            5.615572661866098e-17,
+            0.743144825477394,
+            -0.6691306063588585
+          ],
+          "up": [
+            5.056284335792622e-17,
+            0.669130606358858,
+            0.7431448254773945
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              -122.35,
+              37.99047004632755,
+              -0.00007873946470421064
+            ],
+            "ground_width": 230897.09422606352,
+            "heading": 0,
+            "tilt": 47.999999999999964,
+            "footprint": [
+              [
+                -124.10823705846714,
+                39.67721097931237,
+                0
+              ],
+              [
+                -120.59176294153286,
+                39.67721097931237,
+                0
+              ],
+              [
+                -121.6160684495539,
+                37.28638274243264,
+                0
+              ],
+              [
+                -123.08393155044611,
+                37.28638274243264,
+                1.3969838619232178e-9
+              ]
+            ],
+            "camera": {
+              "position": [
+                -13619939.698557021,
+                4080478.4981916705,
+                133801.19562486187
+              ],
+              "direction": [
+                5.744487739346729e-17,
+                0.7431448254773938,
+                -0.6691306063588587
+              ],
+              "up": [
+                5.1723599929271524e-17,
+                0.6691306063588578,
+                0.7431448254773947
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "ARTHUR BRUSCO · 367008020": "#65c4e8",
+          "EMPRESS · 367533950": "#ffb3a7",
+          "ENHYDRA · 368052630": "#ffd166",
+          "HARBOR EMPEROR · 366985270": "#ad9feb",
+          "INTINTOLI · 366989360": "#8bd6bc",
+          "LASSEN · 367513170": "#f2a8d3",
+          "PS AUGUSTA · 215193000": "#85b1ff",
+          "PV GOLDEN GATE · 368302170": "#d9be89",
+          "STI VIRTUS · 538005171": "#b2d583",
+          "TRIFORCE · 338157873": "#d59dee"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -122.65,
+          37.45,
+          -122.05,
+          38.15
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "7f3826b48af3d5f74d0cc48c288fb160a290620f0b1dc64968c75b45d0843d54"
+    },
+    {
+      "file": "noaa-ais-map.jpg",
+      "demo": "noaa-ais",
+      "source_url": "https://coast.noaa.gov/digitalcoast/data/vesseltraffic.html",
+      "license": "NOAA public data",
+      "saved_view_index": 1,
+      "events": 8473,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -13619939.69855702,
+            4207876.751985742,
+            1665205.1446316643
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204460823375376e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 123025.66711017744
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -122.34999999999997,
+              37.800000000000004,
+              0.0000015644115320910087
+            ],
+            "ground_width": 123025.66711017744,
+            "heading": 359.99999948341883,
+            "tilt": 0,
+            "footprint": [
+              [
+                -122.90177601809951,
+                38.154196832579196,
+                0.00002664249837977434
+              ],
+              [
+                -121.7982239819004,
+                38.15419683257919,
+                -0.000021331410499122897
+              ],
+              [
+                -121.7982239819004,
+                37.44580316742082,
+                0.0000033524520099853204
+              ],
+              [
+                -122.90177601809951,
+                37.44580316742082,
+                -0.0000029310091962338513
+              ]
+            ],
+            "camera": {
+              "position": [
+                -13619939.698557017,
+                4207876.751985742,
+                1665205.1446316643
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446115424762e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 123025.66711017744
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "ARTHUR BRUSCO · 367008020": "#65c4e8",
+          "EMPRESS · 367533950": "#ffb3a7",
+          "ENHYDRA · 368052630": "#ffd166",
+          "HARBOR EMPEROR · 366985270": "#ad9feb",
+          "INTINTOLI · 366989360": "#8bd6bc",
+          "LASSEN · 367513170": "#f2a8d3",
+          "PS AUGUSTA · 215193000": "#85b1ff",
+          "PV GOLDEN GATE · 368302170": "#d9be89",
+          "STI VIRTUS · 538005171": "#b2d583",
+          "TRIFORCE · 338157873": "#d59dee"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -122.65,
+          37.45,
+          -122.05,
+          38.15
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "af3d1ed57f9817a8df63d1b692e733f52fbb303f6f142c8e41b8089524bf075b"
+    },
+    {
+      "file": "animal-gps-time.jpg",
+      "demo": "animal-gps",
+      "source_url": "https://doi.org/10.5281/zenodo.6594838",
+      "license": "CC0 1.0 · Stienen et al. / INBO",
+      "saved_view_index": 0,
+      "events": 15697,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            333958.4723798204,
+            5590359.425363543,
+            114686.7391070259
+          ],
+          "direction": [
+            5.086812494587653e-17,
+            0.7431448254773942,
+            -0.6691306063588582
+          ],
+          "up": [
+            5.5139068171478824e-17,
+            0.6691306063588582,
+            0.7431448254773942
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              2.9999999999999973,
+              51.363260018115625,
+              0.002096910804491092
+            ],
+            "ground_width": 197911.7913158758,
+            "heading": 0,
+            "tilt": 47.99999999999999,
+            "footprint": [
+              [
+                1.4929396740214065,
+                52.80903797841405,
+                0.0002129922138348888
+              ],
+              [
+                4.507060328419394,
+                52.80903798260881,
+                0.00002724479278369079
+              ],
+              [
+                3.6290841760926877,
+                50.75975663050192,
+                0.0012271579107812007
+              ],
+              [
+                2.3709158318415455,
+                50.759756623682335,
+                0.0026736435287002033
+              ]
+            ],
+            "camera": {
+              "position": [
+                333958.47237981856,
+                5590359.425363541,
+                114686.73910702672
+              ],
+              "direction": [
+                5.0868124945876494e-17,
+                0.7431448254773944,
+                -0.6691306063588581
+              ],
+              "up": [
+                5.513906817147879e-17,
+                0.6691306063588583,
+                0.7431448254773941
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "H903183": "#65c4e8",
+          "H907928": "#ffb3a7",
+          "H907929": "#ffd166"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          2.7,
+          50.9,
+          3.3,
+          51.5
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "2f959e7ed9fb24adf9362238197cb064f497e1318e1150a9c60349066067e436"
+    },
+    {
+      "file": "animal-gps-map.jpg",
+      "demo": "animal-gps",
+      "source_url": "https://doi.org/10.5281/zenodo.6594838",
+      "license": "CC0 1.0 · Stienen et al. / INBO",
+      "saved_view_index": 1,
+      "events": 15697,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            333958.47237982065,
+            5699557.928615607,
+            7011780.996570485
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446115424762e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 105698.1083622653
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              3,
+              51.2,
+              0.0000417840500134923
+            ],
+            "ground_width": 105698.1083622653,
+            "heading": 359.99999806195774,
+            "tilt": 0,
+            "footprint": [
+              [
+                2.5259389140271464,
+                51.50430995475115,
+                0.0000067376946563986145
+              ],
+              [
+                3.4740610859728513,
+                51.50430995475114,
+                0.000029736719822450585
+              ],
+              [
+                3.474061085972852,
+                50.895690045248884,
+                -0.00024330297637856197
+              ],
+              [
+                2.525938914027146,
+                50.89569004524886,
+                -0.00030789236803323923
+              ]
+            ],
+            "camera": {
+              "position": [
+                333958.4723798206,
+                5699557.928615608,
+                7011780.996570485
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446181599211e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 105698.1083622653
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "H903183": "#65c4e8",
+          "H907928": "#ffb3a7",
+          "H907929": "#ffd166"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          2.7,
+          50.9,
+          3.3,
+          51.5
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "06b7ef581f3f52f655eea9f9dfbddc14e03501ec4b3526423b57de4c67c6910f"
+    },
+    {
+      "file": "local-wildlife-time.jpg",
+      "demo": "local-wildlife",
+      "source_url": "https://doi.org/10.5441/001/1.652",
+      "license": "CC BY 4.0 · Scott LaPoint (2026), Hudson Highlands Wildlife Connectivity Project",
+      "saved_view_index": 0,
+      "events": 3439,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -8259352.285508737,
+            4571471.78434145,
+            36964.24731962662
+          ],
+          "direction": [
+            5.602733241520002e-17,
+            0.7431448254773944,
+            -0.6691306063588581
+          ],
+          "up": [
+            4.8112936011774646e-17,
+            0.6691306063588586,
+            0.7431448254773941
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              -74.19502394999999,
+              41.43501472318617,
+              0
+            ],
+            "ground_width": 63788.19899169472,
+            "heading": 0,
+            "tilt": 47.99999999999999,
+            "footprint": [
+              [
+                -74.68075884344537,
+                41.90099792150304,
+                0
+              ],
+              [
+                -73.70928905655462,
+                41.90099792150303,
+                9.313225746154785e-10
+              ],
+              [
+                -73.99226621514067,
+                41.24050183344278,
+                9.313225746154785e-10
+              ],
+              [
+                -74.39778168485932,
+                41.2405018334428,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                -8259352.285508737,
+                4571471.78434145,
+                36964.24731962476
+              ],
+              "direction": [
+                5.654351359914217e-17,
+                0.7431448254773944,
+                -0.6691306063588581
+              ],
+              "up": [
+                4.6243406951295666e-17,
+                0.6691306063588586,
+                0.7431448254773941
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "LYRU_0003": "#65c4e8",
+          "LYRU_0004": "#ffb3a7",
+          "PEPE_0001": "#ffd166"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -74.323892438,
+          41.3523188,
+          -74.06615546200001,
+          41.4124712
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "2452b3b50a6bd7de7a3f5b1f3036f1b2958efa088c0f67b72d844083460ea82e"
+    },
+    {
+      "file": "local-wildlife-map.jpg",
+      "demo": "local-wildlife",
+      "source_url": "https://doi.org/10.5441/001/1.652",
+      "license": "CC BY 4.0 · Scott LaPoint (2026), Hudson Highlands Wildlife Connectivity Project",
+      "saved_view_index": 1,
+      "events": 3439,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -8259352.285508737,
+            4606667.1392061105,
+            2690825.4017534163
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204460823375376e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 29804.343834849074
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -74.19502394999999,
+              41.382394999999995,
+              -0.00003940898196388109
+            ],
+            "ground_width": 29804.343834849074,
+            "heading": 359.9999986555283,
+            "tilt": 0,
+            "footprint": [
+              [
+                -74.32869786170929,
+                41.468203144197666,
+                0.000022071646495754665
+              ],
+              [
+                -74.0613500382907,
+                41.46820314419767,
+                0.000019379832177479574
+              ],
+              [
+                -74.0613500382907,
+                41.29658685580233,
+                0.00007983037487161622
+              ],
+              [
+                -74.32869786170929,
+                41.29658685580232,
+                0.00009657473026684918
+              ]
+            ],
+            "camera": {
+              "position": [
+                -8259352.285508737,
+                4606667.1392061105,
+                2690825.4017534163
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446115424762e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 29804.343834849074
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "LYRU_0003": "#65c4e8",
+          "LYRU_0004": "#ffb3a7",
+          "PEPE_0001": "#ffd166"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -74.323892438,
+          41.3523188,
+          -74.06615546200001,
+          41.4124712
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "2c681dcb0c0c6ecc63a062dc50e3b58e965c1a10a2de98d12c4f97f8cd6c7c3e"
+    },
+    {
+      "file": "stork-migration-time.jpg",
+      "demo": "stork-migration",
+      "source_url": "https://doi.org/10.5441/001/1.ck04mn78",
+      "license": "CC0 1.0 · Fiedler et al. (2019), via moveVis",
+      "saved_view_index": 0,
+      "events": 6090,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -17843.40674522856,
+            725233.0226803096,
+            3818318.094915944
+          ],
+          "direction": [
+            5.3737917823374674e-17,
+            0.7431448254773939,
+            -0.6691306063588586
+          ],
+          "up": [
+            5.13037143979252e-17,
+            0.6691306063588579,
+            0.7431448254773946
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              -0.16029005000000177,
+              44.60948243448536,
+              0
+            ],
+            "ground_width": 6589167.957941715,
+            "heading": 0,
+            "tilt": 47.99999999999994,
+            "footprint": [
+              [
+                20.78409754174251,
+                24.516767520812348,
+                0
+              ],
+              [
+                -21.104677641742505,
+                24.51676752081234,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                -17843.406745228545,
+                725233.0226803101,
+                3818318.0949159414
+              ],
+              "direction": [
+                5.2254873558327874e-17,
+                0.7431448254773935,
+                -0.6691306063588592
+              ],
+              "up": [
+                5.230267602989524e-17,
+                0.6691306063588575,
+                0.743144825477395
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "Linus B": "#65c4e8",
+          "Mirabell": "#ffb3a7",
+          "Wendelin": "#ffd166"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -10.703938297999999,
+          29.185954046,
+          10.383358198,
+          49.162028654000004
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "66a272dcba92d1ce770bf24ed0c3a2622d0a935d463464e1ae7717c7c00b0d33"
+    },
+    {
+      "file": "stork-migration-map.jpg",
+      "demo": "stork-migration",
+      "source_url": "https://doi.org/10.5441/001/1.ck04mn78",
+      "license": "CC0 1.0 · Fiedler et al. (2019), via moveVis",
+      "saved_view_index": 1,
+      "events": 6090,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -17843.406745228218,
+            4360828.769422105,
+            6412377.991590687
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204461815992106e-16,
+            1,
+            2.2204460492503126e-16
+          ],
+          "frustum_width": 3463098.8191027786
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -0.16029004999999868,
+              39.17399135000001,
+              0.00042909906377900417
+            ],
+            "ground_width": 3463098.8191027786,
+            "heading": 359.999997961394,
+            "tilt": 0,
+            "footprint": [
+              [
+                -15.692454366398195,
+                49.14441997231675,
+                -0.0025742469478462694
+              ],
+              [
+                15.371874266398194,
+                49.144419972316754,
+                -0.002049442933627798
+              ],
+              [
+                15.371874266398194,
+                29.203562727683263,
+                0.0008555547559627901
+              ],
+              [
+                -15.692454366398197,
+                29.203562727683263,
+                0.0011133181697725212
+              ]
+            ],
+            "camera": {
+              "position": [
+                -17843.406745228218,
+                4360828.769422105,
+                6412377.991590687
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.2204463139481086e-16,
+                1,
+                2.220446049250312e-16
+              ],
+              "frustum_width": 3463098.8191027786
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "Linus B": "#65c4e8",
+          "Mirabell": "#ffb3a7",
+          "Wendelin": "#ffd166"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -10.703938297999999,
+          29.185954046,
+          10.383358198,
+          49.162028654000004
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": true
+      },
+      "sha256": "723d6e4964cfc11e194acd06f408df33ea6341cf675239405492ab83c59dff72"
+    },
+    {
+      "file": "elephant-seals-time.jpg",
+      "demo": "elephant-seals",
+      "source_url": "https://doi.org/10.7291/D18D7W",
+      "license": "CC0 1.0 · Costa, Holser et al., UC Santa Cruz and collaborators",
+      "saved_view_index": 0,
+      "events": 15501,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -16108743.708677698,
+            -2596635.3227375126,
+            7694620.332360385
+          ],
+          "direction": [
+            1.8366940948208025e-17,
+            0.7431448254773946,
+            -0.6691306063588579
+          ],
+          "up": [
+            9.123528986605597e-17,
+            0.6691306063588586,
+            0.7431448254773939
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              -144.7073068146936,
+              53.441731020737365,
+              0
+            ],
+            "ground_width": 13278397.577725124,
+            "heading": 0,
+            "tilt": 47.99999999999999,
+            "footprint": [
+              [
+                -102.50047476097357,
+                12.951177445302143,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                -16108743.708677698,
+                -2596635.3227375103,
+                7694620.332360391
+              ],
+              "direction": [
+                1.7725698827885797e-16,
+                0.7431448254773942,
+                -0.6691306063588582
+              ],
+              "up": [
+                -6.448995673839083e-17,
+                0.6691306063588583,
+                0.7431448254773941
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "99AB": "#65c4e8",
+          "O176": "#ffb3a7",
+          "R881": "#ffd166"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -172.00226704953118,
+          33.01185038513336,
+          -117.41234657985582,
+          51.96456296349744
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "line",
+          "scope": "visible",
+          "source": null,
+          "x": "time",
+          "y": "value",
+          "group": "entity",
+          "aggregate": "max",
+          "x_axis": "time",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [
+          {
+            "name": "Daily deepest dive (m)",
+            "config": {
+              "kind": "line",
+              "scope": "visible",
+              "source": null,
+              "x": "time",
+              "y": "value",
+              "group": "entity",
+              "aggregate": "max",
+              "x_axis": "time",
+              "time_bucket": "day",
+              "stacked": false,
+              "y2": "",
+              "trendline": false,
+              "bins": 20,
+              "limit": 2000,
+              "title": "",
+              "x_label": "",
+              "y_label": "",
+              "y2_label": "",
+              "period_a": null,
+              "period_b": null
+            }
+          }
+        ],
+        "expanded": true
+      },
+      "sha256": "52e46e21d77777d908a5167ef088baf6ed6a4b6499944e73af149f959f53df9f"
+    },
+    {
+      "file": "elephant-seals-map.jpg",
+      "demo": "elephant-seals",
+      "source_url": "https://doi.org/10.7291/D18D7W",
+      "license": "CC0 1.0 · Costa, Holser et al., UC Santa Cruz and collaborators",
+      "saved_view_index": 1,
+      "events": 15501,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -16108743.708677687,
+            4729765.531704157,
+            5101574.226233513
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 6078035.344037496
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -144.7073068146935,
+              42.48820667431538,
+              0.006613410719473078
+            ],
+            "ground_width": 6078035.344037496,
+            "heading": 359.9999995759016,
+            "tilt": 0,
+            "footprint": [
+              [
+                -171.96758687477123,
+                59.98716374344827,
+                -0.000040420756818468175
+              ],
+              [
+                -117.44702675461575,
+                59.98716374344826,
+                -0.00122590676020912
+              ],
+              [
+                -117.44702675461575,
+                24.989249605182504,
+                0.002904004011634231
+              ],
+              [
+                -171.96758687477123,
+                24.989249605182522,
+                0.003034017103628004
+              ]
+            ],
+            "camera": {
+              "position": [
+                -16108743.708677687,
+                4729765.531704157,
+                5101574.226233513
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 6078035.344037496
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "99AB": "#65c4e8",
+          "O176": "#ffb3a7",
+          "R881": "#ffd166"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -172.00226704953118,
+          33.01185038513336,
+          -117.41234657985582,
+          51.96456296349744
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "line",
+          "scope": "visible",
+          "source": null,
+          "x": "time",
+          "y": "value",
+          "group": "entity",
+          "aggregate": "max",
+          "x_axis": "time",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [
+          {
+            "name": "Daily deepest dive (m)",
+            "config": {
+              "kind": "line",
+              "scope": "visible",
+              "source": null,
+              "x": "time",
+              "y": "value",
+              "group": "entity",
+              "aggregate": "max",
+              "x_axis": "time",
+              "time_bucket": "day",
+              "stacked": false,
+              "y2": "",
+              "trendline": false,
+              "bins": 20,
+              "limit": 2000,
+              "title": "",
+              "x_label": "",
+              "y_label": "",
+              "y2_label": "",
+              "period_a": null,
+              "period_b": null
+            }
+          }
+        ],
+        "expanded": true
+      },
+      "sha256": "e47b825f9f193e0a1ff2c2b9cbe6eaccb55f24b5c1074a97b023faa50c50f5ba"
+    }
+  ]
+}

@@ -20,7 +20,7 @@ import {
   type ImageryProvider,
   type Viewer,
 } from "cesium";
-import type { Raster, Terrain } from "./types";
+import type { Bounds, Raster, Terrain } from "./types";
 import {
   geoidUndulation,
   mercatorNorthing,
@@ -45,6 +45,13 @@ const esc = (s: string) =>
 const credit = (s: string) => new Credit(`<span>${esc(s)}</span>`);
 const intersects = (a: Rectangle, b: Rectangle) =>
   !!Rectangle.intersection(a, b);
+/** One catalog for Cesium's lifetime. Native tile sampling refines existing
+ * terrain without replacing the provider (and discarding imagery) on a pan. */
+export interface TerrainTileSource {
+  bounds: Bounds;
+  maximumLevel: number;
+  load(bounds: Bounds, resolution: number): Promise<Terrain>;
+}
 let geoidPromise: Promise<Int16Array> | undefined;
 function loadGeoid() {
   return (geoidPromise ??= fetch(geoidUrl)
@@ -199,28 +206,47 @@ export class LocalDtedTerrainProvider implements TerrainProvider {
     string,
     HeightmapTerrainData | QuantizedMeshTerrainData
   >();
+  private pending = new Map<
+    string,
+    Promise<HeightmapTerrainData | QuantizedMeshTerrainData>
+  >();
+  private disposed = false;
   constructor(
-    readonly terrain: Terrain,
+    public terrain: Terrain,
     private geoid: Int16Array | undefined,
     readonly verticalDatum: TerrainDatum,
     readonly exaggeration: number,
+    readonly source?: TerrainTileSource,
   ) {
-    this.maximumLevel = terrainMaximumLevel(terrain);
+    this.maximumLevel =
+      source?.maximumLevel ??
+      terrainMaximumLevel(terrain, terrain.geographic ? 128 : 32);
     this.rectangle = Rectangle.fromDegrees(
-      ...(terrain.bounds as [number, number, number, number]),
+      ...((source?.bounds || terrain.bounds) as [
+        number,
+        number,
+        number,
+        number,
+      ]),
     );
     this.credit = credit(
-      `Local DTED · ${verticalDatum === "egm96" ? "EGM96 MSL → WGS84 ellipsoid (NGA 15′ geoid)" : "WGS84 ellipsoid heights"}`,
+      `${terrain.attribution || "Local DTED"} · ${verticalDatum === "egm96" ? "EGM96 MSL → WGS84 ellipsoid (NGA 15′ geoid)" : "WGS84 ellipsoid heights"}`,
     );
     this.levelZeroError =
       TerrainProvider.getEstimatedLevelZeroGeometricErrorForAHeightmap(
         Ellipsoid.WGS84,
-        33,
+        terrain.geographic ? 129 : 33,
         2,
       );
   }
   sampleHeight(lat: number, lon: number) {
-    const h = sampleTerrain(this.terrain, lat, lon);
+    return this.height(this.terrain, lat, lon);
+  }
+  get pendingCount() {
+    return this.pending.size;
+  }
+  private height(terrain: Terrain, lat: number, lon: number) {
+    const h = sampleTerrain(terrain, lat, lon);
     if (h === null) return null;
     // Geoid undulation is a datum conversion, not relief: do not exaggerate N.
     return (
@@ -252,9 +278,77 @@ export class LocalDtedTerrainProvider implements TerrainProvider {
       this.cache.set(key, cached);
       return Promise.resolve(cached);
     }
+    if (this.source) {
+      const pending = this.pending.get(key);
+      if (pending) return pending;
+      // Returning undefined asks Cesium to retry later. Bound local IPC and
+      // mesh construction during a fast zoom instead of queueing every tile.
+      if (this.pending.size >= 6) return undefined;
+      const tile = Rectangle.intersection(
+        this.tilingScheme.tileXYToRectangle(x, y, level),
+        this.rectangle,
+      );
+      if (tile && tile.width > 0 && tile.height > 0) {
+        const bounds: Bounds = [
+          tile.west / DEG,
+          tile.south / DEG,
+          tile.east / DEG,
+          tile.north / DEG,
+        ];
+        const promise = this.source
+          .load(bounds, this.terrain.geographic ? 129 : 33)
+          .then((terrain) => {
+            validateTerrain(terrain);
+            return this.createTileGeometry(x, y, level, terrain);
+          })
+          .finally(() => this.pending.delete(key));
+        this.pending.set(key, promise);
+        return promise;
+      }
+    }
+    return this.createTileGeometry(x, y, level, this.terrain);
+  }
+  private createTileGeometry(
+    x: number,
+    y: number,
+    level: number,
+    terrain: Terrain,
+  ) {
+    const key = `${level}/${x}/${y}`;
     const r = this.tilingScheme.tileXYToRectangle(x, y, level),
-      n = 33,
-      count = n * n,
+      n = terrain.geographic ? 129 : 33,
+      westDegrees = r.west / DEG,
+      eastDegrees = r.east / DEG,
+      sourceStep =
+        (terrain.bounds[2] - terrain.bounds[0]) / (terrain.width - 1);
+    let longitudes = Array.from(
+      { length: n },
+      (_, col) => westDegrees + ((eastDegrees - westDegrees) * col) / (n - 1),
+    );
+    // Near the poles a viewport spans many degrees of longitude but very few
+    // metres. Square 33x33 tiles manufacture hundreds of thousands of redundant
+    // vertices. Retain every source-column break (and both tile edges) instead;
+    // interpolation stays piecewise linear and source peaks stay exact.
+    if (
+      terrain.geographic &&
+      level >= 2 &&
+      eastDegrees - westDegrees < sourceStep * (n - 3)
+    ) {
+      longitudes = [westDegrees];
+      const first = Math.max(
+        0,
+        Math.floor((westDegrees - terrain.bounds[0]) / sourceStep) + 1,
+      );
+      const last = Math.min(
+        terrain.width - 1,
+        Math.ceil((eastDegrees - terrain.bounds[0]) / sourceStep) - 1,
+      );
+      for (let col = first; col <= last; col++)
+        longitudes.push(terrain.bounds[0] + col * sourceStep);
+      longitudes.push(eastDegrees);
+    }
+    const width = longitudes.length,
+      count = width * n,
       heights = new Float64Array(count),
       valid = new Uint8Array(count),
       points: Cartesian3[] = [],
@@ -269,32 +363,42 @@ export class LocalDtedTerrainProvider implements TerrainProvider {
       holes = false,
       changed = false;
     for (let row = 0; row < n; row++)
-      for (let col = 0; col < n; col++) {
-        const i = row * n + col,
-          lon = (r.west + ((r.east - r.west) * col) / (n - 1)) / DEG,
+      for (let col = 0; col < width; col++) {
+        const i = row * width + col,
+          lon = longitudes[col],
           lat = (r.north - ((r.north - r.south) * row) / (n - 1)) / DEG,
           inside =
-            lon >= this.terrain.bounds[0] &&
-            lon <= this.terrain.bounds[2] &&
-            lat >= this.terrain.bounds[1] &&
-            lat <= this.terrain.bounds[3],
-          h = inside ? this.sampleHeight(lat, lon) : 0;
+            lon >= terrain.bounds[0] - 1e-10 &&
+            lon <= terrain.bounds[2] + 1e-10 &&
+            (lat >= terrain.bounds[1] - 1e-10 ||
+              (terrain.geographic && terrain.bounds[1] <= -89.99999)) &&
+            (lat <= terrain.bounds[3] + 1e-10 ||
+              (terrain.geographic && terrain.bounds[3] >= 89.99999)),
+          // Packet bounds avoid the projection singularity by a fraction of a
+          // metre. Close that tiny cap with its nearest real sample, not a
+          // fabricated zero-height pole.
+          sampleLatitude = terrain.geographic
+            ? Math.max(terrain.bounds[1], Math.min(terrain.bounds[3], lat))
+            : lat,
+          h = inside ? this.height(terrain, sampleLatitude, lon) : 0;
         heights[i] = h ?? 0;
         valid[i] = h === null ? 0 : 1;
         holes ||= h === null;
         changed ||= h !== null && Math.abs(h) > 1e-8;
         min = Math.min(min, heights[i]);
         max = Math.max(max, heights[i]);
-        vertices[i] = Math.round((col / (n - 1)) * 32767);
+        vertices[i] = Math.round(
+          ((lon - westDegrees) / (eastDegrees - westDegrees)) * 32767,
+        );
         vertices[i + count] = Math.round((1 - row / (n - 1)) * 32767);
         points.push(Cartesian3.fromDegrees(lon, lat, heights[i]));
         if (col === 0 && valid[i]) west.push(i);
-        if (col === n - 1 && valid[i]) east.push(i);
+        if (col === width - 1 && valid[i]) east.push(i);
         if (row === 0 && valid[i]) north.push(i);
         if (row === n - 1 && valid[i]) south.push(i);
         if (row > 0 && col > 0) {
-          const a = i - n - 1,
-            b = i - n,
+          const a = i - width - 1,
+            b = i - width,
             c = i - 1,
             d = i;
           if (valid[a] && valid[b] && valid[c] && valid[d])
@@ -321,10 +425,14 @@ export class LocalDtedTerrainProvider implements TerrainProvider {
         )
           childTileMask |= bit;
     let result: HeightmapTerrainData | QuantizedMeshTerrainData;
-    if (!changed && !holes)
+    // A hemisphere cannot have a finite point suitable for horizon culling.
+    // Quantized root meshes could therefore get culled with all descendants
+    // when broad real terrain reaches a root sample. Cesium's heightmap worker
+    // computes conservative root bounds; retain the real heights in that path.
+    if (!holes && (!changed || level <= 1))
       result = new HeightmapTerrainData({
-        buffer: new Float32Array(count),
-        width: n,
+        buffer: Float32Array.from(heights),
+        width,
         height: n,
         childTileMask,
       });
@@ -371,13 +479,15 @@ export class LocalDtedTerrainProvider implements TerrainProvider {
         credits: [this.credit],
       });
     }
-    this.cache.set(key, result);
+    if (!this.disposed) this.cache.set(key, result);
     while (this.cache.size > 64)
       this.cache.delete(this.cache.keys().next().value!);
     return Promise.resolve(result);
   }
   dispose() {
+    this.disposed = true;
     this.cache.clear();
+    this.pending.clear();
   }
 }
 
@@ -388,6 +498,7 @@ export class CesiumResources {
   private verticalDatum: TerrainDatum = "unresolved-msl";
   private terrain: Terrain | null = null;
   private terrainProvider: LocalDtedTerrainProvider | undefined;
+  private terrainProviderChanges = 0;
   private currentRaster: Raster | undefined;
   private rasterLayers: {
     layer: ImageryLayer;
@@ -440,6 +551,8 @@ export class CesiumResources {
       imageryRequestedTiles:
         this.rasterLayers.at(-1)?.provider.requestedTiles ?? 0,
       terrainActive: !!this.terrainProvider,
+      terrainProviderChanges: this.terrainProviderChanges,
+      terrainPendingTiles: this.terrainProvider?.pendingCount ?? 0,
       terrainCovered: this.terrain?.covered ?? 0,
       verticalDatum: this.verticalDatum,
       geoidModel:
@@ -499,6 +612,7 @@ export class CesiumResources {
     terrain: Terrain | null,
     exaggeration = 1,
     accept: () => boolean = () => true,
+    source?: TerrainTileSource,
   ) {
     const generation = ++this.terrainGeneration;
     if (
@@ -519,12 +633,24 @@ export class CesiumResources {
     if (
       terrain === this.terrain &&
       this.terrainProvider?.exaggeration === exaggeration &&
-      this.terrainProvider.verticalDatum === this.verticalDatum
+      this.terrainProvider.verticalDatum === this.verticalDatum &&
+      this.terrainProvider.source === source
     )
       return;
     // A repeated clear must not replace the ellipsoid provider and invalidate
     // the globe's terrain/imagery quadtree during an unrelated view refresh.
     if (!terrain && !this.terrainProvider && this.terrain === null) return;
+    if (
+      terrain &&
+      source &&
+      this.terrainProvider?.source === source &&
+      this.terrainProvider.exaggeration === exaggeration &&
+      this.terrainProvider.verticalDatum === this.verticalDatum
+    ) {
+      this.terrain = terrain;
+      this.terrainProvider.terrain = terrain;
+      return;
+    }
     const previous = this.terrainProvider;
     this.terrain = terrain;
     this.terrainProvider = terrain
@@ -533,10 +659,12 @@ export class CesiumResources {
           geoid,
           this.verticalDatum,
           exaggeration,
+          source,
         )
       : undefined;
     this.viewer.terrainProvider =
       this.terrainProvider ?? new EllipsoidTerrainProvider();
+    this.terrainProviderChanges++;
     previous?.dispose();
     this.requestRender();
   }

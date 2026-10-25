@@ -133,7 +133,7 @@ jobs:
       - name: Validate and stage actual GUI package
         env:
           PLATFORM: ${{ inputs.platform }}
-        run: python scripts/package_tester.py --target "$PLATFORM" --output "$RUNNER_TEMP/tester-output" --max-bytes 62914560
+        run: python scripts/package_tester.py --target "$PLATFORM" --output "$RUNNER_TEMP/tester-output" --max-bytes 268435456
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ${{ inputs.platform }}-${{ github.sha }}

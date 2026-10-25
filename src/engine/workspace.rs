@@ -25,6 +25,12 @@ pub(super) fn prepare_terrain(
     preferences: &mut Preferences,
     root: Option<&Path>,
 ) -> (Option<TerrainCatalog>, Vec<String>) {
+    if preferences.terrain_builtin {
+        return match TerrainCatalog::balanced() {
+            Ok(terrain) => (Some(terrain), vec![]),
+            Err(error) => (None, vec![error]),
+        };
+    }
     let mut missing = vec![];
     let terrain = preferences.terrain_path.as_ref().and_then(|path| {
         let allowed = root.is_none_or(|root| {
@@ -232,15 +238,24 @@ impl Engine {
             }
             value["map"] = mirror;
         }
+        // Existing clients that supply an external path select their own source.
+        if updates.get("terrain_path").is_some() && updates.get("terrain_builtin").is_none() {
+            value["terrain_builtin"] = json!(false);
+        }
         let preferences: Preferences = serde_json::from_value(value).map_err(|e| e.to_string())?;
         preferences.validate()?;
-        let terrain_changed = reload_terrain || preferences.terrain_path != current.terrain_path;
+        let terrain_changed = reload_terrain
+            || preferences.terrain_path != current.terrain_path
+            || preferences.terrain_builtin != current.terrain_builtin
+            || updates["terrain_builtin"] == true
+                && preferences.terrain_builtin
+                && self
+                    .terrain
+                    .lock()
+                    .map_err(|_| "Terrain unavailable")?
+                    .is_none();
         let terrain = if terrain_changed {
-            preferences
-                .terrain_path
-                .as_ref()
-                .map(|path| TerrainCatalog::load(path))
-                .transpose()?
+            TerrainCatalog::from_preferences(&preferences)?
         } else {
             None
         };

@@ -309,18 +309,42 @@ class NoticePackagingTests(unittest.TestCase):
 
     def test_prepare_cesium_runs_with_tiny_fake_vendor_tree(self):
         # Run the actual entry point in isolation with fixture-local imports.
-        for name in ['scripts/package-notices.mjs', 'frontend/scripts/prepare-cesium.mjs']:
+        for name in ['scripts/package-notices.mjs', 'scripts/verify-balanced-terrain.mjs', 'frontend/scripts/prepare-cesium.mjs']:
             target = self.repo / name
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / name, target)
+        # This fixture owns notice/resource preparation, without installing a
+        # full Cesium tree. Real version/hash/worker patch behavior is covered
+        # by terrain-picking-test.mjs; retain an observable patch-hook boundary.
+        put(self.repo, 'frontend/scripts/patches/terrain-picker.mjs',
+            'import fs from "node:fs";\n'
+            'export function applyTerrainPickerPatch(root) {\n'
+            '  fs.writeFileSync(root + "/patch-hook-invoked.txt", root);\n'
+            '}\n')
         for name in ['Assets', 'ThirdParty', 'Workers', 'Widgets']:
             put(self.repo, 'frontend/node_modules/cesium/Build/Cesium/' + name + '/fixture.txt')
         put(self.repo, 'frontend/node_modules/cesium/LICENSE.md', 'fake vendor license')
+        pack = put(self.repo, 'assets/terrain/balanced.cterrain', 'fixture compressed payload')
+        receipt = {'bytes': pack.stat().st_size, 'sha256': hashlib.sha256(pack.read_bytes()).hexdigest(),
+                   'source_md5': '5b6c47502ae8d03b8718349655d5cd95'}
+        put(self.repo, 'assets/terrain/balanced.json', json.dumps(receipt))
         result = subprocess.run([NODE, str(self.repo / 'frontend/scripts/prepare-cesium.mjs')],
                                 capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.repo / 'frontend/patch-hook-invoked.txt').read_text(),
+                         str((self.repo / 'frontend').resolve()))
         self.assertEqual((self.repo / 'frontend/public/cesium/LICENSE.md').read_text(), 'fake vendor license')
         notices.verify_notices(self.bundle, self.repo)
+        # An incomplete or corrupted terrain resource must prevent packaging.
+        pack.write_bytes(b'corrupt')
+        result = subprocess.run([NODE, str(self.repo / 'frontend/scripts/prepare-cesium.mjs')],
+                                capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('does not match', result.stderr)
+        pack.unlink()
+        result = subprocess.run([NODE, str(self.repo / 'frontend/scripts/prepare-cesium.mjs')],
+                                capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
 
 
 if __name__ == '__main__':

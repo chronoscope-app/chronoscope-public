@@ -297,3 +297,272 @@ fn reference_feature_lookup_does_not_alias_slash_ids_or_unrelated_source_propert
     assert_eq!(table["count"], 1);
     assert_eq!(table["rows"][0]["id"], "group");
 }
+
+#[test]
+fn recording_discovery_scope_defaults_and_video_resource_do_not_block_workspace() {
+    let (dir, engine) = setup();
+    let tool = chronoscope::mcp::tools()
+        .into_iter()
+        .find(|t| t["name"] == "chronoscope_view_recording")
+        .unwrap();
+    assert_eq!(tool["annotations"]["readOnlyHint"], false);
+    let weak = Arc::downgrade(&engine);
+    engine.set_observer(Arc::new(move |event| {
+        if event["kind"] != "view_recording" { return; }
+        let engine = weak.upgrade().unwrap();
+        engine.invoke("snapshot", json!({"compact":true})).unwrap();
+        let args = &event["arguments"];
+        if args["action"] == "start" {
+            assert_eq!(args["fps"], 60);
+            assert_eq!(args["max_seconds"], 30);
+            assert_eq!(args["window"], "main");
+        }
+        let state = if args["action"] == "stop" { "complete" } else { "recording" };
+        engine.invoke("view_response", json!({"request_id":event["request_id"],"result":{
+            "path":args["path"],"uri":"file:///scoped/video%20recording.mp4","state":state,"backend":"screencapturekit","mime_type":"video/mp4","window":"main","fps":60,"max_seconds":30,"width":1920,"height":1080,"duration_seconds":1.5,"bytes":1024,"started_unix_ms":1,"error":null
+        }})).unwrap();
+    })).unwrap();
+    for action in ["start", "status", "stop", "stop"] {
+        let response = chronoscope::mcp::handle(&engine, dir.path(), json!({"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"chronoscope_view_recording","arguments":{"action":action,"path":"video recording.mp4"}}})).unwrap();
+        assert_eq!(response["result"]["isError"], false, "{response}");
+        if action == "stop" {
+            let resource = response["result"]["content"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .find(|c| c["type"] == "resource_link")
+                .unwrap();
+            assert_eq!(resource["mimeType"], "video/mp4");
+            assert!(resource["uri"]
+                .as_str()
+                .unwrap()
+                .ends_with("video%20recording.mp4"));
+            assert_ne!(resource["uri"], "file:///scoped/video%20recording.mp4");
+            assert_eq!(resource["size"], 1024);
+            assert!(response["result"]["structuredContent"]
+                .get("data")
+                .is_none());
+        }
+    }
+    let response = chronoscope::mcp::handle(&engine, dir.path(), json!({"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"chronoscope_view_recording","arguments":{"action":"start","path":"../outside.mp4"}}})).unwrap();
+    assert_eq!(response["result"]["isError"], true);
+}
+
+#[test]
+fn recording_rejects_invalid_limits_targets_and_overwrite_before_native_dispatch() {
+    let (dir, engine) = setup();
+    let path = dir.path().join("recording.mp4");
+    for args in [
+        json!({"action":"start","path":path,"fps":120}),
+        json!({"action":"start","path":path,"max_seconds":121}),
+        json!({"action":"start","path":path,"window":"screen"}),
+        json!({"action":"stop","path":path,"fps":60}),
+        json!({"action":"start","path":dir.path().join("recording.txt")}),
+    ] {
+        assert!(engine.invoke("view_recording", args).is_err());
+    }
+    assert!(engine
+        .invoke("view_recording", json!({"action":"start","path":path}))
+        .unwrap_err()
+        .starts_with("UNAVAILABLE:"));
+    std::fs::write(&path, b"existing movie").unwrap();
+    assert!(engine
+        .invoke("view_recording", json!({"action":"start","path":path}))
+        .unwrap_err()
+        .starts_with("CONFLICT:"));
+    assert_eq!(std::fs::read(path).unwrap(), b"existing movie");
+}
+
+#[test]
+fn navigation_recipe_library_is_persistent_bounded_and_validates_nested_tools() {
+    let (dir, engine) = setup();
+    let steps = json!([
+        {"command":"view_set","arguments":{"mode":"map"}},
+        {"command":"view_navigate","arguments":{"action":"zoom","factor":1.2}},
+        {"command":"view_wait","arguments":{"timeout_ms":1000}},
+        {"command":"view_playback","arguments":{"action":"pause"}},
+        {"command":"wait","arguments":{"milliseconds":10}}
+    ]);
+    let save = json!({"action":"save","name":"Pan test","steps":steps});
+    assert_eq!(
+        engine.invoke("view_scenario", save.clone()).unwrap()["saved"],
+        true
+    );
+    assert!(engine
+        .invoke("view_scenario", save.clone())
+        .unwrap_err()
+        .starts_with("CONFLICT:"));
+    let mut overwrite = save.clone();
+    overwrite["overwrite"] = json!(true);
+    engine.invoke("view_scenario", overwrite).unwrap();
+    assert_eq!(
+        engine
+            .invoke("view_scenario", json!({"action":"list"}))
+            .unwrap()["scenarios"]["Pan test"],
+        steps
+    );
+    let weak = Arc::downgrade(&engine);
+    engine.set_observer(Arc::new(move |event| {
+        if event["kind"]!="view_scenario" { return; }
+        assert_eq!(event["arguments"]["steps"].as_array().unwrap().len(),5);
+        weak.upgrade().unwrap().invoke("view_response",json!({"request_id":event["request_id"],"result":{"id":"run-1","state":"running","completed_steps":0,"error":null}})).unwrap();
+    })).unwrap();
+    assert_eq!(
+        engine
+            .invoke("view_scenario", json!({"action":"run","name":"Pan test"}))
+            .unwrap()["state"],
+        "running"
+    );
+    for step in [
+        json!({"command":"save","arguments":{"path":"outside.json"}}),
+        json!({"command":"wait","arguments":{"milliseconds":90000}}),
+        json!({"command":"view_navigate","arguments":{"action":"zoom","factor":0}}),
+    ] {
+        assert!(engine
+            .invoke(
+                "view_scenario",
+                json!({"action":"save","name":"invalid","steps":[step]})
+            )
+            .is_err());
+    }
+    drop(engine);
+    let restored = Engine::new(
+        Project::new(chronoscope::demo::dataset()),
+        dir.path().into(),
+    )
+    .unwrap();
+    assert_eq!(
+        restored
+            .invoke("view_scenario", json!({"action":"list"}))
+            .unwrap()["scenarios"]["Pan test"],
+        steps
+    );
+    restored
+        .invoke(
+            "view_scenario",
+            json!({"action":"remove","name":"Pan test"}),
+        )
+        .unwrap();
+    assert!(restored
+        .invoke("view_scenario", json!({"action":"run","name":"Pan test"}))
+        .unwrap_err()
+        .starts_with("NOT_FOUND:"));
+}
+
+#[test]
+fn profiling_playback_and_readiness_reject_invalid_arguments_and_require_desktop() {
+    let (_, engine) = setup();
+    for (command, args) in [
+        ("view_profile", json!({"action":"start","max_seconds":121})),
+        ("view_playback", json!({"action":"play","time":0})),
+        ("view_playback", json!({"action":"configure","speed":100})),
+        ("view_playback", json!({"action":"step","steps":101})),
+        ("view_wait", json!({"timeout_ms":11000})),
+    ] {
+        assert!(engine.invoke(command, args).is_err());
+    }
+    for (command, args) in [
+        ("view_profile", json!({"action":"start"})),
+        ("view_playback", json!({"action":"status"})),
+        ("view_wait", json!({})),
+    ] {
+        assert!(engine
+            .invoke(command, args)
+            .unwrap_err()
+            .starts_with("UNAVAILABLE:"));
+    }
+}
+
+#[test]
+fn interactive_mcp_results_have_workspace_identity_and_progressive_ui_discovery() {
+    let (dir, engine) = setup();
+    let request = |method: &str, params: Value| json!({"jsonrpc":"2.0","id":1,"method":method,"params":params});
+    let mut ui = chronoscope::mcp::apps::Session::default();
+    let list =
+        chronoscope::mcp::handle(&engine, dir.path(), request("tools/list", json!({}))).unwrap();
+    assert!(ui.decorate("tools/list", list.clone())["result"]["tools"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .all(|t| t.get("_meta").is_none()));
+    ui.initialize(&request("initialize",json!({"capabilities":{"extensions":{"io.modelcontextprotocol/ui":{"mimeTypes":["text/html;profile=mcp-app"]}}}})));
+    let enhanced = ui.decorate("tools/list", list);
+    assert_eq!(
+        enhanced["result"]["tools"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|t| t["_meta"]["ui"]["resourceUri"] == chronoscope::mcp::apps::URI)
+            .count(),
+        2
+    );
+    let resource = chronoscope::mcp::handle(
+        &engine,
+        dir.path(),
+        request("resources/read", json!({"uri":chronoscope::mcp::apps::URI})),
+    )
+    .unwrap();
+    assert_eq!(
+        resource["result"]["contents"][0]["mimeType"],
+        "text/html;profile=mcp-app"
+    );
+    assert_eq!(
+        resource["result"]["contents"][0]["_meta"]["ui"]["csp"]["connectDomains"],
+        json!([])
+    );
+    let result = chronoscope::mcp::handle(
+        &engine,
+        dir.path(),
+        request(
+            "tools/call",
+            json!({"name":"chronoscope_query","arguments":{"limit":1,"fields":["id","label"]}}),
+        ),
+    )
+    .unwrap();
+    assert_eq!(result["result"]["isError"], false, "{result}");
+    assert!(result["result"]["structuredContent"]["workspace_id"]
+        .as_str()
+        .is_some());
+    let chart=chronoscope::mcp::handle(&engine,dir.path(),request("tools/call",json!({"name":"chronoscope_chart_data","arguments":{"config":{"kind":"bar","x":"entity","aggregate":"count","limit":8}}}))).unwrap();
+    assert_eq!(chart["result"]["isError"], false, "{chart}");
+    assert!(chart["result"]["structuredContent"]["workspace_id"]
+        .as_str()
+        .is_some());
+}
+
+#[test]
+fn subscriptions_coalesce_changes_unsubscribe_and_never_replace_the_desktop_observer() {
+    let (_, engine) = setup();
+    let subscriptions = Arc::new(chronoscope::mcp::subscriptions::Subscriptions::default());
+    let request = |method: &str, uri: &str| json!({"jsonrpc":"2.0","id":1,"method":method,"params":{"uri":uri}});
+    assert!(subscriptions
+        .handle(&request("resources/subscribe", "file:///outside"))
+        .unwrap()
+        .get("error")
+        .is_some());
+    let (send, recv) = std::sync::mpsc::channel();
+    let polled = engine.clone();
+    subscriptions.start(
+        move || Ok(polled.resource_version()),
+        move |v| send.send(v).map_err(|e| e.to_string()),
+    );
+    subscriptions.handle(&request("resources/subscribe", "chronoscope://workspace"));
+    recv.recv_timeout(std::time::Duration::from_secs(3))
+        .unwrap(); // initial invalidation
+    engine
+        .invoke("filter", json!({"filter":{"search":"test"}}))
+        .unwrap();
+    assert_eq!(
+        recv.recv_timeout(std::time::Duration::from_secs(3))
+            .unwrap()["params"]["uri"],
+        "chronoscope://workspace"
+    );
+    subscriptions.handle(&request("resources/unsubscribe", "chronoscope://workspace"));
+    engine
+        .invoke("filter", json!({"filter":{"search":"other"}}))
+        .unwrap();
+    assert!(recv
+        .recv_timeout(std::time::Duration::from_millis(700))
+        .is_err());
+    subscriptions.stop();
+}

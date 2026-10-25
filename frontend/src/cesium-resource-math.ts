@@ -66,6 +66,7 @@ export function validateTerrain(t: Terrain) {
 }
 
 /** Rust terrain_mesh rows are uniform in Web Mercator, NOT latitude.
+ * Built-in world meshes instead carry explicit geographic latitude rows.
  * Bilinear interpolation rejects every positive-weight void; it never invents
  * heights by renormalising the remaining corners. Exact valid posts survive. */
 export function sampleTerrain(
@@ -91,8 +92,10 @@ export function sampleTerrain(
       0,
       Math.min(
         t.height - 1,
-        ((mercatorNorthing(b[3]) - mercatorNorthing(lat)) /
-          (mercatorNorthing(b[3]) - mercatorNorthing(b[1]))) *
+        (t.geographic
+          ? (b[3] - lat) / (b[3] - b[1])
+          : (mercatorNorthing(b[3]) - mercatorNorthing(lat)) /
+            (mercatorNorthing(b[3]) - mercatorNorthing(b[1]))) *
           (t.height - 1),
       ),
     ),
