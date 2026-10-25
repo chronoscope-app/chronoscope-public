@@ -1,11 +1,11 @@
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
 const root = path.resolve(import.meta.dirname, "../.."),
-  dir = path.join(root, ".qa/subsecond");
+  dir = process.env.CHRONOSCOPE_QA_OUT || path.join(root, ".qa/subsecond");
 fs.mkdirSync(dir, { recursive: true });
 const token = randomBytes(32).toString("hex"),
   tokenFile = path.join(dir, "token");
@@ -38,32 +38,8 @@ const check = (name) => {
   console.log("PASS", name);
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.on("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const v = await r.json();
-    assert(r.ok, JSON.stringify(v));
-    return v.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const p = await api("preferences");
   await api("preferences", {
     preferences: {
@@ -72,6 +48,7 @@ try {
       map: { ...p.map, enabled: false },
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
   const preview = await api("import_preview", { path: csv });
@@ -81,15 +58,7 @@ try {
     inspector_tab: "views",
     display: { mode: "points", spatial_culling: false },
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1600, height: 1000 },
   });

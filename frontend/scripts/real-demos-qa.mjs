@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real offline demos, UI picker, attribute tables, saved views and playback.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -27,38 +27,11 @@ const server = spawn(
   ],
   { stdio: ["ignore", "ignore", "pipe"] },
 );
-const report = { passed: false, checks: [], errors: [] };
-let browser;
+const report = { passed: false, checks: [], errors: [], requests: [] };
+let browser, page;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(
-      () => reject(Error(log || "startup timeout")),
-      20000,
-    );
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-    server.on("error", reject);
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const body = await r.json();
-    assert(r.ok, JSON.stringify(body));
-    return body.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const first = await api("snapshot", { compact: true });
   assert.equal(first.count, 0);
   assert.equal(first.visible, 0);
@@ -72,55 +45,90 @@ try {
       map_layers: [],
     },
   });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
-  const page = await browser.newPage({
-    viewport: { width: 1400, height: 900 },
-  });
-  page.on("pageerror", (e) => report.errors.push(e.message));
-  await page.route("**/*", (r) =>
-    /^https?:/.test(r.request().url()) &&
-    !r
-      .request()
-      .url()
-      .startsWith(url + "/")
-      ? r.abort()
-      : r.continue(),
-  );
+  const launchBrowser = () => chromium.launch();
+  // Data/DOM readiness must not depend on animation frames. A busy software
+  // GPU can stop RAF polling after the engine and UI have already become ready.
+  // Keep Playwright's existing timeout and every predicate unchanged.
+  const stateReady = (predicate, arg) =>
+    page.waitForFunction(predicate, arg, { polling: 100 });
+  browser = await launchBrowser();
+  const newPage = async () => {
+    const page = await browser.newPage({
+      viewport: { width: 1400, height: 900 },
+    });
+    page.on("pageerror", (e) => report.errors.push(e.message));
+    // Retain bounded command timings so a load timeout distinguishes engine
+    // work, a failed request, a dialog and a stalled browser render.
+    const starts = new WeakMap();
+    page.on("request", (request) => {
+      if (request.url() === url + "/api/invoke")
+        starts.set(request, performance.now());
+    });
+    const record = (request, outcome) => {
+      const start = starts.get(request);
+      if (start === undefined) return;
+      report.requests.push({
+        command: request.postDataJSON()?.command,
+        milliseconds: Math.round(performance.now() - start),
+        outcome,
+      });
+      if (report.requests.length > 200) report.requests.shift();
+    };
+    page.on("requestfinished", (request) => record(request, "finished"));
+    page.on("requestfailed", (request) =>
+      record(request, request.failure()?.errorText || "failed"),
+    );
+    await page.route("**/*", (r) =>
+      /^https?:/.test(r.request().url()) &&
+      !r
+        .request()
+        .url()
+        .startsWith(url + "/")
+        ? r.abort()
+        : r.continue(),
+    );
+    page.setDefaultTimeout(30000);
+    return page;
+  };
+  page = await newPage();
   await page.goto(url + "/#token=" + token);
-  await page.waitForFunction(
+  await stateReady(
     () =>
       window.__chronoscope?.snapshot?.count === 0 && !window.__chronoscope.busy,
   );
   page.setDefaultTimeout(30000);
-  const idle = () => page.waitForFunction(() => !window.__chronoscope.busy);
+  const idle = () => stateReady(() => !window.__chronoscope.busy);
   const check = (name, evidence = {}) => {
     report.checks.push({ name, evidence });
     console.log("PASS", name);
   };
-  for (const [id, count, entities] of [
+  const datasets = [
     ["noaa-ais", 8473, 10],
     ["animal-gps", 15697, 3],
     ["local-wildlife", 3439, 3],
     ["stork-migration", 6090, 3],
     ["elephant-seals", 15501, 3],
-  ]) {
+  ];
+  for (const [id, count, entities] of process.env.CHRONOSCOPE_QA_FULL === "1"
+    ? datasets
+    : datasets.filter(([id]) => id === "local-wildlife")) {
+    // Keep each large-demo render/mode/playback test in a fresh GPU browser.
+    // The picker still replaces the preceding real workspace within this page.
+    if (id !== "noaa-ais") {
+      await browser.close();
+      browser = await launchBrowser();
+      page = await newPage();
+      await page.goto(url + "/#token=" + token);
+      await stateReady(
+        () => window.__chronoscope?.snapshot && !window.__chronoscope.busy,
+      );
+    }
     await page.locator("#help").click();
     await page.locator("#demo-datasets").click();
     await page.locator("[data-demo-id]").first().waitFor();
     assert.equal(await page.locator("[data-demo-id]").count(), 6);
     await page.locator(`[data-demo-id="${id}"]`).click();
-    await page.waitForFunction(
+    await stateReady(
       (n) =>
         window.__chronoscope?.snapshot?.count === n &&
         !window.__chronoscope.busy,
@@ -137,10 +145,25 @@ try {
     );
     for (const mode of ["map", "globe", "space-time"]) {
       await page.locator(`[data-view="${mode}"]`).click();
-      await page.waitForFunction(
-        (m) =>
-          window.__chronoscope.view.mode === m && !window.__chronoscope.busy,
-        mode,
+      await page.evaluate(() => window.__chronoscope.viewModeIdle());
+      const frames = await page.evaluate(() => {
+        const view = window.__chronoscope.view;
+        const count = view.diagnostics().performance.renderedFrames;
+        view.scene.requestRender();
+        return count;
+      });
+      await stateReady(
+        ({ mode, frames }) => {
+          const c = window.__chronoscope,
+            view = c.view;
+          return (
+            view.mode === mode &&
+            !c.busy &&
+            view.scene.frameState.mode === view.scene.mode &&
+            view.diagnostics().performance.renderedFrames > frames
+          );
+        },
+        { mode, frames },
       );
       const v = await page.evaluate(() => ({
         errors: window.__chronoscope.view.diagnostics().renderErrorCount,
@@ -155,7 +178,7 @@ try {
       .locator("#tables-menu [data-table-layer-source]")
       .first()
       .click();
-    await page.waitForFunction(
+    await stateReady(
       () =>
         document.querySelectorAll("#table-head [data-table-sort]").length > 20,
     );
@@ -166,7 +189,7 @@ try {
       descending: false,
       limit: 100,
     });
-    await page.waitForFunction(
+    await stateReady(
       (ids) =>
         JSON.stringify(
           Array.from(
@@ -180,8 +203,16 @@ try {
       columns: expected.columns.length,
     });
     await page.locator("#close-table").click();
+    const focusBefore = await page.evaluate(
+      () => window.__chronoscope.view.focusFraction,
+    );
     await page.locator("#play").click();
-    await page.waitForTimeout(1200);
+    await page.waitForFunction(
+      (before) =>
+        Math.abs(window.__chronoscope.view.focusFraction - before) > 0.00001,
+      focusBefore,
+      { timeout: 10000 },
+    );
     await page.locator("#play").click();
     await idle();
     assert.equal(
@@ -193,16 +224,19 @@ try {
     await page.screenshot({ path: path.join(out, id + ".png") });
     check(id + ": playback remains functional");
   }
+  await browser.close();
   await api("demo_open", { id: "noaa-ais" });
-  await page.reload();
-  await page.waitForFunction(
+  browser = await launchBrowser();
+  page = await newPage();
+  await page.goto(url + "/#token=" + token);
+  await stateReady(
     () =>
       window.__chronoscope?.snapshot?.count === 8473 &&
       !window.__chronoscope.busy,
   );
   const bloom = await api("restore_view", { index: 3 });
   await page.reload();
-  await page.waitForFunction(
+  await stateReady(
     () =>
       window.__chronoscope?.snapshot?.count === 8473 &&
       !window.__chronoscope.busy,
@@ -219,6 +253,35 @@ try {
   console.log("PASS real-world demo datasets");
 } catch (e) {
   report.errors.push(String(e));
+  // Failure collection must not mask the original assertion or wait forever
+  // if the renderer itself is unresponsive.
+  if (page && !page.isClosed()) {
+    const pending = [
+      page
+        .evaluate(() => ({
+          count: window.__chronoscope?.snapshot?.count,
+          busy: window.__chronoscope?.busy,
+          status: document.querySelector("#status")?.textContent,
+          modal: document.querySelector(".modal")?.textContent?.slice(0, 2000),
+          text: document.body.innerText.slice(-4000),
+        }))
+        .then((state) => {
+          report.failureState = state;
+        })
+        .catch(() => {}),
+      page
+        .screenshot({ path: path.join(out, "failure.png"), timeout: 3000 })
+        .catch(() => {}),
+    ];
+    let timer;
+    await Promise.race([
+      Promise.allSettled(pending),
+      new Promise((resolve) => {
+        timer = setTimeout(resolve, 3500);
+      }),
+    ]);
+    clearTimeout(timer);
+  }
   throw e;
 } finally {
   fs.writeFileSync(

@@ -17,6 +17,7 @@ pub mod project;
 #[cfg(feature = "legacy")]
 pub mod scene;
 
+pub mod balanced_terrain;
 pub mod basemap;
 pub mod coordinates;
 pub mod engine;

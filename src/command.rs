@@ -120,11 +120,15 @@ commands! {
     GisImportPreview => "gis_import_preview", Always, false, false, false, true, false;
     ImportPreview => "import_preview", Always, false, false, false, true, false;
     ImportValidate => "import_validate", Always, false, false, false, true, false;
+    ImportReview => "import_review", Never, false, false, false, true, true;
+    ImportRejectionsExport => "import_rejections_export", Always, false, false, false, true, false;
     ImportCommit => "import_commit", Always, false, false, true, true, false;
     Filter => "filter", Always, true, false, true, true, false;
     SelectVisible => "select_visible", Always, true, false, true, true, false;
     SelectQuery => "select_query", Always, true, false, true, true, false;
     Select => "select", Always, true, false, true, true, false;
+    SelectionPick => "selection_pick", Always, true, false, true, false, false;
+    SelectionRestore => "selection_restore", Always, true, false, true, false, false;
     Analyze => "analyze", Never, false, false, false, true, true;
     Coordinates => "coordinates", Never, false, false, false, true, true;
     Edit => "edit", Always, true, true, true, true, false;
@@ -168,6 +172,11 @@ commands! {
     ViewSet => "view_set", Always, true, false, true, true, false;
     ViewStatus => "view_status", Never, false, false, false, true, false;
     ViewNavigate => "view_navigate", Always, false, false, false, true, false;
+    ViewRecording => "view_recording", Never, false, false, false, true, false;
+    ViewProfile => "view_profile", Never, false, false, false, true, false;
+    ViewWait => "view_wait", Never, false, false, false, true, false;
+    ViewPlayback => "view_playback", Never, false, false, false, true, false;
+    ViewScenario => "view_scenario", Never, false, false, false, true, false;
     ViewCapture => "view_capture", Never, false, false, false, true, false;
     ViewResponse => "view_response", Never, false, false, false, false, false;
     Batch => "batch", Always, true, true, true, true, false;

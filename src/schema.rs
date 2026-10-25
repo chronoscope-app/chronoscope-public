@@ -1,6 +1,7 @@
 //! One authoritative, enforced contract for CLI, desktop commands and MCP.
 use serde_json::{json, Map, Value};
 use std::{collections::BTreeMap, sync::OnceLock};
+mod live;
 pub fn object(properties: Value, required: &[&str]) -> Value {
     json!({"type":"object","properties":properties,"required":required,"additionalProperties":false})
 }
@@ -125,9 +126,15 @@ pub fn chart() -> Value {
         &[],
     )
 }
+fn cesium_camera() -> Value {
+    object(
+        json!({"position":{"type":"array","items":{"type":"number","minimum":-1e10,"maximum":1e10},"minItems":3,"maxItems":3},"direction":vector(3),"up":vector(3),"frustum_width":nullable(json!({"type":"number","minimum":0.01,"maximum":1e10}))}),
+        &["position", "direction", "up"],
+    )
+}
 pub fn scene() -> Value {
     object(
-        json!({"renderer":choice(&["","cesium"]),"cesium_camera":nullable(object(json!({"position":{"type":"array","items":{"type":"number","minimum":-1e10,"maximum":1e10},"minItems":3,"maxItems":3},"direction":vector(3),"up":vector(3),"frustum_width":nullable(json!({"type":"number","minimum":0.01,"maximum":1e10}))}),&["position","direction","up"])),"entity_colors":{"type":"object","maxProperties":10000,"propertyNames":{"maxLength":8192},"additionalProperties":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}},"display":nullable(display_options()),"mode":choice(&["","space-time","map","globe"]),"position":nullable(vector(3)),"target":nullable(vector(3)),"globe_time":boolean(),"globe_time_scale":nullable(json!({"type":"number","minimum":0.05,"maximum":20})),"time_height":nullable(json!({"type":"number","minimum":1.2,"maximum":5})),"camera_up":nullable(vector(3)),"camera_zoom":nullable(json!({"type":"number","minimum":0.1,"maximum":100})),"render_budget":nullable(json!({"enum":[20000,100000]})),"table_source":nullable(string()),"gis_table":nullable(string()),"table_attributes":boolean(),"table_respect_filters":boolean(),"table_sort":string(),"table_descending":boolean(),"table_column_offset":integer(0,528),"focus":nullable(json!({"type":"number","minimum":0,"maximum":1})),"bounds":nullable(vector(4)),"table_open":boolean(),"inspector_tab":choice(&["","inspect","patterns","charts","views"]),"expanded":boolean(),"chart":nullable(chart()),"chart_presets":list(object(json!({"name":{"type":"string","minLength":1,"maxLength":128},"config":chart()}),&["name","config"]),32)}),
+        json!({"renderer":choice(&["","cesium"]),"cesium_camera":nullable(cesium_camera()),"view_states":{"type":"object","maxProperties":3,"propertyNames":{"enum":["space-time","map","globe"]},"additionalProperties":object(json!({"center":vector(3),"ground_width":{"type":"number","minimum":0.01,"maximum":1e10},"heading":{"type":"number","minimum":0,"exclusiveMaximum":360},"tilt":{"type":"number","minimum":0,"maximum":89.5},"footprint":list(vector(3),4),"camera":nullable(cesium_camera())}),&["center","ground_width","heading","tilt"])},"entity_colors":{"type":"object","maxProperties":10000,"propertyNames":{"maxLength":8192},"additionalProperties":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}},"display":nullable(display_options()),"mode":choice(&["","space-time","map","globe"]),"position":nullable(vector(3)),"target":nullable(vector(3)),"globe_time":boolean(),"globe_time_scale":nullable(json!({"type":"number","minimum":0.05,"maximum":20})),"time_height":nullable(json!({"type":"number","minimum":1.2,"maximum":5})),"camera_up":nullable(vector(3)),"camera_zoom":nullable(json!({"type":"number","minimum":0.1,"maximum":100})),"render_budget":nullable(json!({"enum":[20000,100000]})),"table_source":nullable(string()),"gis_table":nullable(string()),"table_attributes":boolean(),"table_respect_filters":boolean(),"table_sort":string(),"table_descending":boolean(),"table_column_offset":integer(0,528),"focus":nullable(json!({"type":"number","minimum":0,"maximum":1})),"bounds":nullable(vector(4)),"table_open":boolean(),"inspector_tab":choice(&["","inspect","patterns","charts","views"]),"expanded":boolean(),"chart":nullable(chart()),"chart_presets":list(object(json!({"name":{"type":"string","minLength":1,"maxLength":128},"config":chart()}),&["name","config"]),32)}),
         &[],
     )
 }
@@ -170,7 +177,7 @@ fn map_layer() -> Value {
 }
 fn preferences() -> Value {
     object(
-        json!({"basemap":choice(&["streets","none"]),"theme":choice(&["dark","light","system"]),"coordinates":choice(&["dd","utm","mgrs"]),"map":map_config(),"map_layers":{"anyOf":[{"type":"null"},{"type":"array","maxItems":64,"items":map_layer()}]},"auto_save_unsaved":boolean(),"terrain_path":nullable(string()),"terrain_exaggeration":{"type":"number","minimum":0.1,"maximum":20},"terrain_vertical_datum":choice(&["unresolved-msl","egm96","ellipsoid"])}),
+        json!({"basemap":choice(&["streets","none"]),"theme":choice(&["dark","light","system"]),"coordinates":choice(&["dd","utm","mgrs"]),"map":map_config(),"map_layers":{"anyOf":[{"type":"null"},{"type":"array","maxItems":64,"items":map_layer()}]},"auto_save_unsaved":boolean(),"terrain_path":nullable(string()),"terrain_builtin":boolean(),"terrain_exaggeration":{"type":"number","minimum":0.1,"maximum":20},"terrain_vertical_datum":choice(&["unresolved-msl","egm96","ellipsoid"])}),
         &[],
     )
 }
@@ -187,6 +194,12 @@ pub fn is_mutation(command: &str, args: &Value) -> bool {
     crate::command::Command::parse(command).is_some_and(|c| c.mutates(args))
 }
 pub fn command_schema(command: &str) -> Option<Value> {
+    if matches!(
+        command,
+        "view_profile" | "view_wait" | "view_playback" | "view_scenario"
+    ) {
+        return Some(live::input(command));
+    }
     let command = crate::command::canonical_name(command);
     let (props, required) = match command {
         "workspace_status"
@@ -336,7 +349,7 @@ pub fn command_schema(command: &str) -> Option<Value> {
         "analytics_discover" => (json!({"search":string(),"offset":integer(0,1000)}), vec![]),
         "analytics_describe" => (json!({"capability":string()}), vec!["capability"]),
         "analytics_run" => (
-            json!({"plan":crate::analytics::plan_schema(),"filter":filter(),"source":nullable(string()),"expected_revision":integer(1,i64::MAX)}),
+            json!({"plan":crate::analytics::plan_schema(),"filter":filter(),"source":nullable(string()),"expected_revision":integer(1,i64::MAX),"expected_workspace":string()}),
             vec!["plan"],
         ),
         "analytics_result" => (
@@ -399,6 +412,14 @@ pub fn command_schema(command: &str) -> Option<Value> {
             json!({"sheet":integer(0,255),"mapping":mapping(),"import_id":string()}),
             vec!["mapping"],
         ),
+        "import_review" => (
+            json!({"sheet":integer(0,255),"mapping":mapping(),"import_id":string(),"expected_workspace":string()}),
+            vec!["mapping", "import_id"],
+        ),
+        "import_rejections_export" => (
+            json!({"sheet":integer(0,255),"mapping":mapping(),"import_id":string(),"path":string(),"overwrite":boolean()}),
+            vec!["mapping", "import_id", "path"],
+        ),
         "import_commit" => (
             json!({"sheet":integer(0,255),"mapping":mapping(),"append":boolean(),"accept_rejected":boolean(),"import_id":string(),"aggregation":aggregation()}),
             vec![],
@@ -418,7 +439,11 @@ pub fn command_schema(command: &str) -> Option<Value> {
             vec![],
         ),
         "selection_contains" => (json!({"ids":list(id(),1000000)}), vec!["ids"]),
-        "select" => (
+        "selection_restore" => (
+            json!({"pick_revision":integer(1,i64::MAX)}),
+            vec!["pick_revision"],
+        ),
+        "select" | "selection_pick" => (
             json!({"ids":list(id(),10000),"mode":choice(&["replace","add","subtract","toggle"])}),
             vec!["ids"],
         ),
@@ -486,6 +511,10 @@ pub fn command_schema(command: &str) -> Option<Value> {
             json!({"chart":nullable(chart()),"chart_presets":list(object(json!({"name":{"type":"string","minLength":1,"maxLength":128},"config":chart()}),&["name","config"]),32),"entity_colors":{"type":"object","maxProperties":10000,"propertyNames":{"maxLength":8192},"additionalProperties":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}},"display":nullable(display_options()),"mode":choice(&["space-time","map","globe"]),"render_budget":{"enum":[20000,100000]},"fit":boolean(),"bounds":vector(4),"globe_time":boolean(),"globe_time_scale":{"type":"number","minimum":0.05,"maximum":20},"time_height":{"type":"number","minimum":1.2,"maximum":5},"focus":{"type":"number","minimum":0,"maximum":1},"gis_table":nullable(string()),"table_open":boolean(),"inspector_tab":choice(&["inspect","patterns","charts","views"])}),
             vec![],
         ),
+        "view_recording" => (
+            json!({"action":choice(&["start","status","stop"]),"path":string(),"window":choice(&["main","si-chat"]),"fps":integer(15,60),"max_seconds":{"type":"number","minimum":1,"maximum":120}}),
+            vec!["action", "path"],
+        ),
         "view_capture" => (
             json!({"target":choice(&["app","map"]),"window":choice(&["main","si-chat"])}),
             vec![],
@@ -506,6 +535,17 @@ pub fn command_schema(command: &str) -> Option<Value> {
         _ => return None,
     };
     let mut schema = object(props, &required);
+    if command == "view_recording" {
+        let mut start = schema["properties"].clone();
+        start["action"] = json!({"const":"start"});
+        schema["oneOf"] = json!([
+            object(start, &["action", "path"]),
+            object(
+                json!({"action":choice(&["status","stop"]),"path":string()}),
+                &["action", "path"]
+            )
+        ]);
+    }
     if command == "view_navigate" {
         let variants: &[(&str, &[&str], &[&str])] = &[
             ("fit", &["whole_globe"], &[]),

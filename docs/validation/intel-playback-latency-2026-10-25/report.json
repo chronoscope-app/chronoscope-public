@@ -1,0 +1,1395 @@
+{
+  "date": "2026-10-25",
+  "base_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+  "product_revision": "3e6f7899d5edcd1f430dccc3b2738b6e353ff1e4",
+  "branch": "codex/intel-playback-latency",
+  "finding": "The serialized browser bridge incurred request/header and separate body-completion scheduling delays during rendering. Delivering parsed JSON from one asynchronous XMLHttpRequest completion improves the same Intel playback workload without caching state or changing CAS/filter semantics.",
+  "resource_timing_control": {
+    "filter_network_median_ms": 5.0,
+    "filter_body_callback_after_response_end_median_ms": 39.0,
+    "snapshot_network_median_ms": 9.25,
+    "snapshot_body_callback_after_response_end_median_ms": 39.65,
+    "view_snapshot_network_median_ms": 20.7,
+    "view_snapshot_body_callback_after_response_end_median_ms": 33.0,
+    "method": "Nearest matching Resource Timing start within 2 ms; only unambiguous matches. Includes browser transport/interception, not just engine execution."
+  },
+  "rejected_leads": [
+    "TCP_NODELAY did not clear pacing, including with request interception removed. No server socket policy was changed.",
+    "Suppressing tooltip observer annotation did not clear pacing. No tooltip behavior was changed.",
+    "Removing interception alone produced inconsistent pacing and exposed a separate pause write. Maintained routing/offline protection remains intact."
+  ],
+  "product_changes": [
+    "Browser-only invoke transport delivers and parses the full JSON body in one completion event. Same POST endpoint, authorization, payload, structured errors and fresh state/CAS pipeline. Native Tauri dispatch stays on its existing path.",
+    "Full-range pause skips the redundant filter write. Each playback session initializes its own window before its first frame.",
+    "Full-range request assertion waits for filterIdle before stopping request observation.",
+    "Six unit regressions cover authenticated payload/body completion, structured conflict/auth errors, malformed JSON, network/abort failures, missing token, and native dispatch/error isolation."
+  ],
+  "acceptance_unchanged": {
+    "minimum_updates_per_3_5_seconds": 20,
+    "maximum_median_interval_ms_exclusive": 180,
+    "maximum_crossfade_layers": 2,
+    "paused_layers": 1,
+    "full_range_filter_writes": 0,
+    "render_errors": 0,
+    "quality_and_budgets": "unchanged"
+  },
+  "execution": {
+    "hardware": "Intel UHD Graphics CML GT2 / Vulkan",
+    "icd": "/usr/share/vulkan/icd.d/intel_icd.json",
+    "cli_profile": "release",
+    "cargo_jobs": 2,
+    "rust_test_threads": 1,
+    "browser_jobs": 1,
+    "headless": true,
+    "compilation_during_browser_timing": false,
+    "github_runners_used": false,
+    "radeon_recovery_attempted": false,
+    "public_pushed": false
+  },
+  "secret_scan": {
+    "status": "unavailable_on_linux_host",
+    "scanner": "gitleaks",
+    "installed_binary_found": false,
+    "new_tools_installed": false,
+    "note": "No binary found in PATH, /tmp, user local/cache/Codex/OpenClaw workspace, /opt, or system bin locations. Exact-candidate scan remains coordinator-owned."
+  },
+  "full_validation_status": "running",
+  "experiments": [
+    {
+      "name": "baseline",
+      "change": "Unchanged main; bounded CPU profiler and method/fetch timing.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/baseline",
+      "invocation": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_s": 7.597,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9",
+        "started_profile": "release"
+      },
+      "installs": 17,
+      "frames": 197,
+      "median_interval_ms": 238.8,
+      "suite_report": {
+        "passed": false,
+        "checks": [],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "failure": "AssertionError [ERR_ASSERTION]: Only 17 live updates in 3.5 seconds\n    at file:///home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/diagnostic.mjs:237:3"
+      },
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "command_timings_ms": {
+        "snapshot": {
+          "fetchMs": 27.3,
+          "jsonMs": 24.7,
+          "totalMs": 54.9
+        },
+        "filter": {
+          "fetchMs": 23.9,
+          "jsonMs": 31.4,
+          "totalMs": 57.5
+        },
+        "view_snapshot_v1": {
+          "fetchMs": 38.65,
+          "jsonMs": 30.75,
+          "totalMs": 70.25
+        }
+      }
+    },
+    {
+      "name": "proxy-control",
+      "change": "No Playwright routing; local HTTP/CONNECT deny proxy never forwards upstream. Failed pacing before an unclosed proxy kept Node alive.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/proxy-control",
+      "invocation": {
+        "exit_code": 124,
+        "timed_out": true,
+        "elapsed_s": 120.016,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9"
+      },
+      "installs": 21,
+      "frames": 199,
+      "median_interval_ms": 186.9,
+      "suite_report": {
+        "passed": false,
+        "checks": [],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "networkGuard": {
+          "externalProbeDenials": 14,
+          "upstreamForwarding": false
+        },
+        "failure": "AssertionError [ERR_ASSERTION]: Data presentation still steps every 186.89999999850988ms\n    at file:///home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/proxy-control.mjs:252:3"
+      },
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "command_timings_ms": {
+        "snapshot": {
+          "fetchMs": 4.9,
+          "jsonMs": 29.7,
+          "totalMs": 37.2
+        },
+        "filter": {
+          "fetchMs": 18.9,
+          "jsonMs": 29.7,
+          "totalMs": 49.3
+        },
+        "view_snapshot_v1": {
+          "fetchMs": 34.5,
+          "jsonMs": 25.15,
+          "totalMs": 63.8
+        }
+      },
+      "network_guard": {
+        "externalProbeDenials": 14,
+        "upstreamForwarding": false,
+        "unexpectedExternalAttempts": 6
+      }
+    },
+    {
+      "name": "proxy-control-cleanup",
+      "change": "Same deny proxy control with unconditional socket/server cleanup.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/proxy-control-cleanup",
+      "invocation": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_s": 9.307,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9"
+      },
+      "installs": 21,
+      "frames": 197,
+      "median_interval_ms": 170.5,
+      "suite_report": {
+        "passed": false,
+        "checks": [
+          {
+            "name": "Day playback presents smaller steps without blocking on bloom",
+            "evidence": {
+              "installs": 21,
+              "medianIntervalMs": 170.5
+            }
+          },
+          {
+            "name": "Bloom crossfades with at most two real imagery layers and no renderer errors",
+            "evidence": {
+              "frames": 197
+            }
+          },
+          {
+            "name": "Pause settles to one bloom atlas",
+            "evidence": {
+              "layers": 1
+            }
+          }
+        ],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "networkGuard": {
+          "externalProbeDenials": 14,
+          "upstreamForwarding": false
+        },
+        "pauseSettlement": {
+          "started": 6473.300000000745,
+          "filterSettled": true,
+          "filterError": null,
+          "samples": [
+            {
+              "elapsedMs": 1.300000000745058,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 2,
+              "error": ""
+            },
+            {
+              "elapsedMs": 101.5,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 1,
+              "error": ""
+            },
+            {
+              "elapsedMs": 201.89999999850988,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 2,
+              "error": ""
+            },
+            {
+              "elapsedMs": 302.19999999925494,
+              "filterSettled": true,
+              "playback": false,
+              "updating": false,
+              "pending": false,
+              "layers": 1,
+              "error": ""
+            }
+          ]
+        },
+        "failure": "AssertionError [ERR_ASSERTION]: Full-range playback must retain its no-refresh fast path\n\n1 !== 0\n\n    at file:///home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/proxy-control-cleanup.mjs:350:10"
+      },
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "command_timings_ms": {
+        "snapshot": {
+          "fetchMs": 5,
+          "jsonMs": 30.1,
+          "totalMs": 36.9
+        },
+        "filter": {
+          "fetchMs": 18,
+          "jsonMs": 28.5,
+          "totalMs": 45.6
+        },
+        "view_snapshot_v1": {
+          "fetchMs": 32.1,
+          "jsonMs": 17.1,
+          "totalMs": 52.4
+        }
+      },
+      "network_guard": {
+        "externalProbeDenials": 14,
+        "upstreamForwarding": false,
+        "unexpectedExternalAttempts": 6
+      }
+    },
+    {
+      "name": "nodelay-control",
+      "change": "Unchanged release binary; diagnostic LD_PRELOAD enables TCP_NODELAY on accepted server connections; normal request interception retained.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/nodelay-control",
+      "invocation": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_s": 7.449,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9"
+      },
+      "installs": 16,
+      "frames": 190,
+      "median_interval_ms": 229.0,
+      "suite_report": {
+        "passed": false,
+        "checks": [],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "failure": "AssertionError [ERR_ASSERTION]: Only 16 live updates in 3.5 seconds\n    at file:///home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/nodelay-control.mjs:237:3\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:541:9)"
+      },
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "command_timings_ms": {
+        "snapshot": {
+          "fetchMs": 26.35,
+          "jsonMs": 34.05,
+          "totalMs": 61.45
+        },
+        "filter": {
+          "fetchMs": 23,
+          "jsonMs": 37.1,
+          "totalMs": 58.4
+        },
+        "view_snapshot_v1": {
+          "fetchMs": 40.75,
+          "jsonMs": 35.75,
+          "totalMs": 78.05
+        }
+      }
+    },
+    {
+      "name": "nodelay-proxy-control",
+      "change": "Both controls combined; accepted TCP_NODELAY settings confirmed in server-stderr.log.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/nodelay-proxy-control",
+      "invocation": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_s": 7.447,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9"
+      },
+      "installs": 20,
+      "frames": 195,
+      "median_interval_ms": 189.3,
+      "suite_report": {
+        "passed": false,
+        "checks": [],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "networkGuard": {
+          "externalProbeDenials": 15,
+          "upstreamForwarding": false
+        },
+        "failure": "AssertionError [ERR_ASSERTION]: Data presentation still steps every 189.30000000074506ms\n    at file:///home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/nodelay-proxy-control.mjs:253:3"
+      },
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "command_timings_ms": {
+        "snapshot": {
+          "fetchMs": 4.65,
+          "jsonMs": 29.45,
+          "totalMs": 37.6
+        },
+        "filter": {
+          "fetchMs": 20.3,
+          "jsonMs": 27.65,
+          "totalMs": 51.7
+        },
+        "view_snapshot_v1": {
+          "fetchMs": 37.5,
+          "jsonMs": 30.5,
+          "totalMs": 69
+        }
+      },
+      "network_guard": {
+        "externalProbeDenials": 15,
+        "upstreamForwarding": false,
+        "unexpectedExternalAttempts": 5
+      }
+    },
+    {
+      "name": "no-tooltip-observer",
+      "change": "Diagnostic frontend copy disables repeated tooltip annotation; ordinary interception retained.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/no-tooltip-observer",
+      "invocation": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_s": 7.295,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9"
+      },
+      "installs": 16,
+      "frames": 185,
+      "median_interval_ms": 218.0,
+      "suite_report": {
+        "passed": false,
+        "checks": [],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "failure": "AssertionError [ERR_ASSERTION]: Only 16 live updates in 3.5 seconds\n    at file:///home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/diagnostic.mjs:237:3\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:541:9)"
+      },
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "command_timings_ms": {
+        "snapshot": {
+          "fetchMs": 26.05,
+          "jsonMs": 30.45,
+          "totalMs": 55.65
+        },
+        "filter": {
+          "fetchMs": 23.8,
+          "jsonMs": 31.6,
+          "totalMs": 56.8
+        },
+        "view_snapshot_v1": {
+          "fetchMs": 38.1,
+          "jsonMs": 34.7,
+          "totalMs": 73.5
+        }
+      }
+    },
+    {
+      "name": "resource-timing",
+      "change": "Unchanged main with browser Resource Timing measurements in addition to bounded profiling.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/resource-timing",
+      "invocation": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_s": 7.546,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9"
+      },
+      "installs": 17,
+      "frames": 192,
+      "median_interval_ms": 214.6,
+      "suite_report": {
+        "passed": false,
+        "checks": [],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "failure": "AssertionError [ERR_ASSERTION]: Only 17 live updates in 3.5 seconds\n    at file:///home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/resource-timing.mjs:237:3"
+      },
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "command_timings_ms": {
+        "snapshot": {
+          "fetchMs": 27.45,
+          "jsonMs": 26.55,
+          "totalMs": 56.3
+        },
+        "filter": {
+          "fetchMs": 24.45,
+          "jsonMs": 33.9,
+          "totalMs": 56.9
+        },
+        "view_snapshot_v1": {
+          "fetchMs": 38.5,
+          "jsonMs": 28.6,
+          "totalMs": 66.8
+        }
+      }
+    },
+    {
+      "name": "xhr-control",
+      "change": "Diagnostic init-script uses XMLHttpRequest, then creates a Response with an asynchronous JSON body read.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/xhr-control",
+      "invocation": {
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 9.26,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9"
+      },
+      "installs": 20,
+      "frames": 175,
+      "median_interval_ms": 176.8,
+      "suite_report": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "Day playback presents smaller steps without blocking on bloom",
+            "evidence": {
+              "installs": 20,
+              "medianIntervalMs": 176.80000000074506
+            }
+          },
+          {
+            "name": "Bloom crossfades with at most two real imagery layers and no renderer errors",
+            "evidence": {
+              "frames": 175
+            }
+          },
+          {
+            "name": "Pause settles to one bloom atlas",
+            "evidence": {
+              "layers": 1
+            }
+          },
+          {
+            "name": "Full-range playback still avoids redundant filtering",
+            "evidence": {
+              "filters": 0
+            }
+          }
+        ],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "pauseSettlement": {
+          "started": 6260.199999999255,
+          "filterSettled": true,
+          "filterError": null,
+          "samples": [
+            {
+              "elapsedMs": 7,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 2,
+              "error": ""
+            },
+            {
+              "elapsedMs": 107.30000000074506,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 1,
+              "error": ""
+            },
+            {
+              "elapsedMs": 242.20000000298023,
+              "filterSettled": true,
+              "playback": false,
+              "updating": false,
+              "pending": false,
+              "layers": 1,
+              "error": ""
+            }
+          ]
+        }
+      },
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "command_timings_ms": {
+        "snapshot": {
+          "fetchMs": 27.1,
+          "jsonMs": 19.2,
+          "totalMs": 45.85
+        },
+        "filter": {
+          "fetchMs": 22.9,
+          "jsonMs": 17.95,
+          "totalMs": 40.9
+        },
+        "view_snapshot_v1": {
+          "fetchMs": 41.7,
+          "jsonMs": 18.7,
+          "totalMs": 59.7
+        }
+      }
+    },
+    {
+      "name": "xhr-json-control",
+      "change": "Diagnostic init-script uses XMLHttpRequest and parses the complete body in its completion event; original pause implementation retained.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/xhr-json-control",
+      "invocation": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_s": 9.206,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9"
+      },
+      "installs": 31,
+      "frames": 179,
+      "median_interval_ms": 116.5,
+      "suite_report": {
+        "passed": false,
+        "checks": [
+          {
+            "name": "Day playback presents smaller steps without blocking on bloom",
+            "evidence": {
+              "installs": 31,
+              "medianIntervalMs": 116.5
+            }
+          },
+          {
+            "name": "Bloom crossfades with at most two real imagery layers and no renderer errors",
+            "evidence": {
+              "frames": 179
+            }
+          },
+          {
+            "name": "Pause settles to one bloom atlas",
+            "evidence": {
+              "layers": 1
+            }
+          }
+        ],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "pauseSettlement": {
+          "started": 6420.900000002235,
+          "filterSettled": true,
+          "filterError": null,
+          "samples": [
+            {
+              "elapsedMs": 7.199999999254942,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 1,
+              "error": ""
+            },
+            {
+              "elapsedMs": 107.59999999776483,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 1,
+              "error": ""
+            },
+            {
+              "elapsedMs": 208,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 2,
+              "error": ""
+            },
+            {
+              "elapsedMs": 308.19999999925494,
+              "filterSettled": true,
+              "playback": false,
+              "updating": false,
+              "pending": false,
+              "layers": 1,
+              "error": ""
+            }
+          ]
+        },
+        "failure": "AssertionError [ERR_ASSERTION]: Full-range playback must retain its no-refresh fast path\n\n1 !== 0\n\n    at file:///home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/xhr-json-control.mjs:352:10\n    at runNextTicks (node:internal/process/task_queues:65:5)\n    at process.processImmediate (node:internal/timers:541:9)"
+      },
+      "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+      "command_timings_ms": {
+        "snapshot": {
+          "fetchMs": 25.4
+        },
+        "filter": {
+          "fetchMs": 20.7
+        },
+        "view_snapshot_v1": {
+          "fetchMs": 42.8
+        }
+      }
+    },
+    {
+      "name": "product-playback",
+      "change": "Rebuilt application transport/pause changes, maintained suite, no transport injection or CPU profiling; pre-commit dirty checkout.",
+      "raw_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/product-playback",
+      "invocation": {
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 9.203,
+        "source_revision": "88dc05b2e2c5986a4c60786f99484185fc52df4b",
+        "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9"
+      },
+      "installs": 33,
+      "frames": 169,
+      "median_interval_ms": 112.8,
+      "suite_report": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "Day playback presents smaller steps without blocking on bloom",
+            "evidence": {
+              "installs": 33,
+              "medianIntervalMs": 112.80000000074506
+            }
+          },
+          {
+            "name": "Bloom crossfades with at most two real imagery layers and no renderer errors",
+            "evidence": {
+              "frames": 169
+            }
+          },
+          {
+            "name": "Pause settles to one bloom atlas",
+            "evidence": {
+              "layers": 1
+            }
+          },
+          {
+            "name": "Full-range playback still avoids redundant filtering",
+            "evidence": {
+              "filters": 0
+            }
+          }
+        ],
+        "errors": [],
+        "rustBuildProfile": "release",
+        "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+        "pauseSettlement": {
+          "started": 5888.39999999851,
+          "filterSettled": true,
+          "filterError": null,
+          "samples": [
+            {
+              "elapsedMs": 9.400000002235174,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 1,
+              "error": ""
+            },
+            {
+              "elapsedMs": 115.69999999925494,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 1,
+              "error": ""
+            },
+            {
+              "elapsedMs": 216.19999999925494,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 2,
+              "error": ""
+            },
+            {
+              "elapsedMs": 332.19999999925494,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 1,
+              "error": ""
+            },
+            {
+              "elapsedMs": 452.5,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 1,
+              "error": ""
+            },
+            {
+              "elapsedMs": 555.9000000022352,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 2,
+              "error": ""
+            },
+            {
+              "elapsedMs": 656,
+              "filterSettled": false,
+              "playback": false,
+              "updating": true,
+              "pending": true,
+              "layers": 1,
+              "error": ""
+            },
+            {
+              "elapsedMs": 759.4000000022352,
+              "filterSettled": true,
+              "playback": false,
+              "updating": false,
+              "pending": false,
+              "layers": 1,
+              "error": ""
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "focused_validation": {
+    "run_id": "20261025T194928Z-c726a9c3",
+    "source_revision": "3e6f7899d5edcd1f430dccc3b2738b6e353ff1e4",
+    "dirty": false,
+    "cli_build_profile": "release",
+    "native_build_profile": null,
+    "platform": "linux",
+    "tier": "full",
+    "started_utc": "2026-10-25T19:49:28.971321+00:00",
+    "test_infrastructure_sha256": {
+      "scripts/validate_local.py": "4d9ab98f8862f089b7be53ddb22edb6c36510b3b1f58af0b419e9f6d63be805a",
+      "scripts/validation_runtime.py": "b296eb98b85cbb7211e28d68784fc35e2f73fcb09fd8340b7248a7d5e5def18e",
+      "scripts/validation_suites.py": "57d21ce2a55cf093d55f4cc6e0d17203a4d6d6dad81de9f6ed24c07db94c9c2c",
+      "scripts/validation-suites.json": "483ad57c2f6733b90e19a9de1de6644cfc37422dac1ad8fe1be1172aa3bee90b",
+      "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+      "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+      "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+      "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+    },
+    "passed": true,
+    "github_runners_used": false,
+    "checks": [
+      {
+        "name": "validation-runner-tests",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_validation_runner.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/validation-runner-tests.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 2.879
+      },
+      {
+        "name": "rust-format",
+        "command": [
+          "cargo",
+          "fmt",
+          "--all",
+          "--check"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/rust-format.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.816
+      },
+      {
+        "name": "glib-backport-integrity",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_glib_backport.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/glib-backport-integrity.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.716
+      },
+      {
+        "name": "core-clippy",
+        "command": [
+          "cargo",
+          "clippy",
+          "--locked",
+          "-p",
+          "chronoscope",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/core-clippy.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.416
+      },
+      {
+        "name": "cli-build",
+        "command": [
+          "cargo",
+          "build",
+          "--locked",
+          "-p",
+          "chronoscope",
+          "--bin",
+          "chronoscope",
+          "--release"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/cli-build.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.415
+      },
+      {
+        "name": "frontend-build",
+        "command": [
+          "/home/claw/.local/bin/npm",
+          "--prefix",
+          "frontend",
+          "run",
+          "build",
+          "--",
+          "--configLoader",
+          "runner"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/frontend-build.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 17.005
+      },
+      {
+        "name": "generated-contracts",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "scripts/generate_contracts.mjs",
+          "--check"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/generated-contracts.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.165
+      },
+      {
+        "name": "frontend-unit-tests",
+        "command": [
+          "/home/claw/.local/bin/npm",
+          "--prefix",
+          "frontend",
+          "test"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/frontend-unit-tests.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 3.125
+      },
+      {
+        "name": "balanced-terrain-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/balanced-terrain-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/balanced-terrain-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 42.022,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "546b3d27a6470fdc2addf797cc466fc7e8d38a319b8ad642617c7023d47174ef"
+      },
+      {
+        "name": "real-demos-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/real-demos-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/real-demos-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 63.19,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          },
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "d624e9a99456c1f1fd051a4a3d5712c656233d9d71e95f1479f108772a75c827"
+      },
+      {
+        "name": "workspace-boundaries-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/workspace-boundaries-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/workspace-boundaries-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 5.431,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "9213c91a12665b45a1e30ba06741443328c6db4cf902aa95b0d3d624eaa982bc"
+      },
+      {
+        "name": "view-sync-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/view-sync-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/view-sync-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 12.363,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "13b5c1df8255ad188e162f25d375077b47708f7fa0481b784f930b5e23da5076"
+      },
+      {
+        "name": "mcp-live-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/mcp-live-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/mcp-live-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 6.334,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201"
+      },
+      {
+        "name": "playback-transitions-qa",
+        "command": [
+          "/home/claw/.local/bin/node",
+          "frontend/scripts/playback-transitions-qa.mjs"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/playback-transitions-qa.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 10.255,
+        "browser_launches": [
+          {
+            "executable": "/usr/bin/google-chrome",
+            "version": "156.0.8078.47",
+            "headless": true,
+            "angle": "vulkan"
+          }
+        ],
+        "suite_sha256": "89e36cd371f9ec50fabbd505ce313118d921321d84a8d842c51771d5d1b32911"
+      },
+      {
+        "name": "test_publication_cleanup",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_publication_cleanup.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/test_publication_cleanup.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.365
+      },
+      {
+        "name": "test_package_distribution",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_package_distribution.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/test_package_distribution.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 1.467
+      },
+      {
+        "name": "test_tester_packaging",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_tester_packaging.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/test_tester_packaging.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.315
+      },
+      {
+        "name": "test_validate_tester_download",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_validate_tester_download.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/test_validate_tester_download.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.114
+      },
+      {
+        "name": "test_analytics",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_analytics.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/test_analytics.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.465
+      },
+      {
+        "name": "test_analytics_engine",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_analytics_engine.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/test_analytics_engine.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 1.569
+      },
+      {
+        "name": "test_chart_shortcuts_protocol",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_chart_shortcuts_protocol.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/test_chart_shortcuts_protocol.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.365
+      },
+      {
+        "name": "test_subsecond_protocol",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_subsecond_protocol.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3/logs/test_subsecond_protocol.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 0.365
+      }
+    ],
+    "unrun_browser_suites": [
+      "analytics-qa.mjs",
+      "assistant-qa.mjs",
+      "basemap-qa.mjs",
+      "cesium-context-qa.mjs",
+      "cesium-effects-pixels-qa.mjs",
+      "cesium-globe-time-qa.mjs",
+      "cesium-parity-qa.mjs",
+      "cesium-terrain-qa.mjs",
+      "chart-shortcuts-qa.mjs",
+      "chart-workflow-qa.mjs",
+      "charts-qa.mjs",
+      "charts-timezone-qa.mjs",
+      "cluster-identity-qa.mjs",
+      "display-recovery-qa.mjs",
+      "empty-workspace-qa.mjs",
+      "event-table-qa.mjs",
+      "field-roles-qa.mjs",
+      "focused-ai-qa.mjs",
+      "gis-files-qa.mjs",
+      "guided-workflows-qa.mjs",
+      "integration-smoke-qa.mjs",
+      "map-notifications-qa.mjs",
+      "navigation-qa.mjs",
+      "navigation-sphere-qa.mjs",
+      "notifications-qa.mjs",
+      "pan-direction-qa.mjs",
+      "patterns-qa.mjs",
+      "playback-speed-qa.mjs",
+      "presentation-ui-qa.mjs",
+      "si-certificate-qa.mjs",
+      "si-rich-chat-qa.mjs",
+      "si-settings-qa.mjs",
+      "sidebar-time-qa.mjs",
+      "space-time-window-qa.mjs",
+      "spectrum-qa.mjs",
+      "subsecond-qa.mjs",
+      "time-rail-qa.mjs",
+      "toolbar-dialogs-qa.mjs",
+      "vector-gis-qa.mjs",
+      "viewport-pan-qa.mjs",
+      "webmcp-disabled-qa.mjs",
+      "welcome-qa.mjs",
+      "wkt-wmts-qa.mjs"
+    ],
+    "manual_checks_not_run": {
+      "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+      "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+      "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+    },
+    "evidence_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/validation/runs/20261025T194928Z-c726a9c3",
+    "limitations": [
+      "Native results apply to this operating system only.",
+      "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+      "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+    ],
+    "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9",
+    "finished_utc": "2026-10-25T19:52:19.618066+00:00"
+  },
+  "official_focused_playback": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "Day playback presents smaller steps without blocking on bloom",
+        "evidence": {
+          "installs": 29,
+          "medianIntervalMs": 124.70000000298023
+        }
+      },
+      {
+        "name": "Bloom crossfades with at most two real imagery layers and no renderer errors",
+        "evidence": {
+          "frames": 153
+        }
+      },
+      {
+        "name": "Pause settles to one bloom atlas",
+        "evidence": {
+          "layers": 1
+        }
+      },
+      {
+        "name": "Full-range playback still avoids redundant filtering",
+        "evidence": {
+          "filters": 0
+        }
+      }
+    ],
+    "errors": [],
+    "rustBuildProfile": "release",
+    "renderer": "ANGLE (Intel, Vulkan 1.4.335 (Intel(R) UHD Graphics (CML GT2) (0x00009BCA)), Intel open-source Mesa driver)",
+    "pauseSettlement": {
+      "started": 6379.900000002235,
+      "filterSettled": true,
+      "filterError": null,
+      "samples": [
+        {
+          "elapsedMs": 8.199999999254942,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 1,
+          "error": ""
+        },
+        {
+          "elapsedMs": 112.59999999776483,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 1,
+          "error": ""
+        },
+        {
+          "elapsedMs": 212.80000000074506,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 2,
+          "error": ""
+        },
+        {
+          "elapsedMs": 336.5999999977648,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 1,
+          "error": ""
+        },
+        {
+          "elapsedMs": 478.3999999985099,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 1,
+          "error": ""
+        },
+        {
+          "elapsedMs": 578.6999999992549,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 1,
+          "error": ""
+        },
+        {
+          "elapsedMs": 688.3000000007451,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 1,
+          "error": ""
+        },
+        {
+          "elapsedMs": 788.5,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 1,
+          "error": ""
+        },
+        {
+          "elapsedMs": 889.1999999992549,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 2,
+          "error": ""
+        },
+        {
+          "elapsedMs": 989.8999999985099,
+          "filterSettled": true,
+          "playback": false,
+          "updating": false,
+          "pending": false,
+          "layers": 1,
+          "error": ""
+        }
+      ]
+    }
+  },
+  "full_validation": {
+    "run_id": "20261025T195232Z-6093a963",
+    "source_revision": "3e6f7899d5edcd1f430dccc3b2738b6e353ff1e4",
+    "dirty": false,
+    "cli_build_profile": "release",
+    "native_build_profile": "debug",
+    "platform": "linux",
+    "tier": "full",
+    "started_utc": "2026-10-25T19:52:32.289804+00:00",
+    "test_infrastructure_sha256": {
+      "scripts/validate_local.py": "4d9ab98f8862f089b7be53ddb22edb6c36510b3b1f58af0b419e9f6d63be805a",
+      "scripts/validation_runtime.py": "b296eb98b85cbb7211e28d68784fc35e2f73fcb09fd8340b7248a7d5e5def18e",
+      "scripts/validation_suites.py": "57d21ce2a55cf093d55f4cc6e0d17203a4d6d6dad81de9f6ed24c07db94c9c2c",
+      "scripts/validation-suites.json": "483ad57c2f6733b90e19a9de1de6644cfc37422dac1ad8fe1be1172aa3bee90b",
+      "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+      "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+      "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+      "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+    },
+    "passed": false,
+    "github_runners_used": false,
+    "checks": [
+      {
+        "name": "validation-runner-tests",
+        "command": [
+          "/tmp/chronoscope-full-qa-python/bin/python",
+          "scripts/test_validation_runner.py"
+        ],
+        "log": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/full/runs/20261025T195232Z-6093a963/logs/validation-runner-tests.log",
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 2.878
+      }
+    ],
+    "unrun_browser_suites": [],
+    "manual_checks_not_run": {
+      "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+      "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+      "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+    },
+    "evidence_directory": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/full/runs/20261025T195232Z-6093a963",
+    "limitations": [
+      "Native results apply to this operating system only.",
+      "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+      "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+    ]
+  },
+  "build_receipt": {
+    "source_digest": "09e104fca4e457549097992e4f22a9604ddb05e44581a067d132a94cdb52ceb4",
+    "cli_sha256": "82e21e68e9956c0024a93df8bb0cd4919a6dc5d5b0c5c4694f5f1c9e222143c9",
+    "frontend_sha256": "92546fc16c551c6fc8727861b19b006f6fd7b59333ad2268ed5fdd3ab73d7f31",
+    "cli_build_profile": "release"
+  },
+  "source_sha256": {
+    "frontend/src/bridge.ts": "47bce2166539f5eb28bd44015001c842a7bf4d85944bfe7227bd80fa0981f422",
+    "frontend/src/main.ts": "f3d5951c18aea35f72d401fc823b8b2092f26711e5835a2a08e9983c1ba9222f",
+    "frontend/scripts/bridge-test.mjs": "f50ad9a9d8ffb7da53ddc01ededc8aa27decb0761ba51ba05910aa9e1beedc5a",
+    "frontend/scripts/playback-transitions-qa.mjs": "89e36cd371f9ec50fabbd505ce313118d921321d84a8d842c51771d5d1b32911",
+    "scripts/validation-suites.json": "483ad57c2f6733b90e19a9de1de6644cfc37422dac1ad8fe1be1172aa3bee90b"
+  },
+  "limitations": [
+    "Linux native GUI/Intel browser evidence is distinct from Mac verification. Native build/CLI checks do not certify native GUI pacing.",
+    "No Radeon certification or recovery was performed. Original failure reports remain unchanged.",
+    "Promotion remains coordinator-owned and requires the agreed platform verification."
+  ]
+}

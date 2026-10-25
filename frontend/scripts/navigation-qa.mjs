@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real Rust bridge and actual mouse/keyboard input. No public map requests.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -25,7 +25,7 @@ const server = spawn(
     "--token-file",
     tokenFile,
     "--frontend",
-    path.join(root, "frontend/dist"),
+    process.env.CHRONOSCOPE_QA_FRONTEND || path.join(root, "frontend/dist"),
   ],
   { stdio: ["ignore", "ignore", "pipe"] },
 );
@@ -36,32 +36,8 @@ const check = (name, evidence = {}) => {
   console.log("PASS", name);
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.once("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const b = await r.json();
-    assert(r.ok, JSON.stringify(b));
-    return b.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const p = await api("preferences");
   await api("preferences", {
     preferences: {
@@ -71,22 +47,10 @@ try {
       basemap: "none",
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1600, height: 1000 },
   });
@@ -116,20 +80,63 @@ try {
         height: v.camera.positionCartographic.height,
         width: v.captureCamera().cesium_camera.frustum_width,
         selected: [...c.snapshot.selected].sort(),
+        rendererSelected: [...v.selected].sort(),
+        selectedCount: c.snapshot.selected_count,
         nav: v.diagnostics().navigation,
         timeHeight: v.timeHeight,
         time: [v.lo, v.hi],
         filter: c.snapshot.filter,
       };
     });
+  const selectionUnchanged = async (ids, label) => {
+    // view.selected is intentionally only the selected evidence in the
+    // current render packet. Verify the full selection in the engine, then
+    // require every currently represented selected event to be highlighted.
+    await page.waitForFunction(async (ids) => {
+      const c = window.__chronoscope,
+        v = c.view;
+      const backend = await c.call("snapshot", {
+        compact: true,
+        selection_limit: 1000000,
+      });
+      const expected = new Set(ids);
+      return (
+        backend.selected_count === ids.length &&
+        backend.selected.length === ids.length &&
+        backend.selected.every((id) => expected.has(id)) &&
+        c.snapshot.selected_count === ids.length &&
+        [...v.selected].every((id) => expected.has(id)) &&
+        [...v.points, ...v.geometryFeatures].every(
+          (p) => !expected.has(p.id) || v.selected.has(p.id),
+        )
+      );
+    }, ids);
+    const backend = await api("snapshot", {
+      compact: true,
+      selection_limit: 1000000,
+    });
+    assert.deepEqual([...backend.selected].sort(), [...ids].sort(), label);
+  };
   const changed = (a, b) =>
     JSON.stringify(a.camera) !== JSON.stringify(b.camera);
   const sameCamera = (actual, expected, label = "camera unchanged") => {
     for (const key of ["position", "direction", "up"])
       assert(
-        Math.hypot(...actual[key].map((x, i) => x - expected[key][i])) <
-          (key === "position" ? 1e-5 : 1e-10),
-        label + " " + key,
+        Math.hypot(
+          ...actual[key].map((x, i) => {
+            // Cesium recomputes 2D camera depth when updating an orthographic
+            // view. Its visible framing is XY + orientation + frustum width.
+            if (
+              key === "position" &&
+              i === 2 &&
+              actual.frustum_width !== undefined &&
+              expected.frustum_width !== undefined
+            )
+              return 0;
+            return x - expected[key][i];
+          }),
+        ) < (key === "position" ? 1e-5 : 1e-10),
+        `${label} ${key}: ${JSON.stringify({ actual: actual[key], expected: expected[key] })}`,
       );
     if (actual.frustum_width !== undefined)
       assert(
@@ -296,17 +303,14 @@ try {
     await api("select", { ids });
     await page.evaluate(() => window.__chronoscope.refresh(false));
     const selectedBefore = await state();
+    assert.deepEqual(selectedBefore.selected, [...ids].sort());
     const d = await location();
     await page.mouse.dblclick(d.x, d.y);
     await page.waitForTimeout(350);
-    // Zoom can cull selected markers. Assert the shared selection, including
-    // off-screen Events, rather than the current packet's highlight subset.
-    await page.waitForFunction((ids) => {
-      const selected = new Set(window.__chronoscope.snapshot.selected);
-      return (
-        selected.size === ids.length && ids.every((id) => selected.has(id))
-      );
-    }, selectedBefore.selected);
+    await selectionUnchanged(
+      ids,
+      mode + " double-click preserves the full engine selection",
+    );
     let afterDouble = await state();
     assert(
       metric(afterDouble) < metric(selectedBefore),
@@ -319,12 +323,10 @@ try {
     );
     await page.mouse.click(d.x, d.y, { button: "right", clickCount: 2 });
     await page.waitForTimeout(80);
-    await page.waitForFunction((ids) => {
-      const selected = new Set(window.__chronoscope.snapshot.selected);
-      return (
-        selected.size === ids.length && ids.every((id) => selected.has(id))
-      );
-    }, selectedBefore.selected);
+    await selectionUnchanged(
+      ids,
+      mode + " right double-click preserves selection",
+    );
     const rightDouble = await state();
     assert(
       metric(rightDouble) > metric(afterDouble),
@@ -379,12 +381,19 @@ try {
       selectedBefore.selected,
       mode + " Escape did not clear selection",
     );
+    await selectionUnchanged(
+      ids,
+      mode + " keyboard/Escape preserves selection",
+    );
     const final = await state();
     invariant(initial, final);
     assert(final.height >= 2, mode + " camera above floor");
     if (mode === "map") {
       assert.equal(final.tilt, 0);
-      assert.equal(final.bearing, 0);
+      assert(
+        Math.min(final.bearing, 360 - final.bearing) < 0.01,
+        "Map remains north-facing after Fit",
+      );
     }
     assert.equal(
       (await page.evaluate(() => window.__chronoscope.view.diagnostics()))
@@ -403,6 +412,80 @@ try {
   }
   await page.click('[data-view="map"]');
   await fit();
+  // Reproduce the actual slow-double-click bug with off-screen selections.
+  const preserved = ["1", "2"];
+  await api("select", { ids: preserved });
+  await page.evaluate(() => window.__chronoscope.refresh(false));
+  const centre = await location();
+  for (let i = 0; i < 4; i++) {
+    await page.mouse.dblclick(centre.x, centre.y);
+    await page.waitForTimeout(350);
+    await selectionUnchanged(
+      preserved,
+      "fast Map zoom preserves complete selection",
+    );
+    if ((await state()).rendererSelected.length < preserved.length) break;
+  }
+  assert(
+    (await state()).rendererSelected.length < preserved.length,
+    "fixture must cull selected evidence",
+  );
+  for (const delay of [300, 750]) {
+    const before = await state();
+    await page.mouse.click(centre.x, centre.y);
+    await page.waitForTimeout(delay);
+    const interim = await api("snapshot", { compact: true });
+    assert(
+      interim.selected_count < 2,
+      "the first click must have committed before rollback",
+    );
+    await page.mouse.down({ clickCount: 2 });
+    await page.mouse.up({ clickCount: 2 });
+    await page.waitForTimeout(350);
+    await selectionUnchanged(
+      preserved,
+      "slow Map double-click restores off-screen selections",
+    );
+    assert(
+      metric(await state()) < metric(before),
+      "slow double-click still zooms",
+    );
+  }
+  await fit();
+  await page.waitForFunction((ids) => {
+    const v = window.__chronoscope.view;
+    return ids.every(
+      (id) => v.points.some((p) => p.id === id) && v.selected.has(id),
+    );
+  }, preserved);
+  await selectionUnchanged(
+    preserved,
+    "zooming back restores selected highlights",
+  );
+  assert.deepEqual((await state()).rendererSelected, preserved);
+  check(
+    "Map fast and slow double-clicks preserve off-screen selections and restore visible highlights",
+    { delaysMs: [300, 750] },
+  );
+  const exported = await api("export", {
+    path: path.join(out, "double-click-selected.csv"),
+    selected_only: true,
+    overwrite: true,
+  });
+  assert.equal(
+    exported.exported,
+    2,
+    "selected-only export uses the complete preserved selection",
+  );
+  const query = await api("query", {
+    filter: { selected_only: true },
+    apply_filter: false,
+    limit: 1000,
+  });
+  assert.deepEqual(query.events.map((e) => e.id).sort(), preserved);
+  check(
+    "Selected-only query and CSV export retain both off-screen and on-screen selections",
+  );
   await api("select", { ids: [] });
   await page.evaluate(() => window.__chronoscope.refresh(false));
   const picks = await page.evaluate(async () => {

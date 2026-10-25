@@ -420,9 +420,22 @@ pub fn proxy(info: ConnectionInfo) -> Result<(), String> {
     let (tx, rx) = std::sync::mpsc::sync_channel::<Value>(64);
     let worker_info = info.clone();
     let output = Arc::new(Mutex::new(std::io::stdout()));
+    let subscriptions = Arc::new(mcp::subscriptions::Subscriptions::default());
+    let subscription_info = info.clone();
+    let subscription_output = output.clone();
+    subscriptions.start(move || {
+        let reply=request_remote(&subscription_info,&json!({"jsonrpc":"2.0","id":"subscription-version","method":"chronoscope/resource-version"}))?.ok_or("Missing version response")?;
+        if reply.get("error").is_some() { return Err("Desktop version unavailable".into()); }
+        Ok(reply["result"].clone())
+    },move |value| {
+        let mut out=subscription_output.lock().map_err(|_| "Protocol output unavailable")?;
+        writeln!(out,"{value}").and_then(|_|out.flush()).map_err(|e|e.to_string())
+    });
+    let worker_subscriptions = subscriptions.clone();
     let writer = output.clone();
     let worker = std::thread::spawn(move || -> Result<(), String> {
         let mut initialized = false;
+        let mut ui = mcp::apps::Session::default();
         for request in rx {
             if !initialized && request["method"] != "initialize" && request["method"] != "ping" {
                 if request.get("id").is_some() {
@@ -432,6 +445,15 @@ pub fn proxy(info: ConnectionInfo) -> Result<(), String> {
                 }
                 continue;
             }
+            if let Some(response) = worker_subscriptions.handle(&request) {
+                let mut out = writer.lock().map_err(|_| "Protocol output unavailable")?;
+                writeln!(out, "{response}")
+                    .and_then(|_| out.flush())
+                    .map_err(|e| e.to_string())?;
+                continue;
+            }
+            ui.initialize(&request);
+            let method = request["method"].as_str().unwrap_or("").to_owned();
             let initialize = request["method"] == "initialize";
             let response = match request_remote(&worker_info, &request) {
                 Ok(v) => v,
@@ -443,6 +465,7 @@ pub fn proxy(info: ConnectionInfo) -> Result<(), String> {
                 if initialize && response.get("result").is_some() {
                     initialized = true;
                 }
+                let response = ui.decorate(&method, response);
                 let mut out = writer.lock().map_err(|_| "Protocol output unavailable")?;
                 writeln!(out, "{response}").map_err(|e| e.to_string())?;
                 out.flush().map_err(|e| e.to_string())?;
@@ -494,6 +517,7 @@ pub fn proxy(info: ConnectionInfo) -> Result<(), String> {
             }
         }
     }
+    subscriptions.stop();
     drop(tx);
     worker.join().map_err(|_| "Agent proxy worker failed")?
 }

@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real SI settings against Rust schemas, offline; no identity/PIN/key is used.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -36,32 +36,8 @@ const pass = (name) => {
 };
 let browser;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.on("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const b = await r.json();
-    assert(r.ok, JSON.stringify(b));
-    return b.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const prefs = await api("preferences");
   await api("preferences", {
     preferences: {
@@ -70,18 +46,10 @@ try {
       map: { ...prefs.map, enabled: false },
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1400, height: 950 },
   });

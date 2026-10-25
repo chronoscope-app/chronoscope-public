@@ -59,16 +59,32 @@ export async function call(
     throw new Error(
       "Browser preview requires the local bridge token in #token=…",
     );
-  const response = await fetch("/api/invoke", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ command, args }),
+  // The loopback bridge returns complete JSON documents. Deliver the body in
+  // one event: fetch followed by response.json() adds a second browser task
+  // boundary, which delays serialized playback commands during rendering.
+  const { ok, data } = await new Promise<{
+    ok: boolean;
+    data: { result?: unknown; error?: unknown };
+  }>((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open("POST", "/api/invoke");
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Authorization", `Bearer ${token}`);
+    request.onload = () => {
+      try {
+        resolve({
+          ok: request.status >= 200 && request.status < 300,
+          data: JSON.parse(request.responseText),
+        });
+      } catch (error) {
+        reject(error);
+      }
+    };
+    request.onerror = () => reject(new TypeError("Failed to fetch"));
+    request.onabort = () => reject(new DOMException("Aborted", "AbortError"));
+    request.send(JSON.stringify({ command, args }));
   });
-  const data = await response.json();
-  if (!response.ok) throw new CommandError(data.error);
+  if (!ok) throw new CommandError(data.error);
   return data.result;
 }
 export async function chooseFile(

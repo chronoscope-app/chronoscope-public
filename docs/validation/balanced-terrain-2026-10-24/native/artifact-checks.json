@@ -1,0 +1,32 @@
+{
+  "appimage_bytes": 200546808,
+  "appimage_sha256": "1a497d14bfaa602be3f2ed34b87c9e08bf73b740bad8bbc7b17bb7d9755ab983",
+  "extracted_pack_sha256": "f93cdd806f477ebf73edb20212cd54089ea8b024cb2e4ba78e488554aa9377f8",
+  "extracted_receipt_matches": true,
+  "all_extracted_pack_crcs_pass": true,
+  "headless_packaged_desktop_cli_smoke": true,
+  "actual_appimage_stdio_mcp_terrain_info": {
+    "bounds": [
+      -180.0,
+      -90.0,
+      180.0,
+      90.0
+    ],
+    "tiles": [
+      {
+        "datum": "WGS84",
+        "east": 180.0,
+        "height": 10800,
+        "latitude_step": 0.016666666666666666,
+        "longitude_step": 0.016666666666666666,
+        "north": 90.0,
+        "path": "/tmp/appimage_extracted_6afcead9b88c185e478b4fa04a4fa874/usr/lib/Chronoscope/terrain/balanced.cterrain",
+        "south": -90.0,
+        "vertical_datum": "EGM96",
+        "west": -180.0,
+        "width": 21600
+      }
+    ]
+  },
+  "github_runners_used": false
+}

@@ -253,6 +253,6 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--target', required=True, choices=['windows-x86_64', 'macos-arm64', 'linux-x86_64'])
     p.add_argument('--output', type=Path, required=True)
-    p.add_argument('--max-bytes', type=int, default=60 * 1024 * 1024)
+    p.add_argument('--max-bytes', type=int, default=256 * 1024 * 1024)
     a = p.parse_args()
     stage(a.target, a.output, a.max_bytes)

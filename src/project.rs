@@ -68,6 +68,44 @@ impl CesiumCamera {
 }
 
 /// Renderer-neutral display state, portable across desktop platforms.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ViewNavigation {
+    pub center: [f64; 3],
+    /// Ground width through the screen centre, in metres.
+    pub ground_width: f64,
+    pub heading: f64,
+    pub tilt: f64,
+    /// Visible geographic ground corners, used to fit across projections.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub footprint: Vec<[f64; 3]>,
+    /// Exact camera for an independently adjusted view; absent after syncing.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub camera: Option<CesiumCamera>,
+}
+impl ViewNavigation {
+    fn validate(&self) -> bool {
+        self.center.iter().all(|v| v.is_finite())
+            && (-180.0..=180.0).contains(&self.center[0])
+            && (-90.0..=90.0).contains(&self.center[1])
+            && self.center[2].abs() <= 1e7
+            && self.ground_width.is_finite()
+            && (0.01..=1e10).contains(&self.ground_width)
+            && self.heading.is_finite()
+            && (0.0..360.0).contains(&self.heading)
+            && self.tilt.is_finite()
+            && (0.0..=89.5).contains(&self.tilt)
+            && self.footprint.len() <= 4
+            && self.footprint.iter().all(|p| {
+                p.iter().all(|v| v.is_finite())
+                    && (-180.0..=180.0).contains(&p[0])
+                    && (-90.0..=90.0).contains(&p[1])
+                    && p[2].abs() <= 1e7
+            })
+            && self.camera.as_ref().is_none_or(CesiumCamera::validate)
+    }
+}
+
+/// Renderer-neutral display state, portable across desktop platforms.
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(default)]
 pub struct SceneState {
@@ -75,6 +113,8 @@ pub struct SceneState {
     pub renderer: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub cesium_camera: Option<CesiumCamera>,
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    pub view_states: BTreeMap<String, ViewNavigation>,
     pub mode: String,
     pub position: Option<[f64; 3]>,
     pub target: Option<[f64; 3]>,
@@ -108,6 +148,15 @@ pub struct SceneState {
 }
 impl SceneState {
     pub fn validate(&self) -> Result<(), String> {
+        if self.view_states.len() > 3
+            || self.view_states.iter().any(|(mode, state)| {
+                !matches!(mode.as_str(), "space-time" | "map" | "globe")
+                    || !state.validate()
+                    || (mode == "map" && state.tilt != 0.0)
+            })
+        {
+            return Err("Invalid per-view navigation state".into());
+        }
         if (!self.renderer.is_empty() && self.renderer != "cesium")
             || self
                 .cesium_camera
@@ -217,6 +266,7 @@ where
     let mut scene = SceneState::deserialize(deserializer)?;
     if scene.mode == "calendar" {
         scene.mode = "space-time".into();
+        scene.view_states.clear();
         scene.cesium_camera = None;
         scene.position = None;
         scene.target = None;
@@ -491,6 +541,9 @@ pub fn save(path: &Path, project: &Project) -> Result<(), String> {
     let mut files = Vec::new();
     if is_bundle(path) {
         if let Some(w) = &mut portable.workspace {
+            if !w.terrain_files.is_empty() {
+                w.preferences.terrain_builtin = false;
+            }
             let mut total = 0u64;
             for (i, file) in w.terrain_files.iter_mut().enumerate() {
                 let size = file
@@ -731,6 +784,7 @@ fn bind_resources(mut p: Project, retained: PathBuf) -> Result<Project, String> 
             *file = retained.join(&*file);
         }
         w.preferences.terrain_path = Some(retained.join("terrain"));
+        w.preferences.terrain_builtin = false;
     }
     p.resource_dir = Some(retained);
     Ok(p)

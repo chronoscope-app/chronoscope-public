@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Local Rust + real pointer drag + delayed event responses and WMTS imagery.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { createServer } from "node:http";
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
@@ -44,35 +44,8 @@ const check = (name, evidence) => {
   console.log("PASS", name, JSON.stringify(evidence));
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(
-      () => reject(Error(log || "Server startup timeout")),
-      20000,
-    );
-    server.once("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timer);
-        resolve(match[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const body = await response.json();
-    assert(response.ok, JSON.stringify(body));
-    return body.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const rows = ["entity,timestamp,latitude,longitude"];
   for (let lat = 10; lat <= 50; lat += 1)
     for (let lon = -130; lon <= -50; lon += 1)
@@ -117,6 +90,7 @@ try {
       basemap: "none",
       map_layers: null,
       terrain_path: null,
+      terrain_builtin: false,
       map: {
         url: `http://127.0.0.1:${tiles.address().port}/caps`,
         layer: "fixture",
@@ -140,15 +114,7 @@ try {
       show_trails: false,
     },
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   page = await browser.newPage({
     viewport: { width: 1100, height: 720 },
   });

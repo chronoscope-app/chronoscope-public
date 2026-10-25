@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl } from "./qa-runtime.mjs";
 // Real Open dialog, Rust readers, Cesium reference layers and Events conversion.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -11,7 +11,10 @@ const desktopCsp = JSON.parse(
   fs.readFileSync(path.join(root, "src-tauri/tauri.conf.json"), "utf8"),
 ).app.security.csp;
 fs.mkdirSync(path.join(root, ".qa"), { recursive: true });
-const directory = fs.mkdtempSync(path.join(root, ".qa/vector-gis-"));
+const directory =
+  process.env.CHRONOSCOPE_QA_OUT ||
+  fs.mkdtempSync(path.join(root, ".qa/vector-gis-"));
+fs.mkdirSync(directory, { recursive: true });
 const token = randomBytes(32).toString("hex");
 const tokenFile = path.join(directory, "token");
 fs.writeFileSync(tokenFile, token, { mode: 0o600 });
@@ -45,22 +48,7 @@ function check(name) {
   console.log("PASS", name);
 }
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(
-      () => reject(Error(log || "Server did not start")),
-      30000,
-    );
-    server.once("error", reject);
-    server.stderr.on("data", (data) => {
-      log += data;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timer);
-        resolve(match[0]);
-      }
-    });
-  });
+  const url = await localServerUrl(server);
   async function api(command, args = {}) {
     const response = await fetch(url + "/api/invoke", {
       method: "POST",
@@ -82,18 +70,10 @@ try {
       map: { ...preferences.map, enabled: false },
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-      "--ignore-gpu-blocklist",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1440, height: 960 },
   });

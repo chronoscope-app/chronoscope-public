@@ -1,7 +1,7 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Local, opt-in performance comparison. Fixed pixels, evidence and display budgets.
 // Measures Chromium's actual WebGL renderer; this is not a native WebKit FPS claim.
-import { chromium } from "playwright";
-import { spawn, execFileSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -42,29 +42,8 @@ const report = {
 };
 let browser;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    server.once("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) resolve(m[0]);
-    });
-    setTimeout(() => reject(Error("Startup failed")), 20000).unref();
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const b = await r.json();
-    assert(r.ok, JSON.stringify(b));
-    return b.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const csv = path.join(out, "tracks-100k.csv");
   assert(
     fs.statfsSync(out).bavail * fs.statfsSync(out).bsize > 2 * 1024 ** 3,
@@ -106,6 +85,7 @@ try {
       basemap: "none",
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
       theme: "dark",
     },
   });
@@ -119,18 +99,7 @@ try {
       show_trails: true,
     },
   });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin" ? ["--use-angle=metal"] : []),
-    ],
-  });
+  browser = await chromium.launchHardware();
   const page = await browser.newPage({
     viewport: { width: 1800, height: 1100 },
     deviceScaleFactor: 1,

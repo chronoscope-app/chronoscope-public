@@ -1,5 +1,6 @@
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+import { roundTripChart } from "./workspace-qa-helpers.mjs";
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -34,32 +35,8 @@ const check = (name, evidence) => {
   console.log("PASS", name);
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.on("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timer);
-        resolve(match[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const result = await response.json();
-    assert(response.ok, JSON.stringify(result));
-    return result.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   await api("open", {
     path: path.join(root, "samples/atlantic-hurricanes-2016-2025.chronoscope"),
   });
@@ -71,6 +48,7 @@ try {
       map: { ...prefs.map, enabled: false },
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
   await api("view_set", {
@@ -89,20 +67,7 @@ try {
       trail_opacity: 0.25,
     },
   });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1600, height: 1000 },
   });
@@ -320,15 +285,11 @@ try {
     "attribute:min_pressure_mb",
   );
   const save = path.join(dir, "chart-presets.chronoscope");
-  await api("save", { path: save });
-  await api("open", { path: save });
-  await page.evaluate(async () => {
-    await window.__chronoscope.refresh();
-    await window.__chronoscope.restoreScene(
-      window.__chronoscope.snapshot.scene,
-    );
-  });
+  await roundTripChart(page, api, save);
   await idle();
+  // Reload intentionally resets disclosure state; inspect the actual restored
+  // preset after opening its controls, rather than reading a hidden label.
+  await page.locator("#chart-presets").evaluate((e) => (e.open = true));
   assert.equal(await page.locator("#chart-kind").inputValue(), "scatter");
   assert.equal(
     await page.locator('[data-chart-load="0"]').innerText(),
@@ -428,6 +389,15 @@ try {
     [1000, 700],
   ]) {
     await page.setViewportSize({ width, height });
+    // Workspace ResizeObserver clamps the dock after the viewport event.
+    await page.waitForFunction(
+      () => {
+        const r = document.querySelector(".inspector").getBoundingClientRect();
+        return r.x >= 0 && r.y >= 0 && r.right <= innerWidth + 1;
+      },
+      undefined,
+      { timeout: 5000 },
+    );
     const layout = await page.locator(".inspector").boundingBox();
     assert(
       layout.x >= 0 && layout.y >= 0 && layout.x + layout.width <= width + 1,

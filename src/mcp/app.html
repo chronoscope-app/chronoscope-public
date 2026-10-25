@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chronoscope results</title>
+<style>
+:root{color-scheme:light dark;font:14px system-ui;background:var(--color-background-primary,Canvas);color:var(--color-text-primary,CanvasText)}body{margin:16px}header{display:flex;gap:10px;align-items:center;flex-wrap:wrap}h1{font-size:17px;margin:0 auto 0 0}button,input{font:inherit;padding:7px;border:1px solid #8886;border-radius:6px;background:transparent;color:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}#status{font-size:12px;white-space:pre-wrap;margin:12px 0}#table{overflow:auto;max-height:480px}table{border-collapse:collapse;width:100%;font-size:12px}th,td{padding:8px;text-align:left;border-bottom:1px solid #8883;max-width:280px;overflow-wrap:anywhere}th button{border:0;padding:0}tbody tr:hover{background:#8881}svg{width:100%;height:240px}svg rect,svg circle{fill:#438bbf}svg polyline{fill:none;stroke:#438bbf;stroke-width:2}svg text{fill:currentColor;font-size:10px}
+</style></head><body>
+<header><h1>Chronoscope results</h1><input id="search" aria-label="Search this page of results" placeholder="Search this page"><button id="refresh" disabled>Refresh</button></header>
+<p id="status" role="status">Connecting to the host…</p><div id="chart"></div><div id="table"></div>
+<script>
+(() => {
+  let sequence=0, connected=false, disposed=false, args={}, data=null, sort=null, descending=false;
+  const pending=new Map(), $=id=>document.getElementById(id), status=text=>$('status').textContent=text;
+  const send=(method,params={})=>parent.postMessage({jsonrpc:'2.0',method,params},'*');
+  function rpc(method,params) {
+    if(disposed) return Promise.reject(Error('View closed'));
+    const id=++sequence;
+    return new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>{pending.delete(id);reject(Error('Host request timed out'));},15000);
+      pending.set(id,{resolve,reject,timer});parent.postMessage({jsonrpc:'2.0',id,method,params},'*');
+    });
+  }
+  const text=value=>value==null?'':typeof value==='object'?JSON.stringify(value):String(value);
+  const node=(tag,value)=>{const n=document.createElement(tag);if(value!==undefined)n.textContent=text(value);return n;};
+  const chart=()=>Array.isArray(data?.rows) && !!data?.config;
+  async function call(name,arguments_) {
+    const result=await rpc('tools/call',{name,arguments:arguments_});
+    if(result.isError) throw Error(result.structuredContent?.error?.message || 'Operation failed');
+    return result.structuredContent;
+  }
+  async function select(row) {
+    if(!connected||!data?.workspace_id) return;
+    try {
+      $('refresh').disabled=true;
+      const common={mode:'replace',expected_revision:data.revision,expected_workspace:data.workspace_id};
+      const result=chart()?await call('chronoscope_select_query',{...common,config:data.config,chart_marks:[{x:row.x,series:row.series,value:row.y??row.value??null,axis:row.axis??0}]}):await call('chronoscope_select',{...common,ids:[String(row.id)]});
+      status(`Selected ${result.selected} Events in Chronoscope. Refresh to select again from current evidence.`);
+      data=null;
+      document.querySelectorAll('[data-select]').forEach(button=>button.disabled=true);
+    }catch(error){status(String(error));}finally{$('refresh').disabled=!connected;}
+  }
+  function render() {
+    if(!data)return;
+    const all=chart()?data.rows:data.events||[], search=$('search').value.toLocaleLowerCase();
+    let rows=all.filter(row=>text(row).toLocaleLowerCase().includes(search));
+    if(sort) rows=[...rows].sort((a,b)=>{const x=a[sort],y=b[sort];return (typeof x==='number'&&typeof y==='number'?x-y:text(x).localeCompare(text(y)))*(descending?-1:1);});
+    const fields=[...new Set(rows.slice(0,1000).flatMap(row=>Object.keys(row)))].slice(0,32);
+    const table=node('table'), head=node('tr');
+    if(data.workspace_id)head.append(node('th','Select'));
+    for(const field of fields){const th=node('th'),button=node('button',field+(sort===field?(descending?' ↓':' ↑'):''));button.onclick=()=>{descending=sort===field?!descending:false;sort=field;render();};th.append(button);head.append(th);}
+    const thead=node('thead');thead.append(head);table.append(thead);const body=node('tbody');
+    for(const row of rows.slice(0,1000)){
+      const tr=node('tr');
+      if(data.workspace_id){const td=node('td'),button=node('button','Select');button.dataset.select='true';button.disabled=!connected||(!chart()&&row.id==null);button.onclick=()=>select(row);td.append(button);tr.append(td);}
+      for(const f of fields)tr.append(node('td',row[f]));body.append(tr);
+    }
+    table.append(body);$('table').replaceChildren(table);$('chart').replaceChildren();
+    const marks=chart()?rows.filter(r=>Number.isFinite(r.y)).slice(0,200):[];
+    if(marks.length&&data.config.kind==='bar'){
+      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 800 240');svg.setAttribute('role','img');svg.setAttribute('aria-label','Chart of the first 200 visible marks; exact values and selection below');
+      const low=Math.min(0,...marks.map(r=>r.y)),high=Math.max(0,...marks.map(r=>r.y)),span=high-low||1;
+      marks.forEach((r,i)=>{const bar=document.createElementNS(svg.namespaceURI,'rect'),x=30+i*740/marks.length,y=210-(r.y-low)/span*180,zero=210-(0-low)/span*180;bar.setAttribute('x',x);bar.setAttribute('y',Math.min(y,zero));bar.setAttribute('width',Math.max(1,740/marks.length-2));bar.setAttribute('height',Math.max(1,Math.abs(zero-y)));const title=document.createElementNS(svg.namespaceURI,'title');title.textContent=`${text(r.x)}: ${r.y}`;bar.append(title);svg.append(bar);});
+      $('chart').append(svg);
+    }
+    status(`${rows.length} matches on this returned page; ${chart()?data.total_marks:data.count} total ${chart()?'marks':'Events'}. Revision ${data.revision}. ${data.limited?'Result is limited. ':''}${rows.length>1000?'Showing first 1,000 matches. ':''}${marks.length?'Chart previews up to 200 marks. ':''}${(data.warnings||[]).join(' ')}`);
+    send('ui/notifications/size-changed',{height:Math.min(850,document.documentElement.scrollHeight)});
+  }
+  $('search').oninput=render;
+  $('refresh').onclick=async()=>{
+    $('refresh').disabled=true;
+    try{data=await call(chartInput()?'chronoscope_chart_data':'chronoscope_query',args);render();}
+    catch(error){status(String(error));}finally{$('refresh').disabled=!connected;}
+  };
+  const chartInput=()=>!!args.config;
+  window.addEventListener('message',event=>{
+    if(event.source!==parent||event.data?.jsonrpc!=='2.0')return;
+    const m=event.data;
+    if(pending.has(m.id)){const p=pending.get(m.id);pending.delete(m.id);clearTimeout(p.timer);m.error?p.reject(Error(m.error.message)):p.resolve(m.result);return;}
+    if(m.method==='ui/notifications/tool-input')args=m.params.arguments||{};
+    if(m.method==='ui/notifications/tool-result'){if(m.params.isError){status(m.params.structuredContent?.error?.message||'Tool failed');return;}data=m.params.structuredContent;render();}
+    if(m.method==='ui/notifications/tool-cancelled')status('Operation cancelled.');
+    if(m.method==='ui/notifications/host-context-changed'&&m.params.theme)document.documentElement.style.colorScheme=m.params.theme;
+    if(m.method==='ping')parent.postMessage({jsonrpc:'2.0',id:m.id,result:{}},'*');
+    if(m.method==='ui/resource-teardown'){
+      disposed=true;connected=false;for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error('View closed'));}pending.clear();
+      parent.postMessage({jsonrpc:'2.0',id:m.id,result:{}},'*');
+    }
+  });
+  rpc('ui/initialize',{appInfo:{name:'Chronoscope results',version:'1.0.0'},appCapabilities:{},protocolVersion:'2026-01-26'})
+    .then(result=>{connected=true;document.documentElement.style.colorScheme=result.hostContext?.theme||'light dark';send('ui/notifications/initialized');$('refresh').disabled=false;status('Waiting for results…');})
+    .catch(error=>status(`Interactive host unavailable: ${error}`));
+})();
+</script></body></html>

@@ -1,0 +1,50 @@
+    Blocking waiting for file lock on build directory
+   Compiling chronoscope v0.15.2 (/workspace/chronoscope-next)
+error: this boolean expression can be simplified
+   --> src/engine/fields.rs:231:16
+    |
+231 |             if !exists && !(role.is_none() && roles.contains_key(field)) {
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `!(exists || role.is_none() && roles.contains_key(field))`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#nonminimal_bool
+    = note: `-D clippy::nonminimal-bool` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::nonminimal_bool)]`
+
+error: called `unwrap` on `self.balanced` after checking its variant with `is_some`
+   --> src/terrain.rs:345:20
+    |
+343 |         if self.balanced.is_some() {
+    |         -------------------------- help: try: `if let Some(<item>) = &mut self.balanced`
+344 |             self.check_file(0)?;
+345 |             return self.balanced.as_mut().unwrap().sample(lat, lon, 0);
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#unnecessary_unwrap
+    = note: `-D clippy::unnecessary-unwrap` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::unnecessary_unwrap)]`
+
+error: this boolean expression can be simplified
+   --> src/si/features.rs:142:16
+    |
+142 |               if !self
+    |  ________________^
+143 | |                 .connection
+144 | |                 .lock()
+145 | |                 .map_err(|_| "SI unavailable")?
+146 | |                 .as_ref()
+147 | |                 .is_some_and(|c| c.session == session)
+    | |______________________________________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#nonminimal_bool
+help: try
+    |
+142 ~             if self
+143 +                 .connection
+144 +                 .lock()
+145 +                 .map_err(|_| "SI unavailable")?
+146 +                 .as_ref().is_none_or(|c| c.session != session)
+    |
+
+error: could not compile `chronoscope` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `chronoscope` (lib test) due to 3 previous errors

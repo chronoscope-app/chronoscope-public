@@ -1011,6 +1011,126 @@ svg {
   gap: 12px;
   padding: 18px 0;
 }
+.modal.demo-picker {
+  width: min(1140px, 96vw);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.demo-card {
+  min-width: 0;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  overflow: hidden;
+}
+.demo-card > button {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  text-align: left;
+  width: 100%;
+  height: auto;
+  padding: 15px;
+  white-space: normal;
+  border-radius: 0;
+  color: var(--text);
+}
+.demo-previews {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+}
+.demo-preview {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  background: #13212d;
+}
+.demo-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  object-fit: cover;
+}
+.demo-preview span {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: #13212d;
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.demo-preview:hover img {
+  filter: brightness(1.15);
+}
+.demo-preview:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+.demo-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.demo-description {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.demo-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--accent);
+  font-size: 12px;
+  margin-top: 5px;
+}
+.demo-card details {
+  padding: 0 15px 12px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.demo-card summary {
+  padding: 4px 0;
+}
+.demo-card details p {
+  margin-top: 7px;
+}
+.demo-source {
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+.demo-footnote {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+@media (max-width: 900px) {
+  .demo-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .help-guide {
   max-height: 65vh;
   overflow-y: auto;

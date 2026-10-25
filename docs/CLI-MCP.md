@@ -52,6 +52,42 @@ App captures use native WKWebView, WebKitGTK or WebView2 snapshots of the visibl
 
 App snapshots preserve the entire visible layout and proportionally reduce high-resolution output to at most 2560 × 1920 pixels. Native source size, decoding memory, request concurrency, image bytes and wait time are bounded. App capture shows the current loading/error state rather than requiring the map to finish loading; for a settled map export, inspect `view_status` or use `target:map`, whose existing readiness checks still apply. SI's Capture map/presentation feature continues to request map-only images.
 
+### Native window video recording
+
+`chronoscope_view_recording` records the displayed Chronoscope window through
+ScreenCaptureKit on **macOS 15 or later**. It captures real compositor frames,
+including the app's panels and window chrome, rather than polling screenshots.
+Only this process's `main` or `si-chat` window is eligible; audio and microphone
+capture are disabled. Other platforms and browser preview return `UNAVAILABLE`.
+
+```json
+{"action":"start","path":"map-pan.mp4","fps":60,"max_seconds":30}
+{"action":"status","path":"map-pan.mp4"}
+{"action":"stop","path":"map-pan.mp4"}
+```
+
+`start` returns after recording begins, so navigation can continue through MCP or
+normal pointer/keyboard input. Use the same path for status/stop. Stop waits for
+MP4 finalization and is repeatable; only `state:complete` establishes success.
+Completed MCP results include a `video/mp4` resource link and a canonical local
+path/URI, byte count, dimensions, requested frame rate and recorded duration.
+Video bytes are not embedded in model context. Playback depends on the client;
+the local path remains available when resource links are unsupported.
+
+Paths must end in `.mp4` and stay within the MCP root. The parent folder must
+exist. Files are encoded privately and atomically published without replacing an
+existing output; there is no overwrite option. One recording may run per app.
+The default is 60 requested FPS and 30 seconds, with 15–60 FPS, 1–120 seconds,
+1920×1080 maximum output, and a 256 MiB output limit. Duration/size limits stop
+capture automatically. The app remembers metadata for the last eight recordings
+in the current session; completed files remain on disk across app restarts.
+After a request timeout inspect status before retrying start. Capture timing is
+variable; requested FPS is not a guarantee that every display refresh is encoded.
+
+See [live MCP automation and interactive results](MCP-LIVE.md) for synchronized
+performance traces, readiness, playback controls, saved navigation recipes,
+resource subscriptions and the external MCP Apps result viewer.
+
 `view_set.display` patches current display fields rather than resetting unrelated options; null resets overrides. Repeating the current mode preserves the camera. Changing mode or `fit:true` requests a new fit. Globe's `globe_time` and `globe_time_scale`, polygon `display.show_centroids`, native `gis_table` and `table_open` are shared CLI/MCP options.
 
 
@@ -93,7 +129,7 @@ The server supports MCP initialization/version negotiation, ping, tools/list and
 
 Stdout contains only newline-delimited JSON-RPC. Requests are limited to 4 MiB; malformed/oversized lines return an error and the server continues at the next line. There are at most 64 queued requests. Standalone execution preserves request order. Call arguments and nested filters, mappings, edits, scenes and analysis parameters are validated; unsupported keys/types are errors. Successful calls return a brief text summary and structuredContent. Key query/analysis/snapshot results have typed output schemas. Tool failures return `isError:true` and `structuredContent.error.{code,message}`. Stable codes include `INVALID_ARGUMENT`, `CONFLICT`, `SCOPE_DENIED`, `NOT_FOUND`, `RESOURCE_LIMIT`, `CANCELLED`, `UNAVAILABLE` and `OPERATION_FAILED`.
 
-Tool response metadata is bounded to 4 MiB. Raster tools omit data URLs by default; use `include_data:true` with small tile requests if bytes are required. Canvas capture uses an MCP image block. No arbitrary SQL, scripts or shell execution is exposed. Scoped MCP writes accept only .chronoscope/.json for save and .csv for export, including asynchronous jobs; unrelated file types are rejected.
+Tool response metadata is bounded to 4 MiB. Raster tools omit data URLs by default; use `include_data:true` with small tile requests if bytes are required. Canvas capture uses an MCP image block. No arbitrary SQL, scripts or shell execution is exposed. Scoped MCP writes accept .chronoscope/.json for save, .csv for export (including asynchronous jobs), and .mp4 for native window recording; unrelated file types are rejected.
 
 ## CLI automation
 

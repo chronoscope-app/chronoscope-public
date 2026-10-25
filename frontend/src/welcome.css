@@ -1,0 +1,133 @@
+.welcome {
+  grid-area: 2 / 1;
+  z-index: 2;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+.welcome[hidden] {
+  display: none;
+}
+.workspace {
+  grid-area: 2 / 1;
+}
+.welcome-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1020px;
+  margin: auto;
+  padding: clamp(28px, 5vw, 64px);
+}
+.welcome h1 {
+  font-size: clamp(27px, 3vw, 38px);
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -1px;
+  margin: 14px 0;
+}
+.welcome-intro {
+  max-width: 540px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.welcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 26px 0 36px;
+}
+.welcome-actions button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 18px;
+}
+.welcome-recents {
+  max-width: 720px;
+}
+.welcome h2 {
+  font-size: 14px;
+  font-weight: 600;
+}
+.welcome-file {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  text-align: left;
+  padding: 15px 0;
+}
+.welcome-file > span:not(.spacer) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.welcome-file strong {
+  display: block;
+  font-weight: 500;
+}
+.welcome-file small,
+.welcome-empty {
+  display: block;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.welcome-empty {
+  padding: 18px 0;
+  font-size: 12px;
+}
+.welcome kbd {
+  font:
+    11px ui-monospace,
+    monospace;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2px 5px;
+  white-space: nowrap;
+}
+.welcome .primary kbd {
+  border-color: currentColor;
+}
+.welcome-hint {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 26px;
+}
+.welcome-hint button,
+.welcome-skip {
+  font-size: 11px;
+}
+.welcome-skip {
+  margin-top: 12px;
+}
+.welcome-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--line);
+  background: var(--panel);
+  font-size: 11px;
+  color: var(--muted);
+}
+.welcome svg {
+  flex-shrink: 0;
+}
+@media (max-width: 600px) {
+  .welcome-file > small {
+    display: none;
+  }
+  .welcome-content {
+    padding: 28px 22px;
+  }
+}

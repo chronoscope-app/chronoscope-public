@@ -154,7 +154,9 @@ Do not modify the checkout concurrently with export/staging.
 
 The manual tester workflow selects one standard public runner at a time and
 requires the exact reviewed main SHA. No caches are saved; artifacts expire
-after one day and each upload is capped at60MiB. Before dispatch, the release
+after one day and each upload is capped at 256 MiB, accommodating the measured
+84.7 MiB offline Balanced terrain pack plus the native app and, on Linux, the
+self-contained WebKit runtime. Before dispatch, the release
 coordinator verifies shared Actions/Packages usage and existing $0 hard-stop
 budgets; a budget or storage denial is a stop, not permission for paid usage.
 Intel macOS is deferred. macOS26 Apple Silicon uses installed Xcode26.6;

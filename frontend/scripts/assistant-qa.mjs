@@ -1,9 +1,9 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Offline integration: actual Rust bridge + browser renderer + local SI fixture.
-import { chromium } from "playwright";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawn } from "node:child_process";
+
 import { createServer } from "node:http";
 import { randomBytes } from "node:crypto";
 import assert from "node:assert/strict";
@@ -43,38 +43,8 @@ let browser,
   remote,
   siRequests = 0;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timeout = setTimeout(
-      () => reject(Error("Bridge startup timeout")),
-      15000,
-    );
-    server.stderr.on("data", (d) => {
-      log += d;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timeout);
-        resolve(match[0]);
-      }
-    });
-    server.once("error", reject);
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const data = await response.json();
-    assert.ok(
-      response.ok,
-      typeof data.error === "string" ? data.error : JSON.stringify(data.error),
-    );
-    return data.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   await api("preferences", {
     preferences: {
       basemap: "none",
@@ -96,15 +66,7 @@ try {
   );
   const ticket = await api("import_preview", { path: file });
   await api("import_commit", { import_id: ticket.import_id });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1800, height: 1150 },
   });
@@ -909,12 +871,14 @@ try {
   );
   page.once("dialog", (d) => d.accept(busy));
   await page.click("#open");
+  await page.click("#import-next");
   await page.waitForSelector("#import-aggregate", { state: "attached" });
   await page
     .locator("summary")
     .filter({ hasText: "Aggregate during import" })
     .click();
   await page.check("#import-aggregate");
+  await page.click("#review-import");
   await page.click("#commit-import");
   await page.waitForFunction(
     () =>

@@ -1,7 +1,8 @@
-import { chromium } from "playwright";
+import { roundTripChart } from "./workspace-qa-helpers.mjs";
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 import path from "node:path";
 import assert from "node:assert/strict";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 const root = path.resolve(import.meta.dirname, "../.."),
@@ -35,36 +36,8 @@ let report = {
   checks: [],
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(
-      () => reject(Error("Engine startup timeout")),
-      20000,
-    );
-    timer.unref();
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-    server.on("error", reject);
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const d = await r.json();
-    if (!r.ok) throw Error(JSON.stringify(d));
-    return d.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const setup = async (id, config) => {
     await api("demo_open", { id });
     const p = await api("preferences");
@@ -89,20 +62,7 @@ try {
       });
   };
   await setup("elephant-seals");
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1600, height: 1000 },
     timezoneId: "America/New_York",
@@ -262,9 +222,7 @@ try {
   await page.locator("#chart-save-preset").click();
   await idle();
   const save = out + "/reviewed-chart.chronoscope";
-  await api("save", { path: save });
-  await api("open", { path: save });
-  await page.reload();
+  await roundTripChart(page, api, save);
   await idle();
   assert.equal(
     await page.locator("#chart-title").innerText(),

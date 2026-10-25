@@ -1,0 +1,130 @@
+    Blocking waiting for file lock on build directory
+   Compiling chronoscope v0.15.2 (/workspace/chronoscope-next)
+    Finished `test` profile [unoptimized] target(s) in 50.58s
+     Running tests/agents_scale.rs (target/debug/deps/agents_scale-6b2627fc6ca97dfb)
+
+running 30 tests
+test altered_database_payload_is_rejected_before_rendering ... ok
+test asynchronous_jobs_report_completion_and_scope_without_blocking_status ... ok
+test atomic_batch_rolls_back_partial_edits_and_has_one_undo ... ok
+test advertised_output_schemas_match_actual_success_payloads ... ok
+test cooperative_cancel_rolls_back_and_keeps_workspace_usable ... ok
+test cas_and_retry_keys_prevent_duplicate_mutations ... ok
+test cursor_is_bound_to_data_and_projection_is_bounded ... ok
+test enforced_nested_contracts_and_dry_run_never_delete ... ok
+test database_embeds_terrain_without_original_file ... ok
+test large_visibility_filters_keep_small_cursors_and_canonical_predicates ... ok
+test mcp_errors_are_structured_and_requests_are_validated ... ok
+test misplaced_mutation_controls_are_rejected_instead_of_ignored ... ok
+test cancellation_inside_sql_write_never_leaves_partial_tags ... ok
+test nested_job_arguments_cannot_escape_mcp_scope ... ok
+test oversized_protocol_line_does_not_poison_next_message ... ok
+test portable_database_excludes_unsaved_history_and_removed_payloads ... ok
+test preview_tickets_detect_file_changes_and_do_not_cross_imports ... ok
+test portable_database_roundtrip_preserves_high_ids_and_rejects_wrong_format ... ok
+test live_agent_shares_engine_authenticates_and_respects_scope ... ok
+test cli_session_preserves_import_ticket_and_json_errors_have_stable_exit_codes ... ok
+test real_stdio_progress_cancellation_interrupts_import_and_ping_recovers ... ok
+test scoped_domain_writes_cannot_overwrite_unrelated_control_files ... ok
+test scene_capture_returns_real_gui_response_and_standalone_is_explicit ... ok
+test saved_terrain_canonical_paths_work_through_symlinked_data_directory ... ok
+test selection_and_filter_navigation_do_not_consume_data_undo ... ok
+test sqlite_filters_match_domain_semantics_including_unicode_and_non_numeric ... ok
+test render_budget_does_not_limit_exact_queries_or_selection ... ok
+test selected_evidence_omitted_by_lod_is_brought_into_the_render_packet ... ok
+test streaming_csv_handles_literal_quotes_and_bounds_multiline_records ... ok
+test snapshot_contract_preserves_fractional_earthquake_timestamps ... ok
+
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s
+
+     Running tests/autosave.rs (target/debug/deps/autosave-d0a3a2fae95e001f)
+
+running 4 tests
+test disabled_preference_is_global_and_original_documents_are_never_overwritten ... ok
+test saving_failure_retains_crash_protection_and_active_sessions_are_excluded ... ok
+test automatic_copies_preserve_rows_context_and_reuse_one_document_path ... ok
+test abandoned_checkpoints_become_documents_without_replacing_the_active_workspace ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+     Running tests/balanced_terrain.rs (target/debug/deps/balanced_terrain-2569179282872701)
+
+running 3 tests
+test corrupt_compressed_blocks_fail_without_substituting_flat_land ... ok
+test compressed_samples_preserve_registration_negative_heights_voids_and_seams ... ok
+test defaults_unload_restart_restore_custom_replacement_and_portable_save ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+
+     Running tests/cesium_scene.rs (target/debug/deps/cesium_scene-57b9cf81fbfa10b1)
+
+running 7 tests
+test geographic_cesium_summary_retains_polar_events_in_flat_modes ... ok
+test globe_time_clusters_retain_time_slabs_and_ground_effects_stay_flat ... ok
+test cesium_camera_roundtrips_without_becoming_event_coordinates ... ok
+test invalid_cesium_camera_is_rejected_and_agent_fit_clears_it ... ok
+test terrain_datum_requires_explicit_choice_and_saves_with_workspace ... ok
+test calendar_is_removed_from_commands_but_saved_workspaces_migrate ... ok
+test globe_time_is_optional_portable_agent_state_without_changing_source_events ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+
+     Running tests/geospatial.rs (target/debug/deps/geospatial-d4c92ad7c30f0e55)
+
+running 17 tests
+test coordinate_reference_vectors_include_special_zones_and_poles ... ok
+test dted_corrupt_crc_and_truncation_are_errors ... ok
+test csv_coordinate_mappings_canonicalize_and_preserve_source ... ok
+test real_mcp_stdio_has_protocol_only_stdout_and_persistent_state ... ok
+test mcp_terrain_autoload_cannot_escape_its_scope ... ok
+test synthetic_dted_agrees_with_analytic_fixture ... ok
+test utm_csv_import_handles_southern_hemisphere ... ok
+test engine_edit_undo_and_exact_string_ids ... ok
+test selecting_visible_includes_unlocated_events ... ok
+test wmts_crs_identifiers_are_exact_and_axis_order_is_authoritative ... ok
+test wmts_geographic_axis_order_is_respected ... ok
+test wmts_layer_matrix_limits_prevent_outside_requests ... ok
+test wmts_rejects_xml_entity_expansion_and_unsupported_schemes ... ok
+test wmts_uses_metadata_not_assumed_numeric_matrix_ids ... ok
+test wide_mesh_decodes_each_tile_once_even_beyond_the_four_tile_cache ... ok
+test mcp_negotiates_lists_tools_and_enforces_root ... ok
+test wmts_cache_and_throttle_verified_without_public_requests ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.39s
+
+     Running tests/gis_accuracy.rs (target/debug/deps/gis_accuracy-945c18e56bcc0ebb)
+
+running 8 tests
+test dted_voids_are_not_filled_and_record_offsets_are_validated ... ok
+test equator_signed_zero_antimeridian_and_unusual_utm_do_not_panic ... ok
+test ellipsoidal_distances_match_proj_including_antipodes ... ok
+test unknown_or_wrong_terrain_datums_and_axes_are_rejected ... ok
+test dted_posts_and_interpolation_match_analytic_oracle_without_half_pixel_shift ... ok
+test web_mercator_matches_epsg3857_oracle_without_axis_swap ... ok
+test every_mgrs_precision_uses_independent_cell_centres ... ok
+test coordinates_match_independent_proj_and_geotrans_vectors ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/performance_terrain.rs (target/debug/deps/performance_terrain-86404e70fce391bb)
+
+running 2 tests
+test c19_mesh_cache_reuses_exact_values_and_rejects_changed_source_files ... ok
+test c19_wire_cache_hits_report_zero_new_decodes_with_identical_elevations ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running tests/workspace_boundaries.rs (target/debug/deps/workspace_boundaries-1f3bc402e14bfe14)
+
+running 9 tests
+test explicitly_reloading_the_same_terrain_folder_refreshes_its_catalog ... ok
+test failed_terrain_load_and_unload_preserve_catalog_preferences_and_revision ... ok
+test analytics_commits_publish_once_and_cache_hits_publish_nothing ... ok
+test legacy_startup_without_workspace_settings_keeps_user_terrain_defaults ... ok
+test stale_workspace_tokens_fail_even_after_undo_restores_the_same_store ... ok
+test sqlite_autosave_external_resources_cannot_bypass_startup_scope ... ok
+test in_flight_si_cannot_edit_newly_opened_workspace ... ok
+test terrain_commit_is_successful_when_cancellation_arrives_after_preferences_are_durable ... ok
+test startup_and_open_enforce_gis_scope_and_checksums ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s

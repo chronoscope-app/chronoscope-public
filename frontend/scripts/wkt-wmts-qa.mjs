@@ -1,9 +1,9 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Offline integration: actual Rust bridge + browser renderer + local WMTS fixture.
-import { chromium } from "playwright";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawn } from "node:child_process";
+
 import { createServer } from "node:http";
 import { randomBytes } from "node:crypto";
 import assert from "node:assert/strict";
@@ -50,52 +50,18 @@ const deadline = setTimeout(
   8 * 60 * 1000,
 );
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timeout = setTimeout(
-      () => reject(Error("Bridge startup timeout")),
-      15000,
-    );
-    server.stderr.on("data", (d) => {
-      log += d;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timeout);
-        resolve(match[0]);
-      }
-    });
-    server.once("error", reject);
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const data = await response.json();
-    assert.ok(response.ok, data.error);
-    return data.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   await api("preferences", {
     preferences: {
       basemap: "none",
+      // Keep the imagery oracle on its original flat-ground fixture until
+      // this suite explicitly loads its custom DTED below.
+      terrain_builtin: false,
       map: { ...(await api("preferences")).map, enabled: false },
     },
   });
-  browser = await chromium.launch({
-    ...(process.env.CHRONOSCOPE_CHROMIUM
-      ? { executablePath: process.env.CHRONOSCOPE_CHROMIUM }
-      : {}),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1800, height: 1150 },
   });
@@ -134,8 +100,10 @@ try {
     d.accept(path.join(root, "tests/fixtures/import/wkt-geometries.csv")),
   );
   await page.click("#open");
+  await page.click("#import-next");
   await page.waitForSelector('[data-map="geometry_wkt"]');
   assert.equal(await page.inputValue('[data-map="geometry_wkt"]'), "2");
+  await page.click("#review-import");
   await page.click("#commit-import");
   await page.waitForFunction(
     () =>
@@ -298,6 +266,18 @@ try {
     "All provider tiles must composite into one bounded viewport mesh: " +
       JSON.stringify(report),
   );
+  // Camera aspect ratio can expose only part of the fixture's world extent.
+  // Verify complete provider coverage independently of that viewport, rather
+  // than assuming every world tile must be visible in a native 2D camera.
+  const fullCoverage = await api("wmts_rasters", {
+    config,
+    bounds: [-170, -80, 170, 80],
+    level: 0,
+    limit: 4096,
+    include_data: false,
+  });
+  assert.equal(fullCoverage.total_tiles, 64);
+  assert.equal(fullCoverage.tiles.length, 64);
   assert.equal(keys.size, 64);
   assert.ok(peak > 1);
   const continuity = await page.evaluate(async () => {
@@ -352,7 +332,7 @@ try {
       return set(data, ...args);
     };
     try {
-      await c.loadRasters();
+      await Promise.all([c.loadRasters(), c.loadRasters()]);
     } finally {
       v.setRasters = set;
     }

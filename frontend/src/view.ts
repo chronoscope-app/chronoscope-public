@@ -10,6 +10,7 @@ import {
   Color,
   CreditDisplay,
   SceneMode,
+  MapMode2D,
   GeographicProjection,
   PointPrimitiveCollection,
   BillboardCollection,
@@ -43,7 +44,7 @@ import {
   type Billboard,
 } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import { CesiumResources } from "./cesium-resources";
+import { CesiumResources, type TerrainTileSource } from "./cesium-resources";
 import { DisplayLayer } from "./cesium-display-layer";
 import {
   defaultDisplay,
@@ -86,6 +87,14 @@ export interface CesiumCameraState {
   up: [number, number, number];
   frustum_width?: number;
 }
+export interface ViewNavigationState {
+  center: [number, number, number];
+  ground_width: number;
+  heading: number;
+  tilt: number;
+  footprint?: [number, number, number][];
+  camera?: CesiumCameraState | null;
+}
 type PickId =
   | { kind: "event" | "geometry"; id: string }
   | { kind: "cluster"; bin: DisplayBin }
@@ -113,6 +122,7 @@ export class SpaceTimeView {
   renderQueued = false;
   effectError = "";
   mode = "space-time";
+  private viewStates: Record<string, ViewNavigationState> = {};
   theme = "dark";
   timeHeight = 2.8;
   globeTime = false;
@@ -120,6 +130,8 @@ export class SpaceTimeView {
   exaggeration = 1;
   bounds: Bounds = [-122.47, 37.75, -122.36, 37.82];
   private spaceTimeFloor: Bounds | null = null;
+  private grabHandleView?: Matrix4;
+  private grabHandleSize = "";
   lo = 0;
   hi = 1;
   points: Point[] = [];
@@ -134,6 +146,7 @@ export class SpaceTimeView {
   trailInputEdges = 0;
   trailOutputEdges = 0;
   terrain: Terrain | null = null;
+  private terrainSource?: TerrainTileSource;
   terrainGeneration = 0;
   generation = 0;
   selected = new Set<string>();
@@ -147,7 +160,8 @@ export class SpaceTimeView {
   labels = { domElement: document.createElement("div") };
   markerRadius = 5;
   selectionRadius = 9;
-  onPick: (ids: string[], add: boolean) => void = () => {};
+  /** A committed single pick returns a bounded engine-owned rollback action. */
+  onPick: (ids: string[], add: boolean) => void | (() => void) = () => {};
   onCluster: (bin: DisplayBin) => void = () => {};
   onClusters: (cells: DisplayCell[], add: boolean, ids: string[]) => void =
     () => {};
@@ -177,8 +191,7 @@ export class SpaceTimeView {
     at: number;
     x: number;
     y: number;
-    selection: string[];
-    applied: boolean;
+    restore?: () => void;
   };
   private rightClick?: { at: number; x: number; y: number };
   private inputSuspended = false;
@@ -228,6 +241,8 @@ export class SpaceTimeView {
   private trailViewMatrix?: number[];
   private renderStarted = 0;
   private lastRendered = 0;
+  private lastFrameIntervalMs = 0;
+  private lastRenderCpuMs = 0;
   private renderedFrames = 0;
   private frameIntervals: number[] = [];
   private renderTimes: number[] = [];
@@ -296,6 +311,7 @@ export class SpaceTimeView {
             ? SceneMode.SCENE2D
             : SceneMode.COLUMBUS_VIEW,
       scene3DOnly: false,
+      mapMode2D: MapMode2D.ROTATE,
       mapProjection: new GeographicProjection(Ellipsoid.WGS84),
       requestRenderMode: true,
       maximumRenderTimeChange: Infinity,
@@ -396,11 +412,14 @@ export class SpaceTimeView {
     scene.preRender.addEventListener(() => {
       this.constrainCamera();
       if (this.updateSpaceTimeFloor()) this.updateAxes();
+      else this.updateGrabHandles();
       this.renderStarted = performance.now();
     });
     scene.postRender.addEventListener(() => {
       const now = performance.now(),
         interval = now - this.lastRendered;
+      this.lastFrameIntervalMs = this.lastRendered ? interval : 0;
+      this.lastRenderCpuMs = now - this.renderStarted;
       // Idle gaps are intentional in request-render mode, not dropped frames.
       if (interval > 250) {
         this.frameIntervals = [];
@@ -413,6 +432,7 @@ export class SpaceTimeView {
       this.renderedFrames++;
       this.renderQueued = false;
       this.cameraDirty = false;
+      this.controls.dispatchEvent(new Event("frame"));
     });
     scene.renderError.addEventListener((_scene, error) => {
       console.error("Cesium render failure", error);
@@ -506,7 +526,12 @@ export class SpaceTimeView {
       await this.resources.setBasemap(this.basemap);
       await this.gis.sync(gisLayers);
       this.setTerrainDatum(datum);
-      await this.resources.setTerrain(this.terrain, this.exaggeration);
+      await this.resources.setTerrain(
+        this.terrain,
+        this.exaggeration,
+        () => !this.disposed,
+        this.terrainSource,
+      );
       if (this.disposed) return;
       this.rebuild(true);
       this.restoreCamera(camera);
@@ -632,12 +657,13 @@ export class SpaceTimeView {
     this.globeTime = enabled;
     if (this.mode === "globe") this.rebuild(true);
   }
-  setMode(mode: string) {
+  setMode(mode: string, remember = true) {
     if (!this.viewer || this.disposed) {
       this.mode = mode;
       return;
     }
     if (this.mode === mode) return;
+    if (remember) this.rememberView();
     this.cancelNavigation();
     this.cancelPendingPick();
     this.rightClick = undefined;
@@ -657,7 +683,7 @@ export class SpaceTimeView {
     this.scene.globe.show = true;
     this.stopFades();
     this.rebuild();
-    this.fit();
+    if (!this.restoreCurrentView()) this.fit();
     this.onSceneChange();
   }
   rebuild(
@@ -667,12 +693,11 @@ export class SpaceTimeView {
   ) {
     if (!this.viewer || this.disposed) return;
     this.generation++;
-    // The study bounds remain data metadata. The space-time floor instead
-    // follows the camera, so geographic zoom cannot shrink it to a tiny tile.
-    this.scene.globe.cartographicLimitRectangle =
-      this.mode === "space-time"
-        ? Rectangle.fromDegrees(...(this.spaceTimeFloor || this.bounds))
-        : Rectangle.clone(Rectangle.MAX_VALUE);
+    // Geography fills the visible ground independently of the inset reference
+    // frame used by the time axis. Never clip it to the study or axis frame.
+    this.scene.globe.cartographicLimitRectangle = Rectangle.clone(
+      Rectangle.MAX_VALUE,
+    );
     // Keep departure timestamps across playback packets. A 200ms refresh must
     // not erase a two-second afterimage or restart its clock.
     if (!previous) this.stopFades();
@@ -1051,12 +1076,17 @@ export class SpaceTimeView {
     } else this.focusLines.removeAll();
     this.requestRender();
   }
-  async setTerrain(data: Terrain | null, accept = () => true) {
+  async setTerrain(
+    data: Terrain | null,
+    accept = () => true,
+    source?: TerrainTileSource,
+  ) {
     await this.ready;
     if (!accept() || this.disposed) return false;
-    await this.resources.setTerrain(data, this.exaggeration, accept);
+    await this.resources.setTerrain(data, this.exaggeration, accept, source);
     if (!accept() || this.disposed) return false;
     this.terrain = data;
+    this.terrainSource = data ? source : undefined;
     this.terrainGeneration++;
     this.rebuild(true);
     return true;
@@ -1335,17 +1365,15 @@ export class SpaceTimeView {
     if (this.spaceTimeFloor?.every((v, i) => Math.abs(v - next[i]) < 1e-10))
       return false;
     this.spaceTimeFloor = next;
-    this.scene.globe.cartographicLimitRectangle = Rectangle.fromDegrees(
-      ...next,
-    );
     return true;
   }
   private updateAxes() {
     if (!this.axes) return;
     this.axes.removeAll();
     this.axisLabels.removeAll();
-    this.handles.removeAll();
     if (this.mode !== "space-time") {
+      this.handles.removeAll();
+      this.grabHandleView = undefined;
       this.setFocus(this.focusFraction);
       return;
     }
@@ -1412,16 +1440,109 @@ export class SpaceTimeView {
       "axis-title",
       new Cartesian2(-10, titlePixel ? Math.max(-28, 16 - titlePixel.y) : -28),
     );
-    {
-      const dx = Math.max(0.000001, Math.min(20, (e - w) * 0.03)),
-        dy = Math.max(0.000001, Math.min(15, (n - s) * 0.03));
-      for (const [side, lon, lat] of [
-        ["north", (w + e) / 2, Math.min(89.5, n + dy)],
-        ["south", (w + e) / 2, Math.max(-89.5, s - dy)],
-        ["west", Math.max(-179.9, w - dx), (s + n) / 2],
-        ["east", Math.min(179.9, e + dx), (s + n) / 2],
-      ] as [string, number, number][]) {
-        const p = this.groundPosition(lat, lon);
+    this.updateGrabHandles(true);
+    this.setFocus(this.focusFraction);
+  }
+  /** Navigation handles belong to the expanded viewport, not the axis frame. */
+  private updateGrabHandles(force = false) {
+    if (
+      !this.handles ||
+      this.mode !== "space-time" ||
+      this.scene.mode !== SceneMode.COLUMBUS_VIEW
+    )
+      return;
+    const width = this.host.clientWidth,
+      height = this.host.clientHeight;
+    const level = this.centerGroundHeight() + 2;
+    const size = `${width}/${height}/${level}`;
+    if (
+      !force &&
+      this.grabHandleView &&
+      Matrix4.equals(this.grabHandleView, this.camera.viewMatrix) &&
+      this.grabHandleSize === size
+    )
+      return;
+    this.grabHandleView = Matrix4.clone(
+      this.camera.viewMatrix,
+      this.grabHandleView,
+    );
+    this.grabHandleSize = size;
+    this.handles.removeAll();
+    const inset = 18;
+    const hostRect = this.host.getBoundingClientRect();
+    const blockers = [
+      ...this.host.querySelectorAll<HTMLElement>(
+        ".sphere-navigator,.scene-top-right,.legend",
+      ),
+    ]
+      .filter((element) => element.getClientRects().length)
+      .map((element) => element.getBoundingClientRect());
+    const blocked = (x: number, y: number) =>
+      blockers.some(
+        (rect) =>
+          hostRect.left + x > rect.left - 12 &&
+          hostRect.left + x < rect.right + 12 &&
+          hostRect.top + y > rect.top - 12 &&
+          hostRect.top + y < rect.bottom + 12,
+      );
+    for (const [side, x, y] of [
+      ["north", width / 2, inset],
+      ["south", width / 2, height - inset],
+      ["west", inset, height / 2],
+      ["east", width - inset, height / 2],
+    ] as [string, number, number][]) {
+      let edgeX = x,
+        edgeY = y;
+      const horizontal = side === "north" || side === "south";
+      // Stay on the same edge, but leave room for the compass/tool rail and
+      // legend. These are real drag targets, not decoration under a panel.
+      for (
+        let offset = 0;
+        offset <= (horizontal ? width : height);
+        offset += 24
+      ) {
+        let found = false;
+        for (const sign of [1, -1]) {
+          const candidateX = horizontal
+            ? Math.max(inset, Math.min(width - inset, x + sign * offset))
+            : x;
+          const candidateY = horizontal
+            ? y
+            : Math.max(inset, Math.min(height - inset, y + sign * offset));
+          if (!blocked(candidateX, candidateY)) {
+            edgeX = candidateX;
+            edgeY = candidateY;
+            found = true;
+            break;
+          }
+        }
+        if (found) break;
+      }
+      // At a geographic world edge or above the natural horizon, move inward
+      // only as far as needed to find real ground; never invent coordinates.
+      for (let step = 0; step <= 20; step++) {
+        const f = step / 20;
+        const pixel = new Cartesian2(
+          edgeX + (width / 2 - edgeX) * f,
+          edgeY + (height / 2 - edgeY) * f,
+        );
+        const ray = this.camera.getPickRay(pixel);
+        if (!ray || Math.abs(ray.direction.x) < 1e-12) continue;
+        const distance = (level - ray.origin.x) / ray.direction.x;
+        if (distance <= 0) continue;
+        const location = this.scene.mapProjection.unproject(
+          new Cartesian3(
+            ray.origin.y + ray.direction.y * distance,
+            ray.origin.z + ray.direction.z * distance,
+            level,
+          ),
+        );
+        if (
+          Math.abs(location.longitude) > Math.PI ||
+          Math.abs(location.latitude) > Math.PI / 2
+        )
+          continue;
+        const p = Cartographic.toCartesian(location);
         this.handles.add({
           position: p,
           id: { kind: "orbit", side },
@@ -1433,9 +1554,9 @@ export class SpaceTimeView {
           outlineWidth: 1,
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
         });
+        break;
       }
     }
-    this.setFocus(this.focusFraction);
   }
   label(
     text: string,
@@ -1698,9 +1819,7 @@ export class SpaceTimeView {
     const degrees =
       this.mode === "globe"
         ? this.globeOrientation().heading
-        : this.mode === "map"
-          ? 0
-          : CesiumMath.toDegrees(this.camera.heading);
+        : CesiumMath.toDegrees(this.camera.heading);
     const wrapped = ((degrees % 360) + 360) % 360;
     return Math.min(wrapped, 360 - wrapped) < 1e-8 ? 0 : wrapped;
   }
@@ -1749,7 +1868,21 @@ export class SpaceTimeView {
     };
   }
   private orient(heading: number, tilt: number) {
-    if (this.mode === "map") return;
+    if (this.mode === "map") {
+      const center = Cartographic.fromCartesian(this.centerGround());
+      this.lookAtGeographic(
+        [
+          CesiumMath.toDegrees(center.longitude),
+          CesiumMath.toDegrees(center.latitude),
+          center.height,
+        ],
+        this.navigationDistance(),
+        heading,
+        0,
+      );
+      this.onSceneChange();
+      return;
+    }
     const target = this.centerGround(),
       range = Cartesian3.distance(
         this.camera.positionWC,
@@ -2071,8 +2204,6 @@ export class SpaceTimeView {
 
   visibleBounds(): Bounds | null {
     if (!this.viewer) return null;
-    if (this.mode === "space-time" && this.spaceTimeFloor)
-      return [...this.spaceTimeFloor];
     if (this.scene.mode !== SceneMode.SCENE3D)
       return this.projectedViewport(false);
     const rect = this.camera.computeViewRectangle(Ellipsoid.WGS84);
@@ -2234,14 +2365,168 @@ export class SpaceTimeView {
     this.controls.dispatchEvent(new Event("change"));
     this.onSceneChange();
   }
+  /** Ground scale at the focus, independent of perspective/orthographic projection. */
+  navigationFrame(): ViewNavigationState {
+    const center = Cartographic.fromCartesian(this.centerGround());
+    const frustum = this.camera.frustum as {
+      fovy?: number;
+      aspectRatio?: number;
+    };
+    const groundWidth =
+      this.mode === "map"
+        ? this.navigationDistance()
+        : this.navigationDistance() *
+          2 *
+          Math.tan((frustum.fovy ?? Math.PI / 3) / 2) *
+          (frustum.aspectRatio ??
+            this.host.clientWidth / this.host.clientHeight);
+    return {
+      center: [
+        CesiumMath.toDegrees(center.longitude),
+        CesiumMath.toDegrees(center.latitude),
+        center.height,
+      ],
+      ground_width: Math.max(0.01, Math.min(1e10, groundWidth)),
+      heading: this.bearing(),
+      tilt: this.tilt(),
+      footprint: this.groundFootprint(),
+    };
+  }
+  private groundFootprint(): [number, number, number][] {
+    const w = this.host.clientWidth,
+      h = this.host.clientHeight;
+    const points = [
+      [1, 1],
+      [w - 1, 1],
+      [w - 1, h - 1],
+      [1, h - 1],
+    ].flatMap(([x, y]) => {
+      const pixel = new Cartesian2(x, y);
+      // With no elevation source the ground is the exact WGS84 ellipsoid.
+      // Picking a rendered globe triangle instead captures its LOD-dependent
+      // chord, which can sit kilometres below that surface near the poles.
+      // Refinement between capture and Sync must not change the visible area.
+      const point =
+        this.mode === "globe" && !this.terrain
+          ? this.camera.pickEllipsoid(pixel, Ellipsoid.WGS84)
+          : this.groundAt(pixel);
+      if (!point) return [];
+      const c = Cartographic.fromCartesian(point);
+      return [
+        [
+          CesiumMath.toDegrees(c.longitude),
+          CesiumMath.toDegrees(c.latitude),
+          c.height,
+        ] as [number, number, number],
+      ];
+    });
+    // An Earth overview can sit entirely inside the viewport, so corner rays
+    // miss it. Retain its conservative geographic area rather than zooming
+    // the flat views into the centre of the globe.
+    if (points.length < 4) {
+      const bounds = this.visibleBounds();
+      if (bounds)
+        return [
+          [bounds[0], bounds[1], 0],
+          [bounds[2], bounds[1], 0],
+          [bounds[2], bounds[3], 0],
+          [bounds[0], bounds[3], 0],
+        ];
+    }
+    return points;
+  }
+  private rememberView() {
+    this.viewStates[this.mode] = {
+      ...this.navigationFrame(),
+      camera: this.captureCamera().cesium_camera,
+    };
+  }
+  captureViewStates() {
+    this.rememberView();
+    return structuredClone(this.viewStates);
+  }
+  restoreViewStates(states: Record<string, ViewNavigationState> = {}) {
+    // Called at workspace/saved-view boundaries, including legacy files.
+    this.viewStates = structuredClone(states);
+  }
+  restoreCurrentView() {
+    const state = this.viewStates[this.mode];
+    if (!state) return false;
+    if (
+      state.camera &&
+      this.restoreCamera({ renderer: "cesium", cesium_camera: state.camera })
+    )
+      return true;
+    const f = this.camera.frustum as { fovy?: number; aspectRatio?: number };
+    const distance =
+      this.mode === "map"
+        ? state.ground_width
+        : state.ground_width /
+          (2 *
+            Math.tan((f.fovy ?? Math.PI / 3) / 2) *
+            (f.aspectRatio ?? this.host.clientWidth / this.host.clientHeight));
+    this.lookAtGeographic(
+      state.center,
+      distance,
+      state.heading,
+      this.mode === "map" ? 0 : state.tilt,
+    );
+    // A tilted perspective and a flat map cannot share identical screen
+    // bounds. Fit the source's visible ground corners while keeping its focus
+    // and heading. This preserves the selected area across projections.
+    if (state.footprint?.length) {
+      const center = this.cameraWorldPosition(
+        Cartesian3.fromDegrees(...state.center),
+      );
+      const aspect = this.host.clientWidth / this.host.clientHeight;
+      const tangent = Math.tan((f.fovy ?? Math.PI / 3) / 2);
+      let fit = 2;
+      for (const point of state.footprint) {
+        const delta = Cartesian3.subtract(
+          this.cameraWorldPosition(Cartesian3.fromDegrees(...point)),
+          center,
+          new Cartesian3(),
+        );
+        const x = Math.abs(Cartesian3.dot(delta, this.camera.rightWC));
+        const y = Math.abs(Cartesian3.dot(delta, this.camera.upWC));
+        const depth = Cartesian3.dot(delta, this.camera.directionWC);
+        fit = Math.max(
+          fit,
+          this.mode === "map"
+            ? Math.max(x * 2, y * 2 * aspect)
+            : Math.max(x / (tangent * aspect) - depth, y / tangent - depth),
+        );
+      }
+      this.lookAtGeographic(
+        state.center,
+        Math.min(8e7, Math.max(distance, fit) * 1.002),
+        state.heading,
+        this.mode === "map" ? 0 : state.tilt,
+      );
+    }
+    return true;
+  }
+  /** One-shot geographic sync; raw Cesium camera vectors never cross projections. */
+  syncViews() {
+    this.cancelNavigation();
+    const frame = this.navigationFrame();
+    for (const mode of ["space-time", "map", "globe"]) {
+      if (mode !== this.mode)
+        this.viewStates[mode] = {
+          ...structuredClone(frame),
+          tilt: mode === "map" ? 0 : frame.tilt,
+        };
+    }
+    this.rememberView();
+  }
   lookAtGeographic(
     center: number[],
     distance: number,
     heading: number,
     tilt: number,
   ) {
-    if (this.mode === "map" && (heading !== 0 || tilt !== 0))
-      throw Error("2D Map is north-up; heading and tilt must be zero");
+    if (this.mode === "map" && tilt !== 0)
+      throw Error("Map stays flat; tilt must be zero");
     this.camera.lookAt(
       Cartesian3.fromDegrees(center[0], center[1], center[2]),
       new HeadingPitchRange(
@@ -2250,9 +2535,16 @@ export class SpaceTimeView {
         distance,
       ),
     );
-    this.preserveNadirHeading(heading, tilt);
+    if (this.mode !== "map") this.preserveNadirHeading(heading, tilt);
     this.camera.lookAtTransform(Matrix4.IDENTITY);
     if (this.mode === "map") {
+      this.camera.setView({
+        orientation: {
+          heading: CesiumMath.toRadians(heading),
+          pitch: -Math.PI / 2,
+          roll: 0,
+        },
+      });
       const state = this.captureCamera();
       state.cesium_camera.frustum_width = distance;
       this.restoreCamera(state);
@@ -2356,7 +2648,8 @@ export class SpaceTimeView {
       navigation: {
         inertia: false,
         freeLook: false,
-        northUpOnly: this.mode === "map",
+        northUpOnly: false,
+        flatOnly: this.mode === "map",
         gestureMaximumTiltDegrees: 85,
         keyboardFocus: "map",
         active: !!this.drag,
@@ -2365,6 +2658,9 @@ export class SpaceTimeView {
         this.mode === "space-time"
           ? {
               bounds: this.spaceTimeFloor ? [...this.spaceTimeFloor] : null,
+              role: "time-axis-reference",
+              mapBounds: this.visibleBounds(),
+              grabHandleAnchor: "viewport-edge",
               padding: spaceTimePadding(
                 this.host.clientWidth,
                 this.host.clientHeight,
@@ -2422,6 +2718,19 @@ export class SpaceTimeView {
       terrain: this.resources.status,
       effectError: this.effectError,
     };
+  }
+  /** Cheap per-render sample: do not enumerate Events or query GPU state. */
+  frameTelemetry() {
+    const terrain = this.resources.status;
+    return [
+      this.lastFrameIntervalMs,
+      this.lastRenderCpuMs,
+      Number(this.scene.globe.show && !this.scene.globe.tilesLoaded),
+      terrain.terrainPendingTiles,
+      terrain.terrainProviderChanges,
+      this.renderErrors,
+      this.contextRecoveries,
+    ];
   }
   setTerrainDatum(datum: "egm96" | "ellipsoid" | "unresolved-msl") {
     this.resources?.setVerticalDatum(datum);
@@ -2486,8 +2795,7 @@ export class SpaceTimeView {
     this.pendingPickAction = undefined;
     clearTimeout(this.pendingPick);
     this.pendingPick = undefined;
-    if (restore && this.clickSequence?.applied)
-      this.onPick(this.clickSequence.selection, false);
+    if (restore) this.clickSequence?.restore?.();
     this.clickSequence = undefined;
   }
   private bindCanvas() {
@@ -2497,6 +2805,31 @@ export class SpaceTimeView {
     canvas.setAttribute(
       "aria-label",
       "Map view. Arrow keys pan; plus and minus zoom; N faces north; U looks down; R fits events.",
+    );
+    // click.detail follows the platform's double-click recognition. Cesium
+    // suppresses compatibility mousedown events, so sequence picks on click,
+    // after pointerup schedules feedback and before dblclick cancels it.
+    canvas.addEventListener(
+      "click",
+      (event) => {
+        if (event.button !== 0 || !this.pendingPickAction) return;
+        if (
+          !this.clickSequence ||
+          event.detail <= 1 ||
+          event.detail % 2 !== 0 ||
+          Math.hypot(
+            this.clickSequence.x - event.clientX,
+            this.clickSequence.y - event.clientY,
+          ) > 5
+        ) {
+          this.clickSequence = {
+            at: performance.now(),
+            x: event.clientX,
+            y: event.clientY,
+          };
+        }
+      },
+      { signal },
     );
     canvas.addEventListener(
       "wheel",
@@ -2776,34 +3109,22 @@ export class SpaceTimeView {
         return;
       }
       if (distance > 5) return;
-      const now = performance.now();
-      if (
-        !this.clickSequence ||
-        now - this.clickSequence.at > 600 ||
-        Math.hypot(
-          this.clickSequence.x - e.clientX,
-          this.clickSequence.y - e.clientY,
-        ) > 5
-      )
-        this.clickSequence = {
-          at: now,
-          x: e.clientX,
-          y: e.clientY,
-          selection: [...this.selected],
-          applied: false,
-        };
       const id = this.pickId(e.clientX - r.left, e.clientY - r.top);
       clearTimeout(this.pendingPick);
       this.pendingPickAction = () => {
         if (this.disposed) return;
-        if (this.clickSequence) this.clickSequence.applied = true;
+        const sequence = this.clickSequence;
         if (id?.kind === "cluster") {
           if (drag.add) this.onClusters([id.bin.cell], true, []);
           else this.onCluster(id.bin);
-        } else if (id && (id.kind === "event" || id.kind === "geometry"))
-          this.onPick([id.id], drag.add);
-        else if (id?.kind === "gis") this.onGisPick(id.layer, id.id);
-        else if (!drag.add) this.onPick([], false);
+        } else if (id && (id.kind === "event" || id.kind === "geometry")) {
+          const restore = this.onPick([id.id], drag.add);
+          if (sequence) sequence.restore = restore || undefined;
+        } else if (id?.kind === "gis") this.onGisPick(id.layer, id.id);
+        else if (!drag.add) {
+          const restore = this.onPick([], false);
+          if (sequence) sequence.restore = restore || undefined;
+        }
       };
       this.pendingPick = setTimeout(() => this.flushPendingPick(), 250);
     };

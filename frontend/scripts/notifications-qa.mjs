@@ -1,5 +1,5 @@
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+import { chromium, spawn, createApi, localServerUrl } from "./qa-runtime.mjs";
+
 import { randomBytes } from "node:crypto";
 import { createInterface } from "node:readline";
 import fs from "node:fs";
@@ -73,32 +73,8 @@ async function bridge(dir) {
     { stdio: ["ignore", "ignore", "pipe"] },
   );
   servers.push(p);
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    p.once("error", reject);
-    p.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const r = await response.json();
-    assert(response.ok, JSON.stringify(r));
-    return r.result;
-  };
+  const url = await localServerUrl(p);
+  const api = createApi(url, token);
   const page = await browser.newPage({
     viewport: { width: 1440, height: 950 },
   });
@@ -118,15 +94,7 @@ async function bridge(dir) {
   return { page, api, url, token };
 }
 try {
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const unit = await browser.newPage();
   await unit.setContent(
     '<button id="bell" aria-controls="notifications-panel"><span class="notification-badge" hidden></span></button><button id="outside">Outside</button>',

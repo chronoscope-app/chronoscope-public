@@ -1,0 +1,445 @@
+{
+  "passed": true,
+  "base_revision": "4ec2553bd15bfc52c90d7116f167b3d0f6d1b30f",
+  "github_runners_used": false,
+  "platform": "macOS arm64",
+  "before": {
+    "run_id": "20261025T113913Z-77a720b1",
+    "observed_frames": 44,
+    "frames_after_provider_replacement": 35,
+    "empty_ground_frames": 12,
+    "same_provider": false
+  },
+  "after": [
+    {
+      "label": "globe-navigation-continuity",
+      "frames": 39,
+      "replacements": 0,
+      "emptyGroundFrames": 0,
+      "sameProvider": true
+    },
+    {
+      "label": "map-navigation-continuity",
+      "frames": 67,
+      "replacements": 0,
+      "emptyGroundFrames": 0,
+      "sameProvider": true
+    },
+    {
+      "label": "space-time-navigation-continuity",
+      "frames": 51,
+      "replacements": 0,
+      "emptyGroundFrames": 0,
+      "sameProvider": true
+    }
+  ],
+  "native_navigation": [
+    {
+      "label": "globe",
+      "samples": [
+        {
+          "action": {
+            "action": "zoom",
+            "factor": 1.15
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "globe",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 0,
+            "terrainProviderChanges": 3,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        },
+        {
+          "action": {
+            "action": "zoom",
+            "factor": 0.8695652173913044
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "globe",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 0,
+            "terrainProviderChanges": 3,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        },
+        {
+          "action": {
+            "action": "look_at",
+            "center": [
+              87.3,
+              28.1,
+              5000
+            ],
+            "distance_m": 250000,
+            "tilt_degrees": 30
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "globe",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 0,
+            "terrainProviderChanges": 3,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        },
+        {
+          "action": {
+            "action": "look_at",
+            "center": [
+              87,
+              28,
+              5000
+            ],
+            "distance_m": 200000,
+            "tilt_degrees": 30
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "globe",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 0,
+            "terrainProviderChanges": 3,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        }
+      ]
+    },
+    {
+      "label": "map",
+      "samples": [
+        {
+          "action": {
+            "action": "zoom",
+            "factor": 1.15
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "map",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 0,
+            "terrainProviderChanges": 4,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        },
+        {
+          "action": {
+            "action": "zoom",
+            "factor": 0.8695652173913044
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "map",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 0,
+            "terrainProviderChanges": 4,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        },
+        {
+          "action": {
+            "action": "look_at",
+            "center": [
+              87.3,
+              28.1,
+              5000
+            ],
+            "distance_m": 250000,
+            "tilt_degrees": 0
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "map",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 0,
+            "terrainProviderChanges": 4,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        },
+        {
+          "action": {
+            "action": "look_at",
+            "center": [
+              87,
+              28,
+              5000
+            ],
+            "distance_m": 200000,
+            "tilt_degrees": 0
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "map",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 0,
+            "terrainProviderChanges": 4,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        }
+      ]
+    },
+    {
+      "label": "space-time",
+      "samples": [
+        {
+          "action": {
+            "action": "zoom",
+            "factor": 1.15
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "space-time",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 5,
+            "terrainProviderChanges": 5,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        },
+        {
+          "action": {
+            "action": "zoom",
+            "factor": 0.8695652173913044
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "space-time",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 1,
+            "terrainProviderChanges": 5,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        },
+        {
+          "action": {
+            "action": "look_at",
+            "center": [
+              87.3,
+              28.1,
+              5000
+            ],
+            "distance_m": 250000,
+            "tilt_degrees": 30
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "space-time",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 5,
+            "terrainProviderChanges": 5,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        },
+        {
+          "action": {
+            "action": "look_at",
+            "center": [
+              87,
+              28,
+              5000
+            ],
+            "distance_m": 200000,
+            "tilt_degrees": 30
+          },
+          "terrain": {
+            "basemap": "none",
+            "basemapAlignmentErrorPixels": 0,
+            "basemapError": "",
+            "basemapMaximumLevel": 0,
+            "basemapPending": 0,
+            "basemapRenderedTiles": 0,
+            "geoidModel": "NGA EGM96 15-minute; H+N",
+            "imageryLayers": 1,
+            "imageryRequestedTiles": 0,
+            "mode": "space-time",
+            "terrainActive": true,
+            "terrainCovered": 66049,
+            "terrainPendingTiles": 1,
+            "terrainProviderChanges": 5,
+            "tileCount": 0,
+            "verticalDatum": "egm96"
+          }
+        }
+      ]
+    }
+  ],
+  "native_checks": [
+    "Native packaged app discovers real Balanced terrain and EGM96 default",
+    "native-himalayas-globe: active terrain, no render errors, settled native scene",
+    "globe: native pan/zoom retains terrain provider and imagery cache",
+    "native-himalayas-map: active terrain, no render errors, settled native scene",
+    "map: native pan/zoom retains terrain provider and imagery cache",
+    "native-himalayas-time: active terrain, no render errors, settled native scene",
+    "space-time: native pan/zoom retains terrain provider and imagery cache",
+    "native-antarctica: active terrain, no render errors, settled native scene",
+    "native-greenland: active terrain, no render errors, settled native scene",
+    "Native unload and portable save/open retain built-in identity without copying world pack",
+    "native-custom-dted: active terrain, no render errors, settled native scene",
+    "Native custom DTED replaces built-in terrain and requires explicit vertical datum",
+    "native-wildlife-time: active terrain, no render errors, settled native scene"
+  ],
+  "counts": {
+    "rust_focused": 46,
+    "frontend_unit": 29,
+    "runner_regressions": 8,
+    "browser_suites": 11,
+    "native_gui_checks": 13
+  },
+  "runs": [
+    {
+      "run_id": "20261025T113913Z-77a720b1",
+      "passed": false,
+      "failures": [
+        "balanced-terrain-qa"
+      ]
+    },
+    {
+      "run_id": "20261025T114116Z-06af572f",
+      "passed": false,
+      "failures": [
+        "balanced-terrain-qa"
+      ]
+    },
+    {
+      "run_id": "20261025T114522Z-8e2caa5b",
+      "passed": false,
+      "failures": [
+        "native-terrain-gui"
+      ]
+    },
+    {
+      "run_id": "20261025T114927Z-11948489",
+      "passed": true,
+      "failures": []
+    }
+  ],
+  "resolved_test_setup_failures": [
+    "Initial extended headless Chrome/Metal terrain run closed during the separate polar case; polar/lifecycle cases now use a fresh browser after the continuous three-mode navigation cases.",
+    "Native Map look_at fixture now uses required zero tilt; all three modes pass."
+  ],
+  "source_sha256": {
+    "frontend/src/cesium-resources.ts": "a9fb1579b7aaf8cac87da9dc639f1ff80983e9277ea4aee184ac92c19c4c78c7",
+    "frontend/src/main.ts": "0bee10a60aabb2b872869ccea2afe5ac0758e45af4407bb2635ad83498b10cd5",
+    "frontend/src/view.ts": "7641e5ac5efaf8aa21fa1a26d7992ed96257ede72b5f2e7923bc62ba2b29bc2d",
+    "frontend/scripts/cesium-resource-test.mjs": "fad4ac61b69b2bb34c4d8b0cb563337ac3d0c50eb5c5ca85240c37cd934bef4a",
+    "frontend/scripts/balanced-terrain-qa.mjs": "546b3d27a6470fdc2addf797cc466fc7e8d38a319b8ad642617c7023d47174ef",
+    "scripts/native_terrain_qa.py": "873321b34def4c637015628fd70e163039709ceb27947ee855c520ee8505ba5f"
+  },
+  "manual_native_input": "CUA wheel zoom and mouse drag exercised in Time, Map and Globe in the newly rebuilt app; returned to Fit on the public wildlife demo.",
+  "not_run": [
+    "Another full 48-browser release sweep",
+    "Optional heavy benchmarks",
+    "Other operating systems"
+  ]
+}

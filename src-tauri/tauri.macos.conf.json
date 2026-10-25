@@ -8,6 +8,7 @@
       "signingIdentity": "-"
     },
     "resources": {
+      "../assets/terrain/": "terrain/",
       "resources/Metadata.appintents/": "Metadata.appintents/",
       "../frontend/dist/third-party/": "third-party/"
     }

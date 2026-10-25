@@ -1,11 +1,18 @@
+import { WorkspaceFiles } from "./workspace-files";
+import { Welcome } from "./welcome";
+import { TableSelection } from "./table-selection";
+import { createMapSettings } from "./map-settings";
 import { suggestTags, focusedUI } from "./focused-ai";
 import { version as appVersion } from "../package.json";
 import { EditorController } from "./editor-controller";
 import { WorkspaceController } from "./workspace-controller";
 import { openAnalytics } from "./analytics";
-import { captureAppWindow } from "./app-capture";
+import { openGuidedAnalysis } from "./guided-analysis";
+import { ImportDialog } from "./import-dialog";
+import { captureAppWindow, recordAppWindow } from "./app-capture";
 import { NotificationCenter, type AppNotification } from "./notifications";
 import { createAgentView } from "./agent-view";
+import { createAgentLab } from "./agent-lab";
 import { GisTable } from "./gis-table";
 import type { GisLayer } from "./gis";
 import {
@@ -41,6 +48,7 @@ import { guide, shortcuts } from "./help";
 import { installTooltips } from "./tooltips";
 import { call, chooseFile, native } from "./bridge";
 import { SpaceTimeView } from "./view";
+import type { TerrainTileSource } from "./cesium-resources";
 import { mapLayers, layerVisible, MapStack } from "./map-stack";
 import {
   decode,
@@ -57,10 +65,7 @@ import {
 } from "./types";
 import type { EngineContracts } from "./contracts";
 import type { Bounds } from "./types";
-const supportedRasterFormat = (format: string) =>
-  ["image/png", "image/jpeg", "image/jpg", "image/jpgpng"].includes(
-    format.toLowerCase(),
-  );
+document.title = `Chronoscope ${appVersion}`;
 type Scene = EngineContracts["scene_sync"]["args"]["scene"];
 type ViewMode = Exclude<Scene["mode"], "" | undefined>;
 type InspectorTab = Exclude<Scene["inspector_tab"], "" | undefined>;
@@ -117,9 +122,22 @@ let snapshot: Snapshot,
   terrainInfo: any = null,
   overrideBounds: Bounds | null = null,
   lastRaster: Raster | null = null;
-let tableAnchor: string | null = null;
-let tableActiveId: string | null = null;
-let tableSelectionWork: Promise<void> = Promise.resolve();
+const tableSelection = new TableSelection({
+  scope: () => ({
+    source: tableSource,
+    apply_filter: tableRespectFilters,
+    ...(tableDisplayCell ? { display_cell: tableDisplayCell } : {}),
+    sort_by: tableSort,
+    descending: tableDescending,
+  }),
+  workspace: () => snapshot.workspace_id,
+  rowHeight: () => TABLE_ROW_HEIGHT,
+  reveal: (id) => {
+    tableReveal = id;
+  },
+  refresh: () => refresh(false, false),
+  error: (error) => toast(String(error), true),
+});
 const entitySelectionIntents = new Map<string, { selected: boolean }>();
 let tableDisplayCell: DisplayCell | null = null;
 let displayOptions: DisplayOptions = { ...defaultDisplay };
@@ -136,13 +154,14 @@ let layerMenu: HTMLElement | null = null;
 let findings: any[] = [];
 let findingsRevision = -1;
 let modalNode: HTMLElement | null = null;
+let modalReturnFocus: HTMLElement | null = null;
 let resolveGuard: ((proceed: boolean) => void) | null = null;
 let playTimer: number | undefined;
 let playbackPreserveFrame = false;
 let timeScrubbing = false;
 let timeScrubGeneration = 0;
 $("#app").innerHTML = `
-<header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Space-time</button><button data-view="map">2D Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Map servers">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open SI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button></div><button type="button" class="renderer-status" id="backend" aria-label="Renderer starting; refresh map"></button><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
+<header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Map servers">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open SI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button></div><button type="button" class="renderer-status" id="backend" aria-label="Renderer starting; refresh map"></button><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
 <main class="workspace"><aside class="sidebar"><section class="sidebar-pinned" id="search-section" aria-label="Search and selection"><input id="search" placeholder="Search events…" aria-label="Search events"><button id="reset-filters">Reset filters</button><div class="selection-tools" id="selection-tools"><div class="selection-summary"><strong id="pinned-selection-count" role="status">0 selected</strong><button id="clear" aria-label="Clear selection">Clear</button></div><div class="selection-actions"><button class="secondary" id="select-all">Select visible</button><label class="check-row"><input type="checkbox" id="selected-only" aria-label="Selected events only"> Show only</label></div></div></section><div class="sidebar-scroll"><details open class="sidebar-facet" id="entity-section"><summary><span>Entities</span><select id="entity-field" aria-label="Entity list field" title="Group the list by another column; source track identities stay unchanged"><option value="entity">Entity</option></select></summary><div class="facet-sort" role="group" aria-label="Sort entities"><button id="entity-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="entity-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div class="facet-controls"><input id="entity-search" placeholder="Find an entity…" aria-label="Find entity"><button id="all-entities">Enable all</button></div><div id="entities"></div><div class="facet-footer"><small id="entity-list-count"></small><button id="entity-show-all">Show all</button></div></details><details open class="sidebar-facet" id="category-section"><summary><span>Categories</span><select id="category-field" aria-label="Category list field" title="Group the list by another column"><option value="category">Category</option></select></summary><div class="facet-sort" role="group" aria-label="Sort categories"><button id="category-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="category-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div id="categories"></div><div class="facet-footer"><small id="category-list-count"></small><button id="category-show-all">Show all</button></div></details><div class="divider"></div><details id="time-section"><summary>Exact time range</summary><label class="field">Start / UTC<input id="exact-start" placeholder="Unbounded"></label><label class="field">End / UTC<input id="exact-end" placeholder="Unbounded"></label><button id="exact-apply" class="secondary">Apply range</button></details><details id="rules-section"><summary>Attribute rules</summary><label class="field">Field<input id="rule-field" placeholder="value, confidence, category…"></label><select id="rule-op"><option>Contains</option><option>Equals</option><option>NotEquals</option><option>Greater</option><option>Less</option><option>IsEmpty</option></select><label class="field">Value<input id="rule-value"></label><button id="add-rule" class="secondary">Add AND rule</button><div id="rules"></div></details><details id="bounds-section"><summary>Geographic bounds</summary><label class="field">West, South, East, North<input id="bounds" placeholder="-80,43,-79,44"></label><button id="apply-bounds" class="secondary">Apply region</button></details><section id="layers-section"><div class="section-head"><span class="caps">Layers</span></div><div id="layer-list"></div><div class="source-foot">WGS84 · UTC</div></section></div></aside>
 <section class="center"><div class="scene-container" id="scene"><div class="scene-top-right"><button class="icon" id="screenshot" title="Export canvas PNG">${icon("camera")}</button><button class="icon" id="fullscreen" title="Expand workspace" aria-label="Expand workspace" aria-pressed="false">${icon("maximize")}</button></div><div class="geography-readout" id="geography-readout"></div><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel"><div class="table-header"><button class="icon" id="close-table" aria-label="Close attribute table" title="Close table">${icon("close")}</button><span class="caps" id="table-title">Attributes</span><small class="muted" id="table-count"></small><input id="gis-table-search" placeholder="Search this GIS layer…" aria-label="Search GIS attributes" hidden><span class="spacer"></span><label class="check-row" id="table-filter-option" hidden><input id="table-respect-filters" type="checkbox"> Respect workspace filters</label><button id="table-all" hidden>All sources</button><small id="table-fields" hidden></small><button id="previous-fields" hidden title="Show previous source columns">Previous fields</button><button id="next-fields" hidden title="Show next source columns">Next fields</button></div><div class="table-scroll"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div></section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
 <aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="Super Intelligence chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
@@ -392,6 +411,7 @@ const workspace = new WorkspaceController({
     ),
   saved: (path) => {
     projectPath = path;
+    welcome.remember(path, snapshot.count);
     toast("Workspace saved");
   },
   confirmUnsaved,
@@ -552,6 +572,11 @@ async function refresh(render = true, resources = true) {
   const s = model.snapshot as Snapshot;
   if (generation !== serial) return;
   snapshot = s;
+  welcome.update(
+    s.workspace_id,
+    s.count === 0 && !(s.gis_layers || []).length,
+    projectPath,
+  );
   await view.ready;
   await view.gis.sync((s.gis_layers || []) as GisLayer[]);
   if (generation !== serial) return;
@@ -853,81 +878,10 @@ function currentMapZoom() {
   return view.mapZoom();
 }
 
-async function mapLayerMenu() {
-  const stack = structuredClone(mapLayers(preferences));
-  const render = () => {
-    const zoom = currentMapZoom();
-    modal(
-      `${head("Map layers")}<p class="description">Bottom to top drawing order. Enable layers from any saved server. Zoom uses the standard 256-pixel Web Mercator scale; minimum is inclusive and maximum exclusive. Street imagery can cover 0–14, with aerial imagery at 14–30.</p><div class="notice">Current zoom: ${zoom.toFixed(2)} · approximately 1:${Math.round(591657527.6 / 2 ** zoom).toLocaleString()} at the equator, 96 dpi. Zoom controls visibility; the server matrix setting controls requested resolution.</div><div id="map-stack-list">${stack.map((l, i) => `<section class="map-stack-row" data-map-stack="${esc(l.id)}"><div class="row"><label class="check-row grow"><input data-map-enabled type="checkbox" ${l.config.enabled ? "checked" : ""}> ${esc(l.server_name)} · ${esc(l.config.layer)}</label><button data-map-up="${i}" title="Move layer up in drawing order" ${i === stack.length - 1 ? "disabled" : ""}>↑</button><button data-map-down="${i}" title="Move layer down in drawing order" ${i === 0 ? "disabled" : ""}>↓</button><button data-map-edit="${i}">Edit source</button><button data-map-remove="${i}" aria-label="Remove ${esc(l.name)}">×</button></div><label class="field">Layer name<input data-map-name value="${esc(l.name)}"></label><div class="modal-grid"><label class="field">Opacity / %<input data-map-opacity type="number" min="0" max="100" step="1" value="${l.opacity * 100}"></label><label class="field">Show from zoom<input data-map-min type="number" min="0" max="30" step="0.1" value="${l.min_zoom}"></label><label class="field">Hide at zoom<input data-map-max type="number" min="0" max="30" step="0.1" value="${l.max_zoom}"></label></div><small>${layerVisible(l, zoom) ? "Visible at current zoom" : "Hidden at current zoom"} · ${esc(l.config.time || "Default date")}</small></section>`).join("") || "<p>No map layers. Add layers using Map servers.</p>"}</div><footer><button id="stack-add">Map servers / add layer</button><span class="spacer"></span><button data-close>Cancel</button><button id="save-map-stack" class="primary">Apply layers</button></footer>`,
-      true,
-    );
-    const capture = () => {
-      $("#map-stack-list")
-        .querySelectorAll<HTMLElement>("[data-map-stack]")
-        .forEach((row, i) => {
-          const value = (key: string) =>
-            (row.querySelector(`[data-map-${key}]`) as HTMLInputElement).value;
-          stack[i].config.enabled = (
-            row.querySelector("[data-map-enabled]") as HTMLInputElement
-          ).checked;
-          stack[i].name = value("name");
-          stack[i].opacity = Number(value("opacity")) / 100;
-          stack[i].min_zoom = Number(value("min"));
-          stack[i].max_zoom = Number(value("max"));
-        });
-    };
-    const save = async () => {
-      capture();
-      await cancelMap();
-      preferences = await call("preferences", {
-        preferences: { map_layers: stack },
-      });
-      mapUnavailable = false;
-      await refresh(false);
-      await loadRasters();
-    };
-    $("#map-stack-list").addEventListener("click", (e) => {
-      const b = (e.target as Element).closest<HTMLElement>("button");
-      if (!b) return;
-      capture();
-      const perform = async () => {
-        if (b.dataset.mapEdit !== undefined) {
-          await save();
-          const l = stack[Number(b.dataset.mapEdit)];
-          await mapMenu(undefined, l);
-          return;
-        }
-        const up = b.dataset.mapUp,
-          down = b.dataset.mapDown,
-          remove = b.dataset.mapRemove;
-        if (up !== undefined) {
-          const i = Number(up);
-          [stack[i], stack[i + 1]] = [stack[i + 1], stack[i]];
-        }
-        if (down !== undefined) {
-          const i = Number(down);
-          [stack[i], stack[i - 1]] = [stack[i - 1], stack[i]];
-        }
-        if (remove !== undefined) stack.splice(Number(remove), 1);
-        render();
-      };
-      void perform().catch((e) => toast(String(e), true));
-    });
-    on("#save-map-stack", async () => {
-      await save();
-      closeModal();
-    });
-    on("#stack-add", async () => {
-      await save();
-      await wmtsMenu();
-    });
-  };
-  render();
-}
 function geographyReadout() {
   // Provider names and zoom metadata belong to Layers/Maps, not the canvas.
   $("#geography-readout").textContent = terrainInfo
-    ? `DTED · ${preferences.terrain_vertical_datum === "egm96" ? "EGM96 → ellipsoid" : preferences.terrain_vertical_datum === "ellipsoid" ? "ellipsoid" : "datum unresolved"} · ${preferences.terrain_exaggeration}× vertical`
+    ? `${preferences.terrain_builtin ? "Balanced world terrain" : "DTED"} · ${preferences.terrain_vertical_datum === "egm96" ? "EGM96 → ellipsoid" : preferences.terrain_vertical_datum === "ellipsoid" ? "ellipsoid" : "datum unresolved"} · ${preferences.terrain_exaggeration}× vertical`
     : "";
   const credits = mapsEnabled()
     ? mapLayers(preferences)
@@ -991,7 +945,7 @@ function layers() {
       )
       .join("") +
     (terrainInfo
-      ? `<div class="layer-card" data-layer-kind="terrain" tabindex="0" role="group">${icon("terrain")}<div><strong>DTED terrain</strong><small>${terrainInfo.tiles.length} tile(s) · ${preferences.terrain_vertical_datum === "egm96" ? "EGM96 MSL → ellipsoid" : preferences.terrain_vertical_datum === "ellipsoid" ? "ellipsoid" : "datum unresolved; not displayed"} · ${preferences.terrain_exaggeration}× vertical</small></div><button class="icon" data-geography-options="terrain" aria-label="Terrain settings">⋯</button></div>`
+      ? `<div class="layer-card" data-layer-kind="terrain" tabindex="0" role="group">${icon("terrain")}<div><strong>${preferences.terrain_builtin ? "Balanced world terrain" : "DTED terrain"}</strong><small>${preferences.terrain_builtin ? "1.9 km spacing · USGS GMTED2010" : `${terrainInfo.tiles.length} tile(s)`} · ${preferences.terrain_vertical_datum === "egm96" ? "EGM96 MSL → ellipsoid" : preferences.terrain_vertical_datum === "ellipsoid" ? "ellipsoid" : "datum unresolved; not displayed"} · ${preferences.terrain_exaggeration}× vertical</small></div><button class="icon" data-geography-options="terrain" aria-label="Terrain settings">⋯</button></div>`
       : "");
   $("#fit-terrain").hidden = !terrainInfo;
 }
@@ -1109,8 +1063,8 @@ function showLayerMenu(layer: HTMLElement, x: number, y: number) {
 }
 async function openAttributes(source: string | null) {
   gisTable.close();
-  tableAnchor = null;
-  tableActiveId = null;
+  tableSelection.anchor = null;
+  tableSelection.activeId = null;
   tableDisplayCell = null;
   tableSource = source;
   tableColumnOffset = 0;
@@ -1247,8 +1201,8 @@ const filterIntent = new FilterIntent<Filter>(
   },
   (filter, revision) => call("filter", { filter, expected_revision: revision }),
   async () => {
-    tableAnchor = null;
-    tableActiveId = null;
+    tableSelection.anchor = null;
+    tableSelection.activeId = null;
     resetTableScroll();
     await refresh();
   },
@@ -1265,8 +1219,41 @@ async function select(ids: string[], add = false, reveal = false) {
   if (reveal && tableOpen) tableReveal = ids[0] ?? null;
   await refresh(false);
 }
-view.onPick = (ids, add) =>
-  select(ids, add, true).catch((e) => toast(String(e), true));
+view.onPick = (ids, add) => {
+  if (add) {
+    void select(ids, true, true).catch((error) => toast(String(error), true));
+    return;
+  }
+  const workspace = snapshot.workspace_id;
+  // The renderer knows only the selected evidence in its current packet.
+  // Keep the full pre-click selection in the engine, including off-screen IDs
+  // and selections too large for a snapshot or a select({ids}) request.
+  const applied = call("selection_pick", {
+    ids,
+    mode: "replace",
+    expected_workspace: workspace,
+  });
+  const report = (error: unknown) => {
+    if (!String(error).includes("CONFLICT:")) toast(String(error), true);
+  };
+  void applied
+    .then(async () => {
+      if (tableOpen) tableReveal = ids[0] ?? null;
+      await refresh(false);
+    })
+    .catch(report);
+  return () => {
+    void applied
+      .then(async (receipt) => {
+        await call("selection_restore", {
+          pick_revision: receipt.pick_revision,
+          expected_workspace: workspace,
+        });
+        await refresh(false);
+      })
+      .catch(report);
+  };
+};
 function locationLabel(e: any) {
   if (e.location_kind === "polygon-centroid")
     return `Centroid · ${e.lat.toFixed(5)}, ${e.lon.toFixed(5)}`;
@@ -1398,7 +1385,7 @@ async function table(
     (r.events
       .map(
         (e: any, index: number) =>
-          `<tr tabindex="${e.id === tableActiveId || (!tableActiveId && index === 0) ? 0 : -1}" aria-rowindex="${page * 50 + index + 2}" data-event="${esc(e.id)}" aria-selected="${exactSelected.has(e.id)}" class="${exactSelected.has(e.id) ? "selected" : ""}">${columns.map((c) => `<td>${esc(value(e, c))}</td>`).join("")}</tr>`,
+          `<tr tabindex="${e.id === tableSelection.activeId || (!tableSelection.activeId && index === 0) ? 0 : -1}" aria-rowindex="${page * 50 + index + 2}" data-event="${esc(e.id)}" aria-selected="${exactSelected.has(e.id)}" class="${exactSelected.has(e.id) ? "selected" : ""}">${columns.map((c) => `<td>${esc(value(e, c))}</td>`).join("")}</tr>`,
       )
       .join("") ||
       `<tr><td colspan="${columns.length}">No events in this scope.</td></tr>`) +
@@ -1407,10 +1394,10 @@ async function table(
     "aria-rowcount",
     String(tableTotal + 1),
   );
-  if (hadTableFocus && tableActiveId) {
+  if (hadTableFocus && tableSelection.activeId) {
     const active = Array.from(
       $("#table-body").querySelectorAll<HTMLElement>("[data-event]"),
-    ).find((row) => row.dataset.event === tableActiveId);
+    ).find((row) => row.dataset.event === tableSelection.activeId);
     active?.focus({ preventScroll: true });
   }
   if (reveal) {
@@ -1428,15 +1415,15 @@ $("#table-head").addEventListener("click", (e) => {
   const c = b.dataset.tableSort!;
   tableDescending = tableSort === c ? !tableDescending : false;
   tableSort = c;
-  tableAnchor = null;
-  tableActiveId = null;
+  tableSelection.anchor = null;
+  tableSelection.activeId = null;
   resetTableScroll();
   table().catch((e) => toast(String(e), true));
 });
 $("#table-respect-filters").addEventListener("change", () => {
   tableRespectFilters = check("#table-respect-filters");
-  tableAnchor = null;
-  tableActiveId = null;
+  tableSelection.anchor = null;
+  tableSelection.activeId = null;
   resetTableScroll();
   table().catch((e) => toast(String(e), true));
 });
@@ -1610,16 +1597,63 @@ function closeModal() {
   pending?.(false);
   modalNode?.remove();
   modalNode = null;
+  if (modalReturnFocus?.isConnected) modalReturnFocus.focus();
+  modalReturnFocus = null;
 }
 function modal(html: string, small = false) {
+  const returnFocus =
+    modalReturnFocus ||
+    (document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null);
   closeModal();
+  modalReturnFocus = returnFocus;
   modalNode = document.createElement("div");
   modalNode.className = "modal-backdrop";
-  modalNode.innerHTML = `<section class="modal ${small ? "small" : ""}">${html}</section>`;
+  modalNode.innerHTML = `<section class="modal ${small ? "small" : ""}" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">${html}</section>`;
   document.body.append(modalNode);
   modalNode
     .querySelectorAll("[data-close]")
     .forEach((e) => e.addEventListener("click", closeModal));
+  modalNode.querySelector("h2")?.setAttribute("id", "modal-title");
+  modalNode.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      closeModal();
+    } else if (event.key === "Tab") {
+      const controls = [
+        ...modalNode!.querySelectorAll<HTMLElement>(
+          'button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),summary,a[href],[tabindex="0"]',
+        ),
+      ].filter((e) => e.getClientRects().length);
+      const first = controls[0],
+        last = controls.at(-1);
+      if (!first) {
+        event.preventDefault();
+        return;
+      }
+      if (
+        event.shiftKey &&
+        (document.activeElement === first ||
+          !controls.includes(document.activeElement as HTMLElement))
+      ) {
+        event.preventDefault();
+        last?.focus();
+      } else if (
+        !event.shiftKey &&
+        (document.activeElement === last ||
+          !controls.includes(document.activeElement as HTMLElement))
+      ) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
+  (
+    modalNode.querySelector<HTMLElement>("button,input,select,textarea") ||
+    modalNode.querySelector<HTMLElement>(".modal")
+  )?.focus();
   return modalNode;
 }
 function head(title: string) {
@@ -1627,8 +1661,8 @@ function head(title: string) {
 }
 async function openGisAttributes(id: string) {
   gisTable.open(id);
-  tableAnchor = null;
-  tableActiveId = null;
+  tableSelection.anchor = null;
+  tableSelection.activeId = null;
   tableDisplayCell = null;
   resetTableScroll();
   tableOpen = true;
@@ -1755,161 +1789,35 @@ async function gisLayerMenu(id: string) {
   });
 }
 
-async function importPreview(
+const importDialog = new ImportDialog({
+  workspace: () => snapshot.workspace_id,
+  committed: async (append, result) => {
+    if (!append) {
+      projectPath = null;
+      tableSource = null;
+      tableSort = "time";
+      tableDescending = false;
+      page = 0;
+    }
+    overrideBounds = null;
+    findings = [];
+    await refresh();
+    view.fit();
+    toast(
+      result.aggregation
+        ? `${result.accepted.toLocaleString()} accepted records → ${(result.retained ?? result.accepted).toLocaleString()} retained summaries/records`
+        : `Imported ${result.accepted.toLocaleString()} Events`,
+    );
+  },
+});
+function importPreview(
   path: string,
   delimiter: NonNullable<
     EngineContracts["import_preview"]["args"]["delimiter"]
   >,
   gisLayer?: string,
 ) {
-  const preview = await task("Reading headers and source values…", () =>
-    gisLayer
-      ? call("gis_import_preview", { id: gisLayer })
-      : call("import_preview", { path, delimiter }),
-  );
-  let sheet = 0,
-    mapping = preview.sheets[0].mapping;
-  function draw() {
-    const s = preview.sheets[sheet];
-    const fields = [
-      ["time", "Timestamp/date *"],
-      ["clock", "Separate time"],
-      ["coordinate_column", "Combined DD/UTM coordinate"],
-      ["entity", "Entity"],
-      ["lat", "Latitude (DD)"],
-      ["lon", "Longitude (DD)"],
-      ["easting", "UTM easting"],
-      ["northing", "UTM northing"],
-      ["zone", "UTM zone"],
-      ["hemisphere", "UTM hemisphere N/S"],
-      ["mgrs", "MGRS reference"],
-      ["geometry_wkt", "WKT geometry (X longitude, Y latitude)"],
-      ["category", "Category"],
-      ["label", "Label"],
-      ["value", "Numeric value"],
-      ["related_to", "Related entity"],
-      ["end", "End timestamp"],
-    ];
-    const el = modal(
-      `${head("Import data")}<p class="description">${esc(preview.source)} · ${s.count.toLocaleString()} rows · original columns are retained.</p><div class="modal-grid"><label class="field">Worksheet<select id="import-sheet">${preview.sheets.map((s: any, i: number) => `<option value="${i}" ${i === sheet ? "selected" : ""}>${esc(s.sheet)}</option>`).join("")}</select></label><label class="field">CSV delimiter<select id="import-delimiter"><option value="auto" ${delimiter === "auto" ? "selected" : ""}>Auto detect</option><option value="|" ${delimiter === "|" ? "selected" : ""}>Pipe</option><option value="," ${delimiter === "," ? "selected" : ""}>Comma</option><option value=";" ${delimiter === ";" ? "selected" : ""}>Semicolon</option><option value="\t" ${delimiter === "\t" ? "selected" : ""}>Tab</option></select></label><label class="field">Input coordinates<select id="import-crs">${["dd", "utm", "mgrs"].map((c) => `<option ${c === mapping.coordinate_system ? "selected" : ""}>${c}</option>`).join("")}</select></label><label class="field">Default entity<input id="default-entity" value="${esc(mapping.default_entity)}"></label>${fields.map(([key, title]) => `<label class="field">${title}<select data-map="${key}"><option value="">Not mapped</option>${s.headers.map((h: string, i: number) => `<option value="${i}" ${mapping[key] === i ? "selected" : ""}>${esc(h)}</option>`).join("")}</select></label>`).join("")}<label class="field">Default UTM zone<input id="default-zone" type="number" min="1" max="60" value="${mapping.default_zone || ""}"></label><label class="field">Default hemisphere<select id="default-hemisphere"><option value="">Choose…</option><option ${mapping.default_hemisphere === "N" ? "selected" : ""}>N</option><option ${mapping.default_hemisphere === "S" ? "selected" : ""}>S</option></select></label><label class="field">Date order<select id="date-order">${[
-        ["auto", "Auto / reject ambiguous"],
-        ["dmy", "Day first"],
-        ["mdy", "Month first"],
-      ]
-        .map(
-          ([v, t]) =>
-            `<option value="${v}" ${mapping.date_order === v ? "selected" : ""}>${t}</option>`,
-        )
-        .join(
-          "",
-        )}</select></label><label class="field">Numeric time encoding<select id="time-encoding">${["auto", "unix_seconds", "unix_milliseconds", "unix_microseconds", "unix_nanoseconds", "excel_serial", "excel1904"].map((v) => `<option value="${v}" ${mapping.time_encoding === v ? "selected" : ""}>${v.replaceAll("_", " ")}</option>`).join("")}</select></label><label class="field">Default date for time-only values<input id="default-date" value="${esc(mapping.default_date)}" placeholder="YYYY-MM-DD"></label><label class="check-row"><input id="decimal-comma" type="checkbox" ${mapping.decimal_comma ? "checked" : ""}> Decimal comma numbers</label><label class="field">Custom timestamp format<input id="date-format" value="${esc(mapping.custom_format)}" placeholder="%d/%m/%Y %H:%M:%S"></label><label class="field">Naive UTC offset / minutes<input id="time-offset" type="number" value="${mapping.offset_minutes}"></label></div><div class="notice">${[...(s.notes || []), ...(s.warnings || [])].map((t: string) => `<p>${esc(t)}</p>`).join("")}</div><div class="preview-scroll"><table><thead><tr>${s.headers.map((h: string) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${s.preview.map((r: string[]) => `<tr>${r.map((v) => `<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div><div class="notice">Input coordinates must already use WGS84; reproject other datums before importing. A UTM zone and hemisphere are separate fields. Times retain seconds and fractions; original source strings are preserved. Short MGRS grids use their centre and retain their precision.</div><details><summary>Aggregate during import (optional)</summary><label class="check-row"><input type="checkbox" id="import-aggregate"> Keep time/proximity summaries instead of all records</label><div class="modal-grid"><label class="field">Time window / minutes<input id="import-aggregate-window" type="number" min="1" max="5259600" value="15"></label><label class="field">Radius / metres<input id="import-aggregate-radius" type="number" min="1" max="20040000" value="100"></label></div><p class="description">Lossy: summaries retain counts, an anchor location, time span and mean value. Keep your original file for individual records. Uses fixed UTC windows and separate groups per entity, category and source. Unknown locations stay separate.</p></details><button id="preview-mapping">Preview conversions with these settings</button><div id="normalized-preview" class="notice"></div><footer><label class="check-row"><input id="append-import" type="checkbox"> Append to workspace</label><span class="spacer"></span><button data-close>Cancel</button><button id="commit-import" class="primary">Validate and import</button></footer>`,
-    );
-    $("#import-sheet").addEventListener("change", () => {
-      sheet = Number(input("#import-sheet"));
-      mapping = preview.sheets[sheet].mapping;
-      draw();
-    });
-    $("#import-delimiter").addEventListener("change", () =>
-      importPreview(
-        path,
-        input("#import-delimiter") as NonNullable<
-          EngineContracts["import_preview"]["args"]["delimiter"]
-        >,
-      ).catch((e) => toast(String(e), true)),
-    );
-    function readMapping() {
-      el.querySelectorAll<HTMLSelectElement>("[data-map]").forEach(
-        (e) =>
-          (mapping[e.dataset.map!] = e.value === "" ? null : Number(e.value)),
-      );
-      Object.assign(mapping, {
-        coordinate_system: input("#import-crs"),
-        default_entity: input("#default-entity"),
-        default_zone: Number(input("#default-zone")),
-        default_hemisphere: input("#default-hemisphere"),
-        custom_format: input("#date-format"),
-        offset_minutes: Number(input("#time-offset")),
-        date_order: input("#date-order"),
-        time_encoding: input("#time-encoding"),
-        default_date: input("#default-date"),
-        decimal_comma: check("#decimal-comma"),
-      });
-    }
-    function showNormalized(r: any) {
-      $("#normalized-preview").innerHTML =
-        `<b>Converted sample / UTC</b>${(r?.events || []).map((e: any) => `<p>${time(e.time)} · ${esc(e.entity)} · ${e.lat == null ? "Unlocated" : `${e.lat.toFixed(6)}, ${e.lon.toFixed(6)}`}${e.mgrs_precision == null ? "" : ` · ${10 ** (5 - e.mgrs_precision)} m MGRS grid`}</p>`).join("")}${(r?.rejected || []).map(([n, t]: any) => `<p class="error">Row ${n}: ${esc(t)}</p>`).join("")}`;
-    }
-    showNormalized(s.normalized);
-    on("#preview-mapping", async () => {
-      readMapping();
-      showNormalized(
-        await call("import_validate", {
-          sheet,
-          mapping,
-          import_id: preview.import_id,
-        }),
-      );
-    });
-    on("#commit-import", async () => {
-      readMapping();
-      const args = {
-        sheet,
-        mapping,
-        import_id: preview.import_id,
-        append: check("#append-import"),
-        accept_rejected: false,
-        ...(check("#import-aggregate")
-          ? {
-              aggregation: {
-                window_minutes: Number(input("#import-aggregate-window")),
-                radius_m: Number(input("#import-aggregate-radius")),
-              },
-            }
-          : {}),
-      };
-      const result = await task("Validating events…", () =>
-        call("import_commit", args),
-      );
-      if (!result.needs_review && result.aggregation)
-        toast(
-          `${result.accepted.toLocaleString()} accepted records → ${(result.retained ?? result.accepted).toLocaleString()} retained summaries/records`,
-        );
-      if (result.needs_review) {
-        modal(
-          `${head("Review rejected rows")}<p class="description">${result.accepted} valid events · ${result.rejected} rejected rows. Continuing excludes these rejected rows.</p><div class="preview-scroll">${(result.reasons || []).map(([r, s]: [number, string]) => `<p class="error" style="padding:9px">Row ${r}: ${esc(s)}</p>`).join("")}</div><footer><button data-close>Cancel</button><span class="spacer"></span><button id="accept-import" class="primary">Import valid rows</button></footer>`,
-        );
-        on("#accept-import", async () => {
-          await call("import_commit", { ...args, accept_rejected: true });
-          closeModal();
-          if (!args.append) {
-            projectPath = null;
-            tableSource = null;
-            tableSort = "time";
-            tableDescending = false;
-            page = 0;
-          }
-          overrideBounds = null;
-          await refresh();
-          view.fit();
-        });
-        return;
-      }
-      closeModal();
-      if (!args.append) {
-        projectPath = null;
-        tableSource = null;
-        tableSort = "time";
-        tableDescending = false;
-        page = 0;
-      }
-      overrideBounds = null;
-      findings = [];
-      await refresh();
-      view.fit();
-      toast(`Imported ${result.accepted} events`);
-    });
-  }
-  draw();
+  return importDialog.open(path, delimiter, gisLayer);
 }
 type MapPreset = Exclude<
   EngineContracts["wmts_servers"]["result"],
@@ -1919,430 +1827,54 @@ let mapPresets: MapPreset[] = [];
 let capabilities: any = null;
 let capabilitiesURL = "";
 let mapUnavailable = false;
-async function mapMenu(
-  draft?: Parameters<typeof wmtsMenu>[0],
-  editing?: MapLayer,
-) {
-  if (draft || editing) return wmtsMenu(draft, editing);
-  const custom = mapLayers(preferences).filter((l) => l.config.enabled).length;
-  modal(
-    `${head("Map")}<label class="check-row"><input id="streets-enabled" type="checkbox" ${preferences.basemap === "streets" ? "checked" : ""}> Streets</label><p class="description">Detailed worldwide streets · OpenFreeMap Positron. Detail follows your zoom automatically. No account or API key needed.</p>${custom ? `<p class="notice">${custom} custom map layer(s) are enabled and may cover Streets.</p><button id="streets-only">Use Streets only</button>` : ""}${view.resources.status.basemapError ? `<p class="error">${esc(view.resources.status.basemapError)}</p><button id="retry-streets">Retry Streets</button>` : ""}<details class="map-advanced"><summary>Advanced map settings</summary><div class="row" style="margin-top:12px"><button id="custom-map-server">Add custom map server…</button><button id="custom-map-layers">Custom layers…</button><button id="basemap-cache">Cache and loading…</button><button id="basemap-credits">Map credits</button></div><p class="description">Custom WMTS layers, authentication, opacity and zoom rules remain available here.</p></details><footer><button data-close>Cancel</button><span class="spacer"></span><button id="apply-basemap" class="primary">Apply</button></footer>`,
-  );
-  on("#custom-map-server", () => wmtsMenu());
-  on("#custom-map-layers", mapLayerMenu);
-  on("#basemap-cache", mapCacheMenu);
-  on("#basemap-credits", () => view.showCredits());
-  if (view.resources.status.basemapError)
-    on("#retry-streets", async () => {
-      await view.setBasemap("none");
-      await view.setBasemap("streets");
-      closeModal();
-    });
-  on("#apply-basemap", async () => {
-    preferences = await call("preferences", {
-      preferences: { basemap: check("#streets-enabled") ? "streets" : "none" },
-    });
-    closeModal();
-    await refresh(false);
-  });
-  if (custom)
-    on("#streets-only", async () => {
-      const stack = mapLayers(preferences).map((layer) => ({
-        ...layer,
-        config: { ...layer.config, enabled: false },
-      }));
-      preferences = await call("preferences", {
-        preferences: {
-          basemap: "streets",
-          map: { ...preferences.map, enabled: false },
-          map_layers: stack,
-        },
-      });
-      closeModal();
-      await refresh(false);
-      await loadRasters();
-    });
-}
-async function wmtsMenu(
-  draft?: {
-    servers: any[];
-    selected: string;
-    config: Preferences["map"];
+
+const mapSettings = createMapSettings({
+  get preferences() {
+    return preferences;
   },
-  editing?: MapLayer,
-) {
-  const catalog = await call("wmts_servers");
-  mapPresets = catalog.presets;
-  const library = draft || catalog;
-  type Server = { id: string; name: string; config: Preferences["map"] };
-  const servers: Server[] = library.servers.map((s: Server) => ({
-    ...s,
-    config: { ...s.config },
-  }));
-  const initialConfig = draft?.config || editing?.config || preferences.map;
-  let selected =
-    draft?.selected ||
-    servers.find(
-      (s) =>
-        s.config.url === initialConfig.url &&
-        s.config.layer === initialConfig.layer &&
-        s.config.matrix_set === initialConfig.matrix_set,
-    )?.id ||
-    servers.find((s) => s.config.url === initialConfig.url)?.id ||
-    "";
-  if (!selected) {
-    selected = `workspace-${crypto.randomUUID()}`;
-    servers.push({
-      id: selected,
-      name: initialConfig.url ? "Current workspace map" : "New map server",
-      config: { ...initialConfig },
-    });
-  }
-  let c = { ...(draft?.config || editing?.config || preferences.map) };
-  if (!c.url) c.enabled = true;
-  let caps: any = capabilitiesURL === c.url ? capabilities : null;
-  let requestGeneration = 0;
-  modal(
-    `${head("Map servers")}<p class="description">Save multiple WMTS connections and add imagery layers from any server. The server library stays on this computer; the layer stack and visibility rules are saved with your workspace.</p><div class="row"><label class="field grow">Map source<select id="wmts-server"></select></label><button id="add-wmts-server">Add server</button><button id="remove-wmts-server">Remove</button></div><div id="wmts-source-info" class="notice" hidden></div><label class="field">Server name<input id="wmts-server-name"></label><label class="field">Capabilities or service URL<input id="wmts-url" placeholder="https://…/WMTSCapabilities.xml"></label><div class="row"><button id="inspect-wmts" class="primary">Read capabilities</button><button id="wmts-auth">Authentication…</button><button id="wmts-cache">Cache and loading…</button><span class="spacer"></span><label class="check-row"><input id="map-enabled" type="checkbox"> Show map</label></div><div id="wmts-layer-status" role="status" class="description"></div><div id="wmts-fields" style="margin-top:12px"></div><div class="notice">EPSG:3857 and EPSG:4326/CRS84. Imagery loads directly with a local disk cache. Each server remembers its layer, matrix, style, date and resolution. Multiple sources can be enabled together. Use Map layers to set opacity, order and zoom visibility.</div><footer><button data-close>Close</button><button id="save-wmts-server">Save server</button><button id="map-stack-settings">Map layers…</button><button id="map-credits">Map credits</button><button id="add-map-layer">Add selected layer to map</button><span class="spacer"></span><button id="apply-map" class="primary">Apply to view</button></footer>`,
-    false,
-  );
-  const menuOwner = $("#wmts-server");
-  const alive = () => document.querySelector("#wmts-server") === menuOwner;
-  const server = () => servers.find((s) => s.id === selected)!;
-  const capture = () => {
-    c.url = input("#wmts-url").trim();
-    c.enabled = check("#map-enabled");
-    if ($("#wmts-layer")) c.layer = input("#wmts-layer");
-    if ($("#wmts-matrix")) c.matrix_set = input("#wmts-matrix");
-    if ($("#wmts-style")) c.style = input("#wmts-style");
-    if ($("#wmts-format")) c.format = input("#wmts-format");
-    if ($("#wmts-time")) c.time = input("#wmts-time");
-    if ($("#wmts-level"))
-      c.level =
-        input("#wmts-level") === "" ? null : Number(input("#wmts-level"));
-    server().name = input("#wmts-server-name").trim();
-    server().config = { ...c };
-  };
-  const options = () => {
-    if (!alive()) return;
-    $("#wmts-server").innerHTML =
-      '<optgroup label="Saved servers">' +
-      servers
-        .map(
-          (s) =>
-            `<option value="${esc(s.id)}" ${s.id === selected ? "selected" : ""}>${esc(s.name)}</option>`,
-        )
-        .join("") +
-      "</optgroup>";
-    ($("#remove-wmts-server") as HTMLButtonElement).disabled =
-      servers.length === 0;
-  };
-  const fields = () => {
-    if (!alive()) return;
-    const preset = mapPresets.find(
-      (p) => p.config.url === c.url && p.config.layer === c.layer,
-    );
-    const info = $("#wmts-source-info");
-    info.hidden = !preset;
-    info.innerHTML = preset
-      ? `<strong>${esc(preset.name)}</strong><p>${esc(preset.description)} ${esc(preset.coverage)}</p><p>${esc(preset.license)}</p>${preset.credits.map((credit) => `<a href="${esc(credit.url)}" target="_blank" rel="noopener noreferrer">${esc(credit.text)}</a>`).join(" · ")}`
-      : "";
-    const layers =
-      caps?.layers.filter((l: any) => l.formats.some(supportedRasterFormat)) ||
-      [];
-    const layer = layers.find((l: any) => l.id === c.layer) || layers[0];
-    if (!layer) {
-      $("#wmts-fields").innerHTML =
-        `<label class="field">Layer<input id="wmts-current-layer" readonly value="${esc(c.layer || "No layer selected")}"></label>`;
-      $("#wmts-layer-status").textContent = caps
-        ? "This service has no supported PNG/JPEG layers."
-        : "Read capabilities to browse all imagery layers. Your current layer is shown below.";
-      return;
-    }
-    c.layer = layer.id;
-    if (!layer.matrix_sets.includes(c.matrix_set)) {
-      c.matrix_set = layer.matrix_sets[0] || "";
-      c.level = null;
-    }
-    if (!layer.formats.includes(c.format))
-      c.format = layer.formats.find(supportedRasterFormat) || "";
-    if (!c.style) c.style = layer.style;
-    const time = layer.dimensions.find(
-      (d: any) => d.name.toLowerCase() === "time",
-    );
-    $("#wmts-layer-status").textContent =
-      `${layers.length.toLocaleString()} imagery layers available`;
-    $("#wmts-fields").innerHTML =
-      `<div class="modal-grid"><label class="field wide">Layer<select id="wmts-layer">${layers.map((l: any) => `<option value="${esc(l.id)}" ${l.id === c.layer ? "selected" : ""}>${esc(l.title || l.id)} · ${esc(l.id)}</option>`).join("")}</select></label><label class="field">Matrix set<select id="wmts-matrix">${layer.matrix_sets.map((id: string) => `<option ${id === c.matrix_set ? "selected" : ""}>${esc(id)}</option>`).join("")}</select></label><label class="field">Resolution<select id="wmts-level"><option value="">Automatic / screen resolution</option>${(caps.matrix_sets.find((m: any) => m.id === c.matrix_set)?.matrices || []).map((m: any, i: number) => `<option value="${i}" ${c.level === i ? "selected" : ""}>${esc(m.id)} · scale 1:${Math.round(m.scale).toLocaleString()}</option>`).join("")}</select></label><label class="field">Time dimension<input id="wmts-time" value="${esc(c.time)}" placeholder="${esc(time?.default || "Provider default")}"><small class="muted">${esc(time?.values?.slice(0, 3).join(", ") || "This layer has no advertised time dimension")}</small></label><label class="field">Style<input id="wmts-style" value="${esc(c.style)}"></label><label class="field">Format<select id="wmts-format">${layer.formats
-        .filter(supportedRasterFormat)
-        .map(
-          (f: string) =>
-            `<option ${f === c.format ? "selected" : ""}>${esc(f)}</option>`,
-        )
-        .join("")}</select></label></div>`;
-    $("#wmts-layer").addEventListener("change", () => {
-      capture();
-      c.matrix_set = "";
-      c.level = null;
-      c.style = "";
-      c.time = "";
-      fields();
-    });
-    $("#wmts-matrix").addEventListener("change", () => {
-      capture();
-      c.level = null;
-      fields();
-    });
-  };
-  const read = async () => {
-    capture();
-    const url = c.url,
-      generation = ++requestGeneration;
-    $("#wmts-layer-status").textContent = "Loading imagery layers…";
-    try {
-      const result = await call("wmts_capabilities", { url });
-      if (
-        !alive() ||
-        generation !== requestGeneration ||
-        input("#wmts-url").trim() !== url
-      )
-        return;
-      caps = result;
-      capabilities = result;
-      capabilitiesURL = url;
-      fields();
-    } catch (error) {
-      if (alive() && generation === requestGeneration)
-        $("#wmts-layer-status").textContent =
-          `Layers unavailable: ${error}. Check the URL or authentication, then read capabilities again.`;
-    }
-  };
-  const show = () => {
-    if (!alive()) return;
-    requestGeneration++;
-    $("#wmts-server-name").setAttribute("value", server().name);
-    ($("#wmts-server-name") as HTMLInputElement).value = server().name;
-    ($("#wmts-url") as HTMLInputElement).value = c.url;
-    ($("#map-enabled") as HTMLInputElement).checked = c.enabled;
-    caps = capabilitiesURL === c.url ? capabilities : null;
-    options();
-    fields();
-    if (!caps && c.enabled && c.url) void read();
-  };
-  const persist = async () => {
-    capture();
-    await call("wmts_servers", { settings: { servers } });
-    options();
-    toast("Map server saved on this computer");
-  };
-  $("#wmts-server").addEventListener("change", () => {
-    capture();
-    const choice = input("#wmts-server");
-    if (choice.startsWith("builtin:")) {
-      const preset = mapPresets.find((p) => p.id === choice.slice(8))!;
-      const existing = servers.find(
-        (s) => JSON.stringify(s.config) === JSON.stringify(preset.config),
-      );
-      if (!existing && servers.length >= 32) {
-        toast(
-          "At most 32 saved map servers. Remove an entry before adding another.",
-          true,
-        );
-        options();
-        return;
-      }
-      selected =
-        existing?.id ||
-        (servers.some((s) => s.id === preset.id)
-          ? `server-${crypto.randomUUID()}`
-          : preset.id);
-      if (!existing) {
-        servers.push({
-          id: selected,
-          name: preset.name,
-          config: { ...preset.config },
-        });
-      }
-    } else selected = choice;
-    c = { ...server().config };
-    show();
-  });
-  $("#wmts-url").addEventListener("input", () => {
-    requestGeneration++;
-    caps = null;
-    fields();
-  });
-  on("#inspect-wmts", read);
-  on("#add-wmts-server", () => {
-    capture();
-    if (servers.length >= 32) throw new Error("At most 32 saved map servers");
-    selected = `server-${crypto.randomUUID()}`;
-    c = {
-      url: "",
-      layer: "",
-      matrix_set: "",
-      style: "",
-      format: "image/png",
-      time: "",
-      enabled: false,
-      level: null,
-    };
-    servers.push({ id: selected, name: "New WMTS server", config: { ...c } });
-    show();
-    $("#wmts-url").focus();
-  });
-  on("#remove-wmts-server", async () => {
-    requestGeneration++;
-    const i = servers.findIndex((s) => s.id === selected);
-    servers.splice(i, 1);
-    await call("wmts_servers", { settings: { servers } });
-    if (!servers.length) {
-      closeModal();
-      await mapMenu();
-      return;
-    }
-    selected = servers[0].id;
-    c = { ...server().config };
-    show();
-  });
-  on("#save-wmts-server", persist);
-  on("#wmts-auth", () => {
-    capture();
-    return authenticationMenu(c.url, () =>
-      mapMenu({ servers, selected, config: c }, editing),
-    );
-  });
-  on("#wmts-cache", mapCacheMenu);
-  on("#map-stack-settings", mapLayerMenu);
-  on("#map-credits", () => {
-    closeModal();
-    view.showCredits();
-  });
-  on("#add-map-layer", async () => {
-    capture();
-    if (!c.layer || !c.matrix_set)
-      throw new Error(
-        "Read capabilities and choose a layer and matrix set first",
-      );
-    await persist();
-    const stack = structuredClone(mapLayers(preferences));
-    stack.push({
-      id: `layer-${crypto.randomUUID()}`,
-      name: `${server().name} · ${c.layer}`,
-      server_name: server().name,
-      config: { ...c, enabled: true },
-      opacity: 1,
-      min_zoom: 0,
-      max_zoom: 30,
-    });
-    await cancelMap();
-    preferences = await call("preferences", {
-      preferences: { map_layers: stack },
-    });
-    mapUnavailable = false;
-    await refresh(false);
-    await loadRasters();
-    await mapLayerMenu();
-  });
-  on("#apply-map", async () => {
-    capture();
-    if (c.enabled && (!c.layer || !c.matrix_set))
-      throw new Error(
-        "Read capabilities and choose a layer and matrix set first",
-      );
-    await persist();
-    await cancelMap();
-    let stack = preferences.map_layers
-      ? structuredClone(preferences.map_layers)
-      : null;
-    if (editing || stack) {
-      stack ??= structuredClone(mapLayers(preferences));
-      const targetId = editing?.id || stack[0]?.id || "legacy-map";
-      const index = stack.findIndex((l) => l.id === targetId);
-      const layer = {
-        ...(index >= 0
-          ? stack[index]
-          : {
-              id: "legacy-map",
-              name: c.layer,
-              opacity: 1,
-              min_zoom: 0,
-              max_zoom: 30,
-            }),
-        server_name: server().name,
-        config: { ...c },
-      };
-      if (index >= 0) stack[index] = layer;
-      else stack.unshift(layer);
-    }
-    preferences = { ...preferences, map: { ...c }, map_layers: stack };
-    await call("preferences", { preferences });
-    closeModal();
-    await refresh(false);
-    mapUnavailable = false;
-    await loadRasters();
-  });
-  show();
-}
-async function authenticationMenu(
-  url: string,
-  returnToMenu?: () => Promise<void>,
-) {
-  const auth = await task("Checking native authentication…", () =>
-    call<any>("wmts_auth_status"),
-  );
-  let origin: string;
-  try {
-    origin = new URL(url).origin;
-  } catch {
-    throw new Error("Enter a valid HTTPS map server URL first.");
-  }
-  const profile = auth.profiles.find((p: any) => p.origin === origin);
-  const kind = auth.platform_kind;
-  const labels: Record<string, string> = {
-    "macos-keychain": "Keychain certificate subject name",
-    "windows-store": "CurrentUser\\MY\\ + 40-digit certificate thumbprint",
-    pkcs11: "PKCS#11 certificate URI (type=cert)",
-  };
-  modal(
-    `${head("Map authentication")}<p class="description">${esc(auth.notice)}</p><div class="notice">${auth.automatic ? "Default: automatic TLS client-certificate detection. The OS/card provider handles PIN prompts. Public servers do not prompt." : "Automatic smartcard detection is unavailable on this platform. Public maps work normally; protected maps need compatible PKCS#11 middleware and an explicit certificate URI."}</div><label class="field">HTTPS server origin<input id="auth-origin" value="${esc(origin)}" placeholder="https://maps.example.org"></label><label class="field">Authentication<select id="auth-mode"><option value="automatic" ${!profile ? "selected" : ""}>${auth.automatic ? "Automatic (default)" : "No override (default)"}</option><option value="identity" ${profile && profile.kind !== "disabled" ? "selected" : ""}>Specific client identity</option><option value="disabled" ${profile?.kind === "disabled" ? "selected" : ""}>No client certificate</option></select></label><label class="field" id="auth-identity-field">${esc(labels[kind])}<input id="auth-identity" value="${esc(profile?.identity || "")}" autocomplete="off" spellcheck="false" placeholder="${kind === "pkcs11" ? "pkcs11:token=My%20Card;id=%01;type=cert" : ""}"></label><p class="description">Overrides stay on this computer and apply only to the exact HTTPS host and port. PINs and private keys are never stored in Chronoscope or shared workspaces. Servers on other origins require their own authentication. Cached imagery can remain visible without the card.</p>${!auth.transport_available ? `<div class="notice error">${esc(auth.unavailable_reason)}</div>` : ""}<footer><button id="auth-back">Back</button><button id="auth-reset">Forget session choices</button><span class="spacer"></span><button id="auth-save" class="primary">Save</button></footer>`,
-  );
-  const update = () => {
-    $("#auth-identity-field").hidden = input("#auth-mode") !== "identity";
-  };
-  $("#auth-mode").addEventListener("change", update);
-  update();
-  const back = async () => {
-    await (returnToMenu ? returnToMenu() : mapMenu());
-  };
-  on("#auth-back", back);
-  on("#auth-reset", async () => {
-    await cancelMap();
-    await call("wmts_auth_reset");
-    toast(
-      "Authentication sessions closed; cached imagery remains on this device.",
-    );
-  });
-  on("#auth-save", async () => {
-    const origin = input("#auth-origin");
-    await cancelMap();
-    if (input("#auth-mode") === "automatic")
-      await call("wmts_auth_remove", { origin });
-    else
-      await call("wmts_auth_set", {
-        profile: {
-          origin,
-          kind: input("#auth-mode") === "disabled" ? "disabled" : kind,
-          identity:
-            input("#auth-mode") === "disabled" ? "" : input("#auth-identity"),
-        },
-      });
-    capabilities = null;
-    mapUnavailable = false;
-    toast("Local map authentication updated");
-    await back();
-  });
-}
+  set preferences(value) {
+    preferences = value;
+  },
+  get mapPresets() {
+    return mapPresets;
+  },
+  set mapPresets(value) {
+    mapPresets = value;
+  },
+  get capabilities() {
+    return capabilities;
+  },
+  set capabilities(value) {
+    capabilities = value;
+  },
+  get capabilitiesURL() {
+    return capabilitiesURL;
+  },
+  set capabilitiesURL(value) {
+    capabilitiesURL = value;
+  },
+  get mapUnavailable() {
+    return mapUnavailable;
+  },
+  set mapUnavailable(value) {
+    mapUnavailable = value;
+  },
+  view,
+  modal,
+  head,
+  closeModal,
+  toast,
+  on,
+  task,
+  refresh,
+  loadRasters: () => loadRasters(),
+  cancelMap: () => cancelMap(),
+  currentMapZoom,
+});
+const mapMenu = (...args: Parameters<typeof mapSettings.mapMenu>) =>
+  mapSettings.mapMenu(...args);
+const mapLayerMenu = () => mapSettings.mapLayerMenu();
+
 let mapLoadGeneration = 0;
 const activeMapJobs = new Set<string>();
 const viewportDataRefresh = new ViewportRefresh(
@@ -2362,8 +1894,40 @@ function cancelViewportRefresh() {
   viewportResourceRefresh.cancel();
 }
 let terrainLoadGeneration = 0;
+let terrainSourceCatalog: unknown;
+let terrainTileSource: TerrainTileSource | undefined;
+function terrainSource() {
+  if (terrainSourceCatalog !== terrainInfo) {
+    terrainSourceCatalog = terrainInfo;
+    const limit = preferences.terrain_builtin ? 89.999999 : 85.0511287798066;
+    const coverage = terrainInfo.bounds as number[];
+    const spacing = Math.min(
+      ...terrainInfo.tiles.flatMap((t: any) => [
+        t.longitude_step,
+        t.latitude_step,
+      ]),
+    );
+    const cells = preferences.terrain_builtin ? 128 : 32;
+    terrainTileSource = {
+      bounds: [
+        coverage[0],
+        Math.max(-limit, coverage[1]),
+        coverage[2],
+        Math.min(limit, coverage[3]),
+      ],
+      maximumLevel: Math.min(
+        22,
+        Math.max(0, Math.ceil(Math.log2(180 / (cells * spacing)))),
+      ),
+      load: (bounds, resolution) =>
+        call("terrain_mesh", { bounds, resolution }),
+    };
+  }
+  return terrainTileSource!;
+}
 const cancelMap = async () => {
   mapLoadGeneration++;
+  activeRasterLoad = undefined;
   $("#cancel-map").hidden = true;
   await Promise.all(
     [...activeMapJobs].map((job_id) =>
@@ -2376,37 +1940,7 @@ on("#cancel-map", async () => {
   $("#cancel-map").hidden = true;
   status("Map loading stopped; downloaded tiles remain cached");
 });
-async function mapCacheMenu() {
-  const info = await call("wmts_access"),
-    s = info.settings;
-  modal(
-    `${head("Map cache and loading")}<p class="description">Tiles and capabilities are cached directly in a private folder on this computer. No proxy, service or listening port is involved. Cache files are independent of saved workspaces. Previously viewed imagery can be reused without contacting the provider; offline mode requires all requested tiles and capabilities to be cached.</p><div class="notice mono">${esc(info.directory)}<br>${(info.bytes / 1048576).toFixed(1)} MiB cached</div><div class="modal-grid"><label class="field">Concurrent downloads<input id="cache-concurrency" type="number" min="1" max="32" value="${s.concurrency}"></label><label class="field">Minimum request interval / ms (0 = no imposed delay)<input id="cache-interval" type="number" min="0" max="60000" value="${s.request_interval_ms}"></label><label class="field">Disk cache limit / MiB (0 = unlimited)<input id="cache-limit" type="number" min="0" value="${s.cache_limit_mb}"></label><label class="field">Tile freshness / days<input id="cache-days" type="number" min="1" max="3650" value="${s.tile_ttl_days}"></label></div><label class="check-row"><input id="cache-offline" type="checkbox" ${s.offline ? "checked" : ""}> Use cached maps only / no network access</label><p class="description">Provider terms and HTTP rate limits still apply. The optional request interval is useful for restrained testing; normal loading defaults to no delay. Cache is oldest-file evicted when over its size limit. Offline mode also permits older cached imagery.</p><button id="cache-clear">Clear cached imagery and capabilities</button><footer><button data-close>Cancel</button><span class="spacer"></span><button id="cache-save" class="primary">Save settings</button></footer>`,
-    true,
-  );
-  on("#cache-save", async () => {
-    await call("wmts_access", {
-      settings: {
-        concurrency: Number(input("#cache-concurrency")),
-        request_interval_ms: Number(input("#cache-interval")),
-        cache_limit_mb: Number(input("#cache-limit")),
-        tile_ttl_days: Number(input("#cache-days")),
-        offline: check("#cache-offline"),
-      },
-    });
-    mapUnavailable = false;
-    closeModal();
-    toast("Local map loading/cache settings saved");
-  });
-  on("#cache-clear", async () => {
-    await cancelMap();
-    await call("wmts_cache_clear");
-    capabilities = null;
-    toast(
-      "Map disk cache cleared; displayed imagery stays until the next load",
-    );
-    closeModal();
-  });
-}
+
 let keyedMapPreferences: Preferences | null = null;
 let cachedMapKey = "";
 let loadedMapVisibility = "";
@@ -2418,7 +1952,40 @@ function mapStackKey() {
   }
   return cachedMapKey;
 }
+let activeRasterLoad:
+  { key: string; full: boolean; promise: Promise<void> } | undefined;
 async function loadRasters(
+  regionOverride?: Bounds,
+  superseded?: () => boolean,
+) {
+  if (restoringScene) return;
+  const key = JSON.stringify([
+    mode,
+    mapStackKey(),
+    regionOverride || view.visibleBounds() || view.bounds,
+    currentMapZoom(),
+    $("#scene").clientWidth,
+    $("#scene").clientHeight,
+  ]);
+  if (activeRasterLoad?.key === key) {
+    // A direct refresh needs the whole viewport, even if a queued camera load
+    // originally started it with permission to yield after a tile page.
+    activeRasterLoad.full ||= !superseded;
+    return activeRasterLoad.promise;
+  }
+  const load = { key, full: !superseded, promise: Promise.resolve() };
+  activeRasterLoad = load;
+  load.promise = loadRasterViewport(
+    regionOverride,
+    () => !load.full && !!superseded?.(),
+  );
+  try {
+    await load.promise;
+  } finally {
+    if (activeRasterLoad === load) activeRasterLoad = undefined;
+  }
+}
+async function loadRasterViewport(
   regionOverride?: Bounds,
   superseded?: () => boolean,
 ) {
@@ -2464,10 +2031,12 @@ async function loadRasters(
     Math.min(devicePixelRatio, 2);
   const stack = new MapStack(visible, region, pixels, lastMapStack);
   // Seed only unchanged visible layers, retaining valid imagery until replacements arrive.
-  lastMapStack = stack;
   stack.compose();
-  lastRaster = stack.result;
-  await view.setRasters(stack.result, current);
+  if (stack.hasContent) {
+    lastMapStack = stack;
+    lastRaster = stack.result;
+    await view.setRasters(stack.result, current);
+  }
   let cursor = 0,
     loaded = 0,
     failures = 0;
@@ -2508,6 +2077,7 @@ async function loadRasters(
         if (!current()) return;
         loaded += next!.tiles.length;
         stack.compose();
+        lastMapStack = stack;
         lastRaster = stack.result;
         await view.setRasters(lastRaster, current);
         if (!current()) return;
@@ -2569,7 +2139,9 @@ async function rebuildTerrain(
 ) {
   if (!terrainInfo) return;
   const generation = ++terrainLoadGeneration;
-  const region = cameraBounds || view.bounds;
+  let region = cameraBounds || view.bounds;
+  // A crossing viewport still uses the two continuous world terrain roots.
+  if (region[0] > region[2]) region = [-180, region[1], 180, region[3]];
   if (
     !preferences.terrain_vertical_datum ||
     preferences.terrain_vertical_datum === "unresolved-msl"
@@ -2582,16 +2154,20 @@ async function rebuildTerrain(
   // Keep the sampled DEM boundary beyond the viewport. Otherwise a local
   // elevation packet can make a false cliff where it meets the ellipsoid.
   // Doubling the grid dimensions preserves the previous sample spacing.
+  const terrainLatitudeLimit = preferences.terrain_builtin
+    ? 89.999999
+    : 85.0511287798066;
   const padLon = (region[2] - region[0]) / 2;
   const padLat = (region[3] - region[1]) / 2;
   const bounds: Bounds = [
     Math.max(region[0] - padLon, coverage[0]),
-    Math.max(region[1] - padLat, coverage[1], -85.0511287798066),
+    Math.max(region[1] - padLat, coverage[1], -terrainLatitudeLimit),
     Math.min(region[2] + padLon, coverage[2]),
-    Math.min(region[3] + padLat, coverage[3], 85.0511287798066),
+    Math.min(region[3] + padLat, coverage[3], terrainLatitudeLimit),
   ];
   if (bounds[0] >= bounds[2] || bounds[1] >= bounds[3]) {
-    await view.setTerrain(null);
+    // Keep the installed catalog outside its coverage too. Its tile mask
+    // supplies ellipsoid ground there without resetting all imagery on return.
     await loadRasters(region, superseded);
     return;
   }
@@ -2610,7 +2186,11 @@ async function rebuildTerrain(
   Object.freeze(t.bounds);
   Object.freeze(t.elevations);
   Object.freeze(t);
-  await view.setTerrain(t, () => generation === terrainLoadGeneration);
+  await view.setTerrain(
+    t,
+    () => generation === terrainLoadGeneration,
+    terrainSource(),
+  );
   if (generation !== terrainLoadGeneration) return;
   await loadRasters(region, superseded);
 }
@@ -2801,17 +2381,35 @@ async function loadTerrain(folder = false) {
 }
 function terrainMenu() {
   modal(
-    `${head("Terrain")}<p class="description">Index a DTED file or folder. Elevations are decoded lazily, validated by checksum, and used to drape WMTS imagery.</p><div class="row"><button id="dted-file" class="primary">${icon("terrain")} Load DTED file</button><button id="dted-folder" class="secondary">${icon("folder")} Load folder</button></div><div class="notice">Standard WGS84 DT0/DT1/DT2. Voids remain holes. Choose the source vertical datum explicitly. EGM96 uses the bundled NGA geoid grid to convert mean-sea-level heights to ellipsoid heights for display. Unknown MSL remains undisplayed; source elevations are never modified.</div><label class="field">Source vertical datum<select id="terrain-datum"><option value="unresolved-msl" ${preferences.terrain_vertical_datum === "unresolved-msl" ? "selected" : ""}>Unresolved mean sea level (do not display)</option><option value="egm96" ${preferences.terrain_vertical_datum === "egm96" ? "selected" : ""}>EGM96 mean sea level</option><option value="ellipsoid" ${preferences.terrain_vertical_datum === "ellipsoid" ? "selected" : ""}>WGS84 ellipsoid heights</option></select></label><label class="field">Vertical exaggeration / ×<input id="exaggeration" type="range" min=".1" max="20" step=".1" value="${preferences.terrain_exaggeration}"></label><footer><button data-close>Close</button><span class="spacer"></span><button id="remove-terrain">Unload terrain</button><button id="apply-terrain" class="primary">Apply exaggeration</button></footer>`,
+    `${head("Terrain")}<p class="description">Balanced world terrain is bundled for offline use at approximately 1.9 km spacing. You can unload it, restore it, or replace it with your own DTED file or folder.</p><div class="row"><button id="restore-balanced" class="secondary">Restore bundled terrain</button><button id="dted-file" class="primary">${icon("terrain")} Load DTED file</button><button id="dted-folder" class="secondary">${icon("folder")} Load folder</button></div><div class="notice">Standard WGS84 DT0/DT1/DT2. Voids remain holes. Choose the source vertical datum explicitly. EGM96 uses the bundled NGA geoid grid to convert mean-sea-level heights to ellipsoid heights for display. Unknown MSL remains undisplayed; source elevations are never modified.</div><label class="field">Source vertical datum<select id="terrain-datum" ${preferences.terrain_builtin ? "disabled" : ""}><option value="unresolved-msl" ${preferences.terrain_vertical_datum === "unresolved-msl" ? "selected" : ""}>Unresolved mean sea level (do not display)</option><option value="egm96" ${preferences.terrain_vertical_datum === "egm96" ? "selected" : ""}>EGM96 mean sea level</option><option value="ellipsoid" ${preferences.terrain_vertical_datum === "ellipsoid" ? "selected" : ""}>WGS84 ellipsoid heights</option></select></label><label class="field">Vertical exaggeration / ×<input id="exaggeration" type="range" min=".1" max="20" step=".1" value="${preferences.terrain_exaggeration}"></label><footer><button data-close>Close</button><span class="spacer"></span><button id="remove-terrain">Unload terrain</button><button id="apply-terrain" class="primary">Apply exaggeration</button></footer>`,
     true,
   );
   on("#remove-terrain", async () => {
     await call("terrain_unload");
+    preferences = await call("preferences");
     terrainInfo = null;
     overrideBounds = null;
     await view.setTerrain(null);
     closeModal();
     await refresh();
     layers();
+  });
+  on("#restore-balanced", async () => {
+    preferences = await task("Loading bundled terrain…", () =>
+      call("preferences", {
+        preferences: {
+          terrain_builtin: true,
+          terrain_path: null,
+          terrain_vertical_datum: "egm96",
+        },
+      }),
+    );
+    terrainInfo = await call("terrain_info");
+    overrideBounds = null;
+    closeModal();
+    await rebuildTerrain();
+    layers();
+    toast("Balanced world terrain restored");
   });
   on("#dted-file", async () => {
     closeModal();
@@ -2834,19 +2432,42 @@ function terrainMenu() {
     await rebuildTerrain();
   });
 }
+async function showAnalysisResults(initial?: string) {
+  await openAnalytics(
+    async () => {
+      await refresh();
+    },
+    (error) => toast(String(error), true),
+    initial,
+    launchGuidedAnalysis,
+  );
+}
+async function launchGuidedAnalysis() {
+  await filterIntent.flush();
+  if (playTimer !== undefined) $("#play").click();
+  const current = await call("snapshot", {
+    compact: false,
+    selection_limit: 0,
+  });
+  await openGuidedAnalysis(current as unknown as Snapshot, async (id) => {
+    await refresh();
+    await showAnalysisResults(id);
+  });
+}
+const analyzeButton = document.createElement("button");
+analyzeButton.id = "new-analysis";
+analyzeButton.textContent = "Analyze";
+analyzeButton.title = "Run a local analysis without an AI connection";
+analyzeButton.onclick = () =>
+  void launchGuidedAnalysis().catch((error) => toast(String(error), true));
 const analyticsButton = document.createElement("button");
 analyticsButton.id = "analytics-results";
 analyticsButton.textContent = "Results";
 analyticsButton.title =
   "Browse persistent analysis results, charts and linked Event rows";
-$("#si").before(analyticsButton);
+$("#si").before(analyzeButton, analyticsButton);
 analyticsButton.onclick = () =>
-  void openAnalytics(
-    async () => {
-      await refresh();
-    },
-    (error) => toast(String(error), true),
-  ).catch((error) => toast(String(error), true));
+  void showAnalysisResults().catch((error) => toast(String(error), true));
 const siHooks = {
   configure: siConnection,
   before: async () => {
@@ -3225,7 +2846,7 @@ $("#entities").addEventListener("click", (e) => {
     b.closest<HTMLElement>(".entity")!.dataset.selected = String(
       intent.selected,
     );
-    tableSelectionWork = tableSelectionWork
+    tableSelection.work = tableSelection.work
       .then(async () => {
         const predicates = [{ field, op: "Equals" as const, value: name }];
         await call("select_query", {
@@ -3243,126 +2864,7 @@ $("#entities").addEventListener("click", (e) => {
       });
   }
 });
-$("#table-body").addEventListener("click", (e) => {
-  const row = (e.target as Element).closest<HTMLElement>("[data-event]");
-  if (!row) return;
-  e.preventDefault();
-  const id = row.dataset.event!,
-    additive = e.ctrlKey || e.metaKey;
-  tableActiveId = id;
-  row.focus({ preventScroll: true });
-  const anchor = tableAnchor;
-  if (!e.shiftKey || !anchor) tableAnchor = id;
-  const scope = {
-    source: tableSource,
-    apply_filter: tableRespectFilters,
-    ...(tableDisplayCell ? { display_cell: tableDisplayCell } : {}),
-  };
-  const range =
-    e.shiftKey && anchor
-      ? {
-          ...scope,
-          table_range: {
-            anchor,
-            target: id,
-            sort_by: tableSort,
-            descending: tableDescending,
-          },
-          mode: additive ? ("add" as const) : ("replace" as const),
-        }
-      : null;
-  tableSelectionWork = tableSelectionWork
-    .then(async () => {
-      if (range) await call("select_query", range);
-      else
-        await call("select", {
-          ids: [id],
-          mode: additive ? "toggle" : "replace",
-        });
-      await refresh(false, false);
-    })
-    .catch((error) => toast(String(error), true));
-});
-$("#table-body").addEventListener("keydown", (event) => {
-  if (
-    !["ArrowDown", "ArrowUp", "Home", "End", "PageDown", "PageUp"].includes(
-      event.key,
-    )
-  )
-    return;
-  const row = (event.target as Element).closest<HTMLElement>("[data-event]");
-  if (!row) return;
-  event.preventDefault();
-  event.stopPropagation();
-  const key = event.key,
-    extend = event.shiftKey,
-    jump = event.ctrlKey || event.metaKey;
-  tableActiveId ??= row.dataset.event!;
-  tableSelectionWork = tableSelectionWork
-    .then(async () => {
-      const currentId = tableActiveId;
-      if (!currentId) return;
-      const scope = {
-        source: tableSource,
-        apply_filter: tableRespectFilters,
-        ...(tableDisplayCell ? { display_cell: tableDisplayCell } : {}),
-        sort_by: tableSort,
-        descending: tableDescending,
-        limit: 1,
-        fields: ["id"],
-      };
-      const current = await call("query", { ...scope, reveal_id: currentId });
-      if (!current.reveal_found || !current.count) return;
-      let rank = current.offset;
-      if (key === "Home" || (jump && key === "ArrowUp")) rank = 0;
-      else if (key === "End" || (jump && key === "ArrowDown"))
-        rank = current.count - 1;
-      else
-        rank +=
-          key === "ArrowDown"
-            ? 1
-            : key === "ArrowUp"
-              ? -1
-              : (key === "PageDown" ? 1 : -1) *
-                Math.max(
-                  1,
-                  Math.floor(
-                    ($(".table-scroll").clientHeight -
-                      $("#table-head").clientHeight) /
-                      TABLE_ROW_HEIGHT,
-                  ),
-                );
-      rank = Math.max(0, Math.min(current.count - 1, rank));
-      const next = await call("query", { ...scope, offset: rank });
-      const id = next.events[0]?.id as string | undefined;
-      if (!id) return;
-      const anchor = tableAnchor || currentId;
-      if (extend)
-        await call("select_query", {
-          source: scope.source,
-          apply_filter: scope.apply_filter,
-          ...(tableDisplayCell ? { display_cell: tableDisplayCell } : {}),
-          table_range: {
-            anchor,
-            target: id,
-            sort_by: scope.sort_by,
-            descending: scope.descending,
-          },
-          mode: "replace",
-        });
-      else await call("select", { ids: [id], mode: "replace" });
-      tableAnchor = extend ? anchor : id;
-      tableActiveId = id;
-      tableReveal = id;
-      await refresh(false, false);
-      const active = Array.from(
-        $("#table-body").querySelectorAll<HTMLElement>("[data-event]"),
-      ).find((row) => row.dataset.event === id);
-      active?.focus({ preventScroll: true });
-      active?.scrollIntoView({ block: "nearest" });
-    })
-    .catch((error) => toast(String(error), true));
-});
+tableSelection.bind($("#table-body"), $(".table-scroll"), $("#table-head"));
 $("#inspector-content").addEventListener("input", (event) => {
   const input = event.target as HTMLInputElement | HTMLTextAreaElement;
   if (input.id?.startsWith("edit-"))
@@ -3547,6 +3049,7 @@ let viewModeGeneration = 0;
 let viewModeWork: Promise<void> = Promise.resolve();
 document.querySelectorAll<HTMLElement>("[data-view]").forEach((b) =>
   b.addEventListener("click", () => {
+    if (!restoringScene) welcome.dismiss();
     const generation = ++viewModeGeneration;
     cancelViewportRefresh();
     void cancelMap();
@@ -3554,7 +3057,7 @@ document.querySelectorAll<HTMLElement>("[data-view]").forEach((b) =>
     document
       .querySelectorAll("[data-view]")
       .forEach((e) => e.classList.toggle("active", e === b));
-    view.setMode(mode);
+    view.setMode(mode, !restoringScene);
     updateNavigationControls();
     layers();
     if (!restoringScene && snapshot)
@@ -3572,6 +3075,22 @@ document.querySelectorAll<HTMLElement>("[data-view]").forEach((b) =>
     if (lastRaster) view.setRasters(lastRaster).catch(() => {});
   }),
 );
+on("#sync-views", async () => {
+  const button = $("#sync-views") as HTMLButtonElement;
+  button.disabled = true;
+  try {
+    await viewModeWork;
+    await filterIntent.flush();
+    view.syncViews();
+    await call("scene_sync", { scene: captureScene() });
+    await refresh(false, false);
+    toast(
+      `Synced ${mode === "space-time" ? "Time" : mode === "map" ? "Map" : "Globe"} bounds and orientation to the other views`,
+    );
+  } finally {
+    button.disabled = false;
+  }
+});
 on("#maps", () => mapMenu());
 on("#terrain", terrainMenu);
 on("#settings", settings);
@@ -3668,6 +3187,7 @@ function captureScene(): Scene {
   return {
     mode,
     ...view.captureCamera(),
+    view_states: view.captureViewStates(),
     render_budget: renderBudget,
     display: displayOptions,
     entity_colors: customEntityColors,
@@ -3706,6 +3226,7 @@ async function restoreScene(scene: any = {}) {
     view.setDisplayOptions(displayOptions);
     tableDisplayCell = null;
     mode = scene.mode || "space-time";
+    view.restoreViewStates(scene.view_states || {});
     renderBudget = scene.render_budget === 100000 ? 100000 : 20000;
     view.timeHeight = scene.time_height || 2.8;
     view.setGlobeTimeScale(scene.globe_time_scale ?? 1);
@@ -3742,7 +3263,7 @@ async function restoreScene(scene: any = {}) {
       view.clearRasters();
     }
     theme();
-    if (!view.restoreCamera(scene)) view.fit();
+    if (!view.restoreCamera(scene) && !view.restoreCurrentView()) view.fit();
     updateTimeFocus();
     view.resize();
   } finally {
@@ -3890,88 +3411,34 @@ function reportRecoveryError(error: unknown) {
     },
   ]);
 }
-async function openFile() {
-  const path = await chooseFile({
-    title: "Open workspace or data",
-    filters: [
-      {
-        name: "Chronoscope workspaces and data",
-        extensions: [
-          "chronoscope",
-          "json",
-          "csv",
-          "tsv",
-          "xlsx",
-          "xls",
-          "xlsb",
-          "shp",
-          "gpkg",
-          "geojson",
-          "topojson",
-          "kml",
-          "kmz",
-          "czml",
-          "gpx",
-          "gltf",
-          "glb",
-        ],
-      },
-      { name: "Chronoscope workspaces", extensions: ["chronoscope", "json"] },
-      {
-        name: "CSV and Excel",
-        extensions: ["csv", "tsv", "xlsx", "xls", "xlsb"],
-      },
-      {
-        name: "GIS data and 3D assets",
-        extensions: [
-          "shp",
-          "gpkg",
-          "geojson",
-          "topojson",
-          "json",
-          "kml",
-          "kmz",
-          "czml",
-          "gpx",
-          "gltf",
-          "glb",
-        ],
-      },
-      { name: "All files", extensions: ["*"] },
-    ],
-  });
-  if (!path) return;
-  const probe =
-    /\.(json|geojson|topojson|kml|kmz|czml|gpx|gltf|glb|shp|gpkg)$/i.test(path)
-      ? await task("Identifying file…", () => call("file_probe", { path }))
-      : null;
-  const isWorkspace =
-    /\.chronoscope$/i.test(path) || probe?.kind === "workspace";
-  await filterIntent.flush();
-  if (
-    !(await guardUnsaved(
-      isWorkspace ? "open another workspace" : "import data",
-    ))
-  )
-    return;
-  if (playTimer !== undefined) $("#play").click();
-  if (probe?.kind === "gis") {
-    await openGisFile(path, probe.format!);
-    return;
-  }
-  if (!isWorkspace) {
-    await importPreview(path, "auto");
-    return;
-  }
-  await task("Opening workspace…", async () => {
-    const result = await call("open", { path });
+const workspaceFiles = new WorkspaceFiles({
+  settle: () => filterIntent.flush(),
+  guard: guardUnsaved,
+  pause: () => {
+    if (playTimer !== undefined) $("#play").click();
+  },
+  importData: (path) => importPreview(path, "auto"),
+  importGis: openGisFile,
+  opened: async (path, result) => {
     projectPath = path;
     lastRaster = null;
     mapUnavailable = false;
     await restoreScene(result.scene);
-    if (result.missing_resources?.length)
-      toast(result.missing_resources.join("; "), true);
-  });
+    welcome.remember(path, snapshot.count);
+  },
+  task,
+  notice: (message) => toast(message),
+});
+const welcome = new Welcome($(".workspace"), {
+  icon,
+  open: () => openFile(),
+  openPath: (path) => workspaceFiles.openPath(path),
+  demos: demoDatasets,
+  help: () => showHelp(true),
+  error: (error) => toast(String(error), true),
+});
+function openFile() {
+  return workspaceFiles.open();
 }
 function saveWorkspace(saveAs = false): Promise<boolean> {
   return workspace.save(saveAs);
@@ -3979,20 +3446,11 @@ function saveWorkspace(saveAs = false): Promise<boolean> {
 
 on("#open", openFile);
 on("#save", () => saveWorkspace());
-on("#export", async () => {
-  const path = await chooseFile({
-    save: true,
-    defaultPath: "events.csv",
-  });
-  if (path) {
-    const r = await call("export", { path });
-    toast(`Exported ${r.exported} events`);
-  }
-});
+on("#export", () => workspaceFiles.exportEvents());
 on("#close-table", () => {
   gisTable.close();
-  tableAnchor = null;
-  tableActiveId = null;
+  tableSelection.anchor = null;
+  tableSelection.activeId = null;
   tableDisplayCell = null;
   tableOpen = false;
   $("#table-panel").classList.remove("open");
@@ -4176,20 +3634,22 @@ const playbackIncrement = new PlaybackIncrement(
   },
 );
 timeRail.mountPlayback();
-on("#play", () => {
+async function togglePlayback() {
   if (playTimer !== undefined) {
     cancelAnimationFrame(playTimer);
     playTimer = undefined;
     playbackClock = undefined;
     view.setPlayback(false);
-    if (playbackWindow)
-      void timeWindow(...playbackWindow)
+    $("#play").innerHTML = icon("play") + " Play";
+    // A full-range sweep only moves the cursor; pausing it must retain the
+    // same no-filter fast path as its animation frames.
+    if (playbackWindow && (playbackWindow[0] !== 0 || playbackWindow[1] !== 1))
+      await timeWindow(...playbackWindow)
         .catch((error) => toast(String(error), true))
         .finally(() => {
           playbackPreserveFrame = playTimer !== undefined;
         });
     else playbackPreserveFrame = false;
-    $("#play").innerHTML = icon("play") + " Play";
     return;
   }
   const [lo, hi] = snapshot.time_bounds;
@@ -4205,6 +3665,7 @@ on("#play", () => {
       : Math.min(1, (snapshot.filter.end - lo) / span),
   );
   const width = endAt - startAt;
+  playbackWindow = [startAt, endAt];
   const travel = 1 - width;
   const initialFocus = focus;
   playbackClock = new PlaybackClock(
@@ -4254,7 +3715,61 @@ on("#play", () => {
     playTimer = requestAnimationFrame(frame);
   };
   playTimer = requestAnimationFrame(frame);
-});
+}
+on("#play", togglePlayback);
+async function agentPlayback(args: Record<string, any>) {
+  if (args.action === "play" && playTimer === undefined) await togglePlayback();
+  else if (args.action === "pause" && playTimer !== undefined)
+    await togglePlayback();
+  else if (args.action === "configure") {
+    if (args.speed !== undefined) playbackSpeed.setValue(args.speed);
+    if (args.increment_seconds !== undefined)
+      playbackIncrement.setValue(args.increment_seconds);
+  } else if (args.action === "seek" || args.action === "step") {
+    if (playTimer !== undefined) await togglePlayback();
+    await filterIntent.flush();
+    const [lo, hi] = snapshot.time_bounds,
+      span = hi - lo;
+    if (!(span > 0))
+      throw Error("UNAVAILABLE: playback requires a nonempty time span");
+    const target =
+      args.action === "seek"
+        ? args.time
+        : Math.max(
+            lo,
+            Math.min(
+              hi,
+              lo + focus * span + args.steps * playbackIncrement.value,
+            ),
+          );
+    if (target < lo || target > hi)
+      throw Error("INVALID_ARGUMENT: seek is outside dataset time bounds");
+    const width = Math.max(
+      0,
+      Math.min(
+        1,
+        ((snapshot.filter.end ?? hi) - (snapshot.filter.start ?? lo)) / span,
+      ),
+    );
+    const start = Math.max(0, Math.min(1 - width, (target - lo) / span));
+    await timeWindow(start, start + width);
+    playbackWindow = null;
+    focus = (target - lo) / span;
+    updateTimeFocus();
+    histogram();
+  }
+  return {
+    playing: playTimer !== undefined,
+    speed: playbackSpeed.value,
+    increment_seconds: playbackIncrement.value,
+    time:
+      snapshot.time_bounds[0] +
+      focus * (snapshot.time_bounds[1] - snapshot.time_bounds[0]),
+    window: [snapshot.filter.start, snapshot.filter.end],
+    workspace_id: snapshot.workspace_id,
+  };
+}
+
 function reviewDelete() {
   if (!snapshot.selected_count) return;
   modal(
@@ -4286,16 +3801,29 @@ function helpMenu() {
 }
 async function demoDatasets() {
   const { demos } = await call("demo_catalog");
-  modal(
-    `${head("Demo datasets")}<p class="description">Real observations, bundled for offline use. Each opens as a new workspace with saved views. Save to keep your own copy.</p><div class="help-actions">${demos
+  const picker = modal(
+    `${head("Demo datasets")}<p class="description">Explore real observations with saved views. All six datasets are bundled for offline use.</p><div class="demo-grid">${demos
       .map(
         (demo) =>
-          `<section><button data-demo-id="${esc(demo.id)}">${esc(demo.name)}</button><p class="description">${esc(demo.description)}</p><p class="description">${esc(demo.license)} · ${esc(demo.source_url)}</p></section>`,
+          `<section class="demo-card"><div class="demo-previews">${[
+            ["space-time", "Time"],
+            ["map", "Map"],
+          ]
+            .map(
+              ([mode, label]) =>
+                `<button class="demo-preview" data-demo-preview="${esc(demo.id)}" data-demo-mode="${mode}" aria-label="Open ${esc(demo.name)} in ${label}"><img src="/demos/${esc(demo.id)}-${mode === "map" ? "map" : "time"}.jpg" alt="${esc(demo.name)} in ${label} view" width="480" height="300"><span>${label}</span></button>`,
+            )
+            .join(
+              "",
+            )}</div><button data-demo-id="${esc(demo.id)}" data-tooltip-disabled aria-label="Open ${esc(demo.name)} in Time"><span class="demo-title">${esc(demo.name)}</span><span class="demo-description">${esc(demo.description)}</span><span class="demo-action">Open demo ${icon("collapse-right")}</span></button><details><summary>Source &amp; license</summary><p>${esc(demo.license)}</p><p class="demo-source">${esc(demo.source_url)}</p></details></section>`,
       )
-      .join("")}</div>`,
+      .join(
+        "",
+      )}</div><p class="demo-footnote">Each demo opens as a new workspace. Save a copy to keep your own investigation.</p>`,
   );
+  picker.querySelector(".modal")!.classList.add("demo-picker");
   demos.forEach((demo) => {
-    on(`[data-demo-id="${demo.id}"]`, async () => {
+    const openDemo = async (requestedMode = "space-time") => {
       closeModal();
       await filterIntent.flush();
       if (!(await guardUnsaved("open a demo dataset"))) return;
@@ -4307,9 +3835,26 @@ async function demoDatasets() {
         projectPath = null;
         lastRaster = null;
         mapUnavailable = false;
-        await restoreScene(result.scene);
+        // The Map thumbnail opens the same saved hero view used to capture it.
+        const restored =
+          requestedMode === "map"
+            ? await call("restore_view", { index: 1 })
+            : result;
+        await restoreScene(restored.scene);
       });
-    });
+    };
+    on(`[data-demo-id="${demo.id}"]`, () => openDemo());
+    picker
+      .querySelectorAll<HTMLButtonElement>(`[data-demo-preview="${demo.id}"]`)
+      .forEach((button) => {
+        button.addEventListener(
+          "click",
+          () =>
+            void openDemo(button.dataset.demoMode).catch((error) =>
+              toast(String(error), true),
+            ),
+        );
+      });
   });
 }
 function showHelp(keysOnly = false) {
@@ -4421,15 +3966,43 @@ const liveViewRequest = createAgentView({
   fitGisLayer,
 });
 
+const agentLab = createAgentLab({
+  view,
+  snapshot: () => snapshot,
+  live: liveViewRequest,
+  setView: async (args) => {
+    const result = await call("view_set", args);
+    if (!("scene" in result))
+      throw Error(
+        "INVALID_ARGUMENT: scenarios require an executed view change",
+      );
+    await refresh(false, false);
+    await restoreScene(result.scene);
+    await viewModeWork;
+  },
+  playback: agentPlayback,
+  record: recordAppWindow,
+});
+async function agentRequest(kind: string, args: Record<string, any> = {}) {
+  if (kind === "view_profile") return agentLab.profile(args);
+  if (kind === "view_wait") return agentLab.wait(args);
+  if (kind === "view_scenario") return agentLab.scenario(args);
+  if (kind === "view_playback") return agentLab.playback(args);
+  if (kind === "view_recording") return agentLab.recording(args);
+  return liveViewRequest(kind, args);
+}
+
 async function initialize() {
   await view.ready;
+  projectPath = (await call("workspace_status")).source;
   [preferences, mapPresets] = await Promise.all([
     call("preferences"),
     call("wmts_servers").then((c) => c.presets),
   ]);
   theme();
   terrainInfo = await call("terrain_info");
-  if (terrainInfo) overrideBounds = terrainInfo.bounds;
+  if (terrainInfo && !preferences.terrain_builtin)
+    overrideBounds = terrainInfo.bounds;
   await refresh(true, false);
   layers();
   if (snapshot.scene) await restoreScene(snapshot.scene);
@@ -4514,7 +4087,9 @@ async function initialize() {
             const pathChanged = next.terrain_path !== preferences.terrain_path;
             terrainInfo = await call("terrain_info");
             if (pathChanged || fitTerrain)
-              overrideBounds = terrainInfo?.bounds || null;
+              overrideBounds = preferences.terrain_builtin
+                ? null
+                : terrainInfo?.bounds || null;
             if (!terrainInfo) await view.setTerrain(null);
           }
           await refresh();
@@ -4535,9 +4110,17 @@ async function initialize() {
       const event = e.payload;
       if (event.command === "scene_sync") return;
       if (
-        ["capture", "view_status", "view_navigate", "assist_ui"].includes(
-          event.kind,
-        )
+        [
+          "capture",
+          "view_status",
+          "view_navigate",
+          "view_recording",
+          "view_profile",
+          "view_wait",
+          "view_scenario",
+          "view_playback",
+          "assist_ui",
+        ].includes(event.kind)
       ) {
         if (eventTimer) flushChanges();
         desktopRequests = desktopRequests
@@ -4550,6 +4133,22 @@ async function initialize() {
                 throw Error(
                   "UNAVAILABLE: desktop request expired before execution",
                 );
+              if (
+                [
+                  "view_recording",
+                  "view_profile",
+                  "view_wait",
+                  "view_scenario",
+                  "view_playback",
+                ].includes(event.kind)
+              ) {
+                const result = await agentRequest(event.kind, event.arguments);
+                await call("view_response", {
+                  request_id: event.request_id,
+                  result,
+                });
+                return;
+              }
               if (event.kind === "assist_ui") {
                 await refresh(false, false);
                 const result = await focusedUI(event.arguments, snapshot, () =>
@@ -4687,7 +4286,7 @@ ready.catch((e) => {
   view,
   openAttributes,
   captureScene,
-  liveViewRequest,
+  liveViewRequest: agentRequest,
   restoreScene,
   displaySettings,
   saveWorkspace,
@@ -4704,7 +4303,7 @@ ready.catch((e) => {
   chartsIdle: () => chartsPanel.idle(),
   patternsIdle: () => patternsPanel.idle(),
   select,
-  selectionIdle: () => tableSelectionWork,
+  selectionIdle: () => tableSelection.work,
   loadTerrain,
   rebuildTerrain,
   loadRasters,

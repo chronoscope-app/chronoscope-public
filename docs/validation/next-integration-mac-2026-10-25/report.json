@@ -1,0 +1,198 @@
+{
+  "date": "2026-10-25",
+  "repository": "chronoscope-app/chronoscope-next",
+  "integration_commit": "eb56541",
+  "parents": {
+    "latest_main": "4df308e3595b23f01df8d7e766b67fad95f4804d",
+    "previously_unmerged_work": "27d1c9f0d41790c93e0bad8f18fc56d7426b6410"
+  },
+  "platform": {
+    "os": "macOS 27.0.1",
+    "architecture": "Apple Silicon",
+    "xcode": "27.1",
+    "rust": "1.99.0",
+    "node": "24.19.0",
+    "compilation_workers": 1
+  },
+  "passed": true,
+  "rust_tests": 401,
+  "frontend_tests": 27,
+  "strict_core_and_native_clippy": true,
+  "format_contracts_inventory": true,
+  "packaging_tests": {
+    "distribution": 23,
+    "tester_staging": 34,
+    "download_validation": 36
+  },
+  "browser_suites": [
+    {
+      "suite": "balanced-terrain",
+      "exit_code": 0,
+      "elapsed_s": 23.74,
+      "phase": "final"
+    },
+    {
+      "suite": "space-time-window",
+      "exit_code": 0,
+      "elapsed_s": 25.61,
+      "phase": "rerun"
+    },
+    {
+      "suite": "view-sync",
+      "exit_code": 0,
+      "elapsed_s": 12.68,
+      "phase": "initial"
+    },
+    {
+      "suite": "navigation",
+      "exit_code": 0,
+      "elapsed_s": 20.68,
+      "phase": "initial"
+    },
+    {
+      "suite": "guided-workflows",
+      "exit_code": 0,
+      "elapsed_s": 21.43,
+      "phase": "initial"
+    },
+    {
+      "suite": "welcome",
+      "exit_code": 0,
+      "elapsed_s": 4.97,
+      "phase": "initial"
+    },
+    {
+      "suite": "presentation-ui",
+      "exit_code": 0,
+      "elapsed_s": 8.18,
+      "phase": "initial"
+    },
+    {
+      "suite": "cesium-terrain",
+      "exit_code": 0,
+      "elapsed_s": 6.06,
+      "phase": "rerun"
+    },
+    {
+      "suite": "wkt-wmts",
+      "exit_code": 0,
+      "elapsed_s": 9.34,
+      "phase": "rerun"
+    },
+    {
+      "suite": "basemap",
+      "exit_code": 0,
+      "elapsed_s": 25.45,
+      "phase": "rerun"
+    },
+    {
+      "suite": "viewport-pan",
+      "exit_code": 0,
+      "elapsed_s": 23.43,
+      "phase": "initial"
+    },
+    {
+      "suite": "playback-transitions",
+      "exit_code": 0,
+      "elapsed_s": 7.69,
+      "phase": "initial"
+    },
+    {
+      "suite": "display-recovery",
+      "exit_code": 0,
+      "elapsed_s": 8.6,
+      "phase": "initial"
+    },
+    {
+      "suite": "focused-ai",
+      "exit_code": 0,
+      "elapsed_s": 8.18,
+      "phase": "initial"
+    },
+    {
+      "suite": "real-demos",
+      "exit_code": 0,
+      "elapsed_s": 39.45,
+      "phase": "initial"
+    }
+  ],
+  "native_checks": [
+    "Native packaged app discovers real Balanced terrain and EGM96 default",
+    "native-himalayas-globe: active terrain, no render errors, settled native scene",
+    "native-himalayas-map: active terrain, no render errors, settled native scene",
+    "native-himalayas-time: active terrain, no render errors, settled native scene",
+    "native-antarctica: active terrain, no render errors, settled native scene",
+    "native-greenland: active terrain, no render errors, settled native scene",
+    "Native unload and portable save/open retain built-in identity without copying world pack",
+    "native-custom-dted: active terrain, no render errors, settled native scene",
+    "Native custom DTED replaces built-in terrain and requires explicit vertical datum",
+    "native-wildlife-time: active terrain, no render errors, settled native scene"
+  ],
+  "native_idle_frames_per_1_3s": [
+    {
+      "scene": "native-himalayas-globe",
+      "frames": 1
+    },
+    {
+      "scene": "native-himalayas-map",
+      "frames": 2
+    },
+    {
+      "scene": "native-himalayas-time",
+      "frames": 2
+    },
+    {
+      "scene": "native-antarctica",
+      "frames": 1
+    },
+    {
+      "scene": "native-greenland",
+      "frames": 2
+    },
+    {
+      "scene": "native-custom-dted",
+      "frames": 1
+    },
+    {
+      "scene": "native-wildlife-time",
+      "frames": 0
+    }
+  ],
+  "terrain_browser_idle_frames_per_1_2s": [
+    {
+      "scene": "himalayas-globe",
+      "frames": 0
+    },
+    {
+      "scene": "himalayas-map",
+      "frames": 0
+    },
+    {
+      "scene": "himalayas-space-time",
+      "frames": 0
+    },
+    {
+      "scene": "himalayas-refined",
+      "frames": 0
+    },
+    {
+      "scene": "antarctic-polar",
+      "frames": 0
+    },
+    {
+      "scene": "greenland-polar",
+      "frames": 0
+    }
+  ],
+  "terrain_workspace_bytes": {
+    "empty_browser": 720,
+    "native_3439_events": 357032
+  },
+  "terrain_sha256": "f93cdd806f477ebf73edb20212cd54089ea8b024cb2e4ba78e488554aa9377f8",
+  "app_executable_sha256": "a028ec8679a06d43a5f1d29e6a201b8836325daff8dd89a9b0697a8fe8cfdf01",
+  "public_requests_in_balanced_suite": [],
+  "github_workflows_dispatched": false,
+  "public_promoted": false,
+  "detailed_local_evidence": ".qa/mac-latest-20261025",
+  "initial_failures": "Retained in local logs; final outcomes use focused corrected reruns. See README for fixture corrections."
+}

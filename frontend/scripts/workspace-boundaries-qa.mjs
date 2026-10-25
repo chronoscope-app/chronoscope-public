@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real Rust + browser regression for submitted drafts and document replacement.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -32,35 +32,8 @@ const server = spawn(
 );
 let browser;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(
-      () => reject(Error("Bridge startup timeout")),
-      20000,
-    );
-    server.on("error", reject);
-    server.stderr.on("data", (data) => {
-      log += data;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timer);
-        resolve(match[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const body = await response.json();
-    assert(response.ok, JSON.stringify(body));
-    return body.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   await api("preferences", {
     preferences: { basemap: "none", map_layers: [] },
   });
@@ -68,15 +41,7 @@ try {
   await api("edit", { id: "1", changes: { note: "Original saved note" } });
   const saved = path.join(dir, "replacement.chronoscope");
   await api("save", { path: saved });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1500, height: 1000 },
   });

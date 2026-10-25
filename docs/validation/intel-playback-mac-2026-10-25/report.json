@@ -1,0 +1,1428 @@
+{
+  "passed": true,
+  "product_revision": "3e6f7899d5edcd1f430dccc3b2738b6e353ff1e4",
+  "platform": "macOS / Apple M5 / Chrome Metal; native WKWebView",
+  "scope": "Focused final cross-platform regression verification; Linux full-suite outcome recorded separately.",
+  "runs": {
+    "browser": {
+      "report_sha256": "56ca14bada798275cbd8610741a9d14fb6a92411e9913f69bcf8399545b35a5f",
+      "validation": {
+        "run_id": "20261025T195509Z-0a8419c5",
+        "source_revision": "3e6f7899d5edcd1f430dccc3b2738b6e353ff1e4",
+        "dirty": false,
+        "cli_build_profile": "debug",
+        "native_build_profile": null,
+        "platform": "darwin",
+        "tier": "full",
+        "started_utc": "2026-10-25T19:55:09.966569+00:00",
+        "test_infrastructure_sha256": {
+          "scripts/validate_local.py": "4d9ab98f8862f089b7be53ddb22edb6c36510b3b1f58af0b419e9f6d63be805a",
+          "scripts/validation_runtime.py": "b296eb98b85cbb7211e28d68784fc35e2f73fcb09fd8340b7248a7d5e5def18e",
+          "scripts/validation_suites.py": "57d21ce2a55cf093d55f4cc6e0d17203a4d6d6dad81de9f6ed24c07db94c9c2c",
+          "scripts/validation-suites.json": "483ad57c2f6733b90e19a9de1de6644cfc37422dac1ad8fe1be1172aa3bee90b",
+          "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+          "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+          "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+          "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+        },
+        "passed": true,
+        "github_runners_used": false,
+        "checks": [
+          {
+            "name": "validation-runner-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_validation_runner.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/validation-runner-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 2.846
+          },
+          {
+            "name": "rust-format",
+            "command": [
+              "cargo",
+              "fmt",
+              "--all",
+              "--check"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/rust-format.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.566
+          },
+          {
+            "name": "glib-backport-integrity",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_glib_backport.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/glib-backport-integrity.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.623
+          },
+          {
+            "name": "core-clippy",
+            "command": [
+              "cargo",
+              "clippy",
+              "--locked",
+              "-p",
+              "chronoscope",
+              "--all-targets",
+              "--",
+              "-D",
+              "warnings"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/core-clippy.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.403
+          },
+          {
+            "name": "cli-build",
+            "command": [
+              "cargo",
+              "build",
+              "--locked",
+              "-p",
+              "chronoscope",
+              "--bin",
+              "chronoscope"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/cli-build.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.294
+          },
+          {
+            "name": "frontend-build",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+              "--prefix",
+              "frontend",
+              "run",
+              "build",
+              "--",
+              "--configLoader",
+              "runner"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/frontend-build.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 7.407
+          },
+          {
+            "name": "generated-contracts",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "scripts/generate_contracts.mjs",
+              "--check"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/generated-contracts.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.146
+          },
+          {
+            "name": "frontend-unit-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+              "--prefix",
+              "frontend",
+              "test"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/frontend-unit-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.422
+          },
+          {
+            "name": "real-demos-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/real-demos-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/real-demos-qa.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 37.789,
+            "browser_launches": [
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              },
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              },
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              },
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              },
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              },
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              }
+            ],
+            "suite_sha256": "d624e9a99456c1f1fd051a4a3d5712c656233d9d71e95f1479f108772a75c827"
+          },
+          {
+            "name": "workspace-boundaries-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/workspace-boundaries-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/workspace-boundaries-qa.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.865,
+            "browser_launches": [
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              }
+            ],
+            "suite_sha256": "9213c91a12665b45a1e30ba06741443328c6db4cf902aa95b0d3d624eaa982bc"
+          },
+          {
+            "name": "guided-workflows-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/guided-workflows-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/guided-workflows-qa.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 6.096,
+            "browser_launches": [
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              }
+            ],
+            "suite_sha256": "7933a3aacf312c1e5e360cb62e61e3fd2f990581efa275a788170b35d405301a"
+          },
+          {
+            "name": "mcp-live-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/mcp-live-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/mcp-live-qa.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 5.028,
+            "browser_launches": [
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              }
+            ],
+            "suite_sha256": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201"
+          },
+          {
+            "name": "playback-transitions-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/playback-transitions-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/playback-transitions-qa.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 7.224,
+            "browser_launches": [
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              }
+            ],
+            "suite_sha256": "89e36cd371f9ec50fabbd505ce313118d921321d84a8d842c51771d5d1b32911"
+          },
+          {
+            "name": "test_publication_cleanup",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_publication_cleanup.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/test_publication_cleanup.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.289
+          },
+          {
+            "name": "test_package_distribution",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_package_distribution.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/test_package_distribution.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.377
+          },
+          {
+            "name": "test_tester_packaging",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_tester_packaging.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/test_tester_packaging.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.238
+          },
+          {
+            "name": "test_validate_tester_download",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_validate_tester_download.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/test_validate_tester_download.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.077
+          },
+          {
+            "name": "test_analytics",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_analytics.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/test_analytics.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.166
+          },
+          {
+            "name": "test_analytics_engine",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_analytics_engine.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/test_analytics_engine.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 2.261
+          },
+          {
+            "name": "test_chart_shortcuts_protocol",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_chart_shortcuts_protocol.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/test_chart_shortcuts_protocol.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.95
+          },
+          {
+            "name": "test_subsecond_protocol",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_subsecond_protocol.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5/logs/test_subsecond_protocol.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.946
+          }
+        ],
+        "unrun_browser_suites": [
+          "analytics-qa.mjs",
+          "assistant-qa.mjs",
+          "balanced-terrain-qa.mjs",
+          "basemap-qa.mjs",
+          "cesium-context-qa.mjs",
+          "cesium-effects-pixels-qa.mjs",
+          "cesium-globe-time-qa.mjs",
+          "cesium-parity-qa.mjs",
+          "cesium-terrain-qa.mjs",
+          "chart-shortcuts-qa.mjs",
+          "chart-workflow-qa.mjs",
+          "charts-qa.mjs",
+          "charts-timezone-qa.mjs",
+          "cluster-identity-qa.mjs",
+          "display-recovery-qa.mjs",
+          "empty-workspace-qa.mjs",
+          "event-table-qa.mjs",
+          "field-roles-qa.mjs",
+          "focused-ai-qa.mjs",
+          "gis-files-qa.mjs",
+          "integration-smoke-qa.mjs",
+          "map-notifications-qa.mjs",
+          "navigation-qa.mjs",
+          "navigation-sphere-qa.mjs",
+          "notifications-qa.mjs",
+          "pan-direction-qa.mjs",
+          "patterns-qa.mjs",
+          "playback-speed-qa.mjs",
+          "presentation-ui-qa.mjs",
+          "si-certificate-qa.mjs",
+          "si-rich-chat-qa.mjs",
+          "si-settings-qa.mjs",
+          "sidebar-time-qa.mjs",
+          "space-time-window-qa.mjs",
+          "spectrum-qa.mjs",
+          "subsecond-qa.mjs",
+          "time-rail-qa.mjs",
+          "toolbar-dialogs-qa.mjs",
+          "vector-gis-qa.mjs",
+          "view-sync-qa.mjs",
+          "viewport-pan-qa.mjs",
+          "webmcp-disabled-qa.mjs",
+          "welcome-qa.mjs",
+          "wkt-wmts-qa.mjs"
+        ],
+        "manual_checks_not_run": {
+          "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+          "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+          "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+        },
+        "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195509Z-0a8419c5",
+        "limitations": [
+          "Native results apply to this operating system only.",
+          "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+          "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+        ],
+        "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f",
+        "finished_utc": "2026-10-25T19:56:30.299901+00:00"
+      }
+    },
+    "native": {
+      "report_sha256": "105d84b2860db9d69170dadca9b42e0afe2377e6f96fc66d3532c4e593221b67",
+      "validation": {
+        "run_id": "20261025T195856Z-eb56096e",
+        "source_revision": "3e6f7899d5edcd1f430dccc3b2738b6e353ff1e4",
+        "dirty": false,
+        "cli_build_profile": "debug",
+        "native_build_profile": "debug",
+        "platform": "darwin",
+        "tier": "fast",
+        "started_utc": "2026-10-25T19:58:56.046012+00:00",
+        "test_infrastructure_sha256": {
+          "scripts/validate_local.py": "4d9ab98f8862f089b7be53ddb22edb6c36510b3b1f58af0b419e9f6d63be805a",
+          "scripts/validation_runtime.py": "b296eb98b85cbb7211e28d68784fc35e2f73fcb09fd8340b7248a7d5e5def18e",
+          "scripts/validation_suites.py": "57d21ce2a55cf093d55f4cc6e0d17203a4d6d6dad81de9f6ed24c07db94c9c2c",
+          "scripts/validation-suites.json": "483ad57c2f6733b90e19a9de1de6644cfc37422dac1ad8fe1be1172aa3bee90b",
+          "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+          "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+          "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+          "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+        },
+        "passed": true,
+        "github_runners_used": false,
+        "checks": [
+          {
+            "name": "validation-runner-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_validation_runner.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/validation-runner-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 2.797
+          },
+          {
+            "name": "rust-format",
+            "command": [
+              "cargo",
+              "fmt",
+              "--all",
+              "--check"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/rust-format.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.563
+          },
+          {
+            "name": "glib-backport-integrity",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_glib_backport.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/glib-backport-integrity.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.569
+          },
+          {
+            "name": "core-clippy",
+            "command": [
+              "cargo",
+              "clippy",
+              "--locked",
+              "-p",
+              "chronoscope",
+              "--all-targets",
+              "--",
+              "-D",
+              "warnings"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/core-clippy.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.351
+          },
+          {
+            "name": "cli-build",
+            "command": [
+              "cargo",
+              "build",
+              "--locked",
+              "-p",
+              "chronoscope",
+              "--bin",
+              "chronoscope"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/cli-build.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.293
+          },
+          {
+            "name": "frontend-build",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+              "--prefix",
+              "frontend",
+              "run",
+              "build",
+              "--",
+              "--configLoader",
+              "runner"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/frontend-build.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 7.363
+          },
+          {
+            "name": "generated-contracts",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "scripts/generate_contracts.mjs",
+              "--check"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/generated-contracts.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.948
+          },
+          {
+            "name": "frontend-unit-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+              "--prefix",
+              "frontend",
+              "test"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/frontend-unit-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.426
+          },
+          {
+            "name": "mcp-live-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/mcp-live-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/mcp-live-qa.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 5.439,
+            "browser_launches": [
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              }
+            ],
+            "suite_sha256": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201"
+          },
+          {
+            "name": "native-clippy",
+            "command": [
+              "cargo",
+              "clippy",
+              "--locked",
+              "-p",
+              "chronoscope-desktop",
+              "--",
+              "-D",
+              "warnings"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/native-clippy.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 3.497
+          },
+          {
+            "name": "native-build",
+            "command": [
+              "cargo",
+              "build",
+              "--locked",
+              "-p",
+              "chronoscope-desktop"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/native-build.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 6.303
+          },
+          {
+            "name": "native-cli-smoke",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_desktop_cli.py",
+              "--binary",
+              "/Users/user/Documents/Codex/chronoscope mac/target/debug/chronoscope-desktop"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/native-cli-smoke.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 4.602
+          },
+          {
+            "name": "native-bundle-launch",
+            "command": [
+              "bash",
+              "script/build_and_run.sh",
+              "--verify"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/native-bundle-launch.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 16.863
+          },
+          {
+            "name": "native-terrain-gui",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/native_terrain_qa.py",
+              "--cli",
+              "/Users/user/Documents/Codex/chronoscope mac/target/debug/bundle/macos/Chronoscope.app/Contents/MacOS/chronoscope-desktop",
+              "--data-dir",
+              "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/native-profile",
+              "--output",
+              "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/artifacts/native-terrain-gui"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/native-terrain-gui.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 126.681
+          },
+          {
+            "name": "native-mcp-live-gui",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/native_mcp_live_qa.py",
+              "--cli",
+              "/Users/user/Documents/Codex/chronoscope mac/target/debug/bundle/macos/Chronoscope.app/Contents/MacOS/chronoscope-desktop",
+              "--data-dir",
+              "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/native-profile",
+              "--output",
+              "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/artifacts/native-mcp-live-gui"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e/logs/native-mcp-live-gui.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 4.941
+          }
+        ],
+        "unrun_browser_suites": [
+          "analytics-qa.mjs",
+          "assistant-qa.mjs",
+          "balanced-terrain-qa.mjs",
+          "basemap-qa.mjs",
+          "cesium-context-qa.mjs",
+          "cesium-effects-pixels-qa.mjs",
+          "cesium-globe-time-qa.mjs",
+          "cesium-parity-qa.mjs",
+          "cesium-terrain-qa.mjs",
+          "chart-shortcuts-qa.mjs",
+          "chart-workflow-qa.mjs",
+          "charts-qa.mjs",
+          "charts-timezone-qa.mjs",
+          "cluster-identity-qa.mjs",
+          "display-recovery-qa.mjs",
+          "empty-workspace-qa.mjs",
+          "event-table-qa.mjs",
+          "field-roles-qa.mjs",
+          "focused-ai-qa.mjs",
+          "gis-files-qa.mjs",
+          "guided-workflows-qa.mjs",
+          "integration-smoke-qa.mjs",
+          "map-notifications-qa.mjs",
+          "navigation-qa.mjs",
+          "navigation-sphere-qa.mjs",
+          "notifications-qa.mjs",
+          "pan-direction-qa.mjs",
+          "patterns-qa.mjs",
+          "playback-speed-qa.mjs",
+          "playback-transitions-qa.mjs",
+          "presentation-ui-qa.mjs",
+          "real-demos-qa.mjs",
+          "si-certificate-qa.mjs",
+          "si-rich-chat-qa.mjs",
+          "si-settings-qa.mjs",
+          "sidebar-time-qa.mjs",
+          "space-time-window-qa.mjs",
+          "spectrum-qa.mjs",
+          "subsecond-qa.mjs",
+          "time-rail-qa.mjs",
+          "toolbar-dialogs-qa.mjs",
+          "vector-gis-qa.mjs",
+          "view-sync-qa.mjs",
+          "viewport-pan-qa.mjs",
+          "webmcp-disabled-qa.mjs",
+          "welcome-qa.mjs",
+          "wkt-wmts-qa.mjs",
+          "workspace-boundaries-qa.mjs"
+        ],
+        "manual_checks_not_run": {
+          "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+          "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+          "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+        },
+        "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T195856Z-eb56096e",
+        "limitations": [
+          "Native results apply to this operating system only.",
+          "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+          "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+        ],
+        "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f",
+        "finished_utc": "2026-10-25T20:01:58.987879+00:00"
+      }
+    }
+  },
+  "playback": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "Day playback presents smaller steps without blocking on bloom",
+        "evidence": {
+          "installs": 68,
+          "medianIntervalMs": 50.20000000298023
+        }
+      },
+      {
+        "name": "Bloom crossfades with at most two real imagery layers and no renderer errors",
+        "evidence": {
+          "frames": 214
+        }
+      },
+      {
+        "name": "Pause settles to one bloom atlas",
+        "evidence": {
+          "layers": 1
+        }
+      },
+      {
+        "name": "Full-range playback still avoids redundant filtering",
+        "evidence": {
+          "filters": 0
+        }
+      }
+    ],
+    "errors": [],
+    "rustBuildProfile": "debug",
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+    "pauseSettlement": {
+      "started": 4473,
+      "filterSettled": true,
+      "filterError": null,
+      "samples": [
+        {
+          "elapsedMs": 0.5999999940395355,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 2,
+          "error": ""
+        },
+        {
+          "elapsedMs": 101.79999999701977,
+          "filterSettled": false,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 2,
+          "error": ""
+        },
+        {
+          "elapsedMs": 202.5,
+          "filterSettled": true,
+          "playback": false,
+          "updating": true,
+          "pending": true,
+          "layers": 2,
+          "error": ""
+        },
+        {
+          "elapsedMs": 303,
+          "filterSettled": true,
+          "playback": false,
+          "updating": false,
+          "pending": false,
+          "layers": 1,
+          "error": ""
+        }
+      ]
+    }
+  },
+  "native_resource_guard": {
+    "peak_owned_rss_mib": 1701,
+    "peak_owned_cpu_percent": 225,
+    "cargo_jobs": 1,
+    "browser_jobs": 1
+  },
+  "github_hosted_runners_used": false,
+  "limitations": [
+    "No new Windows run or signed/downloaded binary certification.",
+    "Radeon ignored by explicit user instruction; Intel hardware is the Linux acceptance target."
+  ],
+  "promotion_cross_checks": {
+    "assistant-check": {
+      "report_sha256": "278586d1b4b8e644ead70e69c6b9f7cce6bce8f5901ba9f819847cf9021fc37e",
+      "validation": {
+        "run_id": "20261025T200414Z-cca56ba7",
+        "source_revision": "1b8da77991214bf3ef1ee80f7b22ce8e38d508f2",
+        "dirty": false,
+        "cli_build_profile": "debug",
+        "native_build_profile": null,
+        "platform": "darwin",
+        "tier": "fast",
+        "started_utc": "2026-10-25T20:04:14.716322+00:00",
+        "test_infrastructure_sha256": {
+          "scripts/validate_local.py": "4d9ab98f8862f089b7be53ddb22edb6c36510b3b1f58af0b419e9f6d63be805a",
+          "scripts/validation_runtime.py": "b296eb98b85cbb7211e28d68784fc35e2f73fcb09fd8340b7248a7d5e5def18e",
+          "scripts/validation_suites.py": "57d21ce2a55cf093d55f4cc6e0d17203a4d6d6dad81de9f6ed24c07db94c9c2c",
+          "scripts/validation-suites.json": "483ad57c2f6733b90e19a9de1de6644cfc37422dac1ad8fe1be1172aa3bee90b",
+          "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+          "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+          "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+          "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+        },
+        "passed": true,
+        "github_runners_used": false,
+        "checks": [
+          {
+            "name": "validation-runner-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_validation_runner.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200414Z-cca56ba7/logs/validation-runner-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 2.872
+          },
+          {
+            "name": "generated-contracts",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "scripts/generate_contracts.mjs",
+              "--check"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200414Z-cca56ba7/logs/generated-contracts.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.185
+          },
+          {
+            "name": "frontend-unit-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+              "--prefix",
+              "frontend",
+              "test"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200414Z-cca56ba7/logs/frontend-unit-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.53
+          },
+          {
+            "name": "assistant-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/assistant-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200414Z-cca56ba7/logs/assistant-qa.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 11.123,
+            "browser_launches": [
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              }
+            ],
+            "suite_sha256": "5b37585c2134908778d3aecdd05065c1fbf712f87353f3aa1352175b38def62d"
+          }
+        ],
+        "unrun_browser_suites": [
+          "analytics-qa.mjs",
+          "balanced-terrain-qa.mjs",
+          "basemap-qa.mjs",
+          "cesium-context-qa.mjs",
+          "cesium-effects-pixels-qa.mjs",
+          "cesium-globe-time-qa.mjs",
+          "cesium-parity-qa.mjs",
+          "cesium-terrain-qa.mjs",
+          "chart-shortcuts-qa.mjs",
+          "chart-workflow-qa.mjs",
+          "charts-qa.mjs",
+          "charts-timezone-qa.mjs",
+          "cluster-identity-qa.mjs",
+          "display-recovery-qa.mjs",
+          "empty-workspace-qa.mjs",
+          "event-table-qa.mjs",
+          "field-roles-qa.mjs",
+          "focused-ai-qa.mjs",
+          "gis-files-qa.mjs",
+          "guided-workflows-qa.mjs",
+          "integration-smoke-qa.mjs",
+          "map-notifications-qa.mjs",
+          "mcp-live-qa.mjs",
+          "navigation-qa.mjs",
+          "navigation-sphere-qa.mjs",
+          "notifications-qa.mjs",
+          "pan-direction-qa.mjs",
+          "patterns-qa.mjs",
+          "playback-speed-qa.mjs",
+          "playback-transitions-qa.mjs",
+          "presentation-ui-qa.mjs",
+          "real-demos-qa.mjs",
+          "si-certificate-qa.mjs",
+          "si-rich-chat-qa.mjs",
+          "si-settings-qa.mjs",
+          "sidebar-time-qa.mjs",
+          "space-time-window-qa.mjs",
+          "spectrum-qa.mjs",
+          "subsecond-qa.mjs",
+          "time-rail-qa.mjs",
+          "toolbar-dialogs-qa.mjs",
+          "vector-gis-qa.mjs",
+          "view-sync-qa.mjs",
+          "viewport-pan-qa.mjs",
+          "webmcp-disabled-qa.mjs",
+          "welcome-qa.mjs",
+          "wkt-wmts-qa.mjs",
+          "workspace-boundaries-qa.mjs"
+        ],
+        "manual_checks_not_run": {
+          "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+          "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+          "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+        },
+        "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200414Z-cca56ba7",
+        "limitations": [
+          "Native results apply to this operating system only.",
+          "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+          "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+        ],
+        "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f",
+        "finished_utc": "2026-10-25T20:04:30.803550+00:00"
+      }
+    },
+    "context-check": {
+      "report_sha256": "0f2ee471f3df16c13fcabe703a950efdada7fe91876a8f1d90879b6a7a452af2",
+      "validation": {
+        "run_id": "20261025T200624Z-548e8fa1",
+        "source_revision": "1b8da77991214bf3ef1ee80f7b22ce8e38d508f2",
+        "dirty": false,
+        "cli_build_profile": "debug",
+        "native_build_profile": null,
+        "platform": "darwin",
+        "tier": "fast",
+        "started_utc": "2026-10-25T20:06:25.021987+00:00",
+        "test_infrastructure_sha256": {
+          "scripts/validate_local.py": "4d9ab98f8862f089b7be53ddb22edb6c36510b3b1f58af0b419e9f6d63be805a",
+          "scripts/validation_runtime.py": "b296eb98b85cbb7211e28d68784fc35e2f73fcb09fd8340b7248a7d5e5def18e",
+          "scripts/validation_suites.py": "57d21ce2a55cf093d55f4cc6e0d17203a4d6d6dad81de9f6ed24c07db94c9c2c",
+          "scripts/validation-suites.json": "483ad57c2f6733b90e19a9de1de6644cfc37422dac1ad8fe1be1172aa3bee90b",
+          "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+          "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+          "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+          "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+        },
+        "passed": true,
+        "github_runners_used": false,
+        "checks": [
+          {
+            "name": "validation-runner-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_validation_runner.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200624Z-548e8fa1/logs/validation-runner-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 2.816
+          },
+          {
+            "name": "generated-contracts",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "scripts/generate_contracts.mjs",
+              "--check"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200624Z-548e8fa1/logs/generated-contracts.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.183
+          },
+          {
+            "name": "frontend-unit-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+              "--prefix",
+              "frontend",
+              "test"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200624Z-548e8fa1/logs/frontend-unit-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.417
+          },
+          {
+            "name": "cesium-context-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/cesium-context-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200624Z-548e8fa1/logs/cesium-context-qa.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 6.62,
+            "browser_launches": [
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": true,
+                "angle": "metal"
+              }
+            ],
+            "suite_sha256": "3f74cb292e0f982511d5ef41da2a7419c2841aa2bb303a15d1e0bc4998082539"
+          }
+        ],
+        "unrun_browser_suites": [
+          "analytics-qa.mjs",
+          "assistant-qa.mjs",
+          "balanced-terrain-qa.mjs",
+          "basemap-qa.mjs",
+          "cesium-effects-pixels-qa.mjs",
+          "cesium-globe-time-qa.mjs",
+          "cesium-parity-qa.mjs",
+          "cesium-terrain-qa.mjs",
+          "chart-shortcuts-qa.mjs",
+          "chart-workflow-qa.mjs",
+          "charts-qa.mjs",
+          "charts-timezone-qa.mjs",
+          "cluster-identity-qa.mjs",
+          "display-recovery-qa.mjs",
+          "empty-workspace-qa.mjs",
+          "event-table-qa.mjs",
+          "field-roles-qa.mjs",
+          "focused-ai-qa.mjs",
+          "gis-files-qa.mjs",
+          "guided-workflows-qa.mjs",
+          "integration-smoke-qa.mjs",
+          "map-notifications-qa.mjs",
+          "mcp-live-qa.mjs",
+          "navigation-qa.mjs",
+          "navigation-sphere-qa.mjs",
+          "notifications-qa.mjs",
+          "pan-direction-qa.mjs",
+          "patterns-qa.mjs",
+          "playback-speed-qa.mjs",
+          "playback-transitions-qa.mjs",
+          "presentation-ui-qa.mjs",
+          "real-demos-qa.mjs",
+          "si-certificate-qa.mjs",
+          "si-rich-chat-qa.mjs",
+          "si-settings-qa.mjs",
+          "sidebar-time-qa.mjs",
+          "space-time-window-qa.mjs",
+          "spectrum-qa.mjs",
+          "subsecond-qa.mjs",
+          "time-rail-qa.mjs",
+          "toolbar-dialogs-qa.mjs",
+          "vector-gis-qa.mjs",
+          "view-sync-qa.mjs",
+          "viewport-pan-qa.mjs",
+          "webmcp-disabled-qa.mjs",
+          "welcome-qa.mjs",
+          "wkt-wmts-qa.mjs",
+          "workspace-boundaries-qa.mjs"
+        ],
+        "manual_checks_not_run": {
+          "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+          "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+          "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+        },
+        "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T200624Z-548e8fa1",
+        "limitations": [
+          "Native results apply to this operating system only.",
+          "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+          "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+        ],
+        "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f",
+        "finished_utc": "2026-10-25T20:06:36.356936+00:00"
+      }
+    },
+    "parity-check": {
+      "report_sha256": "beb5ff7a53d06f164921af46042aa4ab2ca7ac3967d97c94526336bf79ee598b",
+      "validation": {
+        "run_id": "20261025T202951Z-503eb54f",
+        "source_revision": "1b8da77991214bf3ef1ee80f7b22ce8e38d508f2",
+        "dirty": false,
+        "cli_build_profile": "debug",
+        "native_build_profile": null,
+        "platform": "darwin",
+        "tier": "fast",
+        "started_utc": "2026-10-25T20:29:51.360516+00:00",
+        "test_infrastructure_sha256": {
+          "scripts/validate_local.py": "4d9ab98f8862f089b7be53ddb22edb6c36510b3b1f58af0b419e9f6d63be805a",
+          "scripts/validation_runtime.py": "b296eb98b85cbb7211e28d68784fc35e2f73fcb09fd8340b7248a7d5e5def18e",
+          "scripts/validation_suites.py": "57d21ce2a55cf093d55f4cc6e0d17203a4d6d6dad81de9f6ed24c07db94c9c2c",
+          "scripts/validation-suites.json": "483ad57c2f6733b90e19a9de1de6644cfc37422dac1ad8fe1be1172aa3bee90b",
+          "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+          "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+          "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+          "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+        },
+        "passed": false,
+        "github_runners_used": false,
+        "checks": [
+          {
+            "name": "validation-runner-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_validation_runner.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T202951Z-503eb54f/logs/validation-runner-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 2.876
+          },
+          {
+            "name": "generated-contracts",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "scripts/generate_contracts.mjs",
+              "--check"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T202951Z-503eb54f/logs/generated-contracts.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.296
+          },
+          {
+            "name": "frontend-unit-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+              "--prefix",
+              "frontend",
+              "test"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T202951Z-503eb54f/logs/frontend-unit-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.545
+          },
+          {
+            "name": "cesium-parity-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/cesium-parity-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T202951Z-503eb54f/logs/cesium-parity-qa.log",
+            "exit_code": 1,
+            "timed_out": false,
+            "elapsed_s": 32.045,
+            "suite_sha256": "1b0d772c1683b8375b01b03a49f1fb2ca2340973d637cff11548afb9081bce32"
+          }
+        ],
+        "unrun_browser_suites": [
+          "analytics-qa.mjs",
+          "assistant-qa.mjs",
+          "balanced-terrain-qa.mjs",
+          "basemap-qa.mjs",
+          "cesium-context-qa.mjs",
+          "cesium-effects-pixels-qa.mjs",
+          "cesium-globe-time-qa.mjs",
+          "cesium-terrain-qa.mjs",
+          "chart-shortcuts-qa.mjs",
+          "chart-workflow-qa.mjs",
+          "charts-qa.mjs",
+          "charts-timezone-qa.mjs",
+          "cluster-identity-qa.mjs",
+          "display-recovery-qa.mjs",
+          "empty-workspace-qa.mjs",
+          "event-table-qa.mjs",
+          "field-roles-qa.mjs",
+          "focused-ai-qa.mjs",
+          "gis-files-qa.mjs",
+          "guided-workflows-qa.mjs",
+          "integration-smoke-qa.mjs",
+          "map-notifications-qa.mjs",
+          "mcp-live-qa.mjs",
+          "navigation-qa.mjs",
+          "navigation-sphere-qa.mjs",
+          "notifications-qa.mjs",
+          "pan-direction-qa.mjs",
+          "patterns-qa.mjs",
+          "playback-speed-qa.mjs",
+          "playback-transitions-qa.mjs",
+          "presentation-ui-qa.mjs",
+          "real-demos-qa.mjs",
+          "si-certificate-qa.mjs",
+          "si-rich-chat-qa.mjs",
+          "si-settings-qa.mjs",
+          "sidebar-time-qa.mjs",
+          "space-time-window-qa.mjs",
+          "spectrum-qa.mjs",
+          "subsecond-qa.mjs",
+          "time-rail-qa.mjs",
+          "toolbar-dialogs-qa.mjs",
+          "vector-gis-qa.mjs",
+          "view-sync-qa.mjs",
+          "viewport-pan-qa.mjs",
+          "webmcp-disabled-qa.mjs",
+          "welcome-qa.mjs",
+          "wkt-wmts-qa.mjs",
+          "workspace-boundaries-qa.mjs"
+        ],
+        "manual_checks_not_run": {
+          "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+          "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+          "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+        },
+        "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T202951Z-503eb54f",
+        "limitations": [
+          "Native results apply to this operating system only.",
+          "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+          "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+        ],
+        "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f",
+        "finished_utc": "2026-10-25T20:30:28.640022+00:00"
+      }
+    },
+    "parity-headed": {
+      "report_sha256": "e0a7d6549d67d88f4df612b647df233aa9d32a416363de5475c8f76aa48a0b60",
+      "validation": {
+        "run_id": "20261025T203051Z-eb0d2e00",
+        "source_revision": "1b8da77991214bf3ef1ee80f7b22ce8e38d508f2",
+        "dirty": false,
+        "cli_build_profile": "debug",
+        "native_build_profile": null,
+        "platform": "darwin",
+        "tier": "fast",
+        "started_utc": "2026-10-25T20:30:51.044430+00:00",
+        "test_infrastructure_sha256": {
+          "scripts/validate_local.py": "4d9ab98f8862f089b7be53ddb22edb6c36510b3b1f58af0b419e9f6d63be805a",
+          "scripts/validation_runtime.py": "b296eb98b85cbb7211e28d68784fc35e2f73fcb09fd8340b7248a7d5e5def18e",
+          "scripts/validation_suites.py": "57d21ce2a55cf093d55f4cc6e0d17203a4d6d6dad81de9f6ed24c07db94c9c2c",
+          "scripts/validation-suites.json": "483ad57c2f6733b90e19a9de1de6644cfc37422dac1ad8fe1be1172aa3bee90b",
+          "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+          "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+          "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+          "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+        },
+        "passed": true,
+        "github_runners_used": false,
+        "checks": [
+          {
+            "name": "validation-runner-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+              "scripts/test_validation_runner.py"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T203051Z-eb0d2e00/logs/validation-runner-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 2.841
+          },
+          {
+            "name": "generated-contracts",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "scripts/generate_contracts.mjs",
+              "--check"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T203051Z-eb0d2e00/logs/generated-contracts.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 0.187
+          },
+          {
+            "name": "frontend-unit-tests",
+            "command": [
+              "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+              "--prefix",
+              "frontend",
+              "test"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T203051Z-eb0d2e00/logs/frontend-unit-tests.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 1.526
+          },
+          {
+            "name": "cesium-parity-qa",
+            "command": [
+              "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+              "frontend/scripts/cesium-parity-qa.mjs"
+            ],
+            "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T203051Z-eb0d2e00/logs/cesium-parity-qa.log",
+            "exit_code": 0,
+            "timed_out": false,
+            "elapsed_s": 32.313,
+            "browser_launches": [
+              {
+                "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+                "version": "155.0.8059.85",
+                "headless": false,
+                "angle": "metal"
+              }
+            ],
+            "suite_sha256": "1b0d772c1683b8375b01b03a49f1fb2ca2340973d637cff11548afb9081bce32"
+          }
+        ],
+        "unrun_browser_suites": [
+          "analytics-qa.mjs",
+          "assistant-qa.mjs",
+          "balanced-terrain-qa.mjs",
+          "basemap-qa.mjs",
+          "cesium-context-qa.mjs",
+          "cesium-effects-pixels-qa.mjs",
+          "cesium-globe-time-qa.mjs",
+          "cesium-terrain-qa.mjs",
+          "chart-shortcuts-qa.mjs",
+          "chart-workflow-qa.mjs",
+          "charts-qa.mjs",
+          "charts-timezone-qa.mjs",
+          "cluster-identity-qa.mjs",
+          "display-recovery-qa.mjs",
+          "empty-workspace-qa.mjs",
+          "event-table-qa.mjs",
+          "field-roles-qa.mjs",
+          "focused-ai-qa.mjs",
+          "gis-files-qa.mjs",
+          "guided-workflows-qa.mjs",
+          "integration-smoke-qa.mjs",
+          "map-notifications-qa.mjs",
+          "mcp-live-qa.mjs",
+          "navigation-qa.mjs",
+          "navigation-sphere-qa.mjs",
+          "notifications-qa.mjs",
+          "pan-direction-qa.mjs",
+          "patterns-qa.mjs",
+          "playback-speed-qa.mjs",
+          "playback-transitions-qa.mjs",
+          "presentation-ui-qa.mjs",
+          "real-demos-qa.mjs",
+          "si-certificate-qa.mjs",
+          "si-rich-chat-qa.mjs",
+          "si-settings-qa.mjs",
+          "sidebar-time-qa.mjs",
+          "space-time-window-qa.mjs",
+          "spectrum-qa.mjs",
+          "subsecond-qa.mjs",
+          "time-rail-qa.mjs",
+          "toolbar-dialogs-qa.mjs",
+          "vector-gis-qa.mjs",
+          "view-sync-qa.mjs",
+          "viewport-pan-qa.mjs",
+          "webmcp-disabled-qa.mjs",
+          "welcome-qa.mjs",
+          "wkt-wmts-qa.mjs",
+          "workspace-boundaries-qa.mjs"
+        ],
+        "manual_checks_not_run": {
+          "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+          "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+          "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+        },
+        "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/intel-promotion-mac/runs/20261025T203051Z-eb0d2e00",
+        "limitations": [
+          "Native results apply to this operating system only.",
+          "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+          "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+        ],
+        "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f",
+        "finished_utc": "2026-10-25T20:31:28.379297+00:00"
+      }
+    }
+  },
+  "promotion_decision": {
+    "authorization": "User explicitly authorizes current Next source promotion when Mac passes, while continuing Linux repairs.",
+    "mac_failure_owner_checks_passed": [
+      "assistant",
+      "cesium-context",
+      "cesium-parity (headed Chrome Metal)"
+    ],
+    "linux_full_sweep": {
+      "product_revision": "3e6f7899d5edcd1f430dccc3b2738b6e353ff1e4",
+      "run_id": "20261025T195232Z-6093a963",
+      "report": "/home/claw/Documents/Codex/chronoscope-next/.qa/intel-playback-latency/full/report.json",
+      "rust_passed": 408,
+      "rust_ignored": 0,
+      "browser_passed": 46,
+      "browser_total": 49,
+      "browser_failed": [
+        "assistant-qa",
+        "cesium-context-qa",
+        "cesium-parity-qa"
+      ],
+      "scale_passed": true,
+      "hardware_benchmarks_passed": 2,
+      "native_lint_build_cli_passed": true,
+      "overall_passed": false
+    },
+    "linux_failures_accepted_for_this_promotion": true,
+    "linux_follow_up_continues": true,
+    "radeon_recovery_requested": false
+  }
+}

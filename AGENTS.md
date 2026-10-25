@@ -4,3 +4,5 @@
 - Keep GitHub Actions workflows manual-only so normal pushes and pull requests do not consume the user's runner allowance.
 
 - Develop and validate updates in chronoscope-app/chronoscope-next. Do not push or publish changes to chronoscope-app/chronoscope-public until the user explicitly authorizes promotion.
+
+- Completed work intended for Next must be integrated into `chronoscope-next/main`, not left only on a feature branch. Before building the latest version, check pending Next branches so recent completed work is not omitted.

@@ -2,6 +2,7 @@ fn main() {
     if std::env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("macos") {
         println!("cargo:rustc-link-arg=-Wl,-rpath,/usr/lib/swift");
         println!("cargo:rustc-link-arg=-Wl,-weak_framework,AppIntents");
+        println!("cargo:rustc-link-arg=-Wl,-weak_framework,ScreenCaptureKit");
         // Rust drops unused dylibs; retain this public Swift cross-import overlay
         // for its AppKit intent handoff initializer, while allowing older macOS.
         println!("cargo:rustc-link-arg=-Wl,-needed_framework,_AppIntents_AppKit");

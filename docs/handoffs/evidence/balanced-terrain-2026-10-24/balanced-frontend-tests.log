@@ -1,0 +1,57 @@
+
+> chronoscope-ui@0.15.2 test
+> node --test scripts/*-test.mjs
+
+✔ stationary getter roundoff does not accumulate into camera movement (5.76094ms)
+✔ real rotation remains the reference for subsequent stationary frames (0.33324ms)
+✔ a changed position retains even a tiny explicit orientation change (0.381488ms)
+✔ a changed reference frame retains even a tiny explicit orientation change (0.304722ms)
+✔ a changed scene mode retains even a tiny explicit orientation change (0.347396ms)
+✔ invalid camera coordinates are never replaced with stale valid ones (1.134712ms)
+Cesium ground effects: count conservation, weights, UTC-window accumulation, transparency, isolated bloom, threshold, and combined heat/bloom passed.
+Exact bloom percentile and byte-identical 512px bloom/heat oracle checks passed.
+PASS fixed playback exposure preserves changes in event energy
+✔ scripts/cesium-effects-math-test.mjs (4462.57706ms)
+Cesium geometry: hole-aware box selection, occlusion boundaries, independent WGS84 geodesic references and date-line arcs passed
+Karney geodesics: exact/near antipodes, both poles, date line and interpolated display elevation passed
+Columbus frustum: analytic corner-ray agreement, zoom-contracted bounds, horizon clipping and elevated time-prism visibility passed
+2D terrain frustum: geographic footprint, width-based zoom and independent one-level zoom contract passed
+Global arc budget: 10000 near-antipodal source segments bounded to 25002 rendering vertices; every source endpoint preserved, 10000 curves explicitly coarsened
+✔ scripts/cesium-geometry-test.mjs (2821.586332ms)
+Cesium resources: 8 independent PROJ geoid references, dateline/poles, Mercator DTED sampling/voids, native mesh interpolation/availability/cache, explicit datum enforcement passed.
+✔ scripts/cesium-resource-test.mjs (2506.624233ms)
+PASS saved custom-period titles compare window values after JSON round trips
+✔ scripts/chart-guidance-test.mjs (176.080653ms)
+PASS editor draft refresh, captured submissions, workspace isolation, save/close joins and failed-save retries
+✔ scripts/controllers-test.mjs (784.925192ms)
+Display math: independent kernel oracle, bounds, protected evidence, full trails and discontinuities passed.
+✔ scripts/display-math-test.mjs (855.92928ms)
+Passed: 30 deterministic range bursts, joined drains, external CAS rebasing, failed-write retry and captured debounced deltas.
+✔ scripts/filter-intent-test.mjs (1771.096241ms)
+PASS fading line geometry across both meridians and within one hemisphere
+✔ scripts/flat-lines-test.mjs (2079.394197ms)
+Passed: 0/100/20k/100k packets, endian/negative-minute/high IDs, malformed size/base64/IDs/dictionary/inferred/GIS/value checks.
+PASS fractional packet decoding and positive/negative UTC labels without millisecond truncation
+✔ scripts/packet-test.mjs (801.309327ms)
+PASS 24 speed/increment combinations and live rate continuity
+✔ scripts/playback-clock-test.mjs (104.018579ms)
+✔ Streets credit has all required linked providers on live and export paths (6.090532ms)
+✔ About and help share package version rather than stale 0.15.0 (3.728485ms)
+PASS 1003 space-time floor checks: screen margins, geographic zoom, headings, tilts, terrain plane, world limits and invalid inputs
+✔ scripts/space-time-frame-test.mjs (2473.658682ms)
+Time axis: compact UTC overview dates, detail on zoom, deduplication, bounded near-plane clipping and empty/single-instant ranges passed.
+PASS distinct subsecond time-axis ticks
+✔ scripts/time-axis-test.mjs (843.348727ms)
+PASS UTC timeline labels: years, months, days, intraday, year crossing, distinct ticks and invalid bounds
+✔ scripts/timeline-labels-test.mjs (839.682881ms)
+✔ continuous camera input publishes intermediate and final viewports (3.148324ms)
+✔ slow loads finish without overlap and coalesce motion to the latest viewport (1.457527ms)
+✔ cancellation drops queued work and errors do not strand later requests (0.330268ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7992.094018

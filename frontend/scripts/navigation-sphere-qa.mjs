@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real Rust bridge, real pointer/keyboard input, no public map requests.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
@@ -44,32 +44,8 @@ const check = (name, evidence = {}) => {
 };
 let browser;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timeout = setTimeout(() => reject(Error(log)), 20000);
-    server.once("error", reject);
-    server.stderr.on("data", (chunk) => {
-      log += chunk;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timeout);
-        resolve(m[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const b = await r.json();
-    assert(r.ok, JSON.stringify(b));
-    return b.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   await api("demo");
   const prefs = await api("preferences");
   await api("preferences", {
@@ -80,22 +56,10 @@ try {
       map: { ...prefs.map, enabled: false },
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1720, height: 1080 },
   });
@@ -365,8 +329,9 @@ try {
   assert.equal(await page.locator(".navigation-compass").count(), 1);
   const m0 = await state();
   await drag(".navigation-sphere", 20, 12);
-  assert.equal((await state()).bearing, 0);
-  assert.equal((await state()).tilt, 0);
+  // Cesium's Cartesian round trip can produce 359.999999 degrees at north.
+  assert(Math.abs(delta(0, (await state()).bearing)) < 0.0001);
+  assert(Math.abs((await state()).tilt) < 0.0001);
   assert.equal((await state()).count, m0.count);
   const flatDistance = (await state()).distance;
   await page.locator("#navigation-zoom").focus();

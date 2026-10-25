@@ -1,11 +1,11 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Synthetic DTED + generated diagnostic tile; normal app transitions.
 import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
-import { spawn, execFileSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { createServer } from "node:http";
 import { randomBytes, createHash } from "node:crypto";
-import { chromium } from "playwright";
 const root = path.resolve(import.meta.dirname, "../.."),
   dir =
     process.env.CHRONOSCOPE_QA_DATA_DIR ||
@@ -68,32 +68,8 @@ const server = spawn(
 );
 let browser;
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.on("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const b = await r.json();
-    assert(r.ok, JSON.stringify(b));
-    return b.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const lon = (tile.bounds[0] + tile.bounds[2]) / 2,
     lat = (tile.bounds[1] + tile.bounds[3]) / 2;
   const csv = path.join(dir, "hamilton-events.csv");
@@ -136,6 +112,7 @@ try {
         },
       ],
       terrain_path: dtedPath,
+      terrain_builtin: false,
       terrain_exaggeration: 4,
       terrain_vertical_datum: "egm96",
     },
@@ -143,15 +120,7 @@ try {
   await api("terrain_load", {
     path: dtedPath,
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
       viewport: { width: 1800, height: 1150 },
     }),
@@ -241,10 +210,15 @@ try {
             // for the actual rendered source-resolution tile before measuring.
             v.scene.globe._surface._tilesToRender.some((tile) => {
               const r = tile.rectangle,
-                x = lon * Math.PI / 180,
-                y = lat * Math.PI / 180;
-              return tile.level >= 12 && x >= r.west && x <= r.east &&
-                y >= r.south && y <= r.north;
+                x = (lon * Math.PI) / 180,
+                y = (lat * Math.PI) / 180;
+              return (
+                tile.level >= 12 &&
+                x >= r.west &&
+                x <= r.east &&
+                y >= r.south &&
+                y <= r.north
+              );
             })
           );
         },

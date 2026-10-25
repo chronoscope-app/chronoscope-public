@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real Rust bridge, native Globe elevations and compact legend; no public tile requests.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -38,32 +38,8 @@ const report = {
   publicRequests: 0,
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 15000);
-    server.once("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const m = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (m) {
-        clearTimeout(timer);
-        resolve(m[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const r = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const body = await r.json();
-    assert(r.ok, JSON.stringify(body));
-    return body.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const csv = path.join(dir, "time-elevation.csv");
   const entity =
     "An_extremely_long_entity_identifier_to_verify_narrow_legend_wrapping_without_overflow";
@@ -87,6 +63,7 @@ try {
         basemap: "none",
         map_layers: [],
         terrain_path: null,
+        terrain_builtin: false,
         theme: "dark",
       },
     });
@@ -105,15 +82,7 @@ try {
     },
   });
   const sourceEvents = (await api("events", { limit: 100 })).events;
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-    ],
-  });
+  browser = await chromium.launch();
   const page = await browser.newPage({
     viewport: { width: 1800, height: 1100 },
   });

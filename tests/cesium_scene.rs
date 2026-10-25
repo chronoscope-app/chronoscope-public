@@ -146,6 +146,11 @@ fn invalid_cesium_camera_is_rejected_and_agent_fit_clears_it() {
 fn terrain_datum_requires_explicit_choice_and_saves_with_workspace() {
     let dir = tempfile::tempdir().unwrap();
     let engine = Engine::new(Project::new(Dataset::default()), dir.path().join("profile")).unwrap();
+    // The built-in source has a known datum. Replacing it with user DTED must
+    // still require an explicit choice for that new source.
+    let tile = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/fixtures/terrain/synthetic-n43.dt0");
+    engine.invoke("terrain_load", json!({"path":tile})).unwrap();
     let prefs = engine.invoke("preferences", json!({})).unwrap();
     assert_eq!(prefs["terrain_vertical_datum"], "unresolved-msl");
     assert!(engine
@@ -290,4 +295,51 @@ fn globe_time_clusters_retain_time_slabs_and_ground_effects_stay_flat() {
         assert_eq!(surface["display"]["time_bin_minutes"], 0);
         assert_eq!(surface["display"]["count"], 3);
     }
+}
+
+#[test]
+fn independent_and_synced_navigation_roundtrip_and_validate() {
+    let dir = tempfile::tempdir().unwrap();
+    let engine = Engine::new(
+        Project::new(chronoscope::demo::dataset()),
+        dir.path().join("profile"),
+    )
+    .unwrap();
+    let mut scene = camera();
+    let frame = json!({"center":[179.8,70.,0.],"ground_width":80000.,"heading":47.,"tilt":35.});
+    scene["view_states"] = json!({"space-time":frame,"globe":frame,"map":{ "center":[179.8,70.,0.],"ground_width":80000.,"heading":47.,"tilt":0.,"camera":camera()["cesium_camera"]}});
+    engine.invoke("scene_sync", json!({"scene":scene})).unwrap();
+    let path = dir.path().join("synced.chronoscope");
+    engine.invoke("save", json!({"path":path})).unwrap();
+    let loaded = Engine::from_path(&path, dir.path().join("reopen"), None).unwrap();
+    assert_eq!(
+        loaded.invoke("snapshot", json!({})).unwrap()["scene"]["view_states"],
+        scene["view_states"]
+    );
+    for invalid in [
+        json!({"center":[181.,0.,0.]}),
+        json!({"ground_width":-1.}),
+        json!({"heading":360.}),
+        json!({"tilt":90.}),
+        json!({"footprint":[[181.,0.,0.]]}),
+        json!({"camera":{"position":[0.,0.,0.],"direction":[0.,0.,0.],"up":[0.,1.,0.]}}),
+    ] {
+        let mut bad = scene.clone();
+        for (key, value) in invalid.as_object().unwrap() {
+            bad["view_states"]["globe"][key] = value.clone();
+        }
+        assert!(engine.invoke("scene_sync", json!({"scene":bad})).is_err());
+    }
+    let mut bad = scene.clone();
+    bad["view_states"]["calendar"] = frame.clone();
+    assert!(engine.invoke("scene_sync", json!({"scene":bad})).is_err());
+    let mut bad = scene.clone();
+    bad["view_states"]["map"]["tilt"] = json!(1.);
+    assert!(engine.invoke("scene_sync", json!({"scene":bad})).is_err());
+    engine
+        .invoke("view_set", json!({"fit":true,"mode":"map"}))
+        .unwrap();
+    let state = engine.invoke("snapshot", json!({})).unwrap();
+    assert!(state["scene"]["view_states"].get("map").is_none());
+    assert_eq!(state["scene"]["view_states"]["globe"], frame);
 }

@@ -45,7 +45,41 @@ def load_suites():
     missing = (advertised | discovered) - known
     if missing:
         raise ValueError(f'Unclassified validation suites: {sorted(missing)}. Update {MANIFEST.name}.')
+    owners = [suite for feature in manifest['features'].values() for suite in feature['browser']]
+    if len(owners) != len(set(owners)) or set(owners) != set(groups['browser']):
+        raise ValueError('Every browser suite must have exactly one feature owner')
+    if not set(manifest['smoke']) <= set(groups['browser']):
+        raise ValueError('Smoke must reference active browser suites')
+    for feature in manifest['features'].values():
+        for target in feature['rust']:
+            if Path(target).name != target or not (ROOT/'tests'/f'{target}.rs').is_file():
+                raise ValueError(f'Unknown Rust target {target}')
+    python = [name for names in manifest['python_suites'].values() for name in names]
+    if len(python) != len(set(python)) or set(python) != {p.name for p in (ROOT/'scripts').glob('test_*.py')}:
+        raise ValueError('Every Python test must have exactly one inventory group')
+    for name in manifest['native_gui']:
+        if Path(name).name != name or not (ROOT/'scripts'/name).is_file():
+            raise ValueError(f'Unknown native GUI check {name}')
     return manifest
+
+
+def select_browser(manifest, tier, browser, suites=(), features=()):
+    selected = set()
+    known = manifest['groups']['browser']
+    if tier == 'full' and not suites and not features:
+        selected.update(known)
+    elif browser and not suites and not features:
+        selected.update(manifest['smoke'])
+    for suite in suites:
+        normalized = suite if suite.endswith('.mjs') else suite.removesuffix('-qa') + '-qa.mjs'
+        if normalized not in known:
+            raise ValueError(f'Unknown browser suite: {suite}')
+        selected.add(normalized)
+    for feature in features:
+        if feature not in manifest['features']:
+            raise ValueError(f'Unknown feature: {feature}')
+        selected.update(manifest['features'][feature]['browser'])
+    return [suite for suite in known if suite in selected]
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real Rust engine and Cesium loaders; local packaged assets, no public tile traffic.
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -52,32 +52,8 @@ function check(name, evidence) {
   );
 }
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.once("error", reject);
-    server.stderr.on("data", (data) => {
-      log += data;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timer);
-        resolve(match[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const body = await response.json();
-    assert(response.ok, JSON.stringify(body));
-    return body.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   const prefs = await api("preferences");
   await api("preferences", {
     preferences: {
@@ -86,6 +62,7 @@ try {
       basemap: "none",
       map_layers: [],
       terrain_path: null,
+      terrain_builtin: false,
     },
   });
   // Give the existing Events timeline the same interval as the native reference layers.
@@ -104,16 +81,7 @@ try {
       trail_gap_minutes: 0,
     },
   });
-  browser = await chromium.launch({
-    executablePath: process.env.CHRONOSCOPE_CHROMIUM || "/usr/bin/chromium",
-    headless: true,
-    args: [
-      "--no-sandbox",
-      "--use-angle=swiftshader",
-      "--enable-unsafe-swiftshader",
-      "--ignore-gpu-blocklist",
-    ],
-  });
+  browser = await chromium.launch();
   page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
   page.setDefaultTimeout(45000);
   await page.addInitScript(() => {

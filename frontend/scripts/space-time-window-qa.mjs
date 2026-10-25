@@ -1,5 +1,5 @@
-import { chromium } from "playwright";
-import { spawn } from "node:child_process";
+import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
+
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -40,32 +40,8 @@ const check = (name, evidence) => {
   console.log("PASS", name);
 };
 try {
-  const url = await new Promise((resolve, reject) => {
-    let log = "";
-    const timer = setTimeout(() => reject(Error(log)), 20000);
-    server.on("error", reject);
-    server.stderr.on("data", (d) => {
-      log += d;
-      const match = log.match(/http:\/\/127\.0\.0\.1:\d+/);
-      if (match) {
-        clearTimeout(timer);
-        resolve(match[0]);
-      }
-    });
-  });
-  const api = async (command, args = {}) => {
-    const response = await fetch(url + "/api/invoke", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ command, args }),
-    });
-    const result = await response.json();
-    assert(response.ok, JSON.stringify(result));
-    return result.result;
-  };
+  const url = await localServerUrl(server);
+  const api = createApi(url, token);
   await api("demo_open", { id: "local-wildlife" });
   const prefs = await api("preferences");
   await api("preferences", {
@@ -75,6 +51,9 @@ try {
       map: { ...prefs.map, enabled: false },
       map_layers: [],
       terrain_path: null,
+      // This fixed screen-projection oracle measures the ellipsoid plane.
+      // Real terrain changes ground height; its draping is tested separately.
+      terrain_builtin: false,
       theme: "dark",
     },
   });
@@ -91,36 +70,26 @@ try {
       show_trails: true,
     },
   });
-  browser = await chromium.launch({
-    executablePath:
-      process.env.CHRONOSCOPE_CHROMIUM ||
-      (process.platform === "darwin"
-        ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-        : process.platform === "win32"
-          ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-          : "/usr/bin/chromium"),
-    headless: true,
-    args: [
-      "--no-sandbox",
-      ...(process.platform === "darwin"
-        ? ["--use-angle=metal"]
-        : ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]),
-    ],
-  });
-  const page = await browser.newPage({
-    viewport: { width: 1720, height: 1080 },
-  });
-  page.setDefaultTimeout(30000);
-  page.on("pageerror", (e) => report.errors.push(e.message));
-  await page.route("**/*", (route) =>
-    /^https?:/.test(route.request().url()) &&
-    !route
-      .request()
-      .url()
-      .startsWith(url + "/")
-      ? route.abort()
-      : route.continue(),
-  );
+  const launchBrowser = () => chromium.launch();
+  browser = await launchBrowser();
+  const newPage = async () => {
+    const page = await browser.newPage({
+      viewport: { width: 1720, height: 1080 },
+    });
+    page.setDefaultTimeout(30000);
+    page.on("pageerror", (e) => report.errors.push(e.message));
+    await page.route("**/*", (route) =>
+      /^https?:/.test(route.request().url()) &&
+      !route
+        .request()
+        .url()
+        .startsWith(url + "/")
+        ? route.abort()
+        : route.continue(),
+    );
+    return page;
+  };
+  let page = await newPage();
   await page.goto(url + "/#token=" + token);
   await page.waitForFunction(
     () =>
@@ -159,6 +128,13 @@ try {
         tilt: v.tilt(),
         camera: v.captureCamera(),
         floor,
+        mapClip: (() => {
+          const r = v.scene.globe.cartographicLimitRectangle;
+          return [r.west, r.south, r.east, r.north];
+        })(),
+        axisGround: v.axes.length
+          ? v.project(v.axes.get(0).positions[1])
+          : null,
         size: [v.host.clientWidth, v.host.clientHeight],
         generation: v.generation,
         corners: floor?.bounds
@@ -201,6 +177,59 @@ try {
   };
   const original = await state();
   inset(original);
+  assert.deepEqual(original.mapClip, [
+    -Math.PI,
+    -Math.PI / 2,
+    Math.PI,
+    Math.PI / 2,
+  ]);
+  assert.equal(original.floor.role, "time-axis-reference");
+  const reference = original.floor.bounds,
+    expanded = original.floor.mapBounds;
+  assert(
+    expanded[0] < reference[0] &&
+      expanded[1] < reference[1] &&
+      expanded[2] > reference[2] &&
+      expanded[3] > reference[3],
+    "Map requests cover ground beyond the original time-axis rectangle",
+  );
+  near(original.axisGround.x, original.corners[3].x, 0.01);
+  near(original.axisGround.y, original.corners[3].y, 0.01);
+  const expected = [
+    [original.size[0] / 2, 18],
+    [original.size[0] / 2, original.size[1] - 18],
+    [18, original.size[1] / 2],
+    [original.size[0] - 18, original.size[1] / 2],
+  ];
+  original.handles.forEach((p, i) => {
+    near(p.x, expected[i][0], 1);
+    if (i < 2) near(p.y, expected[i][1], 1);
+  });
+  const targets = await page.evaluate(() => {
+    const v = window.__chronoscope.view,
+      r = v.viewer.canvas.getBoundingClientRect();
+    return Array.from({ length: v.handles.length }, (_, i) => {
+      const p = v.project(v.handles.get(i).position);
+      return {
+        side: v.handles.get(i).id.side,
+        picked: v.pickId(p.x, p.y)?.side,
+        unobstructed:
+          document.elementFromPoint(r.left + p.x, r.top + p.y) ===
+          v.viewer.canvas,
+      };
+    });
+  });
+  for (const target of targets) {
+    assert.equal(target.picked, target.side);
+    assert(target.unobstructed, JSON.stringify(target));
+  }
+  check(
+    "Expanded geography retains the original inset time-axis origin and four pickable edge grab spheres",
+    { axisGround: original.axisGround, reference, expanded, handles: targets },
+  );
+  await page.screenshot({
+    path: path.join(dir, "expanded-time-original-axis.png"),
+  });
   const source = await page.evaluate(() =>
     JSON.stringify(
       window.__chronoscope.view.points.map((p) => [p.id, p.lat, p.lon, p.time]),
@@ -473,16 +502,31 @@ try {
     v.fit();
     v.viewer.render();
   });
-  await page.waitForTimeout(800);
+  // Wait for tile/geometry work and trailing camera callbacks to settle. A
+  // continuously drawing scene never reaches this bounded idle condition.
+  await page.waitForFunction(
+    () => {
+      const v = window.__chronoscope.view;
+      return (
+        v.viewer.scene.globe.tilesLoaded && !v.diagnostics().performance.active
+      );
+    },
+    undefined,
+    { timeout: 15000 },
+  );
   const frames = await page.evaluate(
     () => window.__chronoscope.view.diagnostics().performance.renderedFrames,
   );
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1000);
   const additionalFrames = await page.evaluate(
     (before) =>
       window.__chronoscope.view.diagnostics().performance.renderedFrames -
       before,
     frames,
+  );
+  assert(
+    additionalFrames <= 2,
+    `Stationary scene kept drawing: ${additionalFrames} frames in 1000 ms`,
   );
   const unchanged = await page.evaluate(() => {
     const v = window.__chronoscope.view,
@@ -501,13 +545,17 @@ try {
   check("Stationary frames reuse floor/axes in request-render mode", {
     additionalFrames,
   });
-  for (const [id, count] of [
-    ["local-wildlife", 3439],
-    ["elephant-seals", 15501],
-    ["animal-gps", 15697],
-    ["stork-migration", 6090],
-  ]) {
-    await page.goto("about:blank");
+  for (const [id, count] of process.env.CHRONOSCOPE_QA_FULL === "1"
+    ? [
+        ["local-wildlife", 3439],
+        ["elephant-seals", 15501],
+        ["animal-gps", 15697],
+        ["stork-migration", 6090],
+      ]
+    : []) {
+    // Give each large demo a fresh GPU context/browser. Reusing a Metal
+    // browser across blank-page transitions can terminate Chrome on macOS.
+    await browser.close();
     await api("demo_open", { id });
     const preferences = await api("preferences");
     await api("preferences", {
@@ -531,6 +579,8 @@ try {
         bloom: false,
       },
     });
+    browser = await launchBrowser();
+    page = await newPage();
     await page.goto(url + "/#token=" + token);
     await page.waitForFunction(
       (count) =>

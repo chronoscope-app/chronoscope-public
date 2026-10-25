@@ -21,6 +21,8 @@ pub const COMMANDS: &[&str] = &[
     "gis_load",
     "gis_import_preview",
     "import_validate",
+    "import_review",
+    "import_rejections_export",
     "import_commit",
     "analyze",
     "analysis_execute",

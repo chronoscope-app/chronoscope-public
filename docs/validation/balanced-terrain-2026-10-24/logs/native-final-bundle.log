@@ -1,0 +1,4 @@
+        Info Patching /home/claw/Documents/Codex/chronoscope-next/target/release/chronoscope-desktop with bundle type information: appimage
+    Bundling Chronoscope_0.15.2_amd64.AppImage (/home/claw/Documents/Codex/chronoscope-next/target/release/bundle/appimage/Chronoscope_0.15.2_amd64.AppImage)
+    Finished 1 bundle at:
+        /home/claw/Documents/Codex/chronoscope-next/target/release/bundle/appimage/Chronoscope_0.15.2_amd64.AppImage (191.07 MiB)

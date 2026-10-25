@@ -136,6 +136,84 @@ assert.ok(
   ),
 );
 const provider = new LocalDtedTerrainProvider(t, grid, "egm96", 2);
+// Global real terrain reaches root samples. A quantized hemisphere has no
+// finite horizon-culling point; coarse heightmaps must retain the actual DEM.
+const worldTerrain = {
+  ...t,
+  bounds: [-180, -89.999999, 180, 89.999999],
+  geographic: true,
+  width: 257,
+  height: 257,
+  elevations: Array(257 * 257).fill(2800),
+};
+const worldProvider = new LocalDtedTerrainProvider(
+  worldTerrain,
+  undefined,
+  "ellipsoid",
+  1,
+);
+const worldRoot = await worldProvider.requestTileGeometry(1, 0, 0);
+assert(worldRoot instanceof HeightmapTerrainData);
+assert.equal(
+  worldRoot.interpolateHeight(
+    worldProvider.tilingScheme.tileXYToRectangle(1, 0, 0),
+    1,
+    0,
+  ),
+  2800,
+);
+assert(worldRoot.isChildAvailable(1, 0, 2, 0));
+assert.equal(
+  worldRoot.interpolateHeight(
+    worldProvider.tilingScheme.tileXYToRectangle(1, 0, 0),
+    1,
+    -Math.PI / 2,
+  ),
+  2800,
+);
+// A polar viewport has coarse longitude columns. Keep the exact source-column
+// peak without generating 33 redundant columns in every narrow polar tile.
+const polarColumns = {
+  ...worldTerrain,
+  bounds: [-179.7, 80, 179.7, 89.999999],
+  width: 257,
+  height: 257,
+  elevations: Array.from(
+    { length: 257 * 257 },
+    (_, i) => 100 + ((i % 257) % 2) * 1000,
+  ),
+};
+const polarProvider = new LocalDtedTerrainProvider(
+  polarColumns,
+  undefined,
+  "ellipsoid",
+  1,
+);
+const peak = Cartographic.fromDegrees(-179.7 + (129 * 359.4) / 256, 85);
+const polarXY = polarProvider.tilingScheme.positionToTileXY(
+  peak,
+  polarProvider.maximumLevel,
+);
+const polarData = await polarProvider.requestTileGeometry(
+  polarXY.x,
+  polarXY.y,
+  polarProvider.maximumLevel,
+);
+assert(polarData instanceof QuantizedMeshTerrainData);
+assert(polarData._quantizedVertices.length / 3 <= 5 * 129);
+assert(
+  Math.abs(
+    polarData.interpolateHeight(
+      polarProvider.tilingScheme.tileXYToRectangle(
+        polarXY.x,
+        polarXY.y,
+        polarProvider.maximumLevel,
+      ),
+      peak.longitude,
+      peak.latitude,
+    ) - 1100,
+  ) < 0.1,
+);
 assert.ok(
   Math.abs(
     provider.sampleHeight(60, -1) - (200 + geoidUndulation(grid, 60, -1)),
@@ -248,6 +326,151 @@ await CesiumResources.prototype.setTerrain.call(
   null,
   1,
 );
+// Navigation updates its CPU sampling grid, while one native tile source owns
+// Cesium's quadtree and cached GPU-ready tiles across the entire catalog.
+{
+  const world = {
+    ...t,
+    geographic: true,
+    bounds: [-180, -85, 180, 85],
+    elevations: Array(9).fill(100),
+  };
+  let tileLoads = 0;
+  const source = {
+    bounds: world.bounds,
+    maximumLevel: 7,
+    async load(bounds) {
+      tileLoads++;
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      return { ...world, bounds, elevations: Array(9).fill(100) };
+    },
+  };
+  let assignments = 0,
+    installed;
+  const resources = Object.assign(Object.create(CesiumResources.prototype), {
+    disposed: false,
+    terrainGeneration: 0,
+    terrainProviderChanges: 0,
+    verticalDatum: "ellipsoid",
+    terrain: null,
+    viewer: {
+      set terrainProvider(value) {
+        assignments++;
+        installed = value;
+      },
+    },
+    requestRender() {},
+  });
+  await resources.setTerrain(world, 1, () => true, source);
+  const original = installed;
+  const [firstTile, sameTile] = await Promise.all([
+    original.requestTileGeometry(6, 3, 3),
+    original.requestTileGeometry(6, 3, 3),
+  ]);
+  assert.equal(tileLoads, 1, "Concurrent terrain requests coalesce");
+  assert.equal(firstTile, sameTile);
+  const rectangle = original.tilingScheme.tileXYToRectangle(6, 3, 3);
+  assert(
+    Math.abs(
+      firstTile.interpolateHeight(
+        rectangle,
+        (rectangle.west + rectangle.east) / 2,
+        (rectangle.south + rectangle.north) / 2,
+      ) - 100,
+    ) < 0.01,
+  );
+  const viewportGrid = {
+    ...world,
+    bounds: [-1, 40, 1, 50],
+    elevations: Array(9).fill(200),
+  };
+  await resources.setTerrain(viewportGrid, 1, () => true, source);
+  assert.equal(
+    assignments,
+    1,
+    "Viewport terrain sampling must not discard the imagery/terrain quadtree",
+  );
+  assert.equal(installed, original);
+  assert.equal(
+    original.sampleHeight(45, 0),
+    200,
+    "CPU Event/axis heights use the new viewport grid",
+  );
+  assert.equal(
+    await original.requestTileGeometry(6, 3, 3),
+    firstTile,
+    "Navigation retains rendered tile geometry",
+  );
+  await original.requestTileGeometry(7, 3, 3);
+  assert.equal(
+    tileLoads,
+    2,
+    "A newly visible tile reads actual source terrain",
+  );
+  assert.equal(
+    original.maximumLevel,
+    7,
+    "Refinement follows catalog sample spacing, not viewport packet dimensions",
+  );
+  await resources.setTerrain(viewportGrid, 2, () => true, source);
+  assert.equal(
+    assignments,
+    2,
+    "An explicit exaggeration change does replace terrain",
+  );
+  assert.notEqual(installed, original);
+  await resources.setTerrain(viewportGrid, 2, () => true, { ...source });
+  assert.equal(
+    assignments,
+    3,
+    "A different terrain catalog replaces the provider",
+  );
+  await resources.setTerrain(null);
+  assert.equal(assignments, 4, "Unload replaces terrain exactly once");
+  await resources.setTerrain(null);
+  assert.equal(assignments, 4);
+  // Fast navigation cannot create an unbounded queue of native mesh IPC calls.
+  let release;
+  const blocked = new Promise((resolve) => {
+    release = resolve;
+  });
+  const bounded = new LocalDtedTerrainProvider(
+    world,
+    undefined,
+    "ellipsoid",
+    1,
+    {
+      ...source,
+      async load(bounds) {
+        await blocked;
+        return { ...world, bounds };
+      },
+    },
+  );
+  const queued = Array.from({ length: 6 }, (_, i) =>
+    bounded.requestTileGeometry(i, 3, 3),
+  );
+  assert.equal(bounded.pendingCount, 6);
+  assert.equal(
+    bounded.requestTileGeometry(7, 3, 3),
+    undefined,
+    "Cesium retries excess terrain requests later",
+  );
+  release();
+  await Promise.all(queued);
+  assert.equal(bounded.pendingCount, 0);
+  bounded.dispose();
+}
+
+// Geographic world meshes retain uniform latitude registration near the poles.
+const polarTerrain = {
+  bounds: [-1, 80, 1, 89.999999],
+  width: 2,
+  height: 3,
+  geographic: true,
+  elevations: [100, 100, 50, 50, 0, 0],
+};
+assert.equal(sampleTerrain(polarTerrain, (80 + 89.999999) / 2, 0), 50);
 console.log(
   "Cesium resources: 8 independent PROJ geoid references, dateline/poles, Mercator DTED sampling/voids, native mesh interpolation/availability/cache, explicit datum enforcement passed.",
 );

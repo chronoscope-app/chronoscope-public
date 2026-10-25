@@ -1,0 +1,252 @@
+.workflow-dialog {
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  width: min(850px, 94vw);
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  box-shadow: var(--shadow);
+}
+.workflow-dialog::backdrop {
+  background: #0008;
+}
+.workflow-dialog header,
+.workflow-dialog footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.workflow-dialog header {
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.workflow-dialog h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+}
+.workflow-dialog header p,
+.workflow-dialog .description {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.workflow-dialog footer {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.workflow-dialog fieldset {
+  border: 0;
+  padding: 0;
+  margin: 16px 0;
+  min-width: 0;
+}
+.workflow-dialog legend {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.workflow-dialog details {
+  margin: 18px 0;
+}
+.workflow-dialog summary {
+  margin-bottom: 14px;
+}
+.workflow-dialog .notice {
+  line-height: 1.7;
+  margin: 16px 0;
+}
+.workflow-dialog .preview-scroll {
+  max-height: 250px;
+  overflow: auto;
+  margin: 18px 0;
+}
+.workflow-dialog p[role="alert"] {
+  color: var(--selection);
+}
+.workflow-steps {
+  display: flex;
+  gap: 24px;
+  padding: 0 0 16px;
+  list-style: none;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+.workflow-steps [aria-current] {
+  color: var(--accent);
+  font-weight: 600;
+}
+.analysis-tasks {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+}
+.analysis-tasks label {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  align-items: center;
+  font-size: 12px;
+}
+.analysis-tasks label:has(input:checked) {
+  background: var(--raised);
+  border-color: var(--accent);
+}
+.analysis-tasks input {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  flex: 0 0 auto;
+  padding: 0;
+  margin: 0;
+}
+.analysis-tasks small {
+  display: block;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.analysis-field-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 12px;
+  max-height: 190px;
+  overflow: auto;
+}
+.analysis-field-list label {
+  overflow-wrap: anywhere;
+}
+.analysis-dialog {
+  width: min(940px, 96vw);
+  padding: 22px;
+}
+.analysis-dialog header {
+  margin-bottom: 18px;
+}
+.analysis-layout {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 24px;
+}
+.analysis-layout > .analysis-tasks {
+  margin: 0;
+  padding-right: 18px;
+  border-right: 1px solid var(--line);
+}
+.analysis-tasks legend {
+  font-size: 11px;
+  color: var(--muted);
+}
+.analysis-tasks .description {
+  margin: 16px 0 0;
+}
+.analysis-detail {
+  min-width: 0;
+}
+.analysis-detail-heading {
+  margin-bottom: 16px;
+}
+.analysis-detail h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+.analysis-detail .description {
+  line-height: 1.5;
+}
+#analysis-output {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.analysis-scope-summary {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 8px;
+}
+.analysis-dialog .field {
+  margin: 0;
+}
+.analysis-dialog .analysis-fields {
+  margin: 16px 0 0;
+}
+.analysis-dialog .analysis-fields legend {
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+.analysis-dialog .notice {
+  margin: 14px 0 0;
+  padding: 9px 11px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.analysis-dialog footer {
+  margin-top: 8px;
+  padding-top: 12px;
+}
+.analysis-dialog #analysis-status:empty {
+  min-height: 0;
+  margin: 0;
+}
+.import-quality {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+.import-quality strong,
+.import-quality span {
+  display: block;
+}
+.import-quality strong {
+  font-size: 25px;
+}
+.import-quality span {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+}
+.import-rejections {
+  max-height: 210px;
+  overflow: auto;
+  user-select: text;
+}
+#import-status,
+#analysis-status {
+  min-height: 20px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .workflow-dialog {
+    padding: 18px;
+  }
+  .workflow-dialog .modal-grid,
+  .analysis-layout,
+  .analysis-tasks,
+  .analysis-field-list {
+    grid-template-columns: 1fr;
+  }
+  .import-quality {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .workflow-steps {
+    gap: 12px;
+    font-size: 11px;
+  }
+  .analysis-layout {
+    gap: 16px;
+  }
+  .analysis-layout > .analysis-tasks {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 0 0 14px;
+  }
+  .analysis-tasks .description {
+    display: none;
+  }
+}

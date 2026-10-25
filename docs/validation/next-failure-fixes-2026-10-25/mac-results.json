@@ -1,0 +1,1723 @@
+{
+  "scope": "Mac scenario, projection, terrain and harness repair verification, native app checks and hardware benchmarks. Linux results are separate.",
+  "github_runners_used": false,
+  "runs": [
+    {
+      "run_id": "20261025T175845Z-987062e0",
+      "source_revision": "8bfe37b9b16ccb16cc5e5cb5a25a77fe6c08470d",
+      "dirty": true,
+      "passed": false,
+      "started_utc": "2026-10-25T17:58:45.371059+00:00",
+      "finished_utc": "2026-10-25T18:01:59.777289+00:00",
+      "checks": [
+        {
+          "name": "validation-runner-tests",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/validation-runner-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.837
+        },
+        {
+          "name": "rust-format",
+          "command": [
+            "cargo",
+            "fmt",
+            "--all",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/rust-format.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.388
+        },
+        {
+          "name": "glib-backport-integrity",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "scripts/test_glib_backport.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/glib-backport-integrity.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.727
+        },
+        {
+          "name": "core-clippy",
+          "command": [
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--all-targets",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/core-clippy.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 92.527
+        },
+        {
+          "name": "cli-build",
+          "command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--bin",
+            "chronoscope"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/cli-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 73.427
+        },
+        {
+          "name": "frontend-build",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "run",
+            "build",
+            "--",
+            "--configLoader",
+            "runner"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/frontend-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 8.084
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.944
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.391
+        },
+        {
+          "name": "real-demos-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/real-demos-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/real-demos-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 7.271,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "2a09fabe576e62a478092cef360c0e4d2b6bb8fe522ebfbd756282c86610626f"
+        },
+        {
+          "name": "mcp-live-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/mcp-live-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0/logs/mcp-live-qa.log",
+          "exit_code": 1,
+          "timed_out": false,
+          "elapsed_s": 4.484,
+          "suite_sha256": "66c25503b2e12efdba0e3991f6337d9b91be9a7ebbf1658956c4b8f737c93a06"
+        }
+      ],
+      "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T175845Z-987062e0",
+      "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f"
+    },
+    {
+      "run_id": "20261025T180239Z-e4c5cf7b",
+      "source_revision": "8bfe37b9b16ccb16cc5e5cb5a25a77fe6c08470d",
+      "dirty": true,
+      "passed": true,
+      "started_utc": "2026-10-25T18:02:39.701591+00:00",
+      "finished_utc": "2026-10-25T18:02:49.672875+00:00",
+      "checks": [
+        {
+          "name": "validation-runner-tests",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180239Z-e4c5cf7b/logs/validation-runner-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.828
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180239Z-e4c5cf7b/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.187
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180239Z-e4c5cf7b/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.326
+        },
+        {
+          "name": "mcp-live-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/mcp-live-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180239Z-e4c5cf7b/logs/mcp-live-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 5.295,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201"
+        }
+      ],
+      "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180239Z-e4c5cf7b",
+      "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f"
+    },
+    {
+      "run_id": "20261025T180324Z-6fc7dce3",
+      "source_revision": "ee7f05f0d0e42321adf656d25c24456457adee93",
+      "dirty": false,
+      "passed": true,
+      "started_utc": "2026-10-25T18:03:24.221657+00:00",
+      "finished_utc": "2026-10-25T18:08:10.694513+00:00",
+      "checks": [
+        {
+          "name": "validation-runner-tests",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180324Z-6fc7dce3/logs/validation-runner-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.829
+        },
+        {
+          "name": "rust-tests",
+          "command": [
+            "cargo",
+            "test",
+            "--locked",
+            "-p",
+            "chronoscope"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180324Z-6fc7dce3/logs/rust-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 274.459
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180324Z-6fc7dce3/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.294
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180324Z-6fc7dce3/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.473
+        },
+        {
+          "name": "integration-smoke-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/integration-smoke-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180324Z-6fc7dce3/logs/integration-smoke-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.108,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "27829853d7fd27f6167148480312896e3d86c677e947de65a0c90243efed495a"
+        },
+        {
+          "name": "welcome-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/welcome-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180324Z-6fc7dce3/logs/welcome-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 4.799,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "528e00c6ab8ab9469573d3974f1fea4a07683efa32bddd38aa4ce9214e7a09d7"
+        }
+      ],
+      "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T180324Z-6fc7dce3",
+      "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f"
+    },
+    {
+      "run_id": "20261025T181844Z-e70b4525",
+      "source_revision": "b3209684f4032fb4b22c53fd715fcace6b3fe799",
+      "dirty": true,
+      "passed": true,
+      "started_utc": "2026-10-25T18:18:44.309608+00:00",
+      "finished_utc": "2026-10-25T18:20:03.302914+00:00",
+      "checks": [
+        {
+          "name": "validation-runner-tests",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/validation-runner-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.819
+        },
+        {
+          "name": "rust-format",
+          "command": [
+            "cargo",
+            "fmt",
+            "--all",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/rust-format.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.458
+        },
+        {
+          "name": "glib-backport-integrity",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "scripts/test_glib_backport.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/glib-backport-integrity.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.615
+        },
+        {
+          "name": "core-clippy",
+          "command": [
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--all-targets",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/core-clippy.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.351
+        },
+        {
+          "name": "cli-build",
+          "command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--bin",
+            "chronoscope"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/cli-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.292
+        },
+        {
+          "name": "frontend-build",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "run",
+            "build",
+            "--",
+            "--configLoader",
+            "runner"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/frontend-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 7.239
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.005
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.327
+        },
+        {
+          "name": "balanced-terrain-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/balanced-terrain-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/balanced-terrain-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 37.332,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "546b3d27a6470fdc2addf797cc466fc7e8d38a319b8ad642617c7023d47174ef"
+        },
+        {
+          "name": "real-demos-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/real-demos-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/real-demos-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 6.774,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "2a09fabe576e62a478092cef360c0e4d2b6bb8fe522ebfbd756282c86610626f"
+        },
+        {
+          "name": "view-sync-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/view-sync-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/view-sync-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 8.135,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "b97643e2a29e29fe49b6fea12837fde0065ec9a59e03c7ab4a43a5714a1b0b1e"
+        },
+        {
+          "name": "mcp-live-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/mcp-live-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/mcp-live-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 5.098,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201"
+        },
+        {
+          "name": "playback-transitions-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/playback-transitions-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525/logs/playback-transitions-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 7.241,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "3cfe2aba35cccc0dd07731916406f01b855ac37a0b4059f47b4df8540454a879"
+        }
+      ],
+      "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T181844Z-e70b4525",
+      "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f"
+    },
+    {
+      "run_id": "20261025T182219Z-97ac7aaa",
+      "source_revision": "a424f41f828f71324d1acdc536f4dde1d27b6e79",
+      "dirty": true,
+      "passed": true,
+      "started_utc": "2026-10-25T18:22:19.534614+00:00",
+      "finished_utc": "2026-10-25T18:23:16.207808+00:00",
+      "checks": [
+        {
+          "name": "validation-runner-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/validation-runner-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.857
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.197
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.354
+        },
+        {
+          "name": "real-demos-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/real-demos-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/real-demos-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 30.465,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "cb1b4eb189575dac87da4582b9bae68f8c9ef1a3d8f060f5b8649c5ef157d773"
+        },
+        {
+          "name": "view-sync-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/view-sync-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/view-sync-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 8.057,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "13b5c1df8255ad188e162f25d375077b47708f7fa0481b784f930b5e23da5076"
+        },
+        {
+          "name": "test_publication_cleanup",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_publication_cleanup.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/test_publication_cleanup.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.245
+        },
+        {
+          "name": "test_package_distribution",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_package_distribution.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/test_package_distribution.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.405
+        },
+        {
+          "name": "test_tester_packaging",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_tester_packaging.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/test_tester_packaging.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.267
+        },
+        {
+          "name": "test_validate_tester_download",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_validate_tester_download.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/test_validate_tester_download.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.085
+        },
+        {
+          "name": "test_analytics",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_analytics.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/test_analytics.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.153
+        },
+        {
+          "name": "test_analytics_engine",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_analytics_engine.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/test_analytics_engine.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 8.309
+        },
+        {
+          "name": "test_chart_shortcuts_protocol",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_chart_shortcuts_protocol.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/test_chart_shortcuts_protocol.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.963
+        },
+        {
+          "name": "test_subsecond_protocol",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_subsecond_protocol.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa/logs/test_subsecond_protocol.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.968
+        }
+      ],
+      "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T182219Z-97ac7aaa",
+      "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f"
+    },
+    {
+      "run_id": "20261025T183545Z-0676d42a",
+      "source_revision": "01b7c69ad7994b3499918305460ec78f213fa896",
+      "dirty": true,
+      "passed": false,
+      "started_utc": "2026-10-25T18:35:45.129273+00:00",
+      "checks": [
+        {
+          "name": "validation-runner-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/validation-runner-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.826
+        },
+        {
+          "name": "rust-format",
+          "command": [
+            "cargo",
+            "fmt",
+            "--all",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/rust-format.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.515
+        },
+        {
+          "name": "glib-backport-integrity",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_glib_backport.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/glib-backport-integrity.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.666
+        },
+        {
+          "name": "core-clippy",
+          "command": [
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--all-targets",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/core-clippy.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.353
+        },
+        {
+          "name": "cli-build",
+          "command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--bin",
+            "chronoscope"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/cli-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.286
+        },
+        {
+          "name": "frontend-build",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "run",
+            "build",
+            "--",
+            "--configLoader",
+            "runner"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/frontend-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 7.215
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.994
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.385
+        },
+        {
+          "name": "balanced-terrain-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/balanced-terrain-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/balanced-terrain-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 37.271,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "546b3d27a6470fdc2addf797cc466fc7e8d38a319b8ad642617c7023d47174ef"
+        },
+        {
+          "name": "real-demos-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/real-demos-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/real-demos-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 36.862,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "d624e9a99456c1f1fd051a4a3d5712c656233d9d71e95f1479f108772a75c827"
+        },
+        {
+          "name": "view-sync-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/view-sync-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a/logs/view-sync-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 8.044,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "13b5c1df8255ad188e162f25d375077b47708f7fa0481b784f930b5e23da5076"
+        }
+      ],
+      "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T183545Z-0676d42a",
+      "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f",
+      "aborted_reason": "Stopped owned process group before native build after review exposed uncontained synchronous worker construction and fresh-test dependency mutation; final corrected-source verification is separate."
+    },
+    {
+      "run_id": "20261025T184102Z-5a1b659a",
+      "source_revision": "163ae430053a8749dcc607b1372e05cc0defae94",
+      "dirty": true,
+      "passed": false,
+      "started_utc": "2026-10-25T18:41:02.669740+00:00",
+      "finished_utc": "2026-10-25T18:47:56.979214+00:00",
+      "checks": [
+        {
+          "name": "validation-runner-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/validation-runner-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.82
+        },
+        {
+          "name": "rust-format",
+          "command": [
+            "cargo",
+            "fmt",
+            "--all",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/rust-format.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.57
+        },
+        {
+          "name": "glib-backport-integrity",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_glib_backport.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/glib-backport-integrity.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.57
+        },
+        {
+          "name": "core-clippy",
+          "command": [
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--all-targets",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/core-clippy.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.351
+        },
+        {
+          "name": "cli-build",
+          "command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--bin",
+            "chronoscope"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/cli-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.239
+        },
+        {
+          "name": "frontend-build",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "run",
+            "build",
+            "--",
+            "--configLoader",
+            "runner"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/frontend-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 7.259
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.003
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.363
+        },
+        {
+          "name": "balanced-terrain-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/balanced-terrain-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/balanced-terrain-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 37.321,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "546b3d27a6470fdc2addf797cc466fc7e8d38a319b8ad642617c7023d47174ef"
+        },
+        {
+          "name": "real-demos-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/real-demos-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/real-demos-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 37.339,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            },
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "d624e9a99456c1f1fd051a4a3d5712c656233d9d71e95f1479f108772a75c827"
+        },
+        {
+          "name": "view-sync-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/view-sync-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/view-sync-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 8.224,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "13b5c1df8255ad188e162f25d375077b47708f7fa0481b784f930b5e23da5076"
+        },
+        {
+          "name": "mcp-live-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/mcp-live-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/mcp-live-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 5.1,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201"
+        },
+        {
+          "name": "playback-transitions-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/playback-transitions-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/playback-transitions-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 7.128,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "a02a9f446bd158cc39e7df0f8df2655d54f8790439e4a6a9f3177696c54c26d1"
+        },
+        {
+          "name": "test_publication_cleanup",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_publication_cleanup.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/test_publication_cleanup.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.288
+        },
+        {
+          "name": "test_package_distribution",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_package_distribution.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/test_package_distribution.log",
+          "exit_code": 1,
+          "timed_out": false,
+          "elapsed_s": 1.32
+        },
+        {
+          "name": "test_tester_packaging",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_tester_packaging.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/test_tester_packaging.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.242
+        },
+        {
+          "name": "test_validate_tester_download",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_validate_tester_download.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/test_validate_tester_download.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.077
+        },
+        {
+          "name": "test_analytics",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_analytics.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/test_analytics.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.17
+        },
+        {
+          "name": "test_analytics_engine",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_analytics_engine.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/test_analytics_engine.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.268
+        },
+        {
+          "name": "test_chart_shortcuts_protocol",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_chart_shortcuts_protocol.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/test_chart_shortcuts_protocol.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.001
+        },
+        {
+          "name": "test_subsecond_protocol",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_subsecond_protocol.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/test_subsecond_protocol.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.006
+        },
+        {
+          "name": "native-clippy",
+          "command": [
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "chronoscope-desktop",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/native-clippy.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 82.892
+        },
+        {
+          "name": "native-build",
+          "command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "chronoscope-desktop"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/native-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 61.121
+        },
+        {
+          "name": "native-cli-smoke",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/test_desktop_cli.py",
+            "--binary",
+            "/Users/user/Documents/Codex/chronoscope mac/target/debug/chronoscope-desktop"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/native-cli-smoke.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 4.573
+        },
+        {
+          "name": "native-bundle-launch",
+          "command": [
+            "bash",
+            "script/build_and_run.sh",
+            "--verify"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/native-bundle-launch.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 18.491
+        },
+        {
+          "name": "native-terrain-gui",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/native_terrain_qa.py",
+            "--cli",
+            "/Users/user/Documents/Codex/chronoscope mac/target/debug/bundle/macos/Chronoscope.app/Contents/MacOS/chronoscope-desktop",
+            "--data-dir",
+            "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/native-profile",
+            "--output",
+            "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/artifacts/native-terrain-gui"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/native-terrain-gui.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 125.382
+        },
+        {
+          "name": "native-mcp-live-gui",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/qa-python/bin/python",
+            "scripts/native_mcp_live_qa.py",
+            "--cli",
+            "/Users/user/Documents/Codex/chronoscope mac/target/debug/bundle/macos/Chronoscope.app/Contents/MacOS/chronoscope-desktop",
+            "--data-dir",
+            "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/native-profile",
+            "--output",
+            "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/artifacts/native-mcp-live-gui"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/logs/native-mcp-live-gui.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 4.874
+        }
+      ],
+      "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a",
+      "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f",
+      "scope_note": "All product/browser/native checks passed; original packaging fixture failure is corrected by the separate focused 23-test rerun."
+    },
+    {
+      "run_id": "20261025T190656Z-17a535a4",
+      "source_revision": "08871720a0a4000762d63970efeb467735af4a8f",
+      "dirty": true,
+      "passed": true,
+      "started_utc": "2026-10-25T19:06:56.321058+00:00",
+      "finished_utc": "2026-10-25T19:07:16.430687+00:00",
+      "checks": [
+        {
+          "name": "validation-runner-tests",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4/logs/validation-runner-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.838
+        },
+        {
+          "name": "rust-format",
+          "command": [
+            "cargo",
+            "fmt",
+            "--all",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4/logs/rust-format.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.549
+        },
+        {
+          "name": "glib-backport-integrity",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "scripts/test_glib_backport.py"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4/logs/glib-backport-integrity.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.719
+        },
+        {
+          "name": "core-clippy",
+          "command": [
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--all-targets",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4/logs/core-clippy.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.363
+        },
+        {
+          "name": "cli-build",
+          "command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--bin",
+            "chronoscope"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4/logs/cli-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.312
+        },
+        {
+          "name": "frontend-build",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "run",
+            "build",
+            "--",
+            "--configLoader",
+            "runner"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4/logs/frontend-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 7.356
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.999
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.346
+        },
+        {
+          "name": "mcp-live-qa",
+          "command": [
+            "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+            "frontend/scripts/mcp-live-qa.mjs"
+          ],
+          "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4/logs/mcp-live-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 5.309,
+          "browser_launches": [
+            {
+              "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+              "version": "155.0.8059.85",
+              "headless": true,
+              "angle": "metal"
+            }
+          ],
+          "suite_sha256": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201"
+        }
+      ],
+      "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T190656Z-17a535a4",
+      "cli_sha256": "54d1c2aebc27d08e070a7b12ff8e4c343395713d0833e0b3cc169a0678e8635f",
+      "cli_build_profile": "debug",
+      "native_build_profile": null
+    }
+  ],
+  "limitations": [
+    "Earlier focused run contains a failed MCP harness poll; corrected final invocation is separate.",
+    "Original complete demo matrix passed Chrome/Metal. A SwiftShader diagnostic was stopped by the resource guard, not accepted.",
+    "The default Rust gate intentionally ignores the full demo round-trip matrix.",
+    "Two original headless Metal benchmark invocations closed Chromium and remain failed/incomplete. The visible-window diagnostic and both subsequent official benchmark invocations completed successfully."
+  ],
+  "initial_scenario_commit": "ee7f05f0d0e42321adf656d25c24456457adee93",
+  "initial_scenario_file_sha256": {
+    "frontend/src/agent-lab.ts": "fa53809d4cc6e8335ba47b72f612cfc8cd1cf9d0f2e8e90d7a016432928da117",
+    "frontend/scripts/agent-lab-test.mjs": "3daaae6007d29750893a1fcd128b94c9df9109d690e9cd44a9b1130a64dae876",
+    "frontend/scripts/mcp-live-qa.mjs": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201",
+    "frontend/scripts/real-demos-qa.mjs": "2a09fabe576e62a478092cef360c0e4d2b6bb8fe522ebfbd756282c86610626f",
+    "scripts/validation-suites.json": "9e90163e746588f58b91667f00a00028472059a03cf2cdc4b927dfaf6fafe82b"
+  },
+  "application_source_commit": "163ae430053a8749dcc607b1372e05cc0defae94",
+  "final_qa_commit": "08871720a0a4000762d63970efeb467735af4a8f",
+  "final_file_sha256": {
+    "frontend/src/agent-lab.ts": "fa53809d4cc6e8335ba47b72f612cfc8cd1cf9d0f2e8e90d7a016432928da117",
+    "frontend/src/view.ts": "5f461138457859498977dccc4cb9ec98cf462919acc21388c929788611e148e2",
+    "frontend/scripts/patches/terrain-picker.mjs": "1b64edf5916ebdd47a4a8f0a924d63c86d5e87a21cd388c149fc954af285ba38",
+    "frontend/scripts/prepare-cesium.mjs": "01ea4a8afe18e94d394d4d03439cddd20c560abbf491fa5c1bc4cb40e95f7242",
+    "frontend/scripts/agent-lab-test.mjs": "3daaae6007d29750893a1fcd128b94c9df9109d690e9cd44a9b1130a64dae876",
+    "frontend/scripts/terrain-picking-test.mjs": "a702f2a6d8ea26689db7b0af31a64a17d42a285c4143023fd897b13dc475d9ce",
+    "frontend/scripts/real-demos-qa.mjs": "d624e9a99456c1f1fd051a4a3d5712c656233d9d71e95f1479f108772a75c827",
+    "frontend/scripts/view-sync-qa.mjs": "13b5c1df8255ad188e162f25d375077b47708f7fa0481b784f930b5e23da5076",
+    "frontend/scripts/playback-transitions-qa.mjs": "a02a9f446bd158cc39e7df0f8df2655d54f8790439e4a6a9f3177696c54c26d1",
+    "frontend/scripts/mcp-live-qa.mjs": "46d59a5c4890e93594994e47877ccf267a65b3ceac255415cf52a0257c64c201",
+    "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+    "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+    "scripts/validate_local.py": "4d9ab98f8862f089b7be53ddb22edb6c36510b3b1f58af0b419e9f6d63be805a",
+    "scripts/test_package_distribution.py": "d028b91eb55b71590751cd2a95edcf9308c302012497c325a92d2b490d368cf2",
+    "scripts/validation_runtime.py": "b296eb98b85cbb7211e28d68784fc35e2f73fcb09fd8340b7248a7d5e5def18e",
+    "scripts/test_validation_runner.py": "737d00410c2c6417c26aa1e2529fa8df70980370f5a810e7c4ce8f684678af92"
+  },
+  "installed_terrain_picker_sha256": "198f7ed298ee6e97f6e1a625f12f8b8391079c859a0f929c63d20bcaf7385568",
+  "packaging_fixture_rerun": {
+    "validated_tree_commit": "f76c58519fbd147f2b77f7111a3c4c697dec8328",
+    "command": [
+      "python3",
+      "scripts/test_package_distribution.py"
+    ],
+    "exit_code": 0,
+    "tests_passed": 23,
+    "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/packaging-fixture-final.log",
+    "log_sha256": "15f7fd82fdfc79205c48651210e159923f50305358b04b5fc44802d1305de4e7",
+    "suite_sha256": "d028b91eb55b71590751cd2a95edcf9308c302012497c325a92d2b490d368cf2",
+    "scope": "Focused rerun after packaging fixture correction; product code unchanged from163ae43."
+  },
+  "native_gui": {
+    "native-terrain-gui": {
+      "passed": true,
+      "checks": [
+        "Native packaged app discovers real Balanced terrain and EGM96 default",
+        "native-himalayas-globe: active terrain, no render errors, settled native scene",
+        "globe: native pan/zoom retains terrain provider and imagery cache",
+        "native-himalayas-map: active terrain, no render errors, settled native scene",
+        "map: native pan/zoom retains terrain provider and imagery cache",
+        "native-himalayas-time: active terrain, no render errors, settled native scene",
+        "space-time: native pan/zoom retains terrain provider and imagery cache",
+        "native-antarctica: active terrain, no render errors, settled native scene",
+        "native-greenland: active terrain, no render errors, settled native scene",
+        "Native unload and portable save/open retain built-in identity without copying world pack",
+        "native-custom-dted: active terrain, no render errors, settled native scene",
+        "Native custom DTED replaces built-in terrain and requires explicit vertical datum",
+        "native-wildlife-time: active terrain, no render errors, settled native scene"
+      ],
+      "report": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/artifacts/native-terrain-gui/report.json",
+      "report_sha256": "720ce0240f585478d32133e19fe6b03ef4d6d148453c52bc8579d8a029296457"
+    },
+    "native-mcp-live-gui": {
+      "passed": true,
+      "checks": [
+        "Attached MCP Apps negotiation, HTML resource and scoped exact query result",
+        "Attached resource subscription delivers changes; unsubscribe stops updates",
+        "Native timeline configure/seek/step/play/pause through public MCP",
+        "Persistent saved recipe runs asynchronously against the native view with per-frame trace",
+        "Native cancellation releases profile listeners and preserves completed actions"
+      ],
+      "report": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/runs/20261025T184102Z-5a1b659a/artifacts/native-mcp-live-gui/report.json",
+      "report_sha256": "05e7e09f6dd354f131ea9e9726ceb8d793925f80f80a03fcb21178b0dc1ef26b"
+    }
+  },
+  "hardware_benchmarks": [
+    {
+      "name": "performance",
+      "passed": false,
+      "exit_code": 1,
+      "samples": 16,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "report": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/hardware/performance/report.json",
+      "report_sha256": "3b642dc03f807d126681cc26b5eaccb45e19eefa1b61f3cc00813943151b7e88",
+      "diagnostic_only": false
+    },
+    {
+      "name": "performance-100k",
+      "passed": false,
+      "exit_code": 1,
+      "samples": 9,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "report": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/hardware/performance-100k/report.json",
+      "report_sha256": "b5f20022b8fc21afc80d1bc638c3e9e43408f86facd06d19e25e6836a87fcfbc",
+      "diagnostic_only": false
+    },
+    {
+      "name": "performance-headed",
+      "passed": true,
+      "exit_code": 0,
+      "samples": 27,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "angle": "metal"
+        }
+      ],
+      "report": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/hardware/performance-headed/report.json",
+      "report_sha256": "9de7b0625d544f2fdccc79544c56001b383cd88c4ee2ece55d554548e3e75eed",
+      "diagnostic_only": true
+    },
+    {
+      "name": "performance-windowed-final",
+      "passed": true,
+      "exit_code": 0,
+      "samples": 27,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "headless": false,
+          "angle": "metal"
+        }
+      ],
+      "report": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/hardware/performance-windowed-final/report.json",
+      "report_sha256": "7a26e6f250c7d0ad0cde1b2794d974bd574bdf0c64a710e6d48a8dff8de720b2",
+      "diagnostic_only": false
+    },
+    {
+      "name": "performance-100k-windowed-final",
+      "passed": true,
+      "exit_code": 0,
+      "samples": 36,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "155.0.8059.85",
+          "headless": false,
+          "angle": "metal"
+        }
+      ],
+      "report": "/Users/user/Documents/Codex/chronoscope mac/.qa/next-bugfix-mac/hardware/performance-100k-windowed-final/report.json",
+      "report_sha256": "ace074bc88b5fb2c970532a011ffd58ed57879ec8e3195122dac9a4e5ce98bad",
+      "diagnostic_only": false
+    }
+  ],
+  "status": "Final application/native checks and official visible-window hardware benchmarks passed; original failures and superseded invocations remain explicitly recorded."
+}
