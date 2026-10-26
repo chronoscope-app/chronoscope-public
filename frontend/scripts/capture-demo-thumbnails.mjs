@@ -1,95 +1,107 @@
-// Regenerate the shipped thumbnails from the real offline demo hero views.
+// Capture the catalog's actual saved scenes, including year filters and legends.
 import fs from "node:fs";
 import path from "node:path";
+import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { withLocalApp, root } from "./local-browser.mjs";
-const images = [];
-for (const id of [
-  "hurricanes",
-  "noaa-ais",
-  "animal-gps",
-  "local-wildlife",
-  "stork-migration",
-  "elephant-seals",
-])
-  await withLocalApp(
-    `demo-thumbnails-${id}`,
-    async ({ page, api, root, pass }) => {
-      const dest = path.join(root, "frontend/public/demos");
-      fs.mkdirSync(dest, { recursive: true });
-      const { demos } = await api("demo_catalog");
-
-      for (const demo of demos.filter((d) => d.id === id)) {
-        for (const [index, mode] of [
-          [0, "time"],
-          [1, "map"],
-        ]) {
-          const result = await page.evaluate(
-            async ({ id, index }) => {
-              const c = window.__chronoscope;
-              await c.call("demo_open", { id });
-              const restored = await c.call("restore_view", { index });
-              await c.restoreScene({ ...restored.scene, expanded: true });
-              return { scene: c.captureScene(), count: c.snapshot.count };
-            },
-            { id: demo.id, index },
-          );
-          // Wait for geometry refinement and tile texture upload before export.
-          await page.waitForTimeout(750);
-          const png = await page.evaluate(async () => {
-            const v = window.__chronoscope.view;
-            const data = await v.screenshot();
-            // The app export has a credit footer; the picker carries credits in its source disclosure.
-            const image = new Image();
-            image.src = data;
-            await image.decode();
-            const canvas = document.createElement("canvas");
-            canvas.width = 480;
-            canvas.height = 300;
-            canvas
-              .getContext("2d")
-              .drawImage(
-                image,
-                0,
-                0,
-                v.viewer.canvas.width,
-                v.viewer.canvas.height,
-                0,
-                0,
-                480,
-                300,
-              );
-            return canvas.toDataURL("image/jpeg", 0.9).split(",")[1];
-          });
-          const file = `${demo.id}-${mode}.jpg`,
-            bytes = Buffer.from(png, "base64");
-          fs.writeFileSync(path.join(dest, file), bytes);
-          images.push({
-            file,
-            demo: demo.id,
-            source_url: demo.source_url,
-            license: demo.license,
-            saved_view_index: index,
-            events: result.count,
-            scene: result.scene,
-            sha256: createHash("sha256").update(bytes).digest("hex"),
-          });
-          pass(file);
-        }
-      }
-    },
+import { withLocalApp } from "./local-browser.mjs";
+const manifestPath = new URL("../public/demos/manifest.json", import.meta.url);
+const requested = process.env.CHRONOSCOPE_DEMO_IDS?.split(",");
+const images = requested
+  ? JSON.parse(fs.readFileSync(manifestPath)).images.filter(
+      (image) => !requested.includes(image.demo),
+    )
+  : [];
+await withLocalApp("demo-thumbnails", async ({ page, api, root, pass }) => {
+  await page.setViewportSize({ width: 900, height: 650 });
+  const dest = path.join(root, "frontend/public/demos");
+  fs.mkdirSync(dest, { recursive: true });
+  const { demos } = await api("demo_catalog");
+  for (const demo of demos.filter(
+    (demo) => !requested || requested.includes(demo.id),
+  )) {
+    for (const preview of demo.previews) {
+      const result = await page.evaluate(
+        async ({ id, index }) => {
+          const c = window.__chronoscope;
+          await c.call("demo_open", { id });
+          const restored = await c.call("restore_view", { index });
+          await c.restoreScene({ ...restored.scene, expanded: true });
+          return {
+            scene: c.captureScene(),
+            count: c.snapshot.count,
+            visible: c.snapshot.visible,
+            filter: c.snapshot.filter,
+          };
+        },
+        { id: demo.id, index: preview.view_index },
+      );
+      await page.waitForFunction(
+        () =>
+          !window.__chronoscope.busy &&
+          !window.__chronoscope.view.displayLayer.updating,
+        null,
+        { polling: 100 },
+      );
+      await page.waitForTimeout(900);
+      const file = `${demo.id}-${preview.key}.jpg`;
+      // Capture the app surface, so the fixed measurement legend remains visible.
+      const surface = await page.locator("#scene").screenshot({ type: "png" });
+      const encoded = await page.evaluate(async (base64) => {
+        const source = new Image();
+        source.src = "data:image/png;base64," + base64;
+        await source.decode();
+        const canvas = document.createElement("canvas");
+        canvas.width = 480;
+        canvas.height = 300;
+        const context = canvas.getContext("2d");
+        context.fillStyle = "#101722";
+        context.fillRect(0, 0, 480, 300);
+        const scale = Math.min(480 / source.width, 300 / source.height);
+        const width = source.width * scale,
+          height = source.height * scale;
+        context.drawImage(
+          source,
+          (480 - width) / 2,
+          (300 - height) / 2,
+          width,
+          height,
+        );
+        return canvas.toDataURL("image/jpeg", 0.9).split(",")[1];
+      }, surface.toString("base64"));
+      const bytes = Buffer.from(encoded, "base64");
+      fs.writeFileSync(path.join(dest, file), bytes);
+      const state = await page.evaluate(() => ({
+        ...window.__chronoscope.view.diagnostics(),
+        geometryLimited: window.__chronoscope.view.geometryLimited,
+      }));
+      assert(!state.geometryLimited, `${demo.id}: truncated geometry`);
+      images.push({
+        file,
+        demo: demo.id,
+        source_url: demo.source_url,
+        license: demo.license,
+        saved_view_index: preview.view_index,
+        events: result.count,
+        visible: result.visible,
+        scene: result.scene,
+        filter: result.filter,
+        sha256: createHash("sha256").update(bytes).digest("hex"),
+      });
+      pass(file);
+    }
+  }
+  fs.writeFileSync(
+    path.join(dest, "manifest.json"),
+    JSON.stringify(
+      {
+        renderer: "CesiumJS",
+        basemap: "Bundled Natural Earth, public domain",
+        capture:
+          "Actual saved demo scenes and filters, rendered offline; legends included",
+        images,
+      },
+      null,
+      2,
+    ) + "\n",
   );
-
-fs.writeFileSync(
-  path.join(root, "frontend/public/demos/manifest.json"),
-  JSON.stringify(
-    {
-      renderer: "CesiumJS",
-      basemap: "Bundled Natural Earth, public domain",
-      capture: "Actual saved demo hero views, rendered offline",
-      images,
-    },
-    null,
-    2,
-  ) + "\n",
-);
+});

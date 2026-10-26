@@ -1,0 +1,21 @@
+   Compiling chronoscope v0.15.2 (/workspace/chronoscope-next)
+    Finished `test` profile [unoptimized] target(s) in 2.07s
+     Running tests/priority_demos.rs (target/debug/deps/priority_demos-52a4c9c3ddbf6216)
+
+running 4 tests
+test invalid_measurement_ranges_are_rejected_without_replacing_the_scene ... ok
+test priority_sources_preserve_measurements_and_disable_journey_lines ... ok
+test country_polygons_keep_values_and_year_filters_through_portable_reopen ... ok
+test every_catalog_preview_points_to_a_real_saved_view ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 30.83s
+
+     Running tests/real_demos.rs (target/debug/deps/real_demos-9198ea16331302f8)
+
+running 4 tests
+test bundled_demos_are_editable_copies_with_original_attributes_and_saved_views ... ignored, full bundled-data matrix; run validate_local.py --tier full
+test invalid_demo_id_preserves_current_workspace_and_scoped_mcp_can_open_known_demos ... ok
+test representative_demo_is_an_editable_portable_copy ... ok
+test seal_dive_values_intervals_and_saved_chart_keep_the_published_meaning ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 34.01s

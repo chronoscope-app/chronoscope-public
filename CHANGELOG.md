@@ -8,6 +8,9 @@ These changes are in the current source and are planned for the next preview. Th
 
 ### Added
 
+- Expand Help → Demo datasets from six to thirteen offline examples. Include the existing website earthquake/crime samples and shorter hurricane workspace, full-year USGS earthquakes, NASA FIRMS South America detections, World Bank electricity access and historical JHU CSSE COVID snapshots. Preview images open their exact saved scenes and year filters.
+- Add fixed numeric point/polygon colors with a persistent measurement legend and missing-value color. Country statistics can show the latest observation per entity in a time window; all source rows remain available to charts and tables. Retain source snapshots, checksums and embedded credits.
+
 - Choose how dates and times appear in Preferences → General: system locale, ISO dates, month/day/year or day/month/year, short or full years, dotted or month-name dates, and 12/24-hour clocks with optional seconds. Displayed times remain UTC; stored timestamps, exact inputs, imports and exports retain their original precision.
 - View interactive query tables and bar-chart previews inside compatible external MCP chat clients. Search and sort the returned page, and select rows or chart marks to select the corresponding Events in Chronoscope. Clients without MCP Apps support still receive structured results. This viewer is hosted by the external chat client, separately from Chronoscope's SI chat.
 - Record the app window as an MP4 through MCP while panning, zooming or playing a timeline. Recording currently requires the native desktop on macOS 15 or later; Windows and Linux video capture are not supported.

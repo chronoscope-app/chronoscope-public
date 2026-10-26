@@ -1,0 +1,53 @@
+{
+  "prepared_utc": "2026-10-26T12:22:47.000244+00:00",
+  "base_revision": "3e9060b95bb05c36a5d2012d7324c45c0d0e8289",
+  "catalog_size": 13,
+  "thumbnails": 26,
+  "checks": {
+    "core_tests": {
+      "passed": 50,
+      "ignored": 1
+    },
+    "priority_tests": {
+      "passed": 5
+    },
+    "existing_demo_tests": {
+      "passed": 3,
+      "ignored": 1
+    },
+    "frontend_unit_tests": {
+      "passed": 70
+    },
+    "validation_inventory_tests": {
+      "passed": 12
+    },
+    "strict_clippy": "passed",
+    "generated_contracts": "passed",
+    "priority_browser": "passed",
+    "presentation_browser": "passed",
+    "frontend_build": "passed"
+  },
+  "native_platform_validation": false,
+  "github_workflows_dispatched": false,
+  "source_sha256": {
+    "src/demos.rs": "c0ce6746c7744f6e5de316040f219e32a891196b9278395b518632714e87c3ba",
+    "src/project.rs": "d26ab98e476d3e894895d01215509f3220b5625f7aa527ccfcecfa9680dd2864",
+    "src/api.rs": "73095d0f1d4ab3a6b3599e12ebe96d361274116a840b94f3a4b5d4ea1cfe3be5",
+    "src/engine.rs": "6b91d5311b14016d49dc63b80fae59d208d2442006d19a0a560387c8d518ba58",
+    "src/engine/view_snapshot.rs": "0f2376cde43b3123fb3a9d33db404abff2db58c897397b7d49e7f28698419653",
+    "src/geometry.rs": "64770f29742fc73c26c5ef812b5a247155a963554d3fb0184eb4fe67824536b5",
+    "src/geometry_centroid.rs": "795d94c99cd6ea39f14ac9c05275eec2905c9838d16a636603aec63c5d813e70",
+    "src/schema.rs": "b0a182b0918e2bc0ed37453f64c76801033e0f9c31895f301c10e95065ac209f",
+    "frontend/src/main.ts": "f29a66189d9c2dee072944848fa1b49c10ec0b4efa96f9b436fe37951e331634",
+    "frontend/src/view.ts": "e625846c484190f5e5066c4b4afd1189116842c37eda419695b94a9b3dbf13f1",
+    "frontend/src/measurement-style.ts": "f5196b2703fe882db700fe786e4dafd6b4564a953828b9e8c01ce07fc92b8ae9",
+    "frontend/src/measurement-style.css": "55cb7ecff720f6d5c4410502831e35ac852edcad019c451a040043bc97e46022",
+    "scripts/prepare_priority_demos.py": "7496329b11c3e9f91ae64ee9e0c580fa6438f4c4abc1603c3fcaca9aa11fc516"
+  },
+  "screenshot_sha256": {
+    "fire-detections-hero.png": "df21d1c478536483b827a83fd1667f9e469842038c830c40da3763066791d7dd",
+    "earthquakes-hero.png": "120a77b40cb6b5a8d4fad37ac079e863b629691780dc86cf27102302c78856be",
+    "electricity-access-hero.png": "d29da352ddd3b0fb556c5aa60bcba03cd133f6c348cfe4d1e79f5e2436dbb972",
+    "electricity-access-1990.png": "8f37a5a52db89e6bef8cf090c86a339e00cc00c40d06929564178ee016b5fc77"
+  }
+}

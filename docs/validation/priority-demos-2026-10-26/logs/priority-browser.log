@@ -1,0 +1,6 @@
+PASS earthquakes: real picker, source count and line-free display
+PASS fire-detections: real picker, source count and line-free display
+PASS fires: heat includes every source detection and uses numeric FRP weights
+PASS electricity-access: real picker, source count and line-free display
+PASS electricity: all 169 countries, exact polygon values, fixed percentage legend and saved year filter
+PASS electricity: 1990 comparison preserves scale; invalid user scale cannot change the scene

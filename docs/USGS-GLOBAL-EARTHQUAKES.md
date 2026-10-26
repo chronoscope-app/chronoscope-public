@@ -2,7 +2,7 @@
 
 The globe gallery uses **652 USGS-authored earthquakes, magnitude 4.5 or greater, January 2025 UTC**. Latitude spans −73.2204° to +81.6013° and longitude −179.8865° to +179.5566°: 341 events north of the equator and 311 south. This is worldwide catalog coverage, with uneven concentrations along plate boundaries.
 
-Open [the portable project](../samples/usgs-global-earthquakes-2025-01.chronoscope) directly in Chronoscope. The [CSV](../samples/public/usgs-global-earthquakes-2025-01.csv), [column mapping](../samples/public/usgs-global-earthquakes-2025-01.mapping.json) and [attribution companion](../samples/public/usgs-global-earthquakes-2025-01.csv.attribution.json) are included. This additional example is opened from a file, outside the bundled Help menu.
+Open [the portable project](../samples/usgs-global-earthquakes-2025-01.chronoscope) directly in Chronoscope. The [CSV](../samples/public/usgs-global-earthquakes-2025-01.csv), [column mapping](../samples/public/usgs-global-earthquakes-2025-01.mapping.json) and [attribution companion](../samples/public/usgs-global-earthquakes-2025-01.csv.attribution.json) are included. This example is also bundled in Help → Demo datasets as `earthquakes-january`. The [full-year 2025 demo](PRIORITY-DEMOS.md) is available as `earthquakes`.
 
 ## Source and reuse
 

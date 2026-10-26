@@ -11,6 +11,7 @@ pub struct GeometryFeature {
     pub id: String,
     pub entity: String,
     pub time: f64,
+    pub value: Option<f64>,
     pub shape: crate::geometry::Shape,
 }
 #[derive(Serialize, JsonSchema)]

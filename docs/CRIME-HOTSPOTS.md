@@ -2,7 +2,7 @@
 
 The heat-map gallery uses **4,053 Police.uk theft-from-the-person reports in central London, January 2025**. All returned records are retained; repeated coordinates are separate published records, not discarded duplicates. Tracks are off. Color shows approximate overlap of record counts at the chosen zoom and smoothing radius.
 
-Open [the portable project](../samples/police-uk-london-theft-2025-01.chronoscope) directly, outside the bundled Help menu. The [CSV](../samples/public/police-uk-london-theft-2025-01.csv), [mapping](../samples/public/police-uk-london-theft-2025-01.mapping.json) and [credit companion](../samples/public/police-uk-london-theft-2025-01.csv.attribution.json) are included.
+Open [the portable project](../samples/police-uk-london-theft-2025-01.chronoscope) directly or choose London theft reports in Help → Demo datasets (`london-crime`). The [CSV](../samples/public/police-uk-london-theft-2025-01.csv), [mapping](../samples/public/police-uk-london-theft-2025-01.mapping.json) and [credit companion](../samples/public/police-uk-london-theft-2025-01.csv.attribution.json) are included.
 
 ## Source and credit
 

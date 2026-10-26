@@ -66,9 +66,15 @@ impl Engine {
                     Err(error) => return Err(error),
                 };
                 // Retain bounded observations for tracks and trails even when
-                // cluster glyphs replace individual event glyphs. Density alone
-                // retains its selected-evidence representation.
-                if !ground_effect && options.mode == "density" {
+                // cluster glyphs replace individual event glyphs. A heat-only
+                // scene needs exact summary cells and selected evidence, without
+                // constructing thousands of hidden source glyphs.
+                if (!ground_effect && options.mode == "density")
+                    || (ground_effect
+                        && !options.show_points
+                        && !options.show_tracks
+                        && !options.show_trails)
+                {
                     request["selected_only"] = json!(true);
                     request["include_time_only"] = json!(true);
                     request["max_points"] = json!(2000);

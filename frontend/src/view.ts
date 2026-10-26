@@ -1,3 +1,4 @@
+import { measurementColor, type MeasurementStyle } from "./measurement-style";
 import { captureCamera, restoreCamera } from "./cesium-camera-state";
 import { applySceneAppearance } from "./scene-appearance";
 import { TOOLTIP_DELAY_MS } from "./tooltips";
@@ -134,6 +135,12 @@ export class SpaceTimeView {
   renderPoints: Point[] = [];
   trianglePoints: Point[] = [];
   names: string[] = [];
+  measurement: MeasurementStyle | null = null;
+  setMeasurement(style: MeasurementStyle | null) {
+    if (JSON.stringify(style) === JSON.stringify(this.measurement)) return;
+    this.measurement = style;
+    this.rebuild(true);
+  }
   geometryFeatures: GeometryFeature[] = [];
   geometryLimited = false;
   projectionOmitted = 0;
@@ -720,7 +727,11 @@ export class SpaceTimeView {
           departed.push(p);
           if (!this.display.show_points || !this.glyphById.get(p.id)?.show)
             continue;
-          const color = colorFor(p.entity);
+          const color = this.measurement
+            ? Color.fromCssColorString(
+                measurementColor(p.value, this.measurement),
+              )
+            : colorFor(p.entity);
           const glyph: Glyph = p.inferred
             ? this.fadingTriangles.add({
                 position: this.pos(p),
@@ -765,7 +776,9 @@ export class SpaceTimeView {
     this.trianglePoints = this.points.filter((p) => p.inferred);
     this.projectionOmitted = 0;
     for (const p of this.renderPoints) {
-      const color = colorFor(p.entity);
+      const color = this.measurement
+        ? Color.fromCssColorString(measurementColor(p.value, this.measurement))
+        : colorFor(p.entity);
       const id: PickId = { kind: "event", id: p.id };
       const show =
         this.display.show_points &&
@@ -856,7 +869,11 @@ export class SpaceTimeView {
           ? this.theme === "light"
             ? Color.fromCssColorString("#7c4b00")
             : Color.fromCssColorString("#ffd27a")
-          : safeColor(feature.entity, this.theme),
+          : this.measurement
+            ? Color.fromCssColorString(
+                measurementColor(feature.value, this.measurement),
+              )
+            : safeColor(feature.entity, this.theme),
         id: PickId = { kind: "geometry", id: feature.id };
       const position = ([lon, lat]: [number, number]) =>
         this.position(lat, lon, feature.time);
@@ -905,7 +922,7 @@ export class SpaceTimeView {
             id,
             attributes: {
               color: ColorGeometryInstanceAttribute.fromColor(
-                color.withAlpha(0.25),
+                color.withAlpha(this.measurement ? 0.92 : 0.25),
               ),
             },
           }),

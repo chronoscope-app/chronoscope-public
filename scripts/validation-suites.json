@@ -79,7 +79,8 @@
       "welcome-qa.mjs",
       "presentation-ui-qa.mjs",
       "view-sync-qa.mjs",
-      "mcp-live-qa.mjs"
+      "mcp-live-qa.mjs",
+      "priority-demos-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -100,7 +101,8 @@
     "navigation-qa.mjs",
     "navigation-preferences-qa.mjs",
     "playback-speed-qa.mjs",
-    "playback-transitions-qa.mjs"
+    "playback-transitions-qa.mjs",
+    "priority-demos-qa.mjs"
   ],
   "smoke": [
     "integration-smoke-qa.mjs",
@@ -199,7 +201,8 @@
         "workspace-boundaries-qa.mjs",
         "toolbar-dialogs-qa.mjs",
         "welcome-qa.mjs",
-        "presentation-ui-qa.mjs"
+        "presentation-ui-qa.mjs",
+        "priority-demos-qa.mjs"
       ],
       "rust": [
         "autosave",
@@ -210,7 +213,8 @@
         "table_selection",
         "views_layers",
         "workflows",
-        "workspace_boundaries"
+        "workspace_boundaries",
+        "priority_demos"
       ]
     },
     "gis": {

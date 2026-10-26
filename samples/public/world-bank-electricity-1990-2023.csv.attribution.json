@@ -1,0 +1,18 @@
+[
+  {
+    "title": "World Development Indicators \u00b7 EG.ELC.ACCS.ZS",
+    "creator": "World Bank / ESMAP / Tracking SDG7",
+    "source_url": "https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS",
+    "license": "CC BY 4.0",
+    "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+    "changes": "Annual percentages 1990\u20132023, retrieved 2026-10-26. Regional/income aggregates excluded. ISO3 join to Natural Earth; countries too small for these boundaries are omitted. Missing values stay null/gray. No forward filling or averaging over years; saved map views show one year. Current boundaries are reused across all years, not historical political boundaries."
+  },
+  {
+    "title": "Natural Earth \u00b7 Admin 0 countries \u00b7 1:110m",
+    "creator": "Natural Earth contributors",
+    "source_url": "https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/",
+    "license": "Public domain",
+    "license_url": "https://www.naturalearthdata.com/about/terms-of-use/",
+    "changes": "WB_A3 join with ISO_A3_EH fallback. Coordinate rounding to 6 decimals; topology-preserving precision normalization. Cartographic boundaries are generalized and do not imply a position on disputed borders."
+  }
+]

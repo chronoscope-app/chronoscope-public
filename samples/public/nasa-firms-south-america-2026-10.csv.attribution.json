@@ -1,0 +1,10 @@
+[
+  {
+    "title": "VIIRS S-NPP 375 m active fire detections \u00b7 Collection 2 NRT",
+    "creator": "NASA LANCE / FIRMS",
+    "source_url": "https://firms.modaps.eosdis.nasa.gov/active_fire/#firms-txt",
+    "license": "NASA Earth science data, open access",
+    "license_url": "https://www.earthdata.nasa.gov/engage/open-data-services-and-software/data-and-information-policy",
+    "changes": "Frozen 7-day global CSV retrieved 2026-10-26. Retain every nominal/high-confidence record in longitude \u221282\u2026\u221234, latitude \u221256\u202613; no deduplication, interpolation or thinning. A bounding-box subset, not a country boundary selection. Heat sums reported FRP in MW. Detections are not independent fires, burned area or fire severity. NRT records can be revised; cloud, overpass and sensor effects affect coverage. No tracks."
+  }
+]

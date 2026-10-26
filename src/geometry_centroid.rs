@@ -3,6 +3,10 @@
 //! are densified to <=25 km before mapping; holes subtract, multipart areas add.
 use crate::geometry::Shape;
 use geographiclib_rs::{DirectGeodesic, Geodesic, InverseGeodesic};
+use std::{
+    collections::VecDeque,
+    sync::{Mutex, OnceLock},
+};
 const E2: f64 = 0.006_694_379_990_141_316_5;
 fn q(phi: f64) -> f64 {
     let e = E2.sqrt();
@@ -98,10 +102,35 @@ fn ring(points: &[[f64; 2]]) -> Option<[f64; 3]> {
     }
     Some(result)
 }
+type CentroidCache = VecDeque<(String, Option<[f64; 2]>)>;
+static CENTROIDS: OnceLock<Mutex<CentroidCache>> = OnceLock::new();
 pub fn centroid(shape: &Shape) -> Option<[f64; 2]> {
     if shape.polygons.is_empty() || !shape.lines.is_empty() || !shape.points.is_empty() {
         return None;
     }
+    // Key by exact coordinate content, so modified shapes cannot reuse a stale
+    // centroid. Do the expensive geodesic integration outside the mutex.
+    let key = serde_json::to_string(&shape.polygons).ok()?;
+    let cache = CENTROIDS.get_or_init(|| Mutex::new(VecDeque::new()));
+    if let Ok(entries) = cache.lock() {
+        if let Some((_, result)) = entries.iter().find(|(k, _)| k == &key) {
+            return *result;
+        }
+    }
+    let result = integrate(shape);
+    if key.len() <= 4 * 1024 * 1024 {
+        if let Ok(mut entries) = cache.lock() {
+            while entries.len() >= 256
+                || entries.iter().map(|(k, _)| k.len()).sum::<usize>() + key.len() > 4 * 1024 * 1024
+            {
+                entries.pop_front();
+            }
+            entries.push_back((key, result));
+        }
+    }
+    result
+}
+fn integrate(shape: &Shape) -> Option<[f64; 2]> {
     let mut sum = [0.; 3];
     let mut contribution = 0.;
     for polygon in &shape.polygons {
@@ -156,6 +185,23 @@ mod tests {
     fn split_date_line_uses_short_side() {
         let p=c("MULTIPOLYGON(((178 -1,180 -1,180 1,178 1,178 -1)),((-180 -1,-178 -1,-178 1,-180 1,-180 -1)))");
         assert!((p[0].abs() - 180.).abs() < 1e-9 && p[1].abs() < 1e-9);
+    }
+    #[test]
+    fn repeated_boundaries_and_mutated_copies_do_not_share_stale_centroids() {
+        let text = "POLYGON((-1 -1,1 -1,1 1,-1 1,-1 -1))";
+        let original = c(text);
+        let mut moved = crate::geometry::parse(text).unwrap();
+        for polygon in &mut moved.polygons {
+            for ring in polygon {
+                for coordinate in ring {
+                    coordinate[0] += 10.;
+                }
+            }
+        }
+        let next = centroid(&moved).unwrap();
+        assert!((next[0] - 10.).abs() < 1e-8);
+        assert_eq!(original, c(text));
+        assert!(crate::geometry::parse("POLYGON((0 0,2 2,0 2,2 0,0 0))").is_err());
     }
     #[test]
     fn lines_have_no_polygon_centroid() {

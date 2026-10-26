@@ -1,10 +1,13 @@
 """Bounded local subprocesses shared by validation and its regression tests."""
 import hashlib
 import json
+import errno
+import ntpath
 import os
 from pathlib import Path
 import signal
 import subprocess
+import sys
 import time
 
 
@@ -46,16 +49,68 @@ def stop_tree(process):
         send(signal.SIGKILL)
 
 
+class CommandPreparationError(OSError):
+    """Only fixed, non-sensitive messages may be surfaced in CI diagnostics."""
+
+
+def prepare_command(command, cwd, env, windows=None):
+    """Resolve Windows launchers without enabling a general-purpose shell.
+
+    Native executables retain argv semantics. Standard npm batch shims are
+    replaced by their sibling Node executable and npm CLI; no cmd language.
+    Never search the current directory unless PATH explicitly includes it.
+    """
+    if windows is None:
+        windows = sys.platform == 'win32'
+    if not windows:
+        return command
+    command = list(map(str, command))
+    environment = {key.upper(): value for key, value in env.items()}
+    if not command:
+        raise CommandPreparationError(errno.EINVAL, 'Empty suite command')
+    name = command[0]
+    extensions = [ext for ext in environment.get('PATHEXT', '.COM;.EXE;.BAT;.CMD').split(';') if ext]
+    names = [name] if ntpath.splitext(name)[1] else [name+ext for ext in extensions]
+    path = environment.get('PATH', '')
+    directories = [''] if ntpath.dirname(name) else path.split(';') if path else []
+    executable = None
+    for directory in directories:
+        for candidate in names:
+            path = ntpath.join(directory.strip('"'), candidate)
+            if not ntpath.isabs(path):
+                path = ntpath.join(str(cwd), path)
+            if os.path.isfile(path):
+                executable = path
+                break
+        if executable:
+            break
+    if executable is None:
+        raise FileNotFoundError(errno.ENOENT, 'Suite executable not found on PATH')
+    command[0] = executable
+    if not executable.lower().endswith(('.cmd', '.bat')):
+        return command
+    if ntpath.basename(executable).lower() not in {'npm.cmd', 'npm.bat'}:
+        raise CommandPreparationError(errno.EINVAL, 'Unsupported batch launcher; use a native executable entry point')
+    directory = ntpath.dirname(executable)
+    node = ntpath.join(directory, 'node.exe')
+    cli = ntpath.join(directory, 'node_modules', 'npm', 'bin', 'npm-cli.js')
+    if not os.path.isfile(node) or not os.path.isfile(cli):
+        raise CommandPreparationError(errno.ENOENT, 'Standard npm shim requires sibling node.exe and node_modules/npm/bin/npm-cli.js')
+    # Avoid cmd.exe and all batch expansion/quoting. In particular do not select
+    # an unrelated Node/npm from PATH when this installation is incomplete.
+    return [node, cli, *command[1:]]
+
+
 def run_command(command, cwd, env, log, timeout):
     started = time.monotonic()
     process = None
     timed_out = False
+    launch_error = None
     command = list(map(str, command))
-    if os.name == 'nt' and command[0].lower().endswith(('.cmd', '.bat')):
-        command = ['cmd.exe', '/d', '/c', *command]
     Path(log).parent.mkdir(parents=True, exist_ok=True)
     with Path(log).open('w') as output:
         try:
+            command = prepare_command(command, cwd, env)
             process = subprocess.Popen(command, cwd=cwd, env=env, stdout=output,
                                        stderr=subprocess.STDOUT, start_new_session=os.name != 'nt',
                                        creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if os.name == 'nt' else 0)
@@ -66,14 +121,26 @@ def run_command(command, cwd, env, log, timeout):
                 code = 124
                 output.write(f'\nSuite exceeded {timeout} seconds. Stopping its process tree.\n')
         except OSError as error:
-            output.write(str(error))
+            # Exception text may include private paths/arguments. Retain the
+            # root OS error category/numbers without copying those values.
+            launch_error = type(error).__name__ + ' launching suite executable'
+            if isinstance(error, CommandPreparationError):
+                launch_error += ': '+error.strerror
+            for key in ['errno', 'winerror']:
+                value = getattr(error, key, None)
+                if isinstance(value, int):
+                    launch_error += f' ({key}={value})'
+            output.write(launch_error+'\n')
             code = 127
         finally:
             if process:
                 stop_tree(process)
                 process.wait(timeout=10)
-    return {'exit_code': code, 'timed_out': timed_out,
-            'elapsed_s': round(time.monotonic() - started, 3)}
+    result = {'exit_code': code, 'timed_out': timed_out,
+              'elapsed_s': round(time.monotonic() - started, 3)}
+    if launch_error:
+        result['error'] = launch_error
+    return result
 
 
 def sha256(path):

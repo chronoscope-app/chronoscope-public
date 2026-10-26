@@ -120,7 +120,12 @@ export class DisplayLayer {
     this.playback = active;
     this.exposure = undefined;
   }
-  constructor(private view: CesiumDisplayContext) {}
+  constructor(private view: CesiumDisplayContext) {
+    this.legend.className = "display-scale-legend";
+    this.legend.hidden = true;
+    this.legend.setAttribute("aria-label", "Display summary scale");
+    view.host.append(this.legend);
+  }
   private clear(keepAtlas = false) {
     if (!keepAtlas) {
       cancelAnimationFrame(this.transitionFrame);
@@ -237,11 +242,14 @@ export class DisplayLayer {
       o.mode === "heatmap" ||
       (o.mode === "density" && this.view.mode !== "space-time");
     this.view.setSelection?.([...this.view.selected]);
+    this.legend.hidden = !this.active;
     if (!this.active || !p) {
       this.view.requestRender();
       return;
     }
     this.legend.textContent = `${o.mode === "heatmap" ? "Ground heat map" : o.bloom ? "Ground bloom" : o.mode === "auto" ? "Clusters" : o.mode}${o.mode === "heatmap" && o.bloom ? " + bloom" : ""} · ${p.count.toLocaleString()} located events · ${p.bins.length.toLocaleString()} cells · ${p.time_bin_minutes ? `${p.time_bin_minutes.toLocaleString()} min UTC slabs` : "current time window"} · summaries, not measured locations`;
+    if (o.mode === "heatmap")
+      this.legend.textContent = `Smoothed ${o.heat_weight === "value" ? "numeric-value" : "record-count"} heat · ${p.count.toLocaleString()} records · ${o.heat_max ? `display saturation at ${o.heat_max} kernel units` : "relative to the current peak"} · overlap is not independent activity`;
     if (!p.bins.length) {
       if (this.playback && this.atlas) await this.replaceAtlas(undefined);
       this.view.requestRender();

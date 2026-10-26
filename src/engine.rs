@@ -1498,11 +1498,27 @@ impl Engine {
                     false,
                     viewport.as_ref(),
                 )?;
-                let count:usize=s.store.connection.query_row(&format!("SELECT count(*) FROM {table} o JOIN events e ON e.r=o.r WHERE e.geometry_wkt IS NOT NULL AND (e.lat IS NULL OR json_extract(e.payload,'$.location_kind')='polygon-centroid')"),[],|r|r.get(0)).map_err(|e|e.to_string())?;
+                let latest = s
+                    .project
+                    .scene
+                    .measurement
+                    .as_ref()
+                    .is_some_and(|m| m.latest_per_entity);
+                let cte = format!("WITH visible_shapes AS (SELECT e.id,e.id_key,e.entity,e.time,e.geometry_wkt,e.value,o.pos,ROW_NUMBER() OVER (PARTITION BY e.entity ORDER BY e.time DESC,e.id_key DESC) AS recency FROM {table} o JOIN events e ON e.r=o.r WHERE e.geometry_wkt IS NOT NULL AND (e.lat IS NULL OR json_extract(e.payload,'$.location_kind')='polygon-centroid'))");
+                let condition = if latest { "WHERE recency=1" } else { "" };
+                let count: usize = s
+                    .store
+                    .connection
+                    .query_row(
+                        &format!("{cte} SELECT count(*) FROM visible_shapes {condition}"),
+                        [],
+                        |r| r.get(0),
+                    )
+                    .map_err(|e| e.to_string())?;
                 let offset = args["offset"].as_u64().unwrap_or(0) as usize;
                 let limit = args["limit"].as_u64().unwrap_or(500) as usize;
                 let budget = args["max_vertices"].as_u64().unwrap_or(20000) as usize;
-                let mut query=s.store.connection.prepare(&format!("SELECT e.id,e.entity,e.time,e.geometry_wkt FROM {table} o JOIN events e ON e.r=o.r WHERE e.geometry_wkt IS NOT NULL AND (e.lat IS NULL OR json_extract(e.payload,'$.location_kind')='polygon-centroid') ORDER BY o.pos LIMIT ? OFFSET ?")).map_err(|e|e.to_string())?;
+                let mut query = s.store.connection.prepare(&format!("{cte} SELECT id,entity,time,geometry_wkt,value FROM visible_shapes {condition} ORDER BY pos LIMIT ? OFFSET ?")).map_err(|e| e.to_string())?;
                 let mut rows = query
                     .query(rusqlite::params![limit, offset])
                     .map_err(|e| e.to_string())?;
@@ -1531,6 +1547,7 @@ impl Engine {
                         id: row.get(0).map_err(|e| e.to_string())?,
                         entity: row.get(1).map_err(|e| e.to_string())?,
                         time: row.get(2).map_err(|e| e.to_string())?,
+                        value: row.get(4).map_err(|e| e.to_string())?,
                         shape,
                     });
                 }

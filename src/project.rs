@@ -67,6 +67,18 @@ impl CesiumCamera {
     }
 }
 
+/// Fixed numeric scale: filtering never silently changes what a color means.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct MeasurementStyle {
+    pub title: String,
+    pub unit: String,
+    pub minimum: f64,
+    pub maximum: f64,
+    /// Country statistics show the latest record in the chosen time window.
+    #[serde(default)]
+    pub latest_per_entity: bool,
+}
+
 /// Renderer-neutral display state, portable across desktop platforms.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ViewNavigation {
@@ -132,6 +144,8 @@ pub struct SceneState {
     pub display: Option<crate::display::DisplayOptions>,
     #[serde(skip_serializing_if = "BTreeMap::is_empty")]
     pub entity_colors: BTreeMap<String, String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub measurement: Option<MeasurementStyle>,
     pub table_source: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub gis_table: Option<String>,
@@ -150,6 +164,16 @@ pub struct SceneState {
 }
 impl SceneState {
     pub fn validate(&self) -> Result<(), String> {
+        if self.measurement.as_ref().is_some_and(|m| {
+            m.title.trim().is_empty()
+                || m.title.len() > 128
+                || m.unit.len() > 32
+                || !m.minimum.is_finite()
+                || !m.maximum.is_finite()
+                || m.minimum >= m.maximum
+        }) {
+            return Err("Invalid fixed measurement color scale".into());
+        }
         if self.view_states.len() > 3
             || self.view_states.iter().any(|(mode, state)| {
                 !matches!(mode.as_str(), "space-time" | "map" | "globe")

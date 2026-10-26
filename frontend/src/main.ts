@@ -1,3 +1,4 @@
+import { MeasurementLegend } from "./measurement-style";
 import { preferenceEffects } from "./preference-effects";
 import { WorkspaceFiles } from "./workspace-files";
 import { Welcome } from "./welcome";
@@ -301,6 +302,7 @@ void view.ready.then(() => {
   view.controls.addEventListener("change", () => navigation.update());
 });
 const viewsPanel = new ViewsPanel($("#inspector-content"), {
+  measurement: measurementSettings,
   display: applyDisplay,
   preview: (options) => {
     displayOptions = options;
@@ -359,6 +361,7 @@ const sidebarFields = new SidebarFields(
   (error) => toast(String(error), true),
 );
 const entityLegend = new LegendPanel($("#legend"), "Legend");
+const measurementLegend = new MeasurementLegend($("#scene"));
 const timeRange = new TimeRange(
   $("#time-range-track"),
   (start, end, final) => {
@@ -611,6 +614,9 @@ async function refresh(render = true, resources = true) {
     JSON.stringify(s.scene.entity_colors || {});
   customEntityColors = { ...s.scene.entity_colors };
   setEntityColors(customEntityColors);
+  view.setMeasurement(s.scene.measurement ?? null);
+  measurementLegend.update(s.scene.measurement);
+  entityLegend.element.hidden = !!s.scene.measurement;
   if (colorChanged) view.rebuild(true);
   displayOptions = viewsPanel.liveOptions || {
     ...defaultDisplay,
@@ -3059,7 +3065,14 @@ view.onCluster = (bin) => {
   });
 };
 async function applyDisplay(next: DisplayOptions) {
-  await call("scene_sync", { scene: { ...captureScene(), display: next } });
+  await call("scene_sync", {
+    scene: {
+      ...captureScene(),
+      display: next,
+      measurement:
+        next.mode === "points" && !next.bloom ? view.measurement : null,
+    },
+  });
   displayOptions = viewsPanel.liveOptions || next;
   view.setDisplayOptions(displayOptions);
   displayPreserveFrame = true;
@@ -3069,6 +3082,51 @@ async function applyDisplay(next: DisplayOptions) {
   } finally {
     displayPreserveFrame = false;
   }
+}
+function measurementSettings() {
+  const current = view.measurement;
+  modal(`${head("Color by value")}<p class="description">Color event points and polygons using their numeric Value. The scale stays fixed while filtering; missing values appear gray.</p>
+    <form id="measurement-form"><label class="field">Legend title<input id="measurement-title" required maxlength="128" value="${esc(current?.title || "Event value")}"></label>
+    <div class="modal-grid"><label class="field">Minimum<input id="measurement-minimum" type="number" required step="any" value="${current?.minimum ?? 0}"></label><label class="field">Maximum<input id="measurement-maximum" type="number" required step="any" value="${current?.maximum ?? 100}"></label></div>
+    <label class="field">Unit suffix<input id="measurement-unit" maxlength="32" value="${esc(current?.unit || "")}"></label>
+    <label class="check-row"><input id="measurement-latest" type="checkbox" ${current?.latest_per_entity ? "checked" : ""}> Show the latest polygon per entity within the time window</label>
+    <p id="measurement-error" role="alert"></p><footer><button type="button" id="measurement-clear">Use entity colors</button><span class="spacer"></span><button class="primary" type="submit">Apply scale</button></footer></form>`);
+  const save = async (measurement: SceneState["measurement"]) => {
+    const display = measurement
+      ? { ...displayOptions, mode: "points" as const, bloom: false }
+      : displayOptions;
+    await call("scene_sync", {
+      scene: { ...captureScene(), measurement, display },
+    });
+    closeModal();
+    await refresh(true, false);
+  };
+  on("#measurement-clear", () => save(null));
+  $("#measurement-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const minimum = Number(
+      ($("#measurement-minimum") as HTMLInputElement).value,
+    );
+    const maximum = Number(
+      ($("#measurement-maximum") as HTMLInputElement).value,
+    );
+    if (
+      !Number.isFinite(minimum) ||
+      !Number.isFinite(maximum) ||
+      minimum >= maximum
+    ) {
+      $("#measurement-error").textContent =
+        "Maximum must be greater than minimum.";
+      return;
+    }
+    void save({
+      title: ($("#measurement-title") as HTMLInputElement).value,
+      unit: ($("#measurement-unit") as HTMLInputElement).value,
+      minimum,
+      maximum,
+      latest_per_entity: ($("#measurement-latest") as HTMLInputElement).checked,
+    }).catch((error) => toast(String(error), true));
+  });
 }
 function displaySettings() {
   document.querySelector<HTMLButtonElement>('[data-tab="views"]')!.click();
@@ -3081,6 +3139,7 @@ function captureScene(): Scene {
     render_budget: renderBudget,
     display: displayOptions,
     entity_colors: customEntityColors,
+    measurement: view.measurement,
     table_source: tableSource,
     gis_table: gisTable.layerId,
     table_attributes: true,
@@ -3733,20 +3792,17 @@ function helpMenu() {
 async function demoDatasets() {
   const { demos } = await call("demo_catalog");
   const picker = modal(
-    `${head("Demo datasets")}<p class="description">Explore real observations with saved views. All six datasets are bundled for offline use.</p><div class="demo-grid">${demos
+    `${head("Demo datasets")}<p class="description">Explore real observations with saved views. All ${demos.length} datasets are bundled for offline use.</p><div class="demo-grid">${demos
       .map(
         (demo) =>
-          `<section class="demo-card"><div class="demo-previews">${[
-            ["space-time", "Time"],
-            ["map", "Map"],
-          ]
+          `<section class="demo-card"><div class="demo-previews">${demo.previews
             .map(
-              ([mode, label]) =>
-                `<button class="demo-preview" data-demo-preview="${esc(demo.id)}" data-demo-mode="${mode}" aria-label="Open ${esc(demo.name)} in ${label}"><img src="/demos/${esc(demo.id)}-${mode === "map" ? "map" : "time"}.jpg" alt="${esc(demo.name)} in ${label} view" width="480" height="300"><span>${label}</span></button>`,
+              (preview) =>
+                `<button class="demo-preview" data-demo-preview="${esc(demo.id)}" data-demo-view="${preview.view_index}" aria-label="Open ${esc(demo.name)} in ${esc(preview.label)}"><img src="/demos/${esc(demo.id)}-${esc(preview.key)}.jpg" alt="${esc(demo.name)} in ${esc(preview.label)} view" width="480" height="300"><span>${esc(preview.label)}</span></button>`,
             )
             .join(
               "",
-            )}</div><button data-demo-id="${esc(demo.id)}" data-tooltip-disabled aria-label="Open ${esc(demo.name)} in Time"><span class="demo-title">${esc(demo.name)}</span><span class="demo-description">${esc(demo.description)}</span><span class="demo-action">Open demo ${icon("collapse-right")}</span></button><details><summary>Source &amp; license</summary><p>${esc(demo.license)}</p><p class="demo-source">${esc(demo.source_url)}</p></details></section>`,
+            )}</div><button data-demo-id="${esc(demo.id)}" data-tooltip-disabled aria-label="Open ${esc(demo.name)}"><span class="demo-title">${esc(demo.name)}</span><span class="demo-description">${esc(demo.description)}</span><span class="demo-action">Open demo ${icon("collapse-right")}</span></button><details><summary>Source &amp; license</summary><p>${esc(demo.license)}</p><p class="demo-source">${esc(demo.source_url)}</p></details></section>`,
       )
       .join(
         "",
@@ -3754,7 +3810,7 @@ async function demoDatasets() {
   );
   picker.querySelector(".modal")!.classList.add("demo-picker");
   demos.forEach((demo) => {
-    const openDemo = async (requestedMode = "space-time") => {
+    const openDemo = async (viewIndex?: number) => {
       closeModal();
       await filterIntent.flush();
       if (!(await guardUnsaved("open a demo dataset"))) return;
@@ -3766,11 +3822,11 @@ async function demoDatasets() {
         projectPath = null;
         lastRaster = null;
         mapUnavailable = false;
-        // The Map thumbnail opens the same saved hero view used to capture it.
+        // Every preview opens its actual saved scene and filter, including year.
         const restored =
-          requestedMode === "map"
-            ? await call("restore_view", { index: 1 })
-            : result;
+          viewIndex === undefined
+            ? result
+            : await call("restore_view", { index: viewIndex });
         await restoreScene(restored.scene);
       });
     };
@@ -3781,7 +3837,7 @@ async function demoDatasets() {
         button.addEventListener(
           "click",
           () =>
-            void openDemo(button.dataset.demoMode).catch((error) =>
+            void openDemo(Number(button.dataset.demoView)).catch((error) =>
               toast(String(error), true),
             ),
         );

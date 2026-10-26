@@ -1,23 +1,191 @@
 {
   "renderer": "CesiumJS",
   "basemap": "Bundled Natural Earth, public domain",
-  "capture": "Actual saved demo hero views, rendered offline",
+  "capture": "Actual saved demo scenes and filters, rendered offline; legends included",
   "images": [
     {
       "file": "hurricanes-time.jpg",
       "demo": "hurricanes",
       "source_url": "https://www.nhc.noaa.gov/data/#hurdat",
       "license": "NOAA public data",
+      "saved_view_index": 3,
+      "events": 3568,
+      "visible": 3568,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -5232016.067283858,
+            -13695685.999439254,
+            17534510.58499987
+          ],
+          "direction": [
+            1.8366940948208003e-17,
+            0.7431448254773941,
+            -0.6691306063588583
+          ],
+          "up": [
+            9.123528986605592e-17,
+            0.6691306063588582,
+            0.7431448254773942
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              -46.99999999999999,
+              51.907898482745225,
+              9.313225746154785e-10
+            ],
+            "ground_width": 30258829.262734447,
+            "heading": 0,
+            "tilt": 47.99999999999999,
+            "footprint": [
+              [
+                -180,
+                -52.555939809046116,
+                0
+              ],
+              [
+                105.25344507077124,
+                -52.555939809046116,
+                0
+              ],
+              [
+                105.25344507077124,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                -5232016.067283858,
+                -13695685.999439254,
+                17534510.58499987
+              ],
+              "direction": [
+                1.8366940948208003e-17,
+                0.7431448254773941,
+                -0.6691306063588583
+              ],
+              "up": [
+                9.123528986605592e-17,
+                0.6691306063588582,
+                0.7431448254773942
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "heatmap",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 1,
+          "trail_gap_minutes": 720,
+          "heat_radius": 64,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 1.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -106,
+          4,
+          12,
+          66
+        ],
+        "table_open": false,
+        "inspector_tab": "inspect",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "c7f2d779ee1c45a37c9b76b44ad53532d49d8f94f80ccf57d8e75dea2084c09c"
+    },
+    {
+      "file": "hurricanes-map.jpg",
+      "demo": "hurricanes",
+      "source_url": "https://www.nhc.noaa.gov/data/#hurdat",
+      "license": "NOAA public data",
       "saved_view_index": 0,
       "events": 3568,
+      "visible": 3568,
       "scene": {
         "mode": "map",
         "renderer": "cesium",
         "cesium_camera": {
           "position": [
             -5232016.067283858,
-            3896182.1777645736,
-            1726859.0191766275
+            3896182.177764574,
+            7473936.443480348
           ],
           "direction": [
             0,
@@ -25,49 +193,49 @@
             -1
           ],
           "up": [
-            2.220446049250313e-16,
+            2.2204460492503126e-16,
             1,
-            2.220446049250313e-16
+            2.2204460492503126e-16
           ],
           "frustum_width": 13136813.108514212
         },
         "view_states": {
           "map": {
             "center": [
-              -46.99999999999999,
-              34.99999999999999,
-              0
+              -47,
+              34.99999999999998,
+              0.05522616167448374
             ],
             "ground_width": 13136813.108514212,
-            "heading": 359.99999751088365,
+            "heading": 359.9999988550941,
             "tilt": 0,
             "footprint": [
               [
-                -105.91923691860462,
-                72.82151889534885,
-                1.0477378964424133e-9
+                -105.84723262032084,
+                80.1214705882353,
+                -0.002396465160777663
               ],
               [
-                11.919236918604643,
-                72.8215188953488,
-                9.313225746154785e-10
+                11.847232620320856,
+                80.12147058823525,
+                -0.005453728497488278
               ],
               [
-                11.919236918604629,
-                -2.8215188953488526,
-                -9.617483966202885e-10
+                11.847232620320838,
+                -10.121470588235297,
+                0.0029325387368040975
               ],
               [
-                -105.91923691860465,
-                -2.8215188953488264,
-                5.820766091346741e-11
+                -105.84723262032085,
+                -10.121470588235276,
+                -0.01358860091997423
               ]
             ],
             "camera": {
               "position": [
                 -5232016.067283858,
                 3896182.177764574,
-                1726859.0191766275
+                7473936.443480348
               ],
               "direction": [
                 0,
@@ -75,9 +243,9 @@
                 -1
               ],
               "up": [
-                2.220446181599211e-16,
+                2.2204460492503126e-16,
                 1,
-                2.220446049250313e-16
+                2.220446049250312e-16
               ],
               "frustum_width": 13136813.108514212
             }
@@ -109,6 +277,7 @@
           "bloom_threshold": 0.1
         },
         "entity_colors": {},
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -117,6 +286,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -151,161 +321,23 @@
           "period_b": null
         },
         "chart_presets": [],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "4f9e068e34aa105f4886616810adc8b344fdb9bdc8b92fa85e48ce8c7ec1d760"
-    },
-    {
-      "file": "hurricanes-map.jpg",
-      "demo": "hurricanes",
-      "source_url": "https://www.nhc.noaa.gov/data/#hurdat",
-      "license": "NOAA public data",
-      "saved_view_index": 1,
-      "events": 3568,
-      "scene": {
-        "mode": "map",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            -5232016.067283858,
-            3896182.1777645736,
-            1726859.0191766275
-          ],
-          "direction": [
-            0,
-            0,
-            -1
-          ],
-          "up": [
-            2.220446049250313e-16,
-            1,
-            2.220446049250313e-16
-          ],
-          "frustum_width": 13136813.108514212
-        },
-        "view_states": {
-          "map": {
-            "center": [
-              -46.99999999999999,
-              34.99999999999998,
-              -0.002700816195550759
-            ],
-            "ground_width": 13136813.108514212,
-            "heading": 359.99999751088365,
-            "tilt": 0,
-            "footprint": [
-              [
-                -105.91923691860462,
-                72.82151889534885,
-                0.0025351567459008556
-              ],
-              [
-                11.919236918604643,
-                72.82151889534882,
-                -0.001534828718493289
-              ],
-              [
-                11.91923691860463,
-                -2.8215188953488526,
-                0.00006763438413560432
-              ],
-              [
-                -105.91923691860465,
-                -2.8215188953488264,
-                0.0036485336784281602
-              ]
-            ],
-            "camera": {
-              "position": [
-                -5232016.067283858,
-                3896182.177764574,
-                1726859.0191766275
-              ],
-              "direction": [
-                0,
-                0,
-                -1
-              ],
-              "up": [
-                2.220446181599211e-16,
-                1,
-                2.220446049250313e-16
-              ],
-              "frustum_width": 13136813.108514212
-            }
-          }
-        },
-        "render_budget": 20000,
-        "display": {
-          "mode": "heatmap",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": true,
-          "show_points": true,
-          "show_centroids": true,
-          "point_scale": 1,
-          "track_opacity": 0.25,
-          "trail_opacity": 0.25,
-          "show_tracks": true,
-          "show_trails": true,
-          "trail_pixels": 1,
-          "trail_gap_minutes": 720,
-          "heat_radius": 64,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {},
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": true,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "globe_time": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": [
-          -106,
-          4,
-          12,
-          66
-        ],
-        "table_open": false,
-        "inspector_tab": "inspect",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": true
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
       },
-      "sha256": "826a9427e651254498cd0444c96ea74e271a4de4eb232747521ab15c109b3068"
+      "sha256": "6f312bb93b7cd2b7bbcebe18ed7677e8b80ff8e7519057e03b0a218aa5826bd8"
     },
     {
       "file": "noaa-ais-time.jpg",
@@ -314,6 +346,7 @@
       "license": "NOAA public data",
       "saved_view_index": 0,
       "events": 8473,
+      "visible": 8473,
       "scene": {
         "mode": "space-time",
         "renderer": "cesium",
@@ -338,32 +371,32 @@
           "space-time": {
             "center": [
               -122.35,
-              37.99047004632755,
-              -0.00007873946470421064
+              37.990470119136596,
+              -0.007286952817781042
             ],
-            "ground_width": 230897.09422606352,
+            "ground_width": 230897.10675049346,
             "heading": 0,
             "tilt": 47.999999999999964,
             "footprint": [
               [
-                -124.10823705846714,
-                39.67721097931237,
-                0
+                -124.37942509957044,
+                40.31598607194741,
+                -0.0019921586604246077
               ],
               [
-                -120.59176294153286,
-                39.67721097931237,
-                0
+                -120.32057475286213,
+                40.31598633811114,
+                -0.011721421008607905
               ],
               [
-                -121.6160684495539,
-                37.28638274243264,
-                0
+                -121.65598398007867,
+                37.195197994303854,
+                -0.014763111634960066
               ],
               [
-                -123.08393155044611,
-                37.28638274243264,
-                1.3969838619232178e-9
+                -123.04401597327747,
+                37.19519795803566,
+                -0.00577046888638638
               ]
             ],
             "camera": {
@@ -422,6 +455,7 @@
           "STI VIRTUS · 538005171": "#b2d583",
           "TRIFORCE · 338157873": "#d59dee"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -430,6 +464,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -464,9 +499,23 @@
           "period_b": null
         },
         "chart_presets": [],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "7f3826b48af3d5f74d0cc48c288fb160a290620f0b1dc64968c75b45d0843d54"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "82850f42ede6414b212fbf225489b5c2102438bfc0d24522f3596704afc93226"
     },
     {
       "file": "noaa-ais-map.jpg",
@@ -475,6 +524,7 @@
       "license": "NOAA public data",
       "saved_view_index": 1,
       "events": 8473,
+      "visible": 8473,
       "scene": {
         "mode": "map",
         "renderer": "cesium",
@@ -482,7 +532,7 @@
           "position": [
             -13619939.69855702,
             4207876.751985742,
-            1665205.1446316643
+            3669728.0990649415
           ],
           "direction": [
             0,
@@ -490,49 +540,49 @@
             -1
           ],
           "up": [
-            2.2204460823375376e-16,
+            2.220446082337537e-16,
             1,
-            2.220446049250313e-16
+            2.2204460492503126e-16
           ],
-          "frustum_width": 123025.66711017744
+          "frustum_width": 102995.74071514269
         },
         "view_states": {
           "map": {
             "center": [
               -122.34999999999997,
-              37.800000000000004,
-              0.0000015644115320910087
+              37.79999999999999,
+              0.0002601830765912683
             ],
-            "ground_width": 123025.66711017744,
-            "heading": 359.99999948341883,
+            "ground_width": 102995.74071514269,
+            "heading": 359.99999943944795,
             "tilt": 0,
             "footprint": [
               [
-                -122.90177601809951,
-                38.154196832579196,
-                0.00002664249837977434
+                -122.81137630662016,
+                38.1537630662021,
+                -0.0000461274743079462
               ],
               [
-                -121.7982239819004,
-                38.15419683257919,
-                -0.000021331410499122897
+                -121.88862369337976,
+                38.15376306620211,
+                0.00011786347061419542
               ],
               [
-                -121.7982239819004,
-                37.44580316742082,
-                0.0000033524520099853204
+                -121.88862369337976,
+                37.446236933797906,
+                0.00018310568867231856
               ],
               [
-                -122.90177601809951,
-                37.44580316742082,
-                -0.0000029310091962338513
+                -122.81137630662016,
+                37.446236933797906,
+                -0.00015784724262712482
               ]
             ],
             "camera": {
               "position": [
                 -13619939.698557017,
                 4207876.751985742,
-                1665205.1446316643
+                3669728.0990649415
               ],
               "direction": [
                 0,
@@ -542,9 +592,9 @@
               "up": [
                 2.220446115424762e-16,
                 1,
-                2.220446049250313e-16
+                2.2204460492503126e-16
               ],
-              "frustum_width": 123025.66711017744
+              "frustum_width": 102995.74071514269
             }
           }
         },
@@ -585,6 +635,7 @@
           "STI VIRTUS · 538005171": "#b2d583",
           "TRIFORCE · 338157873": "#d59dee"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -593,6 +644,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -627,9 +679,23 @@
           "period_b": null
         },
         "chart_presets": [],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "af3d1ed57f9817a8df63d1b692e733f52fbb303f6f142c8e41b8089524bf075b"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "bb56fab6a4ef4e1b5f122a853c23eceec3b77d757302dace1ee265114308e764"
     },
     {
       "file": "animal-gps-time.jpg",
@@ -638,6 +704,7 @@
       "license": "CC0 1.0 · Stienen et al. / INBO",
       "saved_view_index": 0,
       "events": 15697,
+      "visible": 15697,
       "scene": {
         "mode": "space-time",
         "renderer": "cesium",
@@ -661,33 +728,33 @@
         "view_states": {
           "space-time": {
             "center": [
-              2.9999999999999973,
-              51.363260018115625,
-              0.002096910804491092
+              2.999999999999997,
+              51.36326003911061,
+              0
             ],
-            "ground_width": 197911.7913158758,
+            "ground_width": 197911.7949415767,
             "heading": 0,
             "tilt": 47.99999999999999,
             "footprint": [
               [
-                1.4929396740214065,
-                52.80903797841405,
-                0.0002129922138348888
+                1.2604927995560757,
+                53.35655944225384,
+                0
               ],
               [
-                4.507060328419394,
-                52.80903798260881,
-                0.00002724479278369079
+                4.739507200443885,
+                53.35655944225384,
+                0
               ],
               [
-                3.6290841760926877,
-                50.75975663050192,
-                0.0012271579107812007
+                3.5948708079300458,
+                50.681598229322326,
+                0
               ],
               [
-                2.3709158318415455,
-                50.759756623682335,
-                0.0026736435287002033
+                2.405129192069915,
+                50.68159822932232,
+                1.3174105316582457e-9
               ]
             ],
             "camera": {
@@ -739,6 +806,7 @@
           "H907928": "#ffb3a7",
           "H907929": "#ffd166"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -747,6 +815,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -781,9 +850,23 @@
           "period_b": null
         },
         "chart_presets": [],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "2f959e7ed9fb24adf9362238197cb064f497e1318e1150a9c60349066067e436"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "d92c4d9069624c83c37d7a6f02e71fae2dc0db1b497e28407217fc5d94e71230"
     },
     {
       "file": "animal-gps-map.jpg",
@@ -792,14 +875,15 @@
       "license": "CC0 1.0 · Stienen et al. / INBO",
       "saved_view_index": 1,
       "events": 15697,
+      "visible": 15697,
       "scene": {
         "mode": "map",
         "renderer": "cesium",
         "cesium_camera": {
           "position": [
-            333958.47237982065,
-            5699557.928615607,
-            7011780.996570485
+            333958.4723798207,
+            5699557.928615606,
+            7025316.621739928
           ],
           "direction": [
             0,
@@ -807,49 +891,49 @@
             -1
           ],
           "up": [
-            2.220446115424762e-16,
+            2.220446049250313e-16,
             1,
             2.220446049250313e-16
           ],
-          "frustum_width": 105698.1083622653
+          "frustum_width": 88489.29836089737
         },
         "view_states": {
           "map": {
             "center": [
               3,
               51.2,
-              0.0000417840500134923
+              -0.0002587568663321892
             ],
-            "ground_width": 105698.1083622653,
-            "heading": 359.99999806195774,
+            "ground_width": 88489.29836089737,
+            "heading": 359.99999805822506,
             "tilt": 0,
             "footprint": [
               [
-                2.5259389140271464,
-                51.50430995475115,
-                0.0000067376946563986145
+                2.603606271777001,
+                51.50393728222996,
+                0.00015939726415088596
               ],
               [
-                3.4740610859728513,
-                51.50430995475114,
-                0.000029736719822450585
+                3.3963937282229972,
+                51.50393728222996,
+                0.00017072594434175306
               ],
               [
-                3.474061085972852,
-                50.895690045248884,
-                -0.00024330297637856197
+                3.3963937282229972,
+                50.89606271777004,
+                0.00014999656092442828
               ],
               [
-                2.525938914027146,
-                50.89569004524886,
-                -0.00030789236803323923
+                2.603606271777,
+                50.896062717770036,
+                0.00009474863941005437
               ]
             ],
             "camera": {
               "position": [
                 333958.4723798206,
-                5699557.928615608,
-                7011780.996570485
+                5699557.928615607,
+                7025316.621739928
               ],
               "direction": [
                 0,
@@ -857,11 +941,11 @@
                 -1
               ],
               "up": [
-                2.220446181599211e-16,
+                2.220446115424762e-16,
                 1,
                 2.220446049250313e-16
               ],
-              "frustum_width": 105698.1083622653
+              "frustum_width": 88489.29836089737
             }
           }
         },
@@ -895,6 +979,7 @@
           "H907928": "#ffb3a7",
           "H907929": "#ffd166"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -903,6 +988,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -937,9 +1023,23 @@
           "period_b": null
         },
         "chart_presets": [],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "06b7ef581f3f52f655eea9f9dfbddc14e03501ec4b3526423b57de4c67c6910f"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "3fb4b26bc7a76f5d810b4acc0a9d4097f2e349528bce8ebed7555fae1a7c0f54"
     },
     {
       "file": "local-wildlife-time.jpg",
@@ -948,6 +1048,7 @@
       "license": "CC BY 4.0 · Scott LaPoint (2026), Hudson Highlands Wildlife Connectivity Project",
       "saved_view_index": 0,
       "events": 3439,
+      "visible": 3439,
       "scene": {
         "mode": "space-time",
         "renderer": "cesium",
@@ -972,31 +1073,31 @@
           "space-time": {
             "center": [
               -74.19502394999999,
-              41.43501472318617,
+              41.43501472317012,
               0
             ],
-            "ground_width": 63788.19899169472,
+            "ground_width": 63788.198990161894,
             "heading": 0,
             "tilt": 47.99999999999999,
             "footprint": [
               [
-                -74.68075884344537,
-                41.90099792150304,
+                -74.75567790910856,
+                42.07746748354209,
+                9.313225746154785e-10
+              ],
+              [
+                -73.63436999089144,
+                42.07746748354209,
+                9.313225746154785e-10
+              ],
+              [
+                -74.0032933992161,
+                41.215310894101265,
                 0
               ],
               [
-                -73.70928905655462,
-                41.90099792150303,
-                9.313225746154785e-10
-              ],
-              [
-                -73.99226621514067,
-                41.24050183344278,
-                9.313225746154785e-10
-              ],
-              [
-                -74.39778168485932,
-                41.2405018334428,
+                -74.3867545007839,
+                41.21531089410126,
                 0
               ]
             ],
@@ -1049,6 +1150,7 @@
           "LYRU_0004": "#ffb3a7",
           "PEPE_0001": "#ffd166"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -1057,6 +1159,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -1091,9 +1194,23 @@
           "period_b": null
         },
         "chart_presets": [],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "2452b3b50a6bd7de7a3f5b1f3036f1b2958efa088c0f67b72d844083460ea82e"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "aebd53c910604c74eaa0022c7b00201d51ceaadc51935049185560e3e0046f7d"
     },
     {
       "file": "local-wildlife-map.jpg",
@@ -1102,14 +1219,15 @@
       "license": "CC BY 4.0 · Scott LaPoint (2026), Hudson Highlands Wildlife Connectivity Project",
       "saved_view_index": 1,
       "events": 3439,
+      "visible": 3439,
       "scene": {
         "mode": "map",
         "renderer": "cesium",
         "cesium_camera": {
           "position": [
             -8259352.285508737,
-            4606667.1392061105,
-            2690825.4017534163
+            4606667.13920611,
+            7006714.888080051
           ],
           "direction": [
             0,
@@ -1131,35 +1249,35 @@
               -0.00003940898196388109
             ],
             "ground_width": 29804.343834849074,
-            "heading": 359.9999986555283,
+            "heading": 359.999998957932,
             "tilt": 0,
             "footprint": [
               [
-                -74.32869786170929,
-                41.468203144197666,
-                0.000022071646495754665
+                -74.3285345008663,
+                41.48476502023526,
+                0.000253926987960197
               ],
               [
-                -74.0613500382907,
-                41.46820314419767,
-                0.000019379832177479574
+                -74.0615133991337,
+                41.48476502023527,
+                0.00043710041531107703
               ],
               [
-                -74.0613500382907,
-                41.29658685580233,
-                0.00007983037487161622
+                -74.0615133991337,
+                41.280024979764704,
+                -0.00018554880557804086
               ],
               [
-                -74.32869786170929,
-                41.29658685580232,
-                0.00009657473026684918
+                -74.3285345008663,
+                41.28002497976471,
+                -0.000006040798403794919
               ]
             ],
             "camera": {
               "position": [
                 -8259352.285508737,
-                4606667.1392061105,
-                2690825.4017534163
+                4606667.13920611,
+                7006714.888080051
               ],
               "direction": [
                 0,
@@ -1205,6 +1323,7 @@
           "LYRU_0004": "#ffb3a7",
           "PEPE_0001": "#ffd166"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -1213,6 +1332,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -1247,9 +1367,23 @@
           "period_b": null
         },
         "chart_presets": [],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "2c681dcb0c0c6ecc63a062dc50e3b58e965c1a10a2de98d12c4f97f8cd6c7c3e"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "83e9e113afe60a4288247a9ffcb9bde72668e85c7d6714b2113450f526ba8bde"
     },
     {
       "file": "stork-migration-time.jpg",
@@ -1258,6 +1392,7 @@
       "license": "CC0 1.0 · Fiedler et al. (2019), via moveVis",
       "saved_view_index": 0,
       "events": 6090,
+      "visible": 6090,
       "scene": {
         "mode": "space-time",
         "renderer": "cesium",
@@ -1281,22 +1416,32 @@
         "view_states": {
           "space-time": {
             "center": [
-              -0.16029005000000177,
-              44.60948243448536,
-              0
+              -0.16029005000000182,
+              44.60948255843133,
+              -1.3170940402517233e-9
             ],
-            "ground_width": 6589167.957941715,
+            "ground_width": 6589167.969781574,
             "heading": 0,
             "tilt": 47.99999999999994,
             "footprint": [
               [
-                20.78409754174251,
-                24.516767520812348,
+                -49.231063872959936,
+                21.861412326864283,
                 0
               ],
               [
-                -21.104677641742505,
-                24.51676752081234,
+                48.91048377295992,
+                21.861412326864283,
+                0
+              ],
+              [
+                48.91048377295992,
+                90,
+                0
+              ],
+              [
+                -49.231063872959936,
+                90,
                 0
               ]
             ],
@@ -1349,6 +1494,7 @@
           "Mirabell": "#ffb3a7",
           "Wendelin": "#ffd166"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -1357,6 +1503,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -1391,9 +1538,23 @@
           "period_b": null
         },
         "chart_presets": [],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "66a272dcba92d1ce770bf24ed0c3a2622d0a935d463464e1ae7717c7c00b0d33"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "6b24c83ae1e7062cd91f96a423653720a37cff2ad5df83bae1b65ad9d908edf0"
     },
     {
       "file": "stork-migration-map.jpg",
@@ -1402,14 +1563,15 @@
       "license": "CC0 1.0 · Fiedler et al. (2019), via moveVis",
       "saved_view_index": 1,
       "events": 6090,
+      "visible": 6090,
       "scene": {
         "mode": "map",
         "renderer": "cesium",
         "cesium_camera": {
           "position": [
-            -17843.406745228218,
+            -17843.40674522822,
             4360828.769422105,
-            6412377.991590687
+            6851366.071245957
           ],
           "direction": [
             0,
@@ -1417,49 +1579,49 @@
             -1
           ],
           "up": [
-            2.2204461815992106e-16,
+            2.220446049250313e-16,
             1,
-            2.2204460492503126e-16
+            2.220446049250313e-16
           ],
-          "frustum_width": 3463098.8191027786
+          "frustum_width": 2899268.391886001
         },
         "view_states": {
           "map": {
             "center": [
-              -0.16029004999999868,
+              -0.16029005000000013,
               39.17399135000001,
-              0.00042909906377900417
+              0.007876383403490924
             ],
-            "ground_width": 3463098.8191027786,
-            "heading": 359.999997961394,
+            "ground_width": 2899268.391886001,
+            "heading": 359.99999807977383,
             "tilt": 0,
             "footprint": [
               [
-                -15.692454366398195,
-                49.14441997231675,
-                -0.0025742469478462694
+                -13.147756650668999,
+                49.13220970868989,
+                0.008979292273080563
               ],
               [
-                15.371874266398194,
-                49.144419972316754,
-                -0.002049442933627798
+                12.827176550669005,
+                49.13220970868989,
+                0.0026599529997197967
               ],
               [
-                15.371874266398194,
-                29.203562727683263,
-                0.0008555547559627901
+                12.827176550669,
+                29.215772991310107,
+                -0.004414996193453563
               ],
               [
-                -15.692454366398197,
-                29.203562727683263,
-                0.0011133181697725212
+                -13.147756650668999,
+                29.215772991310107,
+                -0.005623005448116102
               ]
             ],
             "camera": {
               "position": [
-                -17843.406745228218,
+                -17843.406745228225,
                 4360828.769422105,
-                6412377.991590687
+                6851366.071245957
               ],
               "direction": [
                 0,
@@ -1467,11 +1629,11 @@
                 -1
               ],
               "up": [
-                2.2204463139481086e-16,
+                2.220446049250313e-16,
                 1,
-                2.220446049250312e-16
+                2.220446049250313e-16
               ],
-              "frustum_width": 3463098.8191027786
+              "frustum_width": 2899268.391886001
             }
           }
         },
@@ -1505,6 +1667,7 @@
           "Mirabell": "#ffb3a7",
           "Wendelin": "#ffd166"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -1513,6 +1676,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -1547,9 +1711,23 @@
           "period_b": null
         },
         "chart_presets": [],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "723d6e4964cfc11e194acd06f408df33ea6341cf675239405492ab83c59dff72"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "e48753c771977d038712cf99e289c2fee582def629bf2d8731647cf1c9289f31"
     },
     {
       "file": "elephant-seals-time.jpg",
@@ -1558,6 +1736,7 @@
       "license": "CC0 1.0 · Costa, Holser et al., UC Santa Cruz and collaborators",
       "saved_view_index": 0,
       "events": 15501,
+      "visible": 15501,
       "scene": {
         "mode": "space-time",
         "renderer": "cesium",
@@ -1582,16 +1761,31 @@
           "space-time": {
             "center": [
               -144.7073068146936,
-              53.441731020737365,
+              53.441731282537376,
               0
             ],
-            "ground_width": 13278397.577725124,
+            "ground_width": 13278397.602733396,
             "heading": 0,
             "tilt": 47.99999999999999,
             "footprint": [
               [
-                -102.50047476097357,
-                12.951177445302143,
+                -180,
+                7.60015176606394,
+                0
+              ],
+              [
+                -69.3808660882521,
+                7.60015176606394,
+                0
+              ],
+              [
+                -69.3808660882521,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
                 0
               ]
             ],
@@ -1644,6 +1838,7 @@
           "O176": "#ffb3a7",
           "R881": "#ffd166"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -1652,6 +1847,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -1712,9 +1908,23 @@
             }
           }
         ],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "52e46e21d77777d908a5167ef088baf6ed6a4b6499944e73af149f959f53df9f"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "6f7d6e937033da84abea18d5e49283f51e67ba1c249de863af6dc143ba2ed60e"
     },
     {
       "file": "elephant-seals-map.jpg",
@@ -1723,14 +1933,15 @@
       "license": "CC0 1.0 · Costa, Holser et al., UC Santa Cruz and collaborators",
       "saved_view_index": 1,
       "events": 15501,
+      "visible": 15501,
       "scene": {
         "mode": "map",
         "renderer": "cesium",
         "cesium_camera": {
           "position": [
             -16108743.708677687,
-            4729765.531704157,
-            5101574.226233513
+            4729765.531704158,
+            10967881.461592393
           ],
           "direction": [
             0,
@@ -1748,39 +1959,39 @@
           "map": {
             "center": [
               -144.7073068146935,
-              42.48820667431538,
-              0.006613410719473078
+              42.48820667431541,
+              -0.031546485195031934
             ],
             "ground_width": 6078035.344037496,
-            "heading": 359.9999995759016,
+            "heading": 359.9999995516357,
             "tilt": 0,
             "footprint": [
               [
-                -171.96758687477123,
-                59.98716374344827,
-                -0.000040420756818468175
+                -171.9342725034487,
+                63.364646853897156,
+                -0.002546781987474516
               ],
               [
-                -117.44702675461575,
-                59.98716374344826,
-                -0.00122590676020912
+                -117.48034112593828,
+                63.36464685389714,
+                -0.008655155297428004
               ],
               [
-                -117.44702675461575,
-                24.989249605182504,
-                0.002904004011634231
+                -117.48034112593828,
+                21.611766494733637,
+                -0.004935640926093548
               ],
               [
-                -171.96758687477123,
-                24.989249605182522,
-                0.003034017103628004
+                -171.9342725034487,
+                21.611766494733644,
+                -0.010335899912157939
               ]
             ],
             "camera": {
               "position": [
                 -16108743.708677687,
-                4729765.531704157,
-                5101574.226233513
+                4729765.531704158,
+                10967881.461592393
               ],
               "direction": [
                 0,
@@ -1826,6 +2037,7 @@
           "O176": "#ffb3a7",
           "R881": "#ffd166"
         },
+        "measurement": null,
         "table_source": null,
         "gis_table": null,
         "table_attributes": true,
@@ -1834,6 +2046,7 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
         "globe_time": false,
         "globe_time_scale": 1,
         "focus": 0.45,
@@ -1894,9 +2107,2467 @@
             }
           }
         ],
-        "expanded": true
+        "expanded": false
       },
-      "sha256": "e47b825f9f193e0a1ff2c2b9cbe6eaccb55f24b5c1074a97b023faa50c50f5ba"
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "89e2feeefae8eef799789eea0d0fbd318f6398c81243d801d29b87d3b015a658"
+    },
+    {
+      "file": "earthquakes-globe.jpg",
+      "demo": "earthquakes",
+      "source_url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "license": "USGS-authored data · US public domain",
+      "saved_view_index": 0,
+      "events": 8500,
+      "visible": 8500,
+      "scene": {
+        "mode": "globe",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -19783682.395070594,
+            -7200671.515981992,
+            3712274.531963977
+          ],
+          "direction": [
+            0.9254165783983234,
+            0.3368240888334654,
+            -0.17364817766693036
+          ],
+          "up": [
+            0.16317591116653482,
+            0.05939117461388473,
+            0.9848077530122081
+          ]
+        },
+        "view_states": {
+          "globe": {
+            "center": [
+              -160.00000009556018,
+              10.066021178979986,
+              0
+            ],
+            "ground_width": 17321256.30541103,
+            "heading": 359.99991832900673,
+            "tilt": 0.06602117898004986,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                -19783682.395070594,
+                -7200671.515981992,
+                3712274.531963977
+              ],
+              "direction": [
+                0.9254165783983234,
+                0.3368240888334654,
+                -0.17364817766693036
+              ],
+              "up": [
+                0.16317591116653482,
+                0.05939117461388473,
+                0.9848077530122081
+              ]
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": false,
+          "point_scale": 0.65,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": {
+          "latest_per_entity": false,
+          "maximum": 8.8,
+          "minimum": 4.5,
+          "title": "Earthquake magnitude",
+          "unit": ""
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -75,
+          180,
+          82
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "dbb551aab60df514e3d9742b27e8312e636558e7a711592e00c230e958179917"
+    },
+    {
+      "file": "earthquakes-map.jpg",
+      "demo": "earthquakes",
+      "source_url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "license": "USGS-authored data · US public domain",
+      "saved_view_index": 1,
+      "events": 8500,
+      "visible": 8500,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -2.168404344971009e-19,
+            834896.180949551,
+            12756274
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 40075016.68557849
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -1.9984014445200724e-14,
+              7.499999999999993,
+              0.0859938218449702
+            ],
+            "ground_width": 40075016.68557849,
+            "heading": 359.99999983324733,
+            "tilt": 0,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                -1.0842021724855044e-19,
+                834896.180949551,
+                12756274
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 40075016.68557849
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": false,
+          "point_scale": 0.65,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": {
+          "latest_per_entity": false,
+          "maximum": 8.8,
+          "minimum": 4.5,
+          "title": "Earthquake magnitude",
+          "unit": ""
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -65,
+          180,
+          80
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "de67f989ac4ffaecc87969308d363e031d34e6e30edd1e6435637379c0b28000"
+    },
+    {
+      "file": "fire-detections-heat.jpg",
+      "demo": "fire-detections",
+      "source_url": "https://firms.modaps.eosdis.nasa.gov/active_fire/",
+      "license": "NASA LANCE / FIRMS · open Earth science data",
+      "saved_view_index": 0,
+      "events": 50713,
+      "visible": 50713,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -6456530.466009866,
+            -2393369.0520553817,
+            12756274
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 10010895.868664755
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -58.00000000000001,
+              -21.5,
+              0.029769866610886552
+            ],
+            "ground_width": 10010895.868664755,
+            "heading": 3.588397703424562e-7,
+            "tilt": 0,
+            "footprint": [
+              [
+                -102.84447735191637,
+                12.884773519163769,
+                0.0033204006441717084
+              ],
+              [
+                -13.155522648083613,
+                12.88477351916376,
+                -0.041772883141291274
+              ],
+              [
+                -13.155522648083627,
+                -55.884773519163744,
+                0.15360962715667928
+              ],
+              [
+                -102.84447735191637,
+                -55.884773519163744,
+                0.1573674217381042
+              ]
+            ],
+            "camera": {
+              "position": [
+                -6456530.466009866,
+                -2393369.0520553817,
+                12756274
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 10010895.868664755
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "heatmap",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": false,
+          "show_centroids": false,
+          "point_scale": 0.65,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 18,
+          "heat_weight": "value",
+          "heat_max": 300,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -82,
+          -56,
+          -34,
+          13
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "b6785419b613956e716e38ff7f73289e3b25128fcade9cb74f915d794bb17171"
+    },
+    {
+      "file": "fire-detections-map.jpg",
+      "demo": "fire-detections",
+      "source_url": "https://firms.modaps.eosdis.nasa.gov/active_fire/",
+      "license": "NASA LANCE / FIRMS · open Earth science data",
+      "saved_view_index": 1,
+      "events": 50713,
+      "visible": 50713,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -6456530.466009866,
+            -2393369.0520553817,
+            12214504.630876493
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 10010895.868664755
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -58.00000000000001,
+              -21.5,
+              -0.001060154420757638
+            ],
+            "ground_width": 10010895.868664755,
+            "heading": 3.4676190807658713e-7,
+            "tilt": 0,
+            "footprint": [
+              [
+                -102.84447735191637,
+                12.88477351916377,
+                0.007514575683261439
+              ],
+              [
+                -13.15552264808361,
+                12.884773519163751,
+                0.008217988613196649
+              ],
+              [
+                -13.155522648083627,
+                -55.88477351916377,
+                -0.00009057182797904847
+              ],
+              [
+                -102.84447735191637,
+                -55.884773519163744,
+                0.001640474530319427
+              ]
+            ],
+            "camera": {
+              "position": [
+                -6456530.466009866,
+                -2393369.0520553817,
+                12214504.630876493
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 10010895.868664755
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": false,
+          "point_scale": 0.65,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "VIIRS detections": "#ff884f"
+        },
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -82,
+          -56,
+          -34,
+          13
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "f019070714f94b97073be3f75ee4a574501f13885b4ea69bc0d8debb0d6987b2"
+    },
+    {
+      "file": "electricity-access-2023.jpg",
+      "demo": "electricity-access",
+      "source_url": "https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS",
+      "license": "World Bank / ESMAP · CC BY 4.0; Natural Earth boundaries · public domain",
+      "saved_view_index": 0,
+      "events": 5746,
+      "visible": 169,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            0,
+            1669792.361899103,
+            12214504.630876493
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 40075016.68557849
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -1.9984014443252818e-14,
+              14.999999999999996,
+              0.011341092228747438
+            ],
+            "ground_width": 40075016.68557849,
+            "heading": 359.99999970620615,
+            "tilt": 0,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                0,
+                1669792.361899103,
+                12214504.630876493
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 40075016.68557849
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": false,
+          "point_scale": 0.65,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": {
+          "latest_per_entity": true,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Population with electricity access",
+          "unit": "%"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -55,
+          180,
+          85
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "mean",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 250,
+          "title": "Electricity access by country",
+          "x_label": "",
+          "y_label": "Population with access (%)",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [
+          {
+            "name": "Compare visible countries (%)",
+            "config": {
+              "kind": "bar",
+              "scope": "visible",
+              "source": null,
+              "x": "entity",
+              "y": "value",
+              "group": "",
+              "aggregate": "mean",
+              "x_axis": "category",
+              "time_bucket": "day",
+              "stacked": false,
+              "y2": "",
+              "trendline": false,
+              "bins": 20,
+              "limit": 250,
+              "title": "Electricity access by country",
+              "x_label": "",
+              "y_label": "Population with access (%)",
+              "y2_label": "",
+              "period_a": null,
+              "period_b": null
+            }
+          }
+        ],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": 1704067199,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": 1672531200
+      },
+      "sha256": "e38e7131963f073c1929db6fdb638fb2ac518a778a2f732fef5bfb3a236cb23b"
+    },
+    {
+      "file": "electricity-access-1990.jpg",
+      "demo": "electricity-access",
+      "source_url": "https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS",
+      "license": "World Bank / ESMAP · CC BY 4.0; Natural Earth boundaries · public domain",
+      "saved_view_index": 4,
+      "events": 5746,
+      "visible": 169,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            0,
+            1669792.361899103,
+            12214504.630876493
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 40075016.68557849
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -1.998401444325282e-14,
+              14.999999999999996,
+              0.0028562848865918604
+            ],
+            "ground_width": 40075016.68557849,
+            "heading": 359.99999970620615,
+            "tilt": 0,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                0,
+                1669792.361899103,
+                12214504.630876493
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 40075016.68557849
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": false,
+          "point_scale": 0.65,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": {
+          "latest_per_entity": true,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Population with electricity access",
+          "unit": "%"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -55,
+          180,
+          85
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "mean",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 250,
+          "title": "Electricity access by country",
+          "x_label": "",
+          "y_label": "Population with access (%)",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [
+          {
+            "name": "Compare visible countries (%)",
+            "config": {
+              "kind": "bar",
+              "scope": "visible",
+              "source": null,
+              "x": "entity",
+              "y": "value",
+              "group": "",
+              "aggregate": "mean",
+              "x_axis": "category",
+              "time_bucket": "day",
+              "stacked": false,
+              "y2": "",
+              "trendline": false,
+              "bins": 20,
+              "limit": 250,
+              "title": "Electricity access by country",
+              "x_label": "",
+              "y_label": "Population with access (%)",
+              "y2_label": "",
+              "period_a": null,
+              "period_b": null
+            }
+          }
+        ],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": 662687999,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": 631152000
+      },
+      "sha256": "271f60d5250d28b89281e436827df2beb4f2d5c5fb4f464b598920a7f7b390b6"
+    },
+    {
+      "file": "london-crime-heat.jpg",
+      "demo": "london-crime",
+      "source_url": "https://data.police.uk/about/",
+      "license": "Police.uk / contributing forces · Open Government Licence v3.0",
+      "saved_view_index": 0,
+      "events": 4053,
+      "visible": 4053,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -14452.609489690709,
+            5734623.289916759,
+            12214504.630876493
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204460823375376e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 14846.689392658165
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -0.12983,
+              51.51499749999996,
+              0.09946197090233308
+            ],
+            "ground_width": 14846.689392658165,
+            "heading": 359.9999989781079,
+            "tilt": 0,
+            "footprint": [
+              [
+                -0.19633673775401073,
+                51.56599194235291,
+                0.09847835325979577
+              ],
+              [
+                -0.06332326224598929,
+                51.56599194235291,
+                0.10010052384949143
+              ],
+              [
+                -0.06332326224598932,
+                51.46400305764701,
+                0.10044559549446029
+              ],
+              [
+                -0.1963367377540107,
+                51.464003057647,
+                0.09882342367358987
+              ]
+            ],
+            "camera": {
+              "position": [
+                -14452.609489690709,
+                5734623.289916759,
+                12214504.630876493
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446115424762e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 14846.689392658165
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "heatmap",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": false,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 28,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": null,
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "0f44f4c50ebb866acf988fbae13c494ce157a23721e90fa72f1d51ba300aa80f"
+    },
+    {
+      "file": "london-crime-density.jpg",
+      "demo": "london-crime",
+      "source_url": "https://data.police.uk/about/",
+      "license": "Police.uk / contributing forces · Open Government Licence v3.0",
+      "saved_view_index": 1,
+      "events": 4053,
+      "visible": 4053,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -14452.609489690709,
+            5734623.289916759,
+            1725755.967373365
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204461815992106e-16,
+            1,
+            2.2204460492503126e-16
+          ],
+          "frustum_width": 14846.689392658165
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -0.12982999999999995,
+              51.51499749999997,
+              -0.00004265480142069831
+            ],
+            "ground_width": 14846.689392658165,
+            "heading": 359.99999543741876,
+            "tilt": 0,
+            "footprint": [
+              [
+                -0.19633673775401067,
+                51.56599194235292,
+                0.000031701326797445516
+              ],
+              [
+                -0.06332326224598923,
+                51.56599194235292,
+                0.00001102724042528538
+              ],
+              [
+                -0.0633232622459892,
+                51.464003057647034,
+                -0.0000050578267747312
+              ],
+              [
+                -0.19633673775401064,
+                51.46400305764702,
+                0.00000306693413552264
+              ]
+            ],
+            "camera": {
+              "position": [
+                -14452.609489690702,
+                5734623.289916759,
+                1725755.967373365
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.2204461815992106e-16,
+                1,
+                2.220446049250312e-16
+              ],
+              "frustum_width": 14846.689392658165
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "density",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": false,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 28,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": null,
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "921518102ede206ffe0d60fb1dd33164b1cd4ba4a1a1c16abeb6f9c93709d084"
+    },
+    {
+      "file": "earthquakes-january-globe.jpg",
+      "demo": "earthquakes-january",
+      "source_url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "license": "USGS-authored data · US public domain",
+      "saved_view_index": 0,
+      "events": 652,
+      "visible": 652,
+      "scene": {
+        "mode": "globe",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            18549432.167304516,
+            0,
+            1131925.2105781068
+          ],
+          "direction": [
+            -0.9981182961321912,
+            0,
+            -0.06131775375999758
+          ],
+          "up": [
+            -0.06131775375999758,
+            2.2204460492503136e-16,
+            0.9981182961321912
+          ]
+        },
+        "view_states": {
+          "globe": {
+            "center": [
+              -7.041079047798792e-15,
+              3.4702277780415542,
+              4.662430005730313e-9
+            ],
+            "ground_width": 14094136.188264497,
+            "heading": 180.00000000000887,
+            "tilt": 0.0452260126967208,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                18549432.167304516,
+                0,
+                1131925.2105781068
+              ],
+              "direction": [
+                -0.9981182961321912,
+                0,
+                -0.06131775375999758
+              ],
+              "up": [
+                -0.06131775375999758,
+                2.2204460492503136e-16,
+                0.9981182961321912
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 0.8,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "Earthquakes": "#ffd166"
+        },
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -75,
+          180,
+          82
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "f8432b402a947b8c5c8e2126f410b5ed7bc60d0ef2f4b7d26d356ceeaab33b35"
+    },
+    {
+      "file": "earthquakes-january-map.jpg",
+      "demo": "earthquakes-january",
+      "source_url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "license": "USGS-authored data · US public domain",
+      "saved_view_index": 1,
+      "events": 652,
+      "visible": 652,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            0,
+            389618.2177764587,
+            12756274
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 40075016.68557849
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -1.9984014443252818e-14,
+              3.50000000000001,
+              0.10262130415022676
+            ],
+            "ground_width": 40075016.68557849,
+            "heading": 359.9999999332989,
+            "tilt": 0,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                0,
+                389618.2177764587,
+                12756274
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 40075016.68557849
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 0.8,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "Earthquakes": "#ffd166"
+        },
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -75,
+          180,
+          82
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "e14d3826e5283085fd89f60740dcc0cb8f3f9741ffb6dec7f3af04e72fca6458"
+    },
+    {
+      "file": "hurricanes-short-time.jpg",
+      "demo": "hurricanes-short",
+      "source_url": "https://www.nhc.noaa.gov/data/#hurdat",
+      "license": "NOAA public data",
+      "saved_view_index": 1,
+      "events": 1604,
+      "visible": 1604,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -5232016.067283858,
+            -13695685.999439254,
+            17534510.58499987
+          ],
+          "direction": [
+            1.8366940948208003e-17,
+            0.7431448254773941,
+            -0.6691306063588583
+          ],
+          "up": [
+            9.123528986605592e-17,
+            0.6691306063588582,
+            0.7431448254773942
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              -46.99999999999999,
+              51.907898327498714,
+              0.11318226012630657
+            ],
+            "ground_width": 30258829.160454858,
+            "heading": 0,
+            "tilt": 47.99999999999999,
+            "footprint": [
+              [
+                -180,
+                -52.555940334974814,
+                0
+              ],
+              [
+                105.25344569589403,
+                -52.555940334974814,
+                0
+              ],
+              [
+                105.25344569589403,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                -5232016.067283858,
+                -13695685.999439254,
+                17534510.58499987
+              ],
+              "direction": [
+                1.8366940948208003e-17,
+                0.7431448254773941,
+                -0.6691306063588583
+              ],
+              "up": [
+                9.123528986605592e-17,
+                0.6691306063588582,
+                0.7431448254773942
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 0,
+          "trail_gap_minutes": 720,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 1.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -106,
+          4,
+          12,
+          66
+        ],
+        "table_open": false,
+        "inspector_tab": "inspect",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "23dc20a1cbd50684f4764f7a7bf1bdc9f7eb1efcd278e094b177a9bce36a85d1"
+    },
+    {
+      "file": "hurricanes-short-map.jpg",
+      "demo": "hurricanes-short",
+      "source_url": "https://www.nhc.noaa.gov/data/#hurdat",
+      "license": "NOAA public data",
+      "saved_view_index": 0,
+      "events": 1604,
+      "visible": 1604,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -5232016.067283858,
+            3896182.177764574,
+            11739749.291655682
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204460492503126e-16,
+            1,
+            2.2204460492503126e-16
+          ],
+          "frustum_width": 13136813.108514212
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -46.99999999999999,
+              34.99999999999998,
+              0.055226163026760845
+            ],
+            "ground_width": 13136813.108514212,
+            "heading": 359.9999993010572,
+            "tilt": 0,
+            "footprint": [
+              [
+                -105.84723262032084,
+                80.12147058823525,
+                0.04133149357558946
+              ],
+              [
+                11.847232620320856,
+                80.12147058823525,
+                -0.005453729456146482
+              ],
+              [
+                11.847232620320838,
+                -10.121470588235299,
+                0.0029325387368040975
+              ],
+              [
+                -105.84723262032085,
+                -10.121470588235278,
+                -0.1103276392865269
+              ]
+            ],
+            "camera": {
+              "position": [
+                -5232016.067283858,
+                3896182.177764574,
+                11739749.291655682
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.2204460492503126e-16,
+                1,
+                2.220446049250312e-16
+              ],
+              "frustum_width": 13136813.108514212
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 0,
+          "trail_gap_minutes": 720,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -106,
+          4,
+          12,
+          66
+        ],
+        "table_open": false,
+        "inspector_tab": "inspect",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "7e7af269a0704ffed844b664c41583d5664104b6c56af638497ddc828a0383f8"
+    },
+    {
+      "file": "covid-june.jpg",
+      "demo": "covid",
+      "source_url": "https://github.com/CSSEGISandData/COVID-19",
+      "license": "Johns Hopkins University / CSSE · CC BY 4.0",
+      "saved_view_index": 0,
+      "events": 6509,
+      "visible": 283,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            0,
+            1391493.6349159188,
+            11739749.291655682
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 40075016.68557849
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -1.9984014443252815e-14,
+              12.499999999999993,
+              -0.011088464618636978
+            ],
+            "ground_width": 40075016.68557849,
+            "heading": 359.9999997176254,
+            "tilt": 0,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                0,
+                1391493.6349159188,
+                11739749.291655682
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 40075016.68557849
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": false,
+          "point_scale": 0.65,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": {
+          "latest_per_entity": false,
+          "maximum": 2500000,
+          "minimum": 0,
+          "title": "Cumulative confirmed COVID-19 cases",
+          "unit": ""
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -55,
+          180,
+          80
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": 1593388799,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": 1593302400
+      },
+      "sha256": "3963ac3c74f7ccaaeb5fdc6049da92b6343161f3e49678ac32bdd2c8669d5ba0"
+    },
+    {
+      "file": "covid-april.jpg",
+      "demo": "covid",
+      "source_url": "https://github.com/CSSEGISandData/COVID-19",
+      "license": "Johns Hopkins University / CSSE · CC BY 4.0",
+      "saved_view_index": 1,
+      "events": 6509,
+      "visible": 283,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            0,
+            1391493.6349159188,
+            11739749.291655682
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 40075016.68557849
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -1.9984014443252818e-14,
+              12.499999999999995,
+              0.03056881334510555
+            ],
+            "ground_width": 40075016.68557849,
+            "heading": 359.9999997176254,
+            "tilt": 0,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                0,
+                1391493.6349159188,
+                11739749.291655682
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 40075016.68557849
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": false,
+          "point_scale": 0.65,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": {
+          "latest_per_entity": false,
+          "maximum": 2500000,
+          "minimum": 0,
+          "title": "Cumulative confirmed COVID-19 cases",
+          "unit": ""
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": true,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -55,
+          180,
+          80
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": 1586131199,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": 1586044800
+      },
+      "sha256": "ca9eb5838c08f3f958e71fe196967b662acfbe8b790dc2c1d90fe7a861a1efd0"
     }
   ]
 }

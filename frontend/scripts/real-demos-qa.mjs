@@ -126,7 +126,7 @@ try {
     await page.locator("#help").click();
     await page.locator("#demo-datasets").click();
     await page.locator("[data-demo-id]").first().waitFor();
-    assert.equal(await page.locator("[data-demo-id]").count(), 6);
+    assert.equal(await page.locator("[data-demo-id]").count(), 13);
     await page.locator(`[data-demo-id="${id}"]`).click();
     await stateReady(
       (n) =>

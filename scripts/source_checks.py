@@ -65,20 +65,30 @@ def main():
     work = destination.parent/'runs'/run_id
     work.mkdir(parents=True)
     result['evidence_directory'] = str(work)
+    def save_result():
+        receipt = json.dumps(result, indent=2)+'\n'
+        destination.write_text(receipt)
+        (work/'run.json').write_text(receipt)
+
     # Never carry a success from a previous invocation into this run.
-    destination.write_text(json.dumps(result, indent=2)+'\n')
+    save_result()
     for check in checks:
         print(check['name']+' ...', flush=True)
         outcome = run_command(check['command'], ROOT, env,
                               work/'logs'/(check['name']+'.log'), check['timeout'])
-        result['checks'].append({**check, **outcome})
+        log = work/'logs'/(check['name']+'.log')
+        result['checks'].append({**check, **outcome, 'log': str(log)})
         result['finished_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
-        destination.write_text(json.dumps(result, indent=2)+'\n')
+        save_result()
         if outcome['exit_code']:
+            # Never echo arbitrary suite output or environment values into the
+            # job log. Launch errors are sanitized by validation_runtime.
+            reason = outcome.get('error', 'suite timed out' if outcome['timed_out'] else 'suite returned a nonzero exit code')
+            print(f"FAILED {check['name']}: {reason} (exit {outcome['exit_code']}).", file=sys.stderr, flush=True)
+            print(f'Report: {destination}\nSuite stdout/stderr: {log}', file=sys.stderr, flush=True)
             return 1
     result['passed'] = True
-    destination.write_text(json.dumps(result, indent=2)+'\n')
-    (work/'run.json').write_text(json.dumps(result, indent=2)+'\n')
+    save_result()
     print(destination)
     return 0
 
