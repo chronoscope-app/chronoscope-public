@@ -1,0 +1,26 @@
+{
+  "next": "3e9060b95bb05c36a5d2012d7324c45c0d0e8289",
+  "public_base": "e2601c70a59ed1d8e808a026311893faefa1c875",
+  "all_next_tracked_files_identical": true,
+  "private_next_ancestry_imported": false,
+  "preserved_public_only_files": [
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json"
+  ],
+  "validation_reference": "docs/validation/housekeeping-mac-2026-10-25/report.json",
+  "local_validation": {
+    "core_rust_passed": 415,
+    "core_rust_ignored": 1,
+    "frontend_tests": 70,
+    "packaging_tests": 104,
+    "final_runner_stages": 22,
+    "native_compile_cli_mcp_smoke": true
+  },
+  "hosted_builds": "Not run for this candidate yet; previous Windows path-identity and portable Fade fixture failures have local fixes in this source.",
+  "release_publication": false,
+  "app_version": "0.15.2; current source differs from historical 0.15.2 downloads"
+}

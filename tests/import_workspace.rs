@@ -336,7 +336,7 @@ fn utm_defaults_are_never_invented() {
     );
 }
 fn scene() -> Value {
-    json!({"mode":"map","position":[1.,7.,2.],"target":[0.,0.,0.],"time_height":3.5,"globe_time":false,"globe_time_scale":null,"focus":0.6,"bounds":[-80.,43.,-79.,44.],"table_open":true,"inspector_tab":"views","expanded":true,"camera_zoom":null,"table_source":null,"table_attributes":false,"table_respect_filters":false,"table_sort":"","table_descending":false,"table_column_offset":32,"render_budget":100000,"display":null,"chart":null,"chart_presets":[]})
+    json!({"mode":"map","position":[1.,7.,2.],"target":[0.,0.,0.],"time_height":3.5,"playback_fade":false,"globe_time":false,"globe_time_scale":null,"focus":0.6,"bounds":[-80.,43.,-79.,44.],"table_open":true,"inspector_tab":"views","expanded":true,"camera_zoom":null,"table_source":null,"table_attributes":false,"table_respect_filters":false,"table_sort":"","table_descending":false,"table_column_offset":32,"render_budget":100000,"display":null,"chart":null,"chart_presets":[]})
 }
 #[test]
 fn portable_workspace_restores_edited_data_context_and_terrain_without_originals() {

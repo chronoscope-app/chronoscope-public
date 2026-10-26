@@ -74,6 +74,23 @@ try {
     "Time",
   );
   assert.equal(await page.locator('[data-view="map"]').innerText(), "Map");
+  const packageVersion = JSON.parse(
+    fs.readFileSync(path.join(root, "frontend/package.json"), "utf8"),
+  ).version;
+  assert.equal(await page.title(), `Chronoscope ${packageVersion}`);
+  await page.locator("#help").click();
+  await page.locator("#about-app").click();
+  assert((await page.locator(".modal").innerText()).includes(packageVersion));
+  await page.keyboard.press("Escape");
+  await page.locator("#help").click();
+  await page.locator("#user-guide").click();
+  assert(
+    (await page.locator(".modal").innerText()).includes(
+      `version ${packageVersion}`,
+    ),
+  );
+  await page.keyboard.press("Escape");
+  pass("Actual title, About and user guide show the packaged version");
   const contrast = async (selector, background) =>
     page
       .locator(selector)

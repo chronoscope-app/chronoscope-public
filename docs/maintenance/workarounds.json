@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "reviewed_on": "2026-10-25",
+  "workarounds": [
+    {
+      "id": "cesium-terrain-picker",
+      "owner": "Chronoscope maintainer \u2014 rendering",
+      "purpose": "Retain valid parent triangles and prevent stale async terrain partitions from replacing a new picking tree.",
+      "source_files": [
+        "frontend/scripts/patches/terrain-picker.mjs",
+        "frontend/scripts/prepare-cesium.mjs"
+      ],
+      "constraints": [
+        {
+          "file": "frontend/package-lock.json",
+          "keys": [
+            "packages",
+            "node_modules/cesium",
+            "version"
+          ],
+          "expected": "1.146.0"
+        },
+        {
+          "file": "frontend/package-lock.json",
+          "keys": [
+            "packages",
+            "node_modules/@cesium/engine",
+            "version"
+          ],
+          "expected": "26.4.0"
+        }
+      ],
+      "regressions": [
+        "frontend/scripts/terrain-picking-test.mjs",
+        "frontend/scripts/balanced-terrain-qa.mjs"
+      ],
+      "upstream": "No upstream contribution is linked for this local patch. Original/patched hashes and exact edits remain in the patch module.",
+      "remove_when": "A pinned released engine handles refused/rejected tasks, synchronous worker failures and stale completions after reset. Remove the patch and pass the unchanged deterministic regressions and multi-view terrain/picking checks."
+    },
+    {
+      "id": "cesium-idle-camera",
+      "owner": "Chronoscope maintainer \u2014 rendering",
+      "purpose": "Absorb orientation-only getter roundoff for an otherwise stationary camera so request-render scenes can become idle.",
+      "source_files": [
+        "frontend/src/camera-stability.ts",
+        "docs/CESIUM-IDLE-RENDER.md"
+      ],
+      "constraints": [
+        {
+          "file": "frontend/package-lock.json",
+          "keys": [
+            "packages",
+            "node_modules/cesium",
+            "version"
+          ],
+          "expected": "1.146.0"
+        },
+        {
+          "file": "frontend/package-lock.json",
+          "keys": [
+            "packages",
+            "node_modules/@cesium/engine",
+            "version"
+          ],
+          "expected": "26.4.0"
+        }
+      ],
+      "regressions": [
+        "frontend/scripts/camera-stability-test.mjs",
+        "frontend/scripts/balanced-terrain-qa.mjs"
+      ],
+      "upstream": "https://github.com/CesiumGS/cesium/pull/13982 \u2014 open when checked 2026-10-25; not a dependency update in this source.",
+      "remove_when": "A pinned release includes a verified camera-getter fix. Without the application stabilizer, repeat the getter reproduction, idle checks and unchanged real navigation/rotation/zoom/mode/image regressions. Do not widen tolerances to manufacture a pass."
+    },
+    {
+      "id": "cesium-knockout-csp",
+      "owner": "Chronoscope maintainer \u2014 desktop security/rendering",
+      "purpose": "Replace Knockout global-object eval discovery with globalThis while keeping the desktop Content Security Policy restrictive.",
+      "source_files": [
+        "frontend/vite.config.ts"
+      ],
+      "constraints": [
+        {
+          "file": "frontend/package-lock.json",
+          "keys": [
+            "packages",
+            "node_modules/cesium",
+            "version"
+          ],
+          "expected": "1.146.0"
+        },
+        {
+          "file": "frontend/package-lock.json",
+          "keys": [
+            "packages",
+            "node_modules/@cesium/widgets",
+            "version"
+          ],
+          "expected": "16.3.0"
+        }
+      ],
+      "regressions": [
+        "frontend/scripts/cesium-parity-qa.mjs",
+        "scripts/test_package_distribution.py"
+      ],
+      "upstream": "Pinned Knockout 3.5.1 source; the Vite transform requires exactly one reviewed source occurrence. No upstream fix is asserted.",
+      "remove_when": "The locked widgets dependency works without eval in both Vite dev prebundling and production. Remove the transform, retain the CSP, and pass actual CSP-enabled renderer/native launch checks and notice packaging."
+    },
+    {
+      "id": "glib-variant-iterator",
+      "owner": "Chronoscope maintainer \u2014 native dependency security",
+      "purpose": "Backport the fix for C writing through a shared Rust reference in GLib variant iteration while retaining the required 0.18 API.",
+      "source_files": [
+        "vendor/glib/BACKPORT.md",
+        "vendor/glib/BACKPORT-FILES.json",
+        "vendor/glib/src/variant_iter.rs",
+        "Cargo.toml"
+      ],
+      "constraints": [
+        {
+          "file": "vendor/glib/BACKPORT-FILES.json",
+          "keys": [
+            "version"
+          ],
+          "expected": "0.18.5"
+        }
+      ],
+      "regressions": [
+        "scripts/test_glib_backport.py",
+        "tests/glib-backport/Cargo.toml"
+      ],
+      "upstream": "https://github.com/gtk-rs/gtk-rs-core/pull/1343; exact upstream fix and advisory IDs are in the retained backport ledger.",
+      "remove_when": "The verified supported native dependency graph no longer contains affected unpatched GLib. Repeat the exact ledger/graph checks, both debug/release iterator regressions on Linux and native compile/smoke checks; preserve required notices/source access."
+    }
+  ]
+}

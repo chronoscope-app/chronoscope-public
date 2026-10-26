@@ -1,4 +1,34 @@
 import type { GisLayer } from "./gis";
+import type { EngineContracts } from "./contracts";
+
+/** Shared wire definitions come from the Rust registry, not a second UI schema. */
+export type Preferences = Exclude<
+  EngineContracts["preferences"]["result"],
+  { dry_run: true }
+>;
+export type SceneState = EngineContracts["snapshot"]["result"]["scene"];
+type WireFilter = EngineContracts["snapshot"]["result"]["filter"];
+export type Filter = Required<
+  Pick<
+    WireFilter,
+    | "start"
+    | "end"
+    | "hidden_entities"
+    | "hidden_categories"
+    | "hidden_sources"
+    | "search"
+    | "predicates"
+    | "selected_only"
+    | "bounds"
+    | "located_only"
+  >
+> &
+  Pick<WireFilter, "facet_fields" | "facet_hidden">;
+export type MapLayer = NonNullable<Preferences["map_layers"]>[number];
+// Forms may omit the optional matrix level until automatic zoom is resolved.
+export type MapConfig = Omit<Preferences["map"], "level"> &
+  Partial<Pick<Preferences["map"], "level">>;
+
 export interface Snapshot {
   workspace_id: string;
   field_roles?: import("./field-roles").FieldRoles;
@@ -15,7 +45,7 @@ export interface Snapshot {
     visible: number;
     enabled: boolean;
   }[];
-  scene: any;
+  scene: SceneState;
   time_resolution: string;
   revision: number;
   name: string;
@@ -41,67 +71,11 @@ export interface Snapshot {
   selected_histogram: number[];
   filter: Filter;
   preferences: Preferences;
-  views: any[];
-  groups: any[];
+  views: NonNullable<EngineContracts["snapshot"]["result"]["views"]>;
+  groups: NonNullable<EngineContracts["snapshot"]["result"]["groups"]>;
   undo: number;
   redo: number;
   stats: Record<string, number>;
-}
-export interface Filter {
-  start: number | null;
-  end: number | null;
-  hidden_entities: string[];
-  hidden_categories: string[];
-  hidden_sources: string[];
-  facet_fields?: Record<string, string>;
-  facet_hidden?: Record<string, string[]>;
-  search: string;
-  predicates: any[];
-  selected_only: boolean;
-  bounds: any;
-  located_only: boolean;
-}
-export interface Preferences {
-  basemap: "streets" | "none";
-  auto_save_unsaved: boolean;
-  theme: "dark" | "light" | "system";
-  coordinates: "dd" | "utm" | "mgrs";
-  date_format:
-    | "system"
-    | "iso"
-    | "mdy"
-    | "mdy-short"
-    | "dmy"
-    | "dmy-short"
-    | "dmy-dots"
-    | "dmy-long"
-    | "mdy-long";
-  time_format: "system" | "12h" | "12h-seconds" | "24h" | "24h-seconds";
-  map: MapConfig;
-  map_layers?: MapLayer[] | null;
-  terrain_path: string | null;
-  terrain_builtin: boolean;
-  terrain_exaggeration: number;
-  terrain_vertical_datum: "unresolved-msl" | "egm96" | "ellipsoid";
-}
-export interface MapLayer {
-  id: string;
-  name: string;
-  server_name: string;
-  config: MapConfig;
-  opacity: number;
-  min_zoom: number;
-  max_zoom: number;
-}
-export interface MapConfig {
-  level?: number | null;
-  url: string;
-  layer: string;
-  matrix_set: string;
-  style: string;
-  format: string;
-  time: string;
-  enabled: boolean;
 }
 export interface Packed {
   inferred_ids?: string[];

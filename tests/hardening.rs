@@ -511,7 +511,7 @@ fn preferences_dry_run_has_a_valid_output_contract_and_does_not_change_state() {
 }
 #[test]
 fn explicit_error_codes_are_not_reclassified_by_message_words() {
-    use chronoscope::error::ErrorCode;
+    use chronoscope::error::{EngineError, ErrorCode};
     for code in [
         ErrorCode::Conflict,
         ErrorCode::Cancelled,
@@ -522,6 +522,11 @@ fn explicit_error_codes_are_not_reclassified_by_message_words() {
         ErrorCode::Unavailable,
         ErrorCode::OperationFailed,
     ] {
+        let typed = EngineError::new(code, "invalid missing limit interrupted");
+        assert_eq!(typed.code, code);
+        let wire = typed.into_legacy();
+        assert_eq!(EngineError::from_legacy(wire.clone()).code, code);
+        assert_eq!(EngineError::new(code, wire.clone()).into_legacy(), wire);
         assert_eq!(
             ErrorCode::classify(&format!(
                 "{}: invalid missing limit interrupted",
@@ -617,4 +622,25 @@ fn entity_selection_summary_is_exact_beyond_id_limits_and_tracks_edits() {
         engine.invoke("snapshot", json!({})).unwrap()["selected_entities"],
         json!({})
     );
+}
+
+#[test]
+fn typed_argument_failures_redact_connection_values_and_keep_their_category() {
+    use chronoscope::error::ErrorCode;
+    for (command, args) in [
+        ("not_a_command", json!({})),
+        ("view_playback", json!({"action":"not-an-action"})),
+        (
+            "si_configure",
+            json!({"api_key":"must-not-leak", "unknown":true}),
+        ),
+    ] {
+        let error = chronoscope::schema::validate_typed(command, &args).unwrap_err();
+        assert_eq!(error.code, ErrorCode::InvalidArgument);
+        assert!(!error.message.contains("must-not-leak"));
+        assert_eq!(
+            chronoscope::schema::validate(command, &args).unwrap_err(),
+            error.message
+        );
+    }
 }

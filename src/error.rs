@@ -64,12 +64,34 @@ pub struct EngineError {
     pub code: ErrorCode,
     pub message: String,
 }
-impl From<String> for EngineError {
-    fn from(message: String) -> Self {
+impl EngineError {
+    /// Domain code chooses the category; message text never changes it.
+    pub fn new(code: ErrorCode, message: impl Into<String>) -> Self {
+        Self {
+            code,
+            message: message.into(),
+        }
+    }
+    /// Compatibility with String-returning command paths and transport adapters.
+    pub fn into_legacy(self) -> String {
+        let prefix = format!("{}:", self.code.as_str());
+        if self.message.starts_with(&prefix) {
+            self.message
+        } else {
+            format!("{prefix} {}", self.message)
+        }
+    }
+    /// Only unmigrated String boundaries retain historical word-based fallback.
+    pub fn from_legacy(message: String) -> Self {
         Self {
             code: ErrorCode::classify(&message),
             message,
         }
+    }
+}
+impl From<String> for EngineError {
+    fn from(message: String) -> Self {
+        Self::from_legacy(message)
     }
 }
 impl std::fmt::Display for EngineError {

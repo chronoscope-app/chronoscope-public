@@ -1,3 +1,5 @@
+import { captureCamera, restoreCamera } from "./cesium-camera-state";
+import { applySceneAppearance } from "./scene-appearance";
 import { TOOLTIP_DELAY_MS } from "./tooltips";
 import { cameraStabilizer } from "./camera-stability";
 import { GisLayers } from "./gis";
@@ -70,6 +72,7 @@ import {
   type Terrain,
   type Raster,
   type Bounds,
+  type SceneState,
   type GeometryFeature,
 } from "./types";
 
@@ -81,20 +84,11 @@ export function mercator(lat: number, lon: number) {
     6378137 * Math.log(Math.tan(Math.PI / 4 + (limit * Math.PI) / 360)),
   );
 }
-export interface CesiumCameraState {
-  position: [number, number, number];
-  direction: [number, number, number];
-  up: [number, number, number];
-  frustum_width?: number;
-}
-export interface ViewNavigationState {
-  center: [number, number, number];
-  ground_width: number;
-  heading: number;
-  tilt: number;
-  footprint?: [number, number, number][];
-  camera?: CesiumCameraState | null;
-}
+export type CesiumCameraState = NonNullable<SceneState["cesium_camera"]>;
+export type ViewNavigationState = NonNullable<
+  SceneState["view_states"]
+>[string];
+
 type PickId =
   | { kind: "event" | "geometry"; id: string }
   | { kind: "cluster"; bin: DisplayBin }
@@ -103,7 +97,8 @@ type PickId =
 type Glyph = PointPrimitive | Billboard;
 const safeColor = (name: string, theme: string) =>
   Color.fromCssColorString(entityColor(name, theme)) || Color.CYAN;
-const finite = (v: number) => Number.isFinite(v);
+const finite = (v: unknown): v is number =>
+  typeof v === "number" && Number.isFinite(v);
 
 /** One Cesium scene drives Globe, 2D and Columbus space-time. Rust remains the source of truth. */
 export class SpaceTimeView {
@@ -644,12 +639,7 @@ export class SpaceTimeView {
     if (this.theme === theme) return;
     this.theme = theme;
     if (!this.viewer) return;
-    this.scene.backgroundColor = Color.fromCssColorString(
-      theme === "light" ? "#e5e9ef" : "#0e1420",
-    );
-    this.scene.globe.baseColor = Color.fromCssColorString(
-      theme === "light" ? "#c9d2df" : "#2f3c50",
-    );
+    applySceneAppearance(this.scene, theme);
     this.rebuild(true);
   }
   setGlobeTimeScale(scale: number) {
@@ -2691,84 +2681,11 @@ export class SpaceTimeView {
     this.requestRender();
     this.controls.dispatchEvent(new Event("change"));
   }
-  captureCamera(): { renderer: "cesium"; cesium_camera: CesiumCameraState } {
-    const frustum = this.camera.frustum as {
-      width?: number;
-      left?: number;
-      right?: number;
-    };
-    const width =
-      frustum.width ??
-      (typeof frustum.left === "number" && typeof frustum.right === "number"
-        ? frustum.right - frustum.left
-        : undefined);
-    return {
-      renderer: "cesium",
-      cesium_camera: {
-        position: [
-          this.camera.position.x,
-          this.camera.position.y,
-          this.camera.position.z,
-        ],
-        direction: [
-          this.camera.direction.x,
-          this.camera.direction.y,
-          this.camera.direction.z,
-        ],
-        up: [this.camera.up.x, this.camera.up.y, this.camera.up.z],
-        ...(typeof width === "number" ? { frustum_width: width } : {}),
-      },
-    };
+  captureCamera() {
+    return captureCamera(this.camera);
   }
-  restoreCamera(scene: any) {
-    const state = scene?.cesium_camera;
-    if (
-      scene?.renderer !== "cesium" ||
-      !state ||
-      ![state.position, state.direction, state.up].every(
-        (v) => Array.isArray(v) && v.length === 3 && v.every(finite),
-      )
-    )
-      return false;
-    const direction = Cartesian3.unpack(state.direction),
-      up = Cartesian3.unpack(state.up);
-    if (
-      Math.abs(Cartesian3.magnitude(direction) - 1) > 1e-5 ||
-      Math.abs(Cartesian3.magnitude(up) - 1) > 1e-5 ||
-      Math.abs(Cartesian3.dot(direction, up)) > 1e-5
-    )
-      return false;
-    this.camera.lookAtTransform(Matrix4.IDENTITY);
-    Cartesian3.unpack(state.position, 0, this.camera.position);
-    Cartesian3.clone(direction, this.camera.direction);
-    Cartesian3.clone(up, this.camera.up);
-    Cartesian3.cross(direction, up, this.camera.right);
-    if (
-      this.mode === "map" &&
-      finite(state.frustum_width) &&
-      state.frustum_width > 0
-    ) {
-      const f = this.camera.frustum as {
-        width?: number;
-        left?: number;
-        right?: number;
-        top?: number;
-        bottom?: number;
-      };
-      if (f.width !== undefined) f.width = state.frustum_width;
-      else if (
-        f.left !== undefined &&
-        f.right !== undefined &&
-        f.top !== undefined &&
-        f.bottom !== undefined
-      ) {
-        const ratio = (f.top - f.bottom) / (f.right - f.left);
-        f.left = -state.frustum_width / 2;
-        f.right = state.frustum_width / 2;
-        f.top = (state.frustum_width * ratio) / 2;
-        f.bottom = (-state.frustum_width * ratio) / 2;
-      }
-    }
+  restoreCamera(scene: SceneState) {
+    if (!restoreCamera(this.camera, this.mode, scene)) return false;
     this.requestRender();
     this.controls.dispatchEvent(new Event("change"));
     return true;

@@ -2,6 +2,22 @@
 
 Use this for a future preview or production release. Documentation preparation does not authorize rebuilding/replacing historical assets, changing tags, purchasing signing services or making the repository public.
 
+## Prepare consistent metadata
+
+Run `python3 scripts/release_preflight.py` from the configured local build
+environment. It checks five version manifests and the app entries in both lockfiles.
+Use `--plan-version 0.15.3` (or the chosen new version) for a read-only list of
+metadata/notes to update. It does not bump versions, change tags or publish.
+See the [release/promotion procedure](maintenance/RELEASE-PROCESS.md).
+
+Before release acceptance, move the intended Unreleased notes into the new dated
+version section, retain an empty Unreleased section, and freeze a clean commit.
+After refreshing Public tags locally, run
+`python3 scripts/release_preflight.py --for-release --expected-sha FULL_COMMIT_SHA`.
+This rejects version mismatches, missing versioned notes, dirty/wrong source and
+existing local release tags. It cannot discover unfetched remote tags or certify
+packages, native acceptance, rights or publication authorization.
+
 ## Freeze the source
 
 - Choose one clean, reviewed application commit. Record it in the release notes and build evidence. If platforms must use different source, label that explicitly instead of implying equivalent builds.

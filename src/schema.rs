@@ -621,7 +621,12 @@ pub fn command_schema(command: &str) -> Option<Value> {
 }
 static VALIDATORS: OnceLock<BTreeMap<String, jsonschema::Validator>> = OnceLock::new();
 pub const COMMANDS: &[&str] = crate::command::NAMES;
+/// Legacy callers retain their existing human-readable validation messages.
 pub fn validate(command: &str, args: &Value) -> Result<(), String> {
+    validate_typed(command, args).map_err(|error| error.message)
+}
+pub fn validate_typed(command: &str, args: &Value) -> Result<(), crate::error::EngineError> {
+    use crate::error::{EngineError, ErrorCode};
     let command = crate::command::canonical_name(command);
     let all = VALIDATORS.get_or_init(|| {
         COMMANDS
@@ -635,14 +640,23 @@ pub fn validate(command: &str, args: &Value) -> Result<(), String> {
             })
             .collect()
     });
-    let v = all
-        .get(command)
-        .ok_or_else(|| format!("Unknown command: {command}"))?;
+    let v = all.get(command).ok_or_else(|| {
+        EngineError::new(
+            ErrorCode::InvalidArgument,
+            format!("Unknown command: {command}"),
+        )
+    })?;
     if let Some(e) = v.iter_errors(args).next() {
         if matches!(command, "si_configure" | "client_connect") {
-            Err("Invalid connection arguments".into())
+            Err(EngineError::new(
+                ErrorCode::InvalidArgument,
+                "Invalid connection arguments",
+            ))
         } else {
-            Err(format!("Invalid arguments at {}: {e}", e.instance_path()))
+            Err(EngineError::new(
+                ErrorCode::InvalidArgument,
+                format!("Invalid arguments at {}: {e}", e.instance_path()),
+            ))
         }
     } else {
         Ok(())

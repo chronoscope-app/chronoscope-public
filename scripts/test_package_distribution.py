@@ -331,8 +331,11 @@ class NoticePackagingTests(unittest.TestCase):
         result = subprocess.run([NODE, str(self.repo / 'frontend/scripts/prepare-cesium.mjs')],
                                 capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual((self.repo / 'frontend/patch-hook-invoked.txt').read_text(),
-                         str((self.repo / 'frontend').resolve()))
+        # Windows Node/Python can report short/long spellings of the same
+        # temporary directory. Check the actual hook boundary, not its spelling.
+        hook_root = Path((self.repo / 'frontend/patch-hook-invoked.txt').read_text())
+        self.assertTrue(hook_root.samefile(self.repo / 'frontend'),
+                        f'Patch hook targeted the wrong frontend directory: {hook_root}')
         self.assertEqual((self.repo / 'frontend/public/cesium/LICENSE.md').read_text(), 'fake vendor license')
         notices.verify_notices(self.bundle, self.repo)
         # An incomplete or corrupted terrain resource must prevent packaging.

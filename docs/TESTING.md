@@ -33,14 +33,30 @@ one matrix as ignored; that is intentional, not release acceptance.
 
 ## Prerequisites and resource use
 
-On this 16 GB Mac, wrap heavy runs with
-`python3 scripts/guarded_run.py -- python3 scripts/validate_local.py ...`.
-It uses low priority, one Cargo worker and serial Rust tests. It refuses to start
-below 35% reported memory availability and stops only its owned process group
-if availability falls below 25%, its tree exceeds 5 GiB RSS, or tree CPU stays
-above 250% for 15 seconds. Browser jobs remain one by default. Run one guarded
-build/test at a time; the guard is not a global scheduler or a GPU-memory meter.
-It reports peak owned usage and propagates failure rather than silently retrying.
+Normal `validate_local.py`, `npm run build`, `npm test` (in frontend),
+`npm run bundle` and `script/build_and_run.sh` commands now acquire one shared
+workspace resource guard automatically. Nested build hooks reuse the active
+lock; an unrelated second heavy invocation is refused. Direct Cargo commands
+remain available; wrap them with `python3 scripts/guarded_run.py -- cargo ...`
+for the same protection. `--list` and help do not acquire a lock.
+
+On this 16 GB Mac the guard uses low priority, one Cargo worker and serial Rust
+and frontend unit tests. It refuses starts below 35% reported memory availability
+or 5 GiB free disk. It stops its owned process tree, including independently
+sessioned children, below 25% memory availability, above 5 GiB RSS, or above
+250% tree CPU for 15 seconds. It prevents idle system sleep during the guarded
+command, including while the display is locked; it does not unlock the screen
+or prevent display sleep. UI/capture checks may still require an unlocked session.
+Other platforms share the lock and serial Cargo settings; Mac pressure thresholds
+are not claimed as Windows/Linux monitoring. This is not a GPU-memory meter.
+
+Preview old disposable test profiles with `python3 scripts/clean_local_artifacts.py`;
+add `--apply` to remove them. It retains at least the newest three completed runs
+and seven days by default. Only per-suite `profiles/` of runs with a completion
+receipt are eligible. Native app profiles, unfinished runs, logs, screenshots,
+results, saved workspaces, toolchains and recovery data are retained. Older runs
+without a completion receipt require separate review. Cleanup shares the heavy-work
+lock so it cannot race a normal build/test.
 
 Set `CHRONOSCOPE_CHROMIUM` or pass `--chromium` for a nonstandard browser path.
 The shared browser runtime chooses Metal on macOS and SwiftShader elsewhere;
@@ -202,3 +218,24 @@ bundled terrain on the public wildlife demo. The analysis detects large blank
 ground flashes and isolated frame discontinuities in its central region; inspect
 clips/contact sheets as well for other artifacts. This is a correctness check,
 not a GPU-performance certification. MP4s and raw frame evidence stay under .qa/.
+
+## Shared source gate
+
+`scripts/source_checks.py --packaging` runs the same inventoried Python unit,
+integrity/packaging checks, Rust formatting/strict core Clippy/tests and frontend
+unit command used by `validate_local.py`. The local runner still owns builds,
+focused/full selections, browser/native checks and fresh run evidence. Manual
+hosted builds use the shared source gate, then check generated contracts against
+their actual release CLI with `--contracts-only --cli PATH`. The source gate
+does not build or dispatch anything remotely. Workflows remain manual-only.
+
+Version display is checked by opening the actual About and user guide dialogs
+in the presentation browser suite, rather than matching implementation strings.
+
+Release metadata consistency and the workaround version/ownership index are
+inventoried integrity checks in both local and manual hosted source verification.
+See [release preparation](maintenance/RELEASE-PROCESS.md) and the
+[workaround index](maintenance/WORKAROUNDS.md). The portable build wrapper accepts
+the reviewed jobs-only workspace Cargo config; other configured rustflags still
+require explicit effective `CARGO_ENCODED_RUSTFLAGS` so remapping cannot silently
+replace them.

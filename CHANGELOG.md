@@ -37,7 +37,10 @@ These changes are in the current source and are planned for the next preview. Th
 
 ### Maintenance
 
-- Streamline local verification into fast, feature-focused and full checks, with explicit test ownership, isolated evidence and rejection of stale builds. Retain distinct regression coverage while reducing duplicated setup. Add a resource guard for heavy Mac checks and builds; it runs one Cargo worker and serial Rust tests and stops its own processes under excessive CPU or memory pressure when invoked.
+- Protect normal local builds and validation with one shared workspace lock, one Cargo worker and serial unit tests. On macOS, monitor CPU/RAM pressure and free disk space and prevent idle system sleep during guarded work, including while the display is locked. Add a preview-first cleanup tool for old completed test profiles that retains evidence and native app profiles.
+- Share source verification between local checks and manual hosted builds, including generated-contract checks against the built CLI. Verify version labels through actual app dialogs. Fix Windows short/long-path comparisons in packaging tests and verify Fade survives portable-workspace round trips.
+- Reuse generated engine definitions for frontend preferences, filters and saved cameras; separate Preferences/dialog ownership, camera persistence, scene colors and resource-change decisions. Choose explicit error categories for argument validation and saved navigation recipes while preserving older error adapters.
+- Index maintained dependency workarounds with version checks and removal gates. Add read-only release preflight/version planning so manifests, lockfiles and release notes stay consistent; preserve historical versions and downloads.
 - Separate import, analysis, map settings, table gestures, file routing and operation jobs into focused frontend modules while retaining shared save/close coordination.
 
 ## 0.15.2 — experimental preview, 2026-10-23

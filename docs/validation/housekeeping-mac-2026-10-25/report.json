@@ -1,0 +1,232 @@
+{
+  "application_source": "67b24fcad30e5ae0467c6bc85564986ca3e519e7",
+  "scope": "Next main only; no Public update, hosted dispatch, tag, version bump or release publication in this housekeeping task",
+  "checkpoints": [
+    {
+      "commit": "29db0301a973bb85e63b38a44b1185dea4d02a0a",
+      "subject": "Guard ordinary local builds and tests against overlapping work"
+    },
+    {
+      "commit": "ed4f54a6a83764f8776154cba0e245437314f7a3",
+      "subject": "Reuse generated engine types for frontend preferences and scenes"
+    },
+    {
+      "commit": "c7082b4d0dff61f32cc09f1d1935546d6c77006f",
+      "subject": "Fix portable packaging paths and preserve Fade in workspace fixture"
+    },
+    {
+      "commit": "9390ad4df93ba96653b367d4a147ecadd263e5b3",
+      "subject": "Extract preferences flow and modal focus into UI controllers"
+    },
+    {
+      "commit": "136f4b1e60e7df329fcfaad5ee012c67335c7b79",
+      "subject": "Separate camera persistence and appearance from map resource updates"
+    },
+    {
+      "commit": "0ed9c8364cdf5fe610ab9fb64c9acab5d7ed0c96",
+      "subject": "Choose explicit error categories for validation and navigation recipes"
+    },
+    {
+      "commit": "b959c470f4da3b512cd72e7b8dc085f7acceca9e",
+      "subject": "Keep nested guard ownership readable under Windows file locks"
+    },
+    {
+      "commit": "7b7a4b3c3b30db5ded13c34504eeaa6242715e83",
+      "subject": "Share source verification between local and manual hosted builds"
+    },
+    {
+      "commit": "a6e0e7884e6a68cbd000e2e8c8f0cda646d73dac",
+      "subject": "Index maintained dependency workarounds and their removal gates"
+    },
+    {
+      "commit": "208200dd313cd642807281fd4b8929798179185b",
+      "subject": "Allow reviewed worker limits in the portable build wrapper"
+    },
+    {
+      "commit": "fb0d2cf48079d34b82c3aa80d54e75492d00797c",
+      "subject": "Check consistent release metadata and document reviewed promotions"
+    },
+    {
+      "commit": "67b24fcad30e5ae0467c6bc85564986ca3e519e7",
+      "subject": "Read live Preferences values after asynchronous status replies"
+    }
+  ],
+  "verification": {
+    "complete_core_rust": {
+      "passed": 415,
+      "ignored": 1,
+      "note": "Shared source gate before later frontend/tooling follow-ups; Rust product source unchanged afterward"
+    },
+    "final_local_runner": {
+      "run_id": "20261026T012353Z-62cbe244",
+      "source_revision": "67b24fcad30e5ae0467c6bc85564986ca3e519e7",
+      "passed": true,
+      "dirty": false,
+      "checks": [
+        {
+          "name": "test_validation_runner",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "test_guarded_run",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "rust-format",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "test_glib_backport",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "test_workarounds",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "test_release_preflight",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "core-clippy",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "cli-build",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "frontend-build",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "generated-contracts",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "frontend-unit-tests",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "integration-smoke-qa",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "balanced-terrain-qa",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "view-sync-qa",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "navigation-preferences-qa",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "test_publication_cleanup",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "test_package_distribution",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "test_tester_packaging",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "test_validate_tester_download",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "native-clippy",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "native-build",
+          "exit_code": 0,
+          "timed_out": false
+        },
+        {
+          "name": "native-cli-smoke",
+          "exit_code": 0,
+          "timed_out": false
+        }
+      ]
+    },
+    "frontend_unit_tests": 70,
+    "final_browser_suites": [
+      "integration-smoke",
+      "balanced-terrain",
+      "view-sync",
+      "navigation-preferences"
+    ],
+    "additional_browser_suites": [
+      "toolbar-dialogs",
+      "welcome",
+      "presentation-ui"
+    ],
+    "packaging": [
+      {
+        "name": "test_publication_cleanup",
+        "tests": 11,
+        "passed": true
+      },
+      {
+        "name": "test_package_distribution",
+        "tests": 23,
+        "passed": true
+      },
+      {
+        "name": "test_tester_packaging",
+        "tests": 34,
+        "passed": true
+      },
+      {
+        "name": "test_validate_tester_download",
+        "tests": 36,
+        "passed": true
+      }
+    ],
+    "native": "strict native Clippy, debug desktop compilation and headless desktop CLI/agent/MCP smoke passed; no new GUI bundle/download acceptance claim",
+    "resource_guard": {
+      "peak_owned_rss_mib": 2194,
+      "peak_owned_cpu_percent": 308,
+      "cpu_note": "brief peak; guard rejects sustained tree CPU above 250% for 15 seconds",
+      "cargo_workers": 1,
+      "rust_test_threads": 1,
+      "frontend_test_concurrency": 1,
+      "browser_jobs": 1,
+      "idle_system_sleep_prevented_during_guarded_work": true
+    }
+  },
+  "limits": [
+    "No native GUI interaction or video capture in this pass; no screen unlock required by these checks.",
+    "Windows path identity and locking fixes have local regression coverage; native Windows/Linux runs remain separate.",
+    "One explicitly ignored full dataset matrix and optional hardware/model/certificate checks are not counted as passing.",
+    "Refactoring and error migration are incremental: legacy error adapters remain for compatibility; the app is not claimed free of all architectural debt.",
+    "Public workflow failures were repaired in Next; hosted workflows were not rerun."
+  ],
+  "publication_notes": "The Git CLI lacked workflow-edit scope. The existing connected GitHub account published the shared-gate checkpoint with an exactly matching validated tree; unpublished follow-ups were synced without changing their content. A later transient Git network timeout was retried successfully."
+}

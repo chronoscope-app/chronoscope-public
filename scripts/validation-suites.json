@@ -25,7 +25,9 @@
       "guided-workflows-test.mjs",
       "qa-config-test.mjs",
       "view-profile-test.mjs",
-      "agent-lab-test.mjs"
+      "agent-lab-test.mjs",
+      "view-boundaries-test.mjs",
+      "preferences-controller-test.mjs"
     ],
     "browser": [
       "integration-smoke-qa.mjs",
@@ -256,10 +258,13 @@
   },
   "python_suites": {
     "unit": [
-      "test_validation_runner.py"
+      "test_validation_runner.py",
+      "test_guarded_run.py"
     ],
     "integrity": [
-      "test_glib_backport.py"
+      "test_glib_backport.py",
+      "test_workarounds.py",
+      "test_release_preflight.py"
     ],
     "packaging": [
       "test_publication_cleanup.py",

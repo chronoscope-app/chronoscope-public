@@ -12,6 +12,7 @@ import uuid
 from threading import Lock
 from validation_suites import load_suites, select_browser
 from validation_runtime import run_command, sha256, build_receipt, matches_build_receipt
+from source_checks import check_plan
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -117,7 +118,7 @@ def main():
               'platform': sys.platform, 'tier': args.tier, 'started_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
               'test_infrastructure_sha256': {str(p.relative_to(ROOT)): sha256(p) for p in [
                   ROOT/'scripts/validate_local.py', ROOT/'scripts/validation_runtime.py',
-                  ROOT/'scripts/validation_suites.py', ROOT/'scripts/validation-suites.json',
+                  ROOT/'scripts/validation_suites.py', ROOT/'scripts/validation-suites.json', ROOT/'scripts/source_checks.py',
                   ROOT/'frontend/scripts/qa-runtime.mjs', ROOT/'frontend/scripts/qa-config.mjs',
                   ROOT/'frontend/scripts/local-browser.mjs', ROOT/'frontend/scripts/workspace-qa-helpers.mjs']},
               'passed': False, 'github_runners_used': False, 'checks': [], 'unrun_browser_suites': sorted(set(inventory['groups']['browser']) - set(browsers)),
@@ -128,6 +129,7 @@ def main():
     def publish():
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_text(json.dumps(report, indent=2) + '\n')
+        (work/'run.json').write_text(json.dumps(report, indent=2) + '\n')
 
     report_lock = Lock()
 
@@ -159,22 +161,21 @@ def main():
         print(('  passed: ' if result['exit_code'] == 0 else '  FAILED: ') + str(log), flush=True)
         return result['exit_code'] == 0
 
+    plan = check_plan(inventory, rust_targets, args.tier == 'full')
+    def source_check(check):
+        return run(check['name'], check['command'], timeout=check['timeout'])
+
     ok = True
     try:
-        if not run('validation-runner-tests', [sys.executable, 'scripts/test_validation_runner.py']):
-            return 1
+        for check in plan['unit']:
+            if not source_check(check):
+                return 1
         if not args.skip_build:
-            ok = run('rust-format', ['cargo', 'fmt', '--all', '--check']) and ok
-            ok = run('glib-backport-integrity', [sys.executable, 'scripts/test_glib_backport.py']) and ok
-            ok = run('core-clippy', ['cargo', 'clippy', '--locked', '-p', 'chronoscope', '--all-targets', '--', '-D', 'warnings'], timeout=1800) and ok
+            for check in plan['prebuild']:
+                ok = source_check(check) and ok
         focused = bool(args.suite or args.feature or args.rust_test)
         if not focused or rust_targets:
-            command = ['cargo', 'test', '--locked', '-p', 'chronoscope']
-            for name in sorted(rust_targets):
-                command += ['--test', name]
-            if args.tier == 'full':
-                command += ['--', '--include-ignored']
-            ok = run('rust-tests', command, timeout=1800) and ok
+            ok = source_check(plan['rust'][0]) and ok
         receipt = ROOT/('.qa/local-build-receipt-release.json' if args.release_cli else '.qa/local-build-receipt.json')
         current = source_digest()
         if args.skip_build:
@@ -191,8 +192,8 @@ def main():
         ok = built and ok
         if built:
             report['cli_sha256'] = sha256(cli)
-            ok = run('generated-contracts', [node, 'scripts/generate_contracts.mjs', '--check']) and ok
-        ok = run('frontend-unit-tests', [npm, '--prefix', 'frontend', 'test']) and ok
+            ok = source_check(plan['contracts'][0]) and ok
+        ok = source_check(plan['frontend'][0]) and ok
         if built:
             # Timing-sensitive suites always run alone. Default all suites are serial.
             from concurrent.futures import ThreadPoolExecutor
@@ -206,8 +207,12 @@ def main():
                     ok = run(suite.removesuffix('.mjs'), [node, 'frontend/scripts/'+suite], browser=True, timeout=max(args.timeout, 1800)) and ok
             for group, enabled in [('packaging', args.packaging or args.tier == 'full'), ('oracles', args.oracles or args.tier == 'full')]:
                 if enabled:
-                    for suite in inventory['python_suites'][group]:
-                        ok = run(suite.removesuffix('.py'), [sys.executable, 'scripts/'+suite]) and ok
+                    if group == 'packaging':
+                        for check in plan[group]:
+                            ok = source_check(check) and ok
+                    else:
+                        for suite in inventory['python_suites'][group]:
+                            ok = run(suite.removesuffix('.py'), [sys.executable, 'scripts/'+suite]) and ok
         if args.native or args.native_gui:
             ok = run('native-clippy', ['cargo', 'clippy', '--locked', '-p', 'chronoscope-desktop', '--', '-D', 'warnings'], timeout=1800) and ok
             native = run('native-build', ['cargo', 'build', '--locked', '-p', 'chronoscope-desktop'], timeout=1800)
@@ -238,4 +243,7 @@ def main():
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    from guarded_run import is_guarded, run_guarded
+    if any(arg in sys.argv for arg in ['--list', '--help', '-h']) or is_guarded():
+        raise SystemExit(main())
+    raise SystemExit(run_guarded([sys.executable, str(Path(__file__).resolve()), *sys.argv[1:]]))

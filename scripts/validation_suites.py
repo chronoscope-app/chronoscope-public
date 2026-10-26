@@ -26,7 +26,7 @@ def load_suites():
     advertised = set()
     for key, command in package['scripts'].items():
         if key == 'test':
-            if command != 'node --test scripts/*-test.mjs':
+            if command != 'node ../scripts/guarded-node.mjs -- node --test --test-concurrency=1 scripts/*-test.mjs':
                 raise ValueError('npm test must discover the maintained frontend unit suites')
             targets = {p.name for p in (ROOT/'frontend/scripts').glob('*-test.mjs')}
             if targets != set(groups['unit']):
