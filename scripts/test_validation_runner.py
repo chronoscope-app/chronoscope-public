@@ -156,7 +156,7 @@ class ValidationRunnerTests(unittest.TestCase):
 
     def test_source_failure_keeps_exact_run_receipt_and_logs_without_echoing_output(self):
         with tempfile.TemporaryDirectory(prefix='source diagnostics ') as temporary:
-            report = Path(temporary)/'report.json'
+            report = (Path(temporary)/'report.json').resolve()
             for command, expected in [
                 ([sys.executable, '-c', 'print("private fixture output"); raise SystemExit(7)'], 7),
                 ([str(Path(temporary)/'missing-private-executable')], 127),
