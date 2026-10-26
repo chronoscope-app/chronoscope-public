@@ -1,0 +1,23 @@
+{
+  "next": "57c5bb2f22c6e9f3e4e720deb6fa1b7fbd128270",
+  "public_base": "3afde5673eb1c65c2e3f6cb035de79abf101d742",
+  "next_tracked_files": 3109,
+  "all_next_files_bytes_modes_match": true,
+  "preserved_public_only_files": 12,
+  "private_next_ancestry_imported": false,
+  "source_change": "test_validate_tester_download.py only",
+  "production_changed": false,
+  "whole_test_skip_added": false,
+  "independent_review": "approve; no valid requirement relaxed",
+  "local_tests": {
+    "tester_download": 37,
+    "tester_packaging": 34,
+    "distribution": 23,
+    "validation_runner": 20,
+    "publication": 12,
+    "guard": 6
+  },
+  "mutations": "missing POSIX chmod and unexpected Windows chmod both rejected",
+  "native_acceptance": "pending new exact-SHA runs",
+  "release_publication": false
+}
