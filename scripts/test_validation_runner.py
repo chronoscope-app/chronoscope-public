@@ -11,6 +11,7 @@ from unittest import mock
 import validate_local
 from validation_runtime import run_command, build_receipt, matches_build_receipt
 from validation_suites import load_suites, select_browser
+from source_checks import check_plan
 
 
 class ValidationRunnerTests(unittest.TestCase):
@@ -133,6 +134,17 @@ class ValidationRunnerTests(unittest.TestCase):
             receipt.write_text(json.dumps(build_receipt('source', cli, frontend, 'debug')))
             self.assertTrue(matches_build_receipt(receipt, 'source', cli, frontend, 'debug'))
             self.assertFalse(matches_build_receipt(receipt, 'source', cli, frontend, 'release'))
+
+
+    def test_shared_source_plan_covers_owned_python_checks_and_exact_contracts(self):
+        plan = check_plan(self.manifest, ['playback_display', 'playback_display'], True)
+        for group in ['unit', 'packaging']:
+            self.assertEqual([Path(c['command'][-1]).name for c in plan[group]], self.manifest['python_suites'][group])
+        self.assertEqual(plan['rust'][0]['command'].count('playback_display'), 1)
+        self.assertEqual(plan['rust'][0]['command'][-2:], ['--', '--include-ignored'])
+        self.assertIn('--check', plan['contracts'][0]['command'])
+        names = [c['name'] for checks in plan.values() for c in checks]
+        self.assertEqual(len(names), len(set(names)))
 
 
 if __name__ == '__main__':

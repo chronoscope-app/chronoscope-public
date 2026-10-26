@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test scripts/*-test.mjs",
+    "test": "node ../scripts/guarded-node.mjs -- node --test --test-concurrency=1 scripts/*-test.mjs",
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc && vite build",
+    "build": "node ../scripts/guarded-node.mjs -- npm run build:raw --",
     "tauri": "cd .. && tauri",
     "test:ui": "node scripts/cesium-parity-qa.mjs",
     "format": "prettier --write src scripts",
@@ -62,7 +62,8 @@
     "test:presentation-ui": "node scripts/presentation-ui-qa.mjs",
     "test:view-sync": "node scripts/view-sync-qa.mjs",
     "capture:demo-thumbnails": "node scripts/capture-demo-thumbnails.mjs",
-    "test:navigation-preferences": "node scripts/navigation-preferences-qa.mjs"
+    "test:navigation-preferences": "node scripts/navigation-preferences-qa.mjs",
+    "build:raw": "tsc && vite build"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

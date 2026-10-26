@@ -1,3 +1,4 @@
+import tempfile
 #!/usr/bin/env python3
 """Fast offline source/fixture regressions; no native app or network."""
 import importlib.util
@@ -73,6 +74,22 @@ class PublicationCleanup(unittest.TestCase):
                 lookup.assert_not_called()
                 run.assert_called_once_with(command, cwd=portable.root, env={})
 
+    def test_jobs_only_workspace_config_does_not_block_portable_builds(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            config = root/'.cargo/config.toml'
+            config.parent.mkdir()
+            environment = {'CARGO_HOME': str(root/'private-cargo')}
+            with mock.patch.object(portable, 'root', root), mock.patch.object(portable.Path, 'home', return_value=root/'home'):
+                config.write_text('# Safe local worker limit\n[build]\njobs = 1\n')
+                self.assertFalse(portable.configured_flags_required(environment, ['cargo', 'build', '--locked']))
+                config.write_text('[build]\njobs = 1\nrustflags = ["-C", "target-cpu=native"]\n')
+                self.assertTrue(portable.configured_flags_required(environment, ['cargo', 'build']))
+                config.write_text('[build]\njobs = 1\n')
+                self.assertTrue(portable.configured_flags_required(environment, ['cargo', '--config=custom.toml']))
+                self.assertTrue(portable.configured_flags_required({**environment, 'CARGO_TARGET_AARCH64_APPLE_DARWIN_RUSTFLAGS': '-C target-cpu=native'}, ['cargo', 'build']))
+                self.assertFalse(portable.configured_flags_required({**environment, 'CARGO_ENCODED_RUSTFLAGS': ''}, ['cargo', 'build']))
+
     def test_sample_credit_and_records(self):
         with zipfile.ZipFile(ROOT/"samples/animal-gps-black-rock-forest-2023-03.chronoscope") as archive:
             project = json.loads(archive.read("manifest.json"))
@@ -119,9 +136,14 @@ class PublicationCleanup(unittest.TestCase):
         # the Linux GLib graph must also resolve on Windows/macOS hosts.
         self.assertEqual(prefetch.group(1).strip(),
                          "run: cargo fetch --locked --manifest-path Cargo.toml")
-        static = workflow.index("      - name: Static packaging tests\n")
+        static = workflow.index("      - name: Shared source verification\n")
         self.assertLess(prefetch.start(), static)
-        self.assertIn("python -B scripts/test_glib_backport.py", workflow[static:])
+        self.assertIn("python -B scripts/source_checks.py --packaging", workflow[static:])
+        from source_checks import check_plan
+        from validation_suites import load_suites
+        shared = check_plan(load_suites())
+        self.assertTrue(any(c['command'][-1] == 'scripts/test_glib_backport.py' for c in shared['prebuild']))
+        self.assertIn('--contracts-only', workflow)
         guard = (ROOT/"scripts/test_glib_backport.py").read_text()
         self.assertIn("['cargo', 'tree', '--offline', '--locked', *args]", guard)
 

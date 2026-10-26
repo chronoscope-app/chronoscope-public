@@ -1,3 +1,4 @@
+import { preferenceEffects } from "./preference-effects";
 import { WorkspaceFiles } from "./workspace-files";
 import { Welcome } from "./welcome";
 import { TableSelection } from "./table-selection";
@@ -29,11 +30,8 @@ import { RendererStatus } from "./renderer-status";
 import { FilterIntent } from "./filter-intent";
 import { ViewportRefresh } from "./viewport-refresh";
 import { TimeRange } from "./time-range";
-import {
-  preferencesLayout,
-  bindPreferencesLayout,
-  type PreferencesSection,
-} from "./preferences-layout";
+import { DialogController } from "./dialog-controller";
+import { createPreferencesController } from "./preferences-controller";
 import { globeElevationScale, globeElevationSlider } from "./time-elevation";
 import { PlaybackWindow } from "./playback-window";
 import { TimeRail } from "./time-rail";
@@ -63,11 +61,10 @@ import {
   time,
   displayTime,
   setDateTimeDisplay,
-  dateFormats,
-  timeFormats,
   entityColor,
   setEntityColors,
   type Snapshot,
+  type SceneState,
   type Filter,
   type Preferences,
   type Terrain,
@@ -164,9 +161,12 @@ let tableSource: string | null = null,
 let layerMenu: HTMLElement | null = null;
 let findings: any[] = [];
 let findingsRevision = -1;
-let modalNode: HTMLElement | null = null;
-let modalReturnFocus: HTMLElement | null = null;
 let resolveGuard: ((proceed: boolean) => void) | null = null;
+const dialogs = new DialogController(() => {
+  const pending = resolveGuard;
+  resolveGuard = null;
+  pending?.(false);
+});
 let playTimer: number | undefined;
 let playbackPreserveFrame = false;
 let timeScrubbing = false;
@@ -505,17 +505,7 @@ matchMedia("(prefers-color-scheme:dark)").addEventListener("change", () => {
   theme();
   void refresh(false, false).catch((error) => toast(String(error), true));
 });
-function mapPreferencesKey(p: Preferences) {
-  return JSON.stringify([
-    p.basemap,
-    p.map,
-    p.map_layers,
-    p.terrain_path,
-    p.terrain_builtin,
-    p.terrain_exaggeration,
-    p.terrain_vertical_datum,
-  ]);
-}
+
 let renderBudget: 20000 | 100000 = 20000;
 let renderLOD = false,
   geometryLOD = false,
@@ -1619,70 +1609,12 @@ function patterns() {
   );
 }
 function closeModal() {
-  const pending = resolveGuard;
-  resolveGuard = null;
-  pending?.(false);
-  modalNode?.remove();
-  modalNode = null;
-  if (modalReturnFocus?.isConnected) modalReturnFocus.focus();
-  modalReturnFocus = null;
+  dialogs.close();
 }
 function modal(html: string, small = false) {
-  const returnFocus =
-    modalReturnFocus ||
-    (document.activeElement instanceof HTMLElement
-      ? document.activeElement
-      : null);
-  closeModal();
-  modalReturnFocus = returnFocus;
-  modalNode = document.createElement("div");
-  modalNode.className = "modal-backdrop";
-  modalNode.innerHTML = `<section class="modal ${small ? "small" : ""}" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">${html}</section>`;
-  document.body.append(modalNode);
-  modalNode
-    .querySelectorAll("[data-close]")
-    .forEach((e) => e.addEventListener("click", closeModal));
-  modalNode.querySelector("h2")?.setAttribute("id", "modal-title");
-  modalNode.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      event.stopPropagation();
-      closeModal();
-    } else if (event.key === "Tab") {
-      const controls = [
-        ...modalNode!.querySelectorAll<HTMLElement>(
-          'button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),summary,a[href],[tabindex="0"]',
-        ),
-      ].filter((e) => e.getClientRects().length);
-      const first = controls[0],
-        last = controls.at(-1);
-      if (!first) {
-        event.preventDefault();
-        return;
-      }
-      if (
-        event.shiftKey &&
-        (document.activeElement === first ||
-          !controls.includes(document.activeElement as HTMLElement))
-      ) {
-        event.preventDefault();
-        last?.focus();
-      } else if (
-        !event.shiftKey &&
-        (document.activeElement === last ||
-          !controls.includes(document.activeElement as HTMLElement))
-      ) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-  });
-  (
-    modalNode.querySelector<HTMLElement>("button,input,select,textarea") ||
-    modalNode.querySelector<HTMLElement>(".modal")
-  )?.focus();
-  return modalNode;
+  return dialogs.open(html, small);
 }
+
 function head(title: string) {
   return `<div class="modal-head"><h2>${title}</h2><button data-close class="icon">${icon("close")}</button></div>`;
 }
@@ -2594,7 +2526,7 @@ async function siConnection() {
     }
   });
   updateCertificate();
-  const owner = modalNode;
+  const owner = dialogs.node;
   const dialog = owner!.querySelector<HTMLElement>(".modal")!;
   dialog.classList.add("si-settings-dialog");
   dialog.setAttribute("role", "dialog");
@@ -2630,12 +2562,12 @@ async function siConnection() {
     };
     key.value = "";
     await call("si_configure", args);
-    if (modalNode === owner) closeModal();
+    if (dialogs.node === owner) closeModal();
     if (!(await siWindows.focus())) await openSIChat();
   });
   on("#si-disconnect", async () => {
     await call("si_disconnect");
-    if (modalNode === owner) closeModal();
+    if (dialogs.node === owner) closeModal();
     if (!(await siWindows.focus())) await openSIChat();
   });
 }
@@ -2692,118 +2624,29 @@ async function aggregateEvents() {
   });
 }
 on("#aggregate-events", aggregateEvents);
-type PreferencesDraft = {
-  theme: Preferences["theme"];
-  coordinates: Preferences["coordinates"];
-  dateFormat: Preferences["date_format"];
-  timeFormat: Preferences["time_format"];
-  autoSave: boolean;
-  budget: number;
-};
-async function settings(
-  section: PreferencesSection = "general",
-  draft?: PreferencesDraft,
-) {
-  const lifecycle = await call("workspace_status");
-  const agent = native
-    ? await (await import("@tauri-apps/api/core")).invoke<any>("agent_status")
-    : { enabled: false };
-  const dialog = modal(
-    `${head("Preferences")}${preferencesLayout({
-      general: `<div class="modal-grid"><label class="field">Appearance<select id="pref-theme">${["system", "light", "dark"].map((t) => `<option value="${t}" ${t === (draft?.theme ?? preferences.theme) ? "selected" : ""}>${t[0].toUpperCase() + t.slice(1)}</option>`).join("")}</select></label><label class="field">Display coordinates<select id="pref-coordinates">${["dd", "utm", "mgrs"].map((t) => `<option ${t === (draft?.coordinates ?? preferences.coordinates) ? "selected" : ""}>${t}</option>`).join("")}</select></label><label class="field">Date format<select id="pref-date-format">${dateFormats.map(([value, label]) => `<option value="${value}" ${value === (draft?.dateFormat ?? preferences.date_format ?? "system") ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field">Time format<select id="pref-time-format">${timeFormats.map(([value, label]) => `<option value="${value}" ${value === (draft?.timeFormat ?? preferences.time_format ?? "system") ? "selected" : ""}>${label}</option>`).join("")}</select></label></div><p class="description">Dates and times are displayed in UTC. These choices change readouts only; exact editing, imports, exports and stored timestamps retain their original precision.</p>`,
-      workspace: `<label class="check-row"><input id="pref-autosave" type="checkbox" ${(draft?.autoSave ?? lifecycle.auto_save_unsaved) ? "checked" : ""}> Automatically save unsaved work</label><p class="description">Saves a copy every 30 seconds and before switching workspaces or quitting. Previous-session work is saved here automatically, without recovery prompts.</p><div class="notice mono">${esc(lifecycle.document_directory)}</div>`,
-      display: `<label class="field">Marker budget<select id="pref-render-budget"><option value="20000" ${(draft?.budget ?? renderBudget) === 20000 ? "selected" : ""}>20,000 representatives in Points mode</option><option value="100000" ${(draft?.budget ?? renderBudget) === 100000 ? "selected" : ""}>100,000 representatives (uses more memory)</option></select></label><p class="description">This workspace setting changes the maximum in Points mode. Automatic display uses count clusters above 2,000 located records. Heat map and bloom are off by default. Exact queries and selection retain all matching records.</p>`,
-      agents: `<div class="notice mono agent-commands">${esc(agent.cli ? `"${agent.cli}" agent enable\n"${agent.cli}" --attach call snapshot\n"${agent.cli}" mcp --attach` : "chronoscope agent enable\nchronoscope --attach call snapshot\nchronoscope mcp --attach")}</div><p class="description">Enable once here or run <code>agent enable</code> from a terminal. No folder is required: agents can operate the live workspace and exchange files in a private app folder. Access stays enabled across launches. Optionally choose a different folder for importing/exporting files. The app executable shown above also runs the CLI; a separate CLI download or administrator install is unnecessary.</p><div class="notice">SI agent access: ${agent.enabled ? `enabled · ${esc(agent.root)}<br>Connection: ${esc(agent.descriptor)}` : "disabled"}</div>${native ? `<button id="agent-toggle" class="secondary">${agent.enabled ? "Disable SI agent access" : "Enable SI agent access"}</button><button id="agent-folder">Choose file-access folder…</button><button id="agent-default-folder">Use default folder</button><button id="agent-config">MCP setup</button>` : ""}`,
-    })}<footer><button data-close>Cancel</button><span class="spacer"></span><button id="save-preferences" class="primary">Save preferences</button></footer>`,
-  );
-  bindPreferencesLayout(dialog, section);
-  const preferenceDraft = (): PreferencesDraft => ({
-    theme: input("#pref-theme") as Preferences["theme"],
-    coordinates: input("#pref-coordinates") as Preferences["coordinates"],
-    dateFormat: input("#pref-date-format") as Preferences["date_format"],
-    timeFormat: input("#pref-time-format") as Preferences["time_format"],
-    autoSave: check("#pref-autosave"),
-    budget: Number(input("#pref-render-budget")),
-  });
-  const reopenPreferences = async () => {
-    const draft = preferenceDraft();
-    closeModal();
-    await settings("agents", draft);
-  };
-  if (native)
-    on("#agent-toggle", async () => {
-      const { invoke } = await import("@tauri-apps/api/core");
-      if (agent.enabled) {
-        await invoke("agent_access", { enabled: false, root: null });
-      } else {
-        await invoke("agent_access", { enabled: true, root: null });
-      }
-      await reopenPreferences();
-    });
-  if (native) {
-    on("#agent-folder", async () => {
-      const root = await chooseFile({ directory: true });
-      if (!root) return;
-      const { invoke } = await import("@tauri-apps/api/core");
-      await invoke("agent_access", { enabled: true, root });
-      await reopenPreferences();
-    });
-    on("#agent-default-folder", async () => {
-      const { invoke } = await import("@tauri-apps/api/core");
-      await invoke("agent_access", { enabled: true, root: null });
-      await reopenPreferences();
-    });
-    on("#agent-config", () => {
-      const draft = preferenceDraft();
-      modal(
-        `${head("Connect an SI client")}<p class="description">Use this configuration in a client that supports local stdio MCP, such as Codex. Enable agent access first and keep Chronoscope open. This configuration contains no credential.</p><label class="field">MCP configuration<textarea id="agent-client-config" readonly rows="10">${esc(JSON.stringify(agent.config, null, 2))}</textarea></label><p class="description">For Codex CLI, run the command below. It uses the app executable directly, including when the path contains spaces.</p><textarea id="agent-codex-command" readonly rows="3">${esc(agent.codex_command)}</textarea><div class="row"><button id="agent-copy-config">Copy MCP configuration</button><button id="agent-copy-codex">Copy Codex command</button></div><footer><button id="agent-setup-back">Back</button><button data-close>Close</button></footer>`,
-        true,
-      );
-      const copySetup = async (id: string) => {
-        const field = $(id) as HTMLTextAreaElement;
-        field.focus();
-        field.select();
-        try {
-          if (navigator.clipboard?.writeText)
-            await navigator.clipboard.writeText(field.value);
-          else if (!document.execCommand("copy"))
-            throw new Error("Copy unavailable");
-          toast("Copied to clipboard");
-        } catch {
-          toast("Text selected; press Cmd/Ctrl+C to copy");
-        }
-      };
-      on("#agent-copy-config", () => copySetup("#agent-client-config"));
-      on("#agent-copy-codex", () => copySetup("#agent-codex-command"));
-      $("#agent-client-config").addEventListener("focus", (e) =>
-        (e.target as HTMLTextAreaElement).select(),
-      );
-      on("#agent-setup-back", async () => {
-        closeModal();
-        await settings("agents", draft);
-      });
-    });
-  }
-  on("#save-preferences", async () => {
-    preferences = {
-      ...preferences,
-      theme: input("#pref-theme") as Preferences["theme"],
-      coordinates: input("#pref-coordinates") as Preferences["coordinates"],
-      date_format: input("#pref-date-format") as Preferences["date_format"],
-      time_format: input("#pref-time-format") as Preferences["time_format"],
-      auto_save_unsaved: check("#pref-autosave"),
-    };
+const settings = createPreferencesController({
+  preferences: () => preferences,
+  budget: () => renderBudget,
+  $,
+  input,
+  check,
+  on,
+  modal,
+  closeModal,
+  head,
+  toast,
+  save: async (nextPreferences, nextBudget) => {
+    preferences = nextPreferences;
     await call("preferences", { preferences });
-    const nextBudget =
-      Number(input("#pref-render-budget")) === 100000 ? 100000 : 20000;
     const budgetChanged = nextBudget !== renderBudget;
     renderBudget = nextBudget;
     if (budgetChanged) await call("view_set", { render_budget: renderBudget });
     closeModal();
     theme();
     await refresh(budgetChanged, false);
-  });
-}
+  },
+});
+
 function timeWindow(
   start: number,
   end: number,
@@ -3258,7 +3101,7 @@ function captureScene(): Scene {
   };
 }
 let restoringScene = false;
-async function restoreScene(scene: any = {}) {
+async function restoreScene(scene: SceneState = {}) {
   globeElevationGeneration++;
   displayPreserveFrame = false;
   restoringScene = true;
@@ -3656,7 +3499,7 @@ on("#add-rule", () =>
       ...filterIntent.desired(snapshot.filter).predicates,
       {
         field: input("#rule-field"),
-        op: input("#rule-op"),
+        op: input("#rule-op") as Filter["predicates"][number]["op"],
         value: input("#rule-value"),
       },
     ],
@@ -3979,7 +3822,7 @@ window.addEventListener("keydown", (e) => {
   }
   if (key === "escape") {
     e.preventDefault();
-    if (modalNode) closeModal();
+    if (dialogs.node) closeModal();
     else if (notifications.isOpen) notifications.close();
     else if (layerMenu) closeLayerMenu();
     else if (view.cancelNavigation()) {
@@ -3988,7 +3831,7 @@ window.addEventListener("keydown", (e) => {
     else if (!editable) run(() => select([]));
     return;
   }
-  if (modalNode || busy || notifications.isOpen || layerMenu) return;
+  if (dialogs.node || busy || notifications.isOpen || layerMenu) return;
   if (cmd) {
     if (key === "o" || key === "i") run(openFile);
     else if (key === "s") run(() => saveWorkspace(e.shiftKey));
@@ -4296,11 +4139,10 @@ async function initialize() {
           .catch(() => {})
           .then(async () => {
             const next = await call("preferences");
-            const resourcesChanged =
-              mapPreferencesKey(next) !== mapPreferencesKey(preferences);
-            const pathChanged =
-              next.terrain_path !== preferences.terrain_path ||
-              next.terrain_builtin !== preferences.terrain_builtin;
+            const { resourcesChanged, pathChanged } = preferenceEffects(
+              preferences,
+              next,
+            );
             if (resourcesChanged) {
               await cancelMap();
               terrainLoadGeneration++;

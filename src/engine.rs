@@ -488,7 +488,8 @@ impl Engine {
                 args["command"] = json!(crate::command::canonical_name(name));
             }
         }
-        crate::schema::validate(command, &args)?;
+        crate::schema::validate_typed(command, &args)
+            .map_err(crate::error::EngineError::into_legacy)?;
         self.check_workspace()?;
         if let Some(root) = crate::operation::scope() {
             crate::mcp::scope_arguments(command, &mut args, &root)?;
@@ -589,7 +590,9 @@ impl Engine {
                 | "assist_ui"
         ) {
             if command == "view_scenario" {
-                return self.scenario_request(args);
+                return self
+                    .scenario_request(args)
+                    .map_err(crate::error::EngineError::into_legacy);
             }
             let started = std::time::Instant::now();
             let result = self.desktop_request(command, args);

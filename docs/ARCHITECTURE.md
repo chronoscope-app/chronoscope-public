@@ -19,6 +19,23 @@ The Rust library is the single domain implementation. `Engine::invoke` supplies 
 
 The desktop CSP permits local scripts and WebAssembly compilation (`'wasm-unsafe-eval'`), without JavaScript `'unsafe-eval'`. A narrow Vite pre-transform replaces the pinned Cesium Knockout dependency's global-object `eval` discovery with `globalThis` in production and development dependency builds. The transform requires exactly the reviewed source occurrence and fails the build if an update changes it; it does not broadly rewrite application scripts or relax the policy. The main browser parity test installs this same response-header CSP and records policy violations.
 
+Shared wire types for frontend preferences, filters, scene state, saved views,
+groups and camera records are selected from generated `EngineContracts`.
+Presentation-only types (decoded points, raster canvases and form drafts) remain
+local. Preserve optional/null legacy fields at restore boundaries; generated
+wire definitions must not be replaced by a second manually maintained schema.
+
+`preferences-controller.ts` owns the Preferences form/draft/setup flow and
+`dialog-controller.ts` owns modal focus; the app retains persistence coordination.
+`cesium-camera-state.ts` owns validated camera capture/restore. Scene colors use
+`scene-appearance.ts`, whose target exposes no camera, terrain or imagery APIs.
+`preference-effects.ts` explicitly distinguishes resource/source changes from
+appearance, time formatting and workspace preferences. JSON object key order is
+ignored; map-layer array order remains meaningful. Existing data-refresh and
+provider-lifetime guards stay in place. Presentation changes must preserve exact
+camera state and existing providers; a resource refresh requires a resource change
+or explicit data/viewport/recovery operation.
+
 ## State and concurrency
 
 `SceneState.view_states` stores independent navigation for Time, Map and Globe. Visited views retain their exact Cesium camera; a one-shot sync instead stages geographic focus, heading, tilt, ground scale and visible ground corners for the other projections. The next visit fits that footprint using the destination camera, keeping Map flat. Camera vectors are never copied directly between projections. Corner rays that miss an Earth overview use its conservative geographic bounds. Legacy files have no cached views; document replacement clears the previous cache. Rust bounds and validates the three mode keys, geographic coordinates, footprint size and optional camera vectors before portable persistence. Demo thumbnails are renderer captures from the bundled saved views; their asset manifest records public source attribution, view state and image hashes.
@@ -238,3 +255,15 @@ Display-only time slabs and explicitly requested aggregation windows may still b
 ### Time geography and axis anchoring
 
 Time view leaves Cesium geography unrestricted by the inset axis rectangle. The existing north-facing 48-degree reference-window calculation is retained solely for axis/focus-line positioning; expanded imagery requests use the actual projected ground frustum. Four grab handles use viewport-edge ground intersections, with an inward fallback at the natural horizon/world limits and edge offsets to avoid the compass, tool rail and legend. Camera/viewport changes reposition handles independently of the reference axis; stationary frames reuse both. Native main/SI title text derives its version from package metadata.
+
+## Error categories
+
+New or migrated domain paths construct `EngineError::new(code, message)` so
+wording cannot change the category. Command argument validation and saved
+navigation recipes use this typed path. `into_legacy()` preserves the explicit
+code when crossing an existing String-returning engine boundary; it does not
+add a duplicate prefix. `schema::validate` preserves the older plain validation
+messages for its direct callers. `from_legacy` retains historical classification
+only for unmigrated code and native/persistence adapters; migrate those gradually
+rather than changing all transport behavior at once. Connection validation
+continues to redact supplied values.

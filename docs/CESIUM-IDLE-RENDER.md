@@ -2,7 +2,7 @@
 
 This is the handoff for investigating an upstream CesiumJS issue. Chronoscope
 ships a small application workaround; a Cesium PR should address the underlying
-camera-state mutation. No upstream issue or PR has been submitted by this work.
+camera-state mutation. Upstream [PR #13982](https://github.com/CesiumGS/cesium/pull/13982) is open as checked on 25 October 2026. The pinned application dependency does not include that unmerged change. See the [workaround index](maintenance/WORKAROUNDS.md) for the retirement gate.
 
 ## Observed behavior
 

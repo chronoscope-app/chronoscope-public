@@ -13,19 +13,37 @@ def stop_tree(process):
         subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'],
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=10)
     else:
-        # The group can still own a browser after its immediate parent exits.
+        # Guarded commands can create independently sessioned validation steps.
+        # Capture their process groups before terminating the parent so those
+        # steps cannot escape pressure/timeout cleanup by being reparented.
+        groups = {process.pid}
         try:
-            os.killpg(process.pid, signal.SIGTERM)
-        except ProcessLookupError:
-            return
+            rows = [line.split() for line in subprocess.check_output(
+                ['/bin/ps', '-axo', 'pid=,ppid=,pgid='], text=True, timeout=3).splitlines()]
+            owned = {process.pid}
+            while True:
+                more = {int(pid) for pid, parent, _ in rows if int(parent) in owned}
+                if more <= owned:
+                    break
+                owned |= more
+            groups |= {int(group) for pid, _, group in rows
+                       if int(pid) in owned and int(group) in owned}
+        except (OSError, subprocess.SubprocessError, ValueError):
+            pass
+        def send(sig):
+            for group in groups:
+                if group == os.getpgrp():
+                    continue
+                try:
+                    os.killpg(group, sig)
+                except ProcessLookupError:
+                    pass
+        send(signal.SIGTERM)
         try:
             process.wait(timeout=2)
         except subprocess.TimeoutExpired:
             pass
-        try:
-            os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
+        send(signal.SIGKILL)
 
 
 def run_command(command, cwd, env, log, timeout):

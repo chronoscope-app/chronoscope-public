@@ -103,19 +103,16 @@ jobs:
       # compiling or requiring a foreign Rust standard library/toolchain.
       - name: Prefetch locked Cargo dependencies
         run: cargo fetch --locked --manifest-path Cargo.toml
-      - name: Static packaging tests
-        run: |
-          python -B scripts/test_publication_cleanup.py
-          python -B scripts/test_package_distribution.py
-          python -B scripts/test_glib_backport.py
-          python -B scripts/test_tester_packaging.py
-      - run: cargo fmt --check
-      - run: cargo clippy --locked -p chronoscope --all-targets -- -D warnings
-      - run: cargo test --locked -p chronoscope
-      - run: npm --prefix frontend test
+      - name: Shared source verification
+        run: python -B scripts/source_checks.py --packaging --report "$RUNNER_TEMP/source-validation/report.json"
       - run: npm run build
       - run: cargo clippy --locked -p chronoscope-desktop -- -D warnings
       - run: python scripts/build_portable.py build --locked --release -p chronoscope --bin chronoscope
+      - name: Verify generated contracts from the release CLI
+        run: |
+          CLI=target/release/chronoscope
+          if [ "$RUNNER_OS" = Windows ]; then CLI="$CLI.exe"; fi
+          python -B scripts/source_checks.py --contracts-only --cli "$CLI" --report "$RUNNER_TEMP/contracts-validation/report.json"
       - name: Build actual GUI distribution
         run: python scripts/build_portable.py -- npm --prefix frontend run tauri -- build -- --locked
       - name: Finish Linux portable WebKit runtime

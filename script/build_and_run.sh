@@ -7,6 +7,10 @@ MODE="${1:-run}"
 case "$MODE" in run|--verify|--build-only|--debug|--logs|--telemetry) ;; *) echo "Usage: $0 [--verify|--build-only|--debug|--logs|--telemetry]" >&2; exit 2;; esac
 # Optional local toolchain setup; no machine-specific paths are checked in.
 if [[ -n "${CHRONOSCOPE_BUILD_ENV:-}" ]]; then source "$CHRONOSCOPE_BUILD_ENV"; fi
+# Acquire the shared resource guard before stopping or building this app.
+if ! python3 -c 'import sys; sys.path.insert(0, "scripts"); from guarded_run import is_guarded; sys.exit(0 if is_guarded() else 1)'; then
+  exec python3 scripts/guarded_run.py -- bash "$0" "$@"
+fi
 # Stop only this checkout's app, retaining other installed copies.
 TARGET_DIR="${CARGO_TARGET_DIR:-$ROOT_DIR/target}"
 APP_BUNDLE="$TARGET_DIR/debug/bundle/macos/Chronoscope.app"
