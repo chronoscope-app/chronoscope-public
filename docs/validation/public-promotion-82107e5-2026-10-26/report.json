@@ -1,0 +1,22 @@
+{
+  "next": "82107e584cfdac862cc069ea68183101f0bcf9b1",
+  "public_base": "d63ff932a1a3692d08b796c3035bc19a45598037",
+  "all_next_tracked_files_identical": true,
+  "next_tracked_files": 3109,
+  "preserved_public_only_count": 10,
+  "private_next_ancestry_imported": false,
+  "scope": "full Next export; only one test expectation line differs from prior Next source",
+  "reason": "short TEMP alias vs resolved canonical report path; native Windows diagnostic assertion",
+  "production_code_changed": false,
+  "assertions_removed": false,
+  "local_tests": {
+    "validation": 20,
+    "publication": 12,
+    "guard": 6,
+    "alias_reproduction": "baseline fail / candidate pass",
+    "independent_review": "approve"
+  },
+  "hosted_windows": "pending new exact-SHA validation",
+  "earlier_macos_source": "d63ff932a1a3692d08b796c3035bc19a45598037; not this commit",
+  "release_publication": false
+}
