@@ -4,25 +4,41 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
-- Keep terrain picking and polar view synchronization stable, improve live playback and full-range pause, and reject stale MCP scenario completion after workspace changes.
-- Bind SI sends to the intended conversation through reconnects, retain rejected drafts for copying, and prevent late saves from overwriting newer text. Keep graphics-recovery warnings visible until restoration finishes.
+These changes are in the current source and are planned for the next preview. They are not included in the existing 0.15.2 downloads. Platform build and validation results are recorded separately; this list does not certify a new downloadable release.
 
-- Bundle offline Balanced world terrain with explicit unload/restore and custom-DTED replacement. Preserve its identity in portable workspaces without copying the world pack. Retain the idle-camera roundoff workaround and integrate the completed workflow/navigation changes below into Next main.
+### Added
 
-- Preserve the complete Event selection during slower double-click zoom, including off-screen Events and selections beyond UI limits. Guard restoration against newer selections, edits and workspace changes. Correct navigation QA to distinguish full selection from renderer evidence, and add delayed-click/query/export regressions.
+- Choose how dates and times appear in Preferences → General: system locale, ISO dates, month/day/year or day/month/year, short or full years, dotted or month-name dates, and 12/24-hour clocks with optional seconds. Displayed times remain UTC; stored timestamps, exact inputs, imports and exports retain their original precision.
+- View interactive query tables and bar-chart previews inside compatible external MCP chat clients. Search and sort the returned page, and select rows or chart marks to select the corresponding Events in Chronoscope. Clients without MCP Apps support still receive structured results. This viewer is hosted by the external chat client, separately from Chronoscope's SI chat.
+- Record the app window as an MP4 through MCP while panning, zooming or playing a timeline. Recording currently requires the native desktop on macOS 15 or later; Windows and Linux video capture are not supported.
+- Give connected MCP clients live timeline controls, bounded performance traces, waits for map readiness, saved navigation recipes with cancellation, and subscriptions to workspace, view, result and job changes. These controls require the relevant running desktop/session; they do not require video recording. See [live MCP tools and limits](docs/MCP-LIVE.md).
+- Bundle basic offline Balanced world terrain. Unload or restore it, replace it with custom DTED, and preserve its built-in identity in portable workspaces without copying the world pack into each file.
+- Run guided data profiles, duplicate-group searches, outlier detection and trajectory summaries locally, with scope and field choices, progress, cancellation and saved linked results. No SI connection is required.
+- Review an import's mapping and full-file quality before accepting it. Return to mapping without losing the draft, review location gaps and possible duplicates, and export the complete rejected-row report before importing Events.
 
-- Add clickable Time and Map hero thumbnails for all six offline demos, captured from the actual saved views with source attribution. Add Sync views below the selection arrow: fit the active geographic area and heading into the other views, share tilt between Time and Globe, and let Map rotate while remaining flat. Preserve independent view cameras in portable workspaces and named views.
+### Improved
 
-- Extend Time-view geography across the visible ground without moving the existing time-axis reference. Place four pickable grab spheres at viewport edges, clear of navigation overlays, and request imagery for the expanded footprint. Show the packaged version beside Chronoscope in native window titles.
+- Make the playback popup compact and give Fade the same switch style as other toggles. With Fade enabled, departing markers, tracks and trails fade more quickly. With Fade disabled, playback retains a growing filtered history until the next loop; the map, table, selection and query scope agree. The setting persists in saved views and workspaces and is available to MCP clients.
+- Organize Preferences into General, Workspace, Display and Agent access. Draft edits survive category changes and agent setup; Save applies all categories and Cancel discards form edits.
+- Default new profiles to System appearance and follow live system light/dark changes. Retain explicit saved Light/Dark choices. Changing appearance or date/time display preserves the camera and loaded map/terrain resources. Remove the distracting terrain-status banner from the map; terrain details remain available in Layers and Terrain settings.
+- Use one time-elevation slider in Globe and Time, with zero turning elevation off. Simplify navigation controls, use a hand icon for dragging, and preserve reversible pane collapse for older expanded workspaces.
+- Extend the Time view's ground across the visible viewport while preserving its time-axis reference. Place four draggable grab spheres at the viewport edges and load imagery for the expanded area.
+- Add Sync views to share geographic focus and heading across Time, Map and Globe, with shared tilt between Time and Globe. Keep Map flat while allowing rotation, and preserve each view's camera in workspaces and named views.
+- Add clickable Time and Map thumbnails for all six offline demos. Improve demo-picker contrast and arrange New analysis with suggestions on the left and task details on the right. Rename the toolbar views to Time and Map, and show the app version in native window titles.
+- Add a welcome workspace with Open data, offline demos, recent saved workspaces and keyboard hints. Dialogs keep keyboard focus and return it to the initiating control when dismissed.
 
-- Improve demo-picker contrast and readability; arrange New analysis as suggested analyses on the left and task details/options on the right. Rename toolbar views to Time and Map. Add light/dark contrast and responsive master/detail regression checks.
+### Fixed
 
-- Add the welcome workspace with Open data, offline demos, actual recent saved workspaces, keyboard hints and an empty-workspace escape. Modal dialogs retain keyboard focus and return it when dismissed.
-- Coalesce identical in-flight WMTS viewport requests and retain loaded imagery instead of publishing unseeded empty canvases. Use the native Metal backend for macOS map QA; both complete offline map suites pass locally.
-- Add local guided profiles, duplicate groups, outliers and trajectory summaries, with explicit scope/layer/field choices, job progress/cancellation and persistent linked results. No SI connection is required.
-- Stage imports through source selection, mapping and full-file quality review. Preserve drafts when returning to mapping, disclose location gaps and canonical duplicate candidates, require explicit rejection acceptance, and export complete rejected-row reports without publishing Events.
-- Separate frontend import, analysis, map settings, table gestures, document file routing and operation jobs into focused modules; keep save/close serialization in the existing workspace controller.
-- Add full-review, report-export, guided workflow and extracted-table regression coverage.
+- Share identical in-flight imagery requests and retain loaded imagery during viewport refreshes, avoiding empty replacement canvases. Keep stationary cameras from triggering unnecessary redraws.
+- Preserve the full Event selection during slower double-click zoom, including off-screen Events and selections larger than the displayed subset. Prevent delayed restoration from overwriting newer selections, edits or workspace changes.
+- Correct terrain-picking failures, polar view synchronization, live playback responsiveness and full-range pause behavior. Stop stale MCP scenario completions from updating a replacement workspace.
+- Keep SI sends attached to their intended conversation through reconnects, retain rejected drafts for copying, and prevent late autosaves from overwriting newer text.
+- Keep graphics-recovery warnings visible until restoration finishes.
+
+### Maintenance
+
+- Streamline local verification into fast, feature-focused and full checks, with explicit test ownership, isolated evidence and rejection of stale builds. Retain distinct regression coverage while reducing duplicated setup. Add a resource guard for heavy Mac checks and builds; it runs one Cargo worker and serial Rust tests and stops its own processes under excessive CPU or memory pressure when invoked.
+- Separate import, analysis, map settings, table gestures, file routing and operation jobs into focused frontend modules while retaining shared save/close coordination.
 
 ## 0.15.2 — experimental preview, 2026-10-23
 
