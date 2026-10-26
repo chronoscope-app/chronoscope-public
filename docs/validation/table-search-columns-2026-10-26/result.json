@@ -1,0 +1,33 @@
+{
+  "validated_product_commit": "3f14dfea5cfd4435ca408e3db86ad098abcba954",
+  "rust": {
+    "passed": 423,
+    "failed": 0,
+    "ignored": 1,
+    "ignored_reason": "Existing full bundled-data matrix is excluded by default; no new test skip added."
+  },
+  "frontend_unit_passed": 70,
+  "browser_checks": {
+    "detachable-tables": 15,
+    "event-table": 14,
+    "gis-files": 24
+  },
+  "desktop_strict_clippy": true,
+  "generated_contracts": true,
+  "format_and_suite_inventory": true,
+  "clawcomp_tests_integrated_from": "1f43bd7648b0ffc973efae933e86136d97b08436",
+  "public_promotion": "held per current user instruction",
+  "github_hosted_workflows_run": false,
+  "native_mac_observation": {
+    "table_search": "Alex narrows the table to 42 while workspace stays at 3568 visible",
+    "single_tab_title_and_search_row": true,
+    "table_search_survives_detach_dock": true
+  },
+  "linux_note": "Clawcomp receipt covers the earlier frozen implementation; this new UX has not been retested on Linux.",
+  "mac_bundle": {
+    "executable_sha256": "6eda2276771965aaac565f447393ee9f49a1d8e014ea34fa69cb5cf494774186",
+    "guarded_build_verify": true,
+    "strict_ad_hoc_signature": true,
+    "final_committed_app_foreground_ready": true
+  }
+}

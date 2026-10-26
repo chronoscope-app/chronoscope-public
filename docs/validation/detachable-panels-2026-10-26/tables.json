@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "checks": [
+    "Multiple tables share tabs; reopening deduplicates; sort/filter/scroll survive switching",
+    "Detached tabs retain state and row selection updates the main workspace",
+    "Dock returns the whole tab group and its active tab",
+    "Keyboard navigation and closing a tab keep its neighbor open",
+    "Native-style window close returns tabs to the workspace",
+    "GIS tables join the detached group and retain search/sort with linked reference selection",
+    "Reloading the detached page restores its tab group from main",
+    "Removed GIS layers close their tab and retain the neighboring table",
+    "Restoring a scene in the same workspace keeps the other table tabs",
+    "Closing the last detached tab closes its utility window and clears the table surface"
+  ],
+  "errors": [],
+  "publicRequests": 0,
+  "compactTableRequests": 0
+}

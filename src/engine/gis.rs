@@ -259,10 +259,40 @@ impl Engine {
                 for f in features.iter() {
                     columns.extend(f.properties.keys().cloned());
                 }
+                let windowed = args.get("column_limit").is_some();
+                let columns: Vec<_> = if windowed {
+                    ["id", "entity", "time", "end"]
+                        .into_iter()
+                        .map(str::to_owned)
+                        .chain(columns.into_iter().filter(|name| {
+                            !matches!(name.as_str(), "id" | "entity" | "time" | "end")
+                        }))
+                        .collect()
+                } else {
+                    columns.into_iter().collect()
+                };
+                let total_columns = columns.len();
+                let column_offset = args["column_offset"].as_u64().unwrap_or(0) as usize;
+                let columns: Vec<_> = if windowed {
+                    columns
+                        .into_iter()
+                        .skip(column_offset)
+                        .take(args["column_limit"].as_u64().unwrap() as usize)
+                        .collect()
+                } else {
+                    columns
+                };
                 let mut page = vec![];
                 let mut bytes = 0;
                 for row in rows.into_iter().skip(offset).take(limit) {
-                    bytes += serde_json::to_vec(row).map_err(|e| e.to_string())?.len();
+                    let mut value = serde_json::to_value(row).map_err(|e| e.to_string())?;
+                    if windowed {
+                        value["properties"]
+                            .as_object_mut()
+                            .unwrap()
+                            .retain(|name, _| columns.contains(name));
+                    }
+                    bytes += serde_json::to_vec(&value).map_err(|e| e.to_string())?.len();
                     if bytes > 4 * 1024 * 1024 {
                         if page.is_empty() {
                             return Err(
@@ -271,11 +301,11 @@ impl Engine {
                         }
                         break;
                     }
-                    page.push(row);
+                    page.push(value);
                 }
                 let next_offset = offset.saturating_add(page.len());
                 Ok(
-                    json!({"revision":revision,"returned_count":page.len(),"next_offset":if next_offset<count {Some(next_offset)} else {None},"rows":page,"count":count,"offset":offset,"limit":limit,"columns":columns,"source":layer.name,"semantics":"Reference features retain source geometry/properties; Events conversion is explicit and requires timestamps."}),
+                    json!({"revision":revision,"returned_count":page.len(),"next_offset":if next_offset<count {Some(next_offset)} else {None},"rows":page,"count":count,"offset":offset,"limit":limit,"columns":columns,"total_columns":total_columns,"column_offset":column_offset,"source":layer.name,"semantics":"Reference features retain source geometry/properties; Events conversion is explicit and requires timestamps."}),
                 )
             }
             _ => Err(format!("Unknown GIS command: {command}")),

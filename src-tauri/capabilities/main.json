@@ -2,7 +2,8 @@
   "identifier": "main",
   "windows": [
     "main",
-    "si-chat"
+    "si-chat",
+    "attribute-tables"
   ],
   "permissions": [
     "core:default",

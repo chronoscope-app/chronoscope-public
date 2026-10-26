@@ -871,8 +871,8 @@ try {
   await page.click("#cell-table");
   await page.waitForFunction(
     () =>
-      document.querySelector("#table-title").textContent ===
-      "Display cell members",
+      document.querySelector("#table-tabs [role=tab][aria-selected=true]")
+        .textContent === "Display cell members",
   );
   assert.equal(
     (

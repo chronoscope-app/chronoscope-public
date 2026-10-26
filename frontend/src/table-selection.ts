@@ -4,7 +4,12 @@ import type { EngineContracts } from "./contracts";
 type Query = EngineContracts["query"]["args"];
 type Scope = Pick<
   Query,
-  "source" | "apply_filter" | "display_cell" | "sort_by" | "descending"
+  | "source"
+  | "apply_filter"
+  | "display_cell"
+  | "sort_by"
+  | "descending"
+  | "table_search"
 >;
 interface Host {
   scope: () => Scope;
@@ -58,6 +63,7 @@ export class TableSelection {
         e.shiftKey && anchor
           ? {
               source: scope.source,
+              table_search: scope.table_search,
               apply_filter: scope.apply_filter,
               display_cell: scope.display_cell,
               table_range: {
@@ -134,6 +140,7 @@ export class TableSelection {
           if (extend)
             await call("select_query", {
               source: scope.source,
+              table_search: scope.table_search,
               apply_filter: scope.apply_filter,
               display_cell: scope.display_cell,
               table_range: {

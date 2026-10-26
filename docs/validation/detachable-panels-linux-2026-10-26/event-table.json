@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checks": [
+    "synthetic: Tables picker opens every canonical and imported attribute column",
+    "synthetic: full attribute table sorts canonical columns globally in both directions",
+    "synthetic: Shift+arrow and Shift+click select exactly the displayed sorted range",
+    "synthetic: keyboard navigation/reveal retain sorted order across virtual pages",
+    "synthetic: full layer attributes retain imported columns and sorting",
+    "hurricanes: Tables picker opens every canonical and imported attribute column",
+    "hurricanes: full attribute table sorts canonical columns globally in both directions",
+    "hurricanes: Shift+arrow and Shift+click select exactly the displayed sorted range",
+    "hurricanes: keyboard navigation/reveal retain sorted order across virtual pages",
+    "hurricanes: full layer attributes retain imported columns and sorting",
+    "Picker lists both Event sources and the GIS table, including hidden layers; keyboard and trigger dismissal work",
+    "Hidden source opens its exact full table; filter control and wide-column paging retain original fields",
+    "Choosing a hidden GIS reference opens its real properties and sortable feature rows",
+    "An older compact-table workspace restores the full attribute table"
+  ],
+  "errors": [],
+  "publicRequests": 0,
+  "compactTableRequests": 0
+}

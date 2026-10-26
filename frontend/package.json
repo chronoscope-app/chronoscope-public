@@ -28,6 +28,7 @@
     "test:vector-gis": "node scripts/vector-gis-qa.mjs",
     "test:notifications": "node scripts/notifications-qa.mjs",
     "test:spectrum": "node scripts/spectrum-qa.mjs",
+    "test:detachable-tables": "node scripts/detachable-tables-qa.mjs",
     "test:event-table": "node scripts/event-table-qa.mjs",
     "test:navigation": "node scripts/navigation-qa.mjs",
     "test:basemap": "node scripts/basemap-qa.mjs",

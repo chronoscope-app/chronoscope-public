@@ -1,0 +1,59 @@
+{
+  "status": "INCOMPLETE_STOPPED_BY_COORDINATOR",
+  "tested_source_sha": "a8bc62a4b4b5cf1628ebea5aa573e84df842f24e",
+  "environment": "Linux Debian 13; Chromium software SwiftShader; isolated checkout and per-suite profiles",
+  "frontend_build": "PASS",
+  "engine_build": "PASS",
+  "cli_sha256": "0627f2d286759fa43ab74389041390ff3898681d01e5a789a8a8df89931f5297",
+  "frontend_unit_tests": {
+    "passed": 70,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browser_suites": [
+    {
+      "suite": "detachable-tables",
+      "passed": true,
+      "checks": 10,
+      "report": "detachable-tables.json"
+    },
+    {
+      "suite": "event-table",
+      "passed": true,
+      "checks": 14,
+      "report": "event-table.json"
+    },
+    {
+      "suite": "gis-files",
+      "passed": true,
+      "checks": 24,
+      "report": "gis-files.json"
+    },
+    {
+      "suite": "si-rich-chat",
+      "passed": true,
+      "checks": 9,
+      "report": "si-rich-chat.json"
+    }
+  ],
+  "source_checks": {
+    "generated_contracts": "PASS",
+    "rust_format": "PASS",
+    "suite_inventory": "PASS",
+    "python_guard": 6,
+    "python_validation_runner": 20,
+    "python_glib_integrity": 5,
+    "python_workarounds": 3,
+    "python_release_preflight": 5
+  },
+  "native_clippy": "BLOCKED: relocated SDK pkg-config search omitted usr/share/pkgconfig; missing xproto dependency. No product diagnostic established.",
+  "not_run": [
+    "Rust tests",
+    "core Clippy",
+    "fresh native desktop build",
+    "native GTK/WebKit detach/dock/close lifecycle"
+  ],
+  "public_promotion_authorized_by_this_result": false,
+  "github_runners_used": false,
+  "implementation_changes": false
+}

@@ -1,0 +1,69 @@
+{
+  "repository": "chronoscope-app/chronoscope-public",
+  "promoted_next_commit": "6d1937c3b5d6ea96da92ca1d08532d4c024c11a3",
+  "validated_product_commit": "3f14dfea5cfd4435ca408e3db86ad098abcba954",
+  "public_base": "3e5cbe6a84d1498f79efb8b5d6102f85cf47633b",
+  "source_tree_before_promotion_receipt": "42fbb48900b99014a13ebafd053d1bc292948077",
+  "next_tracked_files": 3138,
+  "all_next_files_bytes_and_modes_match": true,
+  "preserved_public_only_files": [
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-23e567f-2026-10-26/README.md",
+    "docs/validation/public-promotion-23e567f-2026-10-26/report.json",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/README.md",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/report.json",
+    "docs/validation/public-promotion-82107e5-2026-10-26/README.md",
+    "docs/validation/public-promotion-82107e5-2026-10-26/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json"
+  ],
+  "only_parent": "3e5cbe6a84d1498f79efb8b5d6102f85cf47633b",
+  "private_next_ancestry_imported": false,
+  "features": [
+    "Detachable tab group for Event, combined, display-cell and GIS attribute tables",
+    "Continuous horizontal column loading and independent per-tab search",
+    "Single left-aligned tab title and per-tab close control",
+    "Clear SI chat Detach/Dock controls"
+  ],
+  "current_mac_validation": {
+    "rust_passed": 423,
+    "rust_failed": 0,
+    "existing_ignored_full_demo_matrix": 1,
+    "frontend_unit_passed": 70,
+    "browser_table_checks": 15,
+    "browser_event_checks": 14,
+    "browser_gis_checks": 24,
+    "strict_desktop_clippy": true,
+    "generated_contracts_format_inventory": true,
+    "signed_native_build_launch": true,
+    "native_search_and_detach_dock": true
+  },
+  "linux_evidence": {
+    "tested_product_commit": "73eaf07",
+    "receipt_commit": "1f43bd7648b0ffc973efae933e86136d97b08436",
+    "rust_passed": 422,
+    "frontend_unit_passed": 70,
+    "browser_checks": 60,
+    "native_gtk_webkit_checks": 9,
+    "new_continuous_column_search_ux_tested": false,
+    "limitation": "Earlier frozen implementation only; software rendering, no GPU devices. Current UX validated on macOS, not freshly on Linux or Windows."
+  },
+  "secret_review": {
+    "tool": "Gitleaks 8.30.1",
+    "config_changed": false,
+    "canary_required": true,
+    "scope": "Exact final tracked Public candidate; private Next history and ignored local profiles excluded",
+    "known_existing_checksum_matches": "Three matches in priority-demos validation.json are actual file SHA-256 values; independently rechecked before push",
+    "unresolved_credential_findings_allowed": 0
+  },
+  "workflow_triggers": "manual-only, byte-identical to existing Public",
+  "github_hosted_runners_used": false,
+  "binary_release_created": false,
+  "existing_versions_tags_downloads_changed": false,
+  "owner_authorization": "Current user explicitly requested Promote it after the validated Next update and earlier promotion hold."
+}
