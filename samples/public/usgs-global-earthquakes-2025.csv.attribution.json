@@ -1,0 +1,10 @@
+[
+  {
+    "title": "USGS-authored earthquakes \u00b7 2025",
+    "creator": "U.S. Geological Survey",
+    "source_url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+    "license": "US public domain",
+    "license_url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+    "changes": "2025 UTC, magnitude \u22654.5; 8556 returned records, retained only USGS net/locationSource/magSource. Original time, coordinates, magnitude types and depth preserved. Surface epicenters; no tracks, depth is an attribute. Retrieved 2026-10-26."
+  }
+]

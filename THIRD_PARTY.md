@@ -31,3 +31,7 @@ Streets: [OpenFreeMap](https://openfreemap.org/) · [© OpenMapTiles](https://ww
 Current source replaces the uncertain/noncommercial imagery, terrain sample, old capture collection, copied promo animation runtime and unproven audio. The [media ledger](docs/MEDIA-RIGHTS.json) preserves historical object evidence separately; a retired asset is not cleared by its removal. This standalone source snapshot imports no earlier Git ancestry, branches/tags or release attachments. Historical ledger entries are provenance metadata, not included historical payloads. No binaries have been published in this clean repository yet; source publication does not clear earlier or future executables.
 
 Native LGPL/MPL source-access and other dependency obligations must still be checked against the exact future binary contents; see [distribution](docs/DISTRIBUTION.md). The root MIT license does not replace dependency or dataset terms.
+
+## Additional event and country-statistics examples
+
+[Priority-demo sources and interpretation](docs/PRIORITY-DEMOS.md) records USGS authorship selection, NASA LANCE/FIRMS source and bounded NRT subset, World Bank / ESMAP electricity-access data (CC BY 4.0), Natural Earth country boundaries (public domain), and JHU CSSE COVID-19 data (CC BY 4.0). Each project embeds the attribution and each CSV includes a credit companion. Inputs are pinned with SHA-256 checksums.

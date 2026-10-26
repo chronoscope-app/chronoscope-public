@@ -33,31 +33,30 @@ class PublicationCleanup(unittest.TestCase):
             self.assertTrue(flags[-2].endswith("=/cargo"))
             self.assertTrue(flags[-3].endswith("=/build-home"))
 
-    def test_windows_npm_launcher_resolves_without_shell_or_argument_rewriting(self):
+    def test_windows_npm_launcher_uses_shared_native_argv_and_preserves_environment(self):
         command = ['npm', '--prefix', 'frontend', 'run', 'tauri', '--', 'build', '--', '--locked']
         environment = portable.build_environment({'PATH': r'C:\Program Files\nodejs',
             'CARGO_ENCODED_RUSTFLAGS': '-C\x1f' + r'link-arg=C:\sdk folder\foo.lib'})
-        with mock.patch.object(portable.sys, 'platform', 'win32'), \
-             mock.patch.object(portable.shutil, 'which', return_value=r'C:\Program Files\nodejs\npm.cmd') as lookup, \
+        prepared = [r'C:\Program Files\nodejs\node.exe', r'C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js', *command[1:]]
+        with mock.patch.object(portable, 'prepare_command', return_value=prepared) as prepare, \
              mock.patch.object(portable.subprocess, 'run', return_value=mock.Mock(returncode=7)) as run:
             self.assertEqual(portable.run_command(command, environment), 7)
-        lookup.assert_called_once_with('npm', path=environment['PATH'])
-        run.assert_called_once_with([r'C:\Program Files\nodejs\npm.cmd', *command[1:]],
-                                    cwd=portable.root, env=environment)
-        self.assertEqual(command[0], 'npm')  # Do not mutate caller arguments.
+        prepare.assert_called_once_with(command, portable.root, environment)
+        run.assert_called_once_with(prepared, cwd=portable.root, env=environment)
+        self.assertEqual(command[0], 'npm')
         self.assertTrue(environment['CARGO_ENCODED_RUSTFLAGS'].startswith('-C\x1f' + r'link-arg=C:\sdk folder\foo.lib' + '\x1f'))
 
     def test_windows_cargo_launcher_preserves_locked_flags(self):
         command = ['cargo', 'build', '--locked', '--release', '-p', 'chronoscope']
-        with mock.patch.object(portable.sys, 'platform', 'win32'), \
-             mock.patch.object(portable.shutil, 'which', return_value=r'C:\Rust tools\cargo.exe'), \
+        prepared = [r'C:\Rust tools\cargo.exe', *command[1:]]
+        with mock.patch.object(portable, 'prepare_command', return_value=prepared) as prepare, \
              mock.patch.object(portable.subprocess, 'run', return_value=mock.Mock(returncode=0)) as run:
             self.assertEqual(portable.run_command(command, {}), 0)
-        run.assert_called_once_with([r'C:\Rust tools\cargo.exe', *command[1:]], cwd=portable.root, env={})
+        prepare.assert_called_once_with(command, portable.root, {})
+        run.assert_called_once_with(prepared, cwd=portable.root, env={})
 
     def test_missing_windows_launcher_fails_before_subprocess(self):
-        with mock.patch.object(portable.sys, 'platform', 'win32'), \
-             mock.patch.object(portable.shutil, 'which', return_value=None), \
+        with mock.patch.object(portable, 'prepare_command', side_effect=FileNotFoundError), \
              mock.patch.object(portable.subprocess, 'run') as run:
             with self.assertRaises(FileNotFoundError):
                 portable.run_command(['npm', 'run', 'build'], {'PATH': ''})
@@ -68,10 +67,8 @@ class PublicationCleanup(unittest.TestCase):
         for platform in ['linux', 'darwin']:
             with self.subTest(platform=platform), \
                  mock.patch.object(portable.sys, 'platform', platform), \
-                 mock.patch.object(portable.shutil, 'which') as lookup, \
                  mock.patch.object(portable.subprocess, 'run', return_value=mock.Mock(returncode=0)) as run:
                 self.assertEqual(portable.run_command(command, {}), 0)
-                lookup.assert_not_called()
                 run.assert_called_once_with(command, cwd=portable.root, env={})
 
     def test_jobs_only_workspace_config_does_not_block_portable_builds(self):
@@ -153,12 +150,27 @@ class PublicationCleanup(unittest.TestCase):
         self.assertIn("workflow_dispatch:", text)
         self.assertNotRegex(text, r"(?m)^\s+(push|pull_request|pull_request_target):")
         actions = re.findall(r"uses: ([^\s]+)", text)
-        self.assertEqual(len(actions), 5)
+        self.assertEqual(len(actions), 6)
         for action in actions: self.assertRegex(action, r"@[0-9a-f]{40}$")
         self.assertIn("timeout-minutes: 90", text)
         self.assertIn("retention-days: 1", text)
         self.assertNotIn("rust-cache", text)
         self.assertIn("expected_sha:", text)
         self.assertIn("contents: read", text)
+
+
+    def test_source_diagnostics_upload_runs_after_failure_and_is_narrowly_scoped(self):
+        text = (ROOT/".github/workflows/build.yml").read_text()
+        marker = '      - name: Retain source validation diagnostics\n'
+        self.assertEqual(text.count(marker), 1)
+        step = text.split(marker)[1]
+        self.assertIn('        if: always()\n', step)
+        self.assertIn('uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02', step)
+        paths = step.split('          path: |\n')[1].split('          if-no-files-found:')[0]
+        expected = ['            ${{ runner.temp }}/'+group+'-validation/'+suffix
+                    for group in ['source', 'contracts']
+                    for suffix in ['report.json', 'runs/*/run.json', 'runs/*/logs/*.log']]
+        self.assertEqual(paths.splitlines(), expected)
+        self.assertIn('          retention-days: 1\n', step)
 
 if __name__ == "__main__": unittest.main()

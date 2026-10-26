@@ -392,6 +392,7 @@ export function entityColor(
 }
 
 export interface GeometryFeature {
+  value?: number | null;
   id: string;
   entity: string;
   time: number;

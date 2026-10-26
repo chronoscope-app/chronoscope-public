@@ -1,0 +1,10 @@
+{
+  "world-bank-countries.json": "c9acf3932785191a649cbc04c3056af4cf64a236e5c3b49d49be25ddb0440bce",
+  "natural-earth-countries.geojson": "6866c877d39cba9c357620878839b336d569f8c662d3cfab4cb1dbe2d39c977f",
+  "usgs-2025.csv": "dbe25623300bbbc5f2f610b44374eac085b785f5ba903df157fb70a105577c34",
+  "world-bank-electricity-1990-2023.json": "9b39b8f7bea2a8e5e5652ad0889dc993000889df21f104fe2853a0fcbc765b48",
+  "world-bank-electricity-metadata.json": "b97baf3b8af89e755fb51e00bf690940fddff51d8af3dbf32849662ece66559b",
+  "viirs-south-america-2026-10-19-25.csv": "92bda522da5b36b0c7611339b3acc1695db3f08061ea6a5df751ec313e75e4df",
+  "original_global_firms_sha256": "669c0b75406abccbe763c8881c0c4874caa21f409b98c818013c6f5fa813d470",
+  "jhu-covid-confirmed-global.csv": "e6234a59eec4359d2577358b5220e1a7e3da74c162913cdb7d882db1413f98c2"
+}

@@ -1,0 +1,107 @@
+
+> chronoscope-ui@0.15.2 test
+> node ../scripts/guarded-node.mjs -- node --test --test-concurrency=1 scripts/*-test.mjs
+
+✔ Workspace replacement during the final telemetry await fails the active scenario (11.128688ms)
+✔ Cancellation during telemetry prevents completion and later steps (1.353549ms)
+✔ A completed scenario retains its result after workspace changes and cancellation (2.601909ms)
+✔ A deadline expiring during final telemetry fails rather than completing (1.675745ms)
+✔ Readiness rechecks its guard after awaited status (1.520663ms)
+✔ Readiness cannot succeed when its status response arrives after the deadline (0.399349ms)
+✔ browser bridge preserves authenticated command payload and awaits the complete body (5.641194ms)
+✔ browser bridge retains structured conflict and authorization errors (3.321551ms)
+✔ browser bridge rejects malformed JSON instead of publishing a result (1.405912ms)
+✔ browser bridge rejects transport failure and abort (2.36504ms)
+✔ browser bridge refuses to send without a token (1.167684ms)
+✔ native commands still use Tauri dispatch and preserve structured errors (3.068394ms)
+✔ stationary getter roundoff does not accumulate into camera movement (3.950001ms)
+✔ real rotation remains the reference for subsequent stationary frames (0.223695ms)
+✔ a changed position retains even a tiny explicit orientation change (0.220397ms)
+✔ a changed reference frame retains even a tiny explicit orientation change (0.174213ms)
+✔ a changed scene mode retains even a tiny explicit orientation change (0.094853ms)
+✔ invalid camera coordinates are never replaced with stale valid ones (0.220462ms)
+Cesium ground effects: count conservation, weights, UTC-window accumulation, transparency, isolated bloom, threshold, and combined heat/bloom passed.
+Exact bloom percentile and byte-identical 512px bloom/heat oracle checks passed.
+PASS fixed playback exposure preserves changes in event energy
+✔ scripts/cesium-effects-math-test.mjs (4857.618969ms)
+Cesium geometry: hole-aware box selection, occlusion boundaries, independent WGS84 geodesic references and date-line arcs passed
+Karney geodesics: exact/near antipodes, both poles, date line and interpolated display elevation passed
+Columbus frustum: analytic corner-ray agreement, zoom-contracted bounds, horizon clipping and elevated time-prism visibility passed
+2D terrain frustum: geographic footprint, width-based zoom and independent one-level zoom contract passed
+Global arc budget: 10000 near-antipodal source segments bounded to 25002 rendering vertices; every source endpoint preserved, 10000 curves explicitly coarsened
+✔ scripts/cesium-geometry-test.mjs (5304.024264ms)
+Cesium resources: 8 independent PROJ geoid references, dateline/poles, Mercator DTED sampling/voids, native mesh interpolation/availability/cache, explicit datum enforcement passed.
+✔ scripts/cesium-resource-test.mjs (3113.135337ms)
+PASS saved custom-period titles compare window values after JSON round trips
+✔ scripts/chart-guidance-test.mjs (266.93775ms)
+PASS editor draft refresh, captured submissions, workspace isolation, save/close joins and failed-save retries
+✔ scripts/controllers-test.mjs (973.576285ms)
+Display math: independent kernel oracle, bounds, protected evidence, full trails and discontinuities passed.
+✔ scripts/display-math-test.mjs (940.549369ms)
+Passed: 30 deterministic range bursts, joined drains, external CAS rebasing, failed-write retry and captured debounced deltas.
+✔ scripts/filter-intent-test.mjs (1447.152354ms)
+PASS fading line geometry across both meridians and within one hemisphere
+✔ scripts/flat-lines-test.mjs (4238.412337ms)
+✔ guided plans retain exact field names and explicit scope, without changing source records (3.852317ms)
+✔ empty/over-budget field lists and nonfinite outlier thresholds fail before submitting (0.859971ms)
+✔ table navigation clamps boundaries and retains page and modifier semantics (0.345676ms)
+Passed: 0/100/20k/100k packets, endian/negative-minute/high IDs, malformed size/base64/IDs/dictionary/inferred/GIS/value checks.
+PASS fractional packet decoding and positive/negative UTC labels without millisecond truncation
+✔ scripts/packet-test.mjs (1105.685254ms)
+PASS 24 speed/increment combinations and live rate continuity
+✔ scripts/playback-clock-test.mjs (141.819448ms)
+PASS moving and cumulative playback windows, live toggles, wrap reset and full-range playback
+PASS globe elevation Off, 0.05x/1x/20x anchors, monotonic height and all 100 slider roundtrips
+✔ scripts/playback-window-test.mjs (696.864647ms)
+✔ Preferences renders current values after a delayed status reply (75.657668ms)
+✔ Streets credit has all required linked providers on live and export paths (5.327422ms)
+✔ One platform policy chooses Metal on Mac and explicit software rendering elsewhere (2.211738ms)
+✔ Hardware probes select a native backend and keep explicit overrides (0.464808ms)
+✔ Explicit run directories win over old shared report locations (1.252993ms)
+✔ an old after completion cannot publish Ready over a new request (7.528694ms)
+✔ an old connection completion cannot publish Ready over a new request (2.13152ms)
+✔ pending connection status cannot publish after hide (2.672965ms)
+✔ pending connection status cannot publish after dispose (3.201971ms)
+✔ open waits for current session after replacing disconnected state (4.847448ms)
+✔ open waits for current session after replacing previous-session (4.614166ms)
+✔ a connection change between state and status cannot enable an unsynchronized draft (24.104462ms)
+✔ reopening the same session preserves an unsent local draft (1.845308ms)
+✔ a saved draft cannot cross services and remains local until explicitly cleared (8.633288ms)
+✔ send pins identity before awaiting the pre-send hook (3.342833ms)
+✔ a rejected dirty draft remains local without a send or retry (3.463353ms)
+✔ session identity stays an exact string beyond JavaScript integer precision (4.697103ms)
+✔ an autosave conflict retains the local draft before any send (2.368448ms)
+✔ a late rejected save cannot resurrect a draft explicitly cleared with New chat (3.614897ms)
+✔ new-session message rendering cannot enable a send with the previous draft (3.398556ms)
+✔ a pending autosave conflict retains newer typing from the same draft (3.03456ms)
+✔ a rejected old-session autosave cannot replace a newer local draft (3.153451ms)
+PASS 1003 space-time floor checks: screen margins, geographic zoom, headings, tilts, terrain plane, world limits and invalid inputs
+✔ scripts/space-time-frame-test.mjs (4431.802703ms)
+✔ an old terrain partition worker cannot erase a rebuilt pick tree (38.26333ms)
+✔ a refused terrain partition retains parent triangles and can retry (11.592844ms)
+✔ a rejected terrain partition is contained and picking can retry (17.919604ms)
+✔ a synchronous worker construction failure retains triangles and can retry (20.7179ms)
+✔ the dependency patch is pinned, fail closed and idempotent (5.463035ms)
+Time axis: compact UTC overview dates, detail on zoom, deduplication, bounded near-plane clipping and empty/single-instant ranges passed.
+PASS distinct subsecond time-axis ticks
+✔ scripts/time-axis-test.mjs (1142.840505ms)
+PASS UTC timeline labels: years, months, days, intraday, year crossing, distinct ticks and invalid bounds
+✔ scripts/timeline-labels-test.mjs (890.688333ms)
+✔ camera roundtrip preserves exact vectors and Map scale without touching providers (21.797784ms)
+✔ invalid camera records are rejected before a valid camera is modified (0.57395ms)
+✔ appearance updates have no camera or provider side effects (0.462632ms)
+✔ display/workspace preferences cannot trigger resource replacement; resource changes can (13.079553ms)
+PASS performance trace timestamps, caps, concurrency, detached replies and listener cleanup
+✔ scripts/view-profile-test.mjs (1238.548214ms)
+✔ continuous camera input publishes intermediate and final viewports (3.880257ms)
+✔ slow loads finish without overlap and coalesce motion to the latest viewport (1.829335ms)
+✔ cancellation drops queued work and errors do not strand later requests (0.461838ms)
+ℹ tests 70
+ℹ suites 0
+ℹ pass 70
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 40932.217715
+Resource guard: peak owned RSS 0 MiB, CPU 0%

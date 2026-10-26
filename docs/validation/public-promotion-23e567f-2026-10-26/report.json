@@ -1,0 +1,46 @@
+{
+  "next": "23e567f5e1ae0c3f6ce993a5f0588b19713fbb70",
+  "public_base": "b41e8173b717382eb670d93d88deaa59171d7ca3",
+  "all_next_tracked_files_identical": true,
+  "next_tracked_files": 3109,
+  "private_next_ancestry_imported": false,
+  "preserved_public_only_files": {
+    "docs/validation/public-promotion-2026-10-25/report.json": "ee0ac60d2dda4fb0c4a8ce144308ffa222642c4b5d71b2f5b3e33ad9955e29ba",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md": "6d9eeda1d8a5507e3ada1dd7b0bd157bee16c17124e1a7f54d5c083a61efed0f",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json": "24eb0ad32c652d8d20dd5e8de8da9e2dc914378e0427625ed1d939675a8d0f42",
+    "docs/validation/public-promotion-2026-10-24/report.json": "48d62c5c4fdbd40a2044cd7efb7d386c85425582ee84638804cdc3358347d762",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md": "d1ea5fcfde468507faeca868ec4d6d6616e344a558e51ca15f2acc273fd913b5",
+    "docs/validation/public-promotion-2026-10-25/README.md": "2ae9756760e26c3c3f43bf5eba88a7b613bd1b264c9ece832f3e4590040d358a",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json": "9daec1b6bb8f597476a35626fcafdb48e418b395d0c9ceba6dc8d6e7c0dc3070",
+    "docs/validation/public-promotion-2026-10-24/README.md": "71ec481651ef330c7ccea47af6348ecb5b0a1dc26edacfa2e732d68c35760ba9"
+  },
+  "promotion_scope": "full current Next tracked source; no partial export",
+  "runner_repair_patch_sha256": "9121519675e13469d8d4c04ef70b4882934d56c3c8646137ab58876fc79553b1",
+  "local_validation": {
+    "python_tests": 131,
+    "frontend_tests": 70,
+    "typecheck": true,
+    "inventory": true,
+    "independent_reviews": "bounded approval, no blockers; native Windows unverified"
+  },
+  "security_review": {
+    "scanner": "gitleaks8.30.1 official release checksum verified, published2026-03-21",
+    "canary_detected": true,
+    "current_source_findings": 3,
+    "unresolved_secret_findings": 0,
+    "finding_disposition": "three named file SHA256 checksums independently recomputed",
+    "scan_rules_changed": false,
+    "new_privacy_path_matches": 0,
+    "new_screenshots_reviewed": 4,
+    "npm_vulnerabilities": 0,
+    "rustsec_vulnerability_entries": 0,
+    "rustsec_warning_counts": {
+      "unmaintained": 6,
+      "unsound": 1,
+      "yanked": 1
+    }
+  },
+  "hosted_builds": "Not yet run at receipt preparation; must use resulting exact Public SHA and record outcomes separately.",
+  "release_publication": false,
+  "app_version": "0.15.2; current source differs from historical0.15.2downloads"
+}

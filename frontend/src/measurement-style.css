@@ -1,0 +1,63 @@
+.measurement-legend {
+  position: absolute;
+  left: 22px;
+  bottom: 28px;
+  z-index: 7;
+  width: min(290px, calc(100% - 44px));
+  padding: 15px 18px;
+  border: 1px solid #71839366;
+  border-radius: 10px;
+  color: #edf4fb;
+  background: #111d2bed;
+  box-shadow: 0 4px 24px #0004;
+  font-size: 12px;
+  pointer-events: none;
+}
+.measurement-legend[hidden] {
+  display: none;
+}
+.measurement-legend strong {
+  display: block;
+  font-size: 13px;
+}
+.measurement-ramp {
+  height: 10px;
+  margin: 13px 0 5px;
+  border-radius: 3px;
+  background: linear-gradient(
+    90deg,
+    #253494,
+    #2c7fb8,
+    #41b6c4,
+    #a1dab4,
+    #ffffcc
+  );
+}
+.measurement-ticks {
+  display: flex;
+  justify-content: space-between;
+}
+.measurement-legend small {
+  display: block;
+  margin-top: 8px;
+  color: #b7c6d4;
+}
+
+.display-scale-legend {
+  position: absolute;
+  left: 22px;
+  bottom: 28px;
+  z-index: 7;
+  max-width: min(420px, calc(100% - 44px));
+  padding: 12px 16px;
+  border: 1px solid #71839366;
+  border-radius: 10px;
+  background: #111d2bed;
+  color: #edf4fb;
+  font-size: 11px;
+  line-height: 1.5;
+  pointer-events: none;
+}
+.display-scale-legend[hidden] {
+  display: none;
+}

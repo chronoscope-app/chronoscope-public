@@ -15,6 +15,13 @@ from validation_runtime import run_command
 
 
 class GuardTests(unittest.TestCase):
+    def test_guard_uses_shared_command_preparation_with_actual_cwd_and_environment(self):
+        command = ['npm', 'test', 'literal & text', '%PATH%']
+        prepared = ['node.exe', 'npm-cli.js', *command[1:]]
+        with mock.patch.object(guarded_run, 'prepare_command', return_value=prepared) as prepare:
+            self.assertEqual(guarded_run.launch_command(command), prepared)
+        prepare.assert_called_once_with(command, Path.cwd(), os.environ)
+
     def test_contention_refuses_a_second_worker_and_releases_after_exception(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve()

@@ -53,3 +53,33 @@ The preflight and plan are read-only. They do not build, push, promote, dispatch
 create tags, upload assets or authorize publication. Development source may keep
 an Unreleased list and the prior app version until a new preview is deliberately
 prepared; the stricter `--for-release` mode is for the frozen release candidate.
+
+## Shared source-check launch and diagnostic contract
+
+Maintain `scripts/source_checks.py`, `scripts/validation_runtime.py` and
+`.github/workflows/build.yml` in Next and export them together. The workflow
+intentionally runs only from Public main; this guard is not workflow drift or
+permission to repair only Public's exported copy. Keep promotion receipts and
+independent Public history as described above.
+
+Source checks, the resource guard and portable builds share the child's
+PATH/PATHEXT resolution. Native executables keep literal argv. Standard Windows
+npm.cmd/npm.bat layouts launch sibling node.exe with
+node_modules/npm/bin/npm-cli.js directly, without cmd.exe or shell expansion.
+Arguments including spaces, quotes and metacharacters stay separate argv tokens;
+POSIX argv is unchanged. Missing/incomplete installations and non-npm batch
+wrappers fail closed instead of falling back to a shell or another installation.
+This supports the standard Node distribution layout, not arbitrary custom npm
+wrappers or their alternate global-prefix/runtime selection behavior.
+
+Every completed check, including a failing launch, retains the current report,
+per-run receipt and combined stdout/stderr log. Console failure summaries expose
+only a sanitized launch category/error number or exit/timeout status and the
+evidence paths, not arbitrary log tails or environment dumps. The pinned
+`if: always()` upload retains only these source/contract reports and suite logs
+for one day, not the whole runner temp/workspace. Inspect retained logs before
+sharing beyond the build's normal access boundary.
+
+Logical Windows-path and mocked Popen tests are not native Windows acceptance.
+After promotion and explicit hosted-run authorization, freeze the resulting
+Public SHA and test Windows before claiming this platform fixed.

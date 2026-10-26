@@ -3,6 +3,10 @@
 //! text, not treated as altitude/time. No implied projection or datum guessing.
 use geo::{Coord, Geometry, Intersects, Rect, Validation};
 use serde::Serialize;
+use std::{
+    collections::VecDeque,
+    sync::{Mutex, OnceLock},
+};
 use wkt::{types::Coord as WktCoord, Wkt};
 #[derive(Clone, Debug, Serialize, schemars::JsonSchema)]
 pub struct Shape {
@@ -104,7 +108,36 @@ fn to_geometry(w: &Wkt<f64>) -> Result<Option<Geometry<f64>>, String> {
             .map_err(|e| format!("Unsupported WKT geometry: {e}")),
     }
 }
+// Repeated annual country boundaries share validation work. Cache only fully
+// validated results, bounded by source bytes, vertices and entry count.
+type ParsedCache = VecDeque<(String, Shape)>;
+static PARSED: OnceLock<Mutex<ParsedCache>> = OnceLock::new();
 pub fn parse(text: &str) -> Result<Shape, String> {
+    let cache = PARSED.get_or_init(|| Mutex::new(VecDeque::new()));
+    if let Ok(entries) = cache.lock() {
+        if let Some((_, shape)) = entries.iter().find(|(key, _)| key == text) {
+            return Ok(shape.clone());
+        }
+    }
+    let shape = parse_uncached(text)?;
+    if let Ok(mut entries) = cache.lock() {
+        while entries.len() >= 256
+            || entries.iter().map(|(key, _)| key.len()).sum::<usize>() + text.len()
+                > 4 * 1024 * 1024
+            || entries
+                .iter()
+                .map(|(_, shape)| shape.vertex_count)
+                .sum::<usize>()
+                + shape.vertex_count
+                > 200000
+        {
+            entries.pop_front();
+        }
+        entries.push_back((text.into(), shape.clone()));
+    }
+    Ok(shape)
+}
+fn parse_uncached(text: &str) -> Result<Shape, String> {
     if text.len() > 512 * 1024 {
         return Err("WKT exceeds 512 KiB per record".into());
     }

@@ -1,0 +1,10 @@
+[
+  {
+    "title": "COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University",
+    "creator": "Johns Hopkins University / CSSE",
+    "source_url": "https://github.com/CSSEGISandData/COVID-19",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "changes": "Sunday columns January\u2013June 2020 from the archived global cumulative confirmed-case table, retrieved 2026-10-26. Original source counts and administrative reference coordinates preserved. Rows without coordinates or at (0,0) excluded. No daily increments, interpolation or case locations inferred. Reporting/testing definitions differ by place and time. Weekly snapshots are cumulative totals, not new cases; dates are UTC display anchors, not diagnosis instants. No tracks."
+  }
+]

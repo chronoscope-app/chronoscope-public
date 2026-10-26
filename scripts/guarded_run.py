@@ -11,6 +11,7 @@ import subprocess
 import sys
 import time
 import uuid
+from validation_runtime import prepare_command
 
 ROOT = Path(__file__).resolve().parent.parent
 MARKER = 'CHRONOSCOPE_RESOURCE_GUARD'
@@ -91,14 +92,7 @@ def workspace_lock(root=ROOT):
 
 
 def launch_command(command):
-    if os.name == 'nt':
-        executable = shutil.which(command[0])
-        if executable is None:
-            raise FileNotFoundError(command[0])
-        command = [executable, *command[1:]]
-        if executable.lower().endswith(('.cmd', '.bat')):
-            command = [os.environ.get('COMSPEC', 'cmd.exe'), '/d', '/c', *command]
-    return command
+    return prepare_command(command, Path.cwd(), os.environ)
 
 
 def run_guarded(command, root=ROOT):

@@ -12,6 +12,10 @@ The new demos each include **Space-time tracks**, **2D tracks**, **Globe tracks*
 
 The source positions and numeric values are preserved. Chronoscope's event clock now retains seconds and fractions; reimport bundled CSVs to recover detail lost in older saved workspaces. The original seconds/milliseconds remain in CSV and event attributes (`base_date_time` / `original_timestamp`); no track interpolation or spatial aggregation is performed. Same-minute GPS fixes are retained as separate observations. These are deliberately bounded examples, not complete national AIS coverage or a complete animal study. AIS reception is incomplete and ground speed/altitude and tracking quality fields are observations, not validated ecological conclusions.
 
+## Event and country-statistics demos
+
+The catalog also includes global earthquakes (2025 and the January website sample), NASA FIRMS detections, country electricity access, historical COVID reference snapshots, London theft reports and the shorter hurricane workspace. See [source counts, interpretation and reproduction](PRIORITY-DEMOS.md).
+
 ## NOAA AIS
 
 Source: [NOAA Office for Coastal Management, MarineCadastre vessel traffic](https://coast.noaa.gov/digitalcoast/data/vesseltraffic.html), [2024 archive](https://noaaocm.blob.core.windows.net/ais/csv2/csv2024/index.html). Downloaded 18 October 2026:

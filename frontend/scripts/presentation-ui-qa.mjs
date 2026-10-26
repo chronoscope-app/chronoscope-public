@@ -124,19 +124,15 @@ try {
     await page.locator("#help").click();
     await page.locator("#demo-datasets").click();
     await page.locator(".demo-picker").waitFor();
-    assert.equal(await page.locator("[data-demo-id]").count(), 6);
+    assert.equal(await page.locator("[data-demo-id]").count(), 13);
     await page.waitForFunction(
       () =>
-        [...document.querySelectorAll(".demo-preview img")].length === 12 &&
+        [...document.querySelectorAll(".demo-preview img")].length === 26 &&
         [...document.querySelectorAll(".demo-preview img")].every(
           (i) => i.complete && i.naturalWidth === 480,
         ),
     );
-    assert.equal(await page.locator('[data-demo-mode="map"]').count(), 6);
-    assert.equal(
-      await page.locator('[data-demo-mode="space-time"]').count(),
-      6,
-    );
+    assert.equal(await page.locator("[data-demo-view]").count(), 26);
     for (const selector of [".demo-title", ".demo-description", ".demo-action"])
       assert(
         (await contrast(selector, ".demo-card")) >= 4.5,
@@ -200,7 +196,7 @@ try {
     await page.locator("#help").click();
     await page.locator("#demo-datasets").click();
     await page
-      .locator(`[data-demo-preview="${id}"][data-demo-mode="${mode}"]`)
+      .locator(`[data-demo-preview="${id}"][data-demo-view="${mode === "map" ? 1 : 0}"]`)
       .click();
     try {
       await page.locator("#unsaved-discard").waitFor({ timeout: 2000 });

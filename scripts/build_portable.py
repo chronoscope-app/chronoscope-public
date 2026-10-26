@@ -6,8 +6,8 @@ Also: python3 scripts/build_portable.py -- npm run bundle
 import os
 from pathlib import Path
 import subprocess
-import shutil
 import sys
+from validation_runtime import prepare_command
 
 root = Path(__file__).resolve().parent.parent
 
@@ -28,14 +28,7 @@ def build_environment(environ, config_flags=()):
     return env
 
 def run_command(command, environment):
-    # CreateProcess does not search PATHEXT for bare names such as npm.
-    # Resolve the actual npm.cmd/cargo.exe launcher, retaining an argv list
-    # instead of shell=True or manually quoted/concatenated build arguments.
-    if sys.platform == "win32":
-        executable = shutil.which(command[0], path=environment.get("PATH"))
-        if executable is None:
-            raise FileNotFoundError(f"Build executable not found on PATH: {command[0]}")
-        command = [executable, *command[1:]]
+    command = prepare_command(command, root, environment)
     return subprocess.run(command, cwd=root, env=environment).returncode
 
 
