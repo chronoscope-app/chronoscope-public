@@ -137,8 +137,10 @@ pub fn domain_output_schema(command: &str) -> Value {
                 "columns",
                 "source",
                 "semantics",
+                "total_columns",
+                "column_offset",
             ];
-            json!({"rows":{"type":"array","items":serde_json::to_value(schemars::schema_for!(crate::gis::Feature)).unwrap()},"count":{"type":"integer","minimum":0},"offset":{"type":"integer","minimum":0},"limit":{"type":"integer","minimum":1},"columns":{"type":"array","items":{"type":"string"}},"source":{"type":"string"},"semantics":{"type":"string"}})
+            json!({"rows":{"type":"array","items":serde_json::to_value(schemars::schema_for!(crate::gis::Feature)).unwrap()},"count":{"type":"integer","minimum":0},"offset":{"type":"integer","minimum":0},"limit":{"type":"integer","minimum":1},"columns":{"type":"array","items":{"type":"string"}},"total_columns":{"type":"integer","minimum":0},"column_offset":{"type":"integer","minimum":0},"source":{"type":"string"},"semantics":{"type":"string"}})
         }
         "query" | "events" | "attribute_table" => {
             required = vec!["events", "count", "offset", "limit"];

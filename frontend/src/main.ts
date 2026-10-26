@@ -2,7 +2,11 @@ import { MeasurementLegend } from "./measurement-style";
 import { preferenceEffects } from "./preference-effects";
 import { WorkspaceFiles } from "./workspace-files";
 import { Welcome } from "./welcome";
-import { TableSelection } from "./table-selection";
+import {
+  attributeTableMarkup,
+  createAttributeTables,
+} from "./attribute-tables";
+import { TableWindowHost } from "./table-windows";
 import { createMapSettings } from "./map-settings";
 import { suggestTags, focusedUI } from "./focused-ai";
 import { version as appVersion } from "../package.json";
@@ -15,7 +19,6 @@ import { captureAppWindow, recordAppWindow } from "./app-capture";
 import { NotificationCenter, type AppNotification } from "./notifications";
 import { createAgentView } from "./agent-view";
 import { createAgentLab } from "./agent-lab";
-import { GisTable } from "./gis-table";
 import type { GisLayer } from "./gis";
 import {
   defaultDisplay,
@@ -123,42 +126,16 @@ let snapshot: Snapshot,
   preferences: Preferences,
   tab: InspectorTab = "inspect",
   mode: ViewMode = "space-time",
-  page = 0,
-  tableOpen = false,
   busy = 0,
   serial = 0,
   focus = 0.45,
   terrainInfo: any = null,
   overrideBounds: Bounds | null = null,
   lastRaster: Raster | null = null;
-const tableSelection = new TableSelection({
-  scope: () => ({
-    source: tableSource,
-    apply_filter: tableRespectFilters,
-    ...(tableDisplayCell ? { display_cell: tableDisplayCell } : {}),
-    sort_by: tableSort,
-    descending: tableDescending,
-  }),
-  workspace: () => snapshot.workspace_id,
-  rowHeight: () => TABLE_ROW_HEIGHT,
-  reveal: (id) => {
-    tableReveal = id;
-  },
-  refresh: () => refresh(false, false),
-  error: (error) => toast(String(error), true),
-});
 const entitySelectionIntents = new Map<string, { selected: boolean }>();
-let tableDisplayCell: DisplayCell | null = null;
 let displayOptions: DisplayOptions = { ...defaultDisplay };
 let customEntityColors: Record<string, string> = {};
 let displayPreserveFrame = false;
-let tableColumnOffset = 0;
-let tableSource: string | null = null,
-  tableRespectFilters = true,
-  tableSort = "time",
-  tableDescending = false,
-  tableTotal = 0,
-  tableSerial = 0;
 let layerMenu: HTMLElement | null = null;
 let findings: any[] = [];
 let findingsRevision = -1;
@@ -175,7 +152,7 @@ let timeScrubGeneration = 0;
 $("#app").innerHTML = `
 <header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Map servers">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open SI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button></div><button type="button" class="renderer-status" id="backend" aria-label="Renderer starting; refresh map"></button><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
 <main class="workspace"><aside class="sidebar"><section class="sidebar-pinned" id="search-section" aria-label="Search and selection"><input id="search" placeholder="Search events…" aria-label="Search events"><button id="reset-filters">Reset filters</button><div class="selection-tools" id="selection-tools"><div class="selection-summary"><strong id="pinned-selection-count" role="status">0 selected</strong><button id="clear" aria-label="Clear selection">Clear</button></div><div class="selection-actions"><button class="secondary" id="select-all">Select visible</button><label class="check-row"><input type="checkbox" id="selected-only" aria-label="Selected events only"> Show only</label></div></div></section><div class="sidebar-scroll"><details open class="sidebar-facet" id="entity-section"><summary><span>Entities</span><select id="entity-field" aria-label="Entity list field" title="Group the list by another column; source track identities stay unchanged"><option value="entity">Entity</option></select></summary><div class="facet-sort" role="group" aria-label="Sort entities"><button id="entity-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="entity-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div class="facet-controls"><input id="entity-search" placeholder="Find an entity…" aria-label="Find entity"><button id="all-entities">Enable all</button></div><div id="entities"></div><div class="facet-footer"><small id="entity-list-count"></small><button id="entity-show-all">Show all</button></div></details><details open class="sidebar-facet" id="category-section"><summary><span>Categories</span><select id="category-field" aria-label="Category list field" title="Group the list by another column"><option value="category">Category</option></select></summary><div class="facet-sort" role="group" aria-label="Sort categories"><button id="category-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="category-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div id="categories"></div><div class="facet-footer"><small id="category-list-count"></small><button id="category-show-all">Show all</button></div></details><div class="divider"></div><details id="time-section"><summary>Exact time range</summary><label class="field">Start / UTC<input id="exact-start" placeholder="Unbounded"></label><label class="field">End / UTC<input id="exact-end" placeholder="Unbounded"></label><button id="exact-apply" class="secondary">Apply range</button></details><details id="rules-section"><summary>Attribute rules</summary><label class="field">Field<input id="rule-field" placeholder="value, confidence, category…"></label><select id="rule-op"><option>Contains</option><option>Equals</option><option>NotEquals</option><option>Greater</option><option>Less</option><option>IsEmpty</option></select><label class="field">Value<input id="rule-value"></label><button id="add-rule" class="secondary">Add AND rule</button><div id="rules"></div></details><details id="bounds-section"><summary>Geographic bounds</summary><label class="field">West, South, East, North<input id="bounds" placeholder="-80,43,-79,44"></label><button id="apply-bounds" class="secondary">Apply region</button></details><section id="layers-section"><div class="section-head"><span class="caps">Layers</span></div><div id="layer-list"></div><div class="source-foot">WGS84 · UTC</div></section></div></aside>
-<section class="center"><div class="scene-container" id="scene"><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel"><div class="table-header"><button class="icon" id="close-table" aria-label="Close attribute table" title="Close table">${icon("close")}</button><span class="caps" id="table-title">Attributes</span><small class="muted" id="table-count"></small><input id="gis-table-search" placeholder="Search this GIS layer…" aria-label="Search GIS attributes" hidden><span class="spacer"></span><label class="check-row" id="table-filter-option" hidden><input id="table-respect-filters" type="checkbox"> Respect workspace filters</label><button id="table-all" hidden>All sources</button><small id="table-fields" hidden></small><button id="previous-fields" hidden title="Show previous source columns">Previous fields</button><button id="next-fields" hidden title="Show next source columns">Next fields</button></div><div class="table-scroll"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div></section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
+<section class="center"><div class="scene-container" id="scene"><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel">${attributeTableMarkup}</section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
 <aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="Super Intelligence chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
 const timeRail = new TimeRail($(".workspace"), {
   icon,
@@ -229,25 +206,52 @@ const notifications = new NotificationCenter(
   $("#notifications") as HTMLButtonElement,
   icon("close"),
 );
+const tables = createAttributeTables($("#table-panel"), {
+  snapshot: () => snapshot,
+  refresh: () => refresh(false, false),
+  error: (error) => toast(String(error), true),
+  changed: () => {
+    syncTableLayout();
+    tableWindows?.publish();
+  },
+  layout: () => {
+    syncTableLayout();
+    view.resize();
+    view.onSceneChange?.();
+  },
+  suspended: () => tableWindows?.detached ?? false,
+  detach: () => tableWindows.open(),
+});
+const { gisTable, tableSelection } = tables;
+function syncTableLayout() {
+  $("#table-panel").classList.toggle(
+    "open",
+    tables.tableOpen && !tableWindows?.detached,
+  );
+  $("#toggle-table").classList.toggle("active", tables.tableOpen);
+}
+const tableWindows = new TableWindowHost(
+  tables,
+  async () => {
+    syncTableLayout();
+    view.resize();
+    await refresh(false, false);
+  },
+  (error) => toast(String(error), true),
+);
+async function table(
+  preloaded?: any,
+  parentGeneration = serial,
+  selectedIds?: string[],
+) {
+  if (parentGeneration !== serial) return;
+  await tables.render(preloaded, selectedIds);
+}
 const rendererStatus = new RendererStatus($("#backend"));
 rendererStatus.update("Initializing renderer");
 const view = new SpaceTimeView($("#scene"), (s) => rendererStatus.update(s));
 $("#backend").addEventListener("click", () => {
   void view.recoverRenderer().catch((error) => toast(String(error), true));
-});
-const gisTable = new GisTable($("#table-head"), $("#table-body"), () =>
-  tableRowUnit(),
-);
-gisTable.onChange = () => refresh(false);
-gisTable.onError = (error) => toast(String(error), true);
-gisTable.onSort = () => {
-  resetTableScroll();
-  void table().catch(gisTable.onError);
-};
-$("#gis-table-search").addEventListener("input", () => {
-  gisTable.search = input("#gis-table-search");
-  resetTableScroll();
-  void table().catch(gisTable.onError);
 });
 view.onGisError = (id, message) => {
   toast(`GIS layer: ${message}`, true);
@@ -514,50 +518,25 @@ let renderLOD = false,
   geometryLOD = false,
   renderedCount = 0;
 let viewportDataGeneration = 0;
-let tableReveal: string | null = null;
-const TABLE_ROW_HEIGHT = 32;
-const TABLE_WINDOW = 100;
-let tableScrollFrame = 0;
-let tableScrollLoading = false;
-// Stay below native browser scroll-height limits even for multi-million-row data.
-const tableRowUnit = () =>
-  Math.min(TABLE_ROW_HEIGHT, 32_000_000 / Math.max(1, tableTotal));
-let tableScopeKey = "";
-function resetTableScroll() {
-  page = 0;
-  $(".table-scroll").scrollTop = 0;
-}
-function tablePageArguments() {
-  return {
-    ...(tableReveal ? { reveal_id: tableReveal } : {}),
-    ...(tableDisplayCell ? { display_cell: tableDisplayCell } : {}),
-    source: tableSource,
-    apply_filter: tableRespectFilters,
-    sort_by: tableSort,
-    descending: tableDescending,
-    column_offset: tableColumnOffset,
-    column_limit: 32,
-    offset: page * 50,
-    limit: TABLE_WINDOW,
-  };
-}
 async function refresh(render = true, resources = true) {
   viewportDataGeneration++;
+  tables.tableSerial++;
   const generation = ++serial;
   const scopeKey = JSON.stringify([
     snapshot?.filter,
-    tableSource,
-    tableRespectFilters,
-    tableSort,
-    tableDescending,
-    tableDisplayCell,
+    tables.tableSource,
+    tables.tableRespectFilters,
+    tables.tableSort,
+    tables.tableDescending,
+    tables.tableDisplayCell,
+    tables.tableSearch,
   ]);
-  if (scopeKey !== tableScopeKey) {
-    tableScopeKey = scopeKey;
-    if (!tableReveal) resetTableScroll();
+  if (scopeKey !== tables.tableScopeKey) {
+    tables.tableScopeKey = scopeKey;
+    if (!tables.tableReveal) tables.resetTableScroll();
   }
-  const requestedTablePage = page;
-  const requestedTableSerial = tableSerial;
+  const requestedTablePage = tables.page;
+  const requestedTableSerial = tables.tableSerial;
   const includeRender =
     render ||
     !!snapshot?.filter.selected_only ||
@@ -579,11 +558,11 @@ async function refresh(render = true, resources = true) {
           ...view.points.map((p) => p.id),
           ...view.geometryFeatures.map((f) => f.id),
         ].slice(0, 100000),
-    ...(tableOpen
+    ...(tables.tableOpen && !tableWindows.detached && !gisTable.layerId
       ? {
           page: {
             command: "attribute_table" as const,
-            args: tablePageArguments(),
+            args: tables.tablePageArguments(),
           },
         }
       : {}),
@@ -601,13 +580,14 @@ async function refresh(render = true, resources = true) {
   await view.ready;
   await view.gis.sync((s.gis_layers || []) as GisLayer[]);
   if (generation !== serial) return;
-  tableScopeKey = JSON.stringify([
+  tables.tableScopeKey = JSON.stringify([
     s.filter,
-    tableSource,
-    tableRespectFilters,
-    tableSort,
-    tableDescending,
-    tableDisplayCell,
+    tables.tableSource,
+    tables.tableRespectFilters,
+    tables.tableSort,
+    tables.tableDescending,
+    tables.tableDisplayCell,
+    tables.tableSearch,
   ]);
   const colorChanged =
     JSON.stringify(customEntityColors) !==
@@ -668,14 +648,14 @@ async function refresh(render = true, resources = true) {
   layers();
   await inspector(model.inspected, generation);
   if (generation !== serial) return;
-  if (tableOpen)
-    await table(
-      requestedTablePage === page && requestedTableSerial === tableSerial
-        ? model.page
-        : undefined,
-      generation,
-      model.selected,
-    );
+  await table(
+    requestedTablePage === tables.page &&
+      requestedTableSerial === tables.tableSerial
+      ? model.page
+      : undefined,
+    generation,
+    model.selected,
+  );
   if (generation !== serial) return;
   if (model.render) {
     const packed = model.render;
@@ -1084,21 +1064,8 @@ function showLayerMenu(layer: HTMLElement, x: number, y: number) {
   layerMenu.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
 }
 async function openAttributes(source: string | null) {
-  gisTable.close();
-  tableSelection.anchor = null;
-  tableSelection.activeId = null;
-  tableDisplayCell = null;
-  tableSource = source;
-  tableColumnOffset = 0;
-  tableRespectFilters = true;
-  tableSort = "time";
-  tableDescending = false;
-  resetTableScroll();
-  tableOpen = true;
-  $("#table-panel").classList.add("open");
-  $("#toggle-table").classList.add("active");
-  await table();
-  view.resize();
+  await tables.openAttributes(source);
+  await tableWindows.focus();
 }
 $("#layer-list").addEventListener("contextmenu", (e) => {
   const layer = (e.target as Element).closest<HTMLElement>(".layer-card");
@@ -1225,7 +1192,7 @@ const filterIntent = new FilterIntent<Filter>(
   async () => {
     tableSelection.anchor = null;
     tableSelection.activeId = null;
-    resetTableScroll();
+    tables.resetTableScroll();
     await refresh();
   },
 );
@@ -1238,7 +1205,7 @@ function filter(
 }
 async function select(ids: string[], add = false, reveal = false) {
   await call("select", { ids, mode: add ? "add" : "replace" });
-  if (reveal && tableOpen) tableReveal = ids[0] ?? null;
+  if (reveal && tables.tableOpen) tables.tableReveal = ids[0] ?? null;
   await refresh(false);
 }
 view.onPick = (ids, add) => {
@@ -1260,7 +1227,7 @@ view.onPick = (ids, add) => {
   };
   void applied
     .then(async () => {
-      if (tableOpen) tableReveal = ids[0] ?? null;
+      if (tables.tableOpen) tables.tableReveal = ids[0] ?? null;
       await refresh(false);
     })
     .catch(report);
@@ -1297,168 +1264,6 @@ function locationLabel(e: any) {
   }
   return `${c.latitude.toFixed(5)}, ${c.longitude.toFixed(5)}`;
 }
-async function table(
-  preloaded?: any,
-  parentGeneration = serial,
-  selectedIds?: string[],
-) {
-  const generation = ++tableSerial;
-  $("#gis-table-search").hidden = !gisTable.layerId;
-  if (gisTable.layerId) {
-    const layer = ((snapshot.gis_layers || []) as GisLayer[]).find(
-      (l) => l.id === gisTable.layerId,
-    );
-    if (!layer) {
-      gisTable.close();
-      return table();
-    }
-    for (const id of [
-      "#table-fields",
-      "#previous-fields",
-      "#next-fields",
-      "#table-filter-option",
-    ])
-      $(id).hidden = true;
-    $("#table-all").hidden = false;
-    $("#table-title").textContent = `GIS · ${layer.name}`;
-    const r = await gisTable.render(layer, page * 50);
-    if (!r || generation !== tableSerial) return;
-    tableTotal = r.count;
-    $("#table-count").textContent =
-      `${r.count.toLocaleString()} reference features · ${layer.selected.length} selected`;
-    $(".table-scroll table").setAttribute("aria-rowcount", String(r.count + 1));
-    return;
-  }
-  const requestedWindow = page;
-  const r = preloaded || (await call("attribute_table", tablePageArguments()));
-  if (generation !== tableSerial || parentGeneration !== serial) return;
-  if (!tableReveal && requestedWindow !== page) return;
-  const exactSelected = new Set(
-    selectedIds ||
-      (
-        await call("selection_contains", {
-          ids: r.events.map((e: any) => e.id),
-        })
-      ).selected,
-  );
-  if (generation !== tableSerial || parentGeneration !== serial) return;
-  const reveal = tableReveal;
-  if (reveal && r.reveal_found !== undefined) {
-    tableReveal = null;
-    if (r.reveal_found === false)
-      toast(
-        "Selected event is outside this table’s source or filter scope. Adjust the table source or workspace filters to reveal it.",
-      );
-  }
-  page = Math.floor(r.offset / 50);
-  tableTotal = r.count;
-  if (page > 0 && page * 50 >= tableTotal) {
-    page = Math.max(0, Math.ceil(tableTotal / 50) - 1);
-    return table();
-  }
-  $("#table-title").textContent =
-    `Attributes · ${tableSource || "all sources"}`;
-  $("#table-title").setAttribute("title", tableSource || "All sources");
-  for (const id of ["#table-fields", "#previous-fields", "#next-fields"])
-    $(id).hidden = false;
-  $("#table-fields").textContent =
-    `${tableColumnOffset + 1}–${Math.min(tableColumnOffset + 32, r.total_columns)} of ${r.total_columns} fields`;
-  ($("#previous-fields") as HTMLButtonElement).disabled =
-    tableColumnOffset === 0;
-  ($("#next-fields") as HTMLButtonElement).disabled =
-    tableColumnOffset + 32 >= r.total_columns;
-  $("#table-filter-option").hidden = false;
-  $("#table-all").hidden = tableSource === null;
-  ($("#table-respect-filters") as HTMLInputElement).checked =
-    tableRespectFilters;
-  $("#table-count").textContent =
-    `${tableTotal.toLocaleString()} events${r.columns_limited ? " · first 512 source fields" : ""}`;
-  const columns = r.columns as string[];
-  const titles: Record<string, string> = {
-    time: "Time / UTC",
-    end: "End / UTC",
-    lat: "Latitude",
-    lon: "Longitude",
-    mgrs_precision: "MGRS digits per half",
-  };
-  const headers = columns.map((c) => [
-    c,
-    c.startsWith("attribute:")
-      ? `Original · ${c.slice(10)}`
-      : titles[c] || c.replaceAll("_", " "),
-  ]);
-  $("#table-head").innerHTML =
-    `<tr>${headers.map(([c, title]) => `<th aria-sort="${tableSort === c ? (tableDescending ? "descending" : "ascending") : "none"}"><button data-table-sort="${esc(c)}" aria-label="Sort by ${esc(c)}">${esc(title)}${tableSort === c ? (tableDescending ? " ↓" : " ↑") : ""}</button></th>`).join("")}</tr>`;
-  const value = (e: any, c: string) => {
-    if (c.startsWith("attribute:")) return e[c] ?? e.attrs?.[c.slice(10)] ?? "";
-    if (c === "time" || c === "end")
-      return e[c] == null ? "" : displayTime(e[c]);
-    if (Array.isArray(e[c])) return e[c].join("; ");
-    return e[c] ?? "";
-  };
-  const hadTableFocus = !!document.activeElement?.closest(
-    "#table-body [data-event]",
-  );
-  const spacer = (rows: number) =>
-    rows > 0
-      ? `<tr class="table-spacer" aria-hidden="true"><td colspan="${columns.length}" style="height:${rows * tableRowUnit()}px"></td></tr>`
-      : "";
-  $("#table-body").innerHTML =
-    spacer(r.offset) +
-    (r.events
-      .map(
-        (e: any, index: number) =>
-          `<tr tabindex="${e.id === tableSelection.activeId || (!tableSelection.activeId && index === 0) ? 0 : -1}" aria-rowindex="${page * 50 + index + 2}" data-event="${esc(e.id)}" aria-selected="${exactSelected.has(e.id)}" class="${exactSelected.has(e.id) ? "selected" : ""}">${columns.map((c) => `<td>${esc(value(e, c))}</td>`).join("")}</tr>`,
-      )
-      .join("") ||
-      `<tr><td colspan="${columns.length}">No events in this scope.</td></tr>`) +
-    spacer(Math.max(0, tableTotal - r.offset - r.events.length));
-  $(".table-scroll table").setAttribute(
-    "aria-rowcount",
-    String(tableTotal + 1),
-  );
-  if (hadTableFocus && tableSelection.activeId) {
-    const active = Array.from(
-      $("#table-body").querySelectorAll<HTMLElement>("[data-event]"),
-    ).find((row) => row.dataset.event === tableSelection.activeId);
-    active?.focus({ preventScroll: true });
-  }
-  if (reveal) {
-    const row = Array.from(
-      $("#table-body").querySelectorAll<HTMLElement>("[data-event]"),
-    ).find((row) => row.dataset.event === reveal);
-    if (row)
-      $(".table-scroll").scrollTop =
-        row.offsetTop - $("#table-head").clientHeight;
-  }
-}
-$("#table-head").addEventListener("click", (e) => {
-  const b = (e.target as Element).closest<HTMLElement>("[data-table-sort]");
-  if (!b) return;
-  const c = b.dataset.tableSort!;
-  tableDescending = tableSort === c ? !tableDescending : false;
-  tableSort = c;
-  tableSelection.anchor = null;
-  tableSelection.activeId = null;
-  resetTableScroll();
-  table().catch((e) => toast(String(e), true));
-});
-$("#table-respect-filters").addEventListener("change", () => {
-  tableRespectFilters = check("#table-respect-filters");
-  tableSelection.anchor = null;
-  tableSelection.activeId = null;
-  resetTableScroll();
-  table().catch((e) => toast(String(e), true));
-});
-on("#previous-fields", async () => {
-  tableColumnOffset = Math.max(0, tableColumnOffset - 32);
-  await table();
-});
-on("#next-fields", async () => {
-  tableColumnOffset += 32;
-  await table();
-});
-on("#table-all", () => openAttributes(null));
 function history() {
   return `<div class="row"><button id="undo" class="secondary" ${snapshot.undo ? "" : "disabled"}>Undo</button><button id="redo" ${snapshot.redo ? "" : "disabled"}>Redo</button></div>`;
 }
@@ -1625,18 +1430,8 @@ function head(title: string) {
   return `<div class="modal-head"><h2>${title}</h2><button data-close class="icon">${icon("close")}</button></div>`;
 }
 async function openGisAttributes(id: string) {
-  gisTable.open(id);
-  tableSelection.anchor = null;
-  tableSelection.activeId = null;
-  tableDisplayCell = null;
-  resetTableScroll();
-  tableOpen = true;
-  $("#gis-table-search").setAttribute("value", "");
-  ($("#gis-table-search") as HTMLInputElement).value = "";
-  $("#table-panel").classList.add("open");
-  $("#toggle-table").classList.add("active");
-  await refresh(false);
-  view.resize();
+  await tables.openGisAttributes(id);
+  await tableWindows.focus();
 }
 async function fitGisLayer(id: string) {
   await view.ready;
@@ -1759,10 +1554,11 @@ const importDialog = new ImportDialog({
   committed: async (append, result) => {
     if (!append) {
       projectPath = null;
-      tableSource = null;
-      tableSort = "time";
-      tableDescending = false;
-      page = 0;
+      tables.resetTabs();
+      tables.tableSource = null;
+      tables.tableSort = "time";
+      tables.tableDescending = false;
+      tables.page = 0;
     }
     overrideBounds = null;
     findings = [];
@@ -2770,7 +2566,6 @@ $("#entities").addEventListener("click", (e) => {
       });
   }
 });
-tableSelection.bind($("#table-body"), $(".table-scroll"), $("#table-head"));
 $("#inspector-content").addEventListener("input", (event) => {
   const input = event.target as HTMLInputElement | HTMLTextAreaElement;
   if (input.id?.startsWith("edit-"))
@@ -3041,12 +2836,8 @@ view.onCluster = (bin) => {
   });
   on("#cell-table", async () => {
     closeModal();
-    await openAttributes(null);
-    tableDisplayCell = bin.cell;
-    tableRespectFilters = true;
-    page = 0;
-    await table();
-    $("#table-title").textContent = "Display cell members";
+    await tables.openAttributes(null, bin.cell);
+    await tableWindows.focus();
   });
   on("#cell-zoom", async () => {
     closeModal();
@@ -3140,20 +2931,20 @@ function captureScene(): Scene {
     display: displayOptions,
     entity_colors: customEntityColors,
     measurement: view.measurement,
-    table_source: tableSource,
+    table_source: tables.tableSource,
     gis_table: gisTable.layerId,
     table_attributes: true,
-    table_respect_filters: tableRespectFilters,
-    table_sort: tableSort,
-    table_descending: tableDescending,
-    table_column_offset: tableColumnOffset,
+    table_respect_filters: tables.tableRespectFilters,
+    table_sort: tables.tableSort,
+    table_descending: tables.tableDescending,
+    table_column_offset: tables.tableColumnOffset,
     time_height: view.timeHeight,
     playback_fade: view.playbackFade,
     globe_time: view.globeTime,
     globe_time_scale: view.globeTimeScale,
     focus,
     bounds: overrideBounds,
-    table_open: tableOpen,
+    table_open: tables.tableOpen,
     inspector_tab: tab,
     ...chartsPanel.capture(),
     expanded: document.body.classList.contains("fullscreen"),
@@ -3176,7 +2967,8 @@ async function restoreScene(scene: SceneState = {}) {
     setEntityColors(customEntityColors);
     displayOptions = { ...defaultDisplay, ...scene.display };
     view.setDisplayOptions(displayOptions);
-    tableDisplayCell = null;
+    tables.beginRestore();
+    tables.tableDisplayCell = null;
     mode = scene.mode || "space-time";
     view.restoreViewStates(scene.view_states || {});
     renderBudget = scene.render_budget === 100000 ? 100000 : 20000;
@@ -3189,19 +2981,19 @@ async function restoreScene(scene: SceneState = {}) {
     $("#time-height").setAttribute("value", String(view.timeHeight));
     ($("#time-height") as HTMLInputElement).value = String(view.timeHeight);
     document.querySelector<HTMLElement>(`[data-view="${mode}"]`)?.click();
-    tableOpen = !!scene.table_open;
+    tables.tableOpen = !!scene.table_open;
     // Older workspaces may request a compact table; every event table now
     // restores the complete attribute columns using the same source/scope.
-    tableSource = scene.table_source ?? null;
+    tables.tableSource = scene.table_source ?? null;
     gisTable.close();
     if (scene.gis_table) gisTable.open(scene.gis_table);
-    tableRespectFilters = true;
-    tableSort = scene.table_sort || "time";
-    tableDescending = !!scene.table_descending;
-    tableColumnOffset = scene.table_column_offset || 0;
+    tables.tableRespectFilters = scene.table_respect_filters ?? true;
+    tables.tableSort = scene.table_sort || "time";
+    tables.tableDescending = !!scene.table_descending;
+    tables.tableColumnOffset = scene.table_column_offset || 0;
     tab = scene.inspector_tab || "inspect";
-    $("#table-panel").classList.toggle("open", tableOpen);
-    $("#toggle-table").classList.toggle("active", tableOpen);
+    $("#table-panel").classList.toggle("open", tables.tableOpen);
+    $("#toggle-table").classList.toggle("active", tables.tableOpen);
     document
       .querySelectorAll<HTMLElement>("[data-tab]")
       .forEach((e) => e.classList.toggle("active", e.dataset.tab === tab));
@@ -3209,7 +3001,7 @@ async function restoreScene(scene: SceneState = {}) {
     findings = [];
     patternsPanel.reset();
     editor.deactivate();
-    page = 0;
+    tables.page = 0;
     await refresh(true, false);
     if (!mapsEnabled()) {
       lastMapStack = undefined;
@@ -3401,41 +3193,7 @@ function saveWorkspace(saveAs = false): Promise<boolean> {
 on("#open", openFile);
 on("#save", () => saveWorkspace());
 on("#export", () => workspaceFiles.exportEvents());
-on("#close-table", () => {
-  gisTable.close();
-  tableSelection.anchor = null;
-  tableSelection.activeId = null;
-  tableDisplayCell = null;
-  tableOpen = false;
-  $("#table-panel").classList.remove("open");
-  $("#toggle-table").classList.remove("active");
-  view.resize();
-  view.onSceneChange?.();
-});
 on("#toggle-table", showTablesMenu);
-$(".table-scroll").addEventListener("scroll", () => {
-  if (!tableOpen || tableScrollFrame) return;
-  tableScrollFrame = requestAnimationFrame(() => {
-    tableScrollFrame = 0;
-    const rank = Math.floor($(".table-scroll").scrollTop / tableRowUnit());
-    const next = Math.floor(Math.max(0, rank - 20) / 50);
-    if (next === page || tableReveal) return;
-    page = next;
-    if (tableScrollLoading) return;
-    tableScrollLoading = true;
-    void (async () => {
-      try {
-        for (;;) {
-          const requested = page;
-          await table();
-          if (requested === page) break;
-        }
-      } finally {
-        tableScrollLoading = false;
-      }
-    })().catch((error) => toast(String(error), true));
-  });
-});
 on("#navigate", () => {
   view.boxMode = false;
   $("#navigate").classList.add("active");

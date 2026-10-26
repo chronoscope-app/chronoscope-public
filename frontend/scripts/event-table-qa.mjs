@@ -102,10 +102,21 @@ try {
       .first()
       .click();
     await page.waitForSelector("#table-body [data-event]");
-    assert.match(
-      await page.locator("#table-title").textContent(),
-      /^Attributes · /,
+    assert.equal(
+      await page
+        .locator("#table-tabs [role=tab][aria-selected=true]")
+        .textContent(),
+      (await api("snapshot")).layers[0].source,
     );
+    assert.equal(
+      await page
+        .locator(
+          "#table-header #close-table,#table-title,#previous-fields,#next-fields",
+        )
+        .count(),
+      0,
+    );
+    assert(await page.locator("#table-search").isVisible());
     assert.equal(
       await page.locator("#toggle-table").getAttribute("aria-expanded"),
       "false",
@@ -364,17 +375,21 @@ try {
   await page.uncheck("#table-respect-filters");
   await page.waitForSelector("#table-body [data-event]");
   assert.equal(await page.locator("#table-body [data-event]").count(), 1);
-  await page.click("#next-fields");
+  await page.locator(".table-scroll").evaluate((el) => {
+    el.scrollLeft = el.scrollWidth - el.clientWidth;
+  });
   await page.waitForSelector('[data-table-sort="attribute:extra39"]');
   pass(
-    "Hidden source opens its exact full table; filter control and wide-column paging retain original fields",
+    "Hidden source opens its exact full table; filter control and demand-loaded horizontal scrolling retain original fields",
   );
   await page.click("#toggle-table");
   await page.locator("#tables-menu [data-table-gis-id]").click();
   await page.waitForSelector("#table-body [data-gis-row]");
   assert.equal(await page.locator("#table-body [data-gis-row]").count(), 2);
   assert.match(
-    await page.locator("#table-title").innerText(),
+    await page
+      .locator("#table-tabs [role=tab][aria-selected=true]")
+      .innerText(),
     /Reference & places/i,
   );
   await page.locator('[data-gis-sort="population"]').click();

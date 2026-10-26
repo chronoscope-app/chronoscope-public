@@ -355,8 +355,10 @@ try {
   await page.locator(`[data-gis-id="${geo.id}"] strong`).dblclick();
   await page.waitForSelector("[data-gis-row]");
   assert.equal(
-    await page.locator("#table-title").textContent(),
-    "GIS · events.geojson",
+    await page
+      .locator("#table-tabs [role=tab][aria-selected=true]")
+      .textContent(),
+    "events.geojson",
   );
   await page.locator('[data-gis-row="zone-1"]').click();
   await page.waitForFunction(

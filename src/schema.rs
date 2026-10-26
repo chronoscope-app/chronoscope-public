@@ -586,6 +586,15 @@ pub fn command_schema(command: &str) -> Option<Value> {
             json!({"type":"string","minLength":1,"maxLength":128}),
         );
     }
+    if matches!(command, "attribute_table" | "query" | "select_query") {
+        schema["properties"].as_object_mut().unwrap().insert("table_search".into(),
+            json!({"type":"string","maxLength":1024,"description":"Additional table-local text and original-attribute substring search, intersected with the existing filter."}));
+    }
+    if command == "gis_table" {
+        let properties = schema["properties"].as_object_mut().unwrap();
+        properties.insert("column_offset".into(), integer(0, 512));
+        properties.insert("column_limit".into(), integer(1, 32));
+    }
     if command == "attribute_table" {
         let properties = schema["properties"].as_object_mut().unwrap();
         properties.insert("column_offset".into(), integer(0, 528));

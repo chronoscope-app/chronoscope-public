@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checks": [
+    "Pop out and dock preserve the draft and share one Rust conversation",
+    "A stale idle poll cannot overwrite a newly submitted request's working state",
+    "A running request survives pop out, page reload, close and reopen without duplicate SI requests; replies retain one typed inline chart",
+    "Markdown headings, emphasis, tables, source links and equations render; raw HTML, scripts, JavaScript links and remote images are blocked",
+    "Detached Capture map uses the original main renderer, stores a bounded PNG in Rust and displays it inline without sending pixels to the service",
+    "An inline evidence row selects the exact source Event through the shared workspace",
+    "Docking restores rich cards and snapshots from Rust without repeating calculations or service calls; both themes render",
+    "Stop cancels the Rust-owned request and preserves earlier results",
+    "New chat clears session text, rich references, drafts and images without altering source Events"
+  ],
+  "errors": [],
+  "publicRequests": 0,
+  "chatCesiumRequests": 0,
+  "serviceCalls": 6,
+  "nativeMacTested": false
+}

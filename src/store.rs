@@ -52,6 +52,11 @@ fn err(e: impl std::fmt::Display) -> String {
         format!("Workspace database: {message}")
     }
 }
+struct TableScope<'a> {
+    viewport: Option<&'a GeoBounds>,
+    cell: Option<&'a crate::display::Cell>,
+    search: &'a str,
+}
 fn search_text(e: &Event) -> String {
     [
         e.entity.as_str(),
@@ -1434,6 +1439,53 @@ impl DataStore {
         viewport: Option<&GeoBounds>,
         cell: Option<&crate::display::Cell>,
     ) -> Result<String, String> {
+        self.ordered_scoped(
+            filter,
+            source,
+            sort,
+            desc,
+            TableScope {
+                viewport,
+                cell,
+                search: "",
+            },
+        )
+    }
+    /// Intersect a table-local search with the workspace filter without changing it.
+    pub fn ordered_table(
+        &self,
+        filter: &Filter,
+        source: Option<&str>,
+        sort: &str,
+        desc: bool,
+        cell: Option<&crate::display::Cell>,
+        search: &str,
+    ) -> Result<String, String> {
+        self.ordered_scoped(
+            filter,
+            source,
+            sort,
+            desc,
+            TableScope {
+                viewport: None,
+                cell,
+                search,
+            },
+        )
+    }
+    fn ordered_scoped(
+        &self,
+        filter: &Filter,
+        source: Option<&str>,
+        sort: &str,
+        desc: bool,
+        scope: TableScope<'_>,
+    ) -> Result<String, String> {
+        let TableScope {
+            viewport,
+            cell,
+            search,
+        } = scope;
         let key = serde_json::to_string(&(
             self.data_revision,
             if filter.selected_only {
@@ -1447,6 +1499,7 @@ impl DataStore {
             desc,
             viewport,
             cell,
+            search,
         ))
         .map_err(err)?;
         *self.clock.borrow_mut() += 1;
@@ -1475,6 +1528,15 @@ impl DataStore {
             scoped.selected_only = false;
         }
         let (mut where_clause, mut values) = Self::where_sql(&scoped, source);
+        if !search.is_empty() {
+            let extra = Filter {
+                search: search.into(),
+                ..Filter::default()
+            };
+            let (clause, parameters) = Self::where_sql(&extra, None);
+            where_clause = format!("({where_clause}) AND ({clause})");
+            values.extend(parameters);
+        }
         if spatial && filter.selected_only {
             where_clause.push_str(" AND EXISTS(SELECT 1 FROM selection s WHERE s.id=e.id)");
         }

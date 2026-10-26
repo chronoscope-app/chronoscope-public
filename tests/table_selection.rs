@@ -97,3 +97,133 @@ fn exact_table_ranges_follow_sort_scope_and_cross_pages() {
         11
     );
 }
+
+#[test]
+fn table_local_search_intersects_workspace_and_keeps_exact_ranges_and_cursors() {
+    let dir = tempfile::tempdir().unwrap();
+    let mut events = vec![];
+    for i in 0..9u64 {
+        let mut event = chronoscope::demo::dataset().events.remove(0);
+        event.id = i + 1;
+        event.time = i as f64;
+        event.source = "A".into();
+        event.note = if i % 2 == 0 { "scope-a" } else { "scope-b" }.into();
+        event.attrs.clear();
+        event.attrs.insert(
+            "far_column".into(),
+            if i % 3 == 0 { "needle" } else { "other" }.into(),
+        );
+        if i == 6 {
+            event
+                .attrs
+                .insert("literal".into(), "needle%_\\literal".into());
+        }
+        events.push(event);
+    }
+    let engine = Engine::new(
+        Project::new(Dataset {
+            events,
+            ..Dataset::default()
+        }),
+        dir.path().into(),
+    )
+    .unwrap();
+    engine
+        .invoke("filter", json!({"filter":{"search":"scope-a"}}))
+        .unwrap();
+    let filtered = engine.invoke("attribute_table", json!({"source":"A","apply_filter":true,"table_search":"NEEDLE","column_offset":0,"column_limit":1,"limit":1})).unwrap();
+    assert_eq!(filtered["count"], 2);
+    assert_eq!(filtered["events"][0]["id"], "1");
+    assert_eq!(filtered["events"][0].as_object().unwrap().len(), 1);
+    let cursor = filtered["next_cursor"].as_str().unwrap();
+    assert_eq!(engine.invoke("attribute_table",json!({"source":"A","apply_filter":true,"table_search":"NEEDLE","cursor":cursor,"limit":1})).unwrap()["events"][0]["id"],"7");
+    assert!(engine.invoke("attribute_table",json!({"source":"A","apply_filter":true,"table_search":"other","cursor":cursor,"limit":1})).is_err());
+    let reveal = engine.invoke("query", json!({"source":"A","apply_filter":true,"table_search":"needle","reveal_id":"7","limit":1})).unwrap();
+    assert_eq!(reveal["offset"], 1);
+    assert_eq!(reveal["reveal_found"], true);
+    assert_eq!(engine.invoke("select_query",json!({"source":"A","apply_filter":true,"table_search":"needle","table_range":{"anchor":"1","target":"7","sort_by":"time"}})).unwrap()["selected"],2);
+    assert_eq!(
+        engine
+            .invoke("selection_contains", json!({"ids":["1","4","7"]}))
+            .unwrap()["selected"],
+        json!(["1", "7"])
+    );
+    assert_eq!(
+        engine
+            .invoke(
+                "attribute_table",
+                json!({"source":"A","apply_filter":false,"table_search":"needle"})
+            )
+            .unwrap()["count"],
+        3
+    );
+    assert_eq!(
+        engine
+            .invoke("attribute_table", json!({"table_search":"%_\\literal"}))
+            .unwrap()["count"],
+        1
+    );
+    assert_eq!(
+        engine
+            .invoke(
+                "attribute_table",
+                json!({"apply_filter":true,"table_search":"no matches"})
+            )
+            .unwrap()["count"],
+        0
+    );
+    assert_eq!(
+        engine.invoke("snapshot", json!({})).unwrap()["filter"]["search"],
+        "scope-a"
+    );
+}
+
+#[test]
+fn gis_column_windows_project_payloads_but_search_all_original_properties() {
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("wide.geojson");
+    let properties: serde_json::Map<String, serde_json::Value> = (0..80)
+        .map(|i| {
+            (
+                format!("field{i:03}"),
+                json!(if i == 79 {
+                    "needle beyond the visible columns".to_owned()
+                } else {
+                    format!("value{i}")
+                }),
+            )
+        })
+        .collect();
+    std::fs::write(&path,serde_json::to_vec(&json!({"type":"FeatureCollection","features":[{"type":"Feature","id":"one","properties":properties,"geometry":{"type":"Point","coordinates":[-70,35]}}]})).unwrap()).unwrap();
+    let engine = Engine::new(Project::new(Dataset::default()), dir.path().join("profile")).unwrap();
+    let layer = engine.invoke("gis_load", json!({"path":path})).unwrap()["layer"]["id"].clone();
+    let full = engine.invoke("gis_table", json!({"id":layer})).unwrap();
+    assert_eq!(full["columns"].as_array().unwrap().len(), 80);
+    let first = engine
+        .invoke(
+            "gis_table",
+            json!({"id":layer,"column_offset":0,"column_limit":8,"search":"needle"}),
+        )
+        .unwrap();
+    assert_eq!(first["count"], 1);
+    assert_eq!(first["total_columns"], 84);
+    assert_eq!(first["rows"][0]["id"], "one");
+    assert_eq!(first["rows"][0]["properties"].as_object().unwrap().len(), 4);
+    assert!(first["rows"][0]["properties"].get("field079").is_none());
+    let last = engine
+        .invoke(
+            "gis_table",
+            json!({"id":layer,"column_offset":76,"column_limit":8}),
+        )
+        .unwrap();
+    assert_eq!(last["column_offset"], 76);
+    assert_eq!(
+        last["columns"].as_array().unwrap().last().unwrap(),
+        "field079"
+    );
+    assert_eq!(last["rows"][0]["properties"].as_object().unwrap().len(), 8);
+    assert_eq!(
+        last["rows"][0]["properties"]["field079"],
+        "needle beyond the visible columns"
+    );
+}

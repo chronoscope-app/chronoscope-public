@@ -63,6 +63,8 @@ const tips: Record<string, string> = {
   save: "Save data and display setup to the current workspace, or choose a file on first save. Ctrl/Cmd+S.",
   "table-respect-filters":
     "Restrict this attribute table to events matching the workspace filters; unchecked shows every row in the selected source.",
+  "table-search":
+    "Search record text and original attribute values in this tab without changing workspace filters.",
   "table-all": "Open the combined attribute table for all imported sources.",
   maps: "Streets is the default worldwide basemap. Advanced settings manage custom WMTS servers, layers and cache.",
   "wmts-auth":
@@ -98,7 +100,7 @@ const tips: Record<string, string> = {
   play: "Move a time window through the data. Space plays or pauses.",
   "full-range": "Clear time restrictions and show the full dataset time span.",
   "toggle-table":
-    "Choose a layer to open its full attribute table. Sort columns and select records.",
+    "Open layers as tabs in one attribute-table panel. Use Detach to move the tab group into a separate window.",
   export:
     "Export visible selected events, or all visible events if none are selected. Ctrl/Cmd+E.",
   "date-format":

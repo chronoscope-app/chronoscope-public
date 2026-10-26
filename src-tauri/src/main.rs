@@ -2,6 +2,7 @@
 #![forbid(unsafe_code)]
 mod icon_appearance;
 mod si_window;
+mod table_window;
 mod window_capture;
 use chronoscope::engine::Engine;
 use serde_json::Value;
@@ -135,12 +136,21 @@ fn main() {
             agent_status,
             desktop_close,
             si_window::si_window,
+            table_window::table_window,
             si_window::si_open_link,
             window_capture::capture_app_window,
             window_capture::record_app_window,
             icon_appearance::desktop_icon_theme
         ])
         .on_window_event(|window, event| {
+            if window.label() == "attribute-tables" {
+                if matches!(event, tauri::WindowEvent::Destroyed) {
+                    let _ = window
+                        .app_handle()
+                        .emit_to("main", "table-window-docked", ());
+                }
+                return;
+            }
             if window.label() == "si-chat" {
                 if matches!(event, tauri::WindowEvent::Destroyed) {
                     let _ = window.app_handle().emit_to("main", "si-window-docked", ());
@@ -157,7 +167,12 @@ fn main() {
                 if window.state::<Arc<Engine>>().workspace_dirty() {
                     api.prevent_close();
                     let _ = window.emit("workspace-close-request", ());
-                } else if window.app_handle().get_webview_window("si-chat").is_some() {
+                } else if window.app_handle().get_webview_window("si-chat").is_some()
+                    || window
+                        .app_handle()
+                        .get_webview_window("attribute-tables")
+                        .is_some()
+                {
                     // A detached chat is not a second workspace. Keep main alive
                     // until the app-level exit check accepts closing both windows.
                     api.prevent_close();

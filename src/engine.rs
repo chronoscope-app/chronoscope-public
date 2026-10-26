@@ -1214,6 +1214,7 @@ impl Engine {
                     args["sort_by"].as_str().unwrap_or("time"),
                     args["descending"].as_bool().unwrap_or(false),
                     &cell,
+                    args["table_search"].as_str().unwrap_or(""),
                 ))
                 .map_err(|e| e.to_string())?;
                 use sha2::Digest;
@@ -1231,13 +1232,13 @@ impl Engine {
                 } else {
                     offset
                 };
-                let table = s.store.ordered_with_cell(
+                let table = s.store.ordered_table(
                     &f,
                     source,
                     args["sort_by"].as_str().unwrap_or("time"),
                     args["descending"].as_bool().unwrap_or(false),
-                    None,
                     cell.as_ref(),
+                    args["table_search"].as_str().unwrap_or(""),
                 )?;
                 let located = args["reveal_id"]
                     .as_str()
@@ -1760,13 +1761,13 @@ impl Engine {
                         .map(serde_json::from_value::<crate::display::Cell>)
                         .transpose()
                         .map_err(|e| e.to_string())?;
-                    let table = s.store.ordered_with_cell(
+                    let table = s.store.ordered_table(
                         &f,
                         args["source"].as_str(),
                         range["sort_by"].as_str().unwrap_or("time"),
                         range["descending"].as_bool().unwrap_or(false),
-                        None,
                         cell.as_ref(),
+                        args["table_search"].as_str().unwrap_or(""),
                     )?;
                     let parse = |key: &str| {
                         range[key]
@@ -1803,13 +1804,13 @@ impl Engine {
                         .map(serde_json::from_value::<crate::display::Cell>)
                         .transpose()
                         .map_err(|e| e.to_string())?;
-                    let table = s.store.ordered_with_cell(
+                    let table = s.store.ordered_table(
                         &f,
                         args["source"].as_str(),
                         "time",
                         false,
-                        None,
                         cell.as_ref(),
+                        args["table_search"].as_str().unwrap_or(""),
                     )?;
                     if let Some(bin) = args["bin"].as_u64() {
                         let (lo, hi) = s.store.time_bounds()?;

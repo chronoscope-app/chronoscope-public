@@ -1,0 +1,1482 @@
+{
+  "status": "PASS for frozen selected Linux checks; PUBLIC PROMOTION HELD",
+  "passed": true,
+  "promotion_permitted": false,
+  "promotion_performed": false,
+  "github_runners_used": false,
+  "source": {
+    "implementation": "a8bc62a4b4b5cf1628ebea5aa573e84df842f24e",
+    "fetched_main": "fb9cee26288a45ffba77de7ee4823326387238fd",
+    "frozen_test_revision": "73eaf077a2e86b1e56d34dc4b87314213b076493",
+    "branch": "codex/linux-detachable-tests-20261026",
+    "product_diff_between_fetched_and_frozen": "",
+    "changes": "212 lines of additional assertions in detachable-tables-qa.mjs only; no implementation changes",
+    "pending_branch_review": "Only retire-apple-si-chat; its completed work is present through ee83f5c (PR #2)."
+  },
+  "completed_utc": "2026-10-26T21:47:03.491277+00:00",
+  "verification": {
+    "full_rust": {
+      "command": "cargo test --locked -p chronoscope -- --include-ignored",
+      "passed": 422,
+      "failed": 0,
+      "ignored": 0,
+      "completed_test_targets": 64,
+      "outcome": {
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_s": 657.073
+      },
+      "log": ".qa/detachable-linux-2026-10-26/full-rust.log",
+      "log_sha256": "89693283c92f0e168d68e23b4b2d33373eb34d69b1bb458d836e419ae9da40a1"
+    },
+    "focused_rust": 6,
+    "frontend_unit_tests": 70,
+    "python_tests": 39,
+    "browser_unique_checks": 60,
+    "browser_checks_by_suite": {
+      "detachable-tables-qa": 13,
+      "event-table-qa": 14,
+      "gis-files-qa": 24,
+      "si-rich-chat-qa": 9
+    },
+    "native_window_checks": 9,
+    "format": true,
+    "core_strict_clippy": true,
+    "native_strict_clippy": true,
+    "fresh_core_cli_build": true,
+    "fresh_native_build": true,
+    "native_cli_mcp_smoke": true,
+    "frontend_production_build": true,
+    "generated_contracts": true,
+    "inventory": {
+      "unit_scripts": 26,
+      "browser_suites": 52,
+      "performance_suites": 3,
+      "experimental": 1
+    },
+    "normal_release_metadata_preflight": true,
+    "workflows_manual_only": true
+  },
+  "artifacts": {
+    "cli": {
+      "profile": "debug",
+      "sha256": "cb4ad5c392157619632f2f6d018a74ae8d1b296af66c29dcae421252b0939311"
+    },
+    "desktop": {
+      "profile": "debug/custom-protocol",
+      "sha256": "195add3fb3fab32924101e44542140fec8f2e581286ff0953d8dce25ce030e3d"
+    },
+    "cli_frontend_build_receipt": {
+      "source_digest": "d56c7e36ea065477cae89ebf48599ee1660fd9c7621bd04afce997d66a2584d7",
+      "cli_sha256": "cb4ad5c392157619632f2f6d018a74ae8d1b296af66c29dcae421252b0939311",
+      "frontend_sha256": "d504b0bc43620fddddc850beebe7270ca812fc19a07b9bf9f3504500bfb51b98",
+      "cli_build_profile": "debug"
+    },
+    "screenshots": [
+      {
+        "path": "docs/validation/detachable-panels-linux-2026-10-26/clawcomp-native-table-detached.png",
+        "sha256": "0092b8e0d3611a504c96ddb440ac52b515cd90f2d3fbd329552987e6781d0040"
+      },
+      {
+        "path": "docs/validation/detachable-panels-linux-2026-10-26/clawcomp-native-table-close-return.png",
+        "sha256": "61571e983f8450204739076c94d6a16c3de05a32982ebb8b5a34d895c222016c"
+      },
+      {
+        "path": "docs/validation/detachable-panels-linux-2026-10-26/clawcomp-native-si-detached-draft.png",
+        "sha256": "b17e3be4cc8fe1b2296286f32dde944960e004319abcd74447e506f47c1d389e"
+      },
+      {
+        "path": "docs/validation/detachable-panels-linux-2026-10-26/clawcomp-native-si-close-return.png",
+        "sha256": "9bc7f4f02e7ed276fbd2d637e60e0cb0e3bd651e3714969cdcf12ea144b8d97d"
+      }
+    ]
+  },
+  "runs": {
+    "fresh": {
+      "run_id": "20261026T212008Z-9ae5ff9d",
+      "source_revision": "fb9cee26288a45ffba77de7ee4823326387238fd",
+      "dirty": false,
+      "cli_build_profile": "debug",
+      "native_build_profile": "debug",
+      "platform": "linux",
+      "tier": "fast",
+      "started_utc": "2026-10-26T21:20:08.491348+00:00",
+      "test_infrastructure_sha256": {
+        "scripts/validate_local.py": "e0cbb062a06741c9320db762746ffcd3816240463f34ec892a552b1d57e118be",
+        "scripts/validation_runtime.py": "f5f4065acf2e6df2b7c207019c302398047d1fa30105bb8426cb6e185e99941b",
+        "scripts/validation_suites.py": "172eb9bd2dcd1310b819f556062fc465b154e972345d7eb7e53530d6d05c4c94",
+        "scripts/validation-suites.json": "1b4b6c66dc4704aea2cc0ac11d44f17da783fa228622ae15cbf2c30b7931ebe2",
+        "scripts/source_checks.py": "147a9607ae1dff5b3b938e53fd99ab5ccbc351717bbca8faab00c3590b2ad62c",
+        "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+        "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+        "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+        "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+      },
+      "passed": true,
+      "github_runners_used": false,
+      "checks": [
+        {
+          "name": "test_validation_runner",
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/test_validation_runner.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 3.037
+        },
+        {
+          "name": "test_guarded_run",
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "scripts/test_guarded_run.py"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/test_guarded_run.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.734
+        },
+        {
+          "name": "rust-format",
+          "command": [
+            "cargo",
+            "fmt",
+            "--all",
+            "--check"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/rust-format.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.977
+        },
+        {
+          "name": "test_glib_backport",
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "scripts/test_glib_backport.py"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/test_glib_backport.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 1.027
+        },
+        {
+          "name": "test_workarounds",
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "scripts/test_workarounds.py"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/test_workarounds.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.075
+        },
+        {
+          "name": "test_release_preflight",
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "scripts/test_release_preflight.py"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/test_release_preflight.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.124
+        },
+        {
+          "name": "core-clippy",
+          "command": [
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--all-targets",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/core-clippy.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 21.571
+        },
+        {
+          "name": "rust-tests",
+          "command": [
+            "cargo",
+            "test",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--test",
+            "table_selection",
+            "--test",
+            "views_layers"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/rust-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 36.904
+        },
+        {
+          "name": "cli-build",
+          "command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "chronoscope",
+            "--bin",
+            "chronoscope"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/cli-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.325
+        },
+        {
+          "name": "frontend-build",
+          "command": [
+            "/home/claw/.local/bin/npm",
+            "--prefix",
+            "frontend",
+            "run",
+            "build",
+            "--",
+            "--configLoader",
+            "runner"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/frontend-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 18.618
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.425
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 14.107
+        },
+        {
+          "name": "event-table-qa",
+          "command": [
+            "/home/claw/.local/bin/node",
+            "frontend/scripts/event-table-qa.mjs"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/event-table-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 27.189,
+          "browser_launches": [
+            {
+              "executable": "/usr/bin/google-chrome",
+              "version": "156.0.8078.47",
+              "headless": true,
+              "angle": "vulkan"
+            }
+          ],
+          "suite_sha256": "5cd437bb364e4e76a23cc75eb9190dc9b29855cb70d1e9ee281b026bda7b6078"
+        },
+        {
+          "name": "detachable-tables-qa",
+          "command": [
+            "/home/claw/.local/bin/node",
+            "frontend/scripts/detachable-tables-qa.mjs"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/detachable-tables-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 9.408,
+          "browser_launches": [
+            {
+              "executable": "/usr/bin/google-chrome",
+              "version": "156.0.8078.47",
+              "headless": true,
+              "angle": "vulkan"
+            }
+          ],
+          "suite_sha256": "63d6f144f76e689c3165d64a2ec769c8882e80d20ae8e09cb841981dea099b00"
+        },
+        {
+          "name": "gis-files-qa",
+          "command": [
+            "/home/claw/.local/bin/node",
+            "frontend/scripts/gis-files-qa.mjs"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/gis-files-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 12.927,
+          "browser_launches": [
+            {
+              "executable": "/usr/bin/google-chrome",
+              "version": "156.0.8078.47",
+              "headless": true,
+              "angle": "vulkan"
+            }
+          ],
+          "suite_sha256": "fb1b34de8aa66102ca34499cdd71076c0929d84e4adc1f8157c622c44f2e006f"
+        },
+        {
+          "name": "si-rich-chat-qa",
+          "command": [
+            "/home/claw/.local/bin/node",
+            "frontend/scripts/si-rich-chat-qa.mjs"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/si-rich-chat-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 15.171,
+          "browser_launches": [
+            {
+              "executable": "/usr/bin/google-chrome",
+              "version": "156.0.8078.47",
+              "headless": true,
+              "angle": "vulkan"
+            }
+          ],
+          "suite_sha256": "085041e7ad400d10ddf318a82632fb89f9f6fe4826982d96d32cd6e525c0c4a5"
+        },
+        {
+          "name": "native-clippy",
+          "command": [
+            "cargo",
+            "clippy",
+            "--locked",
+            "-p",
+            "chronoscope-desktop",
+            "--",
+            "-D",
+            "warnings"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/native-clippy.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 13.453
+        },
+        {
+          "name": "native-build",
+          "command": [
+            "cargo",
+            "build",
+            "--locked",
+            "-p",
+            "chronoscope-desktop"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/native-build.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 44.082
+        },
+        {
+          "name": "native-cli-smoke",
+          "command": [
+            "/usr/bin/python3",
+            "scripts/test_desktop_cli.py",
+            "--binary",
+            "$REPO/target/debug/chronoscope-desktop"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/logs/native-cli-smoke.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 4.089
+        }
+      ],
+      "unrun_browser_suites": [
+        "analytics-qa.mjs",
+        "assistant-qa.mjs",
+        "balanced-terrain-qa.mjs",
+        "basemap-qa.mjs",
+        "cesium-context-qa.mjs",
+        "cesium-effects-pixels-qa.mjs",
+        "cesium-globe-time-qa.mjs",
+        "cesium-parity-qa.mjs",
+        "cesium-terrain-qa.mjs",
+        "chart-shortcuts-qa.mjs",
+        "chart-workflow-qa.mjs",
+        "charts-qa.mjs",
+        "charts-timezone-qa.mjs",
+        "cluster-identity-qa.mjs",
+        "display-recovery-qa.mjs",
+        "empty-workspace-qa.mjs",
+        "field-roles-qa.mjs",
+        "focused-ai-qa.mjs",
+        "guided-workflows-qa.mjs",
+        "integration-smoke-qa.mjs",
+        "map-notifications-qa.mjs",
+        "mcp-live-qa.mjs",
+        "navigation-preferences-qa.mjs",
+        "navigation-qa.mjs",
+        "navigation-sphere-qa.mjs",
+        "notifications-qa.mjs",
+        "pan-direction-qa.mjs",
+        "patterns-qa.mjs",
+        "playback-speed-qa.mjs",
+        "playback-transitions-qa.mjs",
+        "presentation-ui-qa.mjs",
+        "priority-demos-qa.mjs",
+        "real-demos-qa.mjs",
+        "si-certificate-qa.mjs",
+        "si-settings-qa.mjs",
+        "sidebar-time-qa.mjs",
+        "space-time-window-qa.mjs",
+        "spectrum-qa.mjs",
+        "subsecond-qa.mjs",
+        "time-rail-qa.mjs",
+        "toolbar-dialogs-qa.mjs",
+        "vector-gis-qa.mjs",
+        "view-sync-qa.mjs",
+        "viewport-pan-qa.mjs",
+        "webmcp-disabled-qa.mjs",
+        "welcome-qa.mjs",
+        "wkt-wmts-qa.mjs",
+        "workspace-boundaries-qa.mjs"
+      ],
+      "manual_checks_not_run": {
+        "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+        "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+        "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+      },
+      "evidence_directory": "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d",
+      "limitations": [
+        "Native results apply to this operating system only.",
+        "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+        "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+      ],
+      "cli_sha256": "cb4ad5c392157619632f2f6d018a74ae8d1b296af66c29dcae421252b0939311",
+      "finished_utc": "2026-10-26T21:23:55.723923+00:00"
+    },
+    "expanded": {
+      "run_id": "20261026T213553Z-1b4b4119",
+      "source_revision": "73eaf077a2e86b1e56d34dc4b87314213b076493",
+      "dirty": false,
+      "cli_build_profile": "debug",
+      "native_build_profile": null,
+      "platform": "linux",
+      "tier": "fast",
+      "started_utc": "2026-10-26T21:35:53.725360+00:00",
+      "test_infrastructure_sha256": {
+        "scripts/validate_local.py": "e0cbb062a06741c9320db762746ffcd3816240463f34ec892a552b1d57e118be",
+        "scripts/validation_runtime.py": "f5f4065acf2e6df2b7c207019c302398047d1fa30105bb8426cb6e185e99941b",
+        "scripts/validation_suites.py": "172eb9bd2dcd1310b819f556062fc465b154e972345d7eb7e53530d6d05c4c94",
+        "scripts/validation-suites.json": "1b4b6c66dc4704aea2cc0ac11d44f17da783fa228622ae15cbf2c30b7931ebe2",
+        "scripts/source_checks.py": "147a9607ae1dff5b3b938e53fd99ab5ccbc351717bbca8faab00c3590b2ad62c",
+        "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+        "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+        "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+        "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+      },
+      "passed": true,
+      "github_runners_used": false,
+      "checks": [
+        {
+          "name": "test_validation_runner",
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "scripts/test_validation_runner.py"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/expanded/runs/20261026T213553Z-1b4b4119/logs/test_validation_runner.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 3.034
+        },
+        {
+          "name": "test_guarded_run",
+          "command": [
+            "/usr/bin/python3",
+            "-B",
+            "scripts/test_guarded_run.py"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/expanded/runs/20261026T213553Z-1b4b4119/logs/test_guarded_run.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 2.734
+        },
+        {
+          "name": "generated-contracts",
+          "command": [
+            "node",
+            "scripts/generate_contracts.mjs",
+            "--check"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/expanded/runs/20261026T213553Z-1b4b4119/logs/generated-contracts.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 0.425
+        },
+        {
+          "name": "frontend-unit-tests",
+          "command": [
+            "npm",
+            "--prefix",
+            "frontend",
+            "test"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/expanded/runs/20261026T213553Z-1b4b4119/logs/frontend-unit-tests.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 14.359
+        },
+        {
+          "name": "detachable-tables-qa",
+          "command": [
+            "/home/claw/.local/bin/node",
+            "frontend/scripts/detachable-tables-qa.mjs"
+          ],
+          "log": "$REPO/.qa/detachable-linux-2026-10-26/expanded/runs/20261026T213553Z-1b4b4119/logs/detachable-tables-qa.log",
+          "exit_code": 0,
+          "timed_out": false,
+          "elapsed_s": 16.984,
+          "browser_launches": [
+            {
+              "executable": "/usr/bin/google-chrome",
+              "version": "156.0.8078.47",
+              "headless": true,
+              "angle": "vulkan"
+            }
+          ],
+          "suite_sha256": "ce32512cdd719b1605fd422937967fd4c1e4ae6559757537171ebf4696b6aad4"
+        }
+      ],
+      "unrun_browser_suites": [
+        "analytics-qa.mjs",
+        "assistant-qa.mjs",
+        "balanced-terrain-qa.mjs",
+        "basemap-qa.mjs",
+        "cesium-context-qa.mjs",
+        "cesium-effects-pixels-qa.mjs",
+        "cesium-globe-time-qa.mjs",
+        "cesium-parity-qa.mjs",
+        "cesium-terrain-qa.mjs",
+        "chart-shortcuts-qa.mjs",
+        "chart-workflow-qa.mjs",
+        "charts-qa.mjs",
+        "charts-timezone-qa.mjs",
+        "cluster-identity-qa.mjs",
+        "display-recovery-qa.mjs",
+        "empty-workspace-qa.mjs",
+        "event-table-qa.mjs",
+        "field-roles-qa.mjs",
+        "focused-ai-qa.mjs",
+        "gis-files-qa.mjs",
+        "guided-workflows-qa.mjs",
+        "integration-smoke-qa.mjs",
+        "map-notifications-qa.mjs",
+        "mcp-live-qa.mjs",
+        "navigation-preferences-qa.mjs",
+        "navigation-qa.mjs",
+        "navigation-sphere-qa.mjs",
+        "notifications-qa.mjs",
+        "pan-direction-qa.mjs",
+        "patterns-qa.mjs",
+        "playback-speed-qa.mjs",
+        "playback-transitions-qa.mjs",
+        "presentation-ui-qa.mjs",
+        "priority-demos-qa.mjs",
+        "real-demos-qa.mjs",
+        "si-certificate-qa.mjs",
+        "si-rich-chat-qa.mjs",
+        "si-settings-qa.mjs",
+        "sidebar-time-qa.mjs",
+        "space-time-window-qa.mjs",
+        "spectrum-qa.mjs",
+        "subsecond-qa.mjs",
+        "time-rail-qa.mjs",
+        "toolbar-dialogs-qa.mjs",
+        "vector-gis-qa.mjs",
+        "view-sync-qa.mjs",
+        "viewport-pan-qa.mjs",
+        "webmcp-disabled-qa.mjs",
+        "welcome-qa.mjs",
+        "wkt-wmts-qa.mjs",
+        "workspace-boundaries-qa.mjs"
+      ],
+      "manual_checks_not_run": {
+        "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+        "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+        "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+      },
+      "evidence_directory": "$REPO/.qa/detachable-linux-2026-10-26/expanded/runs/20261026T213553Z-1b4b4119",
+      "limitations": [
+        "Native results apply to this operating system only.",
+        "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+        "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+      ],
+      "cli_sha256": "cb4ad5c392157619632f2f6d018a74ae8d1b296af66c29dcae421252b0939311",
+      "finished_utc": "2026-10-26T21:36:32.464108+00:00"
+    }
+  },
+  "browser": {
+    "detachable-tables-qa": {
+      "path": ".qa/detachable-linux-2026-10-26/expanded/runs/20261026T213553Z-1b4b4119/artifacts/detachable-tables-qa/report.json",
+      "sha256": "6157d25d189695079acf353b1b7ec950a09b9292c79752c60c1efbaad762c14d",
+      "report": {
+        "passed": true,
+        "checks": [
+          "Multiple tables share tabs; reopening deduplicates; sort/filter/scroll survive switching",
+          "Detached tabs retain state and row selection updates the main workspace",
+          "Dock returns the whole tab group and its active tab",
+          "Keyboard navigation and closing a tab keep its neighbor open",
+          "Native-style window close returns tabs to the workspace",
+          "GIS tables join the detached group and retain search/sort with linked reference selection",
+          "Reloading the detached page restores its tab group from main",
+          "Removed GIS layers close their tab and retain the neighboring table",
+          "Restoring a scene in the same workspace keeps the other table tabs",
+          "Closing the last detached tab closes its utility window and clears the table surface",
+          "Per-tab source-column paging and both scroll axes survive switching, detaching and docking",
+          "Independent tab selection anchors retain exact shift ranges across tab changes and detachment",
+          "Display-cell tables preserve their exact member scope across tab switching and native-style detach/dock"
+        ],
+        "errors": [],
+        "publicRequests": 0,
+        "compactTableRequests": 0
+      }
+    },
+    "event-table-qa": {
+      "path": ".qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/artifacts/event-table-qa/report.json",
+      "sha256": "b1289ea43363e4b22b1abadc88a45d48b76ac69939ad46a1ab331729f564a89b",
+      "report": {
+        "passed": true,
+        "checks": [
+          "synthetic: Tables picker opens every canonical and imported attribute column",
+          "synthetic: full attribute table sorts canonical columns globally in both directions",
+          "synthetic: Shift+arrow and Shift+click select exactly the displayed sorted range",
+          "synthetic: keyboard navigation/reveal retain sorted order across virtual pages",
+          "synthetic: full layer attributes retain imported columns and sorting",
+          "hurricanes: Tables picker opens every canonical and imported attribute column",
+          "hurricanes: full attribute table sorts canonical columns globally in both directions",
+          "hurricanes: Shift+arrow and Shift+click select exactly the displayed sorted range",
+          "hurricanes: keyboard navigation/reveal retain sorted order across virtual pages",
+          "hurricanes: full layer attributes retain imported columns and sorting",
+          "Picker lists both Event sources and the GIS table, including hidden layers; keyboard and trigger dismissal work",
+          "Hidden source opens its exact full table; filter control and wide-column paging retain original fields",
+          "Choosing a hidden GIS reference opens its real properties and sortable feature rows",
+          "An older compact-table workspace restores the full attribute table"
+        ],
+        "errors": [],
+        "publicRequests": 0,
+        "compactTableRequests": 0
+      }
+    },
+    "gis-files-qa": {
+      "path": ".qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/artifacts/gis-files-qa/screenshots/report.json",
+      "sha256": "9c17a8d07abb6bd134d001c1bf7886b7a3395b2e964924792cd84d8bc148d407",
+      "report": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "Open renders native geojson",
+            "evidence": {
+              "loaded": true,
+              "entities": 3,
+              "primitive": false,
+              "features": 3,
+              "resources": 2
+            }
+          },
+          {
+            "name": "Open renders native topojson",
+            "evidence": {
+              "loaded": true,
+              "entities": 2,
+              "primitive": false,
+              "features": 2,
+              "resources": 2
+            }
+          },
+          {
+            "name": "Open renders native kml",
+            "evidence": {
+              "loaded": true,
+              "entities": 1,
+              "primitive": false,
+              "features": 1,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native kmz",
+            "evidence": {
+              "loaded": true,
+              "entities": 1,
+              "primitive": false,
+              "features": 1,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native czml",
+            "evidence": {
+              "loaded": true,
+              "entities": 1,
+              "primitive": false,
+              "features": 3,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native gpx",
+            "evidence": {
+              "loaded": true,
+              "entities": 2,
+              "primitive": false,
+              "features": 4,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native gltf",
+            "evidence": {
+              "loaded": true,
+              "primitive": true,
+              "features": 0,
+              "resources": 2
+            }
+          },
+          {
+            "name": "Open renders native glb",
+            "evidence": {
+              "loaded": true,
+              "primitive": true,
+              "features": 0,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Native 3D Tiles content is fetched, decoded and ready in the live scene",
+            "evidence": {}
+          },
+          {
+            "name": "Open renders native tiles3d",
+            "evidence": {
+              "loaded": true,
+              "primitive": true,
+              "features": 0,
+              "resources": 2
+            }
+          },
+          {
+            "name": "JSON GIS is distinguished from workspace JSON in Open",
+            "evidence": {}
+          },
+          {
+            "name": "Native rendering preserves source feature IDs beyond JavaScript safe integers",
+            "evidence": {}
+          },
+          {
+            "name": "Multipart native objects retain exact source IDs and highlight every part without suffix collisions",
+            "evidence": {
+              "parts": 2,
+              "selection": 2,
+              "pick": {
+                "kind": "gis",
+                "layer": "a2ef76219bdade92de3bfd27be07cc45",
+                "id": "foo"
+              },
+              "separate": 1
+            }
+          },
+          {
+            "name": "Source XML descriptions retain attributes without executing markup or contacting external URLs",
+            "evidence": {}
+          },
+          {
+            "name": "Reference table and native polygon highlights share exact feature IDs",
+            "evidence": {
+              "selected": [
+                "zone-1",
+                "zone-2"
+              ]
+            }
+          },
+          {
+            "name": "Reference layers persist through Globe, 2D and Columbus transitions",
+            "evidence": {}
+          },
+          {
+            "name": "Native CZML animation follows Chronoscope time focus",
+            "evidence": {
+              "a": [
+                1012518.353413592,
+                -5742276.92974376,
+                2578690.158718329
+              ],
+              "b": [
+                1157523.9055572974,
+                -5638340.9871234195,
+                2739832.36711419
+              ]
+            }
+          },
+          {
+            "name": "Portable GIS workspace reopens all formats and packaged model/tile assets",
+            "evidence": {}
+          },
+          {
+            "name": "Timed polygons retain full geometry plus centroid circles and entity tracks",
+            "evidence": {
+              "points": 3,
+              "centroids": 2,
+              "polygons": 2,
+              "tracks": 2
+            }
+          },
+          {
+            "name": "Centroid markers/tracks can be hidden while polygons remain",
+            "evidence": {}
+          },
+          {
+            "name": "Entity/category rows remain compact without extra vertical margins",
+            "evidence": {
+              "entities": [
+                26,
+                26
+              ],
+              "categories": [
+                {
+                  "height": 24,
+                  "margin": "0px"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Agent geographic camera target is centred in map",
+            "evidence": {
+              "mode": "map",
+              "backend": "WebGL2",
+              "hardware": "unknown",
+              "error": 3.8051139133994094e-12
+            }
+          },
+          {
+            "name": "Agent geographic camera target is centred in globe",
+            "evidence": {
+              "mode": "globe",
+              "backend": "WebGL2",
+              "hardware": "unknown",
+              "error": 0.0019591165000747424
+            }
+          },
+          {
+            "name": "Agent geographic camera target is centred in space-time",
+            "evidence": {
+              "mode": "space-time",
+              "backend": "WebGL2",
+              "hardware": "unknown",
+              "error": 0.001959116495299895
+            }
+          }
+        ],
+        "errors": [],
+        "requests": [],
+        "screenshots": [
+          "$REPO/.qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/artifacts/gis-files-qa/screenshots/polygon-events-time-centroids.png"
+        ],
+        "tileStart": {
+          "mode": "map",
+          "show": true,
+          "position": {
+            "x": 1417815.190153113,
+            "y": -8794239.772668611,
+            "z": 2782987.269831839
+          },
+          "center": {
+            "x": 1103641.92247457,
+            "y": -5677745.48445974,
+            "z": 2679074.4629577873
+          },
+          "radius": 40000,
+          "content": 2,
+          "stats": {
+            "pending": 0,
+            "processing": 1,
+            "selected": 0
+          }
+        },
+        "cspViolations": []
+      }
+    },
+    "si-rich-chat-qa": {
+      "path": ".qa/detachable-linux-2026-10-26/fresh/runs/20261026T212008Z-9ae5ff9d/artifacts/si-rich-chat-qa/report.json",
+      "sha256": "4cfcb5be00b310b41476ed4cb253ab754f5c49d656db96bf7cd4814d0e37c641",
+      "report": {
+        "passed": true,
+        "checks": [
+          "Pop out and dock preserve the draft and share one Rust conversation",
+          "A stale idle poll cannot overwrite a newly submitted request's working state",
+          "A running request survives pop out, page reload, close and reopen without duplicate SI requests; replies retain one typed inline chart",
+          "Markdown headings, emphasis, tables, source links and equations render; raw HTML, scripts, JavaScript links and remote images are blocked",
+          "Detached Capture map uses the original main renderer, stores a bounded PNG in Rust and displays it inline without sending pixels to the service",
+          "An inline evidence row selects the exact source Event through the shared workspace",
+          "Docking restores rich cards and snapshots from Rust without repeating calculations or service calls; both themes render",
+          "Stop cancels the Rust-owned request and preserves earlier results",
+          "New chat clears session text, rich references, drafts and images without altering source Events"
+        ],
+        "errors": [],
+        "publicRequests": 0,
+        "chatCesiumRequests": 0,
+        "serviceCalls": 6,
+        "nativeMacTested": false
+      }
+    }
+  },
+  "native": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "Native attribute utility window opens with both source and all-source tabs",
+        "evidence": {
+          "window": "0x200270",
+          "size": "1100x600",
+          "gpu_devices_visible": false
+        }
+      },
+      {
+        "name": "Detached Event row updates the shared engine selection",
+        "evidence": {
+          "selected_count": 1
+        }
+      },
+      {
+        "name": "Native table window moves and resizes",
+        "evidence": {
+          "x": 120,
+          "y": 60,
+          "width": 1000,
+          "height": 650
+        }
+      },
+      {
+        "name": "Dock destroys the native table utility and returns both tabs with linked selection",
+        "evidence": {
+          "native_window_remaining": false,
+          "tabs": 2,
+          "selected_count": 1
+        }
+      },
+      {
+        "name": "Native window-manager close returns the complete table group",
+        "evidence": {
+          "WM_DELETE_WINDOW": true,
+          "utility_destroyed": true,
+          "tabs_restored": 2
+        }
+      },
+      {
+        "name": "Closing the last detached tab closes the native table utility and clears the main table surface",
+        "evidence": {
+          "utility_destroyed": true,
+          "main_table_visible": false
+        }
+      },
+      {
+        "name": "SI Detach opens the real native chat window and retains the typed draft",
+        "evidence": {
+          "window": "0x20113d",
+          "width": 860,
+          "height": 900,
+          "draft": "Linux native draft survives detach and dock",
+          "active_request_tested": false
+        }
+      },
+      {
+        "name": "SI Dock destroys the native chat window and returns the typed draft to main",
+        "evidence": {
+          "draft": "Linux native draft survives detach and dock",
+          "utility_destroyed": true
+        }
+      },
+      {
+        "name": "Native SI window-manager close returns the typed draft to main without sending",
+        "evidence": {
+          "WM_DELETE_WINDOW": true,
+          "utility_destroyed": true,
+          "draft": "Linux native draft survives detach and dock",
+          "service_calls": 0
+        }
+      }
+    ],
+    "platform": "Linux native Tauri GTK/WebKit; isolated Xvfb, software llvmpipe",
+    "source_revision": "73eaf077a2e86b1e56d34dc4b87314213b076493",
+    "commands": [
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200004",
+          "x": 638,
+          "y": 50
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "table-picker"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/table-picker.png"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200004",
+          "x": 780,
+          "y": 98
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "two-native-tabs"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/two-native-tabs.png"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200004",
+          "x": 846,
+          "y": 821,
+          "wait": 2
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     5 children:\n     0x200270 \"Attribute tables \u2014 Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1100x600+0+0  +0+0\n        1 child:\n        0x200271 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "native-table-detached"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/native-table-detached.png"
+      },
+      {
+        "operation": {
+          "op": "check",
+          "name": "Native attribute utility window opens with both source and all-source tabs",
+          "evidence": {
+            "window": "0x200270",
+            "size": "1100x600",
+            "gpu_devices_visible": false
+          }
+        },
+        "result": "recorded"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200270",
+          "x": 100,
+          "y": 205
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "call",
+          "command": "snapshot"
+        },
+        "result": {
+          "returned": true,
+          "selected_count": 1
+        }
+      },
+      {
+        "operation": {
+          "op": "check",
+          "name": "Detached Event row updates the shared engine selection",
+          "evidence": {
+            "selected_count": 1
+          }
+        },
+        "result": "recorded"
+      },
+      {
+        "operation": {
+          "op": "check",
+          "name": "Native table window moves and resizes",
+          "evidence": {
+            "x": 120,
+            "y": 60,
+            "width": 1000,
+            "height": 650
+          }
+        },
+        "result": "recorded"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "native-table-moved-resized"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/native-table-moved-resized.png"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200270",
+          "x": 542,
+          "y": 96,
+          "wait": 2
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     4 children:\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "native-tables-docked"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/native-tables-docked.png"
+      },
+      {
+        "operation": {
+          "op": "check",
+          "name": "Dock destroys the native table utility and returns both tabs with linked selection",
+          "evidence": {
+            "native_window_remaining": false,
+            "tabs": 2,
+            "selected_count": 1
+          }
+        },
+        "result": "recorded"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200004",
+          "x": 846,
+          "y": 821,
+          "wait": 2
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     5 children:\n     0x200a67 \"Attribute tables \u2014 Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1100x600+0+0  +0+0\n        1 child:\n        0x200a68 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "close",
+          "window": "0x200a67"
+        },
+        "result": "WM_DELETE_WINDOW sent"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     4 children:\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "native-table-close-return"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/native-table-close-return.png"
+      },
+      {
+        "operation": {
+          "op": "check",
+          "name": "Native window-manager close returns the complete table group",
+          "evidence": {
+            "WM_DELETE_WINDOW": true,
+            "utility_destroyed": true,
+            "tabs_restored": 2
+          }
+        },
+        "result": "recorded"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200004",
+          "x": 846,
+          "y": 821,
+          "wait": 2
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     5 children:\n     0x200e3c \"Attribute tables \u2014 Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1100x600+0+0  +0+0\n        1 child:\n        0x200e3d (has no name): ()  1x1+-1+-1  +-1+-1\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200e3c",
+          "x": 358,
+          "y": 49
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200e3c",
+          "x": 106,
+          "y": 49,
+          "wait": 2
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     5 children:\n     0x20100a \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  109x47+59+67  +59+67\n        1 child:\n        0x20100b (has no name): ()  1x1+-1+-1  +58+66\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "native-last-tab-closed"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/native-last-tab-closed.png"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200004",
+          "x": 980,
+          "y": 50
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "native-si-open"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/native-si-open.png"
+      },
+      {
+        "operation": {
+          "op": "check",
+          "name": "Closing the last detached tab closes the native table utility and clears the main table surface",
+          "evidence": {
+            "utility_destroyed": true,
+            "main_table_visible": false
+          }
+        },
+        "result": "recorded"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200004",
+          "x": 1435,
+          "y": 828
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "type",
+          "window": "0x200004",
+          "text": "Linux native draft survives detach and dock"
+        },
+        "result": "typed"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200004",
+          "x": 1508,
+          "y": 457,
+          "wait": 2
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     5 children:\n     0x20113d \"SI \u2014 Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  860x900+0+0  +0+0\n        1 child:\n        0x20113e (has no name): ()  1x1+-1+-1  +-1+-1\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "native-si-detached-draft"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/native-si-detached-draft.png"
+      },
+      {
+        "operation": {
+          "op": "check",
+          "name": "SI Detach opens the real native chat window and retains the typed draft",
+          "evidence": {
+            "window": "0x20113d",
+            "width": 860,
+            "height": 900,
+            "draft": "Linux native draft survives detach and dock",
+            "active_request_tested": false
+          }
+        },
+        "result": "recorded"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x20113d",
+          "x": 754,
+          "y": 72,
+          "wait": 2
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     4 children:\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "native-si-docked-draft"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/native-si-docked-draft.png"
+      },
+      {
+        "operation": {
+          "op": "check",
+          "name": "SI Dock destroys the native chat window and returns the typed draft to main",
+          "evidence": {
+            "draft": "Linux native draft survives detach and dock",
+            "utility_destroyed": true
+          }
+        },
+        "result": "recorded"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "window": "0x200004",
+          "x": 1508,
+          "y": 457,
+          "wait": 2
+        },
+        "result": "clicked"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     5 children:\n     0x201503 \"SI \u2014 Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  860x900+0+0  +0+0\n        1 child:\n        0x201504 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "close",
+          "window": "0x201503"
+        },
+        "result": "WM_DELETE_WINDOW sent"
+      },
+      {
+        "operation": {
+          "op": "windows"
+        },
+        "result": "\nxwininfo: Window id: 0x21f (the root window) (has no name)\n\n  Root window id: 0x21f (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     4 children:\n     0x200004 \"Chronoscope 0.15.2\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  1600x1000+0+0  +0+0\n        1 child:\n        0x200005 (has no name): ()  1x1+-1+-1  +-1+-1\n     0x20000a (has no name): ()  1x1+-1+-1  +-1+-1\n     0x400001 \"xdg-desktop-portal-gtk\": (\"xdg-desktop-portal-gtk\" \"Xdg-desktop-portal-gtk\")  10x10+10+10  +10+10\n     0x200001 \"chronoscope-desktop\": (\"chronoscope-desktop\" \"Chronoscope-desktop\")  10x10+10+10  +10+10\n\n"
+      },
+      {
+        "operation": {
+          "op": "screen",
+          "name": "native-si-close-return"
+        },
+        "result": "$REPO/.qa/detachable-linux-2026-10-26/native/native-si-close-return.png"
+      },
+      {
+        "operation": {
+          "op": "check",
+          "name": "Native SI window-manager close returns the typed draft to main without sending",
+          "evidence": {
+            "WM_DELETE_WINDOW": true,
+            "utility_destroyed": true,
+            "draft": "Linux native draft survives detach and dock",
+            "service_calls": 0
+          }
+        },
+        "result": "recorded"
+      }
+    ],
+    "screenshots": [
+      "$REPO/.qa/detachable-linux-2026-10-26/native/initial.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/table-picker.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/two-native-tabs.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/native-table-detached.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/native-table-moved-resized.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/native-tables-docked.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/native-table-close-return.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/native-last-tab-closed.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/native-si-open.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/native-si-detached-draft.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/native-si-docked-draft.png",
+      "$REPO/.qa/detachable-linux-2026-10-26/native/native-si-close-return.png"
+    ],
+    "gpu_devices_visible": false,
+    "service_calls": 0
+  },
+  "native_fixture": {
+    "source": "docs/validation/detachable-panels-linux-2026-10-26/clawcomp-native-session.py",
+    "invocation": "bwrap --die-with-parent --bind / / --dev /dev --tmpfs /dev/shm --proc /proc -- python3 scripts/guarded_run.py -- python3 -u .qa/detachable-linux-2026-10-26/native-session.py",
+    "mode": "Operator-driven mouse/keyboard and WM_DELETE_WINDOW with observed screenshots and X11 window inventory; actual GTK/WebKit utility windows, not browser popups.",
+    "gpu_devices_exposed": false,
+    "si_service_calls": 0,
+    "active_request_native_tested": false
+  },
+  "setup_and_limits": [
+    "The first native harness attempt used an incorrect SI configuration command and stopped before launching a GUI; corrected only the ignored harness, not product code.",
+    "An initial software-configured native session emitted failed AMD initialization probes. It was stopped without running window checks. The completed session ran with a private /dev containing no GPU devices; no Radeon reset/rebind or hardware performance test was performed.",
+    "The private SI chat-state command is intentionally unavailable through attached MCP. Native draft continuity was verified in the actual UI, not by bypassing that boundary. Native SI remained disconnected; no active request was exercised natively. The independent browser suite verified running requests, cancellation, reload/close/reopen and no duplicate sends, using exactly six local mock calls.",
+    "Native correctness applies to Xvfb/X11 GTK/WebKit with software rendering. This is not GNOME/Wayland desktop acceptance, a GPU performance result, or Mac/Windows validation. Headless portal/PipeWire warnings and 34 existing vendored GLib dependency warnings were retained; product strict Clippy passed.",
+    "This is selected detachable-panel verification plus the complete core Rust matrix, not all 52 browser suites, all native platforms, downloadable-package acceptance, or an FPS benchmark.",
+    "The upcoming continuous-column/per-table-search UX is not covered by these frozen results. The new field-paging assertion intentionally targets the current old UI and must be adapted by the coordinating branch."
+  ],
+  "promotion_hold": {
+    "public_unchanged": "3e5cbe6a84d1498f79efb8b5d6102f85cf47633b",
+    "reason": "Latest user-directed coordinator instruction explicitly holds all Public promotion pending later authorization and new UX work.",
+    "exact_candidate_secret_scan_completed": false,
+    "scanner_canary": "Gitleaks 8.30.1 detected a fresh synthetic generic-api-key canary using unchanged .gitleaks.toml. No fresh Public candidate was exported/scanned/committed/pushed after the hold.",
+    "config_sha256": "7eaf5778dd8aaf775f570f02de19a7c7a0dd8144f6381176c329cf99658087bf",
+    "next_integration": "Test change and this receipt remain on the dedicated Next branch for coordinator integration; no Next main push from this task."
+  }
+}

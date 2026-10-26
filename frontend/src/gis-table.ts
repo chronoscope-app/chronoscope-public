@@ -1,3 +1,4 @@
+import { columnWindow, TABLE_COLUMN_WINDOW } from "./table-columns";
 import { call } from "./bridge";
 import type { GisLayer, GisFeature } from "./gis";
 const esc = (s: unknown) =>
@@ -95,6 +96,27 @@ export class GisTable {
     this.layerId = null;
     this.request++;
   }
+  capture() {
+    return {
+      layerId: this.layerId,
+      sort: this.sort,
+      descending: this.descending,
+      search: this.search,
+      anchor: this.anchor,
+      activeId: this.activeId,
+    };
+  }
+  restore(state: ReturnType<GisTable["capture"]>) {
+    this.request++;
+    this.rows = [];
+    this.selected.clear();
+    this.layerId = state.layerId;
+    this.sort = state.sort;
+    this.descending = state.descending;
+    this.search = state.search;
+    this.anchor = state.anchor;
+    this.activeId = state.activeId;
+  }
   private args() {
     return {
       id: this.layerId!,
@@ -103,26 +125,30 @@ export class GisTable {
       search: this.search,
     };
   }
-  async render(layer: GisLayer, offset: number) {
+  async render(layer: GisLayer, offset: number, columnOffset: number) {
     const request = ++this.request;
-    const r = await call("gis_table", { ...this.args(), offset, limit: 50 });
+    const r = await call("gis_table", {
+      ...this.args(),
+      offset,
+      limit: 50,
+      column_offset: columnOffset,
+      column_limit: TABLE_COLUMN_WINDOW,
+    });
     if (request !== this.request || layer.id !== this.layerId) return null;
     this.rows = r.rows;
     this.offset = offset;
     this.selected = new Set(layer.selected);
-    const columns = [
-      "id",
-      "entity",
-      "time",
-      "end",
-      ...r.columns
-        .filter((c) => !["id", "entity", "time", "end"].includes(c))
-        .slice(0, 32),
-    ];
-    this.head.innerHTML = `<tr>${columns.map((c) => `<th><button data-gis-sort="${esc(c)}">${esc(c)}${this.sort === c ? (this.descending ? " ↓" : " ↑") : ""}</button></th>`).join("")}</tr>`;
+    const columns = r.columns;
+    const window = columnWindow(
+      this.head.closest<HTMLElement>(".table-panel")!,
+      columnOffset,
+      columns.length,
+      r.total_columns,
+    );
+    this.head.innerHTML = `<tr>${window.before("th")}${columns.map((c, i) => `<th aria-colindex="${columnOffset + i + 1}"><button data-gis-sort="${esc(c)}" title="${esc(c)}">${esc(c)}${this.sort === c ? (this.descending ? " ↓" : " ↑") : ""}</button></th>`).join("")}${window.after("th")}</tr>`;
     const spacer = (n: number) =>
       n
-        ? `<tr class="table-spacer" aria-hidden="true"><td colspan="${columns.length}" style="height:${n * this.rowHeight()}px"></td></tr>`
+        ? `<tr class="table-spacer" aria-hidden="true"><td colspan="${window.span}" style="height:${n * this.rowHeight()}px"></td></tr>`
         : "";
     const value = (row: GisFeature, c: string) =>
       ["id", "entity", "time", "end"].includes(c)
@@ -134,10 +160,10 @@ export class GisTable {
       (r.rows
         .map(
           (row, i) =>
-            `<tr data-gis-row="${esc(row.id)}" tabindex="${row.id === this.activeId || (!this.activeId && i === 0) ? 0 : -1}" aria-rowindex="${offset + i + 2}" aria-selected="${this.selected.has(row.id)}" class="${this.selected.has(row.id) ? "selected" : ""}">${columns.map((c) => `<td>${esc(value(row, c))}</td>`).join("")}</tr>`,
+            `<tr data-gis-row="${esc(row.id)}" tabindex="${row.id === this.activeId || (!this.activeId && i === 0) ? 0 : -1}" aria-rowindex="${offset + i + 2}" aria-selected="${this.selected.has(row.id)}" class="${this.selected.has(row.id) ? "selected" : ""}">${window.before("td")}${columns.map((c, i) => `<td aria-colindex="${columnOffset + i + 1}" title="${esc(value(row, c))}">${esc(value(row, c))}</td>`).join("")}${window.after("td")}</tr>`,
         )
         .join("") ||
-        `<tr><td colspan="${columns.length}">No reference features in this scope.</td></tr>`) +
+        `<tr><td colspan="${window.span}">No reference features in this scope.</td></tr>`) +
       spacer(Math.max(0, r.count - offset - r.rows.length));
     if (focus && this.activeId)
       Array.from(this.body.querySelectorAll<HTMLElement>("[data-gis-row]"))
@@ -157,7 +183,13 @@ export class GisTable {
         throw Error(
           "Reference selection supports 1,000 features. Import as Events for larger selections and analysis.",
         );
-      const rows = await call("gis_table", { ...this.args(), offset, limit });
+      const rows = await call("gis_table", {
+        ...this.args(),
+        offset,
+        limit,
+        column_offset: 0,
+        column_limit: 1,
+      });
       rows.rows.forEach((row) => next.add(row.id));
     } else {
       if (additive && next.has(id)) next.delete(id);

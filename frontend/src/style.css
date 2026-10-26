@@ -2968,3 +2968,117 @@ svg {
     flex-basis: 100%;
   }
 }
+
+/* Attribute tabs belong to one surface, docked or in a native utility window. */
+.table-tabs {
+  display: flex;
+  flex: 0 0 auto;
+  overflow-x: auto;
+  gap: 3px;
+  padding: 5px 10px 0;
+  border-bottom: 1px solid var(--line);
+  min-height: 34px;
+}
+.attribute-tab {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  max-width: 260px;
+}
+.attribute-tab [role="tab"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 4px 0 0 0;
+  max-width: 225px;
+}
+.attribute-tab [aria-selected="true"] {
+  color: var(--text);
+  background: var(--selection-bg);
+  border-bottom: 2px solid var(--accent);
+}
+.attribute-tab-close {
+  padding: 3px 6px;
+  min-width: 24px;
+}
+.table-header {
+  flex-wrap: wrap;
+  height: auto;
+  min-height: 37px;
+  padding-block: 5px;
+  flex-shrink: 0;
+}
+.table-header #table-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: min(320px, 40vw);
+  white-space: nowrap;
+}
+.table-window {
+  height: 100vh;
+  overflow: hidden;
+}
+.table-window .table-panel {
+  height: 100vh;
+  width: 100%;
+  border-top: 0;
+}
+.table-window .table-header {
+  gap: 6px 10px;
+  padding: 6px 12px;
+}
+#table-window-error {
+  position: fixed;
+  bottom: 8px;
+  left: 12px;
+  right: 12px;
+  padding: 8px;
+  background: var(--panel);
+  color: var(--danger);
+  border: 1px solid var(--line);
+}
+/* Keep the active-tab close control in the header beneath the tab strip. */
+.table-header #close-table {
+  position: static;
+}
+.table-panel .table-header {
+  padding-left: 12px;
+}
+
+/* One title in each tab, with a table-local search beneath it. */
+.attribute-tab [role="tab"] {
+  text-align: left;
+}
+.attribute-tab #close-table {
+  position: static;
+  background: transparent;
+}
+.table-header #table-search {
+  flex: 1 1 180px;
+  min-width: 120px;
+  max-width: 360px;
+}
+.table-panel .table-scroll table {
+  table-layout: fixed;
+}
+.table-panel .table-column-spacer {
+  padding: 0;
+  border: 0;
+}
+.table-panel th:not(.table-column-spacer),
+.table-panel td:not(.table-column-spacer) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.table-panel th button {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+.attribute-tab [role="tab"] {
+  justify-content: flex-start;
+}
+.table-panel th button {
+  display: block;
+}

@@ -43,7 +43,7 @@ export default defineConfig({
   define: { CESIUM_BASE_URL: JSON.stringify("./cesium/") },
   build: {
     rollupOptions: {
-      input: { main: "index.html", si: "si.html" },
+      input: { main: "index.html", si: "si.html", tables: "tables.html" },
       output: {
         onlyExplicitManualChunks: true,
         manualChunks(id) {
