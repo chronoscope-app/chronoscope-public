@@ -65,7 +65,7 @@ import {
 } from "./cesium-geometry";
 import {
   entityColor,
-  time,
+  displayTime as time,
   type Point,
   type Terrain,
   type Raster,
@@ -125,6 +125,7 @@ export class SpaceTimeView {
   private viewStates: Record<string, ViewNavigationState> = {};
   theme = "dark";
   timeHeight = 2.8;
+  playbackFade = true;
   globeTime = false;
   globeTimeScale = 1;
   exaggeration = 1;
@@ -229,6 +230,7 @@ export class SpaceTimeView {
     alpha: number;
     ids: Set<string>;
     segments: number;
+    kind: "stems" | "tracks" | "trails";
   }[] = [];
   private fadingTriangles!: BillboardCollection;
   private fading!: PointPrimitiveCollection;
@@ -284,7 +286,7 @@ export class SpaceTimeView {
     // elevation, never measured altitude or a change to source coordinates.
     if (this.mode === "globe")
       return Math.min(extent * 0.12, 50000) * this.globeTimeScale;
-    return (extent * Math.max(0.01, this.timeHeight)) / 4;
+    return (extent * Math.max(0, this.timeHeight)) / 4;
   }
   async initialize() {
     // This app supplies its own imagery and terrain, without Cesium ion.
@@ -473,7 +475,9 @@ export class SpaceTimeView {
     this.viewer.screenSpaceEventHandler.removeInputAction(
       ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
     );
-    this.backend("WebGL2");
+    // Construction is only one stage of recovery. Keep its warning until the
+    // retained resources and camera have also been restored.
+    if (!this.recovering) this.backend("WebGL2");
     this.rebuild();
     this.fit();
   }
@@ -624,9 +628,10 @@ export class SpaceTimeView {
         );
       });
     if (same) return false;
-    const old = this.playback
-      ? new Map(this.renderPoints.map((p) => [p.id, p]))
-      : undefined;
+    const old =
+      this.playback && this.playbackFade
+        ? new Map(this.renderPoints.map((p) => [p.id, p]))
+        : undefined;
     this.points = points;
     this.names = names;
     this.geometryFeatures = geometries;
@@ -652,9 +657,10 @@ export class SpaceTimeView {
     this.globeTimeScale = scale;
     if (this.mode === "globe" && this.globeTime) this.rebuild(true);
   }
-  setGlobeTime(enabled: boolean) {
-    if (this.globeTime === enabled) return;
+  setGlobeTime(enabled: boolean, scale = this.globeTimeScale) {
+    if (this.globeTime === enabled && this.globeTimeScale === scale) return;
     this.globeTime = enabled;
+    this.globeTimeScale = scale;
     if (this.mode === "globe") this.rebuild(true);
   }
   setMode(mode: string, remember = true) {
@@ -698,8 +704,8 @@ export class SpaceTimeView {
     this.scene.globe.cartographicLimitRectangle = Rectangle.clone(
       Rectangle.MAX_VALUE,
     );
-    // Keep departure timestamps across playback packets. A 200ms refresh must
-    // not erase a two-second afterimage or restart its clock.
+    // Keep departure timestamps across playback packets. A new playback packet must
+    // not erase an afterimage or restart its departure clock.
     if (!previous) this.stopFades();
     else {
       cancelAnimationFrame(this.fadeFrame);
@@ -753,6 +759,8 @@ export class SpaceTimeView {
           });
         }
     this.addFadeTrails(departed, now);
+    if (previous && departed.length)
+      this.addFadeTracks(previous, new Set(departed.map((p) => p.id)), now);
     // Bound transient history separately from the current event packet.
     this.pruneFades(now);
     this.glyphs.removeAll();
@@ -779,7 +787,7 @@ export class SpaceTimeView {
       // so fade updates affect an entire small batch instead of the static scene.
       if (previous && !previous.has(p.id)) this.incomingAt.set(p.id, now);
       const started = this.incomingAt.get(p.id);
-      const arriving = started !== undefined && now - started < 550;
+      const arriving = started !== undefined && now - started < 180;
       let glyph: Glyph;
       if (p.inferred)
         glyph = (arriving ? this.arrivingTriangles : this.triangles).add({
@@ -804,7 +812,7 @@ export class SpaceTimeView {
         });
       this.glyphById.set(p.id, glyph);
       if (arriving) {
-        const f = Math.min(1, (now - started!) / 550);
+        const f = Math.min(1, (now - started!) / 180);
         glyph.color = color.withAlpha(f * f * (3 - 2 * f));
         this.glyphStarted.set(glyph, started!);
         this.incoming.push(glyph);
@@ -1108,6 +1116,12 @@ export class SpaceTimeView {
     if (installed && accept()) this.lastRaster = data;
     return installed;
   }
+  setPlaybackFade(enabled: boolean) {
+    if (this.playbackFade === enabled) return;
+    this.playbackFade = enabled;
+    this.stopFades();
+    if (this.viewer) this.rebuild(true);
+  }
   setPlayback(active: boolean) {
     this.playback =
       active && !matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1152,6 +1166,120 @@ export class SpaceTimeView {
     ).withAlpha(
       (this.theme === "light" ? 0.4 : 0.15) * this.display.trail_opacity,
     );
+    this.addFadeLines(values, color, ids, started, "stems");
+  }
+  private addFadeTracks(
+    previous: Map<string, Point>,
+    departed: Set<string>,
+    started: number,
+  ) {
+    const streams = [] as ("tracks" | "trails")[];
+    if (this.display.show_tracks && this.display.track_opacity > 0)
+      streams.push("tracks");
+    if (this.display.show_trails && this.display.trail_opacity > 0)
+      streams.push("trails");
+    if (!streams.length) return;
+    const sorted = [...previous.values()]
+      .sort(
+        (a, b) =>
+          a.entity - b.entity || a.time - b.time || a.id.localeCompare(b.id),
+      )
+      .slice(0, 100000);
+    const edges = trailEdges(
+      sorted,
+      (i) => {
+        const p = this.project(this.pos(sorted[i]));
+        return p ? [p.x, p.y, 0] : [0, 0, 2];
+      },
+      this.selected,
+      this.display.trail_pixels,
+      this.display.trail_gap_minutes,
+    );
+    const groups = new Map<
+      number,
+      { edges: [Point, Point][]; ids: Set<string> }
+    >();
+    for (const [a, b] of edges) {
+      const p = sorted[a],
+        q = sorted[b];
+      if (!departed.has(p.id) && !departed.has(q.id)) continue;
+      let group = groups.get(p.entity);
+      if (!group) {
+        group = { edges: [], ids: new Set() };
+        groups.set(p.entity, group);
+      }
+      group.edges.push([p, q]);
+      if (departed.has(p.id)) group.ids.add(p.id);
+      if (departed.has(q.id)) group.ids.add(q.id);
+    }
+    // Crowded history uses one neutral batch per stream, rather than a new
+    // draw primitive for every departing entity. Live entity colors stay exact.
+    if (groups.size > 32) {
+      const merged: { edges: [Point, Point][]; ids: Set<string> } = {
+        edges: [],
+        ids: new Set(),
+      };
+      for (const group of groups.values()) {
+        for (const edge of group.edges) merged.edges.push(edge);
+        for (const id of group.ids) merged.ids.add(id);
+      }
+      groups.clear();
+      groups.set(-1, merged);
+    }
+    const budget = createArcBudget(edges.length * streams.length, 100000);
+    for (const [entity, group] of groups)
+      for (const kind of streams) {
+        const positions: number[] = [];
+        for (const [p, q] of group.edges) {
+          const ends =
+            kind === "tracks"
+              ? [this.pos(p), this.pos(q)]
+              : [
+                  this.groundPosition(p.lat, p.lon),
+                  this.groundPosition(q.lat, q.lon),
+                ];
+          const path =
+            this.mode === "globe"
+              ? geodesicPositions(ends, 200000, budget)
+              : ends;
+          for (let i = 1; i < path.length; i++)
+            positions.push(
+              path[i - 1].x,
+              path[i - 1].y,
+              path[i - 1].z,
+              path[i].x,
+              path[i].y,
+              path[i].z,
+            );
+        }
+        if (!positions.length) continue;
+        const color = (
+          entity === -1
+            ? Color.fromCssColorString(
+                this.theme === "light" ? "#627b8f" : "#97b7c7",
+              )
+            : safeColor(this.names[entity] || String(entity), this.theme)
+        ).withAlpha(
+          kind === "tracks"
+            ? 0.78 * this.display.track_opacity
+            : 0.55 * this.display.trail_opacity,
+        );
+        this.addFadeLines(
+          new Float64Array(positions),
+          color,
+          group.ids,
+          started,
+          kind,
+        );
+      }
+  }
+  private addFadeLines(
+    values: Float64Array,
+    color: Color,
+    ids: Set<string>,
+    started: number,
+    kind: "stems" | "tracks" | "trails",
+  ) {
     const material = Material.fromType("Color", { color });
     const primitive = this.scene.primitives.add(
       new Primitive({
@@ -1177,7 +1305,8 @@ export class SpaceTimeView {
       started,
       alpha: color.alpha,
       ids,
-      segments: positions.length / 6,
+      segments: values.length / 6,
+      kind,
     });
   }
   private pruneFades(now: number, current?: Set<string>) {
@@ -1185,7 +1314,7 @@ export class SpaceTimeView {
     this.outgoing = this.outgoing.filter((entry, index) => {
       if (
         index >= excess &&
-        now - entry.started < 2400 &&
+        now - entry.started < 800 &&
         !current?.has(entry.id)
       )
         return true;
@@ -1197,10 +1326,16 @@ export class SpaceTimeView {
       (n, cohort) => n + cohort.segments,
       0,
     );
-    this.fadeTrails = this.fadeTrails.filter((cohort) => {
+    const excessBatches = Math.max(0, this.fadeTrails.length - 256);
+    this.fadeTrails = this.fadeTrails.filter((cohort, index) => {
       const reentered =
         current && [...cohort.ids].some((id) => current.has(id));
-      if (now - cohort.started < 2400 && !reentered && segments <= 100000)
+      if (
+        index >= excessBatches &&
+        now - cohort.started < 800 &&
+        !reentered &&
+        segments <= 100000
+      )
         return true;
       segments -= cohort.segments;
       this.scene.primitives.remove(cohort.primitive);
@@ -1214,7 +1349,7 @@ export class SpaceTimeView {
       if (this.disposed) return;
       let active = false;
       for (const glyph of this.incoming) {
-        const f = Math.min(1, (now - this.glyphStarted.get(glyph)!) / 550);
+        const f = Math.min(1, (now - this.glyphStarted.get(glyph)!) / 180);
         const c = Color.clone(glyph.color);
         c.alpha = f * f * (3 - 2 * f);
         glyph.color = c;
@@ -1222,7 +1357,7 @@ export class SpaceTimeView {
       }
       this.pruneFades(now);
       for (const { glyph, alpha, started } of this.outgoing) {
-        const f = Math.min(1, (now - started) / 2400);
+        const f = Math.min(1, (now - started) / 800);
         const c = Color.clone(glyph.color);
         c.alpha = alpha * (1 - f * f * (3 - 2 * f));
         glyph.color = c;
@@ -1234,7 +1369,7 @@ export class SpaceTimeView {
         }
       }
       for (const cohort of this.fadeTrails) {
-        const f = Math.min(1, (now - cohort.started) / 2400);
+        const f = Math.min(1, (now - cohort.started) / 800);
         cohort.material.uniforms.color.alpha =
           cohort.alpha * (1 - f * f * (3 - 2 * f));
       }
@@ -1425,7 +1560,7 @@ export class SpaceTimeView {
             (_, i) => ticks[Math.round((i * (ticks.length - 1)) / 3)],
           )
         : ticks;
-    for (const tick of visibleTicks) {
+    for (const tick of this.timeHeightMeters > 0 ? visibleTicks : []) {
       this.label(tick.text, this.position(n, w, tick.time), "time-label");
       line([
         this.position(n, w, tick.time),
@@ -1434,12 +1569,16 @@ export class SpaceTimeView {
     }
     const titlePosition = this.position(n, w, this.lo);
     const titlePixel = this.project(titlePosition);
-    this.label(
-      "TIME / UTC",
-      titlePosition,
-      "axis-title",
-      new Cartesian2(-10, titlePixel ? Math.max(-28, 16 - titlePixel.y) : -28),
-    );
+    if (this.timeHeightMeters > 0)
+      this.label(
+        "TIME / UTC",
+        titlePosition,
+        "axis-title",
+        new Cartesian2(
+          -10,
+          titlePixel ? Math.max(-28, 16 - titlePixel.y) : -28,
+        ),
+      );
     this.updateGrabHandles(true);
     this.setFocus(this.focusFraction);
   }
@@ -2667,6 +2806,7 @@ export class SpaceTimeView {
               ),
             }
           : null,
+      playbackFade: this.playbackFade,
       globeTime: this.globeTime,
       globeTimeScale: this.globeTimeScale,
       timeHeightMeters: this.timeHeightMeters,
@@ -2680,8 +2820,16 @@ export class SpaceTimeView {
       triangleCount: this.triangles.length + this.arrivingTriangles.length,
       fadingPointCount: this.fading.length,
       fadingTriangleCount: this.fadingTriangles.length,
-      fadingStemSegments: this.fadeTrails.reduce((n, c) => n + c.segments, 0),
-      fadeDurationsMs: { arrival: 550, departure: 2400 },
+      fadingStemSegments: this.fadeTrails
+        .filter((c) => c.kind === "stems")
+        .reduce((n, c) => n + c.segments, 0),
+      fadingTrackSegments: this.fadeTrails
+        .filter((c) => c.kind === "tracks")
+        .reduce((n, c) => n + c.segments, 0),
+      fadingTrailSegments: this.fadeTrails
+        .filter((c) => c.kind === "trails")
+        .reduce((n, c) => n + c.segments, 0),
+      fadeDurationsMs: { arrival: 180, departure: 800 },
       arrivingPointCount: this.arrivingPoints.length,
       arrivingTriangleCount: this.arrivingTriangles.length,
       triangleVisibleCount: this.trianglePoints.filter(

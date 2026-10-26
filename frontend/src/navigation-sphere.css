@@ -225,52 +225,9 @@
   color: var(--muted);
   margin-top: 4px;
 }
-.time-elevation-switch {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0;
-  margin: 0 0 12px;
-  font-size: 11px;
-}
-.time-elevation-switch.active {
-  border-color: transparent;
-  color: var(--text);
-  background: transparent;
-}
-.switch-track {
-  width: 28px;
-  height: 16px;
-  border-radius: 10px;
-  background: var(--raised);
-  border: 1px solid var(--line);
-  padding: 2px;
-}
-.switch-track::after {
-  content: "";
-  display: block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--muted);
-  transition: transform 0.12s;
-}
-[aria-pressed="true"] > .switch-track {
-  background: var(--accent);
-  border-color: var(--accent);
-}
-[aria-pressed="true"] > .switch-track::after {
-  transform: translateX(12px);
-  background: var(--accent-ink);
-}
 .navigation-toolbar [hidden],
 .time-elevation-popup[hidden] {
   display: none !important;
-}
-.scene-container > .scene-top-right {
-  top: var(--map-controls-top, 18px);
-  right: 90px;
 }
 .scene-container > .legend {
   left: 24px;
@@ -349,8 +306,7 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sphere-navigator,
-  .switch-track::after {
+  .sphere-navigator {
     transition: none;
   }
 }

@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "checks": [
+    "Nonzero Globe slider raises native markers along independently checked WGS84 normals, preserves the ground, enables stems and avoids ground-footprint culling",
+    "Slider updates height, named views and portable documents restore the elevation/scale, switching off restores surface positions, source events stay unchanged",
+    "Time controls stay scoped to Globe; flat views retain their behavior and controls fit a narrower window; long legend labels wrap within 210 pixels"
+  ],
+  "errors": [],
+  "publicRequests": 0,
+  "cameraPreservedOnToggle": true,
+  "legend": {
+    "width": 210,
+    "contentWidth": 208,
+    "scrollWidth": 208,
+    "labelHeight": 36
+  },
+  "hurricanes": {
+    "mode": "globe",
+    "enabled": true,
+    "lo": 1452124800,
+    "hi": 1761976800,
+    "height": 50000,
+    "stems": 0,
+    "culling": null,
+    "tracks": 38,
+    "framing": {
+      "projected": 1604,
+      "outside": 0
+    }
+  }
+}

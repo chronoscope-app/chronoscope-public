@@ -166,16 +166,15 @@ try {
       window.__chronoscope.view.captureCamera(),
     );
     await page.locator("#time-elevation").hover();
-    await page.click("#globe-time");
+    await page.locator("#globe-time-height").evaluate((el, enabled) => {
+      el.value = enabled ? "50" : "0";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    }, enabled);
     await page.waitForFunction(
       (value) =>
         window.__chronoscope.view.globeTime === value &&
-        !document.querySelector("#globe-time").disabled,
+        window.__chronoscope.snapshot.scene.globe_time === value,
       enabled,
-    );
-    assert.equal(
-      await page.locator("#globe-time").getAttribute("aria-pressed"),
-      String(enabled),
     );
     assert.equal((await api("snapshot")).scene.globe_time, enabled);
     await page.waitForFunction(() => !window.__chronoscope.busy);
@@ -196,12 +195,10 @@ try {
     );
     report.cameraPreservedOnToggle = true;
   };
-  assert.equal(
-    await page.locator("#globe-time").getAttribute("aria-pressed"),
-    "false",
-  );
+  assert.equal(await page.locator("#globe-time").count(), 0);
   assert(await page.locator("#time-height").isHidden());
-  assert(await page.locator("#globe-time-height").isDisabled());
+  assert(await page.locator("#globe-time-height").isEnabled());
+  assert.equal(await page.inputValue("#globe-time-height"), "0");
   const flat = await state();
   verifyECEF(flat, false);
   assert.equal(flat.stems, 0);
@@ -224,7 +221,7 @@ try {
     flat.points.map((p) => p.ground),
   );
   report.checks.push(
-    "Globe toggle raises native markers along independently checked WGS84 normals, preserves the ground, enables stems and avoids ground-footprint culling",
+    "Nonzero Globe slider raises native markers along independently checked WGS84 normals, preserves the ground, enables stems and avoids ground-footprint culling",
   );
   assert(
     raised.height <= 50000,
@@ -263,7 +260,7 @@ try {
   await api("save", { path: saved, scene });
   await toggle(false);
   verifyECEF(await state(), false);
-  assert(await page.locator("#globe-time-height").isDisabled());
+  assert(await page.locator("#globe-time-height").isEnabled());
   await api("restore_view", { index: 0 });
   await restore();
   assert((await state()).enabled);
@@ -283,16 +280,16 @@ try {
   assert(Math.abs((await state()).height / raised.height - 20) < 1e-9);
   verifyECEF(await state(), true);
   report.checks.push(
-    "Slider updates height, named views and portable documents restore the toggle/scale, switching off restores surface positions, source events stay unchanged",
+    "Slider updates height, named views and portable documents restore the elevation/scale, switching off restores surface positions, source events stay unchanged",
   );
   for (const mode of ["map", "space-time", "globe"]) {
     await api("view_set", { mode });
     await restore();
-    if (mode !== "map") await page.locator("#time-elevation").hover();
-    assert.equal(
-      await page.locator("#globe-time").isVisible(),
-      mode === "globe",
-    );
+    if (mode !== "map") {
+      await page.mouse.move(50, 30);
+      await page.locator("#time-elevation").hover();
+      await page.waitForSelector("#time-elevation-popup:not([hidden])");
+    }
     assert.equal(
       await page.locator("#time-height").isVisible(),
       mode === "space-time",

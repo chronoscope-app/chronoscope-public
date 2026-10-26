@@ -61,7 +61,8 @@
     "test:welcome": "node scripts/welcome-qa.mjs",
     "test:presentation-ui": "node scripts/presentation-ui-qa.mjs",
     "test:view-sync": "node scripts/view-sync-qa.mjs",
-    "capture:demo-thumbnails": "node scripts/capture-demo-thumbnails.mjs"
+    "capture:demo-thumbnails": "node scripts/capture-demo-thumbnails.mjs",
+    "test:navigation-preferences": "node scripts/navigation-preferences-qa.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

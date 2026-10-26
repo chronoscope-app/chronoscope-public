@@ -29,6 +29,13 @@ import { RendererStatus } from "./renderer-status";
 import { FilterIntent } from "./filter-intent";
 import { ViewportRefresh } from "./viewport-refresh";
 import { TimeRange } from "./time-range";
+import {
+  preferencesLayout,
+  bindPreferencesLayout,
+  type PreferencesSection,
+} from "./preferences-layout";
+import { globeElevationScale, globeElevationSlider } from "./time-elevation";
+import { PlaybackWindow } from "./playback-window";
 import { TimeRail } from "./time-rail";
 import { installWorkspaceLayout } from "./workspace-layout";
 import {
@@ -54,6 +61,10 @@ import {
   decode,
   escape as esc,
   time,
+  displayTime,
+  setDateTimeDisplay,
+  dateFormats,
+  timeFormats,
   entityColor,
   setEntityColors,
   type Snapshot,
@@ -163,7 +174,7 @@ let timeScrubGeneration = 0;
 $("#app").innerHTML = `
 <header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Map servers">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open SI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button></div><button type="button" class="renderer-status" id="backend" aria-label="Renderer starting; refresh map"></button><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
 <main class="workspace"><aside class="sidebar"><section class="sidebar-pinned" id="search-section" aria-label="Search and selection"><input id="search" placeholder="Search events…" aria-label="Search events"><button id="reset-filters">Reset filters</button><div class="selection-tools" id="selection-tools"><div class="selection-summary"><strong id="pinned-selection-count" role="status">0 selected</strong><button id="clear" aria-label="Clear selection">Clear</button></div><div class="selection-actions"><button class="secondary" id="select-all">Select visible</button><label class="check-row"><input type="checkbox" id="selected-only" aria-label="Selected events only"> Show only</label></div></div></section><div class="sidebar-scroll"><details open class="sidebar-facet" id="entity-section"><summary><span>Entities</span><select id="entity-field" aria-label="Entity list field" title="Group the list by another column; source track identities stay unchanged"><option value="entity">Entity</option></select></summary><div class="facet-sort" role="group" aria-label="Sort entities"><button id="entity-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="entity-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div class="facet-controls"><input id="entity-search" placeholder="Find an entity…" aria-label="Find entity"><button id="all-entities">Enable all</button></div><div id="entities"></div><div class="facet-footer"><small id="entity-list-count"></small><button id="entity-show-all">Show all</button></div></details><details open class="sidebar-facet" id="category-section"><summary><span>Categories</span><select id="category-field" aria-label="Category list field" title="Group the list by another column"><option value="category">Category</option></select></summary><div class="facet-sort" role="group" aria-label="Sort categories"><button id="category-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="category-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div id="categories"></div><div class="facet-footer"><small id="category-list-count"></small><button id="category-show-all">Show all</button></div></details><div class="divider"></div><details id="time-section"><summary>Exact time range</summary><label class="field">Start / UTC<input id="exact-start" placeholder="Unbounded"></label><label class="field">End / UTC<input id="exact-end" placeholder="Unbounded"></label><button id="exact-apply" class="secondary">Apply range</button></details><details id="rules-section"><summary>Attribute rules</summary><label class="field">Field<input id="rule-field" placeholder="value, confidence, category…"></label><select id="rule-op"><option>Contains</option><option>Equals</option><option>NotEquals</option><option>Greater</option><option>Less</option><option>IsEmpty</option></select><label class="field">Value<input id="rule-value"></label><button id="add-rule" class="secondary">Add AND rule</button><div id="rules"></div></details><details id="bounds-section"><summary>Geographic bounds</summary><label class="field">West, South, East, North<input id="bounds" placeholder="-80,43,-79,44"></label><button id="apply-bounds" class="secondary">Apply region</button></details><section id="layers-section"><div class="section-head"><span class="caps">Layers</span></div><div id="layer-list"></div><div class="source-foot">WGS84 · UTC</div></section></div></aside>
-<section class="center"><div class="scene-container" id="scene"><div class="scene-top-right"><button class="icon" id="screenshot" title="Export canvas PNG">${icon("camera")}</button><button class="icon" id="fullscreen" title="Expand workspace" aria-label="Expand workspace" aria-pressed="false">${icon("maximize")}</button></div><div class="geography-readout" id="geography-readout"></div><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel"><div class="table-header"><button class="icon" id="close-table" aria-label="Close attribute table" title="Close table">${icon("close")}</button><span class="caps" id="table-title">Attributes</span><small class="muted" id="table-count"></small><input id="gis-table-search" placeholder="Search this GIS layer…" aria-label="Search GIS attributes" hidden><span class="spacer"></span><label class="check-row" id="table-filter-option" hidden><input id="table-respect-filters" type="checkbox"> Respect workspace filters</label><button id="table-all" hidden>All sources</button><small id="table-fields" hidden></small><button id="previous-fields" hidden title="Show previous source columns">Previous fields</button><button id="next-fields" hidden title="Show next source columns">Next fields</button></div><div class="table-scroll"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div></section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
+<section class="center"><div class="scene-container" id="scene"><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel"><div class="table-header"><button class="icon" id="close-table" aria-label="Close attribute table" title="Close table">${icon("close")}</button><span class="caps" id="table-title">Attributes</span><small class="muted" id="table-count"></small><input id="gis-table-search" placeholder="Search this GIS layer…" aria-label="Search GIS attributes" hidden><span class="spacer"></span><label class="check-row" id="table-filter-option" hidden><input id="table-respect-filters" type="checkbox"> Respect workspace filters</label><button id="table-all" hidden>All sources</button><small id="table-fields" hidden></small><button id="previous-fields" hidden title="Show previous source columns">Previous fields</button><button id="next-fields" hidden title="Show next source columns">Next fields</button></div><div class="table-scroll"><table><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div></section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
 <aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="Super Intelligence chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
 const timeRail = new TimeRail($(".workspace"), {
   icon,
@@ -353,7 +364,7 @@ const timeRange = new TimeRange(
   (start, end, final) => {
     const [lo, hi] = snapshot.time_bounds;
     $("#range-label").textContent =
-      `${time(lo + (hi - lo) * start)} — ${time(lo + (hi - lo) * end)} UTC`;
+      `${displayTime(lo + (hi - lo) * start)} — ${displayTime(lo + (hi - lo) * end)} UTC`;
     timeRail.update(lo, hi, lo + (hi - lo) * start, lo + (hi - lo) * end);
     focus = (start + end) / 2;
     updateTimeFocus();
@@ -471,6 +482,7 @@ function theme() {
         ? "dark"
         : "light"
       : preferences.theme;
+  if (setDateTimeDisplay(preferences)) view.rebuild(true);
   document.documentElement.dataset.theme = t;
   view.setTheme(t);
   const preference = preferences.theme === "system" ? null : preferences.theme;
@@ -487,6 +499,22 @@ function theme() {
         toast(String(error), true);
       });
   }
+}
+matchMedia("(prefers-color-scheme:dark)").addEventListener("change", () => {
+  if (preferences?.theme !== "system") return;
+  theme();
+  void refresh(false, false).catch((error) => toast(String(error), true));
+});
+function mapPreferencesKey(p: Preferences) {
+  return JSON.stringify([
+    p.basemap,
+    p.map,
+    p.map_layers,
+    p.terrain_path,
+    p.terrain_builtin,
+    p.terrain_exaggeration,
+    p.terrain_vertical_datum,
+  ]);
 }
 let renderBudget: 20000 | 100000 = 20000;
 let renderLOD = false,
@@ -604,6 +632,7 @@ async function refresh(render = true, resources = true) {
   renderBudget = s.scene.render_budget === 100000 ? 100000 : 20000;
   projectPath = s.lifecycle?.source ?? null;
   preferences = s.preferences;
+  if (setDateTimeDisplay(preferences)) view.rebuild(true);
   await view.setBasemap(preferences.basemap || "none");
   $("#save").title = s.lifecycle?.dirty
     ? "Save unsaved changes (Ctrl/Cmd+S)"
@@ -868,7 +897,7 @@ function histogram() {
       )
       .join("") + `<div class="cursor" style="top:${focus * 100}%"></div>`;
   $("#range-label").textContent =
-    `${time(desiredTime.start ?? lo)} — ${time(desiredTime.end ?? hi)} UTC`;
+    `${displayTime(desiredTime.start ?? lo)} — ${displayTime(desiredTime.end ?? hi)} UTC`;
   timeRail.update(lo, hi, desiredTime.start, desiredTime.end);
 }
 function mapsEnabled() {
@@ -880,9 +909,6 @@ function currentMapZoom() {
 
 function geographyReadout() {
   // Provider names and zoom metadata belong to Layers/Maps, not the canvas.
-  $("#geography-readout").textContent = terrainInfo
-    ? `${preferences.terrain_builtin ? "Balanced world terrain" : "DTED"} · ${preferences.terrain_vertical_datum === "egm96" ? "EGM96 → ellipsoid" : preferences.terrain_vertical_datum === "ellipsoid" ? "ellipsoid" : "datum unresolved"} · ${preferences.terrain_exaggeration}× vertical`
-    : "";
   const credits = mapsEnabled()
     ? mapLayers(preferences)
         .filter((layer) => layerVisible(layer, currentMapZoom()))
@@ -1369,7 +1395,8 @@ async function table(
     `<tr>${headers.map(([c, title]) => `<th aria-sort="${tableSort === c ? (tableDescending ? "descending" : "ascending") : "none"}"><button data-table-sort="${esc(c)}" aria-label="Sort by ${esc(c)}">${esc(title)}${tableSort === c ? (tableDescending ? " ↓" : " ↑") : ""}</button></th>`).join("")}</tr>`;
   const value = (e: any, c: string) => {
     if (c.startsWith("attribute:")) return e[c] ?? e.attrs?.[c.slice(10)] ?? "";
-    if (c === "time" || c === "end") return e[c] == null ? "" : time(e[c]);
+    if (c === "time" || c === "end")
+      return e[c] == null ? "" : displayTime(e[c]);
     if (Array.isArray(e[c])) return e[c].join("; ");
     return e[c] ?? "";
   };
@@ -2665,15 +2692,44 @@ async function aggregateEvents() {
   });
 }
 on("#aggregate-events", aggregateEvents);
-async function settings() {
+type PreferencesDraft = {
+  theme: Preferences["theme"];
+  coordinates: Preferences["coordinates"];
+  dateFormat: Preferences["date_format"];
+  timeFormat: Preferences["time_format"];
+  autoSave: boolean;
+  budget: number;
+};
+async function settings(
+  section: PreferencesSection = "general",
+  draft?: PreferencesDraft,
+) {
   const lifecycle = await call("workspace_status");
   const agent = native
     ? await (await import("@tauri-apps/api/core")).invoke<any>("agent_status")
     : { enabled: false };
-  modal(
-    `${head("Preferences")}<p class="description">Preferences are stored in your user data directory.</p><div class="modal-grid"><label class="field">Appearance<select id="pref-theme">${["dark", "light", "system"].map((t) => `<option ${t === preferences.theme ? "selected" : ""}>${t}</option>`).join("")}</select></label><label class="field">Display coordinates<select id="pref-coordinates">${["dd", "utm", "mgrs"].map((t) => `<option ${t === preferences.coordinates ? "selected" : ""}>${t}</option>`).join("")}</select></label></div><label class="check-row"><input id="pref-autosave" type="checkbox" ${lifecycle.auto_save_unsaved ? "checked" : ""}> Automatically save unsaved work</label><p class="description">Saves a copy every 30 seconds and before switching workspaces or quitting. Previous-session work is saved here automatically, without recovery prompts.</p><div class="notice mono">${esc(lifecycle.document_directory)}</div><label class="field">Marker budget<select id="pref-render-budget"><option value="20000" ${renderBudget === 20000 ? "selected" : ""}>20,000 representatives in Points mode</option><option value="100000" ${renderBudget === 100000 ? "selected" : ""}>100,000 representatives (uses more memory)</option></select></label><p class="description">This workspace setting changes the maximum in Points mode. Automatic display uses count clusters above 2,000 located records. Heat map and bloom are off by default. Exact queries and selection retain all matching records.</p><div class="divider"></div><div class="row">${icon("terminal")}<h3>CLI and MCP access</h3></div><div class="notice mono agent-commands">${esc(agent.cli ? `"${agent.cli}" agent enable\n"${agent.cli}" --attach call snapshot\n"${agent.cli}" mcp --attach` : "chronoscope agent enable\nchronoscope --attach call snapshot\nchronoscope mcp --attach")}</div><p class="description">Enable once here or run <code>agent enable</code> from a terminal. No folder is required: agents can operate the live workspace and exchange files in a private app folder. Access stays enabled across launches. Optionally choose a different folder for importing/exporting files. The app executable shown above also runs the CLI; a separate CLI download or administrator install is unnecessary.</p><div class="notice">SI agent access: ${agent.enabled ? `enabled · ${esc(agent.root)}<br>Connection: ${esc(agent.descriptor)}` : "disabled"}</div>${native ? `<button id="agent-toggle" class="secondary">${agent.enabled ? "Disable SI agent access" : "Enable SI agent access"}</button><button id="agent-folder">Choose file-access folder…</button><button id="agent-default-folder">Use default folder</button><button id="agent-config">MCP setup</button>` : ""}<footer><button data-close>Cancel</button><span class="spacer"></span><button id="save-preferences" class="primary">Save preferences</button></footer>`,
-    true,
+  const dialog = modal(
+    `${head("Preferences")}${preferencesLayout({
+      general: `<div class="modal-grid"><label class="field">Appearance<select id="pref-theme">${["system", "light", "dark"].map((t) => `<option value="${t}" ${t === (draft?.theme ?? preferences.theme) ? "selected" : ""}>${t[0].toUpperCase() + t.slice(1)}</option>`).join("")}</select></label><label class="field">Display coordinates<select id="pref-coordinates">${["dd", "utm", "mgrs"].map((t) => `<option ${t === (draft?.coordinates ?? preferences.coordinates) ? "selected" : ""}>${t}</option>`).join("")}</select></label><label class="field">Date format<select id="pref-date-format">${dateFormats.map(([value, label]) => `<option value="${value}" ${value === (draft?.dateFormat ?? preferences.date_format ?? "system") ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field">Time format<select id="pref-time-format">${timeFormats.map(([value, label]) => `<option value="${value}" ${value === (draft?.timeFormat ?? preferences.time_format ?? "system") ? "selected" : ""}>${label}</option>`).join("")}</select></label></div><p class="description">Dates and times are displayed in UTC. These choices change readouts only; exact editing, imports, exports and stored timestamps retain their original precision.</p>`,
+      workspace: `<label class="check-row"><input id="pref-autosave" type="checkbox" ${(draft?.autoSave ?? lifecycle.auto_save_unsaved) ? "checked" : ""}> Automatically save unsaved work</label><p class="description">Saves a copy every 30 seconds and before switching workspaces or quitting. Previous-session work is saved here automatically, without recovery prompts.</p><div class="notice mono">${esc(lifecycle.document_directory)}</div>`,
+      display: `<label class="field">Marker budget<select id="pref-render-budget"><option value="20000" ${(draft?.budget ?? renderBudget) === 20000 ? "selected" : ""}>20,000 representatives in Points mode</option><option value="100000" ${(draft?.budget ?? renderBudget) === 100000 ? "selected" : ""}>100,000 representatives (uses more memory)</option></select></label><p class="description">This workspace setting changes the maximum in Points mode. Automatic display uses count clusters above 2,000 located records. Heat map and bloom are off by default. Exact queries and selection retain all matching records.</p>`,
+      agents: `<div class="notice mono agent-commands">${esc(agent.cli ? `"${agent.cli}" agent enable\n"${agent.cli}" --attach call snapshot\n"${agent.cli}" mcp --attach` : "chronoscope agent enable\nchronoscope --attach call snapshot\nchronoscope mcp --attach")}</div><p class="description">Enable once here or run <code>agent enable</code> from a terminal. No folder is required: agents can operate the live workspace and exchange files in a private app folder. Access stays enabled across launches. Optionally choose a different folder for importing/exporting files. The app executable shown above also runs the CLI; a separate CLI download or administrator install is unnecessary.</p><div class="notice">SI agent access: ${agent.enabled ? `enabled · ${esc(agent.root)}<br>Connection: ${esc(agent.descriptor)}` : "disabled"}</div>${native ? `<button id="agent-toggle" class="secondary">${agent.enabled ? "Disable SI agent access" : "Enable SI agent access"}</button><button id="agent-folder">Choose file-access folder…</button><button id="agent-default-folder">Use default folder</button><button id="agent-config">MCP setup</button>` : ""}`,
+    })}<footer><button data-close>Cancel</button><span class="spacer"></span><button id="save-preferences" class="primary">Save preferences</button></footer>`,
   );
+  bindPreferencesLayout(dialog, section);
+  const preferenceDraft = (): PreferencesDraft => ({
+    theme: input("#pref-theme") as Preferences["theme"],
+    coordinates: input("#pref-coordinates") as Preferences["coordinates"],
+    dateFormat: input("#pref-date-format") as Preferences["date_format"],
+    timeFormat: input("#pref-time-format") as Preferences["time_format"],
+    autoSave: check("#pref-autosave"),
+    budget: Number(input("#pref-render-budget")),
+  });
+  const reopenPreferences = async () => {
+    const draft = preferenceDraft();
+    closeModal();
+    await settings("agents", draft);
+  };
   if (native)
     on("#agent-toggle", async () => {
       const { invoke } = await import("@tauri-apps/api/core");
@@ -2682,8 +2738,7 @@ async function settings() {
       } else {
         await invoke("agent_access", { enabled: true, root: null });
       }
-      closeModal();
-      await settings();
+      await reopenPreferences();
     });
   if (native) {
     on("#agent-folder", async () => {
@@ -2691,16 +2746,15 @@ async function settings() {
       if (!root) return;
       const { invoke } = await import("@tauri-apps/api/core");
       await invoke("agent_access", { enabled: true, root });
-      closeModal();
-      await settings();
+      await reopenPreferences();
     });
     on("#agent-default-folder", async () => {
       const { invoke } = await import("@tauri-apps/api/core");
       await invoke("agent_access", { enabled: true, root: null });
-      closeModal();
-      await settings();
+      await reopenPreferences();
     });
     on("#agent-config", () => {
+      const draft = preferenceDraft();
       modal(
         `${head("Connect an SI client")}<p class="description">Use this configuration in a client that supports local stdio MCP, such as Codex. Enable agent access first and keep Chronoscope open. This configuration contains no credential.</p><label class="field">MCP configuration<textarea id="agent-client-config" readonly rows="10">${esc(JSON.stringify(agent.config, null, 2))}</textarea></label><p class="description">For Codex CLI, run the command below. It uses the app executable directly, including when the path contains spaces.</p><textarea id="agent-codex-command" readonly rows="3">${esc(agent.codex_command)}</textarea><div class="row"><button id="agent-copy-config">Copy MCP configuration</button><button id="agent-copy-codex">Copy Codex command</button></div><footer><button id="agent-setup-back">Back</button><button data-close>Close</button></footer>`,
         true,
@@ -2726,7 +2780,7 @@ async function settings() {
       );
       on("#agent-setup-back", async () => {
         closeModal();
-        await settings();
+        await settings("agents", draft);
       });
     });
   }
@@ -2735,16 +2789,19 @@ async function settings() {
       ...preferences,
       theme: input("#pref-theme") as Preferences["theme"],
       coordinates: input("#pref-coordinates") as Preferences["coordinates"],
+      date_format: input("#pref-date-format") as Preferences["date_format"],
+      time_format: input("#pref-time-format") as Preferences["time_format"],
       auto_save_unsaved: check("#pref-autosave"),
     };
     await call("preferences", { preferences });
-    renderBudget =
+    const nextBudget =
       Number(input("#pref-render-budget")) === 100000 ? 100000 : 20000;
-    await call("view_set", { render_budget: renderBudget });
+    const budgetChanged = nextBudget !== renderBudget;
+    renderBudget = nextBudget;
+    if (budgetChanged) await call("view_set", { render_budget: renderBudget });
     closeModal();
     theme();
-    await refresh();
-    if (lastRaster) await view.setRasters(lastRaster);
+    await refresh(budgetChanged, false);
   });
 }
 function timeWindow(
@@ -2992,7 +3049,7 @@ document.querySelectorAll<HTMLElement>("[data-tab]").forEach((b) =>
   }),
 );
 function updateNavigationControls() {
-  const navigationLabel = mode === "map" ? "Pan" : "Orbit";
+  const navigationLabel = mode === "map" ? "Pan" : "Move";
   $("#navigate").setAttribute("aria-label", navigationLabel);
   $("#navigate").dataset.tooltip =
     mode === "map"
@@ -3001,56 +3058,47 @@ function updateNavigationControls() {
   const timeHeight = mode === "space-time";
   $("#time-height").hidden = !timeHeight;
   $("#time-height-label").hidden = !timeHeight;
-  $("#globe-time").hidden = mode !== "globe";
   $("#globe-time-height").hidden = mode !== "globe";
-  ($("#globe-time-height") as HTMLInputElement).disabled = !view.globeTime;
   $("#globe-time-height-label").hidden = mode !== "globe";
   $("#navigation-time-group").hidden = mode === "map";
   const timeLabel = mode === "globe" ? "Time elevation" : "Time height";
   $("#time-elevation-title").textContent = timeLabel;
   $("#time-elevation").setAttribute("aria-label", timeLabel);
-  $("#time-elevation").classList.toggle("active", timeHeight || view.globeTime);
+  $("#time-elevation").classList.toggle(
+    "active",
+    (timeHeight && view.timeHeight > 0) || view.globeTime,
+  );
   navigation.update();
   ($("#globe-time-height") as HTMLInputElement).value = String(
-    Math.round((100 * Math.log(view.globeTimeScale * 20)) / Math.log(400)),
+    globeElevationSlider(view.globeTime, view.globeTimeScale),
   );
   const height = view.timeHeightMeters;
   $("#time-elevation-value").textContent =
     mode !== "globe"
-      ? `${view.timeHeight.toFixed(1)}×`
+      ? view.timeHeight === 0
+        ? "Off"
+        : `${view.timeHeight.toFixed(1)}×`
       : !view.globeTime
         ? "Off"
         : height >= 1000
           ? `${(height / 1000).toFixed(height < 10000 ? 1 : 0)} km`
           : `${Math.round(height)} m`;
-  $("#globe-time").classList.toggle("active", view.globeTime);
-  $("#globe-time").setAttribute("aria-pressed", String(view.globeTime));
+  (
+    $(
+      mode === "globe" ? "#globe-time-height" : "#time-height",
+    ) as HTMLInputElement
+  ).setAttribute(
+    "aria-valuetext",
+    $("#time-elevation-value").textContent || "Off",
+  );
 }
-on("#globe-time", async () => {
-  const button = $("#globe-time") as HTMLButtonElement;
-  const enabled = !view.globeTime;
-  button.disabled = true;
-  displayPreserveFrame = true;
-  try {
-    await call("scene_sync", {
-      scene: { ...captureScene(), globe_time: enabled },
-    });
-    view.setGlobeTime(enabled);
-    updateNavigationControls();
-    // Time elevation changes event geometry, not the user’s camera.
-    await refresh(true, false);
-    await refreshViewportData(view.visibleDataBounds() || [...view.bounds]);
-  } finally {
-    displayPreserveFrame = false;
-    button.disabled = false;
-  }
-});
 let viewModeGeneration = 0;
 let viewModeWork: Promise<void> = Promise.resolve();
 document.querySelectorAll<HTMLElement>("[data-view]").forEach((b) =>
   b.addEventListener("click", () => {
     if (!restoringScene) welcome.dismiss();
     const generation = ++viewModeGeneration;
+    globeElevationGeneration++;
     cancelViewportRefresh();
     void cancelMap();
     mode = b.dataset.view! as ViewMode;
@@ -3093,7 +3141,7 @@ on("#sync-views", async () => {
 });
 on("#maps", () => mapMenu());
 on("#terrain", terrainMenu);
-on("#settings", settings);
+on("#settings", () => settings());
 
 on("#theme", async () => {
   preferences = {
@@ -3102,8 +3150,7 @@ on("#theme", async () => {
   };
   await call("preferences", { preferences });
   theme();
-  await refresh(false);
-  if (lastRaster) await view.setRasters(lastRaster);
+  await refresh(false, false);
 });
 view.onClusters = (cells, add, ids = []) => {
   void (async () => {
@@ -3133,7 +3180,7 @@ view.onCluster = (bin) => {
     return;
   }
   modal(
-    `${head("Display cell")}<p><strong>${bin.count.toLocaleString()} events</strong> · ${bin.selected_count.toLocaleString()} selected</p><p class="description">${time(bin.first_time)}–${time(bin.last_time)} UTC. This is a reversible display summary. Its position is not a measured event location.</p><footer><button id="cell-table">Open member attributes</button><button id="cell-select">Select all members</button><button id="cell-zoom" class="primary">Zoom to members</button></footer>`,
+    `${head("Display cell")}<p><strong>${bin.count.toLocaleString()} events</strong> · ${bin.selected_count.toLocaleString()} selected</p><p class="description">${displayTime(bin.first_time)}–${displayTime(bin.last_time)} UTC. This is a reversible display summary. Its position is not a measured event location.</p><footer><button id="cell-table">Open member attributes</button><button id="cell-select">Select all members</button><button id="cell-zoom" class="primary">Zoom to members</button></footer>`,
   );
   on("#cell-select", async () => {
     await call("select_query", {
@@ -3199,6 +3246,7 @@ function captureScene(): Scene {
     table_descending: tableDescending,
     table_column_offset: tableColumnOffset,
     time_height: view.timeHeight,
+    playback_fade: view.playbackFade,
     globe_time: view.globeTime,
     globe_time_scale: view.globeTimeScale,
     focus,
@@ -3211,6 +3259,8 @@ function captureScene(): Scene {
 }
 let restoringScene = false;
 async function restoreScene(scene: any = {}) {
+  globeElevationGeneration++;
+  displayPreserveFrame = false;
   restoringScene = true;
   try {
     cancelViewportRefresh();
@@ -3228,7 +3278,9 @@ async function restoreScene(scene: any = {}) {
     mode = scene.mode || "space-time";
     view.restoreViewStates(scene.view_states || {});
     renderBudget = scene.render_budget === 100000 ? 100000 : 20000;
-    view.timeHeight = scene.time_height || 2.8;
+    view.timeHeight = scene.time_height ?? 2.8;
+    view.setPlaybackFade(scene.playback_fade ?? true);
+    ($("#playback-fade") as HTMLInputElement).checked = view.playbackFade;
     view.setGlobeTimeScale(scene.globe_time_scale ?? 1);
     view.setGlobeTime(!!scene.globe_time);
     focus = scene.focus ?? 0.45;
@@ -3497,18 +3549,13 @@ on("#box-select", () => {
   $("#navigate").setAttribute("aria-pressed", "false");
 });
 function setWorkspaceExpanded(expanded: boolean) {
-  document.body.classList.toggle("fullscreen", expanded);
-  const button = $("#fullscreen");
-  const label = expanded ? "Restore workspace" : "Expand workspace";
-  button.innerHTML = icon(expanded ? "minimize" : "maximize");
-  button.title = label;
-  button.setAttribute("aria-label", label);
-  button.setAttribute("aria-pressed", String(expanded));
+  // Migrate the removed whole-workspace expansion to the existing pane rails.
+  document.body.classList.remove("fullscreen");
+  if (expanded) {
+    if (!paneLayout.sidebar.collapsed) $("#collapse-left-pane").click();
+    if (!paneLayout.inspector.collapsed) $("#collapse-right-pane").click();
+  }
 }
-on("#fullscreen", () => {
-  setWorkspaceExpanded(!document.body.classList.contains("fullscreen"));
-  view.resize();
-});
 async function fitEvents() {
   overrideBounds = null;
   await refresh();
@@ -3521,12 +3568,40 @@ on("#fit-terrain", async () => {
   await rebuildTerrain();
   view.fit();
 });
+let globeElevationWork: Promise<void> = Promise.resolve();
+let globeElevationGeneration = 0;
 $("#globe-time-height").addEventListener("input", () => {
-  view.setGlobeTimeScale(
-    Math.pow(400, Number(input("#globe-time-height")) / 100) / 20,
+  if (!snapshot || restoringScene || mode !== "globe") return;
+  const value = Number(input("#globe-time-height"));
+  view.setGlobeTime(
+    value > 0,
+    value > 0 ? globeElevationScale(value) : view.globeTimeScale,
   );
   updateNavigationControls();
-  view.onSceneChange();
+  const generation = ++globeElevationGeneration;
+  const workspace = snapshot.workspace_id;
+  const current = () =>
+    generation === globeElevationGeneration &&
+    snapshot.workspace_id === workspace;
+  globeElevationWork = globeElevationWork
+    .catch(() => {})
+    .then(async () => {
+      if (!current()) return;
+      displayPreserveFrame = true;
+      try {
+        await call("scene_sync", {
+          scene: captureScene(),
+          expected_workspace: workspace,
+        });
+        if (!current()) return;
+        await refresh(true, false);
+        if (!current()) return;
+        await refreshViewportData(view.visibleDataBounds() || [...view.bounds]);
+      } finally {
+        displayPreserveFrame = false;
+      }
+    })
+    .catch((error) => toast(String(error), true));
 });
 $("#time-height").addEventListener("input", () => {
   view.timeHeight = Number(input("#time-height"));
@@ -3534,13 +3609,6 @@ $("#time-height").addEventListener("input", () => {
   view.rebuild();
   view.onSceneChange();
   if (lastRaster) view.setRasters(lastRaster).catch(() => {});
-});
-on("#screenshot", async () => {
-  await filterIntent.flush();
-  const a = document.createElement("a");
-  a.href = await view.screenshot();
-  a.download = "chronoscope-space-time.png";
-  a.click();
 });
 on("#select-all", async () => {
   await call("select_visible");
@@ -3634,6 +3702,10 @@ const playbackIncrement = new PlaybackIncrement(
   },
 );
 timeRail.mountPlayback();
+$("#playback-fade").addEventListener("change", () => {
+  view.setPlaybackFade(check("#playback-fade"));
+  view.onSceneChange();
+});
 async function togglePlayback() {
   if (playTimer !== undefined) {
     cancelAnimationFrame(playTimer);
@@ -3673,6 +3745,7 @@ async function togglePlayback() {
     performance.now(),
     playbackIncrement.value,
   );
+  const trailWindow = new PlaybackWindow(startAt, view.playbackFade);
   playbackPreserveFrame = true;
   view.setPlayback(true);
   let lastUpdate = -Infinity;
@@ -3680,20 +3753,25 @@ async function togglePlayback() {
   const frame = (now: number) => {
     if (playTimer === undefined) return;
     const phase = playbackClock!.seconds(now) / span;
-    const start = travel > 1e-9 ? (startAt + phase) % travel : 0;
-    playbackWindow = [start, start + width];
-    focus = travel > 1e-9 ? start + width / 2 : (initialFocus + phase) % 1;
+    const movingStart = travel > 1e-9 ? (startAt + phase) % travel : 0;
+    const [start, end] = trailWindow.advance(
+      movingStart,
+      movingStart + width,
+      view.playbackFade,
+    );
+    playbackWindow = [start, end];
+    focus =
+      travel > 1e-9 ? movingStart + width / 2 : (initialFocus + phase) % 1;
     updateTimeFocus();
     const cursor = $("#histogram").querySelector<HTMLElement>(".cursor");
     if (cursor) cursor.style.top = `${focus * 100}%`;
-    timeRange.set(start, start + width, [lo, hi]);
-    timeRail.update(lo, hi, lo + span * start, lo + span * (start + width));
+    timeRange.set(start, end, [lo, hi]);
+    timeRail.update(lo, hi, lo + span * start, lo + span * end);
     // A full-range cursor sweep does not change the evidence. Avoid decoding
     // and republishing the same large packet just because another tick elapsed.
     const current = filterIntent.desired(snapshot.filter);
     const nextStart = start === 0 ? null : lo + (hi - lo) * start;
-    const nextEnd =
-      start + width === 1 ? null : lo + (hi - lo) * (start + width);
+    const nextEnd = end === 1 ? null : lo + (hi - lo) * end;
     // One data refresh at a time. Never accumulate work behind the render clock.
     if (
       !playbackUpdating &&
@@ -3703,7 +3781,7 @@ async function togglePlayback() {
     ) {
       lastUpdate = now;
       playbackUpdating = true;
-      void timeWindow(start, start + width)
+      void timeWindow(start, end)
         .catch((error) => {
           if (playTimer !== undefined) $("#play").click();
           toast(String(error), true);
@@ -3718,6 +3796,7 @@ async function togglePlayback() {
 }
 on("#play", togglePlayback);
 async function agentPlayback(args: Record<string, any>) {
+  const workspace = snapshot.workspace_id;
   if (args.action === "play" && playTimer === undefined) await togglePlayback();
   else if (args.action === "pause" && playTimer !== undefined)
     await togglePlayback();
@@ -3725,6 +3804,14 @@ async function agentPlayback(args: Record<string, any>) {
     if (args.speed !== undefined) playbackSpeed.setValue(args.speed);
     if (args.increment_seconds !== undefined)
       playbackIncrement.setValue(args.increment_seconds);
+    if (args.fade !== undefined) {
+      view.setPlaybackFade(args.fade);
+      ($("#playback-fade") as HTMLInputElement).checked = view.playbackFade;
+      await call("scene_sync", {
+        scene: captureScene(),
+        expected_workspace: workspace,
+      });
+    }
   } else if (args.action === "seek" || args.action === "step") {
     if (playTimer !== undefined) await togglePlayback();
     await filterIntent.flush();
@@ -3760,6 +3847,7 @@ async function agentPlayback(args: Record<string, any>) {
   }
   return {
     playing: playTimer !== undefined,
+    fade: view.playbackFade,
     speed: playbackSpeed.value,
     increment_seconds: playbackIncrement.value,
     time:
@@ -4201,6 +4289,38 @@ async function initialize() {
             }
           })
           .catch(() => {});
+        return;
+      }
+      if (event.command === "preferences") {
+        guiSync = guiSync
+          .catch(() => {})
+          .then(async () => {
+            const next = await call("preferences");
+            const resourcesChanged =
+              mapPreferencesKey(next) !== mapPreferencesKey(preferences);
+            const pathChanged =
+              next.terrain_path !== preferences.terrain_path ||
+              next.terrain_builtin !== preferences.terrain_builtin;
+            if (resourcesChanged) {
+              await cancelMap();
+              terrainLoadGeneration++;
+              capabilities = null;
+              terrainInfo = await call("terrain_info");
+              if (pathChanged)
+                overrideBounds = next.terrain_builtin
+                  ? null
+                  : terrainInfo?.bounds || null;
+            }
+            preferences = next;
+            theme();
+            await refresh(false, false);
+            if (resourcesChanged) {
+              mapUnavailable = false;
+              if (terrainInfo) await rebuildTerrain();
+              else await loadRasters();
+            }
+          });
+        guiSync.catch((error) => toast(String(error), true));
         return;
       }
       const mapChange = [

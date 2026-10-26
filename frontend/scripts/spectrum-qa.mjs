@@ -179,29 +179,17 @@ try {
     "Partial and filtered entity selections toggle completely; keyboard focus survives",
   );
 
-  const expand = page.locator("#fullscreen");
-  const expandedIcon = await expand.locator("path").getAttribute("d");
-  assert.notEqual(
-    expandedIcon,
-    await page.locator("#box-select path").getAttribute("d"),
-  );
-  await expand.click();
-  assert.equal(await expand.getAttribute("aria-label"), "Restore workspace");
-  assert.equal(await expand.getAttribute("aria-pressed"), "true");
-  assert.notEqual(await expand.locator("path").getAttribute("d"), expandedIcon);
-  const scene = await page.evaluate(() => window.__chronoscope.captureScene());
-  assert.equal(scene.expanded, true);
-  await expand.click();
-  await page.evaluate(
-    (scene) => window.__chronoscope.restoreScene(scene),
-    scene,
-  );
-  assert.equal(await expand.getAttribute("aria-label"), "Restore workspace");
-  assert.equal(await expand.getAttribute("aria-pressed"), "true");
-  await expand.click();
-  assert.equal(await expand.getAttribute("aria-label"), "Expand workspace");
+  assert.equal(await page.locator("#fullscreen,#screenshot").count(), 0);
+  await page.locator("#collapse-left-pane").click();
+  await page.locator("#collapse-right-pane").click();
+  await page
+    .getByRole("button", { name: "Expand left pane", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Expand right pane", exact: true })
+    .click();
   check(
-    "Distinct workspace arrows update on expansion, restoration and saved scenes",
+    "Pane controls replace redundant whole-workspace expansion and canvas icons",
   );
   await toggle(name).click();
   await idle();

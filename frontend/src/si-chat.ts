@@ -9,6 +9,11 @@ interface Hooks {
   close?: () => Promise<void>;
   detached?: boolean;
 }
+interface LocalDraft {
+  session: string | null;
+  generation: number;
+  text: string;
+}
 /** Rust owns messages and jobs. Every WebView is a replaceable session client. */
 export class SIChat {
   private busy = false;
@@ -18,11 +23,15 @@ export class SIChat {
   private root: string | null = null;
   private revision: number | undefined;
   private session: string | null | undefined;
-  private syncing = false;
+  private syncing: Promise<void> | undefined;
   private retryAt = 0;
   private syncFailure = "";
   private disposed = false;
   private initialized = false;
+  private sessionReady = false;
+  private heldDraft: LocalDraft | null = null;
+  private localDraft: LocalDraft | undefined;
+  private draftGeneration = 0;
   private viewEpoch = 0;
   private messages: HTMLElement;
   private prompt: HTMLTextAreaElement;
@@ -79,6 +88,10 @@ export class SIChat {
     on("#si-new", async () => {
       await this.flushDraft();
       await call("si_clear");
+      this.draftGeneration++;
+      this.localDraft = undefined;
+      this.heldDraft = null;
+      this.prompt.readOnly = false;
       clearTimeout(this.draftTimer);
       this.draftDirty = false;
       this.prompt.value = "";
@@ -127,6 +140,7 @@ export class SIChat {
     });
     this.prompt.addEventListener("input", () => {
       this.draftDirty = true;
+      this.captureDraft();
       clearTimeout(this.draftTimer);
       this.draftTimer = setTimeout(
         () => void this.flushDraft().catch(hooks.error),
@@ -162,18 +176,38 @@ export class SIChat {
   async open(focus = true) {
     this.host.hidden = false;
     document.querySelector("#si")?.setAttribute("aria-expanded", "true");
-    await this.sync();
-    if (focus && !this.host.hidden) this.prompt.focus();
+    const epoch = ++this.viewEpoch;
+    this.revision = undefined;
+    this.sessionReady = false;
+    this.sendButton.disabled = true;
+    this.prompt.disabled = true;
+    this.progress.textContent = "Synchronizing…";
+    // A configure/open must wait out the previous view's poll, then read the
+    // current conversation before accepting a draft for that session.
+    await this.syncing?.catch(() => {});
+    if (!this.isCurrentView(epoch)) return;
+    await (this.syncing || this.sync());
+    if (!this.isCurrentView(epoch)) return;
+    this.prompt.disabled = this.submitting || !this.sessionReady;
+    this.showHeldDraft();
+    if (focus) this.prompt.focus();
   }
   async flushDraft() {
     clearTimeout(this.draftTimer);
-    if (!this.draftDirty) return;
-    const text = this.prompt.value,
-      session_id = this.session ?? null;
+    if (!this.draftDirty || this.heldDraft) return;
+    const draft = this.captureDraft(),
+      text = draft.text,
+      session_id = draft.session;
     this.draftWrites = this.draftWrites
       .catch(() => {})
       .then(() => call("si_chat_draft", { text, session_id }));
-    await this.draftWrites;
+    try {
+      await this.draftWrites;
+    } catch (error) {
+      if (String(error).includes("CONFLICT: conversation changed"))
+        this.holdDraft(draft);
+      throw error;
+    }
     if (this.prompt.value === text) this.draftDirty = false;
   }
   dispose() {
@@ -183,14 +217,68 @@ export class SIChat {
     for (const entry of this.entries.values())
       for (const cleanup of entry.dispose) cleanup();
   }
-  private async connection() {
+  private isCurrentView(epoch: number) {
+    return epoch === this.viewEpoch && !this.disposed && !this.host.hidden;
+  }
+  private captureDraft(): LocalDraft {
+    const session = this.session ?? null;
+    if (
+      !this.localDraft ||
+      this.localDraft.session !== session ||
+      this.localDraft.generation !== this.draftGeneration
+    )
+      this.localDraft = {
+        session,
+        generation: this.draftGeneration,
+        text: this.prompt.value,
+      };
+    else this.localDraft.text = this.prompt.value;
+    return this.localDraft;
+  }
+  private holdDraft(draft: LocalDraft) {
+    // A late failed save must not replace a newer draft object or resurrect
+    // text the user explicitly cleared.
+    if (draft !== this.localDraft || draft.generation !== this.draftGeneration)
+      return;
+    // Pending saves retain this draft object, whose text follows newer input
+    // for the same session even before the next debounce has saved it.
+    this.heldDraft = draft;
+    this.draftDirty = false;
+    clearTimeout(this.draftTimer);
+    this.showHeldDraft();
+  }
+  private showHeldDraft() {
+    if (!this.heldDraft || this.disposed || this.host.hidden) return;
+    if (this.prompt.value !== this.heldDraft.text)
+      this.prompt.value = this.heldDraft.text;
+    this.prompt.readOnly = true;
+    this.prompt.disabled = false;
+    this.sessionReady = false;
+    this.sendButton.disabled = true;
+    this.progress.textContent =
+      "Service changed. This draft was not sent. Copy it or start a new chat.";
+  }
+  private async connection(epoch = this.viewEpoch) {
     const status = await call("si_status");
+    if (!this.isCurrentView(epoch)) return false;
+    // Connecting between the state and status reads must not enable a draft
+    // still bound to the disconnected conversation (or the reverse).
+    if (status.connected !== (this.session != null)) {
+      this.revision = undefined;
+      this.sessionReady = false;
+      this.sendButton.disabled = true;
+      this.prompt.disabled = true;
+      this.progress.textContent = "Synchronizing…";
+      this.showHeldDraft();
+      return false;
+    }
     this.connected = status.connected;
     this.root = status.root;
     this.host.querySelector("#si-folder")!.textContent = this.root
       ? `File access: ${this.root}. Used only when record changes are allowed. Ends on disconnect.`
       : "No file access. A folder is optional, for importing and saving files.";
-    this.sendButton.disabled = this.busy || status.running || !this.connected;
+    this.sendButton.disabled =
+      this.busy || status.running || !this.connected || !this.sessionReady;
     (this.host.querySelector("#si-new") as HTMLButtonElement).disabled =
       this.busy || status.running;
     (this.host.querySelector("#si-grant") as HTMLButtonElement).disabled =
@@ -199,69 +287,84 @@ export class SIChat {
       this.busy || !this.root;
     this.stopButton.hidden = this.submitting || (!this.busy && !status.running);
     this.stopButton.disabled = this.stopping;
+    return status;
   }
-  private async sync() {
+  private sync(): Promise<void> {
     if (this.syncing || this.submitting || this.disposed || this.host.hidden)
-      return;
-    this.syncing = true;
+      return Promise.resolve();
     const epoch = this.viewEpoch;
-    try {
-      const state = await call(
-        "si_chat_state",
-        this.revision == null ? {} : { since_revision: this.revision },
-      );
-      if (epoch !== this.viewEpoch) return;
-      const wasBusy = this.busy;
-      this.busy = this.submitting || !!state.active;
-      this.stopping = state.active?.cancel_requested === true;
-      if (state.active)
-        this.progress.textContent = this.stopping
-          ? "Stopping… Completed actions remain."
-          : state.active.message || "Working…";
-      if (this.session !== state.session_id) {
-        clearTimeout(this.draftTimer);
-        this.draftDirty = false;
-        for (const entry of this.entries.values())
-          for (const cleanup of entry.dispose) cleanup();
-        this.entries.clear();
-        this.messages.replaceChildren();
-        this.session = state.session_id;
-      }
-      if (state.messages) {
-        const keep = new Set(state.messages.map((m: any) => m.id));
-        for (const [id, entry] of this.entries)
-          if (!keep.has(id)) {
-            for (const cleanup of entry.dispose) cleanup();
-            entry.node.remove();
-            this.entries.delete(id);
-          }
-        for (const message of state.messages) {
-          if (epoch !== this.viewEpoch) break;
-          if (!this.entries.has(message.id)) await this.append(message);
-        }
-      }
-      if (epoch !== this.viewEpoch) return;
-      this.revision = state.revision;
-      if (
-        !this.draftDirty &&
-        typeof state.draft === "string" &&
-        this.prompt.value !== state.draft
-      )
-        this.prompt.value = state.draft;
-      if (wasBusy && !this.busy)
-        await this.hooks.after().catch(this.hooks.error);
-      await this.connection();
-      if (!this.initialized) {
-        this.initialized = true;
-        this.prompt.disabled = false;
-      }
-      if (!state.active && !this.submitting)
-        this.progress.textContent = this.connected
-          ? "Ready"
-          : "Use SI settings ⚙ to connect a service";
-    } finally {
-      this.syncing = false;
+    this.syncing = this.syncState(epoch).finally(() => {
+      this.syncing = undefined;
+    });
+    return this.syncing;
+  }
+  private async syncState(epoch: number) {
+    const state = await call(
+      "si_chat_state",
+      this.revision == null ? {} : { since_revision: this.revision },
+    );
+    if (!this.isCurrentView(epoch)) return;
+    const wasBusy = this.busy;
+    this.busy = this.submitting || !!state.active;
+    this.stopping = state.active?.cancel_requested === true;
+    if (state.active)
+      this.progress.textContent = this.stopping
+        ? "Stopping… Completed actions remain."
+        : state.active.message || "Working…";
+    if (this.session !== state.session_id) {
+      this.sessionReady = false;
+      this.sendButton.disabled = true;
+      this.prompt.disabled = true;
+      clearTimeout(this.draftTimer);
+      this.draftDirty = false;
+      for (const entry of this.entries.values())
+        for (const cleanup of entry.dispose) cleanup();
+      this.entries.clear();
+      this.messages.replaceChildren();
+      this.session = state.session_id;
     }
+    if (state.messages) {
+      const keep = new Set(state.messages.map((m: any) => m.id));
+      for (const [id, entry] of this.entries)
+        if (!keep.has(id)) {
+          for (const cleanup of entry.dispose) cleanup();
+          entry.node.remove();
+          this.entries.delete(id);
+        }
+      for (const message of state.messages) {
+        if (!this.isCurrentView(epoch)) break;
+        if (!this.entries.has(message.id)) await this.append(message);
+      }
+    }
+    if (!this.isCurrentView(epoch)) return;
+    this.revision = state.revision;
+    if (
+      !this.draftDirty &&
+      !this.heldDraft &&
+      typeof state.draft === "string" &&
+      this.prompt.value !== state.draft
+    )
+      this.prompt.value = state.draft;
+    if (wasBusy && !this.busy) await this.hooks.after().catch(this.hooks.error);
+    if (!this.isCurrentView(epoch)) return;
+    const connection = await this.connection(epoch);
+    if (!connection) return;
+    if (!this.isCurrentView(epoch)) return;
+    // Session identity and its draft/messages must publish together. Permission
+    // status refreshes alone cannot make a partially rendered session sendable.
+    this.sessionReady = !this.heldDraft;
+    this.sendButton.disabled =
+      this.busy || connection.running || !this.connected || !this.sessionReady;
+    if (!this.initialized) this.initialized = true;
+    this.prompt.disabled = this.submitting;
+    if (this.heldDraft) {
+      this.showHeldDraft();
+      return;
+    }
+    if (!state.active && !this.submitting)
+      this.progress.textContent = this.connected
+        ? "Ready"
+        : "Use SI settings ⚙ to connect a service";
   }
   private async append(message: any) {
     const node = document.createElement("article");
@@ -329,11 +432,14 @@ export class SIChat {
   }
   private async send() {
     const prompt = this.prompt.value.trim();
-    if (this.busy || !prompt) return;
+    if (this.busy || !this.sessionReady || this.heldDraft || !prompt) return;
     if (!this.connected) {
       await this.hooks.configure();
       return;
     }
+    const intendedSession = this.session;
+    if (intendedSession == null) return;
+    const draft = this.captureDraft();
     const edits = this.host.querySelector<HTMLInputElement>("#si-edits")!,
       actions = this.host.querySelector<HTMLInputElement>(
         "#si-external-actions",
@@ -358,17 +464,23 @@ export class SIChat {
         prompt,
         allow_edits,
         allow_external_actions,
+        expected_session: intendedSession,
       });
+      this.draftGeneration++;
+      this.localDraft = undefined;
       this.prompt.value = "";
       this.draftDirty = false;
       this.revision = undefined;
     } catch (error) {
       this.busy = false;
+      if (String(error).includes("CONFLICT: conversation changed"))
+        this.holdDraft(draft);
       throw error;
     } finally {
       this.submitting = false;
       this.prompt.disabled = false;
       await this.sync();
+      this.showHeldDraft();
     }
   }
 }

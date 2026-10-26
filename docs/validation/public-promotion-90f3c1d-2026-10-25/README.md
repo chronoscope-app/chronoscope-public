@@ -1,0 +1,7 @@
+# Next to Public source promotion — 2026-10-25
+
+Owner-authorized promotion of Next main `90f3c1d4b978325f93fe09549588e0d82a7f73cc` onto Public main `eb7fe4923b38d756457d0149287dac29278739e2`. All tracked Next files are retained byte for byte, including chat-session/autosave and graphics-recovery follow-ups, navigation/Preferences/playback changes, the maintained test inventory, System appearance, date/time display choices, and removal of the terrain banner. Public’s four prior promotion records are preserved. The commit has only Public main as its parent; private Next ancestry and ignored workspace material are not imported.
+
+The Next application was built and tested locally on macOS: focused Rust and frontend tests, six browser suites, native MCP/appearance checks, and 1,029 native navigation frames with no detected flashes or render errors. See the [Mac report](../appearance-date-time-mac-2026-10-25/README.md) and the [bounded Intel results and limits](../intel-bounded-2026-10-25/README.md).
+
+Local publication, distribution, tester-packaging, download-validator and inventory-runner regressions passed. Product, dependency, packaging and manual-only workflow files are exactly those in validated Next; no Public-specific product change is overwritten. The final tracked snapshot is scanned with the existing Gitleaks rules and a positive control before pushing. No hosted workflow, tag or executable release is created. See [structured results](report.json).

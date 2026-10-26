@@ -1,5 +1,7 @@
 # Final Intel repair: Mac cross-check — 25 October 2026
 
+> Follow-up: [final chat-session and recovery verification](../linux-followup-mac-2026-10-25/README.md) records the later repairs and their Mac evidence. This report preserves the earlier promotion checkpoint.
+
 Product source `3e6f789` passed the five focused browser suites: playback transitions, live MCP, workspace boundaries, guided workflows and the full five-demo matrix including saved bloom restoration. All 48 frontend cases, 11 runner cases, 103 packaging cases, four numerical/protocol suites, formatting, strict core lint, CLI/frontend builds and generated contracts passed.
 
 Playback measured **68 updates in 3.5 seconds / 50.2 ms median** on Apple M5 / Chrome Metal. The existing 20-update minimum and 180 ms upper median limit were unchanged. Bloom retained at most two layers, pause settled to one atlas and full-range playback/pause issued no redundant filter writes. No renderer errors were reported.

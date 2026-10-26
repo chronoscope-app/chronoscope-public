@@ -1,0 +1,80 @@
+.modal.preferences-dialog {
+  width: min(780px, 94vw);
+  height: min(580px, calc(100dvh - var(--dialog-top) - var(--dialog-bottom)));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 22px;
+}
+.preferences-dialog > .modal-head,
+.preferences-dialog > footer {
+  flex: none;
+}
+.preferences-body {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+  margin-top: 18px;
+}
+.preferences-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  border-right: 1px solid var(--line);
+  padding-right: 12px;
+}
+.preferences-nav button {
+  text-align: left;
+  justify-content: flex-start;
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 7px;
+  color: var(--muted);
+  background: transparent;
+}
+.preferences-nav button[aria-selected="true"] {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+}
+.preferences-panels {
+  overflow-y: auto;
+  padding-right: 3px;
+  min-width: 0;
+}
+.preferences-panels h3 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.preferences-panels .modal-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.preferences-panels .notice {
+  overflow-wrap: anywhere;
+}
+.preferences-panels .preferences-agent-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.preferences-dialog > footer {
+  margin-top: 16px;
+}
+@media (max-width: 560px) {
+  .modal.preferences-dialog {
+    padding: 16px;
+  }
+  .preferences-body {
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .preferences-nav {
+    padding-right: 8px;
+  }
+  .preferences-nav button {
+    padding: 9px 7px;
+  }
+}

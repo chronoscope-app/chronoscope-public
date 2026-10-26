@@ -1,4 +1,4 @@
-import { time } from "./types";
+import { displayTime as time, displayDate, displayClock } from "./types";
 import {
   axisLabel,
   measurementLabel,
@@ -543,30 +543,12 @@ export function createWorkspaceChart(
                 ? xLabel
                 : c.x_axis === "time"
                   ? (value: number) => {
-                      const date = new Date(value);
                       const span = Number(rows.at(-1)?.x) - Number(rows[0]?.x);
-                      if (span < 300)
-                        return time(Number(value) / 1000).split(" ")[1];
-                      return new Intl.DateTimeFormat(
-                        undefined,
-                        span > 63072000
-                          ? { timeZone: "UTC", year: "numeric" }
-                          : span > 172800
-                            ? {
-                                timeZone: "UTC",
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              }
-                            : {
-                                timeZone: "UTC",
-                                month: "short",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hourCycle: "h23",
-                              },
-                      ).format(date);
+                      const epoch = Number(value) / 1000;
+                      return span < 300
+                        ? displayClock(epoch, true)
+                        : displayDate(epoch) +
+                            (span <= 172800 ? " " + displayClock(epoch) : "");
                     }
                   : undefined,
             },

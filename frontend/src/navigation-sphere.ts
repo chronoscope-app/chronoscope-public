@@ -5,8 +5,7 @@ import { compassRose } from "./compass-rose";
 const glyph = (path: string) =>
   `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
 const icons = {
-  orbit:
-    "M21 12a9 9 0 1 1-3-6.7M21 3v6h-6M4 12h16M12 3c4 4 4 14 0 18-4-4-4-14 0-18",
+  hand: "M18 11V7a2 2 0 0 0-4 0M14 10V5a2 2 0 0 0-4 0v5M10 10.5V7a2 2 0 0 0-4 0v9M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-1.2-6-3l-3-4a2 2 0 0 1 3-2l2 2",
   select: "M5 3v16l4-4 4 7 3-2-4-7h7L5 3z",
   sync: "M3 8h16m-4-4 4 4-4 4M21 16H5m4-4-4 4 4 4",
   fit: "M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M9 12h6m-3-3v6",
@@ -21,7 +20,7 @@ const tool = (id: string, label: string, name: keyof typeof icons) =>
 /** Rendered with the app so the existing mode/time/terrain handlers retain ownership. */
 export function navigationTools() {
   return `<div class="navigation-toolbar" id="navigation-tools" role="group" aria-label="View tools">
-    <div class="navigation-core">${tool("navigate", "Orbit", "orbit")}${tool("box-select", "Select events", "select")}${tool("sync-views", "Sync views · copy bounds and orientation to the other views", "sync")}
+    <div class="navigation-core">${tool("navigate", "Drag to move", "hand")}${tool("box-select", "Select events", "select")}${tool("sync-views", "Sync views · copy bounds and orientation to the other views", "sync")}
     <span class="navigation-divider"></span>
     ${tool("fit", "Fit visible events · F", "fit")}
     <button type="button" id="fit-terrain" class="navigation-tool" aria-label="Fit terrain" title="Fit terrain" hidden>${glyph(icons.terrain)}</button>
@@ -34,10 +33,9 @@ export function navigationTools() {
       <button type="button" id="time-elevation" class="navigation-tool" data-tooltip-disabled aria-label="Time height" aria-expanded="false" aria-controls="time-elevation-popup">${glyph(icons.time)}</button>
       <div class="time-elevation-popup" id="time-elevation-popup" role="group" aria-labelledby="time-elevation-title" hidden>
         <div class="time-popup-title"><strong id="time-elevation-title">Time height</strong><output id="time-elevation-value"></output></div>
-        <button type="button" id="globe-time" class="time-elevation-switch" aria-pressed="false" hidden><span>Elevate events by time</span><span class="switch-track" aria-hidden="true"></span></button>
-        <label id="time-height-label" for="time-height" class="sr-only">Time height</label><input id="time-height" type="range" min="1.2" max="5" step=".1" value="2.8" aria-label="Time height">
+        <label id="time-height-label" for="time-height" class="sr-only">Time height</label><input id="time-height" type="range" min="0" max="5" step=".1" value="2.8" aria-label="Time height">
         <label id="globe-time-height-label" for="globe-time-height" class="sr-only" hidden>Time elevation</label><input id="globe-time-height" type="range" min="0" max="100" step="1" value="50" aria-label="Globe time height" hidden>
-        <div class="time-height-endpoints" aria-hidden="true"><span>Lower</span><span>Higher</span></div>
+        <div class="time-height-endpoints" aria-hidden="true"><span>Off</span><span>Higher</span></div>
         <p>Display height, not physical altitude.</p>
       </div>
     </div>

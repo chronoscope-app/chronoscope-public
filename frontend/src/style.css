@@ -485,14 +485,6 @@ summary {
   inset: 0;
   pointer-events: none;
 }
-.scene-top-right {
-  position: absolute;
-  right: 24px;
-  top: var(--map-controls-top, 18px);
-  z-index: 4;
-  display: flex;
-  gap: 8px;
-}
 .canvas-hint {
   position: absolute;
   bottom: 27px;
@@ -1258,20 +1250,6 @@ svg {
   font-size: 12px;
 }
 
-.geography-readout {
-  position: absolute;
-  left: 24px;
-  top: 21px;
-  z-index: 3;
-  color: var(--muted);
-  font-size: 10px;
-  max-width: calc(100% - 270px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  pointer-events: none;
-}
-
 /* One workspace toolbar; narrow windows can scroll it without stealing scene height. */
 .topbar {
   gap: 5px;
@@ -1367,7 +1345,6 @@ svg {
   font-size: 12px;
 }
 .legend,
-.geography-readout,
 .canvas-hint {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -1376,8 +1353,7 @@ svg {
   color: var(--text);
   box-shadow: 0 1px 4px #0002;
 }
-.legend:empty,
-.geography-readout:empty {
+.legend:empty {
   display: none;
 }
 .legend {

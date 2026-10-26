@@ -310,3 +310,80 @@ fn finished_engine_cards_survive_a_failed_model_explanation() {
         artifact["result_id"]
     );
 }
+
+#[test]
+fn chat_send_pins_its_session_before_replay_draft_changes_and_provider_work() {
+    for reset in ["si_configure", "si_clear"] {
+        let dir = tempfile::tempdir().unwrap();
+        let e = engine(dir.path());
+        let (url, worker) = mock(vec![answer("Fresh reply")]);
+        e.invoke("si_configure", json!({"url":url,"model":"first"}))
+            .unwrap();
+        let old = e.invoke("si_chat_state", json!({})).unwrap()["session_id"].clone();
+        e.invoke(
+            "si_chat_draft",
+            json!({"text":"Draft for old service","session_id":old}),
+        )
+        .unwrap();
+        e.invoke(
+            reset,
+            if reset == "si_configure" {
+                json!({"url":url,"model":"replacement"})
+            } else {
+                json!({})
+            },
+        )
+        .unwrap();
+        let current = e.invoke("si_chat_state", json!({})).unwrap()["session_id"].clone();
+        assert_ne!(old, current);
+        e.invoke(
+            "si_chat_draft",
+            json!({"text":"Replacement draft","session_id":current}),
+        )
+        .unwrap();
+        let before = e.invoke("si_chat_state", json!({})).unwrap();
+        let request = "d".repeat(32);
+        let stale =
+            json!({"request_id":request,"prompt":"Draft for old service","expected_session":old});
+        let error = e.invoke("si_chat_send", stale).unwrap_err();
+        assert_eq!(
+            error,
+            "CONFLICT: conversation changed; message was not sent"
+        );
+        assert_eq!(e.invoke("si_chat_state", json!({})).unwrap(), before);
+        let fresh =
+            json!({"request_id":request,"prompt":"Fresh message","expected_session":current});
+        assert_eq!(
+            e.invoke("si_chat_send", fresh.clone()).unwrap()["replayed"],
+            false
+        );
+        let mut stale_replay = fresh.clone();
+        stale_replay["expected_session"] = old;
+        assert_eq!(e.invoke("si_chat_send", stale_replay).unwrap_err(), error);
+        assert_eq!(e.invoke("si_chat_send", fresh).unwrap()["replayed"], true);
+        worker.join().unwrap();
+        let state = settled(&e);
+        assert_eq!(state["messages"].as_array().unwrap().len(), 2);
+        assert_eq!(state["messages"][0]["content"], "Fresh message");
+        assert_eq!(state["messages"][1]["content"], "Fresh reply");
+    }
+}
+
+#[test]
+fn chat_send_session_input_is_optional_and_keeps_decimal_identity_exact() {
+    let base = json!({"request_id":"e".repeat(32),"prompt":"No provider work"});
+    chronoscope::schema::validate("si_chat_send", &base).unwrap();
+    let mut guarded = base;
+    guarded["expected_session"] = json!("18446744073709551615");
+    chronoscope::schema::validate("si_chat_send", &guarded).unwrap();
+    for invalid in [
+        json!(9007199254740993_u64),
+        json!(""),
+        json!("1.0"),
+        json!("1".repeat(21)),
+        Value::Null,
+    ] {
+        guarded["expected_session"] = invalid;
+        assert!(chronoscope::schema::validate("si_chat_send", &guarded).is_err());
+    }
+}

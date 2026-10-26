@@ -3,6 +3,7 @@
   "groups": {
     "unit": [
       "bridge-test.mjs",
+      "si-chat-test.mjs",
       "camera-stability-test.mjs",
       "cesium-effects-math-test.mjs",
       "cesium-geometry-test.mjs",
@@ -14,6 +15,7 @@
       "flat-lines-test.mjs",
       "packet-test.mjs",
       "playback-clock-test.mjs",
+      "playback-window-test.mjs",
       "space-time-frame-test.mjs",
       "time-axis-test.mjs",
       "timeline-labels-test.mjs",
@@ -48,6 +50,7 @@
       "vector-gis-qa.mjs",
       "map-notifications-qa.mjs",
       "navigation-qa.mjs",
+      "navigation-preferences-qa.mjs",
       "navigation-sphere-qa.mjs",
       "notifications-qa.mjs",
       "pan-direction-qa.mjs",
@@ -93,6 +96,7 @@
   },
   "serial_browser": [
     "navigation-qa.mjs",
+    "navigation-preferences-qa.mjs",
     "playback-speed-qa.mjs",
     "playback-transitions-qa.mjs"
   ],
@@ -123,6 +127,7 @@
     "navigation": {
       "browser": [
         "navigation-qa.mjs",
+        "navigation-preferences-qa.mjs",
         "navigation-sphere-qa.mjs",
         "pan-direction-qa.mjs",
         "viewport-pan-qa.mjs",
@@ -145,7 +150,8 @@
       ],
       "rust": [
         "subsecond_precision",
-        "sidebar_facets"
+        "sidebar_facets",
+        "playback_display"
       ]
     },
     "rendering": {

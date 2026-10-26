@@ -1,0 +1,52 @@
+{
+  "repository": "chronoscope-app/chronoscope-public",
+  "promoted_next_commit": "90f3c1d4b978325f93fe09549588e0d82a7f73cc",
+  "base_public_commit": "eb7fe4923b38d756457d0149287dac29278739e2",
+  "source_file_count": 3029,
+  "source_parity": true,
+  "public_history_preserved": true,
+  "private_next_ancestry_imported": false,
+  "public_only_receipts_preserved": [
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json"
+  ],
+  "github_runners_used": false,
+  "scope": "Source main promotion; no tags or executable release assets.",
+  "local_publication_checks": [
+    {
+      "name": "test_publication_cleanup",
+      "exit_code": 0,
+      "elapsed_s": 0.289
+    },
+    {
+      "name": "test_package_distribution",
+      "exit_code": 0,
+      "elapsed_s": 1.376
+    },
+    {
+      "name": "test_tester_packaging",
+      "exit_code": 0,
+      "elapsed_s": 0.242
+    },
+    {
+      "name": "test_validate_tester_download",
+      "exit_code": 0,
+      "elapsed_s": 0.075
+    },
+    {
+      "name": "test_validation_runner",
+      "exit_code": 0,
+      "elapsed_s": 2.836
+    }
+  ],
+  "application_validation": "docs/validation/appearance-date-time-mac-2026-10-25/report.json",
+  "intel_validation": "docs/validation/intel-bounded-2026-10-25/report.json",
+  "native_flash_test": {
+    "frames": 1029,
+    "candidates": 0,
+    "render_errors": 0
+  },
+  "snapshot_scan_required_before_push": true
+}

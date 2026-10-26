@@ -34,6 +34,26 @@ def main():
         query=client.call('query',{'limit':2,'fields':['id','entity']})
         assert query['workspace_id'] and len(query['events'])==2
         passed('Attached MCP Apps negotiation, HTML resource and scoped exact query result')
+        client.call('view_wait',{'timeout_ms':10000})
+        time.sleep(.6)
+        before=client.call('view_status')
+        original_preferences=client.call('preferences')
+        audit=args.data_dir/'logs/engine.jsonl'
+        def terrain_requests():
+            return audit.read_bytes().count(b'"command":"terrain_mesh"')
+        baseline_requests=terrain_requests()
+        for appearance in ['light','dark','system']:
+            client.call('preferences',{'preferences':{'theme':appearance,'date_format':'mdy-short','time_format':'24h-seconds'}})
+            time.sleep(.6)
+            current=client.call('view_status')
+            assert current['scene']['cesium_camera']==before['scene']['cesium_camera'],current
+            assert current['diagnostics']['terrain']['terrainProviderChanges']==before['diagnostics']['terrain']['terrainProviderChanges']
+            assert terrain_requests()==baseline_requests,'Display-only Preferences sampled terrain again'
+            assert current['diagnostics']['renderErrorCount']==0
+        client.call('preferences',{'preferences':{'theme':original_preferences['theme'],'date_format':original_preferences['date_format'],'time_format':original_preferences['time_format']}})
+        time.sleep(.3)
+        passed('Native theme/date changes retain the camera and terrain provider without terrain reload requests')
+
         client.rpc('resources/subscribe',{'uri':'chronoscope://workspace'})
         time.sleep(.6);client.rpc('ping',{});client.notifications=[]
         client.call('filter',{'filter':{'search':'unlikely-qa-value'}})

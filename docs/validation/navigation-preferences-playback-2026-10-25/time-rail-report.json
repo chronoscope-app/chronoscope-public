@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "64px rail sits after entities; full map height; vertical accessible range and no bottom timeline"
+    },
+    {
+      "name": "Entity and time rails collapse independently without changing filters"
+    },
+    {
+      "name": "Range popup applies exact UTC timestamps to real Rust filters and retains drafts during refresh"
+    },
+    {
+      "name": "start drag shows only its live date outside the rail; release commits the correct backend timestamp"
+    },
+    {
+      "name": "end drag shows only its live date outside the rail; release commits the correct backend timestamp"
+    },
+    {
+      "name": "Up/down keys match vertical chronology; moving the window translates both bounds"
+    },
+    {
+      "name": "Vertical density bars retain exact histogram-bin evidence selection"
+    },
+    {
+      "name": "Attribute table shares map height while the time rail spans the workspace"
+    },
+    {
+      "name": "Playback popup controls existing speed, time step and live play/pause"
+    },
+    {
+      "name": "Collapsed rail retains popup playback and Escape restores the trigger focus"
+    },
+    {
+      "name": "Collapsed range popup can restore full data coverage"
+    },
+    {
+      "name": "Full-height rail survives expanded workspace and resized displays; popups remain on screen"
+    },
+    {
+      "name": "Local collapse persists across reload; portable workspace roundtrip retains real filters"
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "drag-start.png",
+    "drag-end.png",
+    "expanded.png"
+  ]
+}

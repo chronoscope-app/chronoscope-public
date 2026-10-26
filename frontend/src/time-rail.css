@@ -260,6 +260,44 @@
   gap: 12px;
   margin-bottom: 11px;
 }
+#time-rail-playback-popup {
+  width: min(208px, calc(100vw - 16px));
+}
+#playback-fade {
+  appearance: none;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 18px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--muted);
+  cursor: pointer;
+}
+#playback-fade::before {
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--panel);
+  transition: transform 120ms ease;
+}
+#playback-fade:checked {
+  background: var(--accent);
+}
+#playback-fade:checked::before {
+  transform: translateX(12px);
+}
+#playback-fade:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  #playback-fade::before {
+    transition: none;
+  }
+}
 .time-rail-popup > header strong {
   font-size: 13px;
   font-weight: 500;

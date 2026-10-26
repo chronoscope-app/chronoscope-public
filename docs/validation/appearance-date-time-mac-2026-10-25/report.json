@@ -1,0 +1,87 @@
+{
+  "base_revision": "bcdad25d1033a792aa8f6973373da8ddcf895c7d",
+  "tested_working_tree": true,
+  "platform": "macOS",
+  "github_runners_used": false,
+  "cargo_jobs": 1,
+  "browser_jobs": 1,
+  "focused_rust_tests_passed": 10,
+  "frontend_unit_tests_passed": 66,
+  "browser_suites": [
+    {
+      "suite": "charts-timezone-qa",
+      "passed": true,
+      "checks": 4,
+      "backend": "metal"
+    },
+    {
+      "suite": "sidebar-time-qa",
+      "passed": true,
+      "checks": 11,
+      "backend": "metal"
+    },
+    {
+      "suite": "subsecond-qa",
+      "passed": true,
+      "checks": 6,
+      "backend": "metal"
+    },
+    {
+      "suite": "time-rail-qa",
+      "passed": true,
+      "checks": 13,
+      "backend": "metal"
+    },
+    {
+      "suite": "navigation-preferences-qa",
+      "passed": true,
+      "checks": 13,
+      "backend": "metal"
+    },
+    {
+      "suite": "playback-speed-qa",
+      "passed": true,
+      "checks": 7,
+      "backend": "metal"
+    }
+  ],
+  "final_inventory_and_navigation_run_passed": true,
+  "native_mcp_checks": [
+    "Attached MCP Apps negotiation, HTML resource and scoped exact query result",
+    "Native theme/date changes retain the camera and terrain provider without terrain reload requests",
+    "Attached resource subscription delivers changes; unsubscribe stops updates",
+    "Native timeline configure/seek/step/play/pause through public MCP",
+    "Persistent saved recipe runs asynchronously against the native view with per-frame trace",
+    "Native cancellation releases profile listeners and preserves completed actions"
+  ],
+  "native_navigation_clips": [
+    {
+      "decoded_frames": 338,
+      "duration_seconds": 5.848333333333334,
+      "candidate_flashes": [],
+      "render_errors": 0,
+      "mode": "map"
+    },
+    {
+      "decoded_frames": 344,
+      "duration_seconds": 5.948333333333333,
+      "candidate_flashes": [],
+      "render_errors": 0,
+      "mode": "globe"
+    },
+    {
+      "decoded_frames": 347,
+      "duration_seconds": 5.991666666666666,
+      "candidate_flashes": [],
+      "render_errors": 0,
+      "mode": "space-time"
+    }
+  ],
+  "decoded_frames_total": 1029,
+  "native_ui_inspected": [
+    "System appearance on a fresh profile",
+    "Nine date-format choices and five time-format choices",
+    "Compact playback menu and pill Fade switch",
+    "Terrain banner absent from map"
+  ]
+}

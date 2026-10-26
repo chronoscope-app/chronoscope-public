@@ -286,7 +286,11 @@ try {
     await page.locator("#time-elevation-title").textContent(),
     "Time elevation",
   );
-  if (!(await state()).globeTime) await page.locator("#globe-time").click();
+  if (!(await state()).globeTime)
+    await page.locator("#globe-time-height").evaluate((el) => {
+      el.value = "51";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    });
   await page.waitForFunction(
     () => window.__chronoscope.view.globeTime && !window.__chronoscope.busy,
   );
@@ -301,7 +305,7 @@ try {
   await page.locator("#navigate").click();
   assert(await page.locator("#time-elevation-popup").isHidden());
   check(
-    "Time icon opens on hover/focus; globe switch and scale work; Escape closes popup",
+    "Time icon opens on hover/focus; zero-based globe scale works; Escape closes popup",
   );
   await frame("space-time");
   await page.locator("#time-elevation").hover();
@@ -392,7 +396,6 @@ try {
           scene: read("#scene"),
           rail: read(".navigation-toolbar"),
           orb: read(".navigation-sphere"),
-          utilities: read(".scene-top-right"),
         };
       });
       assert(

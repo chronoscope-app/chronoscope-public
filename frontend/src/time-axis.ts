@@ -1,4 +1,4 @@
-import { time as utcTime } from "./types";
+import { displayDate, displayClock } from "./types";
 /** Newest at ground level; oldest at the top. Source timestamps stay unchanged. */
 export function timeElevationFraction(epoch: number, lo: number, hi: number) {
   if (hi <= lo) return 0;
@@ -85,9 +85,9 @@ export function timeAxisTicks(
   return times.flatMap((time) => {
     const date = new Date(time * 1000);
     if (!Number.isFinite(date.getTime())) return [];
-    const day = `${["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getUTCMonth()]} ${String(date.getUTCDate()).padStart(2, "0")}, ${date.getUTCFullYear()}`;
+    const day = displayDate(time);
     const text = detailed
-      ? `${day}\n${step < 60 ? utcTime(time).split(" ")[1] : `${String(date.getUTCHours()).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")}`} UTC`
+      ? `${day}\n${displayClock(time, step < 60)} UTC`
       : day;
     if (text === previous) return [];
     previous = text;
