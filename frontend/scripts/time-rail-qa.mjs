@@ -339,11 +339,17 @@ try {
   await page.keyboard.press("Escape");
   check("Collapsed range popup can restore full data coverage");
   await page.click("#collapse-time-rail");
-  await page.click("#fullscreen");
+  await page.click("#collapse-left-pane");
+  await page.click("#collapse-right-pane");
   g = await geometry();
   assert.equal(g.rail.width, 64);
-  assert(g.scene.width > g.workspace.width - 70);
-  await page.click("#fullscreen");
+  assert(g.scene.width > g.workspace.width - 160);
+  await page
+    .getByRole("button", { name: "Expand left pane", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Expand right pane", exact: true })
+    .click();
   for (const size of [
     { width: 1280, height: 800 },
     { width: 1720, height: 1080 },

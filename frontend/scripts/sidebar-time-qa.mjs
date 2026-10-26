@@ -489,15 +489,16 @@ try {
     }
   }
   await page.locator("#close-table").click();
-  await page.locator("#fullscreen").click();
-  assert.equal(
-    Math.round(
-      (await size(".center")).width + (await size(".time-rail")).width,
-    ),
-    1000,
-  );
+  await page.locator("#collapse-left-pane").click();
+  await page.locator("#collapse-right-pane").click();
+  assert((await size(".center")).width > 800);
   assert(await page.locator("#resize-sidebar").isHidden());
-  await page.locator("#fullscreen").click();
+  await page
+    .getByRole("button", { name: "Expand left pane", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Expand right pane", exact: true })
+    .click();
   await page.setViewportSize({ width: 1600, height: 1000 });
   for (const pane of ["sidebar", "inspector", "table"]) {
     if (pane !== "table") await page.locator(`#resize-${pane}`).press("Enter");

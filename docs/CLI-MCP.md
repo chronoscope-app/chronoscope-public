@@ -90,6 +90,9 @@ resource subscriptions and the external MCP Apps result viewer.
 
 `view_set.display` patches current display fields rather than resetting unrelated options; null resets overrides. Repeating the current mode preserves the camera. Changing mode or `fit:true` requests a new fit. Globe's `globe_time` and `globe_time_scale`, polygon `display.show_centroids`, native `gis_table` and `table_open` are shared CLI/MCP options.
 
+`view_set {"playback_fade":false}` retains playback history in a growing time window until the next loop. `true` (the default for older scenes) uses the moving window and 0.8-second departing afterimages; entering markers fade over 0.18 seconds. This choice persists in scenes, named views and portable workspaces. Retained Events remain in the ordinary exact filtered scope and rendering budgets; the setting does not start playback. `time_height:0` flattens Space-time and persists as zero. The Globe UI also uses slider zero for Off, while the compatible agent contract remains `globe_time:false` and a separate positive `globe_time_scale` (0.05–20).
+
+
 
 ## Event terminology
 

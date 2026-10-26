@@ -189,6 +189,14 @@ impl Assistant {
             .map(|c| c.history.clone())
             .unwrap_or_default();
         let mut chat = self.chat.lock().map_err(|_| "SI chat unavailable")?;
+        // Pin a UI send to the conversation in which the user composed it.
+        // Check before synchronization, receipt replay or any job/draft change.
+        if command == "si_chat_send"
+            && args.get("expected_session").is_some()
+            && args["expected_session"] != json!(session.map(|s| s.to_string()))
+        {
+            return Err("CONFLICT: conversation changed; message was not sent".into());
+        }
         chat.sync(session, &history);
         match command {
             "si_chat_draft" => {

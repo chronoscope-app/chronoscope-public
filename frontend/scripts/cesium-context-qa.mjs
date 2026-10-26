@@ -8,6 +8,7 @@ import path from "node:path";
 import assert from "node:assert/strict";
 const root = path.resolve(import.meta.dirname, "../..");
 const contextMode = process.env.CHRONOSCOPE_QA_CONTEXT_MODE || "space-time";
+const recoveryRace = process.env.CHRONOSCOPE_QA_CONTEXT_RACE === "1";
 assert(["space-time", "map", "globe"].includes(contextMode));
 const atlasCount = 1;
 const dir =
@@ -43,6 +44,7 @@ const report = {
   fixture:
     "Synthetic ellipsoid-height terrain and local checker raster; no public requests",
   mode: contextMode,
+  recoveryRace,
 };
 let browser, page;
 const write = () =>
@@ -219,38 +221,83 @@ try {
   );
   // Capture the loss phase in the native event itself: automatic recovery may
   // already advance to "refreshing" before a later Playwright DOM query runs.
-  await page.evaluate(() => {
+  await page.evaluate((recoveryRace) => {
     const view = window.__chronoscope.view;
     view.viewer.canvas.addEventListener(
       "webglcontextlost",
-      () => {
+      (event) => {
         const status = document.querySelector(".topbar #backend");
+        let currentCanvas;
+        try {
+          currentCanvas = view.viewer.canvas;
+        } catch {}
         window.__lossIndicator = {
           recovering: view.recovering,
+          contextRecoveries: view.contextRecoveries,
+          targetIsCurrentCanvas: event.target === currentCanvas,
+          targetIsOriginalCanvas: event.target === window.__oldCesiumCanvas,
           warning: status.getAttribute("data-warning"),
           label: status.getAttribute("aria-label"),
         };
         window.__lossCapture = view.screenshot().then(
-          () => "",
-          (error) => String(error),
+          (data) => ({
+            ok: true,
+            png: data.startsWith("data:image/png;base64,"),
+            recovering: view.recovering,
+            recoveries: view.contextRecoveries,
+          }),
+          (error) => ({ ok: false, error: String(error) }),
         );
       },
       { once: true },
     );
     window.__contextLoss.loseContext();
-  });
+    // Exercise the other native ordering too: a failed frame starts automatic
+    // recovery before the old canvas dispatches its queued loss event.
+    if (recoveryRace)
+      view.scene.renderError.raiseEvent(
+        view.scene,
+        new Error("QA injected frame failure after native context loss"),
+      );
+  }, recoveryRace);
   await page.waitForFunction(() => window.__lossIndicator);
   const lost = await page.evaluate(() => window.__lossIndicator);
   report.lossIndicator = lost;
   write();
   assert.equal(lost.recovering, true);
   assert.equal(lost.warning, "true");
-  assert.match(lost.label, /context lost/);
-  const unavailableCapture = await page.evaluate(() => window.__lossCapture);
-  assert.match(
-    unavailableCapture,
-    /Graphics context is unavailable|Graphics are initializing or restoring/,
-  );
+  assert.equal(lost.targetIsOriginalCanvas, true);
+  if (lost.contextRecoveries === 0) {
+    assert.equal(lost.targetIsCurrentCanvas, true);
+    assert.match(lost.label, /context lost/);
+  } else {
+    assert.equal(lost.contextRecoveries, 1);
+    assert.match(lost.label, /context lost|refreshing map renderer/);
+  }
+  if (recoveryRace) {
+    assert.equal(lost.contextRecoveries, 1);
+    assert.equal(lost.targetIsCurrentCanvas, false);
+  }
+  const lossCapture = await page.evaluate(() => window.__lossCapture);
+  report.lossCapture = lossCapture;
+  if (lost.contextRecoveries === 0) {
+    assert.equal(lossCapture.ok, false);
+    assert.match(
+      lossCapture.error,
+      /Graphics context is unavailable|Graphics are initializing or restoring/,
+    );
+  } else if (lossCapture.ok) {
+    // Capture intentionally waits for an existing recovery. A replacement may
+    // finish before this old canvas's loss callback completes its capture.
+    assert.equal(lossCapture.png, true);
+    assert.equal(lossCapture.recovering, false);
+    assert.equal(lossCapture.recoveries, 1);
+  } else {
+    assert.match(
+      lossCapture.error,
+      /Graphics context is unavailable|Graphics are initializing or restoring|Map imagery or display effects are still loading/,
+    );
+  }
   await page.evaluate(() => window.__contextLoss.restoreContext());
   await page.waitForFunction((count) => {
     const v = window.__chronoscope.view;

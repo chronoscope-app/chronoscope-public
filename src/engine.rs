@@ -32,6 +32,10 @@ pub struct Preferences {
     pub theme: String,
     #[schemars(with = "crate::api::CoordinateDisplay")]
     pub coordinates: String,
+    #[schemars(with = "crate::api::DateFormat")]
+    pub date_format: String,
+    #[schemars(with = "crate::api::TimeFormat")]
+    pub time_format: String,
     /// Streets is the built-in OpenFreeMap Positron map. Older projects retain
     /// their explicit WMTS presentation until the user changes their basemap.
     #[serde(default)]
@@ -51,8 +55,10 @@ pub struct Preferences {
 impl Default for Preferences {
     fn default() -> Self {
         Self {
-            theme: "dark".into(),
+            theme: "system".into(),
             coordinates: "dd".into(),
+            date_format: "system".into(),
+            time_format: "system".into(),
             basemap: crate::basemap::Basemap::Streets,
             map: MapConfig::default(),
             map_layers: Some(Vec::new()),
@@ -68,6 +74,22 @@ impl Preferences {
     pub fn validate(&self) -> Result<(), String> {
         if !matches!(self.theme.as_str(), "dark" | "light" | "system")
             || !matches!(self.coordinates.as_str(), "dd" | "utm" | "mgrs")
+            || !matches!(
+                self.date_format.as_str(),
+                "system"
+                    | "iso"
+                    | "mdy"
+                    | "mdy-short"
+                    | "dmy"
+                    | "dmy-short"
+                    | "dmy-dots"
+                    | "dmy-long"
+                    | "mdy-long"
+            )
+            || !matches!(
+                self.time_format.as_str(),
+                "system" | "12h" | "12h-seconds" | "24h" | "24h-seconds"
+            )
             || !self.terrain_exaggeration.is_finite()
             || !(0.1..=20.).contains(&self.terrain_exaggeration)
         {
@@ -2121,6 +2143,7 @@ impl Engine {
                                 scene.camera_up = None;
                             }
                             "time_height" => scene.time_height = v.as_f64(),
+                            "playback_fade" => scene.playback_fade = v.as_bool(),
                             "globe_time" => scene.globe_time = v.as_bool().unwrap(),
                             "globe_time_scale" => scene.globe_time_scale = v.as_f64(),
                             "render_budget" => scene.render_budget = v.as_u64().map(|v| v as usize),

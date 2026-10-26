@@ -81,3 +81,29 @@ pub enum CoordinateDisplay {
     Utm,
     Mgrs,
 }
+#[derive(Serialize, JsonSchema)]
+#[serde(rename_all = "kebab-case")]
+pub enum DateFormat {
+    System,
+    Iso,
+    Mdy,
+    MdyShort,
+    Dmy,
+    DmyShort,
+    DmyDots,
+    DmyLong,
+    MdyLong,
+}
+#[derive(Serialize, JsonSchema)]
+pub enum TimeFormat {
+    #[serde(rename = "system")]
+    System,
+    #[serde(rename = "12h")]
+    TwelveHour,
+    #[serde(rename = "12h-seconds")]
+    TwelveHourSeconds,
+    #[serde(rename = "24h")]
+    TwentyFourHour,
+    #[serde(rename = "24h-seconds")]
+    TwentyFourHourSeconds,
+}

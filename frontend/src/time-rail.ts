@@ -248,6 +248,14 @@ export class TimeRail {
       row.append(label, choice);
       settings.append(row);
     }
+    const fade = document.createElement("label");
+    fade.className = "time-rail-setting";
+    fade.htmlFor = "playback-fade";
+    fade.innerHTML =
+      '<span>Fade</span><input id="playback-fade" type="checkbox" role="switch" aria-label="Fade playback history" checked>';
+    fade.title =
+      "On: move the time window and fade departing events and trails. Off: retain playback history until the next loop.";
+    settings.append(fade);
     // Menu expansion changes the flyout height. Reposition in the same task,
     // before the next paint, rather than waiting for the next resize frame.
     new MutationObserver(() => this.position()).observe(settings, {

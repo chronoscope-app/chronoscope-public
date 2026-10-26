@@ -2,7 +2,10 @@
 
 Chronoscope is experimental. Source versions and downloadable builds can differ; [installation status](docs/INSTALLATION.md) records current availability and verification limits. No production-ready release is currently advertised.
 
-## Unreleased — Next
+## Unreleased
+
+- Keep terrain picking and polar view synchronization stable, improve live playback and full-range pause, and reject stale MCP scenario completion after workspace changes.
+- Bind SI sends to the intended conversation through reconnects, retain rejected drafts for copying, and prevent late saves from overwriting newer text. Keep graphics-recovery warnings visible until restoration finishes.
 
 - Bundle offline Balanced world terrain with explicit unload/restore and custom-DTED replacement. Preserve its identity in portable workspaces without copying the world pack. Retain the idle-camera roundoff workaround and integrate the completed workflow/navigation changes below into Next main.
 
@@ -19,7 +22,7 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 - Add local guided profiles, duplicate groups, outliers and trajectory summaries, with explicit scope/layer/field choices, job progress/cancellation and persistent linked results. No SI connection is required.
 - Stage imports through source selection, mapping and full-file quality review. Preserve drafts when returning to mapping, disclose location gaps and canonical duplicate candidates, require explicit rejection acceptance, and export complete rejected-row reports without publishing Events.
 - Separate frontend import, analysis, map settings, table gestures, document file routing and operation jobs into focused modules; keep save/close serialization in the existing workspace controller.
-- Add full-review, report-export, guided workflow and extracted-table regression coverage. These changes are development source in Next and have not been promoted to Public.
+- Add full-review, report-export, guided workflow and extracted-table regression coverage.
 
 ## 0.15.2 — experimental preview, 2026-10-23
 

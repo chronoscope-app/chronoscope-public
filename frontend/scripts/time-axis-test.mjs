@@ -21,6 +21,8 @@ const typesJs = ts.transpileModule(
 ).outputText;
 const typesUrl =
   "data:text/javascript;base64," + Buffer.from(typesJs).toString("base64");
+const formats = await import(typesUrl);
+formats.setDateTimeDisplay({ date_format: "iso", time_format: "24h" });
 const { timeAxisTicks, timeElevationFraction } = await import(
   "data:text/javascript;base64," +
     Buffer.from(source.replace('"./types"', JSON.stringify(typesUrl))).toString(
@@ -39,7 +41,7 @@ const overview = timeAxisTicks(
 );
 assert(overview.length >= 2);
 assert(
-  overview.every((t) => /^Oct (15|16), 2026$/.test(t.text)),
+  overview.every((t) => /^2026-10-(15|16)$/.test(t.text)),
   "Overview shows UTC dates without timestamps",
 );
 assert.equal(

@@ -29,7 +29,7 @@ export class RendererStatus {
     this.host.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[mode]}"/></svg><span>${label}</span>`;
     this.host.dataset.renderer = mode;
     this.host.dataset.warning = String(
-      /error|lost|failed|restart/i.test(status),
+      /error|lost|failed|restart|refreshing/i.test(status),
     );
     this.host.title = `Renderer: ${status}. Click to refresh the map renderer.`;
     this.host.setAttribute(

@@ -684,6 +684,7 @@ try {
       (m) => window.__chronoscope.view.mode === m,
       name,
     );
+    await page.evaluate(() => window.__chronoscope.viewModeIdle());
     await idle();
     await page.evaluate(() => window.__chronoscope.view.fit());
     await page.waitForTimeout(300);
@@ -1300,6 +1301,10 @@ try {
 
   // Terrain and WMTS installation/mode matrices have dedicated native suites.
   // Return to an ordinary workspace for import and save/open integration.
+  await page.evaluate(() => {
+    window.__chronoscope.view.onViewportChange =
+      window.__chronoscopeQAViewportChange;
+  });
   await api("view_set", {
     mode: "space-time",
     display: {

@@ -66,6 +66,17 @@ export interface Preferences {
   auto_save_unsaved: boolean;
   theme: "dark" | "light" | "system";
   coordinates: "dd" | "utm" | "mgrs";
+  date_format:
+    | "system"
+    | "iso"
+    | "mdy"
+    | "mdy-short"
+    | "dmy"
+    | "dmy-short"
+    | "dmy-dots"
+    | "dmy-long"
+    | "mdy-long";
+  time_format: "system" | "12h" | "12h-seconds" | "24h" | "24h-seconds";
   map: MapConfig;
   map_layers?: MapLayer[] | null;
   terrain_path: string | null;
@@ -255,6 +266,105 @@ export function time(t: number) {
     date.toISOString().replace("T", " ").slice(0, 19) +
     (fraction ? "." + fraction : "")
   );
+}
+
+export const dateFormats: [Preferences["date_format"], string][] = [
+  ["system", "System locale"],
+  ["iso", "YYYY-MM-DD"],
+  ["mdy", "MM/DD/YYYY"],
+  ["mdy-short", "MM/DD/YY"],
+  ["dmy", "DD/MM/YYYY"],
+  ["dmy-short", "DD/MM/YY"],
+  ["dmy-dots", "DD.MM.YYYY"],
+  ["dmy-long", "DD Mon YYYY"],
+  ["mdy-long", "Mon D, YYYY"],
+];
+export const timeFormats: [Preferences["time_format"], string][] = [
+  ["system", "System locale"],
+  ["12h", "12-hour · h:mm AM/PM"],
+  ["12h-seconds", "12-hour · h:mm:ss AM/PM"],
+  ["24h", "24-hour · HH:mm"],
+  ["24h-seconds", "24-hour · HH:mm:ss"],
+];
+// Display preferences never affect canonical `time()`, parsers or stored epochs.
+const systemDateFormatter = new Intl.DateTimeFormat(undefined, {
+  timeZone: "UTC",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+const monthNameFormatter = new Intl.DateTimeFormat(undefined, {
+  timeZone: "UTC",
+  month: "short",
+});
+const clockFormatters = new Map<string, Intl.DateTimeFormat>();
+let displayFormats = { date_format: "system", time_format: "system" };
+export function setDateTimeDisplay(
+  p: Pick<Preferences, "date_format" | "time_format">,
+) {
+  const next = {
+    date_format: p.date_format || "system",
+    time_format: p.time_format || "system",
+  };
+  if (JSON.stringify(next) === JSON.stringify(displayFormats)) return false;
+  displayFormats = next;
+  return true;
+}
+export function displayDate(t: number) {
+  const canonical = time(t);
+  if (canonical === "Invalid time") return canonical;
+  const [year, month, day] = canonical.split(" ")[0].split("-");
+  const d = new Date(Math.floor(t) * 1000),
+    f = displayFormats.date_format;
+  if (f === "iso") return `${year}-${month}-${day}`;
+  if (f === "mdy" || f === "mdy-short")
+    return `${month}/${day}/${f.endsWith("short") ? year.slice(-2) : year}`;
+  if (f === "dmy" || f === "dmy-short")
+    return `${day}/${month}/${f.endsWith("short") ? year.slice(-2) : year}`;
+  if (f === "dmy-dots") return `${day}.${month}.${year}`;
+  if (f === "dmy-long" || f === "mdy-long") {
+    const name = monthNameFormatter.format(d);
+    return f === "dmy-long"
+      ? `${day} ${name} ${year}`
+      : `${name} ${Number(day)}, ${year}`;
+  }
+  return systemDateFormatter.format(d);
+}
+export function displayClock(t: number, precise = false) {
+  const canonical = time(t);
+  if (canonical === "Invalid time") return canonical;
+  const f = displayFormats.time_format;
+  const seconds = precise || f === "system" || f.endsWith("seconds");
+  const fraction = seconds ? canonical.split(".")[1] : undefined;
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: "UTC",
+    hour: "2-digit",
+    minute: "2-digit",
+    ...(seconds ? { second: "2-digit" as const } : {}),
+    ...(f.startsWith("12h")
+      ? { hourCycle: "h12" as const }
+      : f.startsWith("24h")
+        ? { hourCycle: "h23" as const }
+        : {}),
+  };
+  const key = f + ":" + seconds;
+  let formatter = clockFormatters.get(key);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(undefined, options);
+    clockFormatters.set(key, formatter);
+  }
+  return formatter
+    .formatToParts(new Date(Math.floor(t) * 1000))
+    .map(
+      (p) => p.value + (p.type === "second" && fraction ? "." + fraction : ""),
+    )
+    .join("")
+    .replace(/[\u202f\u00a0]/g, " ");
+}
+export function displayTime(t: number, precise = false) {
+  return Number.isFinite(t) && time(t) !== "Invalid time"
+    ? `${displayDate(t)} ${displayClock(t, precise)}`
+    : "Invalid time";
 }
 
 export function escape(s: unknown) {

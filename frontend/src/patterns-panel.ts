@@ -1,3 +1,4 @@
+import { displayTime } from "./types";
 import { explainResult } from "./focused-ai";
 import { call } from "./bridge";
 import { escape as esc, type Snapshot } from "./types";
@@ -383,7 +384,7 @@ export class PatternsPanel {
                 `<tr>${Object.keys(examples[0])
                   .map(
                     (k) =>
-                      `<td>${esc(k === "event_id" ? String(row[k]) : k === "time" && typeof row[k] === "number" ? new Date(Number(row[k]) * 1000).toISOString().replace("T", " ").replace(".000Z", " UTC") : format(row[k]))}</td>`,
+                      `<td>${esc(k === "event_id" ? String(row[k]) : k === "time" && typeof row[k] === "number" ? displayTime(Number(row[k])) + " UTC" : format(row[k]))}</td>`,
                   )
                   .join("")}</tr>`,
             )

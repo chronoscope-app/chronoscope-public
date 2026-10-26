@@ -1,6 +1,6 @@
 import { FieldRolesEditor } from "./field-roles";
 import { call } from "./bridge";
-import { escape as esc, time, type Snapshot } from "./types";
+import { escape as esc, time, displayTime, type Snapshot } from "./types";
 import type { EngineContracts } from "./contracts";
 import {
   categoryField,
@@ -119,6 +119,7 @@ export class ChartsPanel {
   private schemaRequestKey = "";
   private schemaRequest?: Promise<EngineContracts["dataset_schema"]["result"]>;
   private signature = "";
+  private presentation = "";
   private generation = 0;
   private pending?: {
     snapshot: Snapshot;
@@ -292,7 +293,21 @@ export class ChartsPanel {
     this.rolesEditor.update(this.schema, snapshot);
     this.controls();
     const signature = JSON.stringify([snapshot.revision, this.config]);
-    if (signature === this.signature) return;
+    const presentation = JSON.stringify([
+      snapshot.preferences.date_format,
+      snapshot.preferences.time_format,
+      document.documentElement.dataset.theme,
+    ]);
+    const presentationChanged = presentation !== this.presentation;
+    this.presentation = presentation;
+    if (signature === this.signature) {
+      if (presentationChanged && this.result) {
+        this.plot?.update(this.result);
+        this.dataTable();
+        this.comparison(this.result);
+      }
+      return;
+    }
     this.signature = signature;
     const generation = ++this.generation;
     this.pending = { snapshot, config: { ...this.config }, generation };
@@ -801,7 +816,7 @@ export class ChartsPanel {
       pattern
         ? `${hourLabel(r.x)}–${hourLabel(r.x + 1)} UTC`
         : c.x_axis === "time" && c.kind !== "histogram"
-          ? time(r.x) + " UTC"
+          ? displayTime(r.x) + " UTC"
           : chartValue(
               r.range
                 ? `${chartValue(r.range[0])} – ${chartValue(r.range[1])}`
@@ -831,7 +846,7 @@ export class ChartsPanel {
     }
     const groups = result.rows.filter((r: any) => r.series === 1) as any[];
     const window = (key: "period_a" | "period_b") =>
-      (result.config[key] || []).map((t: number) => time(t)).join(" → ");
+      (result.config[key] || []).map((t: number) => displayTime(t)).join(" → ");
     host.innerHTML = `<div class="chart-period-dates"><span>A: ${esc(window("period_a"))}</span><span>B: ${esc(window("period_b"))}</span><small>UTC · starts included, ends excluded</small></div>${
       groups.length
         ? `<div class="chart-data-scroll"><table><thead><tr><th>${esc(fieldLabel(result.config.x))}</th><th>A</th><th>B</th><th>B − A</th><th>Change %</th></tr></thead><tbody>${groups

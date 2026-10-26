@@ -33,7 +33,7 @@ pub(super) fn input(command: &str) -> Value {
             branch("pause", json!({}), &[]),
             branch(
                 "configure",
-                json!({"speed":{"enum":[0.25,0.5,0.75,1,1.25,1.5,1.75,2]},"increment_seconds":{"enum":[0.001,1,60,3600,86400,604800]}}),
+                json!({"fade":boolean(),"speed":{"enum":[0.25,0.5,0.75,1,1.25,1.5,1.75,2]},"increment_seconds":{"enum":[0.001,1,60,3600,86400,604800]}}),
                 &[],
             ),
             branch("seek", json!({"time":number()}), &["time"]),

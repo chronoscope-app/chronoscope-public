@@ -119,6 +119,8 @@ pub struct SceneState {
     pub position: Option<[f64; 3]>,
     pub target: Option<[f64; 3]>,
     pub time_height: Option<f64>,
+    /// None preserves the default fading playback of older workspaces.
+    pub playback_fade: Option<bool>,
     /// Encode UTC event time as display elevation in Globe, never source altitude.
     pub globe_time: bool,
     /// Multiplier for the terrain-relative Globe time display (default 1).
@@ -225,7 +227,7 @@ impl SceneState {
             || self.table_sort.len() > 8192
             || self
                 .time_height
-                .is_some_and(|v| !v.is_finite() || !(1.2..=5.).contains(&v))
+                .is_some_and(|v| !v.is_finite() || !(0. ..=5.).contains(&v))
             || self
                 .globe_time_scale
                 .is_some_and(|v| !v.is_finite() || !(0.05..=20.).contains(&v))

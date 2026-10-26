@@ -434,7 +434,7 @@ try {
   );
   assert.equal(await page.locator("#scene .map-attribution").count(), 0);
   assert.equal(await page.locator(".statusbar #map-attribution").count(), 1);
-  assert.equal(await page.locator("#geography-readout").innerText(), "");
+  assert.equal(await page.locator("#geography-readout").count(), 0);
   const footer = await page.locator(".statusbar").boundingBox();
   const creditLink = page.locator("#cesium-credits .cesium-credit-expand-link");
   if (await creditLink.isVisible()) {

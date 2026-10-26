@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Redundant canvas icons removed; hand icon identifies drag navigation"
+    },
+    {
+      "name": "Preferences use keyboard-accessible left categories/right settings, preserve drafts, and Cancel discards edits"
+    },
+    {
+      "name": "Preferences save across categories and remain usable in light/dark themes and narrow windows"
+    },
+    {
+      "name": "Globe elevation has one enabled slider: zero flattens Events; keyboard/nonzero/max enable elevation"
+    },
+    {
+      "name": "Zero Space-time height and Fade off survive portable save/reopen; original coordinates/timestamps stay unchanged"
+    },
+    {
+      "name": "Old expanded workspaces migrate to normal, reversible pane collapse controls"
+    },
+    {
+      "name": "The attached CLI/MCP playback configure action shares the UI Fade setting"
+    },
+    {
+      "name": "Fade off retains earlier playback Events/trails using a growing, exact filter window",
+      "evidence": {
+        "initial": 21,
+        "retained": 24
+      }
+    },
+    {
+      "name": "Fade on moves a fixed-width window; toggling off live anchors history without stopping playback"
+    },
+    {
+      "name": "Markers, entity tracks, ground trails and stems fade out within the faster 800 ms lifetime"
+    },
+    {
+      "name": "Crowded departing tracks share bounded GPU batches instead of one primitive per entity",
+      "evidence": {
+        "batches": 3
+      }
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "preferences-dark.png",
+    "preferences-light.png",
+    "single-elevation-slider.png",
+    "playback-fade-controls.png"
+  ]
+}
