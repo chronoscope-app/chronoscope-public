@@ -310,9 +310,35 @@ class ValidatorTests(unittest.TestCase):
                 item.mode = 0o755
                 item.size = 7
                 out.addfile(item, io.BytesIO(b'fixture'))
-            validator.extract_archive(archive, root / 'output')
+            with tarfile.open(archive, 'r:xz') as source:
+                self.assertEqual(source.getmember('Chronoscope/app').mode, 0o755)
+            chmod = Path.chmod
+            with patch.object(Path, 'chmod', autospec=True, side_effect=chmod) as apply_mode:
+                validator.extract_archive(archive, root / 'output')
+            extracted = root / 'output/Chronoscope/app'
+            self.assertEqual(extracted.read_bytes(), b'fixture')
+            if os.name == 'nt':
+                # Windows has no Unix executable-bit contract; do not chmod it.
+                apply_mode.assert_not_called()
+            else:
+                apply_mode.assert_called_once_with(extracted, 0o755)
+                self.assertTrue(extracted.stat().st_mode & 0o111)
+
+    def test_tar_windows_extraction_does_not_apply_posix_permissions(self):
+        from types import SimpleNamespace
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            archive = root / 'fixture.tar.xz'
+            with tarfile.open(archive, 'w:xz') as out:
+                item = tarfile.TarInfo('Chronoscope/app')
+                item.mode = 0o755
+                item.size = 7
+                out.addfile(item, io.BytesIO(b'fixture'))
+            # Replace only the extractor's OS view, not pathlib's host platform.
+            with patch.object(validator, 'os', SimpleNamespace(name='nt')),                     patch.object(Path, 'chmod', autospec=True) as apply_mode:
+                validator.extract_archive(archive, root / 'output')
             self.assertEqual((root / 'output/Chronoscope/app').read_bytes(), b'fixture')
-            self.assertTrue((root / 'output/Chronoscope/app').stat().st_mode & 0o111)
+            apply_mode.assert_not_called()
 
     def test_tar_link(self):
         with tempfile.TemporaryDirectory() as temp:
