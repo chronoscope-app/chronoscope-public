@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parent.parent
 MAX_ARCHIVE = 256 * 1024 * 1024
 MAX_EXPANDED = 1024 * 1024 * 1024
 # Reviewed GIS additions: bufrw, dbase, geozero (two licenses), scroll, shapefile.
-NOTICE_COUNT = 1498
+NOTICE_COUNT = 1499
 
 
 def require(condition, message):

@@ -14,6 +14,18 @@ import validate_tester_download as validator
 
 
 class ValidatorTests(unittest.TestCase):
+    def test_current_notice_count_is_exact_and_not_optional(self):
+        manifest = {'files': [{} for _ in range(1499)]}
+        sdk = {'retained_original_files': []}
+        with (patch.object(validator, 'verify_notices', return_value=manifest),
+              patch.object(validator, 'digest', return_value='fixture'),
+              patch.object(Path, 'read_text', return_value=validator.json.dumps(sdk))):
+            self.assertEqual(validator.notices(Path('notices'), Path('source'))['files'], 1499)
+            for count in (1498, 1500):
+                manifest['files'] = [{} for _ in range(count)]
+                with self.subTest(count=count), self.assertRaisesRegex(ValueError, 'notice count'):
+                    validator.notices(Path('notices'), Path('source'))
+
     def windows_fixture(self, *, portable=False, machine=0x8664):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
