@@ -250,3 +250,185 @@
     display: none;
   }
 }
+
+/* A single import surface: only its body scrolls; mappings stay in place. */
+.import-dialog[open] {
+  display: flex;
+  flex-direction: column;
+  width: min(760px, 94vw);
+  height: min(900px, calc(100dvh - 48px));
+  padding: 0;
+  overflow: hidden;
+  --import-valid: #8ed2a3;
+  --import-invalid: #ffb4b4;
+  --import-valid-fill: #23392d;
+  --import-invalid-fill: #442b30;
+}
+:root[data-theme="light"] .import-dialog {
+  --import-valid: #27663b;
+  --import-invalid: #a43037;
+  --import-valid-fill: #eaf4ed;
+  --import-invalid-fill: #fbecee;
+}
+.import-dialog > header {
+  flex: 0 0 auto;
+  padding: 20px 24px 14px;
+  margin: 0;
+}
+.import-dialog > header > div {
+  min-width: 0;
+  flex: 1;
+}
+.import-dialog h2 {
+  font-size: 20px;
+}
+.import-dialog header p {
+  margin: 5px 0 0;
+  overflow-wrap: anywhere;
+}
+.import-dialog .import-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding: 10px 24px;
+  border-block: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+}
+.import-dialog .import-legend span::before {
+  content: "●";
+  margin-right: 5px;
+}
+.import-dialog [data-state="valid"] [data-feedback],
+.import-dialog .import-legend [data-state="valid"] {
+  color: var(--import-valid);
+}
+.import-dialog [data-state="invalid"] [data-feedback],
+.import-dialog .import-legend [data-state="invalid"] {
+  color: var(--import-invalid);
+}
+.import-dialog > .workflow-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 20px 24px;
+  overscroll-behavior: contain;
+}
+.import-dialog .import-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 18px 0 12px;
+}
+.import-dialog h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+.import-dialog .import-section-heading span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.import-dialog .modal-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.import-dialog .field {
+  min-width: 0;
+  margin: 0;
+}
+.import-dialog .import-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 12px;
+  border-radius: 6px;
+  background: var(--raised);
+  gap: 8px;
+}
+.import-dialog .import-field[data-state="valid"] {
+  background: var(--import-valid-fill);
+}
+.import-dialog .import-field[data-state="invalid"] {
+  background: var(--import-invalid-fill);
+}
+.import-dialog .import-field label,
+.import-dialog .import-field small {
+  overflow-wrap: anywhere;
+}
+.import-dialog .import-field small {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.import-dialog select,
+.import-dialog input:not([type="checkbox"]) {
+  width: 100%;
+  min-width: 0;
+}
+.import-dialog .import-subfield {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 11px;
+}
+.import-dialog .import-options {
+  margin-top: 18px;
+}
+.import-dialog .import-detection-notes:empty {
+  display: none;
+}
+.import-dialog > footer {
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  margin: 0;
+  background: var(--panel);
+}
+.import-dialog > footer > div:first-child {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+.import-dialog > footer p {
+  font-size: 11px;
+  margin: 0;
+  min-height: 0;
+}
+.import-dialog #import-status:not(:empty) {
+  margin-top: 4px;
+}
+.import-dialog .import-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.import-dialog .import-rejections p {
+  color: var(--import-invalid);
+  font-size: 12px;
+}
+.import-dialog #import-review {
+  margin-top: 24px;
+}
+@media (max-width: 600px) {
+  .import-dialog > header,
+  .import-dialog > footer,
+  .import-dialog > .workflow-body {
+    padding: 14px;
+  }
+  .import-dialog .import-legend {
+    padding: 10px 14px;
+  }
+  .import-dialog .modal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (pointer: coarse) {
+  .import-dialog button,
+  .import-dialog select,
+  .import-dialog input:not([type="checkbox"]) {
+    min-height: 44px;
+  }
+}

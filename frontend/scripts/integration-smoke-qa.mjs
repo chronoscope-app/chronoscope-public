@@ -13,14 +13,13 @@ await withLocalApp("integration-smoke", async ({ page, api, out, pass }) => {
   );
   page.once("dialog", (dialog) => dialog.accept(source));
   await page.locator("#open").click();
-  await page.locator("#import-next").click();
   await page.locator("#review-import").click();
   await page.locator("#commit-import").click();
   await page.waitForFunction(
     () =>
       window.__chronoscope.snapshot.count === 3 && !window.__chronoscope.busy,
   );
-  pass("Small CSV enters through the real staged Open/import workflow");
+  pass("Small CSV enters through the single-window Open/import workflow");
   for (const mode of ["map", "globe", "space-time"]) {
     await page.locator(`[data-view="${mode}"]`).click();
     await page.evaluate(() => window.__chronoscope.viewModeIdle());

@@ -409,7 +409,7 @@ pub fn command_schema(command: &str) -> Option<Value> {
             vec!["path"],
         ),
         "import_validate" => (
-            json!({"sheet":integer(0,255),"mapping":mapping(),"import_id":string()}),
+            json!({"sheet":integer(0,255),"mapping":mapping(),"import_id":string(),"field_feedback":boolean()}),
             vec!["mapping"],
         ),
         "import_review" => (

@@ -1323,7 +1323,6 @@ try {
   async function importDialog(file) {
     page.once("dialog", (dialog) => dialog.accept(file));
     await page.click("#open");
-    await page.click("#import-next");
     await page.waitForSelector("#review-import");
   }
   async function commitImport(count) {
@@ -1340,8 +1339,8 @@ try {
   }
   await importDialog(path.join(root, "tests/fixtures/import/small-study.xlsx"));
   assert.match(
-    await page.locator(".workflow-steps [aria-current]").textContent(),
-    /Map fields/,
+    await page.locator("#import-dialog").innerText(),
+    /Match source columns/,
   );
   await commitImport(5);
   assert.equal(
@@ -1413,7 +1412,7 @@ try {
   page.once("dialog", (dialog) => dialog.accept(source));
   await page.keyboard.press("Control+i");
   assert((await previewed).ok());
-  await page.waitForSelector("#import-next");
+  await page.waitForSelector("#review-import");
   await page.keyboard.press("Escape");
   assert.equal(
     (await api("snapshot")).count,

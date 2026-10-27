@@ -97,7 +97,7 @@ try {
   );
   page.once("dialog", (d) => d.accept(source));
   await page.locator("#welcome-open").click();
-  await page.locator("#import-next").waitFor();
+  await page.locator("#review-import").waitFor();
   await page.keyboard.press("Escape");
   assert.equal(await page.locator("#welcome").isVisible(), true);
   assert.equal((await api("snapshot")).count, 0);

@@ -7,6 +7,9 @@ use std::{
     path::Path,
 };
 
+mod feedback;
+pub use feedback::field_feedback;
+
 const MAX_EXPANDED: u64 = 256 * 1024 * 1024;
 const MAX_COLUMNS: usize = 512;
 const MAX_CELLS: usize = 4_000_000;

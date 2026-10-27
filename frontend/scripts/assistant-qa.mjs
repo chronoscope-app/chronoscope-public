@@ -871,7 +871,6 @@ try {
   );
   page.once("dialog", (d) => d.accept(busy));
   await page.click("#open");
-  await page.click("#import-next");
   await page.waitForSelector("#import-aggregate", { state: "attached" });
   await page
     .locator("summary")
