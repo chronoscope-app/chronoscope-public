@@ -65,7 +65,8 @@
     "capture:demo-thumbnails": "node scripts/capture-demo-thumbnails.mjs",
     "test:navigation-preferences": "node scripts/navigation-preferences-qa.mjs",
     "build:raw": "tsc && vite build",
-    "test:priority-demos": "node scripts/priority-demos-qa.mjs"
+    "test:priority-demos": "node scripts/priority-demos-qa.mjs",
+    "test:import-grid": "node scripts/import-grid-qa.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

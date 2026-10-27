@@ -81,7 +81,8 @@
       "presentation-ui-qa.mjs",
       "view-sync-qa.mjs",
       "mcp-live-qa.mjs",
-      "priority-demos-qa.mjs"
+      "priority-demos-qa.mjs",
+      "import-grid-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -194,6 +195,7 @@
     },
     "workspace": {
       "browser": [
+        "import-grid-qa.mjs",
         "integration-smoke-qa.mjs",
         "empty-workspace-qa.mjs",
         "event-table-qa.mjs",

@@ -100,7 +100,6 @@ try {
     d.accept(path.join(root, "tests/fixtures/import/wkt-geometries.csv")),
   );
   await page.click("#open");
-  await page.click("#import-next");
   await page.waitForSelector('[data-map="geometry_wkt"]');
   assert.equal(await page.inputValue('[data-map="geometry_wkt"]'), "2");
   await page.click("#review-import");

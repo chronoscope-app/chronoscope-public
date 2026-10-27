@@ -91,18 +91,17 @@ try {
   );
   page.once("dialog", (d) => d.accept(source));
   await page.click("#open");
-  await page.waitForSelector("#import-next");
+  await page.waitForSelector("#review-import");
   await page.keyboard.press("Escape");
   await page.locator("#import-dialog").waitFor({ state: "detached" });
   assert.equal((await api("snapshot", { compact: true })).count, 0);
   page.once("dialog", (d) => d.accept(source));
   await page.click("#open");
-  await page.waitForSelector("#import-next");
+  await page.waitForSelector("#review-import");
   assert.equal(await page.locator("#import-sheet option").count(), 1);
-  await page.click("#import-next");
+  await page.locator("#import-advanced summary").click();
   await page.locator("#default-entity").fill("Fallback");
-  await page.click("#import-back");
-  await page.click("#import-next");
+  await page.click("#preview-mapping");
   assert.equal(await page.locator("#default-entity").inputValue(), "Fallback");
   await page.click("#review-import");
   await page.waitForSelector("#accept-rejections");
@@ -128,7 +127,7 @@ try {
       ?.textContent.includes("Exported 1"),
   );
   assert.match(fs.readFileSync(reportPath, "utf8"), /15,/);
-  await page.click("#import-back");
+  await page.click("#preview-mapping");
   assert.equal(await page.locator("#default-entity").inputValue(), "Fallback");
   await page.click("#review-import");
   await page.waitForSelector("#accept-rejections");
@@ -142,7 +141,7 @@ try {
   );
   console.log("Completed workflow stage");
   report.checks.push(
-    "Rejected-row CSV exports source rows/reasons; returning to mapping preserves the draft; explicit acceptance commits valid rows",
+    "Rejected-row CSV exports source rows/reasons; inline sample refresh preserves the draft; explicit acceptance commits valid rows",
   );
 
   // Own the former renderer-suite regression as well: invalid coordinates
@@ -155,7 +154,6 @@ try {
   const beforeRejectedCoordinates = (await api("query", { limit: 100 })).events;
   page.once("dialog", (dialog) => dialog.accept(badCoordinates));
   await page.locator("#open").click();
-  await page.locator("#import-next").click();
   await page.locator("#review-import").click();
   await page.locator("#accept-rejections").waitFor();
   assert.equal(await page.locator("#commit-import").isDisabled(), true);

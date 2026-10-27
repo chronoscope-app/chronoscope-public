@@ -176,3 +176,42 @@ fn empty_geometry_is_reported_as_unlocated_but_real_shapes_have_a_location() {
     assert_eq!(report["accepted"], 2);
     assert_eq!(report["missing_locations"], 1);
 }
+
+#[test]
+fn interactive_field_feedback_is_bounded_read_only_and_preserves_legacy_validation_errors() {
+    let dir = tempfile::tempdir().unwrap();
+    let e = Engine::new(Project::empty(), dir.path().join("profile")).unwrap();
+    let path = dir.path().join("source.csv");
+    let mut csv = "entity,timestamp,latitude,mystery,value\n".to_string();
+    for _ in 0..8 {
+        csv.push_str("A,03/04/2026,40,-70,2\n");
+    }
+    csv.push_str("B,2026-10-01,40,-70,bad\n");
+    std::fs::write(&path, csv).unwrap();
+    let mut args = preview(&e, &path);
+    assert!(e.invoke("import_validate", args.clone()).is_err());
+    args["field_feedback"] = json!(true);
+    let result = e.invoke("import_validate", args.clone()).unwrap();
+    chronoscope::schema::validate_output("import_validate", &result).unwrap();
+    assert!(result["error"]
+        .as_str()
+        .unwrap()
+        .contains("both coordinate"));
+    assert_eq!(result["fields"]["time"]["state"], "invalid");
+    assert_eq!(result["fields"]["lat"]["state"], "valid");
+    assert_eq!(result["fields"]["lon"]["state"], "invalid");
+    assert_eq!(result["fields"]["value"]["state"], "valid");
+    args["mapping"]["lon"] = json!(3);
+    args["mapping"]["date_order"] = json!("dmy");
+    let result = e.invoke("import_validate", args.clone()).unwrap();
+    assert_eq!(result["events"].as_array().unwrap().len(), 6);
+    assert_eq!(result["fields"]["time"]["state"], "valid");
+    assert_eq!(result["fields"]["lon"]["state"], "valid");
+    args.as_object_mut().unwrap().remove("field_feedback");
+    let report = e.invoke("import_review", args).unwrap();
+    assert_eq!(report["rejected"], 1);
+    assert_eq!(
+        e.invoke("snapshot", json!({"compact":true})).unwrap()["count"],
+        0
+    );
+}

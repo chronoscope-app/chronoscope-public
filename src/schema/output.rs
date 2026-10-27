@@ -325,7 +325,7 @@ pub fn domain_output_schema(command: &str) -> Value {
         }
         "import_validate" => {
             required = vec!["import_id", "events", "rejected", "sample_only"];
-            json!({"import_id":{"type":"string"},"events":{"type":"array","items":{"type":"object"}},"rejected":{"type":"array"},"sample_only":{"const":true},"text_limit_bytes":{"type":"integer"}})
+            json!({"import_id":{"type":"string"},"events":{"type":"array","items":{"type":"object"}},"rejected":{"type":"array"},"sample_only":{"const":true},"text_limit_bytes":{"type":"integer"},"error":{"type":["string","null"]},"fields":{"type":"object","additionalProperties":{"type":"object","properties":{"state":{"enum":["valid","invalid","optional","inactive"]},"message":{"type":"string"},"required":{"type":"boolean"}},"required":["state","message","required"],"additionalProperties":false}}})
         }
         "import_commit" => {
             required = vec!["accepted", "rejected"];
