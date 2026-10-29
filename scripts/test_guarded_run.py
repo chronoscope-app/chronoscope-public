@@ -3,6 +3,7 @@
 import datetime
 import json
 import os
+import signal
 from pathlib import Path
 import subprocess
 import sys
@@ -11,7 +12,7 @@ import unittest
 from unittest import mock
 import guarded_run
 from clean_local_artifacts import plan
-from validation_runtime import run_command
+from validation_runtime import run_command, stop_tree
 
 
 class GuardTests(unittest.TestCase):
@@ -67,6 +68,32 @@ class GuardTests(unittest.TestCase):
             import time
             time.sleep(2.1)
             self.assertFalse(marker.exists())
+
+    @unittest.skipIf(os.name == 'nt', 'POSIX process-group signaling')
+    def test_exited_zombie_groups_may_reject_the_second_signal(self):
+        process = mock.Mock(pid=111)
+        error = PermissionError(1, 'fixture EPERM')
+        def signal_group(group, sig):
+            if sig == signal.SIGKILL:
+                raise error
+        with (mock.patch('validation_runtime.subprocess.check_output',
+                         side_effect=['111 1 111\n222 111 222\n', '111 Z\n222 Z+\n', '111 Z\n222 Z+\n']),
+              mock.patch('validation_runtime.os.getpgrp', return_value=999),
+              mock.patch('validation_runtime.os.killpg', side_effect=signal_group) as kill):
+            stop_tree(process)
+        self.assertEqual(kill.call_count, 4)
+
+    @unittest.skipIf(os.name == 'nt', 'POSIX process-group signaling')
+    def test_live_or_unverifiable_groups_still_report_permission_errors(self):
+        process = mock.Mock(pid=111)
+        for listing in ['111 S\n', '', 'invalid process listing\n']:
+            with (self.subTest(listing=listing),
+                  mock.patch('validation_runtime.subprocess.check_output',
+                             side_effect=['111 1 111\n', listing]),
+                  mock.patch('validation_runtime.os.getpgrp', return_value=999),
+                  mock.patch('validation_runtime.os.killpg', side_effect=PermissionError(1, 'fixture EPERM')),
+                  self.assertRaises(PermissionError)):
+                stop_tree(process)
 
     def test_cleanup_preserves_recent_unfinished_native_and_evidence_paths(self):
         with tempfile.TemporaryDirectory() as temporary:

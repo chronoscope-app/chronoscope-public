@@ -41,6 +41,21 @@ def stop_tree(process):
                     os.killpg(group, sig)
                 except ProcessLookupError:
                     pass
+                except PermissionError as error:
+                    # Darwin can retain an exited/zombie group after TERM and
+                    # reject the later KILL with EPERM rather than ESRCH. Only
+                    # accept that outcome after ps proves no live members remain.
+                    try:
+                        members = [line.split() for line in subprocess.check_output(
+                            ['/bin/ps', '-axo', 'pgid=,stat='], text=True, timeout=3).splitlines()]
+                        if not members or any(len(row) != 2 for row in members):
+                            raise error
+                        live = any(int(pgid) == group and not state.startswith('Z')
+                                   for pgid, state in members)
+                    except (OSError, subprocess.SubprocessError, ValueError):
+                        raise error
+                    if live:
+                        raise
         send(signal.SIGTERM)
         try:
             process.wait(timeout=2)
