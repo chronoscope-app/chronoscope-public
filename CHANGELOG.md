@@ -4,9 +4,9 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
-## 0.16.4 — experimental preview, 2026-10-28
+## 0.16.4 — experimental preview, 2026-10-29
 
-Windows x64 and Apple Silicon macOS packages are prepared from one frozen Public source commit and validated separately before publication. Both remain experimental: Windows unsigned, macOS ad hoc signed and not notarized.
+[Windows x64 and Apple Silicon macOS downloads](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.4) use per-platform source commits: Windows `b5146aa48db73b60bc9ef7353758cd90782d70f3` and macOS `498b888a93bc95d5491dec1915a4c624354cd1c3`. Application code, assets and dependency locks are byte-identical; the later commit repairs Mac validation cleanup. Both exact packages passed narrow native hosted validation. Windows is unsigned; macOS is ad hoc signed and not notarized. Matching source companions, notices, checksums and validation receipts accompany the downloads.
 
 ### Added
 

@@ -92,7 +92,7 @@ Time heights, tracks and density colors describe recorded samples, not physical 
 
 Open a bundled demo from **Help → Demo datasets**, or import CSV, TSV, Excel or GIS files. Filter, select, chart and save a portable `.chronoscope` project. Optional SI chat and CLI/MCP tools use the same analysis engine. [Features and guides](docs/USER-GUIDE.md) · [Privacy](PRIVACY.md).
 
-**[Download 0.15.2 experimental previews](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.15.2)** for Windows x64 and Apple Silicon macOS. Windows is unsigned; macOS is ad hoc signed and not notarized. Exact source archives, checksums and native validation receipts accompany the downloads. [Platform status](docs/INSTALLATION.md) · [Changes](CHANGELOG.md).
+**[Download 0.16.4 experimental previews](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.4)** for Windows x64 and Apple Silicon macOS. Windows is unsigned; macOS is ad hoc signed and not notarized. Exact source archives, checksums and native validation receipts accompany the downloads. [Platform status](docs/INSTALLATION.md) · [Changes](CHANGELOG.md).
 
 Build with Rust 1.96+, Node 22+ and [platform prerequisites](docs/INSTALLATION.md):
 

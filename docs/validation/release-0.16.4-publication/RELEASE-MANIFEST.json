@@ -1,0 +1,173 @@
+{
+  "format": 1,
+  "version": "0.16.4",
+  "release_kind": "experimental prerelease",
+  "application_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+  "reviewed_validation_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+  "platforms": {
+    "windows-x86_64": {
+      "build_run": 40805588443,
+      "validation_run": 40810595256,
+      "source_commit": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+      "reviewed_validation_commit": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+      "source_archive": "chronoscope-source-windows-x86_64.zip",
+      "package": "chronoscope-windows-x86_64.zip",
+      "sha256": "771c08b325a61b1945705651880c3478ce8e70f7354c93e6e27237c8b1f4a79d",
+      "bytes": 132629292,
+      "validation_status": "passed-narrow",
+      "receipt": "HOSTED-VALIDATION-windows-x86_64.json",
+      "signing": "unsigned"
+    },
+    "macos-arm64": {
+      "build_run": 40811685893,
+      "validation_run": 40817595536,
+      "source_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+      "reviewed_validation_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+      "source_archive": "chronoscope-source.zip",
+      "package": "chronoscope-macos-arm64.tar.xz",
+      "sha256": "cf94c6db8fce533e4480e0363b60bd7922f61451364ac55e7ac91e280d364c11",
+      "bytes": 126737592,
+      "validation_status": "passed-narrow",
+      "receipt": "HOSTED-VALIDATION-macos-arm64.json",
+      "signing": "ad hoc; not notarized"
+    }
+  },
+  "assets": [
+    {
+      "name": "AUDIT-SUMMARY.json",
+      "bytes": 7338,
+      "sha256": "4cbe8ee9d786a52f32ff0fb1ff43498f091abc8772bd68544abd45d0ea41a358"
+    },
+    {
+      "name": "HOSTED-VALIDATION-macos-arm64.json",
+      "bytes": 9184,
+      "sha256": "a07fb37b70bf867eb987147dc22338a956737388a8b63335d7af4dc8ac190da6"
+    },
+    {
+      "name": "HOSTED-VALIDATION-windows-x86_64.json",
+      "bytes": 198522,
+      "sha256": "a895bd62e8849dcea4d8cd21de7fbd4144d625322b567422f63992b927ac25af"
+    },
+    {
+      "name": "SHA256SUMS-macos-arm64.txt",
+      "bytes": 191,
+      "sha256": "b7ef08da7b92f901c1640d9df0687117bdd5e84bdaec9db64ecf0401318b5320"
+    },
+    {
+      "name": "SHA256SUMS-windows-x86_64.txt",
+      "bytes": 196,
+      "sha256": "e3457e99e20ba7c1687b28804b6c8198a917c494fdf840ce2ba54851e78af039"
+    },
+    {
+      "name": "SOURCE-MANIFEST-RELEASE.json",
+      "bytes": 1699,
+      "sha256": "75e0bc5f1eb5b5c378e39176dfb57288a9890ebc0b93686661ec770cc489aaf6"
+    },
+    {
+      "name": "SOURCE-SHA256SUMS.txt",
+      "bytes": 388,
+      "sha256": "56da99c8fb6c17f43cccf41030f7fa7b6775e1ad74b8cd0b51c776fc21503ca8"
+    },
+    {
+      "name": "VALIDATION-macos-arm64.json",
+      "bytes": 5943,
+      "sha256": "59c88e17e42b249fbcf4f186dff50986b25098ecb73860324ddc616baadf9ba6"
+    },
+    {
+      "name": "VALIDATION-windows-x86_64.json",
+      "bytes": 22999,
+      "sha256": "0cfa50f53c7d848d59a9d867406a0ee7d117453e9996b6c6af6ba06c1f1b7e83"
+    },
+    {
+      "name": "chronoscope-dependency-sources.tar.xz",
+      "bytes": 445009172,
+      "sha256": "2c50591c5cdcd8239131077fe8cbb2c2060ab4864ab919ade6314df64fc79bd1"
+    },
+    {
+      "name": "chronoscope-licenses.zip",
+      "bytes": 3387167,
+      "sha256": "10fc315b917cbead1eae2f66e7ad5a178d2467e5b29ae1c60feb1dc0299f60ed"
+    },
+    {
+      "name": "chronoscope-macos-arm64.tar.xz",
+      "bytes": 126737592,
+      "sha256": "cf94c6db8fce533e4480e0363b60bd7922f61451364ac55e7ac91e280d364c11"
+    },
+    {
+      "name": "chronoscope-source-windows-x86_64.zip",
+      "bytes": 204575355,
+      "sha256": "8e936a521ee79910bbb3d503e4d51baf2b7e14fb14f05dbad81ba5997a67ff95"
+    },
+    {
+      "name": "chronoscope-source.zip",
+      "bytes": 204575992,
+      "sha256": "c4f5f7d4d94be3b5f604a287284650dbba9762e6a2e5c27de8964abc3299745b"
+    },
+    {
+      "name": "chronoscope-windows-x86_64.zip",
+      "bytes": 132629292,
+      "sha256": "771c08b325a61b1945705651880c3478ce8e70f7354c93e6e27237c8b1f4a79d"
+    }
+  ],
+  "source": {
+    "application_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+    "source_files": 3277,
+    "locked_cargo_archives": 834,
+    "locked_npm_archives": 145,
+    "every_locked_registry_source_verified": true,
+    "assets": [
+      {
+        "name": "chronoscope-source.zip",
+        "bytes": 204575992,
+        "sha256": "c4f5f7d4d94be3b5f604a287284650dbba9762e6a2e5c27de8964abc3299745b"
+      },
+      {
+        "name": "chronoscope-source-windows-x86_64.zip",
+        "bytes": 204575355,
+        "sha256": "8e936a521ee79910bbb3d503e4d51baf2b7e14fb14f05dbad81ba5997a67ff95"
+      },
+      {
+        "name": "chronoscope-dependency-sources.tar.xz",
+        "bytes": 445009172,
+        "sha256": "2c50591c5cdcd8239131077fe8cbb2c2060ab4864ab919ade6314df64fc79bd1"
+      },
+      {
+        "name": "chronoscope-licenses.zip",
+        "bytes": 3387167,
+        "sha256": "10fc315b917cbead1eae2f66e7ad5a178d2467e5b29ae1c60feb1dc0299f60ed"
+      }
+    ],
+    "platform_application_commits": {
+      "windows-x86_64": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+      "macos-arm64": "498b888a93bc95d5491dec1915a4c624354cd1c3"
+    },
+    "source_archives": {
+      "windows-x86_64": "chronoscope-source-windows-x86_64.zip",
+      "macos-arm64": "chronoscope-source.zip"
+    },
+    "application_source_parity": {
+      "windows_source_commit": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+      "macos_source_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+      "only_different_files": [
+        "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+        "scripts/test_guarded_run.py",
+        "scripts/validation_runtime.py"
+      ],
+      "application_code_assets_and_dependency_locks_byte_identical": true,
+      "windows_specific_cleanup_branch_unchanged": true
+    }
+  },
+  "application_source_parity": {
+    "windows_source_commit": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+    "macos_source_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+    "only_different_files": [
+      "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+      "scripts/test_guarded_run.py",
+      "scripts/validation_runtime.py"
+    ],
+    "application_code_assets_and_dependency_locks_byte_identical": true,
+    "windows_specific_cleanup_branch_unchanged": true
+  },
+  "real_device_tests": false,
+  "installer_interaction_tested": false
+}

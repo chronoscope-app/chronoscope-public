@@ -1,4 +1,4 @@
-# Chronoscope 0.15.2 user guide
+# Chronoscope 0.16.4 user guide
 
 The same guide is available offline from **Help → Full user guide** in the app.
 

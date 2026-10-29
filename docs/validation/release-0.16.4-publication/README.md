@@ -1,0 +1,5 @@
+# Published experimental preview 0.16.4
+
+Published 2026-10-29 with per-platform source commits recorded in the manifest. Promoted source is `498b888a93bc95d5491dec1915a4c624354cd1c3`; Windows uses the earlier byte-identical application source `b5146aa48db73b60bc9ef7353758cd90782d70f3`. The difference is validation cleanup, tests and a promotion record. Exact Windows x64 and Apple Silicon app downloads passed their native hosted checks; their build IDs, validator IDs and hashes are in RELEASE-MANIFEST.json. Source companions contain all 979 locked registry archives and 3,277 application files, independently checked against the frozen source. All release asset hashes were checked against GitHub. Prior releases and tags are unchanged.
+
+Windows remains unsigned; macOS is ad hoc signed and not notarized. Fresh quarantined-download, manual installer, physical-device/GPU and production acceptance are not established. The release Mac app was installed in ~/Applications without opening the local desktop UI.

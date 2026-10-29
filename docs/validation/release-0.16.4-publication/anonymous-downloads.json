@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "verified_utc": "2026-10-29T04:31:09.453037+00:00",
+  "downloads": [
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/SHA256SUMS.txt",
+      "bytes": 1523,
+      "sha256": "43f551779db0b5cc136e06d03ee5a8692481c63c748fc21f5b0ffb43a6325698",
+      "authorization_header_used": false
+    },
+    {
+      "name": "chronoscope-dependency-sources.tar.xz",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-dependency-sources.tar.xz",
+      "bytes": 445009172,
+      "sha256": "2c50591c5cdcd8239131077fe8cbb2c2060ab4864ab919ade6314df64fc79bd1",
+      "authorization_header_used": false
+    },
+    {
+      "name": "chronoscope-licenses.zip",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-licenses.zip",
+      "bytes": 3387167,
+      "sha256": "10fc315b917cbead1eae2f66e7ad5a178d2467e5b29ae1c60feb1dc0299f60ed",
+      "authorization_header_used": false
+    },
+    {
+      "name": "chronoscope-macos-arm64.tar.xz",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-macos-arm64.tar.xz",
+      "bytes": 126737592,
+      "sha256": "cf94c6db8fce533e4480e0363b60bd7922f61451364ac55e7ac91e280d364c11",
+      "authorization_header_used": false
+    },
+    {
+      "name": "chronoscope-source-windows-x86_64.zip",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-source-windows-x86_64.zip",
+      "bytes": 204575355,
+      "sha256": "8e936a521ee79910bbb3d503e4d51baf2b7e14fb14f05dbad81ba5997a67ff95",
+      "authorization_header_used": false
+    },
+    {
+      "name": "chronoscope-source.zip",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-source.zip",
+      "bytes": 204575992,
+      "sha256": "c4f5f7d4d94be3b5f604a287284650dbba9762e6a2e5c27de8964abc3299745b",
+      "authorization_header_used": false
+    },
+    {
+      "name": "chronoscope-windows-x86_64.zip",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-windows-x86_64.zip",
+      "bytes": 132629292,
+      "sha256": "771c08b325a61b1945705651880c3478ce8e70f7354c93e6e27237c8b1f4a79d",
+      "authorization_header_used": false
+    }
+  ]
+}
