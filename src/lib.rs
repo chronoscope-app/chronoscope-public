@@ -17,6 +17,7 @@ pub mod pattern_scan;
 pub mod project;
 #[cfg(feature = "legacy")]
 pub mod scene;
+pub mod system_resources;
 
 pub mod balanced_terrain;
 pub mod basemap;

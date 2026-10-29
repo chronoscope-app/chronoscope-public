@@ -1,0 +1,1871 @@
+{
+  "passed": true,
+  "checks": [
+    "Native frontend ready before fixture changes",
+    "Native OS memory sample and automatic renderer diagnostics are available",
+    "Light entities at near distance captured through app MCP",
+    "Light entities at far distance captured through app MCP"
+  ],
+  "baseline": false,
+  "capture_only": true,
+  "version": "0.16.8",
+  "frontend_readiness": [
+    {
+      "attempt": 1,
+      "ready": false,
+      "error": "{'content': [{'text': 'UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying', 'type': 'text'}], 'isError': True, 'structuredContent': {'error': {'code': 'UNAVAILABLE', 'message': 'UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying'}}}"
+    },
+    {
+      "attempt": 2,
+      "ready": true
+    }
+  ],
+  "initial": {
+    "backend": "WebGL2",
+    "diagnostics": {
+      "allocatedMarkerSlots": 0,
+      "allocatedTrackPolylines": 0,
+      "allocatedTrackVertices": 0,
+      "altitude": {
+        "approximate": 0,
+        "known": 0,
+        "maximum": 0,
+        "minimum": 0,
+        "omitted": 0
+      },
+      "arrivingPointCount": 0,
+      "arrivingTriangleCount": 0,
+      "axisLabels": 4,
+      "contextRecoveries": 0,
+      "displayTimeBounds": [
+        0,
+        1
+      ],
+      "effectError": "",
+      "engine": "CesiumJS",
+      "fadeDurationsMs": {
+        "arrival": 180,
+        "departure": 800
+      },
+      "fadingPointCount": 0,
+      "fadingStemSegments": 0,
+      "fadingTrackSegments": 0,
+      "fadingTrailSegments": 0,
+      "fadingTriangleCount": 0,
+      "geodesicRendering": {
+        "geometry": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        },
+        "maximumAddedVertices": 400000,
+        "sourceEndpointBudget": 400000,
+        "trails": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        }
+      },
+      "geometryFeatures": 0,
+      "geometryPrimitives": 2,
+      "globeAltitude": false,
+      "globeTime": false,
+      "globeTimeScale": 1,
+      "graphics": {
+        "framebuffer": [
+          1857,
+          1338
+        ],
+        "renderer": "Apple GPU",
+        "resolutionScale": 1.5,
+        "vendor": "Apple Inc.",
+        "version": "WebGL 2.0"
+      },
+      "lastRenderError": "",
+      "lastResourceGeometryMs": 3,
+      "navigation": {
+        "active": false,
+        "flatOnly": false,
+        "freeLook": false,
+        "gestureMaximumTiltDegrees": 85,
+        "inertia": false,
+        "keyboardFocus": "map",
+        "northUpOnly": false
+      },
+      "orbitHandles": 4,
+      "performance": {
+        "active": false,
+        "fps": null,
+        "frameP95Ms": null,
+        "renderCpuP95Ms": null,
+        "renderedFrames": 0,
+        "sampleFrames": 0,
+        "updateRateLimitHz": null
+      },
+      "playbackFade": true,
+      "playbackFadeAmount": 50,
+      "pointCount": 0,
+      "recovering": false,
+      "renderErrorCount": 0,
+      "requestRenderMode": true,
+      "resourceGovernor": {
+        "automatic": true,
+        "changes": 0,
+        "gpuMemoryMeasured": false,
+        "graphicsRenderer": "Apple GPU",
+        "limits": {
+          "afterimages": 100000,
+          "arcVertices": 200000,
+          "fadeCohorts": 256,
+          "fadeSegments": 100000,
+          "maxPixels": 8000000,
+          "maxPoints": 100000,
+          "maxScale": 1.5,
+          "name": "full",
+          "screenError": 1,
+          "streetCanvases": 24,
+          "tiles": 100
+        },
+        "memory": {
+          "available_bytes": 10708221952,
+          "sample_age_ms": 0,
+          "scope": "host",
+          "supported": true,
+          "swap_used_bytes": 255328256,
+          "total_bytes": 17179869184
+        },
+        "memorySampleAgeMs": 11068,
+        "profile": "full",
+        "reason": "healthy",
+        "recoveryHoldMs": 45000
+      },
+      "resourceReuse": {
+        "markerCollectionBuilds": 0,
+        "markerCollectionReuses": 3,
+        "playbackMarkerCompactions": 0,
+        "playbackMarkerOrderFallbacks": 0,
+        "playbackMarkerPatches": 0,
+        "playbackMarkerReuses": 0,
+        "playbackMarkerSmallRebuilds": 0,
+        "stemGeometryBuilds": 0,
+        "trackPositionReuses": 0,
+        "trackPositionSharingEnabled": true,
+        "trailGeometryBuilds": 3,
+        "trailGlobeStreamRebuilds": 0,
+        "trailSorts": 3,
+        "trailStyleUpdates": 3
+      },
+      "sceneMode": 1,
+      "selectionCount": 0,
+      "spaceTimeFloor": {
+        "bounds": null,
+        "grabHandleAnchor": "viewport-edge",
+        "mapBounds": [
+          -122.65613412880863,
+          37.71254039654034,
+          -122.17386587119132,
+          38.069504343143535
+        ],
+        "padding": {
+          "bottom": 62.440000000000005,
+          "left": 49.52,
+          "right": 37.14,
+          "top": 89.2
+        },
+        "role": "time-axis-reference"
+      },
+      "stemSegments": 0,
+      "terrain": {
+        "basemap": "streets",
+        "basemapAlignmentErrorPixels": 0,
+        "basemapError": "",
+        "basemapMaximumLevel": 0,
+        "basemapPending": 0,
+        "basemapRenderedTiles": 0,
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "imageryLayers": 2,
+        "imageryRequestedTiles": 0,
+        "mode": "space-time",
+        "terrainActive": true,
+        "terrainCovered": 66049,
+        "terrainPendingTiles": 0,
+        "terrainProviderChanges": 1,
+        "tileCount": 0,
+        "verticalDatum": "egm96"
+      },
+      "timeHeightMeters": 6774.268485293465,
+      "trackCpuStages": {
+        "ordering": {
+          "calls": 3,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "projectionSimplification": {
+          "calls": 3,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "runs": {
+          "calls": 3,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        }
+      },
+      "trackPolylines": 0,
+      "trailInputEdges": 0,
+      "trailOutputEdges": 0,
+      "triangleCount": 0,
+      "triangleVisibleCount": 0
+    },
+    "gis_layers": [],
+    "hardware_acceleration": "unknown",
+    "loading": {
+      "effects": false,
+      "gis": 0,
+      "imagery": false
+    },
+    "mode": "space-time",
+    "renderer": "cesium",
+    "revision": 1,
+    "scene": {
+      "bounds": null,
+      "cesium_camera": {
+        "direction": [
+          1.8447512871633396e-17,
+          0.743144825477394,
+          -0.6691306063588585
+        ],
+        "position": [
+          -13627175.465458583,
+          4190385.0613007713,
+          16617.0952084139
+        ],
+        "up": [
+          9.130783715176499e-17,
+          0.669130606358858,
+          0.7431448254773945
+        ]
+      },
+      "chart": {
+        "aggregate": "count",
+        "bins": 20,
+        "group": "",
+        "kind": "bar",
+        "limit": 2000,
+        "period_a": null,
+        "period_b": null,
+        "scope": "visible",
+        "source": null,
+        "stacked": false,
+        "time_bucket": "day",
+        "title": "",
+        "trendline": false,
+        "x": "entity",
+        "x_axis": "category",
+        "x_label": "",
+        "y": "value",
+        "y2": "",
+        "y2_label": "",
+        "y_label": ""
+      },
+      "chart_presets": [],
+      "display": {
+        "bloom": false,
+        "bloom_radius": 0.1,
+        "bloom_strength": 1.3,
+        "bloom_threshold": 0.1,
+        "cluster_pixels": 48,
+        "heat_max": null,
+        "heat_radius": 32,
+        "heat_reference_zoom": null,
+        "heat_weight": "count",
+        "mode": "auto",
+        "partition": "all",
+        "point_scale": 1,
+        "show_centroids": true,
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": true,
+        "spatial_culling": true,
+        "time_bin_minutes": 0,
+        "track_opacity": 0.25,
+        "trail_gap_minutes": 180,
+        "trail_opacity": 0.25,
+        "trail_pixels": 2
+      },
+      "entity_colors": {},
+      "expanded": false,
+      "focus": 0.45,
+      "gis_table": null,
+      "globe_altitude": false,
+      "globe_time": false,
+      "globe_time_scale": 1,
+      "inspector_tab": "inspect",
+      "measurement": null,
+      "mode": "space-time",
+      "playback_fade": true,
+      "playback_fade_amount": 50,
+      "render_budget": 20000,
+      "renderer": "cesium",
+      "table_attributes": true,
+      "table_column_offset": 0,
+      "table_descending": false,
+      "table_open": false,
+      "table_respect_filters": false,
+      "table_sort": "time",
+      "table_source": null,
+      "time_height": 2.8,
+      "view_states": {
+        "space-time": {
+          "camera": {
+            "direction": [
+              1.8447512871633402e-17,
+              0.7431448254773938,
+              -0.6691306063588587
+            ],
+            "position": [
+              -13627175.465458583,
+              4190385.0613007713,
+              16617.0952084139
+            ],
+            "up": [
+              9.130783715176501e-17,
+              0.6691306063588578,
+              0.7431448254773947
+            ]
+          },
+          "center": [
+            -122.41499999999999,
+            37.80865493721895,
+            0
+          ],
+          "footprint": [
+            [
+              -122.65355916122502,
+              38.06537318390672,
+              0
+            ],
+            [
+              -122.17644083877494,
+              38.065373183906736,
+              0
+            ],
+            [
+              -122.32698243785515,
+              37.71393749222326,
+              0
+            ],
+            [
+              -122.5030175621448,
+              37.71393749222326,
+              0
+            ]
+          ],
+          "ground_width": 28675.670482909693,
+          "heading": 0,
+          "tilt": 47.999999999999964
+        }
+      }
+    },
+    "viewport": {
+      "height": 892,
+      "width": 1238
+    },
+    "webgpu_api_available": true
+  },
+  "system_resources": {
+    "available_bytes": 10751705088,
+    "sample_age_ms": 15,
+    "scope": "host",
+    "supported": true,
+    "swap_used_bytes": 255328256,
+    "total_bytes": 17179869184
+  },
+  "light_ready": {
+    "backend": "WebGL2",
+    "diagnostics": {
+      "allocatedMarkerSlots": 0,
+      "allocatedTrackPolylines": 0,
+      "allocatedTrackVertices": 0,
+      "altitude": {
+        "approximate": 0,
+        "known": 0,
+        "maximum": 0,
+        "minimum": 0,
+        "omitted": 0
+      },
+      "arrivingPointCount": 0,
+      "arrivingTriangleCount": 0,
+      "axisLabels": 4,
+      "contextRecoveries": 0,
+      "displayTimeBounds": [
+        0,
+        1
+      ],
+      "effectError": "",
+      "engine": "CesiumJS",
+      "fadeDurationsMs": {
+        "arrival": 180,
+        "departure": 800
+      },
+      "fadingPointCount": 0,
+      "fadingStemSegments": 0,
+      "fadingTrackSegments": 0,
+      "fadingTrailSegments": 0,
+      "fadingTriangleCount": 0,
+      "geodesicRendering": {
+        "geometry": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        },
+        "maximumAddedVertices": 400000,
+        "sourceEndpointBudget": 400000,
+        "trails": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        }
+      },
+      "geometryFeatures": 0,
+      "geometryPrimitives": 2,
+      "globeAltitude": false,
+      "globeTime": false,
+      "globeTimeScale": 1,
+      "graphics": {
+        "framebuffer": [
+          1857,
+          1338
+        ],
+        "renderer": "Apple GPU",
+        "resolutionScale": 1.5,
+        "vendor": "Apple Inc.",
+        "version": "WebGL 2.0"
+      },
+      "lastRenderError": "",
+      "lastResourceGeometryMs": 0,
+      "navigation": {
+        "active": false,
+        "flatOnly": false,
+        "freeLook": false,
+        "gestureMaximumTiltDegrees": 85,
+        "inertia": false,
+        "keyboardFocus": "map",
+        "northUpOnly": false
+      },
+      "orbitHandles": 4,
+      "performance": {
+        "active": false,
+        "fps": null,
+        "frameP95Ms": null,
+        "renderCpuP95Ms": null,
+        "renderedFrames": 0,
+        "sampleFrames": 0,
+        "updateRateLimitHz": null
+      },
+      "playbackFade": true,
+      "playbackFadeAmount": 50,
+      "pointCount": 0,
+      "recovering": false,
+      "renderErrorCount": 0,
+      "requestRenderMode": true,
+      "resourceGovernor": {
+        "automatic": true,
+        "changes": 0,
+        "gpuMemoryMeasured": false,
+        "graphicsRenderer": "Apple GPU",
+        "limits": {
+          "afterimages": 100000,
+          "arcVertices": 200000,
+          "fadeCohorts": 256,
+          "fadeSegments": 100000,
+          "maxPixels": 8000000,
+          "maxPoints": 100000,
+          "maxScale": 1.5,
+          "name": "full",
+          "screenError": 1,
+          "streetCanvases": 24,
+          "tiles": 100
+        },
+        "memory": {
+          "available_bytes": 10751705088,
+          "sample_age_ms": 0,
+          "scope": "host",
+          "supported": true,
+          "swap_used_bytes": 255328256,
+          "total_bytes": 17179869184
+        },
+        "memorySampleAgeMs": 28,
+        "profile": "full",
+        "reason": "healthy",
+        "recoveryHoldMs": 45000
+      },
+      "resourceReuse": {
+        "markerCollectionBuilds": 0,
+        "markerCollectionReuses": 3,
+        "playbackMarkerCompactions": 0,
+        "playbackMarkerOrderFallbacks": 0,
+        "playbackMarkerPatches": 0,
+        "playbackMarkerReuses": 0,
+        "playbackMarkerSmallRebuilds": 0,
+        "stemGeometryBuilds": 0,
+        "trackPositionReuses": 0,
+        "trackPositionSharingEnabled": true,
+        "trailGeometryBuilds": 3,
+        "trailGlobeStreamRebuilds": 0,
+        "trailSorts": 3,
+        "trailStyleUpdates": 3
+      },
+      "sceneMode": 1,
+      "selectionCount": 0,
+      "spaceTimeFloor": {
+        "bounds": null,
+        "grabHandleAnchor": "viewport-edge",
+        "mapBounds": [
+          -122.65613412880866,
+          37.71254039654034,
+          -122.17386587119132,
+          38.069504343143535
+        ],
+        "padding": {
+          "bottom": 62.440000000000005,
+          "left": 49.52,
+          "right": 37.14,
+          "top": 89.2
+        },
+        "role": "time-axis-reference"
+      },
+      "stemSegments": 0,
+      "terrain": {
+        "basemap": "none",
+        "basemapAlignmentErrorPixels": 0,
+        "basemapError": "",
+        "basemapMaximumLevel": 0,
+        "basemapPending": 0,
+        "basemapRenderedTiles": 0,
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "imageryLayers": 1,
+        "imageryRequestedTiles": 0,
+        "mode": "space-time",
+        "terrainActive": true,
+        "terrainCovered": 66049,
+        "terrainPendingTiles": 0,
+        "terrainProviderChanges": 1,
+        "tileCount": 0,
+        "verticalDatum": "egm96"
+      },
+      "timeHeightMeters": 6774.268485293465,
+      "trackCpuStages": {
+        "ordering": {
+          "calls": 3,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "projectionSimplification": {
+          "calls": 3,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "runs": {
+          "calls": 3,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        }
+      },
+      "trackPolylines": 0,
+      "trailInputEdges": 0,
+      "trailOutputEdges": 0,
+      "triangleCount": 0,
+      "triangleVisibleCount": 0
+    },
+    "gis_layers": [],
+    "hardware_acceleration": "unknown",
+    "loading": {
+      "effects": false,
+      "gis": 0,
+      "imagery": false
+    },
+    "mode": "space-time",
+    "renderer": "cesium",
+    "revision": 2,
+    "scene": {
+      "bounds": null,
+      "cesium_camera": {
+        "direction": [
+          1.8447512871633418e-17,
+          0.7431448254773935,
+          -0.6691306063588592
+        ],
+        "position": [
+          -13627175.465458583,
+          4190385.0613007713,
+          16617.0952084139
+        ],
+        "up": [
+          9.130783715176506e-17,
+          0.6691306063588573,
+          0.7431448254773951
+        ]
+      },
+      "chart": {
+        "aggregate": "count",
+        "bins": 20,
+        "group": "",
+        "kind": "bar",
+        "limit": 2000,
+        "period_a": null,
+        "period_b": null,
+        "scope": "visible",
+        "source": null,
+        "stacked": false,
+        "time_bucket": "day",
+        "title": "",
+        "trendline": false,
+        "x": "entity",
+        "x_axis": "category",
+        "x_label": "",
+        "y": "value",
+        "y2": "",
+        "y2_label": "",
+        "y_label": ""
+      },
+      "chart_presets": [],
+      "display": {
+        "bloom": false,
+        "bloom_radius": 0.1,
+        "bloom_strength": 1.3,
+        "bloom_threshold": 0.1,
+        "cluster_pixels": 48,
+        "heat_max": null,
+        "heat_radius": 32,
+        "heat_reference_zoom": null,
+        "heat_weight": "count",
+        "mode": "auto",
+        "partition": "all",
+        "point_scale": 1,
+        "show_centroids": true,
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": true,
+        "spatial_culling": true,
+        "time_bin_minutes": 0,
+        "track_opacity": 0.25,
+        "trail_gap_minutes": 180,
+        "trail_opacity": 0.25,
+        "trail_pixels": 2
+      },
+      "entity_colors": {},
+      "expanded": false,
+      "focus": 0.45,
+      "gis_table": null,
+      "globe_altitude": false,
+      "globe_time": false,
+      "globe_time_scale": 1,
+      "inspector_tab": "inspect",
+      "measurement": null,
+      "mode": "space-time",
+      "playback_fade": true,
+      "playback_fade_amount": 50,
+      "render_budget": 20000,
+      "renderer": "cesium",
+      "table_attributes": true,
+      "table_column_offset": 0,
+      "table_descending": false,
+      "table_open": false,
+      "table_respect_filters": false,
+      "table_sort": "time",
+      "table_source": null,
+      "time_height": 2.8,
+      "view_states": {
+        "space-time": {
+          "camera": {
+            "direction": [
+              1.8447512871633424e-17,
+              0.7431448254773932,
+              -0.6691306063588595
+            ],
+            "position": [
+              -13627175.465458583,
+              4190385.0613007713,
+              16617.0952084139
+            ],
+            "up": [
+              9.130783715176509e-17,
+              0.6691306063588571,
+              0.7431448254773954
+            ]
+          },
+          "center": [
+            -122.41499999999999,
+            37.80865493721895,
+            0
+          ],
+          "footprint": [
+            [
+              -122.65355916122502,
+              38.06537318390672,
+              0
+            ],
+            [
+              -122.17644083877494,
+              38.065373183906736,
+              0
+            ],
+            [
+              -122.32698243785515,
+              37.71393749222326,
+              0
+            ],
+            [
+              -122.5030175621448,
+              37.71393749222326,
+              0
+            ]
+          ],
+          "ground_width": 28675.670482909693,
+          "heading": 0,
+          "tilt": 47.999999999999915
+        }
+      }
+    },
+    "viewport": {
+      "height": 892,
+      "width": 1238
+    },
+    "webgpu_api_available": true
+  },
+  "import_ready": {
+    "backend": "WebGL2",
+    "diagnostics": {
+      "allocatedMarkerSlots": 202,
+      "allocatedTrackPolylines": 4,
+      "allocatedTrackVertices": 404,
+      "altitude": {
+        "approximate": 0,
+        "known": 0,
+        "maximum": 0,
+        "minimum": 0,
+        "omitted": 202
+      },
+      "arrivingPointCount": 0,
+      "arrivingTriangleCount": 0,
+      "axisLabels": 1,
+      "contextRecoveries": 0,
+      "displayTimeBounds": [
+        1793232000,
+        1793232100
+      ],
+      "effectError": "",
+      "engine": "CesiumJS",
+      "fadeDurationsMs": {
+        "arrival": 180,
+        "departure": 800
+      },
+      "fadingPointCount": 0,
+      "fadingStemSegments": 0,
+      "fadingTrackSegments": 0,
+      "fadingTrailSegments": 0,
+      "fadingTriangleCount": 0,
+      "geodesicRendering": {
+        "geometry": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        },
+        "maximumAddedVertices": 400000,
+        "sourceEndpointBudget": 400000,
+        "trails": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 400,
+          "sourceSegments": 400
+        }
+      },
+      "geometryFeatures": 0,
+      "geometryPrimitives": 2,
+      "globeAltitude": false,
+      "globeTime": false,
+      "globeTimeScale": 1,
+      "graphics": {
+        "framebuffer": [
+          1857,
+          1338
+        ],
+        "renderer": "Apple GPU",
+        "resolutionScale": 1.5,
+        "vendor": "Apple Inc.",
+        "version": "WebGL 2.0"
+      },
+      "lastRenderError": "",
+      "lastResourceGeometryMs": 0,
+      "navigation": {
+        "active": false,
+        "flatOnly": false,
+        "freeLook": false,
+        "gestureMaximumTiltDegrees": 85,
+        "inertia": false,
+        "keyboardFocus": "map",
+        "northUpOnly": false
+      },
+      "orbitHandles": 4,
+      "performance": {
+        "active": false,
+        "fps": null,
+        "frameP95Ms": null,
+        "renderCpuP95Ms": null,
+        "renderedFrames": 0,
+        "sampleFrames": 0,
+        "updateRateLimitHz": null
+      },
+      "playbackFade": true,
+      "playbackFadeAmount": 50,
+      "pointCount": 202,
+      "recovering": false,
+      "renderErrorCount": 0,
+      "requestRenderMode": true,
+      "resourceGovernor": {
+        "automatic": true,
+        "changes": 0,
+        "gpuMemoryMeasured": false,
+        "graphicsRenderer": "Apple GPU",
+        "limits": {
+          "afterimages": 100000,
+          "arcVertices": 200000,
+          "fadeCohorts": 256,
+          "fadeSegments": 100000,
+          "maxPixels": 8000000,
+          "maxPoints": 100000,
+          "maxScale": 1.5,
+          "name": "full",
+          "screenError": 1,
+          "streetCanvases": 24,
+          "tiles": 100
+        },
+        "memory": {
+          "available_bytes": 10751705088,
+          "sample_age_ms": 0,
+          "scope": "host",
+          "supported": true,
+          "swap_used_bytes": 255328256,
+          "total_bytes": 17179869184
+        },
+        "memorySampleAgeMs": 54,
+        "profile": "full",
+        "reason": "healthy",
+        "recoveryHoldMs": 45000
+      },
+      "resourceReuse": {
+        "markerCollectionBuilds": 1,
+        "markerCollectionReuses": 3,
+        "playbackMarkerCompactions": 0,
+        "playbackMarkerOrderFallbacks": 0,
+        "playbackMarkerPatches": 0,
+        "playbackMarkerReuses": 0,
+        "playbackMarkerSmallRebuilds": 0,
+        "stemGeometryBuilds": 1,
+        "trackPositionReuses": 606,
+        "trackPositionSharingEnabled": true,
+        "trailGeometryBuilds": 4,
+        "trailGlobeStreamRebuilds": 0,
+        "trailSorts": 4,
+        "trailStyleUpdates": 4
+      },
+      "sceneMode": 1,
+      "selectionCount": 0,
+      "spaceTimeFloor": {
+        "bounds": null,
+        "grabHandleAnchor": "viewport-edge",
+        "mapBounds": [
+          -122.65613412880866,
+          37.71254039654034,
+          -122.17386587119132,
+          38.069504343143535
+        ],
+        "padding": {
+          "bottom": 62.440000000000005,
+          "left": 49.52,
+          "right": 37.14,
+          "top": 89.2
+        },
+        "role": "time-axis-reference"
+      },
+      "stemSegments": 202,
+      "terrain": {
+        "basemap": "none",
+        "basemapAlignmentErrorPixels": 0,
+        "basemapError": "",
+        "basemapMaximumLevel": 0,
+        "basemapPending": 0,
+        "basemapRenderedTiles": 0,
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "imageryLayers": 1,
+        "imageryRequestedTiles": 0,
+        "mode": "space-time",
+        "terrainActive": true,
+        "terrainCovered": 66049,
+        "terrainPendingTiles": 0,
+        "terrainProviderChanges": 1,
+        "tileCount": 0,
+        "verticalDatum": "egm96"
+      },
+      "timeHeightMeters": 44930.772876695926,
+      "trackCpuStages": {
+        "ordering": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "projectionSimplification": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "runs": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "stemConstruction": {
+          "calls": 1,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "stemCoordinates": {
+          "calls": 1,
+          "lastMs": 1,
+          "maxMs": 1,
+          "totalMs": 1
+        },
+        "trailConstruction": {
+          "calls": 4,
+          "lastMs": 1,
+          "maxMs": 1,
+          "totalMs": 1
+        },
+        "trailCoordinates": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        }
+      },
+      "trackPolylines": 4,
+      "trailInputEdges": 200,
+      "trailOutputEdges": 200,
+      "triangleCount": 0,
+      "triangleVisibleCount": 0
+    },
+    "gis_layers": [],
+    "hardware_acceleration": "unknown",
+    "loading": {
+      "effects": false,
+      "gis": 0,
+      "imagery": false
+    },
+    "mode": "space-time",
+    "renderer": "cesium",
+    "revision": 4,
+    "scene": {
+      "bounds": null,
+      "cesium_camera": {
+        "direction": [
+          1.8447512871633436e-17,
+          0.7431448254773928,
+          -0.6691306063588599
+        ],
+        "position": [
+          -13627175.465458583,
+          4190385.0613007713,
+          16617.0952084139
+        ],
+        "up": [
+          9.130783715176512e-17,
+          0.6691306063588566,
+          0.7431448254773957
+        ]
+      },
+      "chart": {
+        "aggregate": "count",
+        "bins": 20,
+        "group": "",
+        "kind": "bar",
+        "limit": 2000,
+        "period_a": null,
+        "period_b": null,
+        "scope": "visible",
+        "source": null,
+        "stacked": false,
+        "time_bucket": "day",
+        "title": "",
+        "trendline": false,
+        "x": "entity",
+        "x_axis": "category",
+        "x_label": "",
+        "y": "value",
+        "y2": "",
+        "y2_label": "",
+        "y_label": ""
+      },
+      "chart_presets": [],
+      "display": {
+        "bloom": false,
+        "bloom_radius": 0.1,
+        "bloom_strength": 1.3,
+        "bloom_threshold": 0.1,
+        "cluster_pixels": 48,
+        "heat_max": null,
+        "heat_radius": 32,
+        "heat_reference_zoom": null,
+        "heat_weight": "count",
+        "mode": "auto",
+        "partition": "all",
+        "point_scale": 1,
+        "show_centroids": true,
+        "show_points": true,
+        "show_tracks": true,
+        "show_trails": true,
+        "spatial_culling": true,
+        "time_bin_minutes": 0,
+        "track_opacity": 0.25,
+        "trail_gap_minutes": 180,
+        "trail_opacity": 0.25,
+        "trail_pixels": 2
+      },
+      "entity_colors": {},
+      "expanded": false,
+      "focus": 0.45,
+      "gis_table": null,
+      "globe_altitude": false,
+      "globe_time": false,
+      "globe_time_scale": 1,
+      "inspector_tab": "inspect",
+      "measurement": null,
+      "mode": "space-time",
+      "playback_fade": true,
+      "playback_fade_amount": 50,
+      "render_budget": 20000,
+      "renderer": "cesium",
+      "table_attributes": true,
+      "table_column_offset": 0,
+      "table_descending": false,
+      "table_open": false,
+      "table_respect_filters": false,
+      "table_sort": "time",
+      "table_source": null,
+      "time_height": 2.8,
+      "view_states": {
+        "space-time": {
+          "camera": {
+            "direction": [
+              1.8447512871633442e-17,
+              0.7431448254773926,
+              -0.6691306063588601
+            ],
+            "position": [
+              -13627175.465458583,
+              4190385.0613007713,
+              16617.0952084139
+            ],
+            "up": [
+              9.130783715176515e-17,
+              0.6691306063588564,
+              0.7431448254773959
+            ]
+          },
+          "center": [
+            -122.41499999999999,
+            37.80865493721895,
+            0
+          ],
+          "footprint": [
+            [
+              -122.65355916122502,
+              38.06537318390672,
+              0
+            ],
+            [
+              -122.17644083877494,
+              38.065373183906736,
+              0
+            ],
+            [
+              -122.32698243785515,
+              37.71393749222326,
+              0
+            ],
+            [
+              -122.5030175621448,
+              37.71393749222326,
+              0
+            ]
+          ],
+          "ground_width": 28675.670482909693,
+          "heading": 0,
+          "tilt": 47.999999999999865
+        }
+      }
+    },
+    "viewport": {
+      "height": 892,
+      "width": 1238
+    },
+    "webgpu_api_available": true
+  },
+  "near": {
+    "backend": "WebGL2",
+    "diagnostics": {
+      "allocatedMarkerSlots": 202,
+      "allocatedTrackPolylines": 0,
+      "allocatedTrackVertices": 0,
+      "altitude": {
+        "approximate": 0,
+        "known": 0,
+        "maximum": 0,
+        "minimum": 0,
+        "omitted": 202
+      },
+      "arrivingPointCount": 0,
+      "arrivingTriangleCount": 0,
+      "axisLabels": 0,
+      "contextRecoveries": 0,
+      "displayTimeBounds": [
+        1793232000,
+        1793232100
+      ],
+      "effectError": "",
+      "engine": "CesiumJS",
+      "fadeDurationsMs": {
+        "arrival": 180,
+        "departure": 800
+      },
+      "fadingPointCount": 0,
+      "fadingStemSegments": 0,
+      "fadingTrackSegments": 0,
+      "fadingTrailSegments": 0,
+      "fadingTriangleCount": 0,
+      "geodesicRendering": {
+        "geometry": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        },
+        "maximumAddedVertices": 400000,
+        "sourceEndpointBudget": 400000,
+        "trails": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        }
+      },
+      "geometryFeatures": 0,
+      "geometryPrimitives": 2,
+      "globeAltitude": false,
+      "globeTime": false,
+      "globeTimeScale": 1,
+      "graphics": {
+        "framebuffer": [
+          1857,
+          1338
+        ],
+        "renderer": "Apple GPU",
+        "resolutionScale": 1.5,
+        "vendor": "Apple Inc.",
+        "version": "WebGL 2.0"
+      },
+      "lastRenderError": "",
+      "lastResourceGeometryMs": 0,
+      "navigation": {
+        "active": false,
+        "flatOnly": false,
+        "freeLook": false,
+        "gestureMaximumTiltDegrees": 85,
+        "inertia": false,
+        "keyboardFocus": "map",
+        "northUpOnly": false
+      },
+      "orbitHandles": 0,
+      "performance": {
+        "active": false,
+        "fps": null,
+        "frameP95Ms": 3,
+        "renderCpuP95Ms": 42,
+        "renderedFrames": 2,
+        "sampleFrames": 1,
+        "updateRateLimitHz": null
+      },
+      "playbackFade": true,
+      "playbackFadeAmount": 50,
+      "pointCount": 202,
+      "recovering": false,
+      "renderErrorCount": 0,
+      "requestRenderMode": true,
+      "resourceGovernor": {
+        "automatic": true,
+        "changes": 0,
+        "gpuMemoryMeasured": false,
+        "graphicsRenderer": "Apple GPU",
+        "limits": {
+          "afterimages": 100000,
+          "arcVertices": 200000,
+          "fadeCohorts": 256,
+          "fadeSegments": 100000,
+          "maxPixels": 8000000,
+          "maxPoints": 100000,
+          "maxScale": 1.5,
+          "name": "full",
+          "screenError": 1,
+          "streetCanvases": 24,
+          "tiles": 100
+        },
+        "memory": {
+          "available_bytes": 10751705088,
+          "sample_age_ms": 0,
+          "scope": "host",
+          "supported": true,
+          "swap_used_bytes": 255328256,
+          "total_bytes": 17179869184
+        },
+        "memorySampleAgeMs": 1201,
+        "profile": "full",
+        "reason": "healthy",
+        "recoveryHoldMs": 45000
+      },
+      "resourceReuse": {
+        "markerCollectionBuilds": 1,
+        "markerCollectionReuses": 6,
+        "playbackMarkerCompactions": 0,
+        "playbackMarkerOrderFallbacks": 0,
+        "playbackMarkerPatches": 0,
+        "playbackMarkerReuses": 0,
+        "playbackMarkerSmallRebuilds": 0,
+        "stemGeometryBuilds": 1,
+        "trackPositionReuses": 606,
+        "trackPositionSharingEnabled": true,
+        "trailGeometryBuilds": 4,
+        "trailGlobeStreamRebuilds": 0,
+        "trailSorts": 4,
+        "trailStyleUpdates": 5
+      },
+      "sceneMode": 3,
+      "selectionCount": 0,
+      "spaceTimeFloor": null,
+      "stemSegments": 0,
+      "terrain": {
+        "basemap": "none",
+        "basemapAlignmentErrorPixels": 0,
+        "basemapError": "",
+        "basemapMaximumLevel": 0,
+        "basemapPending": 0,
+        "basemapRenderedTiles": 0,
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "imageryLayers": 1,
+        "imageryRequestedTiles": 0,
+        "mode": "globe",
+        "terrainActive": false,
+        "terrainCovered": 0,
+        "terrainPendingTiles": 0,
+        "terrainProviderChanges": 2,
+        "tileCount": 0,
+        "verticalDatum": "egm96"
+      },
+      "timeHeightMeters": 7702.418207433588,
+      "trackCpuStages": {
+        "ordering": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "projectionSimplification": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "runs": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "stemConstruction": {
+          "calls": 1,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "stemCoordinates": {
+          "calls": 1,
+          "lastMs": 1,
+          "maxMs": 1,
+          "totalMs": 1
+        },
+        "trailConstruction": {
+          "calls": 4,
+          "lastMs": 1,
+          "maxMs": 1,
+          "totalMs": 1
+        },
+        "trailCoordinates": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        }
+      },
+      "trackPolylines": 0,
+      "trailInputEdges": 0,
+      "trailOutputEdges": 0,
+      "triangleCount": 0,
+      "triangleVisibleCount": 0
+    },
+    "gis_layers": [],
+    "hardware_acceleration": "unknown",
+    "loading": {
+      "effects": false,
+      "gis": 0,
+      "imagery": true
+    },
+    "mode": "globe",
+    "renderer": "cesium",
+    "revision": 7,
+    "scene": {
+      "bounds": null,
+      "cesium_camera": {
+        "direction": [
+          -0.21115046473962068,
+          0.7363691805566742,
+          -0.642787609686539
+        ],
+        "position": [
+          1411958.125091659,
+          -4924083.159543182,
+          4270821.855106338
+        ],
+        "up": [
+          -0.17717627708592695,
+          0.6178871078154209,
+          0.7660444431189782
+        ]
+      },
+      "chart": {
+        "aggregate": "count",
+        "bins": 20,
+        "group": "",
+        "kind": "bar",
+        "limit": 2000,
+        "period_a": null,
+        "period_b": null,
+        "scope": "visible",
+        "source": null,
+        "stacked": false,
+        "time_bucket": "day",
+        "title": "",
+        "trendline": false,
+        "x": "entity",
+        "x_axis": "category",
+        "x_label": "",
+        "y": "value",
+        "y2": "",
+        "y2_label": "",
+        "y_label": ""
+      },
+      "chart_presets": [],
+      "display": {
+        "bloom": false,
+        "bloom_radius": 0.1,
+        "bloom_strength": 1.3,
+        "bloom_threshold": 0.1,
+        "cluster_pixels": 48,
+        "heat_max": null,
+        "heat_radius": 32,
+        "heat_reference_zoom": null,
+        "heat_weight": "count",
+        "mode": "points",
+        "partition": "all",
+        "point_scale": 0.4,
+        "show_centroids": true,
+        "show_points": true,
+        "show_tracks": false,
+        "show_trails": false,
+        "spatial_culling": false,
+        "time_bin_minutes": 0,
+        "track_opacity": 0.25,
+        "trail_gap_minutes": 180,
+        "trail_opacity": 0.25,
+        "trail_pixels": 2
+      },
+      "entity_colors": {},
+      "expanded": false,
+      "focus": 0.45,
+      "gis_table": null,
+      "globe_altitude": false,
+      "globe_time": false,
+      "globe_time_scale": 1,
+      "inspector_tab": "inspect",
+      "measurement": null,
+      "mode": "globe",
+      "playback_fade": true,
+      "playback_fade_amount": 50,
+      "render_budget": 20000,
+      "renderer": "cesium",
+      "table_attributes": true,
+      "table_column_offset": 0,
+      "table_descending": false,
+      "table_open": false,
+      "table_respect_filters": false,
+      "table_sort": "time",
+      "table_source": null,
+      "time_height": 2.8,
+      "view_states": {
+        "globe": {
+          "camera": {
+            "direction": [
+              -0.21115046473962068,
+              0.7363691805566742,
+              -0.642787609686539
+            ],
+            "position": [
+              1411958.125091659,
+              -4924083.159543182,
+              4270821.855106338
+            ],
+            "up": [
+              -0.17717627708592695,
+              0.6178871078154209,
+              0.7660444431189782
+            ]
+          },
+          "center": [
+            -73.9999999968907,
+            40.00000000539705,
+            0
+          ],
+          "footprint": [
+            [
+              -76.08445144984115,
+              41.1165919415208,
+              0
+            ],
+            [
+              -71.91554852709612,
+              41.11659193366781,
+              0
+            ],
+            [
+              -71.98342889861948,
+              38.84690999163104,
+              0
+            ],
+            [
+              -76.01657108496113,
+              38.84691001470113,
+              0
+            ]
+          ],
+          "ground_width": 346410.161513777,
+          "heading": 0,
+          "tilt": 5.899303343332394e-09
+        }
+      }
+    },
+    "viewport": {
+      "height": 892,
+      "width": 1238
+    },
+    "webgpu_api_available": true
+  },
+  "far": {
+    "backend": "WebGL2",
+    "diagnostics": {
+      "allocatedMarkerSlots": 202,
+      "allocatedTrackPolylines": 0,
+      "allocatedTrackVertices": 0,
+      "altitude": {
+        "approximate": 0,
+        "known": 0,
+        "maximum": 0,
+        "minimum": 0,
+        "omitted": 202
+      },
+      "arrivingPointCount": 0,
+      "arrivingTriangleCount": 0,
+      "axisLabels": 0,
+      "contextRecoveries": 0,
+      "displayTimeBounds": [
+        1793232000,
+        1793232100
+      ],
+      "effectError": "",
+      "engine": "CesiumJS",
+      "fadeDurationsMs": {
+        "arrival": 180,
+        "departure": 800
+      },
+      "fadingPointCount": 0,
+      "fadingStemSegments": 0,
+      "fadingTrackSegments": 0,
+      "fadingTrailSegments": 0,
+      "fadingTriangleCount": 0,
+      "geodesicRendering": {
+        "geometry": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        },
+        "maximumAddedVertices": 400000,
+        "sourceEndpointBudget": 400000,
+        "trails": {
+          "coarsened": 0,
+          "interpolated": 0,
+          "remainingInterpolation": 200000,
+          "remainingSegments": 0,
+          "sourceSegments": 0
+        }
+      },
+      "geometryFeatures": 0,
+      "geometryPrimitives": 2,
+      "globeAltitude": false,
+      "globeTime": false,
+      "globeTimeScale": 1,
+      "graphics": {
+        "framebuffer": [
+          1857,
+          1338
+        ],
+        "renderer": "Apple GPU",
+        "resolutionScale": 1.5,
+        "vendor": "Apple Inc.",
+        "version": "WebGL 2.0"
+      },
+      "lastRenderError": "",
+      "lastResourceGeometryMs": 0,
+      "navigation": {
+        "active": false,
+        "flatOnly": false,
+        "freeLook": false,
+        "gestureMaximumTiltDegrees": 85,
+        "inertia": false,
+        "keyboardFocus": "map",
+        "northUpOnly": false
+      },
+      "orbitHandles": 0,
+      "performance": {
+        "active": false,
+        "fps": null,
+        "frameP95Ms": 1,
+        "renderCpuP95Ms": 2,
+        "renderedFrames": 4,
+        "sampleFrames": 1,
+        "updateRateLimitHz": null
+      },
+      "playbackFade": true,
+      "playbackFadeAmount": 50,
+      "pointCount": 202,
+      "recovering": false,
+      "renderErrorCount": 0,
+      "requestRenderMode": true,
+      "resourceGovernor": {
+        "automatic": true,
+        "changes": 0,
+        "gpuMemoryMeasured": false,
+        "graphicsRenderer": "Apple GPU",
+        "limits": {
+          "afterimages": 100000,
+          "arcVertices": 200000,
+          "fadeCohorts": 256,
+          "fadeSegments": 100000,
+          "maxPixels": 8000000,
+          "maxPoints": 100000,
+          "maxScale": 1.5,
+          "name": "full",
+          "screenError": 1,
+          "streetCanvases": 24,
+          "tiles": 100
+        },
+        "memory": {
+          "available_bytes": 10751705088,
+          "sample_age_ms": 0,
+          "scope": "host",
+          "supported": true,
+          "swap_used_bytes": 255328256,
+          "total_bytes": 17179869184
+        },
+        "memorySampleAgeMs": 2285,
+        "profile": "full",
+        "reason": "healthy",
+        "recoveryHoldMs": 45000
+      },
+      "resourceReuse": {
+        "markerCollectionBuilds": 1,
+        "markerCollectionReuses": 6,
+        "playbackMarkerCompactions": 0,
+        "playbackMarkerOrderFallbacks": 0,
+        "playbackMarkerPatches": 0,
+        "playbackMarkerReuses": 0,
+        "playbackMarkerSmallRebuilds": 0,
+        "stemGeometryBuilds": 1,
+        "trackPositionReuses": 606,
+        "trackPositionSharingEnabled": true,
+        "trailGeometryBuilds": 4,
+        "trailGlobeStreamRebuilds": 0,
+        "trailSorts": 4,
+        "trailStyleUpdates": 5
+      },
+      "sceneMode": 3,
+      "selectionCount": 0,
+      "spaceTimeFloor": null,
+      "stemSegments": 0,
+      "terrain": {
+        "basemap": "none",
+        "basemapAlignmentErrorPixels": 0,
+        "basemapError": "",
+        "basemapMaximumLevel": 0,
+        "basemapPending": 0,
+        "basemapRenderedTiles": 0,
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "imageryLayers": 1,
+        "imageryRequestedTiles": 0,
+        "mode": "globe",
+        "terrainActive": false,
+        "terrainCovered": 0,
+        "terrainPendingTiles": 0,
+        "terrainProviderChanges": 2,
+        "tileCount": 0,
+        "verticalDatum": "egm96"
+      },
+      "timeHeightMeters": 7702.418207433588,
+      "trackCpuStages": {
+        "ordering": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "projectionSimplification": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "runs": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "stemConstruction": {
+          "calls": 1,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        },
+        "stemCoordinates": {
+          "calls": 1,
+          "lastMs": 1,
+          "maxMs": 1,
+          "totalMs": 1
+        },
+        "trailConstruction": {
+          "calls": 4,
+          "lastMs": 1,
+          "maxMs": 1,
+          "totalMs": 1
+        },
+        "trailCoordinates": {
+          "calls": 4,
+          "lastMs": 0,
+          "maxMs": 0,
+          "totalMs": 0
+        }
+      },
+      "trackPolylines": 0,
+      "trailInputEdges": 0,
+      "trailOutputEdges": 0,
+      "triangleCount": 0,
+      "triangleVisibleCount": 0
+    },
+    "gis_layers": [],
+    "hardware_acceleration": "unknown",
+    "loading": {
+      "effects": false,
+      "gis": 0,
+      "imagery": true
+    },
+    "mode": "globe",
+    "renderer": "cesium",
+    "revision": 9,
+    "scene": {
+      "bounds": null,
+      "cesium_camera": {
+        "direction": [
+          -0.21115046473962074,
+          0.7363691805566743,
+          -0.642787609686539
+        ],
+        "position": [
+          4515869.956764083,
+          -15748710.113726292,
+          13719799.717498463
+        ],
+        "up": [
+          -0.1771762770859269,
+          0.6178871078154208,
+          0.7660444431189783
+        ]
+      },
+      "chart": {
+        "aggregate": "count",
+        "bins": 20,
+        "group": "",
+        "kind": "bar",
+        "limit": 2000,
+        "period_a": null,
+        "period_b": null,
+        "scope": "visible",
+        "source": null,
+        "stacked": false,
+        "time_bucket": "day",
+        "title": "",
+        "trendline": false,
+        "x": "entity",
+        "x_axis": "category",
+        "x_label": "",
+        "y": "value",
+        "y2": "",
+        "y2_label": "",
+        "y_label": ""
+      },
+      "chart_presets": [],
+      "display": {
+        "bloom": false,
+        "bloom_radius": 0.1,
+        "bloom_strength": 1.3,
+        "bloom_threshold": 0.1,
+        "cluster_pixels": 48,
+        "heat_max": null,
+        "heat_radius": 32,
+        "heat_reference_zoom": null,
+        "heat_weight": "count",
+        "mode": "points",
+        "partition": "all",
+        "point_scale": 0.4,
+        "show_centroids": true,
+        "show_points": true,
+        "show_tracks": false,
+        "show_trails": false,
+        "spatial_culling": false,
+        "time_bin_minutes": 0,
+        "track_opacity": 0.25,
+        "trail_gap_minutes": 180,
+        "trail_opacity": 0.25,
+        "trail_pixels": 2
+      },
+      "entity_colors": {},
+      "expanded": false,
+      "focus": 0.45,
+      "gis_table": null,
+      "globe_altitude": false,
+      "globe_time": false,
+      "globe_time_scale": 1,
+      "inspector_tab": "inspect",
+      "measurement": null,
+      "mode": "globe",
+      "playback_fade": true,
+      "playback_fade_amount": 50,
+      "render_budget": 20000,
+      "renderer": "cesium",
+      "table_attributes": true,
+      "table_column_offset": 0,
+      "table_descending": false,
+      "table_open": false,
+      "table_respect_filters": false,
+      "table_sort": "time",
+      "table_source": null,
+      "time_height": 2.8,
+      "view_states": {
+        "globe": {
+          "camera": {
+            "direction": [
+              -0.21115046473962074,
+              0.7363691805566743,
+              -0.642787609686539
+            ],
+            "position": [
+              4515869.956764083,
+              -15748710.113726292,
+              13719799.717498463
+            ],
+            "up": [
+              -0.1771762770859269,
+              0.6178871078154208,
+              0.7660444431189783
+            ]
+          },
+          "center": [
+            -74.00000108173631,
+            39.999999603914794,
+            9.313225746154785e-10
+          ],
+          "footprint": [
+            [
+              -180,
+              -90,
+              0
+            ],
+            [
+              180,
+              -90,
+              0
+            ],
+            [
+              180,
+              90,
+              0
+            ],
+            [
+              -180,
+              90,
+              0
+            ]
+          ],
+          "ground_width": 17320508.075688772,
+          "heading": 359.99999930467334,
+          "tilt": 9.184539650274442e-07
+        }
+      }
+    },
+    "viewport": {
+      "height": 892,
+      "width": 1238
+    },
+    "webgpu_api_available": true
+  }
+}

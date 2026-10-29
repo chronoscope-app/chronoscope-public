@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "checked_observations": 11018,
+  "checked_original_files": 175,
+  "source_rows": 57788,
+  "unmodified_fields": [
+    "timestamp",
+    "latitude",
+    "longitude",
+    "altitude_meters"
+  ],
+  "endpoints_preserved": true,
+  "modified_or_poison_members": 0,
+  "pinned_download_and_reproduction_identical": true,
+  "output_project_sha256": "9f3b5d3f7603e03dcd31a7821307a145f7f3e0d4497504fe63d5958384feb058",
+  "output_csv_sha256": "4fa447273e80d4c67e1257fcb4cc36035b5cb3ad786d0023e73d26f5ce593e30",
+  "days": [
+    "2026-03-01",
+    "2026-03-02",
+    "2026-03-03",
+    "2026-03-04",
+    "2026-03-05",
+    "2026-03-06",
+    "2026-03-07"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "version": "0.16.9",
+  "bundle_version": "0.16.9",
+  "identifier": "org.chronoscope.desktop",
+  "binary_sha256": "3e533d971997c6401e273f74d234382ce92e13d835e30eb8bf0db0d20a18006b",
+  "installed_matches_release": true,
+  "installed_chronoscope_apps": [
+    "/Users/user/Applications/Chronoscope.app"
+  ],
+  "code_commit": "af4a21bf3161e6f00e57b8cab0339ae206ff4196",
+  "build": "optimized release; local ad hoc signature verified by build and installation scripts"
+}

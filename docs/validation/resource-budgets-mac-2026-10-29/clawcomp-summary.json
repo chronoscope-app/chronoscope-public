@@ -1,0 +1,103 @@
+{
+  "kind": "Reported summary from connected clawcomp validation; full raw receipts remain on that host",
+  "host": "clawcomp",
+  "ram_total_gib": 14.72,
+  "gpu_actual": "Intel UHD / i915",
+  "gpu_reported_by_webkit": "Apple GPU (masked)",
+  "source_before": "96c5734127de0c0514905aeb751dd482cac0d504",
+  "source_after": "032ccfff0259abc2b44ec2dc559153f680abb94d",
+  "binary_before_sha256": "0bfbe0cace5fabe0567071005983e76d2acb4cbc45f4fd28750d3749dbc7ec6b",
+  "binary_after_sha256": "79e94c24d42707fb3d11ffa5bef40dec2294e7017284777bcc05a4126fe8cfc0",
+  "paired_before_after": {
+    "flight_zoom_median_ms": [
+      1213.63,
+      460.16
+    ],
+    "flight_markers_each": [
+      88018,
+      20000
+    ],
+    "flight_stems_each": [
+      88018,
+      20000
+    ],
+    "peak_app_webkit_rss_mib": [
+      1633.65,
+      1537.19
+    ],
+    "starlink_open_ready_seconds": [
+      5.237,
+      15.024
+    ],
+    "starlink_initial_rss_mib": [
+      805.7,
+      1071.05
+    ]
+  },
+  "reversed_starlink_repeat": {
+    "order": [
+      "0.16.8",
+      "0.16.7"
+    ],
+    "fresh_profiles": true,
+    "engine_demo_open_seconds": [
+      2.17,
+      3.537
+    ],
+    "subsequent_ui_readiness_seconds": [
+      2.435,
+      2.179
+    ],
+    "total_seconds": [
+      4.605,
+      5.715
+    ]
+  },
+  "sustained": {
+    "seconds_per_dataset_over": 40,
+    "starlink_transition": [
+      "full",
+      "balanced"
+    ],
+    "flights_reached": "reduced",
+    "flights_geometry_work_ms": 344,
+    "flights_marker_and_stem_count_each": 5000,
+    "flights_framebuffer": [
+      979,
+      681
+    ],
+    "flights_recovery_to_balanced_approx_seconds": 50,
+    "flights_recovery_to_full_approx_seconds": 95,
+    "source_query_selection_saved_choices_preserved": true,
+    "corrected_run_render_errors": 0,
+    "corrected_run_navigation_conflicts": 0,
+    "corrected_run_navigation_retries": 0
+  },
+  "checks": {
+    "focused_rust_passed": 2,
+    "browser_checks_passed": 2,
+    "browser_pressure_injected": true,
+    "physical_memory_exhaustion_attempted": false
+  },
+  "limitations": [
+    "One paired trial is not a universal latency or memory improvement guarantee.",
+    "RSS sums app and WebKit processes; it is not unique physical footprint or GPU-byte accounting.",
+    "The original adverse Starlink sample is preserved; reverse-order load repetition supports neither a stable startup gain nor a repeatable regression.",
+    "An earlier overlapping-navigation revision conflict is retained with unknown camera outcome.",
+    "8 GiB critical-pressure behavior was tested through injected readings, not physical host exhaustion."
+  ],
+  "safety": {
+    "openclaw_idle_gate_and_runtime_monitoring": true,
+    "owned_processes_stopped": true,
+    "checkouts_clean": true,
+    "product_edits": false,
+    "pushes": false,
+    "hosted_runners": false,
+    "system_gpu_changes": false
+  },
+  "raw_receipt_paths": {
+    "report": "/home/claw/Documents/Codex/chronoscope-next/.qa/pressure-after-2026-10-29/README.md",
+    "consolidated_json": "/home/claw/Documents/Codex/chronoscope-next/.qa/pressure-after-2026-10-29/final-report.json",
+    "reversed_order": "/home/claw/Documents/Codex/chronoscope-next/.qa/pressure-after-2026-10-29/load-repeat/report.json"
+  }
+}

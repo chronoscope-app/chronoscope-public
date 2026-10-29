@@ -635,6 +635,8 @@ async function runRefresh(render = true, resources = true) {
     version: 1,
     generation: String(generation),
     include_render: includeRender,
+    resource_max_points: view.resourceLimits.maxPoints,
+    resource_max_vertices: view.resourceLimits.arcVertices,
     display_level: displayLevel(),
     include_inspector: tab === "inspect",
     include_statistics: false,
@@ -2126,6 +2128,8 @@ async function runViewportData(bounds: Bounds | null, force = false, superseded 
       include_render: true,
       display_level: displayLevel(),
       max_points: renderBudget,
+      resource_max_points: view.resourceLimits.maxPoints,
+      resource_max_vertices: view.resourceLimits.arcVertices,
       ...(displayOptions.spatial_culling && bounds ? { bounds } : {}),
       selection_ids: [],
     }, snapshotIntent(lane, refreshGeneration, generation, true));

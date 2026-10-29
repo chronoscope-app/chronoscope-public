@@ -13,7 +13,7 @@ export const requiredFiles = [
   "samples/README.md", "samples/public/SOURCES.md",
   "samples/public/demo-provenance.json", "samples/public/wildlife-provenance.json",
   "docs/ALTITUDE-DEMOS.md", "samples/public/altitude-provenance.json",
-  "samples/public/flights-lhr-zrh-100-2025.csv.attribution.json",
+  "samples/public/flights-philippines-week-2026.csv.attribution.json",
   "docs/SPACE-DEMOS.md", "samples/public/space-provenance.json",
   "samples/public/starlink-128-predicted-orbits-2024.csv.attribution.json",
   "samples/public/falcon9-launch-history-2010-2026.csv.attribution.json",

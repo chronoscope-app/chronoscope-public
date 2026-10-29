@@ -1,0 +1,61 @@
+{
+  "version": "0.16.9",
+  "next_commit": "ca4a7fa55ef8d3497c949257620fb14447b8efd8",
+  "public_parent": "5d58147397cce5c4ad94a74429bba9b5d2a001ae",
+  "next_tracked_files": 3314,
+  "next_files_byte_identical": true,
+  "preserved_public_only_files": [
+    "docs/validation/public-promotion-0.16.4-2026-10-28/README.md",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/report.json",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/README.md",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/report.json",
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-23e567f-2026-10-26/README.md",
+    "docs/validation/public-promotion-23e567f-2026-10-26/report.json",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/README.md",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/report.json",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/README.md",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/report.json",
+    "docs/validation/public-promotion-82107e5-2026-10-26/README.md",
+    "docs/validation/public-promotion-82107e5-2026-10-26/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json"
+  ],
+  "removed_retired_sample_files": [
+    "samples/flights-lhr-zrh-100-2025.chronoscope",
+    "samples/public/flights-lhr-zrh-100-2025.csv",
+    "samples/public/flights-lhr-zrh-100-2025.csv.attribution.json"
+  ],
+  "owner_authorization": "Promote to Public and do the GitHub runners then post those releases",
+  "source_checks_passed": true,
+  "source_checks_revision": "04f166c677bdaaa831ede34ca17799c60eca7cad",
+  "source_checks_dirty": true,
+  "source_gate_note": "Checks ran against the final Next working tree including the release-note and validation-inventory edits, then that unchanged tree was committed.",
+  "workflows": "Manual-only; byte-identical to Next.",
+  "source_export": "Tracked Next source only; independent Public history; ignored profiles/builds/full Starlink stress fixture excluded.",
+  "native_limit": "Locked-screen native flight canvas rendering not validated; actual offline scenes and cross-day playback passed in headless Chrome; exact hosted package validation still required before download publication.",
+  "upstream_license_whitespace": [
+    {
+      "file": "assets/licenses/locked-cargo/ntapi-0.4.3/LICENSE-APACHE",
+      "sha256": "cf90d659de5c1e6418267ab8043b756e65508ee5d8d50b29eb2d2fe444c2c3eb",
+      "preserved_upstream_whitespace": true
+    },
+    {
+      "file": "assets/licenses/locked-cargo/ntapi-0.4.3/LICENSE-MIT",
+      "sha256": "11a7964ccc0dd115d16720ab1d826c5d03e52838748ffaba3d21bae8bcacd82a",
+      "preserved_upstream_whitespace": true
+    },
+    {
+      "file": "assets/licenses/locked-cargo/sysinfo-0.40.0/LICENSE",
+      "sha256": "1f14f9ce70a5fdedab449bb32cd7d3f20e6e9d18c2a2b74221fc203db8684d43",
+      "preserved_upstream_whitespace": true
+    }
+  ]
+}

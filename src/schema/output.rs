@@ -11,6 +11,7 @@ fn derived(command: &str) -> Option<Value> {
         "chart_data" => schema!(crate::charts::Report),
         "pattern_scan" => schema!(crate::pattern_scan::Response),
         "demo_catalog" => schema!(crate::demos::Catalog),
+        "system_resources" => schema!(crate::system_resources::Resources),
         "statistics" => schema!(crate::store::statistics::Report),
         "analysis_prepare" => schema!(crate::analysis_assist::Plan),
         "gis_load" | "gis_set" => schema!(crate::gis::LayerResult),

@@ -22,6 +22,16 @@ The root [MIT license](LICENSE) covers independent Chronoscope application code,
 | `Cargo.lock`, frontend/video package locks | Exact package identity inventories, including optional/dev/target entries. MPL/native LGPL obligations depend on actual shipped components; selected permissive alternatives do not erase AND obligations. See [binary/source-access gate](docs/DISTRIBUTION.md). |
 | `docs/screenshots/current/*.png`; application icons | Current native-app screenshots use public-domain Natural Earth relief, plus credited OpenFreeMap Streets in the gull-density, crime and vessel views, and identified public-domain/CC0 data or OGL v3.0 crime data. First-party UI/branding is MIT; dataset attribution remains applicable. [Gallery and credits](docs/screenshots/current/README.md) · [object ledger](docs/MEDIA-RIGHTS.json). Older screenshots, promo compositions, copied GSAP runtime and unproven audio were retired from HEAD. |
 
+## OS memory sampling
+
+Automatic memory sampling uses `sysinfo` 0.40.0 (MIT), with only its `system`
+feature enabled. Its new platform dependencies are `ntapi` 0.4.3 and
+`objc2-io-kit` 0.3.2; selected notices and exact registry checksums are retained in
+`assets/licenses/locked-cargo/NOTICE-INVENTORY.json`. The latter crate's published
+archive omits standalone licenses; its exact upstream licensing statement and
+commit provenance are retained alongside its notices. No process enumeration or
+GPU-identification feature is enabled for this sampler.
+
 ## Map and capture credit
 
 Streets: [OpenFreeMap](https://openfreemap.org/) · [© OpenMapTiles](https://www.openmaptiles.org/) · [© OpenStreetMap contributors](https://www.openstreetmap.org/copyright). Retain these links in online exports and corresponding readable URLs in print/video credits. Custom layers keep their own provider credits. Dataset credits also travel with shared projects/CSV companions.

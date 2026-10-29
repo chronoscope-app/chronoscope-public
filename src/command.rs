@@ -167,6 +167,7 @@ commands! {
     DemoCatalog => "demo_catalog", Never, false, false, false, true, false;
     DemoOpen => "demo_open", Always, false, false, true, true, false;
     Capabilities => "capabilities", Never, false, false, false, true, true;
+    SystemResources => "system_resources", Never, false, false, false, true, true;
     Diagnostics => "diagnostics", Never, false, false, false, true, false;
     SceneSync => "scene_sync", Always, false, false, true, false, false;
     ViewSet => "view_set", Always, true, false, true, true, false;

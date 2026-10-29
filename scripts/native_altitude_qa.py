@@ -37,7 +37,7 @@ def main():
         client.call('preferences', {'preferences': {**prefs, 'auto_save_unsaved': False,
                     'basemap': 'none', 'map_layers': [], 'terrain_builtin': False,
                     'terrain_path': None, 'map': {**prefs['map'], 'enabled': False}}})
-        for name, count, entities in [('flights-lhr-zrh-100-2025', 88018, 100),
+        for name, count, entities in [('flights-philippines-week-2026', 11018, 175),
                                       ('starlink-128-predicted-orbits-2024', 46208, 128)]:
             exchange = args.data_dir.resolve()/'agent-files'
             exchange.mkdir(exist_ok=True)

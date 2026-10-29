@@ -24,3 +24,7 @@ Police.uk theft-from-the-person reports in central London, January 2025, OGL v3.
 ## SpaceX examples
 
 `starlink-128-predicted-orbits-2024.csv` retains 46,208 original predicted states from 128 satellites in MAD-LEO v1 (Guo et al., CC BY 4.0; SpaceX operator ephemerides). `falcon9-launch-history-2010-2026.csv` retains 700 GCAT Falcon 9 launch records across three pads (Jonathan McDowell, CC BY 4.0). Keep both attribution sidecars. See [coordinate assumptions, source checksums and the full 43-million-state fixture](../../docs/SPACE-DEMOS.md).
+
+## A week of Philippine flights
+
+`flights-philippines-week-2026.csv` retains 11,018 original altitude observations from 175 flights across six airports, March 1–7, 2026 UTC (Alexander Bañados, CC BY 4.0). Only the source archive's original-flight files are used; modified and poison data are excluded. Heights are approximate reported metres with unspecified physical datum. Keep its attribution sidecar. [Selection, source checksums and reproduction](../../docs/ALTITUDE-DEMOS.md).

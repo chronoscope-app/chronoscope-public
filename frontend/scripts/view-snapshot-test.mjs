@@ -219,6 +219,7 @@ function harness() {
     editor: { acknowledgeScene() {} },
   });
   context.view = {
+    resourceLimits: { maxPoints: 100000, arcVertices: 200000 },
     nativeSnapshots: true,
     ready: Promise.resolve(),
     gis: { sync: async () => {} },

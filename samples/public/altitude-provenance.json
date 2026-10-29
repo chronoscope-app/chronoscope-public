@@ -1,13 +1,1268 @@
 {
-  "flights-lhr-zrh-100-2025": {
-    "csv_sha256": "30ffc86c3b8eb1e1487678005e457670d798634ded13ab06c4b2b49720e4e023",
-    "entities": 100,
-    "maximum_m": 12166.86,
-    "minimum_m": 20.58,
-    "project_sha256": "073807a29f2fb7c77d655c2ab5014ef34b7ddfc484364acd74a188892149d5bc",
-    "records": 88018
+  "flights-philippines-week-2026": {
+    "airports": [
+      "RPLL",
+      "RPVM",
+      "RPMD",
+      "RPVI",
+      "RPVE",
+      "RPVP"
+    ],
+    "csv_sha256": "4fa447273e80d4c67e1257fcb4cc36035b5cb3ad786d0023e73d26f5ce593e30",
+    "entities": 175,
+    "first_timestamp": "2026-03-01T00:07:24+00:00",
+    "flights_per_departure_day": 25,
+    "flights_per_route_per_day": 5,
+    "last_timestamp": "2026-03-07T23:58:20+00:00",
+    "maximum_m": 12497.0,
+    "minimum_m": 0.0,
+    "project_sha256": "9f3b5d3f7603e03dcd31a7821307a145f7f3e0d4497504fe63d5958384feb058",
+    "records": 11018,
+    "selected_original_files": [
+      {
+        "departure_utc": "2026-03-01T01:10:08+00:00",
+        "retained_records": 68,
+        "sha256": "ef87653231eba84dad622352bc08450171bbe124dc1aa2827668f372eda6e155",
+        "source_file": "dataset/raw/data_ceb/A20N_3e8b0bd8_RPLL_to_RPVM.csv",
+        "source_records": 352
+      },
+      {
+        "departure_utc": "2026-03-01T01:35:05+00:00",
+        "retained_records": 66,
+        "sha256": "702a9e0ba3e9d1fbba64ec38bfb2a03c937435fb9ec67b99da67998c33aae500",
+        "source_file": "dataset/raw/data_ceb/A320_3e8b1ba9_RPLL_to_RPVM.csv",
+        "source_records": 339
+      },
+      {
+        "departure_utc": "2026-03-01T03:14:04+00:00",
+        "retained_records": 66,
+        "sha256": "925101736e1423c6d4b5ddf16947e7da73f35593452cdeb7e2e6690c2f07467e",
+        "source_file": "dataset/raw/data_ceb/A21N_3e8b471a_RPLL_to_RPVM.csv",
+        "source_records": 323
+      },
+      {
+        "departure_utc": "2026-03-01T11:25:25+00:00",
+        "retained_records": 72,
+        "sha256": "29f6caf7c885e675a045a2562fc69c5b25c542fe8f9143475aa8901d62218e3b",
+        "source_file": "dataset/raw/data_ceb/A320_3e8c2986_RPLL_to_RPVM.csv",
+        "source_records": 379
+      },
+      {
+        "departure_utc": "2026-03-01T22:42:57+00:00",
+        "retained_records": 64,
+        "sha256": "aab5a7265f11cadd9ed8dfca3898d7761f92ebccf8bbd71f126ee8da4f2e12e4",
+        "source_file": "dataset/raw/data_ceb/A20N_3e8e18ae_RPLL_to_RPVM.csv",
+        "source_records": 343
+      },
+      {
+        "departure_utc": "2026-03-01T00:53:45+00:00",
+        "retained_records": 90,
+        "sha256": "1631aa5d16478c46341f859c2837ac7b182fb11d57f7e237435c1b316c6ac6a8",
+        "source_file": "dataset/raw/data_dvo/A321_3e8b0168_RPLL_to_RPMD.csv",
+        "source_records": 384
+      },
+      {
+        "departure_utc": "2026-03-01T03:09:48+00:00",
+        "retained_records": 87,
+        "sha256": "6bf49d80b6cf469a0004542a707d5a58d570ef9400c11eb4bd97607dd4f8158e",
+        "source_file": "dataset/raw/data_dvo/A321_3e8b48e8_RPLL_to_RPMD.csv",
+        "source_records": 368
+      },
+      {
+        "departure_utc": "2026-03-01T08:41:57+00:00",
+        "retained_records": 102,
+        "sha256": "9fc43053dcbf9dfb8d15ebd506feee6e27a39a2ea73d6510c3c999980fa93f44",
+        "source_file": "dataset/raw/data_dvo/A339_3e8bcb7e_RPLL_to_RPMD.csv",
+        "source_records": 558
+      },
+      {
+        "departure_utc": "2026-03-01T15:38:41+00:00",
+        "retained_records": 91,
+        "sha256": "6ab18fa5f6053e9f82c565af1aed29f565767bf10bf0e103f8b686b526aaa2c2",
+        "source_file": "dataset/raw/data_dvo/A321_3e8ccfb5_RPLL_to_RPMD.csv",
+        "source_records": 384
+      },
+      {
+        "departure_utc": "2026-03-01T22:28:39+00:00",
+        "retained_records": 90,
+        "sha256": "6d20631f2cb2c14cd5b582606cc0e97bfbf526e38512ca9a6410e35ca1693f6a",
+        "source_file": "dataset/raw/data_dvo/A339_3e8e13b2_RPLL_to_RPMD.csv",
+        "source_records": 378
+      },
+      {
+        "departure_utc": "2026-03-01T00:07:24+00:00",
+        "retained_records": 56,
+        "sha256": "fa1b48c8223d12771504921fa42892959c6edda8fad81ff046e261f921658776",
+        "source_file": "dataset/raw/data_ilo/A320_3e8adbcd_RPLL_to_RPVI.csv",
+        "source_records": 332
+      },
+      {
+        "departure_utc": "2026-03-01T05:21:39+00:00",
+        "retained_records": 57,
+        "sha256": "f1e4d8eb13b6e76d192443a959e9ddf8a771350079213ffa4287f9b3ae8a0f06",
+        "source_file": "dataset/raw/data_ilo/A21N_3e8b7e01_RPLL_to_RPVI.csv",
+        "source_records": 375
+      },
+      {
+        "departure_utc": "2026-03-01T09:38:18+00:00",
+        "retained_records": 56,
+        "sha256": "6c0fed58901b36982cc9eef87277a19c4d95458728437d5a5b09f52a0d0a4f02",
+        "source_file": "dataset/raw/data_ilo/A20N_3e8bd104_RPLL_to_RPVI.csv",
+        "source_records": 394
+      },
+      {
+        "departure_utc": "2026-03-01T12:03:26+00:00",
+        "retained_records": 56,
+        "sha256": "e935436581a34d2747d052ac63f47973d3dbb84fdd7849835529663660f86a1e",
+        "source_file": "dataset/raw/data_ilo/A320_3e8c40f1_RPLL_to_RPVI.csv",
+        "source_records": 323
+      },
+      {
+        "departure_utc": "2026-03-01T22:26:44+00:00",
+        "retained_records": 56,
+        "sha256": "a585e5ddb98a430ce916429c6f21b144df5fb0eab4f121a9540147074d6e3745",
+        "source_file": "dataset/raw/data_ilo/A21N_3e8e17a9_RPLL_to_RPVI.csv",
+        "source_records": 365
+      },
+      {
+        "departure_utc": "2026-03-01T01:06:32+00:00",
+        "retained_records": 37,
+        "sha256": "cdaf0d4160d0e724282bdfb73b4e6def0e39f6d0c6627123e9326abaf82fe8c6",
+        "source_file": "dataset/raw/data_mph/A20N_3e8b0aba_RPLL_to_RPVE.csv",
+        "source_records": 213
+      },
+      {
+        "departure_utc": "2026-03-01T03:33:43+00:00",
+        "retained_records": 36,
+        "sha256": "62a06c0d2e785412be6ad2a46ec1377d9286c3373f7254a3039cfba7ef321c49",
+        "source_file": "dataset/raw/data_mph/A20N_3e8b4d29_RPLL_to_RPVE.csv",
+        "source_records": 214
+      },
+      {
+        "departure_utc": "2026-03-01T03:43:20+00:00",
+        "retained_records": 45,
+        "sha256": "379d587bfa559fe761b8ee0535f203cf9872c2402c50c2d283fe3d08c4f6484e",
+        "source_file": "dataset/raw/data_mph/A320_3e8b56b1_RPLL_to_RPVE.csv",
+        "source_records": 385
+      },
+      {
+        "departure_utc": "2026-03-01T06:30:38+00:00",
+        "retained_records": 36,
+        "sha256": "0abc8eec7717dff383c2b3937e496df55339cdaf3c8c7ad3e21a40dbddf1aa17",
+        "source_file": "dataset/raw/data_mph/A320_3e8b9226_RPLL_to_RPVE.csv",
+        "source_records": 215
+      },
+      {
+        "departure_utc": "2026-03-01T07:32:22+00:00",
+        "retained_records": 38,
+        "sha256": "fbca761ffb49b86598d990bcee4b00455fac16482a1895fbc868f253aa65c148",
+        "source_file": "dataset/raw/data_mph/A20N_3e8bb458_RPLL_to_RPVE.csv",
+        "source_records": 198
+      },
+      {
+        "departure_utc": "2026-03-01T00:25:29+00:00",
+        "retained_records": 67,
+        "sha256": "39d90aaa501a998548b3b831087fff1fdc41933f5d7d03cccfb944b752fd8440",
+        "source_file": "dataset/raw/data_pps/A321_3e8af171_RPLL_to_RPVP.csv",
+        "source_records": 416
+      },
+      {
+        "departure_utc": "2026-03-01T02:23:27+00:00",
+        "retained_records": 62,
+        "sha256": "cbcbed0e9f83b72d27e07c194bc994650a9b06a89bb5b38e402400e2543a3c6d",
+        "source_file": "dataset/raw/data_pps/A339_3e8b25e8_RPLL_to_RPVP.csv",
+        "source_records": 334
+      },
+      {
+        "departure_utc": "2026-03-01T07:17:15+00:00",
+        "retained_records": 60,
+        "sha256": "eb2587e90e74333cf3097c6c5fa95c4cb26bf5e7b24a4317ac60772d501da0a6",
+        "source_file": "dataset/raw/data_pps/A320_3e8bb0eb_RPLL_to_RPVP.csv",
+        "source_records": 288
+      },
+      {
+        "departure_utc": "2026-03-01T09:10:29+00:00",
+        "retained_records": 65,
+        "sha256": "6ff59d809c371ddd07c19b5051200eb6ab046994306efdbc29397a961ff4b184",
+        "source_file": "dataset/raw/data_pps/A21N_3e8bdd8f_RPLL_to_RPVP.csv",
+        "source_records": 406
+      },
+      {
+        "departure_utc": "2026-03-01T22:32:33+00:00",
+        "retained_records": 58,
+        "sha256": "75fc78eccf896c17d9d98b932031af7f2c32c03019a4613c5637415547d3ccb3",
+        "source_file": "dataset/raw/data_pps/A333_3e8e0c3d_RPLL_to_RPVP.csv",
+        "source_records": 329
+      },
+      {
+        "departure_utc": "2026-03-02T00:24:58+00:00",
+        "retained_records": 62,
+        "sha256": "1ceb64abeef3152ad568d10d79abf762d36ee266f30e27fde59ead8215a92213",
+        "source_file": "dataset/raw/data_ceb/A320_3e8e6af8_RPLL_to_RPVM.csv",
+        "source_records": 316
+      },
+      {
+        "departure_utc": "2026-03-02T01:22:21+00:00",
+        "retained_records": 64,
+        "sha256": "c14a80cf4958c392c3d607d28f3f8f9043d746ad81583fae290a1295be89bffa",
+        "source_file": "dataset/raw/data_ceb/A321_3e8e90ce_RPLL_to_RPVM.csv",
+        "source_records": 365
+      },
+      {
+        "departure_utc": "2026-03-02T08:15:21+00:00",
+        "retained_records": 70,
+        "sha256": "cfeeed338242ae50e274ddf62b892826d3715a6fabb047aa9fa96d5ca214ef30",
+        "source_file": "dataset/raw/data_ceb/A321_3e8f55f8_RPLL_to_RPVM.csv",
+        "source_records": 393
+      },
+      {
+        "departure_utc": "2026-03-02T11:33:34+00:00",
+        "retained_records": 64,
+        "sha256": "a9af9095277fc7ba9f703b91d60575a263e30cc4089922520041f6f9c9d8b720",
+        "source_file": "dataset/raw/data_ceb/A339_3e8fb808_RPLL_to_RPVM.csv",
+        "source_records": 352
+      },
+      {
+        "departure_utc": "2026-03-02T22:34:53+00:00",
+        "retained_records": 73,
+        "sha256": "c5388e689903b2dc121f9220b9a5d10e64c990f50e3e642f54f252a2559e82d5",
+        "source_file": "dataset/raw/data_ceb/A320_3e91e885_RPLL_to_RPVM.csv",
+        "source_records": 387
+      },
+      {
+        "departure_utc": "2026-03-02T02:40:53+00:00",
+        "retained_records": 87,
+        "sha256": "93e9bc56da56211a29831e9cfd10a11d7d5debefc04e3225bcd46b43b05cf0b7",
+        "source_file": "dataset/raw/data_dvo/A321_3e8eb3e0_RPLL_to_RPMD.csv",
+        "source_records": 345
+      },
+      {
+        "departure_utc": "2026-03-02T08:08:57+00:00",
+        "retained_records": 96,
+        "sha256": "477e1fdc48899eafc10d375fed6b43fa84ab6730743bb9b56afe0dd21de76d4d",
+        "source_file": "dataset/raw/data_dvo/A339_3e8f4dea_RPLL_to_RPMD.csv",
+        "source_records": 462
+      },
+      {
+        "departure_utc": "2026-03-02T14:59:06+00:00",
+        "retained_records": 89,
+        "sha256": "e1d44acb80dbbda87970f361869ff7377e1b7f9c27de8c354463e498a16fb5fb",
+        "source_file": "dataset/raw/data_dvo/A320_3e9064db_RPLL_to_RPMD.csv",
+        "source_records": 367
+      },
+      {
+        "departure_utc": "2026-03-02T18:36:31+00:00",
+        "retained_records": 89,
+        "sha256": "7f5db5daaef03f6dcc17db52cac900168720f694a3d08d4afbbf7b1581775c14",
+        "source_file": "dataset/raw/data_dvo/A320_3e912b43_RPLL_to_RPMD.csv",
+        "source_records": 364
+      },
+      {
+        "departure_utc": "2026-03-02T22:38:18+00:00",
+        "retained_records": 90,
+        "sha256": "1d7855ce45ab92b82050ecebbc8dae450bae9629744cfaba4af1b5ae7ff03f9f",
+        "source_file": "dataset/raw/data_dvo/A339_3e91e0d7_RPLL_to_RPMD.csv",
+        "source_records": 354
+      },
+      {
+        "departure_utc": "2026-03-02T01:09:06+00:00",
+        "retained_records": 57,
+        "sha256": "f798978bccde165c233ba5dbc25bfae137bd83263a8ec3854b2dec46096cc174",
+        "source_file": "dataset/raw/data_ilo/A320_3e8e861f_RPLL_to_RPVI.csv",
+        "source_records": 324
+      },
+      {
+        "departure_utc": "2026-03-02T05:52:47+00:00",
+        "retained_records": 57,
+        "sha256": "381b41b299babb4c4b51ebebb45b3f60a176e54c4f5e66cf0b217ac8bd26b269",
+        "source_file": "dataset/raw/data_ilo/A21N_3e8ef6de_RPLL_to_RPVI.csv",
+        "source_records": 334
+      },
+      {
+        "departure_utc": "2026-03-02T09:09:16+00:00",
+        "retained_records": 54,
+        "sha256": "6340ea643e7f475ff7ecde9942c28f68b78c0b6cca277b1a4d94fcca9c4ed33a",
+        "source_file": "dataset/raw/data_ilo/A20N_3e8f71a9_RPLL_to_RPVI.csv",
+        "source_records": 289
+      },
+      {
+        "departure_utc": "2026-03-02T12:23:03+00:00",
+        "retained_records": 51,
+        "sha256": "fe55512da7f8c6282c5919c2e2faf6ef924b4b03449c9bc603abb2a0e8469d60",
+        "source_file": "dataset/raw/data_ilo/A320_3e8fe101_RPLL_to_RPVI.csv",
+        "source_records": 294
+      },
+      {
+        "departure_utc": "2026-03-02T19:52:30+00:00",
+        "retained_records": 54,
+        "sha256": "a86142709f1780fc1124422febaa67a9fdac491918b1fdb6a60c1e800710a38d",
+        "source_file": "dataset/raw/data_ilo/A320_3e917611_RPLL_to_RPVI.csv",
+        "source_records": 309
+      },
+      {
+        "departure_utc": "2026-03-02T02:34:15+00:00",
+        "retained_records": 38,
+        "sha256": "b330577253d4f11968d805cdd59876ad20a5104937ab4119973e0a9d546394a7",
+        "source_file": "dataset/raw/data_mph/A20N_3e8eb8f5_RPLL_to_RPVE.csv",
+        "source_records": 194
+      },
+      {
+        "departure_utc": "2026-03-02T03:40:28+00:00",
+        "retained_records": 42,
+        "sha256": "d02fd0196ca107a126ce5d0a5fcb18342cd4b61ee0d76dcb53c6e111cb71e378",
+        "source_file": "dataset/raw/data_mph/A20N_3e8ed519_RPLL_to_RPVE.csv",
+        "source_records": 256
+      },
+      {
+        "departure_utc": "2026-03-02T05:43:08+00:00",
+        "retained_records": 40,
+        "sha256": "edb0b29b6e2a8759e88bc0d0f7ac0d2ae90c19f127899b57c0cbdaaf9334e9dc",
+        "source_file": "dataset/raw/data_mph/A320_3e8f0f89_RPLL_to_RPVE.csv",
+        "source_records": 237
+      },
+      {
+        "departure_utc": "2026-03-02T06:28:09+00:00",
+        "retained_records": 42,
+        "sha256": "0e1b7a68db2eddab10010f0af25b67dc21684300251e1158b752bf86c31b7aec",
+        "source_file": "dataset/raw/data_mph/A320_3e8f1ec2_RPLL_to_RPVE.csv",
+        "source_records": 217
+      },
+      {
+        "departure_utc": "2026-03-02T07:42:47+00:00",
+        "retained_records": 44,
+        "sha256": "6f3bbf805e5229477e5449f3634c2db5e27987b27c97a2161d5b57c635ae3b6e",
+        "source_file": "dataset/raw/data_mph/A20N_3e8f3fdc_RPLL_to_RPVE.csv",
+        "source_records": 338
+      },
+      {
+        "departure_utc": "2026-03-02T00:22:00+00:00",
+        "retained_records": 61,
+        "sha256": "93b7c66a2bde4199f4be3b5448531ea9a48500aa5995638b721574a7fa7f632f",
+        "source_file": "dataset/raw/data_pps/A21N_3e8e6711_RPLL_to_RPVP.csv",
+        "source_records": 306
+      },
+      {
+        "departure_utc": "2026-03-02T02:07:03+00:00",
+        "retained_records": 63,
+        "sha256": "de6ba8be688f711c7a675dcaa030c7fa2813a8ab37048dbf945a23bc0c83a635",
+        "source_file": "dataset/raw/data_pps/A339_3e8ea648_RPLL_to_RPVP.csv",
+        "source_records": 326
+      },
+      {
+        "departure_utc": "2026-03-02T07:26:46+00:00",
+        "retained_records": 59,
+        "sha256": "24452877ffd84d6a4bfc026abe5b71b2bef5cff4b5a6b7851984717e18c89f3a",
+        "source_file": "dataset/raw/data_pps/A320_3e8f3d94_RPLL_to_RPVP.csv",
+        "source_records": 283
+      },
+      {
+        "departure_utc": "2026-03-02T09:06:49+00:00",
+        "retained_records": 68,
+        "sha256": "5c7c2148120a731daceb9b2c63bd447cbcfa3e0340799f887800f5e4137d5a38",
+        "source_file": "dataset/raw/data_pps/A321_3e8f6dab_RPLL_to_RPVP.csv",
+        "source_records": 422
+      },
+      {
+        "departure_utc": "2026-03-02T22:44:54+00:00",
+        "retained_records": 62,
+        "sha256": "288e7042b104f4f0594d3b931a58f74b27128a53566e286b75469f523c7061e5",
+        "source_file": "dataset/raw/data_pps/A321_3e91f62f_RPLL_to_RPVP.csv",
+        "source_records": 408
+      },
+      {
+        "departure_utc": "2026-03-03T00:29:05+00:00",
+        "retained_records": 63,
+        "sha256": "58bc3a013236c7efa92e0ceafcb6e97ede9a5a2e279f93e3b4ef92e7f175f6c4",
+        "source_file": "dataset/raw/data_ceb/A320_3e92469e_RPLL_to_RPVM.csv",
+        "source_records": 325
+      },
+      {
+        "departure_utc": "2026-03-03T01:48:56+00:00",
+        "retained_records": 61,
+        "sha256": "8fdf970fdcdd56a243bc96905d14241967451cff0965a6b447a8c91aeabac1da",
+        "source_file": "dataset/raw/data_ceb/A321_3e927ea8_RPLL_to_RPVM.csv",
+        "source_records": 311
+      },
+      {
+        "departure_utc": "2026-03-03T04:53:28+00:00",
+        "retained_records": 63,
+        "sha256": "c4fa7ded803356adbeae9cf7dc683e5363ddb7ba285346f36009d70386b57e0d",
+        "source_file": "dataset/raw/data_ceb/A21N_3e92d884_RPLL_to_RPVM.csv",
+        "source_records": 318
+      },
+      {
+        "departure_utc": "2026-03-03T08:25:53+00:00",
+        "retained_records": 64,
+        "sha256": "1e18243c344fae2c1ce9210c2847f2ae0a35e2c3eb9291a6e5a88a62c28c809c",
+        "source_file": "dataset/raw/data_ceb/A339_3e933ed7_RPLL_to_RPVM.csv",
+        "source_records": 349
+      },
+      {
+        "departure_utc": "2026-03-03T11:54:49+00:00",
+        "retained_records": 61,
+        "sha256": "d0291974b2f4ea6bed173ac171cdb9c841de3823eba19b8ec532c4a1cc0f3641",
+        "source_file": "dataset/raw/data_ceb/A320_3e93b2d9_RPLL_to_RPVM.csv",
+        "source_records": 306
+      },
+      {
+        "departure_utc": "2026-03-03T00:41:14+00:00",
+        "retained_records": 91,
+        "sha256": "1856c5150a00525d6fd820cfd56acbe22ea28b06df914dd9d8b4bac5917d28d3",
+        "source_file": "dataset/raw/data_dvo/A321_3e924aa7_RPLL_to_RPMD.csv",
+        "source_records": 372
+      },
+      {
+        "departure_utc": "2026-03-03T04:47:11+00:00",
+        "retained_records": 90,
+        "sha256": "ef5e5435e49568a210859ddaf3e1d4cbbe72093b8452ee546d1464e8f5858aac",
+        "source_file": "dataset/raw/data_dvo/A333_3e92d688_RPLL_to_RPMD.csv",
+        "source_records": 409
+      },
+      {
+        "departure_utc": "2026-03-03T08:08:28+00:00",
+        "retained_records": 90,
+        "sha256": "9502660ddc96e8c9b75a80be175ebf2203c20fa4ebe56c9055296ed7d23fedd1",
+        "source_file": "dataset/raw/data_dvo/A339_3e93392e_RPLL_to_RPMD.csv",
+        "source_records": 373
+      },
+      {
+        "departure_utc": "2026-03-03T15:43:03+00:00",
+        "retained_records": 88,
+        "sha256": "0d70aee57adf1572ef663aebabc9cb6a3f8580633393db735dbe6f5d022ac02e",
+        "source_file": "dataset/raw/data_dvo/A321_3e946461_RPLL_to_RPMD.csv",
+        "source_records": 352
+      },
+      {
+        "departure_utc": "2026-03-03T22:33:44+00:00",
+        "retained_records": 94,
+        "sha256": "50a979b3aec0f848b79a9d15036684d29156177ff5ba67067e791c82d1504886",
+        "source_file": "dataset/raw/data_dvo/A339_3e953bd5_RPLL_to_RPMD.csv",
+        "source_records": 367
+      },
+      {
+        "departure_utc": "2026-03-03T01:21:24+00:00",
+        "retained_records": 56,
+        "sha256": "76beafe2cb9f15d84c72eb6b96ed271e2afd71fa9c7b1f6b19dc25cea5b0c547",
+        "source_file": "dataset/raw/data_ilo/A320_3e9272e2_RPLL_to_RPVI.csv",
+        "source_records": 351
+      },
+      {
+        "departure_utc": "2026-03-03T05:56:45+00:00",
+        "retained_records": 53,
+        "sha256": "5c34bea86c2161fd4fc67fb4a222340fd78a83002eecee68280a010a7f4f3150",
+        "source_file": "dataset/raw/data_ilo/A21N_3e92f33c_RPLL_to_RPVI.csv",
+        "source_records": 323
+      },
+      {
+        "departure_utc": "2026-03-03T09:31:24+00:00",
+        "retained_records": 54,
+        "sha256": "ed395ccc5facb9b62ceb1d86b9ef8171bfa745181fe78f76e274ee0c7006b98b",
+        "source_file": "dataset/raw/data_ilo/A20N_3e936135_RPLL_to_RPVI.csv",
+        "source_records": 340
+      },
+      {
+        "departure_utc": "2026-03-03T12:19:09+00:00",
+        "retained_records": 55,
+        "sha256": "0a91a2844b161943c7997949ee4eb2da750588a395f7c66aa658b8f142c00ccf",
+        "source_file": "dataset/raw/data_ilo/A320_3e939cab_RPLL_to_RPVI.csv",
+        "source_records": 353
+      },
+      {
+        "departure_utc": "2026-03-03T23:01:12+00:00",
+        "retained_records": 54,
+        "sha256": "c6b997bb976d0aad3e6d9441c2750bbba273ba1f1e3fecb4c75c485ffc80ca5f",
+        "source_file": "dataset/raw/data_ilo/A20N_3e95b76b_RPLL_to_RPVI.csv",
+        "source_records": 295
+      },
+      {
+        "departure_utc": "2026-03-03T01:18:23+00:00",
+        "retained_records": 44,
+        "sha256": "290114aa944f0d09eb5a89b3177489d1f30a51c36d5640d79e403deb8913ab49",
+        "source_file": "dataset/raw/data_mph/A320_3e926c0e_RPLL_to_RPVE.csv",
+        "source_records": 278
+      },
+      {
+        "departure_utc": "2026-03-03T02:42:48+00:00",
+        "retained_records": 36,
+        "sha256": "00d79949426e6ba032ff41c17025cfd585de314a69a6663e24ef2a19dfa9b390",
+        "source_file": "dataset/raw/data_mph/A20N_3e929f53_RPLL_to_RPVE.csv",
+        "source_records": 190
+      },
+      {
+        "departure_utc": "2026-03-03T04:48:34+00:00",
+        "retained_records": 36,
+        "sha256": "0135145a36b63af47a5f0abfbcb1035fcbe2488ddcc47adeddd45ac0728231ee",
+        "source_file": "dataset/raw/data_mph/A320_3e92dc1b_RPLL_to_RPVE.csv",
+        "source_records": 181
+      },
+      {
+        "departure_utc": "2026-03-03T06:14:36+00:00",
+        "retained_records": 35,
+        "sha256": "32e8ce9d691d83148557ab45656253d558441b6cd11401496b6e995c9fa7b66c",
+        "source_file": "dataset/raw/data_mph/A320_3e92fcce_RPLL_to_RPVE.csv",
+        "source_records": 173
+      },
+      {
+        "departure_utc": "2026-03-03T07:24:55+00:00",
+        "retained_records": 35,
+        "sha256": "60b00d7072a95f3ba9695b3ce16d60889bcab064dc1e559a5c0cff4e67644f2e",
+        "source_file": "dataset/raw/data_mph/A20N_3e93283a_RPLL_to_RPVE.csv",
+        "source_records": 190
+      },
+      {
+        "departure_utc": "2026-03-03T00:11:56+00:00",
+        "retained_records": 59,
+        "sha256": "6787ebfaba406a74e5a7a89eb7c1022fcb70562d305e14c3142951dc8909407e",
+        "source_file": "dataset/raw/data_pps/A21N_3e922638_RPLL_to_RPVP.csv",
+        "source_records": 296
+      },
+      {
+        "departure_utc": "2026-03-03T06:19:59+00:00",
+        "retained_records": 67,
+        "sha256": "90fcb0c79875168746ca9e54d47162844891ec293e332da1d0baab7c52b75d8b",
+        "source_file": "dataset/raw/data_pps/A320_3e92fd7a_RPLL_to_RPVP.csv",
+        "source_records": 397
+      },
+      {
+        "departure_utc": "2026-03-03T07:48:13+00:00",
+        "retained_records": 68,
+        "sha256": "d72c60f3a9dd76733204cb5445fa76daf56295466597a81c8c11f9efaa4bd84e",
+        "source_file": "dataset/raw/data_pps/A320_3e933015_RPLL_to_RPVP.csv",
+        "source_records": 406
+      },
+      {
+        "departure_utc": "2026-03-03T10:41:28+00:00",
+        "retained_records": 74,
+        "sha256": "4bd4f57d18c81b1e2164594f6e4a84442b43fa9a785e110f2f57297dfab57102",
+        "source_file": "dataset/raw/data_pps/A320_3e936a8b_RPLL_to_RPVP.csv",
+        "source_records": 516
+      },
+      {
+        "departure_utc": "2026-03-03T21:55:31+00:00",
+        "retained_records": 62,
+        "sha256": "d36cc6110fc09ffa66c16182991a82eecf82aeb5d30b01c15f82164550c951ec",
+        "source_file": "dataset/raw/data_pps/A320_3e9594fb_RPLL_to_RPVP.csv",
+        "source_records": 302
+      },
+      {
+        "departure_utc": "2026-03-04T00:34:22+00:00",
+        "retained_records": 67,
+        "sha256": "d24890ada17d09aeba61df7d6e0b7322bf45ec8842016a2e9bb3442b9dacfda5",
+        "source_file": "dataset/raw/data_ceb/A320_3e960c66_RPLL_to_RPVM.csv",
+        "source_records": 382
+      },
+      {
+        "departure_utc": "2026-03-04T02:55:44+00:00",
+        "retained_records": 69,
+        "sha256": "f50ecbac8f8a4b37f6ea20fc159aba1f9ba7ee3efe838c109c4109e15d28c6f4",
+        "source_file": "dataset/raw/data_ceb/A21N_3e9641ad_RPLL_to_RPVM.csv",
+        "source_records": 368
+      },
+      {
+        "departure_utc": "2026-03-04T09:28:50+00:00",
+        "retained_records": 64,
+        "sha256": "c0000ea2cb8b9845f634a825b96d0a5f67a7487370a0b378f83b60b242c0f731",
+        "source_file": "dataset/raw/data_ceb/A320_3e972d7a_RPLL_to_RPVM.csv",
+        "source_records": 313
+      },
+      {
+        "departure_utc": "2026-03-04T10:57:45+00:00",
+        "retained_records": 74,
+        "sha256": "8602e2bfb69d3a9e349690b55ce3a61e511c68387a49ed7e2e736ae8a24e539a",
+        "source_file": "dataset/raw/data_ceb/A339_3e97522c_RPLL_to_RPVM.csv",
+        "source_records": 357
+      },
+      {
+        "departure_utc": "2026-03-04T23:35:49+00:00",
+        "retained_records": 67,
+        "sha256": "7dfb75d84167895f615fefb1d92486a6cb6a33f2701d48921576185f40bb061e",
+        "source_file": "dataset/raw/data_ceb/A321_3e99b84c_RPLL_to_RPVM.csv",
+        "source_records": 346
+      },
+      {
+        "departure_utc": "2026-03-04T00:32:01+00:00",
+        "retained_records": 89,
+        "sha256": "345c15ef2bf2a3b963460bc80fe9680d310023026c1eaf9bd8a313cd2f8cbc31",
+        "source_file": "dataset/raw/data_dvo/A339_3e960220_RPLL_to_RPMD.csv",
+        "source_records": 370
+      },
+      {
+        "departure_utc": "2026-03-04T02:55:00+00:00",
+        "retained_records": 92,
+        "sha256": "6fce4712afbb2e3ba2b758f2b11dc3cbfec8781b31a46df3b22e697607fcfa84",
+        "source_file": "dataset/raw/data_dvo/A321_3e96649c_RPLL_to_RPMD.csv",
+        "source_records": 382
+      },
+      {
+        "departure_utc": "2026-03-04T11:51:50+00:00",
+        "retained_records": 93,
+        "sha256": "c9ba7956c49ef38ee374503fdc6b63e4c9b73647304d5288bd22ee41aba00362",
+        "source_file": "dataset/raw/data_dvo/A321_3e9761c5_RPLL_to_RPMD.csv",
+        "source_records": 357
+      },
+      {
+        "departure_utc": "2026-03-04T15:29:07+00:00",
+        "retained_records": 92,
+        "sha256": "f83c8cee661cb4af2677bb9888342b9670ed9fd5a8af947502171b4ea014c02c",
+        "source_file": "dataset/raw/data_dvo/A21N_3e98227d_RPLL_to_RPMD.csv",
+        "source_records": 378
+      },
+      {
+        "departure_utc": "2026-03-04T22:22:50+00:00",
+        "retained_records": 91,
+        "sha256": "d0f091d29f356a833bdf1fd5d69aa743cb433a83f80fb09af82254e431c56cf9",
+        "source_file": "dataset/raw/data_dvo/A339_3e99764f_RPLL_to_RPMD.csv",
+        "source_records": 330
+      },
+      {
+        "departure_utc": "2026-03-04T00:58:12+00:00",
+        "retained_records": 55,
+        "sha256": "fb5013f4dd58d8b8ab3288f9f0337df4a60407d76828dd75f489f0c070b9e020",
+        "source_file": "dataset/raw/data_ilo/A320_3e96033f_RPLL_to_RPVI.csv",
+        "source_records": 353
+      },
+      {
+        "departure_utc": "2026-03-04T05:33:27+00:00",
+        "retained_records": 55,
+        "sha256": "777a4674e530079c8273111c112f732e5b65f8f0e482e913e63b4afb62e0203d",
+        "source_file": "dataset/raw/data_ilo/A321_3e96a7c4_RPLL_to_RPVI.csv",
+        "source_records": 377
+      },
+      {
+        "departure_utc": "2026-03-04T09:30:03+00:00",
+        "retained_records": 55,
+        "sha256": "27dbb265213ba537c3f4c7051c7009c7372be47eb3404ca2fc579b2115156d21",
+        "source_file": "dataset/raw/data_ilo/A20N_3e971e64_RPLL_to_RPVI.csv",
+        "source_records": 286
+      },
+      {
+        "departure_utc": "2026-03-04T13:26:30+00:00",
+        "retained_records": 53,
+        "sha256": "9b1d1fb4dbae8e7e35890176188168d430bbac8c1a1dcc854d314cb1964cf002",
+        "source_file": "dataset/raw/data_ilo/A320_3e97c0db_RPLL_to_RPVI.csv",
+        "source_records": 317
+      },
+      {
+        "departure_utc": "2026-03-04T20:08:36+00:00",
+        "retained_records": 53,
+        "sha256": "933db608a6c537e58c640c88f45c9e73c0c08d22ae27de270dc23d830a5e02c4",
+        "source_file": "dataset/raw/data_ilo/A320_3e99218c_RPLL_to_RPVI.csv",
+        "source_records": 309
+      },
+      {
+        "departure_utc": "2026-03-04T01:13:55+00:00",
+        "retained_records": 42,
+        "sha256": "376f4549e3064fdd1b7e86da8a96e26bad818be61cff4c9c8dd681e9a2bcfcb3",
+        "source_file": "dataset/raw/data_mph/A20N_3e962386_RPLL_to_RPVE.csv",
+        "source_records": 261
+      },
+      {
+        "departure_utc": "2026-03-04T03:04:46+00:00",
+        "retained_records": 57,
+        "sha256": "780a00df53e1df751725ca8cc44c27e66270a1b41f1b8c5b54b1bfce1dca757d",
+        "source_file": "dataset/raw/data_mph/A20N_3e966024_RPLL_to_RPVE.csv",
+        "source_records": 563
+      },
+      {
+        "departure_utc": "2026-03-04T04:48:41+00:00",
+        "retained_records": 39,
+        "sha256": "bca1529e4968f90cdcd36d56f82806c5f3b81a79b928c2ce0dd5cf38cf32efe6",
+        "source_file": "dataset/raw/data_mph/A320_3e9697fd_RPLL_to_RPVE.csv",
+        "source_records": 246
+      },
+      {
+        "departure_utc": "2026-03-04T06:14:48+00:00",
+        "retained_records": 40,
+        "sha256": "f3c399abb704f76285c3a1a8c1fc6bc16d27f13e8c5a901a7980f60e7afc5447",
+        "source_file": "dataset/raw/data_mph/A320_3e96be20_RPLL_to_RPVE.csv",
+        "source_records": 262
+      },
+      {
+        "departure_utc": "2026-03-04T07:17:12+00:00",
+        "retained_records": 36,
+        "sha256": "5e9f4095a7aec7575fddb30fe32bb2554ea51992d509823410cfa9825b87dfd1",
+        "source_file": "dataset/raw/data_mph/A20N_3e96e27a_RPLL_to_RPVE.csv",
+        "source_records": 186
+      },
+      {
+        "departure_utc": "2026-03-04T00:13:38+00:00",
+        "retained_records": 66,
+        "sha256": "e3d59b0325bb0eddd03aa1c452c3c2ce269eead427bd80db7743bdcfeddb400d",
+        "source_file": "dataset/raw/data_pps/A21N_3e95fed5_RPLL_to_RPVP.csv",
+        "source_records": 406
+      },
+      {
+        "departure_utc": "2026-03-04T02:27:42+00:00",
+        "retained_records": 67,
+        "sha256": "1d8a8f8e0cfd0a9a49d99667d54938fa3c22188c4357ef98ab307b6323ea5a16",
+        "source_file": "dataset/raw/data_pps/A339_3e961643_RPLL_to_RPVP.csv",
+        "source_records": 432
+      },
+      {
+        "departure_utc": "2026-03-04T07:21:11+00:00",
+        "retained_records": 63,
+        "sha256": "1de058e5371493da87e4f8bd1dee05aaa68e1faeeca4639d479cc47eac79e066",
+        "source_file": "dataset/raw/data_pps/A320_3e96e9a0_RPLL_to_RPVP.csv",
+        "source_records": 327
+      },
+      {
+        "departure_utc": "2026-03-04T10:30:21+00:00",
+        "retained_records": 62,
+        "sha256": "401462f990eb78e143c9a2e620386f47a5a12dedb367f1c6684cc496427fc0bb",
+        "source_file": "dataset/raw/data_pps/A320_3e974795_RPLL_to_RPVP.csv",
+        "source_records": 321
+      },
+      {
+        "departure_utc": "2026-03-04T22:01:07+00:00",
+        "retained_records": 59,
+        "sha256": "9b0f22bd13ee4e0a18269bed4d0b9aaceea5f8c1a1b98c9aedb67659b4fea6aa",
+        "source_file": "dataset/raw/data_pps/A320_3e997b28_RPLL_to_RPVP.csv",
+        "source_records": 285
+      },
+      {
+        "departure_utc": "2026-03-05T01:38:54+00:00",
+        "retained_records": 63,
+        "sha256": "02e9e0d75501e305a52a2b80f7224706afe2c65fcdc600703e079f5d3913dfd9",
+        "source_file": "dataset/raw/data_ceb/A321_3e9a215f_RPLL_to_RPVM.csv",
+        "source_records": 345
+      },
+      {
+        "departure_utc": "2026-03-05T03:06:33+00:00",
+        "retained_records": 67,
+        "sha256": "837713ca0f3eef19e00770fefb9e29036c963a9e836796e1a3a429196b568921",
+        "source_file": "dataset/raw/data_ceb/A321_3e9a4bf1_RPLL_to_RPVM.csv",
+        "source_records": 338
+      },
+      {
+        "departure_utc": "2026-03-05T08:35:33+00:00",
+        "retained_records": 66,
+        "sha256": "694498d62a9fdce10cfa100b31f15aaa7ead4132a0d3fbe730557fad40c37e6a",
+        "source_file": "dataset/raw/data_ceb/A339_3e9af3eb_RPLL_to_RPVM.csv",
+        "source_records": 380
+      },
+      {
+        "departure_utc": "2026-03-05T11:52:08+00:00",
+        "retained_records": 63,
+        "sha256": "078634bb972516962acceeb1960e47864c34434a4aef520a1a0d66b8da3b4536",
+        "source_file": "dataset/raw/data_ceb/A321_3e9b689b_RPLL_to_RPVM.csv",
+        "source_records": 312
+      },
+      {
+        "departure_utc": "2026-03-05T23:20:09+00:00",
+        "retained_records": 66,
+        "sha256": "3574dd0bac2e2d29cb38952710351706a2c008ed2c0a62f7c688f352d1c1579c",
+        "source_file": "dataset/raw/data_ceb/A21N_3e9d96b8_RPLL_to_RPVM.csv",
+        "source_records": 338
+      },
+      {
+        "departure_utc": "2026-03-05T00:46:27+00:00",
+        "retained_records": 92,
+        "sha256": "a5f09566869e5adb63dfdfc0743cf13e3bad130f575c1eacc7584eac3fd98c4f",
+        "source_file": "dataset/raw/data_dvo/A321_3e99ed9c_RPLL_to_RPMD.csv",
+        "source_records": 371
+      },
+      {
+        "departure_utc": "2026-03-05T02:48:39+00:00",
+        "retained_records": 91,
+        "sha256": "a4840c7ed47fb62d49bb14068f67e9799d8ebce43d3fee49b3167cf4064f0675",
+        "source_file": "dataset/raw/data_dvo/A321_3e9a4d6d_RPLL_to_RPMD.csv",
+        "source_records": 422
+      },
+      {
+        "departure_utc": "2026-03-05T08:17:37+00:00",
+        "retained_records": 90,
+        "sha256": "a11b4485934ff449f76dc72e737345210f6a4c88a945f79339eeb2bf6c07421b",
+        "source_file": "dataset/raw/data_dvo/A339_3e9ae32b_RPLL_to_RPMD.csv",
+        "source_records": 359
+      },
+      {
+        "departure_utc": "2026-03-05T18:25:05+00:00",
+        "retained_records": 89,
+        "sha256": "1ff030c4b434c6ac7675e47cbc1d1ad156a27a7f2cce2f44a259b2288afa148b",
+        "source_file": "dataset/raw/data_dvo/A320_3e9cbc27_RPLL_to_RPMD.csv",
+        "source_records": 349
+      },
+      {
+        "departure_utc": "2026-03-05T21:54:13+00:00",
+        "retained_records": 93,
+        "sha256": "fad223542d50142bede6434579c48da0b8bc202a45014bacb88466a1f064056a",
+        "source_file": "dataset/raw/data_dvo/A339_3e9d5418_RPLL_to_RPMD.csv",
+        "source_records": 373
+      },
+      {
+        "departure_utc": "2026-03-05T00:40:38+00:00",
+        "retained_records": 54,
+        "sha256": "84ae885da103522243a97f52afdd75e806154533ae55c22ccb4588743651eea8",
+        "source_file": "dataset/raw/data_ilo/A320_3e99f0ac_RPLL_to_RPVI.csv",
+        "source_records": 320
+      },
+      {
+        "departure_utc": "2026-03-05T05:41:56+00:00",
+        "retained_records": 54,
+        "sha256": "2d6ec7ae8309ca294c7fac4e136968f73d708137f7fb406b1dffdb14a6ccbaff",
+        "source_file": "dataset/raw/data_ilo/A21N_3e9a95af_RPLL_to_RPVI.csv",
+        "source_records": 336
+      },
+      {
+        "departure_utc": "2026-03-05T07:57:56+00:00",
+        "retained_records": 56,
+        "sha256": "f20f55516b1e28d28cb04790469b78e3e55eca740092f22d526cd185e0e70417",
+        "source_file": "dataset/raw/data_ilo/A21N_3e9ade26_RPLL_to_RPVI.csv",
+        "source_records": 361
+      },
+      {
+        "departure_utc": "2026-03-05T11:47:28+00:00",
+        "retained_records": 54,
+        "sha256": "395ac4051a10c4ca00736b7630c8eb2912530b38f665a6cc19573b5cb9894715",
+        "source_file": "dataset/raw/data_ilo/A320_3e9b5d33_RPLL_to_RPVI.csv",
+        "source_records": 333
+      },
+      {
+        "departure_utc": "2026-03-05T19:11:35+00:00",
+        "retained_records": 55,
+        "sha256": "8e0fe1a4090da79d99c832dfb92508ee11c918b32f04925ee4bb831b9df770ae",
+        "source_file": "dataset/raw/data_ilo/A320_3e9cd80c_RPLL_to_RPVI.csv",
+        "source_records": 304
+      },
+      {
+        "departure_utc": "2026-03-05T01:09:32+00:00",
+        "retained_records": 39,
+        "sha256": "1f6e88bfd665d4faa1571caaf740887a92d7b6855965ce6533865af1c0a16848",
+        "source_file": "dataset/raw/data_mph/A320_3e9a05d5_RPLL_to_RPVE.csv",
+        "source_records": 230
+      },
+      {
+        "departure_utc": "2026-03-05T02:51:35+00:00",
+        "retained_records": 37,
+        "sha256": "99e01528fb481518c4c71929cccb6172c19bfb5f366cb2288d831b99de704c39",
+        "source_file": "dataset/raw/data_mph/A320_3e9a4b2b_RPLL_to_RPVE.csv",
+        "source_records": 211
+      },
+      {
+        "departure_utc": "2026-03-05T03:41:51+00:00",
+        "retained_records": 44,
+        "sha256": "3ff57bbc7232ba0cd1a897728b8c19f903d3d62863901bab0dc10eac5cb06d11",
+        "source_file": "dataset/raw/data_mph/A20N_3e9a48e8_RPLL_to_RPVE.csv",
+        "source_records": 273
+      },
+      {
+        "departure_utc": "2026-03-05T05:46:02+00:00",
+        "retained_records": 37,
+        "sha256": "8cc6998a8e3198a6a23d774a702c8066805242a27503e64ef657c56ae4238ae8",
+        "source_file": "dataset/raw/data_mph/A320_3e9a9f17_RPLL_to_RPVE.csv",
+        "source_records": 188
+      },
+      {
+        "departure_utc": "2026-03-05T07:22:37+00:00",
+        "retained_records": 37,
+        "sha256": "728a1a0477c6f7b7e16ac5ff39b0749f3f997a14907a66904994c13d00a4a166",
+        "source_file": "dataset/raw/data_mph/A20N_3e9ace97_RPLL_to_RPVE.csv",
+        "source_records": 189
+      },
+      {
+        "departure_utc": "2026-03-05T01:31:37+00:00",
+        "retained_records": 62,
+        "sha256": "7d4f3f645ad5921ecae087a3cbf5edee0789065a961c8efaa83c8c549cf9d469",
+        "source_file": "dataset/raw/data_pps/A320_3e9a1b82_RPLL_to_RPVP.csv",
+        "source_records": 298
+      },
+      {
+        "departure_utc": "2026-03-05T05:18:02+00:00",
+        "retained_records": 60,
+        "sha256": "14d966ce6df7bffda191153a6d3eb20c8f3ebb6ccba41a3129cb141a5ee96403",
+        "source_file": "dataset/raw/data_pps/A320_3e9a6d46_RPLL_to_RPVP.csv",
+        "source_records": 340
+      },
+      {
+        "departure_utc": "2026-03-05T07:51:09+00:00",
+        "retained_records": 60,
+        "sha256": "41aea54b8693c7a9a6ca441002881b3b7cf1c6d934e3e1122e98e4d7868ded5c",
+        "source_file": "dataset/raw/data_pps/A320_3e9ad864_RPLL_to_RPVP.csv",
+        "source_records": 277
+      },
+      {
+        "departure_utc": "2026-03-05T09:34:48+00:00",
+        "retained_records": 76,
+        "sha256": "d3f9f5c85a7f98e844fdc6a53e2c38285e12496ad3b8defa56369cbc51072713",
+        "source_file": "dataset/raw/data_pps/A21N_3e9b080f_RPLL_to_RPVP.csv",
+        "source_records": 490
+      },
+      {
+        "departure_utc": "2026-03-05T22:20:02+00:00",
+        "retained_records": 59,
+        "sha256": "ee3380c3b6350c4e5a4bbcebd637554d400e1b73817b9d883316d6210fa5c1d5",
+        "source_file": "dataset/raw/data_pps/A333_3e9d5032_RPLL_to_RPVP.csv",
+        "source_records": 288
+      },
+      {
+        "departure_utc": "2026-03-06T00:40:10+00:00",
+        "retained_records": 68,
+        "sha256": "429beae0a4bae82ea36dc4a0753dd90220b8ef55bea994374b0e063569564184",
+        "source_file": "dataset/raw/data_ceb/A320_3e9db56e_RPLL_to_RPVM.csv",
+        "source_records": 368
+      },
+      {
+        "departure_utc": "2026-03-06T01:57:11+00:00",
+        "retained_records": 64,
+        "sha256": "3604086bd2b5e98e9a2703744b9afba982a09c9b56ff045cce9c24890eace230",
+        "source_file": "dataset/raw/data_ceb/A321_3e9e070d_RPLL_to_RPVM.csv",
+        "source_records": 341
+      },
+      {
+        "departure_utc": "2026-03-06T08:36:59+00:00",
+        "retained_records": 72,
+        "sha256": "39153d1888d9ce6d60054e4f7aa9f9e01c66c0d25cd510ce752005e991d9dd36",
+        "source_file": "dataset/raw/data_ceb/A339_3e9eab00_RPLL_to_RPVM.csv",
+        "source_records": 407
+      },
+      {
+        "departure_utc": "2026-03-06T12:11:48+00:00",
+        "retained_records": 59,
+        "sha256": "3668f2d825d3104a25b828ecf3a5cf6c2dfbf6916468f9fd99921ebfce0a6b4f",
+        "source_file": "dataset/raw/data_ceb/A320_3e9f427d_RPLL_to_RPVM.csv",
+        "source_records": 300
+      },
+      {
+        "departure_utc": "2026-03-06T23:22:02+00:00",
+        "retained_records": 69,
+        "sha256": "91f32c4d5720058b9b5d8105e73f9de5df8d08f18ce368b81dbe464d7e1aa3d4",
+        "source_file": "dataset/raw/data_ceb/A20N_3ea16829_RPLL_to_RPVM.csv",
+        "source_records": 371
+      },
+      {
+        "departure_utc": "2026-03-06T01:01:04+00:00",
+        "retained_records": 90,
+        "sha256": "6c61b19b47143ec095f33b8659898de18968f6c57e7276c582f2437b49e3dfaf",
+        "source_file": "dataset/raw/data_dvo/A339_3e9ddb29_RPLL_to_RPMD.csv",
+        "source_records": 359
+      },
+      {
+        "departure_utc": "2026-03-06T03:07:51+00:00",
+        "retained_records": 87,
+        "sha256": "64925025b64fe6d8b794f633df32a9ed3ea4cf4be39ec27de31ab7dbb1fc76ff",
+        "source_file": "dataset/raw/data_dvo/A321_3e9e2ccf_RPLL_to_RPMD.csv",
+        "source_records": 363
+      },
+      {
+        "departure_utc": "2026-03-06T12:09:50+00:00",
+        "retained_records": 93,
+        "sha256": "0694d14e654ac0b095a371284b0c0f281301327e14f39f2e68a719cb2ae4cd8b",
+        "source_file": "dataset/raw/data_dvo/A320_3e9f5181_RPLL_to_RPMD.csv",
+        "source_records": 370
+      },
+      {
+        "departure_utc": "2026-03-06T18:45:31+00:00",
+        "retained_records": 87,
+        "sha256": "8139ab05798529b92034bf6db80422fc6d28c2ed45f3111bb86746620a322d26",
+        "source_file": "dataset/raw/data_dvo/A320_3ea0a0f3_RPLL_to_RPMD.csv",
+        "source_records": 343
+      },
+      {
+        "departure_utc": "2026-03-06T22:42:53+00:00",
+        "retained_records": 90,
+        "sha256": "b5f11c69cce5786297ea738eca3f323b30fae137e655c30773de65c507636273",
+        "source_file": "dataset/raw/data_dvo/A339_3ea1432c_RPLL_to_RPMD.csv",
+        "source_records": 362
+      },
+      {
+        "departure_utc": "2026-03-06T01:18:25+00:00",
+        "retained_records": 54,
+        "sha256": "6d52e27b451276d8839c0526f4f43c6e9635c565ef12429066d706934e3ecf75",
+        "source_file": "dataset/raw/data_ilo/A320_3e9deb96_RPLL_to_RPVI.csv",
+        "source_records": 343
+      },
+      {
+        "departure_utc": "2026-03-06T05:23:21+00:00",
+        "retained_records": 55,
+        "sha256": "b5921fbc28abf8df919dc873774c5f3f3496489ec0085e9385f0d48dd4f4d8a0",
+        "source_file": "dataset/raw/data_ilo/A21N_3e9e6e9b_RPLL_to_RPVI.csv",
+        "source_records": 326
+      },
+      {
+        "departure_utc": "2026-03-06T10:54:16+00:00",
+        "retained_records": 56,
+        "sha256": "2a40278af3cb023c49c72b836746d8184f348c4507d628cf6084c6f766a0d705",
+        "source_file": "dataset/raw/data_ilo/A21N_3e9f0611_RPLL_to_RPVI.csv",
+        "source_records": 367
+      },
+      {
+        "departure_utc": "2026-03-06T13:30:26+00:00",
+        "retained_records": 52,
+        "sha256": "1feb6624b20f46b9f48da544cadd31128eb87c01da607ff9ec322b8b3e0a9520",
+        "source_file": "dataset/raw/data_ilo/A320_3e9f8e83_RPLL_to_RPVI.csv",
+        "source_records": 302
+      },
+      {
+        "departure_utc": "2026-03-06T19:11:12+00:00",
+        "retained_records": 55,
+        "sha256": "1cd475e0f00b0eac226c744827498f44305c21d914c21e6a74040eb060584168",
+        "source_file": "dataset/raw/data_ilo/A320_3ea0a30b_RPLL_to_RPVI.csv",
+        "source_records": 301
+      },
+      {
+        "departure_utc": "2026-03-06T01:21:24+00:00",
+        "retained_records": 41,
+        "sha256": "26e93dcec3a3bb11976633fa9f21cb7efdc3b4d7eebd8c2a68ffaffd4b076345",
+        "source_file": "dataset/raw/data_mph/A20N_3e9de1d5_RPLL_to_RPVE.csv",
+        "source_records": 250
+      },
+      {
+        "departure_utc": "2026-03-06T03:03:16+00:00",
+        "retained_records": 39,
+        "sha256": "3b429912db77de209718fa357dae77e4d33f6842638303ac827895c10715202d",
+        "source_file": "dataset/raw/data_mph/A320_3e9e1c3a_RPLL_to_RPVE.csv",
+        "source_records": 209
+      },
+      {
+        "departure_utc": "2026-03-06T04:38:29+00:00",
+        "retained_records": 36,
+        "sha256": "d949204eea23dc1e3b6bfb56b3a48c7406c648dcf083f37895e795c78cab723e",
+        "source_file": "dataset/raw/data_mph/A320_3e9e5d2b_RPLL_to_RPVE.csv",
+        "source_records": 180
+      },
+      {
+        "departure_utc": "2026-03-06T05:58:55+00:00",
+        "retained_records": 34,
+        "sha256": "d4c87c802fdaa063c582c4e0d91db79f0b2595645fdad97ca1556a1fc0226a3a",
+        "source_file": "dataset/raw/data_mph/A320_3e9e80a4_RPLL_to_RPVE.csv",
+        "source_records": 164
+      },
+      {
+        "departure_utc": "2026-03-06T07:38:21+00:00",
+        "retained_records": 42,
+        "sha256": "acf9f5a499752c14b9524968a83101599fed4880febb791309cae7fa22e3c28b",
+        "source_file": "dataset/raw/data_mph/A20N_3e9ead86_RPLL_to_RPVE.csv",
+        "source_records": 195
+      },
+      {
+        "departure_utc": "2026-03-06T00:26:38+00:00",
+        "retained_records": 73,
+        "sha256": "8d8503653fe6beb5b35248cc7048280f81c3aa6e50b5b5bed54a52afc594a6f1",
+        "source_file": "dataset/raw/data_pps/A321_3e9dc56b_RPLL_to_RPVP.csv",
+        "source_records": 445
+      },
+      {
+        "departure_utc": "2026-03-06T02:21:35+00:00",
+        "retained_records": 67,
+        "sha256": "9a7e7c6c4677741e50c9f5cfa8791fb7b3b0c007ae516757bcc785bcee741b6c",
+        "source_file": "dataset/raw/data_pps/A339_3e9e0e85_RPLL_to_RPVP.csv",
+        "source_records": 443
+      },
+      {
+        "departure_utc": "2026-03-06T07:20:14+00:00",
+        "retained_records": 59,
+        "sha256": "5a68fc1e8470118080ff9ef57a6523ba31d5b7df9462a139ef968c96246509a5",
+        "source_file": "dataset/raw/data_pps/A320_3e9eab4d_RPLL_to_RPVP.csv",
+        "source_records": 268
+      },
+      {
+        "departure_utc": "2026-03-06T10:27:45+00:00",
+        "retained_records": 67,
+        "sha256": "d28a12bea6b6369330d7ba1fe599c8949488e4066ae664fa560f32b8f8e5de7b",
+        "source_file": "dataset/raw/data_pps/A321_3e9efc36_RPLL_to_RPVP.csv",
+        "source_records": 428
+      },
+      {
+        "departure_utc": "2026-03-06T21:33:50+00:00",
+        "retained_records": 61,
+        "sha256": "e3dd7a0659870b71b6193794e8a3d86cde4489e859ffc0f22e5be2176a9cce61",
+        "source_file": "dataset/raw/data_pps/A320_3ea10338_RPLL_to_RPVP.csv",
+        "source_records": 270
+      },
+      {
+        "departure_utc": "2026-03-07T00:16:27+00:00",
+        "retained_records": 63,
+        "sha256": "7aaa20672ded8e6d6ff5ddb7379862f786b39f7f46ea6d4b601997bfc35e588b",
+        "source_file": "dataset/raw/data_ceb/A320_3ea18fc1_RPLL_to_RPVM.csv",
+        "source_records": 354
+      },
+      {
+        "departure_utc": "2026-03-07T01:07:29+00:00",
+        "retained_records": 63,
+        "sha256": "c2d31a0b7e4b97f4d09e8d609de0e6bbc4411112750b07e6c66a480419f304f7",
+        "source_file": "dataset/raw/data_ceb/A321_3ea1b152_RPLL_to_RPVM.csv",
+        "source_records": 317
+      },
+      {
+        "departure_utc": "2026-03-07T06:57:33+00:00",
+        "retained_records": 64,
+        "sha256": "10cb71f4cff02cf867c9302c0cc65e67be8df9e637f6b09764683b852727bfd2",
+        "source_file": "dataset/raw/data_ceb/A321_3ea25750_RPLL_to_RPVM.csv",
+        "source_records": 326
+      },
+      {
+        "departure_utc": "2026-03-07T11:31:32+00:00",
+        "retained_records": 62,
+        "sha256": "43fb3e80df94dfd656fcab6652e9ac65ed466aa92fa5c274d8db57dc808809f9",
+        "source_file": "dataset/raw/data_ceb/A320_3ea2e5c4_RPLL_to_RPVM.csv",
+        "source_records": 294
+      },
+      {
+        "departure_utc": "2026-03-07T23:00:05+00:00",
+        "retained_records": 62,
+        "sha256": "c5b1738b7189cde9b2d462ccccc2a050e777c7ab2ad4dddd788ff422299aa6fa",
+        "source_file": "dataset/raw/data_ceb/A321_3ea4a113_RPLL_to_RPVM.csv",
+        "source_records": 316
+      },
+      {
+        "departure_utc": "2026-03-07T00:37:01+00:00",
+        "retained_records": 91,
+        "sha256": "d1bc74c432f5c169c6a6f2062a42815e5a1e8b11f5240e905d259db11874d311",
+        "source_file": "dataset/raw/data_dvo/A21N_3ea194ae_RPLL_to_RPMD.csv",
+        "source_records": 373
+      },
+      {
+        "departure_utc": "2026-03-07T02:47:09+00:00",
+        "retained_records": 97,
+        "sha256": "a4ba9b596f672df2e31c733a9eb473f2053e71a7eb989f8c85e0388008510613",
+        "source_file": "dataset/raw/data_dvo/A321_3ea1e43c_RPLL_to_RPMD.csv",
+        "source_records": 502
+      },
+      {
+        "departure_utc": "2026-03-07T15:40:59+00:00",
+        "retained_records": 91,
+        "sha256": "841ad0dab777e98030e5065a2ecf01999c485202cdd374db13ea841e57790bc0",
+        "source_file": "dataset/raw/data_dvo/A21N_3ea3841f_RPLL_to_RPMD.csv",
+        "source_records": 354
+      },
+      {
+        "departure_utc": "2026-03-07T19:08:49+00:00",
+        "retained_records": 88,
+        "sha256": "1750117cf74980017dbbcce91bb3a3529ee3e4bbbf1a262a98350487ef66c6aa",
+        "source_file": "dataset/raw/data_dvo/A320_3ea416e4_RPLL_to_RPMD.csv",
+        "source_records": 363
+      },
+      {
+        "departure_utc": "2026-03-07T22:19:13+00:00",
+        "retained_records": 92,
+        "sha256": "78c5e6a2f6462325677fedabbd62c735a5cf3692f958a04d9aaedd9ce01efd80",
+        "source_file": "dataset/raw/data_dvo/A339_3ea48116_RPLL_to_RPMD.csv",
+        "source_records": 367
+      },
+      {
+        "departure_utc": "2026-03-07T00:21:35+00:00",
+        "retained_records": 57,
+        "sha256": "11eb4613dba74c256a4f8315e9c55aa7159f3e2e3a36f2aaddb6163bf6027b73",
+        "source_file": "dataset/raw/data_ilo/A320_3ea19176_RPLL_to_RPVI.csv",
+        "source_records": 368
+      },
+      {
+        "departure_utc": "2026-03-07T05:20:25+00:00",
+        "retained_records": 55,
+        "sha256": "859e873df15a3aab3df69acc1dd0f0797e5ca24c59d38c0f90df7d66ce2976d9",
+        "source_file": "dataset/raw/data_ilo/A21N_3ea2136f_RPLL_to_RPVI.csv",
+        "source_records": 328
+      },
+      {
+        "departure_utc": "2026-03-07T09:23:52+00:00",
+        "retained_records": 54,
+        "sha256": "73bacc7182b2606934b844a0eef5bcddddb08e47100e3dcbaea2a10157328bf1",
+        "source_file": "dataset/raw/data_ilo/A20N_3ea29bae_RPLL_to_RPVI.csv",
+        "source_records": 310
+      },
+      {
+        "departure_utc": "2026-03-07T13:19:37+00:00",
+        "retained_records": 60,
+        "sha256": "0433f7288f341b1cd04dcfbc0f72e83068102cc789ef9f37ca2039f04f52fc9d",
+        "source_file": "dataset/raw/data_ilo/A320_3ea32cb8_RPLL_to_RPVI.csv",
+        "source_records": 365
+      },
+      {
+        "departure_utc": "2026-03-07T22:35:07+00:00",
+        "retained_records": 55,
+        "sha256": "c7e3a4ce950da6386cc1d00eee9d262d4e532b3fb9bca654f6ee03ecb83aa396",
+        "source_file": "dataset/raw/data_ilo/A21N_3ea491bc_RPLL_to_RPVI.csv",
+        "source_records": 348
+      },
+      {
+        "departure_utc": "2026-03-07T01:11:34+00:00",
+        "retained_records": 40,
+        "sha256": "ad546fb79afecedf04f8cb9d27e419685529e484609dad0ef0ebdab3dc08a261",
+        "source_file": "dataset/raw/data_mph/A320_3ea1ac74_RPLL_to_RPVE.csv",
+        "source_records": 206
+      },
+      {
+        "departure_utc": "2026-03-07T02:56:32+00:00",
+        "retained_records": 40,
+        "sha256": "b58e569158801265f951ae89a8eaa566fbbfa38d85815e64f903292aeea5b21d",
+        "source_file": "dataset/raw/data_mph/A320_3ea1eb3e_RPLL_to_RPVE.csv",
+        "source_records": 225
+      },
+      {
+        "departure_utc": "2026-03-07T03:40:41+00:00",
+        "retained_records": 38,
+        "sha256": "b54083eb4ecc9be1b568907c9248cfe6fb959211244df1daeaba71ab5a64d515",
+        "source_file": "dataset/raw/data_mph/A20N_3ea1df65_RPLL_to_RPVE.csv",
+        "source_records": 218
+      },
+      {
+        "departure_utc": "2026-03-07T05:50:13+00:00",
+        "retained_records": 40,
+        "sha256": "3a363d0fea59437575461aa056cb424885aa622c85d7155ce41cb5bddc6d76e3",
+        "source_file": "dataset/raw/data_mph/A320_3ea236f5_RPLL_to_RPVE.csv",
+        "source_records": 218
+      },
+      {
+        "departure_utc": "2026-03-07T07:26:15+00:00",
+        "retained_records": 37,
+        "sha256": "b216fa450885d3b422cab63710ce013f0cd49250596d8e25ab3ba0e17b153b0f",
+        "source_file": "dataset/raw/data_mph/A20N_3ea262ed_RPLL_to_RPVE.csv",
+        "source_records": 194
+      },
+      {
+        "departure_utc": "2026-03-07T00:21:12+00:00",
+        "retained_records": 67,
+        "sha256": "646ede957760c529e4dccf22c3404c3d4063ef24d606a40fe6e77f98047b97ab",
+        "source_file": "dataset/raw/data_pps/A321_3ea18c47_RPLL_to_RPVP.csv",
+        "source_records": 414
+      },
+      {
+        "departure_utc": "2026-03-07T02:19:12+00:00",
+        "retained_records": 65,
+        "sha256": "9db646462073f6eadc02a6f8f527026cb5324978ce8f99b221b57e6c9932b613",
+        "source_file": "dataset/raw/data_pps/A339_3ea1cea2_RPLL_to_RPVP.csv",
+        "source_records": 422
+      },
+      {
+        "departure_utc": "2026-03-07T07:17:15+00:00",
+        "retained_records": 66,
+        "sha256": "fa852b0ee6d436ae1410de04dea1935883cb250e58afb4fe6f8834cf15220310",
+        "source_file": "dataset/raw/data_pps/A320_3ea26109_RPLL_to_RPVP.csv",
+        "source_records": 429
+      },
+      {
+        "departure_utc": "2026-03-07T09:05:47+00:00",
+        "retained_records": 66,
+        "sha256": "3f8673c3744eadd5a8fab76404b58e9aaa3584b3dae2a3c29b495429f7905de1",
+        "source_file": "dataset/raw/data_pps/A321_3ea28e7a_RPLL_to_RPVP.csv",
+        "source_records": 376
+      },
+      {
+        "departure_utc": "2026-03-07T21:40:43+00:00",
+        "retained_records": 61,
+        "sha256": "067412f2986570349fdd371450792650ab855b01e3de974222b3954796edab2d",
+        "source_file": "dataset/raw/data_pps/A320_3ea47a86_RPLL_to_RPVP.csv",
+        "source_records": 277
+      }
+    ]
   },
-  "inputs_sha256": {
-    "CSV.zip": "f929a7a1bfbfef67e90b4ffa081dd447478472a54fcd0e84e94e53800a476838"
+  "source": {
+    "archive_bytes": 1093213553,
+    "archive_md5_verified": false,
+    "note": "Only pinned byte ranges downloaded; the published whole-archive MD5 is informational.",
+    "parts": {
+      "dataset-directory.bin": {
+        "bytes": 8303898,
+        "offset": 1084909633,
+        "sha256": "b424955a4dd5ec2419ccae5b7f02954e183f433ce0ed6e53089186e1bf4b05ba"
+      },
+      "raw-flights.bin": {
+        "bytes": 41319432,
+        "offset": 895180013,
+        "sha256": "1c13a9ae463cbce1470617d8c34a4cb16c354ec2748a2e55c90586dd7f950f44"
+      }
+    },
+    "published_archive_md5": "4e10c93ea0a880ff75a1ecac57dc8fbc",
+    "url": "https://zenodo.org/records/20534917/files/dataset.zip"
   }
 }

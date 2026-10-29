@@ -158,7 +158,10 @@ fn complete_mcp_discovery_and_capability_resource_use_the_live_provider() {
     assert!(!instructions.contains("MP4 on macOS"));
     let listed = rpc("tools/list", json!({}));
     let tools = listed["result"]["tools"].as_array().unwrap();
-    assert_eq!(tools.len(), 118);
+    assert_eq!(tools.len(), 119);
+    assert!(tools
+        .iter()
+        .any(|tool| tool["name"] == "chronoscope_system_resources"));
     let recording = tools
         .iter()
         .find(|tool| tool["name"] == "chronoscope_view_recording")

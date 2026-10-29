@@ -1,0 +1,18 @@
+{
+  "count": 11018,
+  "visible": 1656,
+  "filter": {
+    "bounds": null,
+    "end": 1772503312.7999995,
+    "facet_fields": {},
+    "facet_hidden": {},
+    "hidden_categories": [],
+    "hidden_entities": [],
+    "hidden_sources": [],
+    "located_only": false,
+    "predicates": [],
+    "search": "",
+    "selected_only": false,
+    "start": 1772416912.7999995
+  }
+}

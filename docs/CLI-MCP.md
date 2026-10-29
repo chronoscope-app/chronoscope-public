@@ -1,6 +1,10 @@
 # CLI and MCP — Chronoscope
 
-Chronoscope’s desktop, CLI and MCP share the Rust engine and enforced command schemas. The generated MCP registration and server name are `chronoscope`. Tool names (`chronoscope_*`), resource URIs and portable workspace files retain their contracts. See [Mac installation and profile migration](MAC_HANDOFF.md). Build the CLI without a graphical toolkit:
+Chronoscope’s desktop, CLI and MCP share the Rust engine and enforced command schemas. The generated MCP registration and server name are `chronoscope`. Tool names (`chronoscope_*`), resource URIs and portable workspace files retain their contracts. See [Mac installation and profile migration](MAC_HANDOFF.md).
+
+Automatic memory/graphics throttling needs no new settings. `chronoscope call system_resources` reads cached OS RAM/swap bytes; attached `chronoscope --attach view status` reports current automatic limits under `diagnostics.resourceGovernor`. [Policy and limits](performance/AUTOMATIC_RESOURCE_BUDGETS_2026-10-29.md).
+
+Build the CLI without a graphical toolkit:
 
 ```sh
 cargo build --locked --release -p chronoscope --bin chronoscope
@@ -318,7 +322,9 @@ chronoscope --attach call edit --args '{"id":"1","changes":{"altitude":{"meters"
 
 `altitude:null` clears the value; zero remains a valid height. JSON Events retain `{meters,reference}`; CSV export/reimport preserves normalized metres and mixed references. Portable altitude projects use format 7.
 
-`demo_catalog` includes `flight-altitude` (100 flights, 88,018 samples) and `starlink-orbits` (128 satellites, 46,208 predicted states) and `falcon9-launches` (700 launch-pad Events, 2010–2026), each with Altitude and Time Height preview metadata. `demo_open {"id":"starlink-orbits"}` opens the altitude scene; `restore_view {"index":1}` chooses its Time Height preview. `falcon9-launches` opens Time Height and has a launch-site map preview. The retired `rocket-altitude` ID is rejected. [Sources, attribution and approximate-height caveats](ALTITUDE-DEMOS.md).
+`demo_catalog` includes `flight-altitude` (175 flights, 11,018 samples, six airports, March 1–7, 2026 UTC) and `starlink-orbits` (128 satellites, 46,208 predicted states) and `falcon9-launches` (700 launch-pad Events, 2010–2026), each with Altitude and Time Height preview metadata. `demo_open {"id":"starlink-orbits"}` opens the altitude scene; `restore_view {"index":1}` chooses its Time Height preview. `falcon9-launches` opens Time Height and has a launch-site map preview. The retired `rocket-altitude` ID is rejected. [Sources, attribution and approximate-height caveats](ALTITUDE-DEMOS.md).
+
+`demo_open {"id":"flight-altitude"}` opens the complete week in Altitude. Its saved views are Altitude (0), Time Height (1), Ground tracks (2), and **Day 1 · 24-hour playback window** (3). `restore_view {"index":3}` sets a full-day window starting at the first observation; the original dataset retains all seven days for moving-window playback. Flight attributes include departure/arrival airport codes, aircraft type, route, original filename and source row. The demo ID and existing CLI/MCP controls are unchanged.
 
 ## Globe time elevation (CesiumJS)
 

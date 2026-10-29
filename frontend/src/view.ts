@@ -6,6 +6,7 @@ import { applySceneAppearance } from "./scene-appearance";
 import { TOOLTIP_DELAY_MS } from "./tooltips";
 import { cameraStabilizer } from "./camera-stability";
 import { idleSceneUpdates } from "./idle-scene-updates";
+import { ResourceGovernor, resolutionFor, activeCadenceCost } from "./resource-governor";
 import { fadeAmount, departureDuration, recentHistorySpan } from "./playback-window";
 import { GisLayers } from "./gis";
 import {
@@ -245,6 +246,7 @@ export class SpaceTimeView {
   > = {};
   private recordTrackCpu(stage: string, start: number) {
     const elapsed = performance.now() - start;
+    this.resourceGeometryMs = Math.max(this.resourceGeometryMs, elapsed);
     const sample = (this.trackCpuStages[stage] ??= {
       calls: 0,
       totalMs: 0,
@@ -330,6 +332,16 @@ export class SpaceTimeView {
   private renderedFrames = 0;
   private frameIntervals: number[] = [];
   private renderTimes: number[] = [];
+  readonly resourceGovernor = new ResourceGovernor();
+  get resourceLimits() { return this.resourceGovernor.limits; }
+  private resourceTimer?: ReturnType<typeof setTimeout>;
+  private resourceEpochFrames = 0;
+  private resourceGeometryMs = 0;
+  private lastResourceGeometryMs = 0;
+  private resourceActiveLast = 0;
+  private resourceActiveTotal = 0;
+  private resourceActiveIntervals = 0;
+  private updateRate: number | undefined;
   private geometryArcBudget = createArcBudget(0);
   private trailArcBudget = createArcBudget(0);
   private lastRaster?: Raster;
@@ -370,7 +382,54 @@ export class SpaceTimeView {
       return Math.min(extent * 0.12, 50000) * this.globeTimeScale;
     return (extent * Math.max(0, this.timeHeight)) / 4;
   }
+  private applyUpdateRate() {
+    if (!this.viewer || this.viewer.isDestroyed()) return;
+    const cap = this.resourceLimits.maxFps;
+    (this.viewer as { targetFrameRate: number | undefined }).targetFrameRate =
+      cap === undefined ? this.updateRate : Math.min(this.updateRate ?? cap, cap);
+  }
+  private applyResourceGraphics() {
+    if (!this.viewer || this.viewer.isDestroyed()) return;
+    const limits = this.resourceLimits;
+    this.viewer.resolutionScale = resolutionFor(this.host.clientWidth, this.host.clientHeight, devicePixelRatio, limits);
+    this.scene.msaaSamples = limits.name === "full" ? 4 : 1;
+    this.resources?.setResourceLimits(limits.tiles, limits.screenError, limits.streetCanvases);
+    this.applyUpdateRate();
+  }
+  async checkResourcePressure() {
+    if (this.disposed || this.recovering) return;
+    const sample = await call("system_resources");
+    if (this.disposed || this.recovering) return;
+    const frameCount = this.renderedFrames - this.resourceEpochFrames;
+    this.resourceEpochFrames = this.renderedFrames;
+    const mean = (values: number[]) => values.reduce((a, b) => a + b, 0) / Math.max(1, values.length);
+    const activeCadence = this.playback || !!this.drag
+      ? activeCadenceCost(this.resourceActiveTotal, this.resourceActiveIntervals, this.resourceLimits.maxFps) : 0;
+    this.resourceActiveTotal = this.resourceActiveIntervals = 0;
+    if (!this.playback && !this.drag) this.resourceActiveLast = 0;
+    const renderMs = frameCount >= 3 && performance.now() - this.lastRendered < 6000
+      ? Math.max(mean(this.renderTimes), activeCadence) : null;
+    this.lastResourceGeometryMs = this.resourceGeometryMs;
+    this.resourceGeometryMs = 0;
+    if (this.resourceGovernor.update(sample, renderMs, performance.now(), this.lastResourceGeometryMs)) {
+      this.stopFades();
+      this.playbackMarkersDirty = true;
+      this.applyResourceGraphics();
+      this.onRepresentationInvalidated("resource-pressure");
+      this.requestRender();
+    }
+  }
+  private scheduleResourceCheck() {
+    clearTimeout(this.resourceTimer);
+    if (this.disposed) return;
+    this.resourceTimer = setTimeout(() => {
+      void this.checkResourcePressure().catch(() => {}).finally(() => this.scheduleResourceCheck());
+    }, 5000);
+  }
   async initialize() {
+    clearTimeout(this.resourceTimer);
+    this.resourceActiveLast = this.resourceActiveTotal = this.resourceActiveIntervals = 0;
+    if (this.disposed) return;
     // This app supplies its own imagery and terrain, without Cesium ion.
     // Remove only the engine's default logo; provider-required credits remain.
     CreditDisplay.cesiumCredit = undefined!;
@@ -405,7 +464,10 @@ export class SpaceTimeView {
         webgl: { alpha: false, antialias: true, preserveDrawingBuffer: false },
       },
     });
-    this.viewer.resolutionScale = Math.min(devicePixelRatio || 1, 1.5);
+    const gl = this.viewer.canvas.getContext("webgl2");
+    const info = gl?.getExtension("WEBGL_debug_renderer_info");
+    if (gl) this.resourceGovernor.setGraphicsRenderer(String(gl.getParameter(info?.UNMASKED_RENDERER_WEBGL ?? gl.RENDERER)));
+    this.viewer.resolutionScale = resolutionFor(this.host.clientWidth, this.host.clientHeight, devicePixelRatio, this.resourceLimits);
     const scene = this.viewer.scene;
     scene.backgroundColor = Color.fromCssColorString(
       this.theme === "light" ? "#e5e9ef" : "#0e1420",
@@ -476,7 +538,8 @@ export class SpaceTimeView {
       (rate) => {
         // Cesium accepts undefined to restore display cadence; its declaration
         // lists only number even though the runtime setter supports both.
-        (this.viewer as { targetFrameRate: number | undefined }).targetFrameRate = rate;
+        this.updateRate = rate;
+        this.applyUpdateRate();
       },
       () =>
         this.playback || !!this.drag || this.renderQueued ||
@@ -535,6 +598,13 @@ export class SpaceTimeView {
         interval = now - this.lastRendered;
       this.lastFrameIntervalMs = this.lastRendered ? interval : 0;
       this.lastRenderCpuMs = now - this.renderStarted;
+      if (this.playback || this.drag) {
+        if (this.resourceActiveLast) {
+          this.resourceActiveTotal += now - this.resourceActiveLast;
+          this.resourceActiveIntervals++;
+        }
+        this.resourceActiveLast = now;
+      } else this.resourceActiveLast = 0;
       // Idle gaps are intentional in request-render mode, not dropped frames.
       if (interval > 250) {
         this.frameIntervals = [];
@@ -593,6 +663,10 @@ export class SpaceTimeView {
     if (!this.recovering) this.backend("WebGL2");
     this.rebuild();
     this.fit();
+    this.applyResourceGraphics();
+    try { await this.checkResourcePressure(); } catch { /* Retain graphics hints when OS sampling is unavailable. */ }
+    this.resourceEpochFrames = this.renderedFrames;
+    this.scheduleResourceCheck();
   }
   /** A fresh renderer retains the workspace, selection, camera and map layers. */
   async recoverRenderer(manual = true) {
@@ -625,6 +699,7 @@ export class SpaceTimeView {
     try {
       this.stopFades();
       clearTimeout(this.idleTimer);
+      clearTimeout(this.resourceTimer);
       this.resizeObserver?.disconnect();
       this.idleUpdates?.dispose();
       this.idleUpdates = undefined;
@@ -890,6 +965,7 @@ export class SpaceTimeView {
     markerPositionsUnchanged = false,
   ) {
     if (!this.viewer || this.disposed) return;
+    const rebuildStarted = performance.now();
     this.generation++;
     this.trailOrder = [];
     // Geography fills the visible ground independently of the inset reference
@@ -917,12 +993,14 @@ export class SpaceTimeView {
       if (!incomingIds.has(id)) this.incomingAt.delete(id);
     this.pruneFades(now, incomingIds);
     const departed: Point[] = [];
-    if (previous && this.playbackFade)
+    let newAfterimages = 0;
+    if (previous && this.playbackFade && this.resourceLimits.afterimages)
       for (const p of previous.values())
         if (!incomingIds.has(p.id)) {
-          departed.push(p);
-          if (!this.display.show_points || !this.glyphById.get(p.id)?.show)
+          if (departed.length < this.resourceLimits.fadeSegments) departed.push(p);
+          if (!this.display.show_points || !this.glyphById.get(p.id)?.show || newAfterimages >= this.resourceLimits.afterimages)
             continue;
+          newAfterimages++;
           const color = this.measurement
             ? Color.fromCssColorString(
                 measurementColor(p.value, this.measurement),
@@ -1115,6 +1193,7 @@ export class SpaceTimeView {
       (this.incoming.length || this.outgoing.length || this.fadeTrails.length)
     )
       this.advanceFades();
+    this.resourceGeometryMs = Math.max(this.resourceGeometryMs, performance.now() - rebuildStarted);
     this.requestRender();
   }
   private markerBucket(point: Point, now: number) {
@@ -1183,7 +1262,7 @@ export class SpaceTimeView {
         ),
       0,
     );
-    this.geometryArcBudget = createArcBudget(segments, 200000);
+    this.geometryArcBudget = createArcBudget(segments, this.resourceLimits.arcVertices);
     const polygonInstances: GeometryInstance[] = [];
     const lines = this.shapes.add(new PolylineCollection());
     const vertices = this.shapes.add(new PointPrimitiveCollection());
@@ -1522,6 +1601,7 @@ export class SpaceTimeView {
   }
   setPlayback(active: boolean) {
     this.idleUpdates?.wake();
+    this.resourceActiveLast = 0;
     this.playback =
       active && !matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.displayLayer.setPlayback(this.playback);
@@ -1542,6 +1622,7 @@ export class SpaceTimeView {
       ?.click();
   }
   private addFadeTrails(points: Point[], started: number) {
+    if (!this.resourceLimits.fadeSegments) return;
     if (
       !this.display.show_trails ||
       this.display.trail_opacity <= 0 ||
@@ -1573,6 +1654,7 @@ export class SpaceTimeView {
     departed: Set<string>,
     started: number,
   ) {
+    if (!this.resourceLimits.fadeSegments) return;
     const streams = [] as ("tracks" | "trails")[];
     if (this.display.show_tracks && this.display.track_opacity > 0)
       streams.push("tracks");
@@ -1584,7 +1666,7 @@ export class SpaceTimeView {
         (a, b) =>
           a.entity - b.entity || a.time - b.time || a.id.localeCompare(b.id),
       )
-      .slice(0, 100000);
+      .slice(0, this.resourceLimits.fadeSegments);
     const edges = trailEdges(
       sorted,
       (i) => {
@@ -1626,7 +1708,7 @@ export class SpaceTimeView {
       groups.clear();
       groups.set(-1, merged);
     }
-    const budget = createArcBudget(edges.length * streams.length, 100000);
+    const budget = createArcBudget(edges.length * streams.length, Math.min(100000, this.resourceLimits.arcVertices));
     for (const [entity, group] of groups)
       for (const kind of streams) {
         const positions: number[] = [];
@@ -1680,6 +1762,7 @@ export class SpaceTimeView {
     started: number,
     kind: "stems" | "tracks" | "trails",
   ) {
+    if (!values.length || !this.resourceLimits.fadeSegments) return;
     const material = Material.fromType("Color", { color });
     const primitive = this.scene.primitives.add(
       new Primitive({
@@ -1710,7 +1793,7 @@ export class SpaceTimeView {
     });
   }
   private pruneFades(now: number, current?: Set<string>) {
-    const excess = Math.max(0, this.outgoing.length - 100000);
+    const excess = Math.max(0, this.outgoing.length - this.resourceLimits.afterimages);
     this.outgoing = this.outgoing.filter((entry, index) => {
       if (
         index >= excess &&
@@ -1726,7 +1809,7 @@ export class SpaceTimeView {
       (n, cohort) => n + cohort.segments,
       0,
     );
-    const excessBatches = Math.max(0, this.fadeTrails.length - 256);
+    const excessBatches = Math.max(0, this.fadeTrails.length - this.resourceLimits.fadeCohorts);
     this.fadeTrails = this.fadeTrails.filter((cohort, index) => {
       const reentered =
         current && [...cohort.ids].some((id) => current.has(id));
@@ -1734,7 +1817,7 @@ export class SpaceTimeView {
         index >= excessBatches &&
         now - cohort.started < this.fadeDepartureMs &&
         !reentered &&
-        segments <= 100000
+        segments <= this.resourceLimits.fadeSegments
       )
         return true;
       segments -= cohort.segments;
@@ -2239,7 +2322,7 @@ export class SpaceTimeView {
         (n, run) => n + Math.max(0, run.points.length - 1) * streams,
         0,
       ),
-      200000,
+      this.resourceLimits.arcVertices,
     );
     this.recordTrackCpu("runs", runsStart);
     for (const run of runs) {
@@ -3256,6 +3339,8 @@ export class SpaceTimeView {
       allocatedMarkerSlots:
         this.glyphs.length + this.triangles.length +
         this.arrivingPoints.length + this.arrivingTriangles.length,
+      resourceGovernor: this.resourceGovernor.diagnostics(),
+      lastResourceGeometryMs: this.lastResourceGeometryMs,
       fadingPointCount: this.fading.length,
       fadingTriangleCount: this.fadingTriangles.length,
       fadingStemSegments: this.fadeTrails
@@ -3361,6 +3446,7 @@ export class SpaceTimeView {
   }
   resize() {
     if (this.viewer && !this.disposed) {
+      this.applyResourceGraphics();
       this.viewer.resize();
       this.updateAxes();
       this.requestRender();
@@ -3893,6 +3979,7 @@ export class SpaceTimeView {
     if (this.disposed) return;
     this.disposed = true;
     clearTimeout(this.idleTimer);
+    clearTimeout(this.resourceTimer);
     this.idleUpdates?.dispose();
     this.idleUpdates = undefined;
     this.abort.abort();

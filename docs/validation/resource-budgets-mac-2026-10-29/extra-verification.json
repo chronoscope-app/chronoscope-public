@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "source": "032ccfff0259abc2b44ec2dc559153f680abb94d",
+  "checks": [
+    {
+      "name": "core-library",
+      "exit_code": 0
+    },
+    {
+      "name": "publication",
+      "exit_code": 0
+    },
+    {
+      "name": "distribution",
+      "exit_code": 0
+    },
+    {
+      "name": "packaging",
+      "exit_code": 0
+    },
+    {
+      "name": "dependency-audit",
+      "exit_code": 0
+    }
+  ],
+  "dependency_audit": {
+    "vulnerabilities": 0,
+    "database": {
+      "advisory-count": 1381,
+      "last-commit": "40f5be6fb12ed93fc591bf4ab23b7d793b3f2239",
+      "last-updated": "2026-10-28T09:50:03+01:00"
+    },
+    "warnings": {
+      "unmaintained": 6,
+      "yanked": 1
+    }
+  }
+}

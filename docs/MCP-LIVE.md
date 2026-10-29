@@ -5,6 +5,23 @@ recording remains macOS 15+ only; telemetry, playback and scenarios do not requi
 video support. None of these tools provides arbitrary scripts, DOM access or
 shell execution.
 
+## Automatic resource budgets
+
+The desktop samples OS RAM availability and swap use every five seconds and
+monitors active drawing and geometry-build cost. It automatically limits render
+resolution, multisampling, map caches, observation/geometry packets and transient
+afterimages under pressure. Recovery requires 45 seconds of healthy headroom per
+step. There is no new tuning control; existing render-budget choices remain upper
+bounds, and original records, query scope, selection and saved settings persist.
+
+Use `chronoscope_system_resources` (CLI `chronoscope call system_resources`) for
+cached OS memory bytes and sample age. This is not a process or GPU-allocation
+measurement. Attached `view_status` / `chronoscope --attach view status` exposes
+`diagnostics.resourceGovernor`: current profile, reason, effective caps, memory
+sample age and transition count. Renderer strings are hints and may be masked;
+measured work remains an independent throttling signal. See
+[policy, limits and validation](performance/AUTOMATIC_RESOURCE_BUDGETS_2026-10-29.md).
+
 ## Height selection and map reset
 
 Use `chronoscope_view_set` with `mode:"globe", globe_altitude:true` for physical altitude, or `globe_time:true` and optional `globe_time_scale` for timestamp elevation. Each selection turns the other off; both false gives ground placement. Altitude leaves the Time Height slider visible but disabled and retains its scale. The CLI equivalents are `chronoscope --attach view height altitude`, `view height time --scale 2`, and `view height ground`.

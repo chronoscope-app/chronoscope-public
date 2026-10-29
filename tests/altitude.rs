@@ -142,7 +142,7 @@ fn csv_roundtrip_keeps_mixed_references_and_rejects_invalid_altitude() {
 fn real_examples_have_many_distinct_tracks_and_preserved_credit() {
     let dir = tempfile::tempdir().unwrap();
     for (id, count, entities) in [
-        ("flight-altitude", 88018, 100),
+        ("flight-altitude", 11018, 175),
         ("starlink-orbits", 46208, 128),
     ] {
         let p = chronoscope::demos::load(id, dir.path()).unwrap();
@@ -161,5 +161,56 @@ fn real_examples_have_many_distinct_tracks_and_preserved_credit() {
         assert!(!p.provenance.is_empty());
         p.validate().unwrap();
         assert!(p.dataset.events.iter().all(|e| e.altitude.is_some()));
+    }
+}
+
+#[test]
+fn flight_demo_spans_seven_days_with_five_routes_every_day() {
+    use std::collections::{BTreeMap, BTreeSet};
+    let dir = tempfile::tempdir().unwrap();
+    let p = chronoscope::demos::load("flight-altitude", dir.path()).unwrap();
+    let mut departures = BTreeMap::new();
+    let mut airports = BTreeSet::new();
+    for e in &p.dataset.events {
+        assert!((1772323200.0..1772928000.0).contains(&e.time)); // March 1–8 UTC
+        assert!(e.source.starts_with("dataset/raw/"));
+        assert_eq!(e.altitude.unwrap().reference, AltitudeReference::Reported);
+        airports.insert(e.attrs["departure_airport"].clone());
+        airports.insert(e.attrs["arrival_airport"].clone());
+        departures.entry(&e.entity).or_insert(e);
+    }
+    assert_eq!(airports.len(), 6);
+    assert_eq!(departures.len(), 175);
+    let mut per_route_day = BTreeMap::new();
+    for e in departures.values() {
+        let day = ((e.time - 1772323200.0) / 86400.0).floor() as u32;
+        *per_route_day
+            .entry((day, &e.attrs["arrival_airport"]))
+            .or_insert(0) += 1;
+    }
+    assert_eq!(per_route_day.len(), 7 * 5);
+    assert!(per_route_day.values().all(|count| *count == 5));
+    assert!(p.filter.start.is_none() && p.filter.end.is_none());
+    let playback = &p.views[3];
+    assert_eq!(playback.filter.start, Some(1772323644.0));
+    assert_eq!(playback.filter.end, Some(1772410044.0));
+    let raw = import::read_file(
+        &std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("samples/public/flights-philippines-week-2026.csv"),
+        b',',
+    )
+    .unwrap();
+    let table = &raw.tables[0];
+    let imported = import::convert(
+        table,
+        &Mapping::guess(&table.headers),
+        "flight-roundtrip",
+        1,
+    )
+    .unwrap();
+    assert_eq!(imported.events.len(), p.dataset.events.len());
+    for (source, roundtrip) in p.dataset.events.iter().zip(imported.events.iter()) {
+        assert_eq!(source.time, roundtrip.time);
+        assert_eq!(source.altitude, roundtrip.altitude);
     }
 }

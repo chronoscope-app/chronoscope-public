@@ -1,10 +1,10 @@
 # Altitude and multi-track examples
 
-Open **Help → Demo datasets → 100 flights · London to Zurich** or **128 Starlinks · global orbits**. Both are offline projects with Altitude, Time Height and Ground saved views. CSV copies are in `samples/public/`; keep their `.attribution.json` companions when sharing. No military missile telemetry is bundled.
+Open **Help → Demo datasets → A week of flights · 6 Philippine airports** or **128 Starlinks · global orbits**. Both are offline projects with Altitude, Time Height and Ground saved views. CSV copies are in `samples/public/`; keep their `.attribution.json` companions when sharing. No military missile telemetry is bundled.
 
 | Example | Distinct tracks | Samples | Reported altitude |
 | --- | ---: | ---: | --- |
-| London–Zurich flights | 100 | 88,018 | 20.58–12,166.86 m |
+| Philippine flights · March 1–7, 2026 UTC | 175 | 11,018 | 0–12,497 m (approximate reported height) |
 | Starlink predicted orbits | 256 | 46,208 | 290,555–595,675 m (derived ellipsoid height) |
 
 ## Height controls and interpretation
@@ -24,11 +24,15 @@ Event JSON stores `altitude: {meters, reference}`. CSV export includes `altitude
 
 ## Flights: source and transformations
 
-[Cleaned ADS-B Trajectories (LHR-ZRH 2025) for AI Training](https://doi.org/10.5281/zenodo.18916312), Khalid El Ouanbi and Issam Amellal, LAMSAD Laboratory / Hassan First University; original telemetry from the OpenSky Network. The Zenodo record licenses this derived dataset under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). This does not imply endorsement.
+[Authentic and Modified ADS-B Flight Data of Major Philippine Domestic Routes](https://doi.org/10.5281/zenodo.20534917), Alexander Bañados, University of the Philippines Diliman; also published as [Mendeley Data v1](https://doi.org/10.17632/tjh279d4f7.1), June 4, 2026. The author describes collection of the original-flight CSVs via Flightradar24 and licenses the derived dataset under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). This does not imply endorsement.
 
-The source corpus has 2,465 separate flight CSVs. This example takes the first 100 CSV filenames in lexical order, retains every fifth source row and each final row, and identifies each flight by date plus callsign. It adds no interpolation. The upstream corpus already applies smoothing, anomaly removal, a constant −48 m correction and 1 Hz interpolation. Its column is named `GEOALTITUDE`, but its README describes corrected barometric altitude; the example therefore explicitly uses **reported/approximate** metres. These are processed observations, not raw ADS-B messages or independent 1 Hz measurements.
+Only the archive's `dataset/raw/` original-flight CSVs are used. Modified altitude/speed/position attacks, poison data and model-ready sequence windows are excluded. Five flights on each of five routes are selected per UTC departure date, spread across the available departure times. All 175 flights take place within **March 1–7, 2026 UTC**: first retained observation March 1 at 00:07:24, last March 7 at 23:58:20. The six airports are Manila (**RPLL**), Cebu (**RPVM**), Davao (**RPMD**), Iloilo (**RPVI**), Caticlan (**RPVE**) and Puerto Princesa (**RPVP**). This is a balanced illustrative subset of departures from Manila, not a complete airport schedule or a measure of traffic volume.
 
-[Download CSV.zip](https://zenodo.org/records/18916312/files/CSV.zip) (364 MB), [upstream README](https://zenodo.org/records/18916312/files/README.md). Archive MD5 from the record: `c0e2531e7a887c7172f4a53f18a80ca4`. The large source archive stays outside Git.
+The example retains each flight's first and last rows and original rows at least 45 seconds apart, reducing 57,788 source rows to 11,018 observations. Timestamps, coordinates and `altitude_meters` values are preserved without date shifts, added interpolation or vertical corrections. The physical datum and upstream processing are unspecified, so heights use **reported/approximate metres**. Zero is retained as reported, not certified ground elevation. These are curated positions, not raw radio messages. Source filenames and row numbers remain inspectable, with aircraft type, airport codes and route attributes. Some upstream `flight_id` cells were converted to floating-point notation or `inf`; the intact hexadecimal IDs in the original filenames identify flights, while `source_flight_id` preserves the upstream cell.
+
+The initial scene shows the entire week. Route colors distinguish the five destinations. For moving-window playback, restore **Day 1 · 24-hour playback window**, choose a **Day** increment in playback controls and press Play; the window can travel across the seven-day dataset. The other saved views show full-week Altitude, Time Height and Ground tracks. The portable workspace is about 339 KiB, with two actual-app preview thumbnails. The CSV is about 2.1 MiB and is not loaded separately by the demo picker.
+
+[Source archive](https://zenodo.org/records/20534917/files/dataset.zip) (1,093,213,553 bytes). The published whole-archive MD5 is `4e10c93ea0a880ff75a1ecac57dc8fbc`; reproduction downloads only two pinned byte ranges totaling 49,623,330 bytes, so it does **not** claim to verify that whole-archive MD5. Each range is verified by SHA-256, each original ZIP member by length/CRC, and each selected original file is recorded with SHA-256 in [altitude-provenance.json](../samples/public/altitude-provenance.json). Large source regions remain ignored local fixtures. The previous London–Zurich sample is retired; historical validation reports retain its names and counts.
 
 ## Space examples and retired rocket sample
 
@@ -36,6 +40,6 @@ The five-JAXA-rocket example has been removed from the catalog and shipped sampl
 
 ## Reproduce the flight example
 
-Download `CSV.zip` into a temporary input directory, then run `python3 scripts/prepare_altitude_demos.py INPUT_DIRECTORY`. The script verifies the pinned source hash, retains every fifth source row and each final row, and regenerates only the flight project, CSV and credit report. The 364 MB source archive is not committed.
+Run `python3 scripts/prepare_altitude_demos.py INPUT_DIRECTORY --download`. This downloads about 50 MB of pinned source archive regions, verifies them, and regenerates the flight project, CSV, credit sidecar and source/output digest report. Subsequent runs omit `--download` to use the verified cached regions. No third-party Python packages are needed. The full 1.09 GB archive and its attack/training data are not bundled.
 
 [CLI and MCP altitude controls](CLI-MCP.md#globe-height-selection-and-altitude-0161) share the same units, vertical references and saved modes.
