@@ -11,20 +11,32 @@ from unittest.mock import Mock, patch
 import zipfile
 
 import validate_tester_download as validator
+import package_notices
 
 
 class ValidatorTests(unittest.TestCase):
     def test_current_notice_count_is_exact_and_not_optional(self):
-        manifest = {'files': [{} for _ in range(1531)]}
+        manifest = {'files': [{} for _ in range(1536)]}
         sdk = {'retained_original_files': []}
         with (patch.object(validator, 'verify_notices', return_value=manifest),
               patch.object(validator, 'digest', return_value='fixture'),
               patch.object(Path, 'read_text', return_value=validator.json.dumps(sdk))):
-            self.assertEqual(validator.notices(Path('notices'), Path('source'))['files'], 1531)
-            for count in (1530, 1532):
+            self.assertEqual(validator.notices(Path('notices'), Path('source'))['files'], 1536)
+            for count in (1531, 1535, 1537):
                 manifest['files'] = [{} for _ in range(count)]
                 with self.subTest(count=count), self.assertRaisesRegex(ValueError, 'notice count'):
                     validator.notices(Path('notices'), Path('source'))
+
+    def test_pinned_notice_count_matches_actual_reviewed_source_inventory(self):
+        root = validator.ROOT
+        selected = set(package_notices.REQUIRED_FILES)
+        for tree in package_notices.REQUIRED_TREES + package_notices.OPTIONAL_TREES:
+            if tree in package_notices.OPTIONAL_TREES and not (root / tree).exists():
+                continue
+            selected.update(package_notices.regular_files(root, tree))
+        selected.update(name for name in package_notices.OPTIONAL_FILES if (root / name).exists())
+        self.assertEqual(len(selected), validator.NOTICE_COUNT,
+                         'Review new source notices and update the exact download gate before dispatch')
 
     def windows_fixture(self, *, portable=False, machine=0x8664):
         temporary = tempfile.TemporaryDirectory()
