@@ -1,0 +1,29 @@
+{
+  "all_historical_releases_and_tags_preserved": true,
+  "releases": [
+    {
+      "tag": "v0.16.4",
+      "release_id": 427399419,
+      "asset_count": 17,
+      "metadata_and_assets_unchanged": true
+    },
+    {
+      "tag": "v0.15.2",
+      "release_id": 421831855,
+      "asset_count": 16,
+      "metadata_and_assets_unchanged": true
+    },
+    {
+      "tag": "tester-20261022",
+      "release_id": 420955991,
+      "asset_count": 5,
+      "metadata_and_assets_unchanged": true
+    }
+  ],
+  "existing_tags": [
+    "refs/tags/tester-20261022",
+    "refs/tags/v0.15.2",
+    "refs/tags/v0.16.4"
+  ],
+  "new_release_tag_commit": "c5c532749397edbfc8b023fd1171fa0ac2a46d14"
+}

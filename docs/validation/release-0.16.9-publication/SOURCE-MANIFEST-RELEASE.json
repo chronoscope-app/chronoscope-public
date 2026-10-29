@@ -1,0 +1,49 @@
+{
+  "application_commit": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+  "source_access_reference_commit": "19b4587994bb08083d4693e10e0df2d2f0bfc3f4",
+  "version": "0.16.9",
+  "source_files": 3338,
+  "locked_cargo_archives": 837,
+  "locked_npm_archives": 145,
+  "every_locked_registry_source_verified": true,
+  "notice_archive_matches_selected_source_payload": true,
+  "assets": [
+    {
+      "name": "chronoscope-source.zip",
+      "bytes": 200643607,
+      "sha256": "e5cbca52ae3434db6242b892dca004a96e7ae35cea598f74b301dca01ea9a5f5"
+    },
+    {
+      "name": "chronoscope-dependency-sources.tar.xz",
+      "bytes": 445703736,
+      "sha256": "455045748153979a9149cbb414c57da030f3a6e33971d4ee53c6c0485962d477"
+    },
+    {
+      "name": "chronoscope-licenses.zip",
+      "bytes": 3402716,
+      "sha256": "ba7b9d42aa0c01b09a4d3ce85e92e7a3a2087057b273e20788c68851ae1ca585"
+    },
+    {
+      "name": "chronoscope-source-macos-arm64.zip",
+      "bytes": 200643877,
+      "sha256": "c9040fafd90a463f28f83753b5948c0e98ffb7e0d10d2e27ffcb9e46be888c33"
+    }
+  ],
+  "platform_application_commits": {
+    "windows-x86_64": "19b4587994bb08083d4693e10e0df2d2f0bfc3f4",
+    "macos-arm64": "c5c532749397edbfc8b023fd1171fa0ac2a46d14"
+  },
+  "source_archives": {
+    "windows-x86_64": "chronoscope-source.zip",
+    "macos-arm64": "chronoscope-source-macos-arm64.zip"
+  },
+  "application_source_parity": {
+    "windows_source": "19b4587994bb08083d4693e10e0df2d2f0bfc3f4",
+    "macos_source": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+    "different_files": [
+      "scripts/test_validate_tester_download.py",
+      "scripts/validate_tester_download.py"
+    ],
+    "application_code_assets_and_dependency_locks_byte_identical": true
+  }
+}

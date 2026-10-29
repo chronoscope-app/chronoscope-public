@@ -1,0 +1,124 @@
+{
+  "format": 1,
+  "version": "0.16.9",
+  "release_kind": "experimental prerelease",
+  "application_commit": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+  "reviewed_validation_commit": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+  "application_source_parity": {
+    "windows_source": "19b4587994bb08083d4693e10e0df2d2f0bfc3f4",
+    "macos_source": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+    "different_files": [
+      "scripts/test_validate_tester_download.py",
+      "scripts/validate_tester_download.py"
+    ],
+    "application_code_assets_and_dependency_locks_byte_identical": true
+  },
+  "platforms": {
+    "windows-x86_64": {
+      "build_run": 40895638945,
+      "validation_run": 40910679424,
+      "source_commit": "19b4587994bb08083d4693e10e0df2d2f0bfc3f4",
+      "reviewed_validation_commit": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+      "source_archive": "chronoscope-source.zip",
+      "package": "chronoscope-windows-x86_64.zip",
+      "sha256": "103d5484b84ec4ac006a29dc10bb053c168a54de6728bebc309a37c6b94d6ede",
+      "bytes": 130036549,
+      "validation_status": "passed-narrow",
+      "receipt": "HOSTED-VALIDATION-windows-x86_64.json",
+      "signing": "unsigned"
+    },
+    "macos-arm64": {
+      "build_run": 40913190241,
+      "validation_run": 40921037437,
+      "source_commit": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+      "reviewed_validation_commit": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+      "source_archive": "chronoscope-source-macos-arm64.zip",
+      "package": "chronoscope-macos-arm64.tar.xz",
+      "sha256": "c08573db36b21d0f4ed46c2f888157e793912345c5f91b2a1b979a2e6e9d06a2",
+      "bytes": 124127472,
+      "validation_status": "passed-narrow",
+      "receipt": "HOSTED-VALIDATION-macos-arm64.json",
+      "signing": "ad hoc; not notarized"
+    }
+  },
+  "assets": [
+    {
+      "name": "HOSTED-VALIDATION-macos-arm64.json",
+      "bytes": 9443,
+      "sha256": "6c750e627016221da662044ef3345f5ba59b01384cd20e4c8eab92c84e0f4ee3"
+    },
+    {
+      "name": "HOSTED-VALIDATION-windows-x86_64.json",
+      "bytes": 199355,
+      "sha256": "f264281ae9661492316fef28d119e7b844f3e17820139a57964173425bc4988b"
+    },
+    {
+      "name": "SHA256SUMS-macos-arm64.txt",
+      "bytes": 191,
+      "sha256": "178cd44e488f2c18b11b1b80243021c7a59417f1e126857031623bee2673f943"
+    },
+    {
+      "name": "SHA256SUMS-windows-x86_64.txt",
+      "bytes": 196,
+      "sha256": "e8bf04e6d7a97fc92caffec33cbe93083f85161f0606070d5bef652670e78a4e"
+    },
+    {
+      "name": "SOURCE-MANIFEST-RELEASE.json",
+      "bytes": 1727,
+      "sha256": "03ffa8aa75031210a27ee333d3b184be284fb42a1e1b4609e34858b74fbb39f4"
+    },
+    {
+      "name": "SOURCE-SHA256SUMS.txt",
+      "bytes": 385,
+      "sha256": "74acbc37a15edcd2e9672ea1cb0677ab9ae8d457a2fde4035d684718ab512c70"
+    },
+    {
+      "name": "VALIDATION-macos-arm64.json",
+      "bytes": 6061,
+      "sha256": "ee9d1706be724e23437612c0d031321262cea84145348863bbd7ebe807df00ee"
+    },
+    {
+      "name": "VALIDATION-windows-x86_64.json",
+      "bytes": 24421,
+      "sha256": "a7f4819c3aea4fa77a27885657f49198ffa792070cfda83a37019c91c3250523"
+    },
+    {
+      "name": "chronoscope-dependency-sources.tar.xz",
+      "bytes": 445703736,
+      "sha256": "455045748153979a9149cbb414c57da030f3a6e33971d4ee53c6c0485962d477"
+    },
+    {
+      "name": "chronoscope-licenses.zip",
+      "bytes": 3402716,
+      "sha256": "ba7b9d42aa0c01b09a4d3ce85e92e7a3a2087057b273e20788c68851ae1ca585"
+    },
+    {
+      "name": "chronoscope-macos-arm64.tar.xz",
+      "bytes": 124127472,
+      "sha256": "c08573db36b21d0f4ed46c2f888157e793912345c5f91b2a1b979a2e6e9d06a2"
+    },
+    {
+      "name": "chronoscope-source-macos-arm64.zip",
+      "bytes": 200643877,
+      "sha256": "c9040fafd90a463f28f83753b5948c0e98ffb7e0d10d2e27ffcb9e46be888c33"
+    },
+    {
+      "name": "chronoscope-source.zip",
+      "bytes": 200643607,
+      "sha256": "e5cbca52ae3434db6242b892dca004a96e7ae35cea598f74b301dca01ea9a5f5"
+    },
+    {
+      "name": "chronoscope-windows-x86_64.zip",
+      "bytes": 130036549,
+      "sha256": "103d5484b84ec4ac006a29dc10bb053c168a54de6728bebc309a37c6b94d6ede"
+    }
+  ],
+  "source_access": "Exact application source, all locked registry sources with original notices, selected notices, source digests and retrieval/build instructions accompany the executables.",
+  "limits": [
+    "Windows unsigned; installed WebView2 Evergreen prerequisite",
+    "macOS ad hoc signed, not notarized; fresh quarantined-download/manual installer acceptance unverified",
+    "No Linux or Intel Mac executable",
+    "Hosted validation is narrow CLI/agent/MCP plus GUI launch and attached engine query; no physical GPU, certificate/card or production acceptance",
+    "Local native flight canvas captures unavailable under locked screen; headless rendered scenes and moving-window playback passed"
+  ]
+}

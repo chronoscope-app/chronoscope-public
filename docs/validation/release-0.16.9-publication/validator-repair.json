@@ -1,0 +1,13 @@
+{
+  "original_build_sha": "19b4587994bb08083d4693e10e0df2d2f0bfc3f4",
+  "reviewed_validator_sha": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+  "next_fix_sha": "17475ae1cad3a5c21bc373f0e1e531b277314ed2",
+  "changed_files": [
+    "scripts/test_validate_tester_download.py",
+    "scripts/validate_tester_download.py"
+  ],
+  "application_code_assets_and_dependency_locks_unchanged": true,
+  "old_notice_count": 1531,
+  "reviewed_notice_count": 1536,
+  "new_count_matches_exact_source_inventory": true
+}
