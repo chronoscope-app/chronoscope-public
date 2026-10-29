@@ -168,7 +168,7 @@ fn globe_map_zoom_and_attribute_table_state_roundtrip_in_v3_bundle() {
     .unwrap();
     e.invoke("save", json!({"path":p,"scene":scene})).unwrap();
     let loaded = project::load_with_resources(&p, dir.path()).unwrap();
-    assert_eq!(loaded.version, 6);
+    assert_eq!(loaded.version, 7);
     assert_eq!(loaded.scene.mode, "globe");
     assert_eq!(loaded.scene.camera_up, Some([0.6, 0.8, 0.]));
     for bad in [[0., 0., 0.], [1., 1., 0.], [f64::NAN, 1., 0.]] {
@@ -199,7 +199,7 @@ fn globe_map_zoom_and_attribute_table_state_roundtrip_in_v3_bundle() {
         project::load_with_resources(&path, dir.path())
             .unwrap()
             .version,
-        6
+        7
     );
 }
 

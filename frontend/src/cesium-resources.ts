@@ -20,7 +20,7 @@ import {
   type ImageryProvider,
   type Viewer,
 } from "cesium";
-import type { Bounds, Raster, Terrain } from "./types";
+import type { Bounds, Raster, Terrain, Point } from "./types";
 import {
   geoidUndulation,
   mercatorNorthing,
@@ -492,6 +492,24 @@ export class LocalDtedTerrainProvider implements TerrainProvider {
 }
 
 export class CesiumResources {
+  private altitudeGeoid?: Int16Array;
+  async prepareAltitude(points: readonly Point[]) {
+    if (
+      !this.altitudeGeoid &&
+      points.some((p) => p.altitude?.reference === "egm96")
+    )
+      this.altitudeGeoid = await loadGeoid();
+  }
+  altitudeHeight(point: Point): number | null {
+    const altitude = point.altitude;
+    if (!altitude || altitude.reference === "unspecified") return null;
+    if (altitude.reference === "egm96")
+      return this.altitudeGeoid
+        ? altitude.meters +
+            geoidUndulation(this.altitudeGeoid, point.lat, point.lon)
+        : null;
+    return altitude.meters;
+  }
   private disposed = false;
   private generation = 0;
   private terrainGeneration = 0;

@@ -1,4 +1,3 @@
-import { call } from "./bridge";
 import type { SpaceTimeView } from "./view";
 import type { Snapshot } from "./types";
 import type { EngineContracts } from "./contracts";
@@ -8,14 +7,47 @@ interface ViewHost {
   snapshot: () => Snapshot;
   mode: () => string;
   captureScene: () => Scene;
+  syncScene: (
+    scene: Scene,
+    expectedRevision?: number,
+    expectedWorkspace?: string,
+  ) => Promise<
+    Exclude<EngineContracts["scene_sync"]["result"], { dry_run: true }>
+  >;
   fitGisLayer: (id: string) => Promise<void>;
 }
 /** One native live-view adapter, shared by CLI/MCP requests and browser QA. */
 export function createAgentView(host: ViewHost) {
   return async (kind: string, args: Record<string, any> = {}) => {
     const view = host.view;
+    const originWorkspace = ["view_navigate", "view_reset"].includes(kind)
+      ? host.snapshot().workspace_id
+      : undefined;
     await view.ready;
+    if (kind === "view_reset") {
+      if (args.confirm !== true)
+        throw Error("INVALID_ARGUMENT: map reset requires confirm:true");
+      if (host.snapshot().workspace_id !== originWorkspace)
+        throw Error("CONFLICT: workspace changed before map reset");
+      if (view.diagnostics().recovering)
+        throw Error(
+          "UNAVAILABLE: graphics are already restoring; inspect view_status before retrying",
+        );
+      await view.recoverRenderer();
+      if (host.snapshot().workspace_id !== originWorkspace)
+        throw Error(
+          "CONFLICT: workspace changed during map reset; inspect view_status",
+        );
+      const diagnostics = view.diagnostics();
+      if (diagnostics.recovering || diagnostics.effectError)
+        throw Error(
+          `UNAVAILABLE: map reset failed: ${diagnostics.effectError || "graphics are still restoring"}`,
+        );
+      view.viewer.render();
+    }
     if (kind === "view_navigate") {
+      if (host.snapshot().workspace_id !== originWorkspace)
+        throw Error("CONFLICT: workspace changed before navigation");
       if (view.diagnostics().recovering)
         throw Error(
           "UNAVAILABLE: graphics are restoring; inspect view_status before navigating",
@@ -52,10 +84,11 @@ export function createAgentView(host: ViewHost) {
       view.viewer.render();
       // Publish the completed camera immediately instead of relying on the idle timer.
       const scene = host.captureScene();
-      const synced = await call("scene_sync", {
+      const synced = await host.syncScene(
         scene,
-        expected_revision: host.snapshot().revision,
-      });
+        host.snapshot().revision,
+        originWorkspace,
+      );
       const current = host.snapshot();
       if (synced.revision >= current.revision) {
         current.scene = scene;
@@ -82,6 +115,7 @@ export function createAgentView(host: ViewHost) {
       };
     });
     return {
+      ...(kind === "view_reset" ? { reset: true } : {}),
       revision: host.snapshot().revision,
       renderer: "cesium",
       backend: "WebGL2",

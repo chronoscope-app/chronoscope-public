@@ -305,6 +305,7 @@ try {
     window.__oldCanvas = window.__chronoscope.view.viewer.canvas;
   });
   await page.locator("#backend").click();
+  await page.locator("#reset-map-confirm").click();
   await page.waitForFunction(() => {
     const v = window.__chronoscope.view;
     return (
@@ -314,7 +315,7 @@ try {
     );
   });
   check(
-    "Renderer indicator explicitly refreshes the map after prior recovery",
+    "Confirmed Reset map explicitly refreshes the map after prior recovery",
     {
       recoveries: await page.evaluate(
         () => window.__chronoscope.view.diagnostics().contextRecoveries,

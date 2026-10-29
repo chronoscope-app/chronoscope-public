@@ -5,6 +5,14 @@ recording remains macOS 15+ only; telemetry, playback and scenarios do not requi
 video support. None of these tools provides arbitrary scripts, DOM access or
 shell execution.
 
+## Height selection and map reset
+
+Use `chronoscope_view_set` with `mode:"globe", globe_altitude:true` for physical altitude, or `globe_time:true` and optional `globe_time_scale` for timestamp elevation. Each selection turns the other off; both false gives ground placement. Altitude leaves the Time Height slider visible but disabled and retains its scale. The CLI equivalents are `chronoscope --attach view height altitude`, `view height time --scale 2`, and `view height ground`.
+
+`chronoscope_view_reset` requires `{"confirm":true}` and recreates map graphics while preserving Events, filters, selection, camera and saved workspace. The CLI equivalent is `chronoscope --attach view reset --confirm`. Missing/false confirmation is rejected, and no graphical modal appears after explicit API confirmation. Success returns `reset:true` and live status; failed recovery returns an error. Reloads may contact configured imagery providers. After a timeout inspect `view_status` before retrying; reset is intentionally excluded from saved recipes and atomic batches.
+
+Altitude units/references, inspection fields, example demos and import/export contracts are described in the [CLI/MCP guide](CLI-MCP.md#globe-height-selection-and-altitude-0161). The tools/list contracts and generated frontend types share the Rust registry. Reconnect an existing MCP client after updating the executable to refresh its tool list.
+
 ## Performance traces
 
 Start `chronoscope_view_profile` with `{"action":"start","max_seconds":30}`,

@@ -190,13 +190,13 @@ fn wkt_auto_values_edit_undo_exports_zip_and_sqlite_v2_and_v1_migration() {
     let saved = dir.path().join("study.chronoscope");
     assert_eq!(
         e.invoke("save", json!({"path":saved})).unwrap()["format"],
-        "zip_v6"
+        "zip_v7"
     );
     assert_eq!(
         chronoscope::project::load_with_resources(&saved, dir.path())
             .unwrap()
             .version,
-        6
+        7
     );
     let reopened = Engine::from_path(&saved, dir.path().join("reopen"), None).unwrap();
     assert_eq!(

@@ -1,4 +1,5 @@
 #![forbid(unsafe_code)]
+pub mod altitude;
 pub mod analysis;
 pub mod analysis_assist;
 pub mod analytics;

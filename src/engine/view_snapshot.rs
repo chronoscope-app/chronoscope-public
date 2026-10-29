@@ -21,7 +21,10 @@ impl Engine {
                     s.project.scene.globe_time,
                 )
             };
-            if options.mode != "points" || options.bloom {
+            if (options.mode != "points" || options.bloom)
+                && !(result["snapshot"]["scene"]["mode"] == "globe"
+                    && result["snapshot"]["scene"]["globe_altitude"] == true)
+            {
                 let mode = result["snapshot"]["scene"]["mode"]
                     .as_str()
                     .unwrap_or("space-time");
@@ -135,15 +138,12 @@ impl Engine {
                     .is_some_and(|id| state.project.selected.contains(&id))
             })
             .collect::<BTreeSet<_>>();
-        let (data, selection) = state.store.query_stamp(true);
-        use sha2::{Digest, Sha256};
-        let signature = format!(
-            "{:x}",
-            Sha256::digest(serde_json::to_vec(&state.project.filter).map_err(|e| e.to_string())?)
-        );
+        let identity = self
+            .canonical_view_identity_locked(&state)
+            .map_err(crate::error::EngineError::into_legacy)?;
         let selected = json!(selected);
         result["selected"] = selected;
-        result["stamp"] = json!({"store_id":state.store.opaque_identity(),"revision":state.revision.to_string(),"data_revision":data.to_string(),"selection_revision":selection.to_string(),"filter_signature":signature,"scene_generation":args["generation"]});
+        result["stamp"] = json!({"store_id":identity.store_id(),"revision":identity.revision(),"data_revision":identity.data_revision(),"selection_revision":identity.selection_revision(),"filter_signature":identity.filter_signature(),"scene_generation":args["generation"]});
         Ok(result)
     }
 }

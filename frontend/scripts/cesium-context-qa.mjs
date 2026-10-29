@@ -237,7 +237,7 @@ try {
           targetIsCurrentCanvas: event.target === currentCanvas,
           targetIsOriginalCanvas: event.target === window.__oldCesiumCanvas,
           warning: status.getAttribute("data-warning"),
-          label: status.getAttribute("aria-label"),
+          label: status.getAttribute("title"),
         };
         window.__lossCapture = view.screenshot().then(
           (data) => ({

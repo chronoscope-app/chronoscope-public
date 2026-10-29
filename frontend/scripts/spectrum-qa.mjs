@@ -87,7 +87,7 @@ try {
   assert.equal(await page.locator(".topbar #backend svg").count(), 1);
   assert.match(
     await page.locator("#backend").getAttribute("aria-label"),
-    /Renderer: WebGL2/,
+    /^Reset map$/,
   );
   for (const width of [1600, 1000]) {
     await page.setViewportSize({ width, height: 1000 });

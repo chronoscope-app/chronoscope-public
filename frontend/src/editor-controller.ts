@@ -5,6 +5,12 @@ export interface EditorTarget {
   revision: number;
   originalWkt: string;
 }
+/** Primitive UI identity captured before a local scene-only RPC. */
+export interface SceneSyncFence {
+  workspace: string;
+  revision: number;
+  expectedRevision?: number;
+}
 export interface EditorSubmission {
   target: EditorTarget;
   values: Record<string, string>;
@@ -43,6 +49,77 @@ export class EditorController {
     }
     this.active = draft;
     return { ...draft.values };
+  }
+
+  /** Advance only a proven adjacent local scene commit, never arbitrary heads.
+   * Submitted edits already own copies of their target and remain immutable.
+   * Dirty fields and original source values are untouched by this acknowledgement.
+   */
+  acknowledgeScene(
+    fence: SceneSyncFence,
+    currentWorkspace: string,
+    result: unknown,
+  ) {
+    if (
+      fence.workspace !== currentWorkspace ||
+      this.workspace !== fence.workspace ||
+      !Number.isSafeInteger(fence.revision) ||
+      fence.revision < 0 ||
+      !result ||
+      typeof result !== "object"
+    )
+      return false;
+    const response = result as {
+      revision?: unknown;
+      dry_run?: unknown;
+      executed?: unknown;
+      commit_receipt?: unknown;
+    };
+    if (
+      response.dry_run === true ||
+      response.executed === false ||
+      !response.commit_receipt ||
+      typeof response.commit_receipt !== "object"
+    )
+      return false;
+    const receipt = response.commit_receipt as Record<string, unknown>;
+    const decimal = (value: unknown): value is string =>
+      typeof value === "string" &&
+      /^(0|[1-9][0-9]*)$/.test(value) &&
+      value.length <= 20 &&
+      BigInt(value) <= 18446744073709551615n;
+    const separator = fence.workspace.lastIndexOf(":");
+    if (
+      separator <= 0 ||
+      !decimal(fence.workspace.slice(separator + 1)) ||
+      receipt.store_id !== fence.workspace.slice(0, separator) ||
+      receipt.kind !== "workspace" ||
+      receipt.committed !== true ||
+      !decimal(receipt.revision_before) ||
+      !decimal(receipt.revision_after) ||
+      BigInt(receipt.revision_before) < BigInt(fence.revision) ||
+      (fence.expectedRevision !== undefined &&
+        (!Number.isSafeInteger(fence.expectedRevision) ||
+          receipt.revision_before !== String(fence.expectedRevision))) ||
+      BigInt(receipt.revision_after) !== BigInt(receipt.revision_before) + 1n ||
+      !Number.isSafeInteger(response.revision) ||
+      String(response.revision) !== receipt.revision_after
+    )
+      return false;
+    let advanced = false;
+    for (const draft of this.drafts.values()) {
+      if (
+        draft.target.workspace === fence.workspace &&
+        String(draft.target.revision) === receipt.revision_before
+      ) {
+        draft.target = {
+          ...draft.target,
+          revision: response.revision as number,
+        };
+        advanced = true;
+      }
+    }
+    return advanced;
   }
 
   deactivate() {

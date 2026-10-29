@@ -43,6 +43,33 @@ pub struct Demo {
 
 pub const DEMOS: &[Demo] = &[
     Demo {
+        id: "flight-altitude",
+        name: "100 flights · London to Zurich",
+        description: "88,018 samples from 100 distinct flights in 2025. Corrected barometric heights are approximate reported metres, not precise ellipsoid altitude.",
+        source_url: "https://doi.org/10.5281/zenodo.18916312",
+        license: "CC BY 4.0 · El Ouanbi and Amellal / OpenSky telemetry",
+        previews: &[Preview { key: "globe", label: "Altitude", view_index: 0 }, Preview { key: "time", label: "Time Height", view_index: 1 }],
+        bytes: include_bytes!("../samples/flights-lhr-zrh-100-2025.chronoscope"),
+    },
+    Demo {
+        id: "starlink-orbits",
+        name: "128 Starlinks · global orbits",
+        description: "46,208 predicted positions over six hours, 26 November 2024; opens a 90-minute window. Original 60-second samples; transformed MEME coordinates assume J2000 equinox. Predictions, not measured flight telemetry.",
+        source_url: "https://doi.org/10.6084/m9.figshare.33446503.v1",
+        license: "CC BY 4.0 · Guo et al. / SpaceX operator predictions",
+        previews: &[Preview { key: "globe", label: "Altitude", view_index: 0 }, Preview { key: "time", label: "Time Height", view_index: 1 }],
+        bytes: include_bytes!("../samples/starlink-128-predicted-orbits-2024.chronoscope"),
+    },
+    Demo {
+        id: "falcon9-launches",
+        name: "700 Falcon 9 launches · 2010–2026",
+        description: "Sixteen years at Cape Canaveral SLC-40, Kennedy LC-39A and Vandenberg SLC-4E, including failures and the in-flight abort test. Locations are launch pads, not vehicle trajectories; altitude is unknown.",
+        source_url: "https://planet4589.org/space/gcat/",
+        license: "CC BY 4.0 · Jonathan McDowell / GCAT",
+        previews: &[Preview { key: "time", label: "Time Height", view_index: 0 }, Preview { key: "map", label: "Launch sites", view_index: 1 }],
+        bytes: include_bytes!("../samples/falcon9-launch-history-2010-2026.chronoscope"),
+    },
+    Demo {
         id: "hurricanes",
         name: "Atlantic hurricanes · 2016–2025",
         description: "3,568 NOAA NHC observations of 83 storms, with saved views.",

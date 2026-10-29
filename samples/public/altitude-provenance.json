@@ -1,0 +1,13 @@
+{
+  "flights-lhr-zrh-100-2025": {
+    "csv_sha256": "30ffc86c3b8eb1e1487678005e457670d798634ded13ab06c4b2b49720e4e023",
+    "entities": 100,
+    "maximum_m": 12166.86,
+    "minimum_m": 20.58,
+    "project_sha256": "073807a29f2fb7c77d655c2ab5014ef34b7ddfc484364acd74a188892149d5bc",
+    "records": 88018
+  },
+  "inputs_sha256": {
+    "CSV.zip": "f929a7a1bfbfef67e90b4ffa081dd447478472a54fcd0e84e94e53800a476838"
+  }
+}

@@ -1,3 +1,5 @@
+import { call, native } from "./bridge";
+import type { SnapshotArgs, SnapshotModel, SnapshotRequestIntent, SnapshotApplication, SnapshotPublication } from "./view-snapshot";
 import { measurementColor, type MeasurementStyle } from "./measurement-style";
 import { captureCamera, restoreCamera } from "./cesium-camera-state";
 import { applySceneAppearance } from "./scene-appearance";
@@ -45,6 +47,7 @@ import {
   Math as CesiumMath,
   type PointPrimitive,
   type Billboard,
+  type Polyline,
 } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import { CesiumResources, type TerrainTileSource } from "./cesium-resources";
@@ -123,6 +126,7 @@ export class SpaceTimeView {
   timeHeight = 2.8;
   playbackFade = true;
   globeTime = false;
+  globeAltitude = false;
   globeTimeScale = 1;
   exaggeration = 1;
   bounds: Bounds = [-122.47, 37.75, -122.36, 37.82];
@@ -179,11 +183,80 @@ export class SpaceTimeView {
   private trails!: PolylineCollection;
   private stemsPrimitive?: Primitive;
   private stemSegments = 0;
+  private stemGeneration = -1;
+  private stemMaterial?: Material;
+  private stemGeometryBuilds = 0;
+  private markerCollectionBuilds = 0;
+  private markerCollectionReuses = 0;
+  private playbackMarkerPatches = 0;
+  private playbackMarkerReuses = 0;
+  private playbackMarkerOrderFallbacks = 0;
+  private playbackMarkerCompactions = 0;
+  private playbackMarkerSmallRebuilds = 0;
+  private playbackMarkersDirty = false;
+  // Only arrivals need extra membership metadata. glyphOrder already records
+  // relative order within each collection; a successful patch preserves it.
+  private arrivalGlyphs = new WeakSet<Glyph>();
+  private trailOrderGeneration = -1;
+  private trailOrder: Point[] = [];
+  private trailSorts = 0;
+  private trailBatches: {
+    line: Polyline;
+    kind: "tracks" | "trails";
+    points: Point[];
+    ready: boolean;
+  }[] = [];
+  private trailGeometryReady = false;
+  private trailGeometryLimited = false;
+  private trailGeometryMask = 0;
+  private trailStyleKey = "";
+  private trailGeometryBuilds = 0;
+  private trailStyleUpdates = 0;
+  private trailGlobeStreamRebuilds = 0;
+  private shareTrackPositions = false;
+  // Native WKWebView profiling supports this path. Chrome's 100k paired
+  // workload regressed, so retain canonical conversion in other runtimes.
+  private trackPositionSharingEnabled = native && /Mac/.test(navigator.platform);
+  private trackPositionReuses = 0;
+  private trackEventPosition(point: Point, owned = false) {
+    // Only share within the synchronous marker -> stem/trail refresh below.
+    // Camera-only refreshes and all other callers recompute positions, avoiding
+    // a cache invalidation dependency on terrain, datum or time-height changes.
+    // Duplicate source IDs must retain each occurrence's own coordinates.
+    if (this.shareTrackPositions) {
+      const glyph = this.glyphById.get(point.id);
+      if (glyph) {
+        this.trackPositionReuses++;
+        return owned ? Cartesian3.clone(glyph.position) : glyph.position;
+      }
+    }
+    return this.pos(point);
+  }
+  // Bounded CPU stage accounting for native playback profiling. Buffer uploads
+  // happen during Cesium rendering and are measured separately by frame traces.
+  private trackCpuStages: Record<
+    string,
+    { calls: number; totalMs: number; lastMs: number; maxMs: number }
+  > = {};
+  private recordTrackCpu(stage: string, start: number) {
+    const elapsed = performance.now() - start;
+    const sample = (this.trackCpuStages[stage] ??= {
+      calls: 0,
+      totalMs: 0,
+      lastMs: 0,
+      maxMs: 0,
+    });
+    sample.calls++;
+    sample.totalMs += elapsed;
+    sample.lastMs = elapsed;
+    sample.maxMs = Math.max(sample.maxMs, elapsed);
+  }
   private axes!: PolylineCollection;
   private focusLines!: PolylineCollection;
   private axisLabels!: LabelCollection;
   private handles!: PointPrimitiveCollection;
   private glyphById = new Map<string, Glyph>();
+  private glyphOrder = new WeakMap<Glyph, number>();
   private pointById = new Map<string, Point>();
   private abort = new AbortController();
   private resizeObserver?: ResizeObserver;
@@ -241,6 +314,7 @@ export class SpaceTimeView {
   private occluderCamera = new Cartesian3(Number.NaN, Number.NaN, Number.NaN);
   private geometrySelectionKey = "";
   private selectionRenderKey = "";
+  private glyphVisibilityKey = "";
   private trailRenderKey = "";
   private trailViewMatrix?: number[];
   private renderStarted = 0;
@@ -367,6 +441,13 @@ export class SpaceTimeView {
     this.gis.onError = (id, message) => this.onGisError(id, message);
     this.resources.setMode(this.mode);
     scene.globe.show = true;
+    // Renderer recovery creates a new scene; no cached primitive may survive it.
+    this.stemsPrimitive = undefined;
+    this.stemMaterial = undefined;
+    this.stemGeneration = -1;
+    this.glyphById.clear();
+    this.playbackMarkersDirty = false;
+    this.arrivalGlyphs = new WeakSet();
     this.glyphs = scene.primitives.add(new PointPrimitiveCollection());
     this.triangles = scene.primitives.add(new BillboardCollection());
     this.arrivingPoints = scene.primitives.add(new PointPrimitiveCollection());
@@ -375,6 +456,10 @@ export class SpaceTimeView {
     this.fadingTriangles = scene.primitives.add(new BillboardCollection());
     this.selections = scene.primitives.add(new PointPrimitiveCollection());
     this.shapes = scene.primitives.add(new PrimitiveCollection());
+    this.trailBatches = [];
+    this.trailGeometryReady = false;
+    this.trailGeometryMask = 0;
+    this.trailStyleKey = "";
     this.trails = scene.primitives.add(new PolylineCollection());
     this.axes = scene.primitives.add(new PolylineCollection());
     this.focusLines = scene.primitives.add(new PolylineCollection());
@@ -502,7 +587,7 @@ export class SpaceTimeView {
     if (!manual && this.contextRecoveries >= 1) {
       this.recovering = false;
       this.effectError =
-        "Graphics recovery stopped after a repeated failure. Click the renderer indicator to refresh the map. Workspace data remains available.";
+        "Graphics recovery stopped after a repeated failure. Click Reset map to refresh the map. Workspace data remains available.";
       this.backend("WebGL2 · repeated graphics failure; click to refresh map");
       return;
     }
@@ -539,6 +624,7 @@ export class SpaceTimeView {
         this.terrainSource,
       );
       if (this.disposed) return;
+      await this.resources.prepareAltitude(this.points);
       this.rebuild(true);
       this.restoreCamera(camera);
       if (this.lastRaster) await this.resources.setRasters(this.lastRaster);
@@ -577,7 +663,24 @@ export class SpaceTimeView {
   groundPosition(lat: number, lon: number) {
     return this.position(lat, lon, undefined, true);
   }
+  altitudeSummary() {
+    let known = 0, approximate = 0, minimum = Infinity, maximum = -Infinity;
+    for (const point of this.points) {
+      const height = this.resources?.altitudeHeight(point);
+      if (height == null) continue;
+      known++;
+      if (point.altitude?.reference === "reported") approximate++;
+      minimum = Math.min(minimum, height); maximum = Math.max(maximum, height);
+    }
+    return { known, omitted: this.points.length - known, approximate,
+      minimum: known ? minimum : 0, maximum: known ? maximum : 0 };
+  }
+  private altitudeVisible(point: Point) {
+    return !(this.mode === "globe" && this.globeAltitude) || this.resources.altitudeHeight(point) !== null;
+  }
   pos(point: Point) {
+    if (this.mode === "globe" && this.globeAltitude)
+      return Cartesian3.fromDegrees(point.lon, point.lat, this.resources.altitudeHeight(point) ?? 0);
     return this.position(point.lat, point.lon, point.time);
   }
   project(position: Cartesian3): Cartesian2 | undefined {
@@ -598,6 +701,44 @@ export class SpaceTimeView {
     const p = this.scene.cartesianToCanvasCoordinates(position);
     return p && finite(p.x) && finite(p.y) ? p : undefined;
   }
+  readonly nativeSnapshots = false;
+  onRepresentationInvalidated: (reason: string) => void = () => {};
+  onSnapshotError: (error: unknown) => void = () => {};
+
+  requestSnapshot(args: SnapshotArgs, _intent: SnapshotRequestIntent): Promise<SnapshotModel> {
+    return call("view_snapshot_v1", args);
+  }
+  /** Classic keeps its established renderer operations; native overrides this
+   * boundary to commit the entire candidate without intermediate publications. */
+  async publishSnapshot(_model: SnapshotModel, application: SnapshotApplication, accept: () => boolean): Promise<SnapshotPublication> {
+    await this.ready;
+    if (!accept() || this.disposed) return { kind: "stale" };
+    this.setMeasurement(application.measurement);
+    this.setDisplayOptions(application.display);
+    this.setGlobeTime(application.globeTime, application.globeTimeScale);
+    this.setGlobeAltitude(!!application.globeAltitude);
+    this.timeHeight = application.timeHeight;
+    this.setTheme(application.theme);
+    if (application.rebuild) this.rebuild(true);
+    const data = application.data;
+    const dataChanged = data ? await this.setData([...data.points], [...data.names], [...data.studyBounds], [...data.timeBounds], [...data.geometries], accept, true) : false;
+    if (!accept()) return { kind: "stale" };
+    this.setFocus(application.focus);
+    if (data) {
+      const effectsAlreadyUpdating = this.displayLayer.updating;
+      const effects = this.displayLayer.set(application.displayPacket, application.display);
+      if (application.awaitEffects) await effects;
+      else if (!effectsAlreadyUpdating) void effects.catch(error => this.onSnapshotError(error));
+      if (!accept()) return { kind: "stale" };
+      this.rebuildTrails();
+    }
+    this.setSelection([...application.selection]);
+    return { kind: "accepted", dataChanged };
+  }
+  /** Leaf barrier. Classic request/publication work is owned by main's tails. */
+  async snapshotIdle(): Promise<void> {}
+  async navigationIdle(): Promise<void> { await this.ready; }
+
   async setData(
     points: Point[],
     names: string[],
@@ -608,6 +749,8 @@ export class SpaceTimeView {
     displayPacketWillFollow = false,
   ) {
     await this.ready;
+    if (!accept() || this.disposed) return false;
+    await this.resources.prepareAltitude(points);
     if (!accept() || this.disposed) return false;
     const same =
       points.length === this.points.length &&
@@ -625,21 +768,30 @@ export class SpaceTimeView {
           p.time === q.time &&
           p.entity === q.entity &&
           p.value === q.value &&
+          p.altitude?.meters === q.altitude?.meters &&
+          p.altitude?.reference === q.altitude?.reference &&
           p.inferred === q.inferred &&
           p.centroid === q.centroid
         );
       });
     if (same) return false;
-    const old =
-      this.playback && this.playbackFade
+    const old = this.playback
+      ? this.playbackFade
         ? new Map(this.renderPoints.map((p) => [p.id, p]))
-        : undefined;
+        : this.pointById
+      : undefined;
+    const markerPositionsUnchanged =
+      this.mode === "map" ||
+      (this.mode === "globe" && !this.globeTime) ||
+      ((!bounds || bounds.every((v, i) => v === this.bounds[i])) &&
+        (!timeBounds ||
+          (timeBounds[0] === this.lo && timeBounds[1] === this.hi)));
     this.points = points;
     this.names = names;
     this.geometryFeatures = geometries;
     if (bounds) this.bounds = bounds.slice(0, 4) as Bounds;
     if (timeBounds) [this.lo, this.hi] = timeBounds;
-    this.rebuild(true, old, !displayPacketWillFollow);
+    this.rebuild(true, old, !displayPacketWillFollow, markerPositionsUnchanged);
     return true;
   }
   setTheme(theme: string) {
@@ -657,7 +809,17 @@ export class SpaceTimeView {
   setGlobeTime(enabled: boolean, scale = this.globeTimeScale) {
     if (this.globeTime === enabled && this.globeTimeScale === scale) return;
     this.globeTime = enabled;
+    if (enabled) this.globeAltitude = false;
     this.globeTimeScale = scale;
+    if (this.mode === "globe") this.rebuild(true);
+  }
+  setGlobeAltitude(enabled: boolean) {
+    if (this.globeAltitude === enabled) return;
+    this.globeAltitude = enabled;
+    if (enabled) {
+      this.globeTime = false;
+      if (this.mode === "globe") void this.displayLayer.set(null, this.display);
+    }
     if (this.mode === "globe") this.rebuild(true);
   }
   setMode(mode: string, remember = true) {
@@ -693,9 +855,11 @@ export class SpaceTimeView {
     _keepGeography = false,
     previous?: Map<string, Point>,
     refreshDisplay = true,
+    markerPositionsUnchanged = false,
   ) {
     if (!this.viewer || this.disposed) return;
     this.generation++;
+    this.trailOrder = [];
     // Geography fills the visible ground independently of the inset reference
     // frame used by the time axis. Never clip it to the study or axis frame.
     this.scene.globe.cartographicLimitRectangle = Rectangle.clone(
@@ -721,7 +885,7 @@ export class SpaceTimeView {
       if (!incomingIds.has(id)) this.incomingAt.delete(id);
     this.pruneFades(now, incomingIds);
     const departed: Point[] = [];
-    if (previous)
+    if (previous && this.playbackFade)
       for (const p of previous.values())
         if (!incomingIds.has(p.id)) {
           departed.push(p);
@@ -764,22 +928,76 @@ export class SpaceTimeView {
       this.addFadeTracks(previous, new Set(departed.map((p) => p.id)), now);
     // Bound transient history separately from the current event packet.
     this.pruneFades(now);
-    this.glyphs.removeAll();
-    this.triangles.removeAll();
-    this.arrivingPoints.removeAll();
-    this.arrivingTriangles.removeAll();
-    this.glyphById.clear();
-    this.renderPoints = this.display.show_centroids
+    const renderPoints = this.display.show_centroids && !(this.mode === "globe" && this.globeAltitude)
       ? this.points
-      : this.points.filter((p) => !p.centroid);
-    this.pointById = new Map(this.points.map((p) => [p.id, p]));
+      : this.points.filter((p) => (this.display.show_centroids || !p.centroid) && this.altitudeVisible(p));
+    const nextPointById = new Map(this.points.map((p) => [p.id, p]));
+    if (previous && this.playbackFade)
+      for (const p of renderPoints)
+        if (!previous.has(p.id)) this.incomingAt.set(p.id, now);
+    // Style/projection changes can patch resident glyphs. Preserve canonical
+    // packet order and shape; moving-window fades retain their separate batches.
+    const reuseMarkers =
+      (!previous || !this.playbackFade) &&
+      !this.arrivingPoints.length &&
+      !this.arrivingTriangles.length &&
+      this.glyphs.length + this.triangles.length === renderPoints.length &&
+      this.glyphById.size === renderPoints.length &&
+      this.renderPoints.length === renderPoints.length &&
+      renderPoints.every((p, i) => {
+        const old = this.renderPoints[i];
+        return p.id === old.id && !!p.inferred === !!old.inferred;
+      });
+    // With fades off, unchanged membership already has a cheap resident path.
+    // Avoid planning a delta or copying the old packet for those time-only edits.
+    const playbackPlan = previous && !reuseMarkers
+      ? nextPointById.size !== this.points.length
+        ? "order"
+        : this.playbackMarkerPlan(renderPoints, now)
+      : undefined;
+    const patchPlayback = playbackPlan === "patch";
+    if (playbackPlan === "order") this.playbackMarkerOrderFallbacks++;
+    if (playbackPlan === "capacity") this.playbackMarkerCompactions++;
+    if (playbackPlan === "small") this.playbackMarkerSmallRebuilds++;
+    if (patchPlayback) {
+      this.playbackMarkerPatches++;
+      this.playbackMarkersDirty = true;
+      for (const [id, glyph] of this.glyphById) {
+        const p = nextPointById.get(id);
+        if (
+          !p ||
+          (!this.display.show_centroids && p.centroid) ||
+          this.markerBucket(p, now) !== this.residentMarkerBucket(glyph)
+        ) {
+          glyph.show = false;
+          this.glyphById.delete(id);
+        }
+      }
+    } else if (reuseMarkers) this.markerCollectionReuses++;
+    else {
+      this.markerCollectionBuilds++;
+      this.glyphs.removeAll();
+      this.triangles.removeAll();
+      this.arrivingPoints.removeAll();
+      this.arrivingTriangles.removeAll();
+      this.glyphById.clear();
+      this.glyphOrder = new WeakMap();
+      this.arrivalGlyphs = new WeakSet();
+      this.playbackMarkersDirty = false;
+    }
+    if (!previous) this.playbackMarkersDirty = false;
+    const previousPoints = this.pointById;
+    this.renderPoints = renderPoints;
+    this.pointById = nextPointById;
     this.trianglePoints = this.points.filter((p) => p.inferred);
     this.projectionOmitted = 0;
+    const outlineColor =
+      this.theme === "light" ? Color.WHITE : Color.BLACK.withAlpha(0.8);
+    let glyphIndex = 0;
     for (const p of this.renderPoints) {
       const color = this.measurement
         ? Color.fromCssColorString(measurementColor(p.value, this.measurement))
         : colorFor(p.entity);
-      const id: PickId = { kind: "event", id: p.id };
       const show =
         this.display.show_points &&
         (p.inferred ||
@@ -788,14 +1006,35 @@ export class SpaceTimeView {
       // Cesium individually uploads sparse per-point edits (<10% dirty). On
       // WebKit/Metal each tiny upload can copy/fence the buffer. Isolate arrivals
       // so fade updates affect an entire small batch instead of the static scene.
-      if (previous && !previous.has(p.id)) this.incomingAt.set(p.id, now);
       const started = this.incomingAt.get(p.id);
       const arriving = started !== undefined && now - started < 180;
       let glyph: Glyph;
-      if (p.inferred)
+      const resident =
+        (reuseMarkers || patchPlayback) && this.glyphById.get(p.id);
+      if (resident) {
+        glyph = resident;
+        const old = previousPoints.get(p.id);
+        if (
+          !patchPlayback || !markerPositionsUnchanged || !old ||
+          old.lat !== p.lat || old.lon !== p.lon || old.time !== p.time ||
+          old.altitude?.meters !== p.altitude?.meters || old.altitude?.reference !== p.altitude?.reference
+        )
+          glyph.position = this.pos(p);
+        if (patchPlayback) this.playbackMarkerReuses++;
+        glyph.color = color;
+        glyph.show = show;
+        if (p.inferred) {
+          (glyph as Billboard).width = 11 * this.display.point_scale;
+          (glyph as Billboard).height = 11 * this.display.point_scale;
+        } else {
+          const point = glyph as PointPrimitive;
+          point.pixelSize = 8 * this.display.point_scale;
+          point.outlineColor = outlineColor;
+        }
+      } else if (p.inferred)
         glyph = (arriving ? this.arrivingTriangles : this.triangles).add({
           position: this.pos(p),
-          id,
+          id: { kind: "event", id: p.id } satisfies PickId,
           image: this.triangleImage,
           color,
           width: 11 * this.display.point_scale,
@@ -805,15 +1044,16 @@ export class SpaceTimeView {
       else
         glyph = (arriving ? this.arrivingPoints : this.glyphs).add({
           position: this.pos(p),
-          id,
+          id: { kind: "event", id: p.id } satisfies PickId,
           color,
           pixelSize: 8 * this.display.point_scale,
-          outlineColor:
-            this.theme === "light" ? Color.WHITE : Color.BLACK.withAlpha(0.8),
+          outlineColor,
           outlineWidth: 1,
           show,
         });
+      if (!resident && arriving) this.arrivalGlyphs.add(glyph);
       this.glyphById.set(p.id, glyph);
+      this.glyphOrder.set(glyph, glyphIndex++);
       if (arriving) {
         const f = Math.min(1, (now - started!) / 180);
         glyph.color = color.withAlpha(f * f * (3 - 2 * f));
@@ -822,9 +1062,16 @@ export class SpaceTimeView {
       }
     }
     this.buildGeometryFeatures();
-    this.setSelection([...this.selected]);
-    this.updateAxes();
-    this.rebuildTrails();
+    this.shareTrackPositions =
+      this.trackPositionSharingEnabled &&
+      this.pointById.size === this.points.length;
+    try {
+      this.setSelection([...this.selected]);
+      this.updateAxes();
+      this.rebuildTrails();
+    } finally {
+      this.shareTrackPositions = false;
+    }
     // Main refresh supplies the new packet immediately after setData. Avoid
     // starting a worker for the obsolete packet and then cancelling it.
     if (refreshDisplay && this.displayLayer.packet)
@@ -835,6 +1082,52 @@ export class SpaceTimeView {
     )
       this.advanceFades();
     this.requestRender();
+  }
+  private markerBucket(point: Point, now: number) {
+    const started = this.incomingAt.get(point.id);
+    return (
+      Number(!!point.inferred) +
+      (started !== undefined && now - started < 180 ? 2 : 0)
+    );
+  }
+  private residentMarkerBucket(glyph: Glyph) {
+    return Number(!("pixelSize" in glyph)) + (this.arrivalGlyphs.has(glyph) ? 2 : 0);
+  }
+  private playbackMarkerPlan(
+    points: Point[], now: number,
+  ): "patch" | "order" | "capacity" | "small" {
+    // The real 20-event bloom fixture presented fewer updates with resident
+    // markers. Small canonical rebuilds avoid that renderer cost; retain
+    // incremental installation for larger packets.
+    if (points.length < 256) return "small";
+    const last = [-1, -1, -1, -1];
+    const appended = [false, false, false, false];
+    let additions = 0;
+    for (const p of points) {
+      const bucket = this.markerBucket(p, now);
+      const glyph = this.glyphById.get(p.id);
+      if (glyph && this.residentMarkerBucket(glyph) === bucket) {
+        const slot = this.glyphOrder.get(glyph)!;
+        // Appending before a survivor or reversing survivors would change ties
+        // between overlapping markers and picks. Use the canonical rebuild.
+        if (appended[bucket] || slot <= last[bucket]) return "order";
+        last[bucket] = slot;
+      } else {
+        appended[bucket] = true;
+        additions++;
+      }
+    }
+    const allocated =
+      this.glyphs.length + this.triangles.length +
+      this.arrivingPoints.length + this.arrivingTriangles.length;
+    // Cap retained slots relative to this packet, including shrinking/empty
+    // windows. Never retain an ever-growing history during long playback.
+    const budget = Math.min(
+      200000, points.length + Math.max(4096, Math.ceil(points.length / 4)),
+    );
+    return allocated + additions > budget || (points.length === 0 && allocated > 0)
+      ? "capacity"
+      : "patch";
   }
   buildGeometryFeatures() {
     this.shapes.removeAll();
@@ -962,6 +1255,7 @@ export class SpaceTimeView {
     if (this.geometryArcBudget.coarsened) this.geometryLimited = true;
   }
   setSelection(ids: string[]) {
+    const previousSelection = this.selected;
     this.selected = new Set(ids);
     // Engine refreshes often publish the same selection. Preserve native GPU
     // resources unless their evidence, style or summary representation changed.
@@ -985,53 +1279,78 @@ export class SpaceTimeView {
       this.buildGeometryFeatures();
     if (!this.selections) return;
     this.selections.removeAll();
-    for (const [id, glyph] of this.glyphById) {
-      glyph.show =
-        this.display.show_points &&
-        (this.pointById.get(id)?.inferred ||
-          !this.displayLayer.replacesEvents ||
-          this.selected.has(id));
-      if (this.selected.has(id))
-        this.selections.add({
-          position: glyph.position,
-          id: { kind: "event", id },
-          // A one-pixel edge hugs the marker instead of a large halo.
-          pixelSize:
-            (this.pointById.get(id)?.inferred ? 11 : 8) *
-              this.display.point_scale +
-            2,
-          color: Color.TRANSPARENT,
-          outlineColor:
-            this.theme === "light"
-              ? Color.fromCssColorString("#7c4b00")
-              : Color.fromCssColorString("#ffd27a"),
-          outlineWidth: 1,
-        });
+    const visibilityKey = JSON.stringify([
+      this.generation,
+      this.display.show_points,
+      this.displayLayer.replacesEvents,
+    ]);
+    const updateVisibility = (id: string) => {
+      const glyph = this.glyphById.get(id);
+      if (glyph)
+        glyph.show =
+          this.display.show_points &&
+          (!!this.pointById.get(id)?.inferred ||
+            !this.displayLayer.replacesEvents ||
+            this.selected.has(id));
+    };
+    if (visibilityKey !== this.glyphVisibilityKey) {
+      for (const id of this.glyphById.keys()) updateVisibility(id);
+      this.glyphVisibilityKey = visibilityKey;
+    } else if (this.displayLayer.replacesEvents) {
+      // Summary mode reserves exact markers only for selected evidence. Patch
+      // that small union instead of scanning every event on each pick.
+      for (const id of previousSelection) updateVisibility(id);
+      for (const id of this.selected) updateVisibility(id);
+    }
+    // Preserve the former packet-order overlay/pick ties while looking up only
+    // selected glyphs. Selection request order must not change coincident picks.
+    const selectedIds = [...this.selected].filter((id) =>
+      this.glyphById.has(id),
+    );
+    selectedIds.sort(
+      (a, b) =>
+        this.glyphOrder.get(this.glyphById.get(a)!)! -
+        this.glyphOrder.get(this.glyphById.get(b)!)!,
+    );
+    for (const id of selectedIds) {
+      const glyph = this.glyphById.get(id)!;
+      this.selections.add({
+        position: glyph.position,
+        id: { kind: "event", id },
+        // A one-pixel edge hugs the marker instead of a large halo.
+        pixelSize:
+          (this.pointById.get(id)?.inferred ? 11 : 8) *
+            this.display.point_scale +
+          2,
+        color: Color.TRANSPARENT,
+        outlineColor:
+          this.theme === "light"
+            ? Color.fromCssColorString("#7c4b00")
+            : Color.fromCssColorString("#ffd27a"),
+        outlineWidth: 1,
+      });
     }
     this.rebuildStems();
     this.requestRender();
   }
   private rebuildStems() {
-    if (this.stemsPrimitive) this.scene.primitives.remove(this.stemsPrimitive);
-    this.stemsPrimitive = undefined;
-    this.stemSegments = 0;
-    if (
-      (this.mode !== "space-time" &&
-        !(this.mode === "globe" && this.globeTime)) ||
-      !this.display.show_trails ||
-      this.display.trail_opacity <= 0
-    )
-      return;
-    const positions: number[] = [];
-    for (const p of this.renderPoints) {
-      if (p.inferred) continue;
-      const ground = this.groundPosition(p.lat, p.lon),
-        event = this.pos(p);
-      positions.push(ground.x, ground.y, ground.z, event.x, event.y, event.z);
+    // Selection does not change stem positions. Style changes only update the
+    // shared material/show flag, leaving Cesium's vertex buffers resident.
+    if (this.stemGeneration !== this.generation) {
+      if (this.stemsPrimitive)
+        this.scene.primitives.remove(this.stemsPrimitive);
+      this.stemsPrimitive = undefined;
+      this.stemMaterial = undefined;
+      this.stemSegments = 0;
+      this.stemGeneration = this.generation;
     }
-    if (!positions.length) return;
-    const values = new Float64Array(positions);
-    const geometry = flatLineGeometry(values);
+    const show =
+      (this.mode === "space-time" ||
+        (this.mode === "globe" && (this.globeTime || this.globeAltitude))) &&
+      this.display.show_trails &&
+      this.display.trail_opacity > 0;
+    if (this.stemsPrimitive) this.stemsPrimitive.show = show;
+    if (!show) return;
     const color = (
       this.theme === "light"
         ? Color.fromCssColorString("#627b8f")
@@ -1039,23 +1358,56 @@ export class SpaceTimeView {
     ).withAlpha(
       (this.theme === "light" ? 0.4 : 0.15) * this.display.trail_opacity,
     );
+    // Match the original normalized-byte vertex color, including alpha. The
+    // uniform must not subtly brighten stems by introducing extra precision.
+    const rgba = ColorGeometryInstanceAttribute.toValue(color);
+    const uniformColor = Color.fromBytes(rgba[0], rgba[1], rgba[2], rgba[3]);
+    if (this.stemMaterial) {
+      this.stemMaterial.uniforms.color = uniformColor;
+      return;
+    }
+    const coordinateStart = performance.now();
+    const count = this.renderPoints.reduce(
+      (n, p) => n + Number(!p.inferred),
+      0,
+    );
+    if (!count) return;
+    const values = new Float64Array(count * 6);
+    let offset = 0;
+    for (const p of this.renderPoints) {
+      if (p.inferred) continue;
+      const ground = this.groundPosition(p.lat, p.lon),
+        event = this.trackEventPosition(p);
+      values[offset++] = ground.x;
+      values[offset++] = ground.y;
+      values[offset++] = ground.z;
+      values[offset++] = event.x;
+      values[offset++] = event.y;
+      values[offset++] = event.z;
+    }
+    this.recordTrackCpu("stemCoordinates", coordinateStart);
+    const constructionStart = performance.now();
+    const material = Material.fromType("Color", { color: uniformColor });
     this.stemsPrimitive = this.scene.primitives.add(
       new Primitive({
         geometryInstances: new GeometryInstance({
-          geometry,
-          attributes: {
-            color: ColorGeometryInstanceAttribute.fromColor(color),
-          },
+          geometry: flatLineGeometry(values),
         }),
-        appearance: new PerInstanceColorAppearance({
+        appearance: new MaterialAppearance({
+          material,
           flat: true,
           translucent: true,
+          materialSupport: MaterialAppearance.MaterialSupport.BASIC,
+          vertexShaderSource: flatLineVertexShader,
         }),
         asynchronous: false,
         allowPicking: false,
       }),
     );
-    this.stemSegments = positions.length / 6;
+    this.stemMaterial = material;
+    this.stemSegments = count;
+    this.stemGeometryBuilds++;
+    this.recordTrackCpu("stemConstruction", constructionStart);
   }
   setFocus(fraction: number) {
     this.focusFraction = Math.max(0, Math.min(1, fraction));
@@ -1135,6 +1487,7 @@ export class SpaceTimeView {
     this.displayLayer.setPlayback(this.playback);
     if (!this.playback) {
       const consolidate =
+        this.playbackMarkersDirty ||
         this.arrivingPoints?.length || this.arrivingTriangles?.length;
       this.stopFades();
       // Return opaque glyphs to canonical packet order when playback/scrubbing
@@ -1152,7 +1505,7 @@ export class SpaceTimeView {
     if (
       !this.display.show_trails ||
       this.display.trail_opacity <= 0 ||
-      (this.mode !== "space-time" && !(this.mode === "globe" && this.globeTime))
+      (this.mode !== "space-time" && !(this.mode === "globe" && (this.globeTime || this.globeAltitude)))
     )
       return;
     const positions: number[] = [],
@@ -1738,6 +2091,9 @@ export class SpaceTimeView {
   }
   rebuildTrails() {
     if (!this.trails || this.disposed) return;
+    const mask =
+      Number(this.display.show_tracks && this.display.track_opacity > 0) |
+      (Number(this.display.show_trails && this.display.trail_opacity > 0) << 1);
     // Simplification depends on the actual camera, viewport, selected anchors
     // and data generation. A repeated refresh with identical inputs is a no-op.
     const key = JSON.stringify([
@@ -1746,10 +2102,6 @@ export class SpaceTimeView {
       this.host.clientWidth,
       this.host.clientHeight,
       [...this.selected],
-      this.display.show_tracks,
-      this.display.show_trails,
-      this.display.track_opacity,
-      this.display.trail_opacity,
       this.display.trail_pixels,
       this.display.trail_gap_minutes,
       this.theme,
@@ -1763,38 +2115,71 @@ export class SpaceTimeView {
       (value, i) =>
         Math.abs(value - matrix[i]) <= (i >= 12 && i <= 14 ? 1e-5 : 1e-12),
     );
-    if (key === this.trailRenderKey && sameCamera) return;
+    // Hidden globe streams still affect Cesium command bounds/depth sorting,
+    // and curved streams share an interpolation budget. Rebuild when switching
+    // individual globe layers so appearance and curve detail stay unchanged.
+    const rebuildGlobeStreams = this.mode === "globe" && mask !== 0 &&
+      mask !== this.trailGeometryMask;
+    if (
+      key === this.trailRenderKey &&
+      sameCamera &&
+      (this.trailGeometryReady || mask === 0) &&
+      !rebuildGlobeStreams
+    ) {
+      this.styleTrails(mask);
+      return;
+    }
+    if (rebuildGlobeStreams && this.trailGeometryReady && key === this.trailRenderKey && sameCamera)
+      this.trailGlobeStreamRebuilds++;
     this.trailRenderKey = key;
     this.trailViewMatrix = matrix;
     this.trails.removeAll();
+    this.trailBatches = [];
+    this.trailGeometryReady = false;
+    this.trailGeometryLimited = false;
+    this.trailStyleKey = "";
     this.trailInputEdges = 0;
     this.trailOutputEdges = 0;
     this.trailArcBudget = createArcBudget(0);
     this.trailsLimited = false;
-    if (!this.display.show_tracks && !this.display.show_trails) return;
-    const sorted = [...this.renderPoints].sort(
-      (a, b) =>
-        a.entity - b.entity || a.time - b.time || a.id.localeCompare(b.id),
-    );
-    if (sorted.length > 100000) {
-      sorted.length = 100000;
-      this.trailsLimited = true;
+    if (mask === 0) {
+      this.releaseEmptyTrails();
+      return;
     }
+    this.trailGeometryBuilds++;
+    // Camera and selection changes need fresh simplification, but
+    // entity/time/ID ordering is invariant until the event generation changes.
+    if (this.trailOrderGeneration !== this.generation) {
+      const orderingStart = performance.now();
+      this.trailOrder = [...this.renderPoints].sort(
+        (a, b) =>
+          a.entity - b.entity || a.time - b.time || a.id.localeCompare(b.id),
+      );
+      if (this.trailOrder.length > 100000) this.trailOrder.length = 100000;
+      this.trailOrderGeneration = this.generation;
+      this.trailSorts++;
+      this.recordTrackCpu("ordering", orderingStart);
+    }
+    const sorted = this.trailOrder;
+    if (this.renderPoints.length > 100000) this.trailsLimited = true;
     this.trailInputEdges = Math.max(
       0,
       sorted.length - new Set(sorted.map((p) => p.entity)).size,
     );
+    const projectionStart = performance.now();
     const edges = trailEdges(
       sorted,
       (i) => {
-        const p = this.project(this.pos(sorted[i]));
+        const p = this.project(this.trackEventPosition(sorted[i]));
         return p ? [p.x, p.y, 0] : [0, 0, 2];
       },
       this.selected,
       this.display.trail_pixels,
       this.display.trail_gap_minutes,
     );
+    this.recordTrackCpu("projectionSimplification", projectionStart);
     this.trailOutputEdges = edges.length;
+    const runsStart = performance.now();
     // One polyline per contiguous entity chain, rather than one draw object per edge.
     const runs: { entity: number; points: Point[] }[] = [];
     let last = -1;
@@ -1805,6 +2190,7 @@ export class SpaceTimeView {
         runs.push({ entity: sorted[a].entity, points: [sorted[a], sorted[b]] });
       last = b;
     }
+    if (!runs.length) this.releaseEmptyTrails();
     const streams =
       Number(this.display.show_tracks && this.display.track_opacity > 0) +
       Number(this.display.show_trails && this.display.trail_opacity > 0);
@@ -1815,43 +2201,94 @@ export class SpaceTimeView {
       ),
       200000,
     );
+    this.recordTrackCpu("runs", runsStart);
     for (const run of runs) {
       const color = safeColor(
         this.names[run.entity] || String(run.entity),
         this.theme,
       );
-      if (this.display.show_tracks && this.display.track_opacity > 0)
-        this.trails.add({
-          positions:
-            this.mode === "globe"
-              ? geodesicPositions(
-                  run.points.map((p) => this.pos(p)),
-                  200000,
-                  this.trailArcBudget,
-                )
-              : run.points.map((p) => this.pos(p)),
-          width: 1.6,
+      for (const kind of ["tracks", "trails"] as const) {
+        const active = (mask & (kind === "tracks" ? 1 : 2)) !== 0;
+        // Empty placeholders preserve the original interleaved draw order.
+        // Hidden streams allocate positions lazily, at most once per geometry.
+        let positions: Cartesian3[] = [];
+        if (active) {
+          const conversionStart = performance.now();
+          positions = run.points.map((p) =>
+            kind === "tracks"
+              ? this.trackEventPosition(p, true)
+              : this.groundPosition(p.lat, p.lon),
+          );
+          if (this.mode === "globe")
+            positions = geodesicPositions(
+              positions,
+              200000,
+              this.trailArcBudget,
+            );
+          this.recordTrackCpu("trailCoordinates", conversionStart);
+        }
+        const constructionStart = performance.now();
+        const line = this.trails.add({
+          positions,
+          show: active,
+          width: kind === "tracks" ? 1.6 : 2,
           material: Material.fromType("Color", {
-            color: color.withAlpha(0.78 * this.display.track_opacity),
+            color: color.withAlpha(
+              kind === "tracks"
+                ? 0.78 * this.display.track_opacity
+                : 0.55 * this.display.trail_opacity,
+            ),
           }),
         });
-      if (this.display.show_trails && this.display.trail_opacity > 0)
-        this.trails.add({
-          positions:
-            this.mode === "globe"
-              ? geodesicPositions(
-                  run.points.map((p) => this.groundPosition(p.lat, p.lon)),
-                  200000,
-                  this.trailArcBudget,
-                )
-              : run.points.map((p) => this.groundPosition(p.lat, p.lon)),
-          width: 2,
-          material: Material.fromType("Color", {
-            color: color.withAlpha(0.55 * this.display.trail_opacity),
-          }),
+        this.trailBatches.push({
+          line,
+          kind,
+          points: run.points,
+          ready: active,
         });
+        this.recordTrackCpu("trailConstruction", constructionStart);
+      }
     }
+    this.trailGeometryMask = mask;
+    this.trailGeometryReady = true;
     if (this.trailArcBudget.coarsened) this.trailsLimited = true;
+    this.trailGeometryLimited = this.trailsLimited;
+    this.styleTrails(mask);
+    this.requestRender();
+  }
+  private releaseEmptyTrails() {
+    // Cesium removeAll() can retain vertex arrays until another nonempty
+    // update. Release stale hidden/empty GPU geometry without changing scene
+    // draw order relative to axes, labels and other primitives.
+    const primitives = this.scene.primitives;
+    let index = 0;
+    while (index < primitives.length && primitives.get(index) !== this.trails) index++;
+    primitives.remove(this.trails);
+    this.trails = primitives.add(new PolylineCollection(), index);
+  }
+  private styleTrails(mask: number) {
+    const key = `${mask}:${this.display.track_opacity}:${this.display.trail_opacity}`;
+    if (key === this.trailStyleKey) return;
+    this.trailStyleKey = key;
+    for (const batch of this.trailBatches) {
+      const show = (mask & (batch.kind === "tracks" ? 1 : 2)) !== 0;
+      if (show && !batch.ready) {
+        // Globe additions take the budget-preserving rebuild above.
+        batch.line.positions = batch.points.map((p) =>
+          batch.kind === "tracks"
+            ? this.pos(p)
+            : this.groundPosition(p.lat, p.lon),
+        );
+        batch.ready = true;
+      }
+      batch.line.show = show;
+      batch.line.material.uniforms.color.alpha =
+        batch.kind === "tracks"
+          ? 0.78 * this.display.track_opacity
+          : 0.55 * this.display.trail_opacity;
+    }
+    this.trailsLimited = mask !== 0 && this.trailGeometryLimited;
+    this.trailStyleUpdates++;
     this.requestRender();
   }
   setDisplayOptions(options: DisplayOptions) {
@@ -2371,7 +2808,7 @@ export class SpaceTimeView {
     ];
   }
   visibleDataBounds(): Bounds | null {
-    if (this.mode === "globe" && this.globeTime) return null;
+    if (this.mode === "globe" && (this.globeTime || this.globeAltitude)) return null;
     // A ground footprint can exclude elevated events above the horizon. Globe time
     // uses the study bounds and existing bounded representative/cell budgets.
     // Intersect the whole displayed time-height prism: an elevated event can be visible above a ground footprint.
@@ -2383,7 +2820,7 @@ export class SpaceTimeView {
     if (!this.viewer || this.disposed) return;
     if (
       this.mode === "globe" &&
-      this.globeTime &&
+      (this.globeTime || this.globeAltitude) &&
       !wholeGlobe &&
       this.bounds[2] - this.bounds[0] <= 150 &&
       this.bounds[3] - this.bounds[1] <= 100
@@ -2432,7 +2869,7 @@ export class SpaceTimeView {
       const vertical =
         (this.camera.frustum as { fovy?: number }).fovy || Math.PI / 3;
       const horizontal = 2 * Math.atan(Math.tan(vertical / 2) * aspect);
-      const timeHeight = this.globeTime ? this.timeHeightMeters : 0;
+      const timeHeight = this.globeAltitude ? Math.max(0, this.altitudeSummary().maximum) : this.globeTime ? this.timeHeightMeters : 0;
       const altitude =
         (Ellipsoid.WGS84.maximumRadius + timeHeight) /
           Math.sin(Math.min(vertical, horizontal) * 0.42) -
@@ -2716,8 +3153,29 @@ export class SpaceTimeView {
     const intervals = [...this.frameIntervals].sort((a, b) => a - b),
       cpu = [...this.renderTimes].sort((a, b) => a - b);
     const active = performance.now() - this.lastRendered < 250;
+    const triangleCount = this.trianglePoints.filter(
+      (p) => this.glyphById.has(p.id),
+    ).length;
+    // Query only on explicit diagnostics requests, outside per-frame telemetry.
+    const gl = this.viewer.canvas.getContext("webgl2");
+    const debug = gl?.getExtension("WEBGL_debug_renderer_info");
     return {
       engine: "CesiumJS",
+      graphics: {
+        renderer:
+          gl?.getParameter(debug ? debug.UNMASKED_RENDERER_WEBGL : gl.RENDERER) ?? null,
+        vendor:
+          gl?.getParameter(debug ? debug.UNMASKED_VENDOR_WEBGL : gl.VENDOR) ?? null,
+        version: gl?.getParameter(gl.VERSION) ?? null,
+        framebuffer: [this.viewer.canvas.width, this.viewer.canvas.height],
+        resolutionScale: this.viewer.resolutionScale,
+      },
+      trackCpuStages: Object.fromEntries(
+        Object.entries(this.trackCpuStages).map(([name, sample]) => [
+          name,
+          { ...sample },
+        ]),
+      ),
       navigation: {
         inertia: false,
         freeLook: false,
@@ -2742,6 +3200,8 @@ export class SpaceTimeView {
           : null,
       playbackFade: this.playbackFade,
       globeTime: this.globeTime,
+      globeAltitude: this.globeAltitude,
+      altitude: this.altitudeSummary(),
       globeTimeScale: this.globeTimeScale,
       timeHeightMeters: this.timeHeightMeters,
       displayTimeBounds: [this.lo, this.hi],
@@ -2750,8 +3210,11 @@ export class SpaceTimeView {
       renderErrorCount: this.renderErrors,
       lastRenderError: this.lastRenderError,
       sceneMode: this.scene.mode,
-      pointCount: this.glyphs.length + this.arrivingPoints.length,
-      triangleCount: this.triangles.length + this.arrivingTriangles.length,
+      pointCount: this.renderPoints.length - triangleCount,
+      triangleCount,
+      allocatedMarkerSlots:
+        this.glyphs.length + this.triangles.length +
+        this.arrivingPoints.length + this.arrivingTriangles.length,
       fadingPointCount: this.fading.length,
       fadingTriangleCount: this.fadingTriangles.length,
       fadingStemSegments: this.fadeTrails
@@ -2772,13 +3235,50 @@ export class SpaceTimeView {
       selectionCount: this.selections.length,
       geometryFeatures: this.geometryFeatures.length,
       geometryPrimitives: this.shapes.length,
-      trackPolylines: this.trails.length,
-      stemSegments: this.stemSegments,
-      trailInputEdges: this.trailInputEdges,
-      trailOutputEdges: this.trailOutputEdges,
+      trackPolylines: this.trailBatches.filter((b) => b.line.show).length,
+      allocatedTrackPolylines: this.trails.length,
+      allocatedTrackVertices: this.trailBatches.reduce(
+        (n, b) => n + b.line.positions.length,
+        0,
+      ),
+      stemSegments: this.stemsPrimitive?.show ? this.stemSegments : 0,
+      resourceReuse: {
+        markerCollectionBuilds: this.markerCollectionBuilds,
+        markerCollectionReuses: this.markerCollectionReuses,
+        playbackMarkerPatches: this.playbackMarkerPatches,
+        playbackMarkerReuses: this.playbackMarkerReuses,
+        playbackMarkerOrderFallbacks: this.playbackMarkerOrderFallbacks,
+        playbackMarkerCompactions: this.playbackMarkerCompactions,
+        playbackMarkerSmallRebuilds: this.playbackMarkerSmallRebuilds,
+        stemGeometryBuilds: this.stemGeometryBuilds,
+        trailSorts: this.trailSorts,
+        trailGeometryBuilds: this.trailGeometryBuilds,
+        trailStyleUpdates: this.trailStyleUpdates,
+        trailGlobeStreamRebuilds: this.trailGlobeStreamRebuilds,
+        trackPositionReuses: this.trackPositionReuses,
+        trackPositionSharingEnabled: this.trackPositionSharingEnabled,
+      },
+      trailInputEdges: this.trailBatches.some((b) => b.line.show)
+        ? this.trailInputEdges
+        : 0,
+      trailOutputEdges: this.trailBatches.some((b) => b.line.show)
+        ? this.trailOutputEdges
+        : 0,
       geodesicRendering: {
         geometry: { ...this.geometryArcBudget },
-        trails: { ...this.trailArcBudget },
+        trails: this.trailBatches.some((b) => b.line.show)
+          ? {
+              ...this.trailArcBudget,
+              sourceSegments:
+                this.trailOutputEdges *
+                (Number(
+                  this.display.show_tracks && this.display.track_opacity > 0,
+                ) +
+                  Number(
+                    this.display.show_trails && this.display.trail_opacity > 0,
+                  )),
+            }
+          : createArcBudget(0),
         maximumAddedVertices: 400000,
         sourceEndpointBudget: 400000,
       },
@@ -3239,6 +3739,16 @@ export class SpaceTimeView {
       signal,
     });
   }
+  /** App UI capture must remain available even if the classic GPU context fails. */
+  async captureConsistent<T>(
+    capture: () => Promise<T>,
+    _uiIdentity: () => { revision: number; workspace_id?: string },
+  ): Promise<T> {
+    try {
+      this.requestRender();
+    } catch {}
+    return capture();
+  }
   async screenshot() {
     const deadline = performance.now() + 3000;
     const waitForReady = async (promise: Promise<unknown>) => {
@@ -3346,6 +3856,8 @@ export class SpaceTimeView {
     this.displayLayer?.dispose();
     this.resources?.dispose();
     this.gis?.dispose();
+    this.trailOrder = [];
+    this.trailBatches = [];
     this.box.remove();
     this.tooltip.remove();
     this.labels.domElement.remove();

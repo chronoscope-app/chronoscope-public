@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "runtime": "macOS WKWebView",
+  "datasets": [
+    {
+      "name": "flights-lhr-zrh-100-2025",
+      "points": 88018,
+      "entities": 100,
+      "altitude": {
+        "approximate": 88018,
+        "known": 88018,
+        "maximum": 12166.86,
+        "minimum": 20.58,
+        "omitted": 0
+      },
+      "graphics": {
+        "framebuffer": [
+          1857,
+          1338
+        ],
+        "renderer": "Apple GPU",
+        "resolutionScale": 1.5,
+        "vendor": "Apple Inc.",
+        "version": "WebGL 2.0"
+      },
+      "stems": 88018
+    },
+    {
+      "name": "jaxa-five-sounding-rockets",
+      "points": 2456,
+      "entities": 5,
+      "altitude": {
+        "approximate": 2456,
+        "known": 2456,
+        "maximum": 315889,
+        "minimum": 29,
+        "omitted": 0
+      },
+      "graphics": {
+        "framebuffer": [
+          1857,
+          1338
+        ],
+        "renderer": "Apple GPU",
+        "resolutionScale": 1.5,
+        "vendor": "Apple Inc.",
+        "version": "WebGL 2.0"
+      },
+      "stems": 2456
+    }
+  ],
+  "source_commit": "f80c3b598d3a54df862fcdabceb3f703316c4b8d",
+  "cli_sha256": "c3143e0ab9c0a6111290cab46327d3744b00974909fc7ca2e0451415c6901651",
+  "app_version": "0.16.0",
+  "native_ui": {
+    "window_title": "Chronoscope 0.16.0",
+    "control": "one sliding segmented Time Height / Altitude selector",
+    "altitude_slider_visible": true,
+    "altitude_slider_disabled": true,
+    "time_height_slider_enabled": true,
+    "retained_slider_value": 50,
+    "method": "Native accessibility and visual inspection; both options clicked"
+  }
+}

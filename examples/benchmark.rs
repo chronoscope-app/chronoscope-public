@@ -15,6 +15,7 @@ fn main() {
     let mut events = Vec::with_capacity(count);
     for i in 0..count {
         events.push(Event {
+            altitude: None,
             location_kind: None,
             geometry_wkt: None,
             mgrs_precision: None,

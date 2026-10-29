@@ -1545,8 +1545,8 @@
   },
   {
     "name": "core-foundation",
-    "version": "0.9.4",
-    "archive_sha256": "91e195e091a93c46f7102ec7818a2aa394e1e1771c3ab4825963fa03e45afb8f",
+    "version": "0.10.1",
+    "archive_sha256": "b2a6cd9ae233e7f62ba4e9353e81a88df7fc8a5987b8d445b4d90c879bd156f6",
     "notices": [
       {
         "path": "LICENSE-APACHE",
@@ -1561,8 +1561,8 @@
   },
   {
     "name": "core-foundation",
-    "version": "0.10.1",
-    "archive_sha256": "b2a6cd9ae233e7f62ba4e9353e81a88df7fc8a5987b8d445b4d90c879bd156f6",
+    "version": "0.9.4",
+    "archive_sha256": "91e195e091a93c46f7102ec7818a2aa394e1e1771c3ab4825963fa03e45afb8f",
     "notices": [
       {
         "path": "LICENSE-APACHE",
@@ -4095,8 +4095,8 @@
   },
   {
     "name": "ico",
-    "version": "0.5.0",
-    "archive_sha256": "3e795dff5605e0f04bff85ca41b51a96b83e80b281e96231bcaaf1ac35103371",
+    "version": "0.6.0",
+    "archive_sha256": "d75e94d66081e4d8dcd098bd8dc5254800fea14a26389b298410158d834de167",
     "notices": [
       {
         "path": "LICENSE",
@@ -4908,8 +4908,8 @@
   },
   {
     "name": "linux-raw-sys",
-    "version": "0.4.15",
-    "archive_sha256": "d26c52dbd32dccf2d10cac7725f8eae5296885fb5703b261f7d0a0739ec807ab",
+    "version": "0.12.1",
+    "archive_sha256": "32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53",
     "notices": [
       {
         "path": "COPYRIGHT",
@@ -4932,8 +4932,8 @@
   },
   {
     "name": "linux-raw-sys",
-    "version": "0.12.1",
-    "archive_sha256": "32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53",
+    "version": "0.4.15",
+    "archive_sha256": "d26c52dbd32dccf2d10cac7725f8eae5296885fb5703b261f7d0a0739ec807ab",
     "notices": [
       {
         "path": "COPYRIGHT",
@@ -6443,22 +6443,6 @@
   },
   {
     "name": "png",
-    "version": "0.17.16",
-    "archive_sha256": "82151a2fc869e011c153adc57cf2789ccb8d9906ce52c0b39a6b5697749d7526",
-    "notices": [
-      {
-        "path": "LICENSE-APACHE",
-        "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
-      },
-      {
-        "path": "LICENSE-MIT",
-        "sha256": "eaf40297c75da471f7cda1f3458e8d91b4b2ec866e609527a13acfa93b638652"
-      }
-    ],
-    "scope": "conservative entire lock inventory; may not be linked on this target"
-  },
-  {
-    "name": "png",
     "version": "0.18.1",
     "archive_sha256": "60769b8b31b2a9f263dae2776c37b1b28ae246943cf719eb6946a1db05128a61",
     "notices": [
@@ -6858,6 +6842,26 @@
   },
   {
     "name": "rand",
+    "version": "0.10.3",
+    "archive_sha256": "65c9fb96cbc91e3478eaae79a69fcd3f1ae4ad052e471fe6732fff548984b4af",
+    "notices": [
+      {
+        "path": "COPYRIGHT",
+        "sha256": "90eb64f0279b0d9432accfa6023ff803bc4965212383697eee27a0f426d5f8d5"
+      },
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "35242e7a83f69875e6edeff02291e688c97caafe2f8902e4e19b49d3e78b4cab"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "209fbbe0ad52d9235e37badf9cadfe4dbdc87203179c0899e738b39ade42177b"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "rand",
     "version": "0.8.6",
     "archive_sha256": "5ca0ecfa931c29007047d1bc58e623ab12e5590e8c7cc53200d5202b69266d8a",
     "notices": [
@@ -6880,26 +6884,6 @@
     "name": "rand",
     "version": "0.9.5",
     "archive_sha256": "b9ef1d0d795eb7d84685bca4f72f3649f064e6641543d3a8c415898726a57b41",
-    "notices": [
-      {
-        "path": "COPYRIGHT",
-        "sha256": "90eb64f0279b0d9432accfa6023ff803bc4965212383697eee27a0f426d5f8d5"
-      },
-      {
-        "path": "LICENSE-APACHE",
-        "sha256": "35242e7a83f69875e6edeff02291e688c97caafe2f8902e4e19b49d3e78b4cab"
-      },
-      {
-        "path": "LICENSE-MIT",
-        "sha256": "209fbbe0ad52d9235e37badf9cadfe4dbdc87203179c0899e738b39ade42177b"
-      }
-    ],
-    "scope": "conservative entire lock inventory; may not be linked on this target"
-  },
-  {
-    "name": "rand",
-    "version": "0.10.3",
-    "archive_sha256": "65c9fb96cbc91e3478eaae79a69fcd3f1ae4ad052e471fe6732fff548984b4af",
     "notices": [
       {
         "path": "COPYRIGHT",
@@ -6958,6 +6942,26 @@
   },
   {
     "name": "rand_core",
+    "version": "0.10.1",
+    "archive_sha256": "63b8176103e19a2643978565ca18b50549f6101881c443590420e4dc998a3c69",
+    "notices": [
+      {
+        "path": "COPYRIGHT",
+        "sha256": "92b81db30f7ab6d693e0af5661a40d273ca1947e891123ed823924192c10cbc7"
+      },
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "6df43f6f4b5d4587f3d8d71e45532c688fd168afa5fe89d571cb32fa09c4ef51"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "8b6e9feec03e7c9a5facb26855cecd31662bf989b636bcfe79521bdf8ac863f0"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "rand_core",
     "version": "0.6.4",
     "archive_sha256": "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c",
     "notices": [
@@ -6992,26 +6996,6 @@
       {
         "path": "LICENSE-MIT",
         "sha256": "209fbbe0ad52d9235e37badf9cadfe4dbdc87203179c0899e738b39ade42177b"
-      }
-    ],
-    "scope": "conservative entire lock inventory; may not be linked on this target"
-  },
-  {
-    "name": "rand_core",
-    "version": "0.10.1",
-    "archive_sha256": "63b8176103e19a2643978565ca18b50549f6101881c443590420e4dc998a3c69",
-    "notices": [
-      {
-        "path": "COPYRIGHT",
-        "sha256": "92b81db30f7ab6d693e0af5661a40d273ca1947e891123ed823924192c10cbc7"
-      },
-      {
-        "path": "LICENSE-APACHE",
-        "sha256": "6df43f6f4b5d4587f3d8d71e45532c688fd168afa5fe89d571cb32fa09c4ef51"
-      },
-      {
-        "path": "LICENSE-MIT",
-        "sha256": "8b6e9feec03e7c9a5facb26855cecd31662bf989b636bcfe79521bdf8ac863f0"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -8532,6 +8516,30 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "static_vcruntime",
+    "version": "3.0.0",
+    "archive_sha256": "ff7589a1859b09232522bb9edf076ca7fcf14ded96685d3fa629db73023ffbb7",
+    "notices": [
+      {
+        "path": "LICENSE",
+        "sha256": "b9290e9d37bc53272ff4f3fb392c1762169fc0a8b797d164803049c81eacb48c"
+      },
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "e3ba223bb1423f0aad8c3dfce0fe3148db48926d41e6fbc3afbbf5ff9e1c89cb"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "748c208045a6f00734dbc85a1c0e401c9a25e1f83fc756e99916750dbd2469a7"
+      },
+      {
+        "path": "LICENSE-ZLIB",
+        "sha256": "c1ff532091cac33bdecedf7268ff4f9bc3ddcffba494249fb723033e9e782f1a"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "statrs",
     "version": "0.19.1",
     "archive_sha256": "c1837f9a1bd13dabbdbb04489c39451482d3cdd35a6e1a0d0f3570dea2b8c8be",
@@ -8793,8 +8801,8 @@
   },
   {
     "name": "tauri",
-    "version": "2.12.3",
-    "archive_sha256": "c404ecf956ff241bf6b39dd688614724e1bf1f63255abb4fc46d1c40371672ea",
+    "version": "2.12.5",
+    "archive_sha256": "5fb0244332cfb9cee7e2a568bf5da29a36ed8fdbd717f6f47a66b6b7b358c072",
     "notices": [
       {
         "path": "LICENSE-APACHE-2.0",
@@ -8809,8 +8817,8 @@
   },
   {
     "name": "tauri-build",
-    "version": "2.7.2",
-    "archive_sha256": "2eea0b6302f82c574b21af6fc6ae6e86183b9280853c22621d0abf0936911ffc",
+    "version": "2.7.4",
+    "archive_sha256": "adddb0e648752aaac5da9c3c3c6a68e1e87cab55e3b757b18a9441ef8c3ac614",
     "notices": [
       {
         "path": "LICENSE-APACHE-2.0",
@@ -8825,8 +8833,8 @@
   },
   {
     "name": "tauri-codegen",
-    "version": "2.7.2",
-    "archive_sha256": "02f468f9a9bcd404f57e5c191d91024e3de953d4b610f78c2907e7110615cb1c",
+    "version": "2.7.4",
+    "archive_sha256": "fb37631cf71dab5e8ab55e1bdd701e18a52653d90b78e71d0e5598b1e0a61316",
     "notices": [
       {
         "path": "LICENSE-APACHE-2.0",
@@ -8841,8 +8849,8 @@
   },
   {
     "name": "tauri-macros",
-    "version": "2.7.2",
-    "archive_sha256": "131bffec939b20642380317f8403a33c8888489925e14bb965ceaff0d949b1cb",
+    "version": "2.7.4",
+    "archive_sha256": "0cc38db58854c10fb5f91a887ed8bf82d3239bb92b5d8db86eda09e96d9963d1",
     "notices": [
       {
         "path": "LICENSE-APACHE-2.0",
@@ -8924,8 +8932,8 @@
   },
   {
     "name": "tauri-runtime",
-    "version": "2.12.1",
-    "archive_sha256": "c2a57a2a9b8c8b7fc00d35b510fe808ded7f9f1b44fc1cdda6aee38632ea5413",
+    "version": "2.12.2",
+    "archive_sha256": "7c55766d99cea69055904d1735b93c2049302b2e09effd462120deb5581d78e9",
     "notices": [
       {
         "path": "LICENSE-APACHE-2.0",
@@ -8940,8 +8948,8 @@
   },
   {
     "name": "tauri-runtime-wry",
-    "version": "2.12.1",
-    "archive_sha256": "7f9e7e0c9f80a5130773cfabb6df4dc924518fb1b2c923726966804634b57d22",
+    "version": "2.12.3",
+    "archive_sha256": "e1aa9d8b7a120f879f44fdc1053f7b7dbf416bf0bbc6a72b714dec46b782b52f",
     "notices": [
       {
         "path": "LICENSE-APACHE-2.0",
@@ -8956,8 +8964,8 @@
   },
   {
     "name": "tauri-utils",
-    "version": "2.10.1",
-    "archive_sha256": "2ff55a614843b9a3f010f211df637c94df2607175b8d0f6e0f4a7c19e18621ee",
+    "version": "2.10.2",
+    "archive_sha256": "362ab21cd4cc713f2a02b1a9b5688198b1541cfb6907c4281e9190e0f0ef4aa3",
     "notices": [
       {
         "path": "LICENSE-APACHE-2.0",
@@ -9192,8 +9200,8 @@
   },
   {
     "name": "tokio",
-    "version": "1.53.2",
-    "archive_sha256": "e95f91fcc7a621e8b030f6aa23c71fe9838ae2fb4d8118b75602a328f5144044",
+    "version": "1.53.3",
+    "archive_sha256": "ce3335fa71841cda333a58d7615b03901380ecf09d59b3296d21f8bbac0dde4e",
     "notices": [
       {
         "path": "LICENSE",

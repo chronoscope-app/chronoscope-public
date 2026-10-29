@@ -19,3 +19,8 @@ The fixed January 2025 USGS-authored earthquake sample has worldwide coverage. [
 ## Crime hotspots
 
 Police.uk theft-from-the-person reports in central London, January 2025, OGL v3.0. Contains public sector information licensed under the Open Government Licence v3.0. [Selection, hashes, credit and reproduction](../../docs/CRIME-HOTSPOTS.md).
+
+
+## SpaceX examples
+
+`starlink-128-predicted-orbits-2024.csv` retains 46,208 original predicted states from 128 satellites in MAD-LEO v1 (Guo et al., CC BY 4.0; SpaceX operator ephemerides). `falcon9-launch-history-2010-2026.csv` retains 700 GCAT Falcon 9 launch records across three pads (Jonathan McDowell, CC BY 4.0). Keep both attribution sidecars. See [coordinate assumptions, source checksums and the full 43-million-state fixture](../../docs/SPACE-DEMOS.md).

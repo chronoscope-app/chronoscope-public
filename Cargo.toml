@@ -1,6 +1,6 @@
 [package]
 name = "chronoscope"
-version = "0.15.2"
+version = "0.16.4"
 edition = "2021"
 rust-version = "1.96"
 description = "Rust space-time engine, CLI and MCP server"

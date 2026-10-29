@@ -1,0 +1,1422 @@
+{
+  "baselineCommit": "c664af5",
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "viewport": [
+    1400,
+    900
+  ],
+  "deviceScaleFactor": 1,
+  "scope": "Local Chrome/SwiftShader; synthetic 90 ms packet clock; original monotonic clock measures installation and explicit render. Excludes queries, transport, UI scheduling and native/physical-GPU FPS.",
+  "bufferScope": "bufferData/bufferSubData allocation/upload argument bytes, excluding uniforms/textures and not a bus-traffic measurement.",
+  "samples": [
+    {
+      "count": 10000,
+      "mode": "map",
+      "changedPerPacket": 50,
+      "tracks": false,
+      "packetInstall": {
+        "baselineMedianMs": 16.25,
+        "candidateMedianMs": 20.25,
+        "reductionPercent": -24.615,
+        "baselineSamplesMs": [
+          19.9,
+          16.3,
+          20.1,
+          11.8,
+          12.9,
+          12.4,
+          13.2,
+          23.7,
+          10.9,
+          16.2,
+          14.8,
+          30.8,
+          20.6,
+          23.8,
+          10.3,
+          18.6,
+          13.9,
+          23.1
+        ],
+        "candidateSamplesMs": [
+          24,
+          22.6,
+          15.5,
+          25.4,
+          13.8,
+          13.7,
+          29.6,
+          25.8,
+          18.1,
+          17.9,
+          17.6,
+          31.6,
+          23.8,
+          20.1,
+          17.7,
+          14.3,
+          20.4,
+          25.3
+        ]
+      },
+      "packetAndRender": {
+        "baselineMedianMs": 29.1,
+        "candidateMedianMs": 33.35,
+        "reductionPercent": -14.605,
+        "baselineSamplesMs": [
+          32.5,
+          26.6,
+          28.5,
+          20.2,
+          28.9,
+          21.1,
+          29.7,
+          37.4,
+          31.6,
+          26.3,
+          24.3,
+          45.5,
+          29.6,
+          35.8,
+          18.5,
+          29.3,
+          27.5,
+          32.4
+        ],
+        "candidateSamplesMs": [
+          33,
+          25.1,
+          37.1,
+          41.3,
+          30.7,
+          26.7,
+          37,
+          31.2,
+          33.3,
+          32.5,
+          33.7,
+          53.6,
+          33.4,
+          22.4,
+          32.6,
+          33.6,
+          40.3,
+          48.6
+        ]
+      },
+      "bufferAllocationUploadBytesPerSixPackets": {
+        "baselineTrials": [
+          5903352,
+          5903024,
+          5903024
+        ],
+        "candidateTrials": [
+          5074184,
+          5090584,
+          5073856
+        ],
+        "reductionPercent": 14.041
+      },
+      "liveMarkerRecreationReductionPercent": 99.167,
+      "candidatePatchesPerTrial": [
+        6,
+        6,
+        6
+      ],
+      "candidateReusedMarkersPerTrial": [
+        59500,
+        59500,
+        59500
+      ]
+    },
+    {
+      "count": 10000,
+      "mode": "space-time",
+      "changedPerPacket": 50,
+      "tracks": false,
+      "packetInstall": {
+        "baselineMedianMs": 18.85,
+        "candidateMedianMs": 24.25,
+        "reductionPercent": -28.647,
+        "baselineSamplesMs": [
+          17.1,
+          12.7,
+          21.1,
+          11.4,
+          19.2,
+          11.3,
+          22.4,
+          10.6,
+          20.5,
+          11,
+          19.6,
+          11.5,
+          36,
+          18.5,
+          32,
+          26.1,
+          18.2,
+          23.8
+        ],
+        "candidateSamplesMs": [
+          19.8,
+          19.2,
+          26,
+          18.6,
+          18.8,
+          19.9,
+          22.7,
+          20.8,
+          39.8,
+          17.6,
+          27.3,
+          30.3,
+          23.3,
+          25.2,
+          44.5,
+          35.1,
+          30,
+          38.6
+        ]
+      },
+      "packetAndRender": {
+        "baselineMedianMs": 28.6,
+        "candidateMedianMs": 41.6,
+        "reductionPercent": -45.455,
+        "baselineSamplesMs": [
+          27.1,
+          22.7,
+          30.6,
+          20.2,
+          28.5,
+          20.4,
+          30.6,
+          19.1,
+          28.7,
+          19.5,
+          27.9,
+          25.3,
+          52.2,
+          30.2,
+          44.1,
+          45,
+          35.1,
+          34.2
+        ],
+        "candidateSamplesMs": [
+          33.3,
+          29.2,
+          44.5,
+          30.5,
+          32.1,
+          32.1,
+          35.6,
+          30.1,
+          56.6,
+          38.7,
+          47.9,
+          52,
+          45,
+          38.3,
+          60.2,
+          58.5,
+          49.7,
+          62.5
+        ]
+      },
+      "bufferAllocationUploadBytesPerSixPackets": {
+        "baselineTrials": [
+          5936412,
+          5936336,
+          5936336
+        ],
+        "candidateTrials": [
+          6086504,
+          6086428,
+          6086428
+        ],
+        "reductionPercent": -2.528
+      },
+      "liveMarkerRecreationReductionPercent": 99.167,
+      "candidatePatchesPerTrial": [
+        6,
+        6,
+        6
+      ],
+      "candidateReusedMarkersPerTrial": [
+        59500,
+        59500,
+        59500
+      ]
+    },
+    {
+      "count": 100000,
+      "mode": "map",
+      "changedPerPacket": 500,
+      "tracks": false,
+      "packetInstall": {
+        "baselineMedianMs": 302.15,
+        "candidateMedianMs": 177.1,
+        "reductionPercent": 41.387,
+        "baselineSamplesMs": [
+          337.3,
+          325,
+          318.4,
+          386.3,
+          334.9,
+          360.5,
+          320,
+          422,
+          294.2,
+          161.3,
+          150.1,
+          185.7,
+          310.1,
+          161.9,
+          197.2,
+          186.5,
+          180.4,
+          195.7
+        ],
+        "candidateSamplesMs": [
+          374.9,
+          343.3,
+          336.1,
+          398.4,
+          313.2,
+          338.6,
+          322.4,
+          356.9,
+          167.7,
+          119.3,
+          106.1,
+          112.2,
+          186.5,
+          127.3,
+          111.1,
+          108.8,
+          101.3,
+          96.6
+        ]
+      },
+      "packetAndRender": {
+        "baselineMedianMs": 418.0,
+        "candidateMedianMs": 246.35,
+        "reductionPercent": 41.065,
+        "baselineSamplesMs": [
+          765.2,
+          468,
+          459.5,
+          557,
+          574.9,
+          541.1,
+          786,
+          580.3,
+          376.5,
+          249.8,
+          225.6,
+          261.7,
+          1585.1,
+          241.8,
+          279.7,
+          276.6,
+          315.3,
+          295.2
+        ],
+        "candidateSamplesMs": [
+          450,
+          353.3,
+          559.5,
+          634.1,
+          581.4,
+          585.6,
+          398.9,
+          367.1,
+          270.6,
+          202.7,
+          183.2,
+          191.2,
+          222.1,
+          140.5,
+          183.7,
+          176.9,
+          167.3,
+          165
+        ]
+      },
+      "bufferAllocationUploadBytesPerSixPackets": {
+        "baselineTrials": [
+          59036196,
+          59036196,
+          59036196
+        ],
+        "candidateTrials": [
+          50913648,
+          50913648,
+          50913648
+        ],
+        "reductionPercent": 13.759
+      },
+      "liveMarkerRecreationReductionPercent": 99.167,
+      "candidatePatchesPerTrial": [
+        6,
+        6,
+        6
+      ],
+      "candidateReusedMarkersPerTrial": [
+        595000,
+        595000,
+        595000
+      ]
+    },
+    {
+      "count": 100000,
+      "mode": "space-time",
+      "changedPerPacket": 500,
+      "tracks": false,
+      "packetInstall": {
+        "baselineMedianMs": 309.1,
+        "candidateMedianMs": 149.25,
+        "reductionPercent": 51.715,
+        "baselineSamplesMs": [
+          649.8,
+          322.3,
+          230.3,
+          204.3,
+          219,
+          219.7,
+          749.8,
+          297.4,
+          238,
+          265.4,
+          605.1,
+          644.8,
+          678.2,
+          370.5,
+          314.8,
+          277.8,
+          308.5,
+          309.7
+        ],
+        "candidateSamplesMs": [
+          234.8,
+          168.8,
+          155.6,
+          145.7,
+          344.6,
+          478.1,
+          222.1,
+          167.7,
+          148.4,
+          144.8,
+          144.1,
+          150.1,
+          227.6,
+          143.8,
+          126.6,
+          124.9,
+          122.9,
+          127.7
+        ]
+      },
+      "packetAndRender": {
+        "baselineMedianMs": 462.8,
+        "candidateMedianMs": 222.8,
+        "reductionPercent": 51.858,
+        "baselineSamplesMs": [
+          4371,
+          461.9,
+          352.5,
+          304.6,
+          356.4,
+          319.2,
+          4850.7,
+          463.7,
+          346.4,
+          507.6,
+          924.6,
+          1128.4,
+          3413.8,
+          531.9,
+          506.7,
+          406.9,
+          440.2,
+          432.6
+        ],
+        "candidateSamplesMs": [
+          317.7,
+          229.6,
+          228.4,
+          216.7,
+          597.1,
+          777.3,
+          304.1,
+          225.5,
+          219.8,
+          211.9,
+          215,
+          224.9,
+          299.7,
+          191.8,
+          220.7,
+          181.2,
+          183.5,
+          189.2
+        ]
+      },
+      "bufferAllocationUploadBytesPerSixPackets": {
+        "baselineTrials": [
+          59107724,
+          59109444,
+          59109444
+        ],
+        "candidateTrials": [
+          60606944,
+          60608664,
+          60608664
+        ],
+        "reductionPercent": -2.536
+      },
+      "liveMarkerRecreationReductionPercent": 99.167,
+      "candidatePatchesPerTrial": [
+        6,
+        6,
+        6
+      ],
+      "candidateReusedMarkersPerTrial": [
+        595000,
+        595000,
+        595000
+      ]
+    }
+  ],
+  "withTracks100k": {
+    "installsMs": {
+      "baselineSamplesMs": [
+        1123.5999999940395,
+        974.9000000059605,
+        998.6999999880791
+      ],
+      "candidateSamplesMs": [
+        949.8000000119209,
+        859.8000000119209,
+        947.6999999880791
+      ],
+      "baselineMedianMs": 998.6999999880791,
+      "candidateMedianMs": 947.6999999880791,
+      "reductionPercent": 5.107
+    },
+    "packetAndRenderMs": {
+      "baselineSamplesMs": [
+        1560.4000000059605,
+        1432.0999999940395,
+        1401.0999999940395
+      ],
+      "candidateSamplesMs": [
+        1338.300000011921,
+        1219.4000000059605,
+        1330
+      ],
+      "baselineMedianMs": 1432.0999999940395,
+      "candidateMedianMs": 1330,
+      "reductionPercent": 7.129
+    }
+  },
+  "memory2000Events": {
+    "cycles": 150,
+    "maxSlots": 6080,
+    "pausedSlots": 2000,
+    "peakTrackedBufferBytes": 596220,
+    "peakTrackedBufferObjects": 4,
+    "pausedBufferFootprint": {
+      "buffers": 4,
+      "bytes": 201616
+    },
+    "compactions": 1,
+    "retainedHeapDeltaBytes": 246656
+  },
+  "visualComparison": {
+    "freshControlledScenes": true,
+    "images": 21,
+    "pixelsPerImage": 1260000,
+    "allPixelsExact": true,
+    "allCoincidentPickOrdersExact": true,
+    "cases": [
+      {
+        "image": "globe-fade-off.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "globe-forward.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "globe-mature.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "globe-mid-fade.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "globe-paused.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "globe-reordered.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "globe-reverse.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "map-fade-off.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "map-forward.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "map-mature.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "map-mid-fade.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "map-paused.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "map-reordered.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "map-reverse.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "space-time-fade-off.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "space-time-forward.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "space-time-mature.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "space-time-mid-fade.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "space-time-paused.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "space-time-reordered.png",
+        "changedPixels": 0,
+        "bounds": null
+      },
+      {
+        "image": "space-time-reverse.png",
+        "changedPixels": 0,
+        "bounds": null
+      }
+    ]
+  },
+  "invalidation": {
+    "contextRecoveries": 1,
+    "emptySlots": 0
+  },
+  "validation": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "test_validation_runner",
+        "passed": true
+      },
+      {
+        "name": "test_guarded_run",
+        "passed": true
+      },
+      {
+        "name": "rust-format",
+        "passed": true
+      },
+      {
+        "name": "test_glib_backport",
+        "passed": true
+      },
+      {
+        "name": "test_workarounds",
+        "passed": true
+      },
+      {
+        "name": "test_release_preflight",
+        "passed": true
+      },
+      {
+        "name": "core-clippy",
+        "passed": true
+      },
+      {
+        "name": "rust-tests",
+        "passed": true
+      },
+      {
+        "name": "cli-build",
+        "passed": true
+      },
+      {
+        "name": "frontend-build",
+        "passed": true
+      },
+      {
+        "name": "generated-contracts",
+        "passed": true
+      },
+      {
+        "name": "frontend-unit-tests",
+        "passed": true
+      },
+      {
+        "name": "playback-reuse-qa",
+        "passed": true
+      },
+      {
+        "name": "playback-transitions-qa",
+        "passed": true,
+        "hardwareCadenceVerified": false
+      }
+    ],
+    "earlierPassingChecks": [
+      {
+        "name": "cesium-context-qa",
+        "passed": true
+      },
+      {
+        "name": "cesium-parity-qa",
+        "passed": true
+      },
+      {
+        "name": "playback-speed-qa",
+        "passed": true
+      },
+      {
+        "name": "renderer-reuse-qa",
+        "passed": true
+      }
+    ]
+  },
+  "candidateSourceSha256": {
+    "frontend/src/view.ts": "84244f89249e3cd7d966ae62f06e32bde67638fe86913a8bccb2f5bdfe56affb",
+    "frontend/scripts/playback-reuse-qa.mjs": "a0efdf408942bb45d302df5f47e30ec5c2618af1544e40018146eb01ce9bf302",
+    "frontend/scripts/playback-transitions-qa.mjs": "1277dd1a69ffe95218284388a0aec67da9e16f8497d45b2680398405d1ca7845",
+    "frontend/package-lock.json": "e6dad4c4436b8aa1187e3ba11c0194d3c842f959ba127c4634bd2ddd0259a475"
+  },
+  "fullDatasetInstallation100k": [
+    {
+      "count": 100000,
+      "mode": "map",
+      "installMs": {
+        "baselineTrials": [
+          224.60000002384186,
+          261.7000000178814,
+          267.90000000596046
+        ],
+        "candidateTrials": [
+          212,
+          265.09999999403954,
+          267.09999999403954
+        ],
+        "baselineMedianMs": 261.7000000178814,
+        "candidateMedianMs": 265.09999999403954,
+        "reductionPercent": -1.299
+      },
+      "installFitAndTwoRendersMs": {
+        "baselineTrials": [
+          436,
+          441.30000001192093,
+          476
+        ],
+        "candidateTrials": [
+          432,
+          434.19999998807907,
+          526.5
+        ],
+        "baselineMedianMs": 441.30000001192093,
+        "candidateMedianMs": 434.19999998807907,
+        "reductionPercent": 1.609
+      }
+    },
+    {
+      "count": 100000,
+      "mode": "space-time",
+      "installMs": {
+        "baselineTrials": [
+          332.40000000596046,
+          190.80000001192093,
+          211
+        ],
+        "candidateTrials": [
+          292.09999999403954,
+          174.39999997615814,
+          182
+        ],
+        "baselineMedianMs": 211,
+        "candidateMedianMs": 182,
+        "reductionPercent": 13.744
+      },
+      "installFitAndTwoRendersMs": {
+        "baselineTrials": [
+          1742.699999988079,
+          338.59999999403954,
+          609.1000000238419
+        ],
+        "candidateTrials": [
+          1654.5,
+          331.5,
+          663.5999999940395
+        ],
+        "baselineMedianMs": 609.1000000238419,
+        "candidateMedianMs": 663.5999999940395,
+        "reductionPercent": -8.948
+      }
+    }
+  ],
+  "pairedSamples": [
+    {
+      "count": 10000,
+      "mode": "map",
+      "trials": [
+        {
+          "fresh": false,
+          "installsMs": [
+            16.400000005960464,
+            13.5,
+            10.699999988079071,
+            10,
+            10.099999994039536,
+            9.199999988079071
+          ],
+          "packetAndRenderMs": [
+            22.099999994039536,
+            15.600000023841858,
+            21.5,
+            19.69999998807907,
+            18.5,
+            17.80000001192093
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            16.5,
+            19.099999994039536,
+            22.400000005960464,
+            32.599999994039536,
+            15,
+            11
+          ],
+          "packetAndRenderMs": [
+            30.69999998807907,
+            35.900000005960464,
+            38.19999998807907,
+            49.099999994039536,
+            23.400000005960464,
+            28.30000001192093
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            22.099999994039536,
+            21.700000017881393,
+            36.099999994039536,
+            13.100000023841858,
+            38.29999998211861,
+            16.30000001192093
+          ],
+          "packetAndRenderMs": [
+            30.19999998807907,
+            38.400000005960464,
+            44.099999994039536,
+            29.700000017881393,
+            53.099999994039536,
+            29.599999994039536
+          ]
+        },
+        {
+          "fresh": false,
+          "installsMs": [
+            22,
+            30.599999994039536,
+            18.099999994039536,
+            14.800000011920929,
+            14.900000005960464,
+            14.900000005960464
+          ],
+          "packetAndRenderMs": [
+            28.200000017881393,
+            34.599999994039536,
+            30.099999994039536,
+            26,
+            29.5,
+            29.5
+          ]
+        },
+        {
+          "fresh": false,
+          "installsMs": [
+            15.599999994039536,
+            12.600000023841858,
+            16.099999994039536,
+            18,
+            12.799999982118607,
+            18.400000005960464
+          ],
+          "packetAndRenderMs": [
+            19.19999998807907,
+            14.900000005960464,
+            27.700000017881393,
+            31,
+            21.899999976158142,
+            33.70000001788139
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            21.900000005960464,
+            32.19999998807907,
+            21.700000017881393,
+            36.80000001192093,
+            17.799999982118607,
+            35
+          ],
+          "packetAndRenderMs": [
+            35.400000005960464,
+            1252.199999988079,
+            34.30000001192093,
+            50.900000005960464,
+            32,
+            49.099999994039536
+          ]
+        }
+      ]
+    },
+    {
+      "count": 10000,
+      "mode": "space-time",
+      "trials": [
+        {
+          "fresh": false,
+          "installsMs": [
+            12.100000023841858,
+            17.30000001192093,
+            11.900000005960464,
+            12.5,
+            11,
+            10.900000005960464
+          ],
+          "packetAndRenderMs": [
+            21.30000001192093,
+            24.400000005960464,
+            20.19999998807907,
+            20.400000005960464,
+            21.099999994039536,
+            19.900000005960464
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            24.69999998807907,
+            11.200000017881393,
+            24.80000001192093,
+            11.099999994039536,
+            21.30000001192093,
+            10.900000005960464
+          ],
+          "packetAndRenderMs": [
+            33.29999998211861,
+            23.099999994039536,
+            33.20000001788139,
+            19.299999982118607,
+            30,
+            19.30000001192093
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            14.300000011920929,
+            20.600000023841858,
+            34.30000001192093,
+            15.299999982118607,
+            35.19999998807907,
+            10.599999994039536
+          ],
+          "packetAndRenderMs": [
+            22.599999994039536,
+            32.30000001192093,
+            49.30000001192093,
+            31.599999994039536,
+            50.099999994039536,
+            24.30000001192093
+          ]
+        },
+        {
+          "fresh": false,
+          "installsMs": [
+            24.69999998807907,
+            20.80000001192093,
+            15.400000005960464,
+            18.30000001192093,
+            22.900000005960464,
+            20.200000017881393
+          ],
+          "packetAndRenderMs": [
+            36.099999994039536,
+            401.09999999403954,
+            32.5,
+            34.70000001788139,
+            37.29999998211861,
+            33.5
+          ]
+        },
+        {
+          "fresh": false,
+          "installsMs": [
+            32,
+            13.199999988079071,
+            19.200000017881393,
+            20.799999982118607,
+            17.099999994039536,
+            23.599999994039536
+          ],
+          "packetAndRenderMs": [
+            529.1999999880791,
+            25.599999994039536,
+            33.80000001192093,
+            44.69999998807907,
+            32.900000005960464,
+            39.599999994039536
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            19.69999998807907,
+            18.700000017881393,
+            19.5,
+            20.299999982118607,
+            20.80000001192093,
+            24.400000005960464
+          ],
+          "packetAndRenderMs": [
+            34.29999998211861,
+            43.60000002384186,
+            36,
+            50.29999998211861,
+            33.400000005960464,
+            53.099999994039536
+          ]
+        }
+      ]
+    },
+    {
+      "count": 100000,
+      "mode": "map",
+      "trials": [
+        {
+          "fresh": false,
+          "installsMs": [
+            261.59999999403954,
+            300.2000000178814,
+            320.09999999403954,
+            373.30000001192093,
+            354.5,
+            328.2000000178814
+          ],
+          "packetAndRenderMs": [
+            326.89999997615814,
+            310.90000000596046,
+            518.5,
+            605.5999999940395,
+            608.9000000059605,
+            585.5999999940395
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            767.7999999821186,
+            262.5,
+            206.59999999403954,
+            193.09999999403954,
+            188.2999999821186,
+            228
+          ],
+          "packetAndRenderMs": [
+            958.2999999821186,
+            373.5,
+            307.40000000596046,
+            287.40000000596046,
+            282.59999999403954,
+            327.69999998807907
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            662,
+            299,
+            225.90000000596046,
+            206.2000000178814,
+            192,
+            207.5
+          ],
+          "packetAndRenderMs": [
+            3933.2999999821186,
+            419.09999999403954,
+            325.90000000596046,
+            299.80000001192093,
+            285.7999999821186,
+            324.2000000178814
+          ]
+        },
+        {
+          "fresh": false,
+          "installsMs": [
+            296.7999999821186,
+            172.39999997615814,
+            132.59999999403954,
+            108,
+            100.09999999403954,
+            98.59999999403954
+          ],
+          "packetAndRenderMs": [
+            4564.299999982119,
+            178,
+            221.19999998807907,
+            185.09999999403954,
+            174.30000001192093,
+            205.40000000596046
+          ]
+        },
+        {
+          "fresh": false,
+          "installsMs": [
+            148,
+            148,
+            121.30000001192093,
+            101,
+            96.2999999821186,
+            104.19999998807907
+          ],
+          "packetAndRenderMs": [
+            182.40000000596046,
+            151.89999997615814,
+            201.10000002384186,
+            172.5,
+            161.69999998807907,
+            212.59999999403954
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            247.80000001192093,
+            214.10000002384186,
+            201.59999999403954,
+            195,
+            187.69999998807907,
+            191.5
+          ],
+          "packetAndRenderMs": [
+            381.09999999403954,
+            312.7000000178814,
+            293.90000000596046,
+            286.09999999403954,
+            322.19999998807907,
+            309.7000000178814
+          ]
+        }
+      ]
+    },
+    {
+      "count": 100000,
+      "mode": "space-time",
+      "trials": [
+        {
+          "fresh": false,
+          "installsMs": [
+            521.1999999880791,
+            221.19999998807907,
+            170.19999998807907,
+            155.5,
+            144.80000001192093,
+            146.19999998807907
+          ],
+          "packetAndRenderMs": [
+            4202.0999999940395,
+            287.90000000596046,
+            242.09999999403954,
+            229,
+            214,
+            215.30000001192093
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            287,
+            241.59999999403954,
+            194,
+            207.19999998807907,
+            205.40000000596046,
+            216.5
+          ],
+          "packetAndRenderMs": [
+            404.2000000178814,
+            342.89999997615814,
+            358.7000000178814,
+            324.2999999821186,
+            300.5,
+            312.10000002384186
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            617,
+            311.30000001192093,
+            217.30000001192093,
+            207.30000001192093,
+            280.5,
+            208.39999997615814
+          ],
+          "packetAndRenderMs": [
+            4607.199999988079,
+            423.90000000596046,
+            334.19999998807907,
+            304.7000000178814,
+            404.40000000596046,
+            304.59999999403954
+          ]
+        },
+        {
+          "fresh": false,
+          "installsMs": [
+            552.1999999880791,
+            216.19999998807907,
+            173.40000000596046,
+            150.90000000596046,
+            152.80000001192093,
+            178.69999998807907
+          ],
+          "packetAndRenderMs": [
+            4753,
+            285,
+            249,
+            217.59999999403954,
+            219.30000001192093,
+            259.39999997615814
+          ]
+        },
+        {
+          "fresh": false,
+          "installsMs": [
+            257.40000000596046,
+            169.19999998807907,
+            153.59999999403954,
+            147.59999999403954,
+            151.2999999821186,
+            142.40000000596046
+          ],
+          "packetAndRenderMs": [
+            339.2000000178814,
+            228,
+            224.40000000596046,
+            212.5,
+            216.7999999821186,
+            211.2000000178814
+          ]
+        },
+        {
+          "fresh": true,
+          "installsMs": [
+            280.2999999821186,
+            251,
+            224.40000000596046,
+            242.30000001192093,
+            204.80000001192093,
+            217.40000000596046
+          ],
+          "packetAndRenderMs": [
+            401.5,
+            354.89999997615814,
+            319.80000001192093,
+            340.69999998807907,
+            305.40000000596046,
+            313.40000000596046
+          ]
+        }
+      ]
+    }
+  ],
+  "pairedSummary": [
+    {
+      "count": 10000,
+      "mode": "map",
+      "installsMs": {
+        "forcedRebuildMedianMs": 21.80000001192093,
+        "reuseMedianMs": 14.900000005960464,
+        "reductionPercent": 31.651
+      },
+      "packetAndRenderMs": {
+        "forcedRebuildMedianMs": 35.650000005960464,
+        "reuseMedianMs": 24.049999997019768,
+        "reductionPercent": 32.539
+      }
+    },
+    {
+      "count": 10000,
+      "mode": "space-time",
+      "installsMs": {
+        "forcedRebuildMedianMs": 19.99999998509884,
+        "reuseMedianMs": 17.80000001192093,
+        "reductionPercent": 11.0
+      },
+      "packetAndRenderMs": {
+        "forcedRebuildMedianMs": 33.25,
+        "reuseMedianMs": 33.20000000298023,
+        "reductionPercent": 0.15
+      }
+    },
+    {
+      "count": 100000,
+      "mode": "map",
+      "installsMs": {
+        "forcedRebuildMedianMs": 207.04999999701977,
+        "reuseMedianMs": 148.0,
+        "reductionPercent": 28.52
+      },
+      "packetAndRenderMs": {
+        "forcedRebuildMedianMs": 317.45000000298023,
+        "reuseMedianMs": 209.0,
+        "reductionPercent": 34.163
+      }
+    },
+    {
+      "count": 100000,
+      "mode": "space-time",
+      "installsMs": {
+        "forcedRebuildMedianMs": 220.90000000596046,
+        "reuseMedianMs": 162.34999999403954,
+        "reductionPercent": 26.505
+      },
+      "packetAndRenderMs": {
+        "forcedRebuildMedianMs": 337.44999998807907,
+        "reuseMedianMs": 228.5,
+        "reductionPercent": 32.286
+      }
+    }
+  ],
+  "actualControls": {
+    "passed": true,
+    "viewport": {
+      "width": 1100,
+      "height": 700
+    },
+    "checks": [
+      {
+        "name": "Day playback presents repeated windows while bloom updates",
+        "evidence": {
+          "installs": 29,
+          "medianIntervalMs": 107,
+          "resourceReuse": {
+            "markerCollectionBuilds": 31,
+            "markerCollectionReuses": 3,
+            "playbackMarkerPatches": 0,
+            "playbackMarkerReuses": 0,
+            "playbackMarkerOrderFallbacks": 0,
+            "playbackMarkerCompactions": 0,
+            "playbackMarkerSmallRebuilds": 29,
+            "stemGeometryBuilds": 33,
+            "trailSorts": 34,
+            "trailGeometryBuilds": 35,
+            "trailStyleUpdates": 35,
+            "trailGlobeStreamRebuilds": 0
+          }
+        }
+      },
+      {
+        "name": "Bloom crossfades with at most two real imagery layers and no renderer errors",
+        "evidence": {
+          "frames": 42
+        }
+      },
+      {
+        "name": "Pause settles to one bloom atlas",
+        "evidence": {
+          "layers": 1
+        }
+      },
+      {
+        "name": "Full-range playback still avoids redundant filtering",
+        "evidence": {
+          "filters": 0
+        }
+      }
+    ],
+    "cadence": {
+      "installs": 29,
+      "medianIntervalMs": 107,
+      "hardwareThresholdsEnforced": false
+    }
+  },
+  "smallBatchInvestigation": {
+    "viewport": [
+      1100,
+      700
+    ],
+    "residentUpdates": 14,
+    "sameBundleForcedRebuildUpdates": 26,
+    "oldFrontendUpdates": 27,
+    "adaptiveCandidateSingleRunUpdates": 29,
+    "adaptiveUnchangedBuildObservedRange": [
+      16,
+      29
+    ],
+    "durationSeconds": 3.5,
+    "scope": "Single-run actual playback controls with bloom; not a general/native FPS improvement claim."
+  },
+  "preferredComparison": "pairedSummary: forced canonical rebuilding and incremental reuse alternate in one warmed candidate browser. Separate baseline/candidate process timings varied substantially at 10k and are retained as secondary evidence."
+}

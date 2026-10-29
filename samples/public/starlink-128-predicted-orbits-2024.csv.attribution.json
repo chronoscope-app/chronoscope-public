@@ -1,0 +1,10 @@
+[
+  {
+    "title": "MAD-LEO v1 · Starlink operational ephemerides",
+    "creator": "Zhixin Guo et al. (2026); original predicted ephemerides published by SpaceX",
+    "source_url": "https://doi.org/10.6084/m9.figshare.33446503.v1",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "changes": "Deterministic 128-satellite subset, six hours of original 60-second predicted states. NORAD IDs distinguish reused satellite names. MEME is interpreted as fixed J2000 equinox, following the source authors’ frame audit, then transformed to ITRS and WGS84 geodetic latitude/longitude/ellipsoid height with Astropy and bundled IERS data. The source does not specify the MEME equinox; this assumption and predicted positions are approximate, not measured telemetry or maneuver truth. Source below_surface states are excluded from this small demo. No extra time samples, orbit propagation or synthetic satellites are added."
+  }
+]

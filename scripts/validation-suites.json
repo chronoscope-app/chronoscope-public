@@ -27,7 +27,10 @@
       "view-profile-test.mjs",
       "agent-lab-test.mjs",
       "view-boundaries-test.mjs",
-      "preferences-controller-test.mjs"
+      "preferences-controller-test.mjs",
+      "scene-ack-test.mjs",
+      "scene-transitions-test.mjs",
+      "view-snapshot-test.mjs"
     ],
     "browser": [
       "integration-smoke-qa.mjs",
@@ -82,7 +85,13 @@
       "view-sync-qa.mjs",
       "mcp-live-qa.mjs",
       "priority-demos-qa.mjs",
-      "import-grid-qa.mjs"
+      "import-grid-qa.mjs",
+      "renderer-reuse-qa.mjs",
+      "track-style-qa.mjs",
+      "playback-reuse-qa.mjs",
+      "altitude-qa.mjs",
+      "table-playback-qa.mjs",
+      "space-demos-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -104,7 +113,10 @@
     "navigation-preferences-qa.mjs",
     "playback-speed-qa.mjs",
     "playback-transitions-qa.mjs",
-    "priority-demos-qa.mjs"
+    "priority-demos-qa.mjs",
+    "renderer-reuse-qa.mjs",
+    "track-style-qa.mjs",
+    "playback-reuse-qa.mjs"
   ],
   "smoke": [
     "integration-smoke-qa.mjs",
@@ -168,7 +180,10 @@
         "cesium-globe-time-qa.mjs",
         "cluster-identity-qa.mjs",
         "display-recovery-qa.mjs",
-        "spectrum-qa.mjs"
+        "spectrum-qa.mjs",
+        "renderer-reuse-qa.mjs",
+        "track-style-qa.mjs",
+        "playback-reuse-qa.mjs"
       ],
       "rust": [
         "display_lod",
@@ -206,7 +221,8 @@
         "toolbar-dialogs-qa.mjs",
         "welcome-qa.mjs",
         "presentation-ui-qa.mjs",
-        "priority-demos-qa.mjs"
+        "priority-demos-qa.mjs",
+        "table-playback-qa.mjs"
       ],
       "rust": [
         "autosave",
@@ -262,6 +278,19 @@
         "mcp_clients",
         "agent_host"
       ]
+    },
+    "altitude": {
+      "browser": [
+        "altitude-qa.mjs",
+        "space-demos-qa.mjs"
+      ],
+      "rust": [
+        "altitude",
+        "playback_display",
+        "views_layers",
+        "altitude_controls",
+        "space_demos"
+      ]
     }
   },
   "python_suites": {
@@ -297,7 +326,8 @@
   "native_gui": [
     "native_terrain_qa.py",
     "native_video_qa.py",
-    "native_mcp_live_qa.py"
+    "native_mcp_live_qa.py",
+    "native_altitude_qa.py"
   ],
   "manual_checks": {
     "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",

@@ -1,0 +1,29 @@
+{
+  "source_commit": "f80c3b598d3a54df862fcdabceb3f703316c4b8d",
+  "app_version": "0.16.0",
+  "bundle_version": "0.16.0",
+  "bundle_binary_sha256": "289de666653a824cb89a6293d8f2282cb90da86460ecfc546056bd4d2db13d57",
+  "rust_checks_passed": 157,
+  "rust_full_demo_matrix_ignored": 1,
+  "frontend_tests_passed": 146,
+  "validation_runner_tests_passed": 20,
+  "metadata_tests_passed": 5,
+  "browser_suites": [
+    "altitude-qa",
+    "cesium-globe-time-qa",
+    "display-recovery-qa",
+    "import-grid-qa",
+    "renderer-reuse-qa",
+    "playback-reuse-qa"
+  ],
+  "renderer_reuse_sizes": [
+    10000,
+    100000
+  ],
+  "platform": "Apple M5 / macOS 27.0.1 / native WKWebView and Chrome Metal",
+  "tauri_core": "2.12.5",
+  "tauri_build": "2.7.4",
+  "tauri_js_api_and_cli": "2.12.4",
+  "hosted_workflows_started": 0,
+  "public_promotion": false
+}

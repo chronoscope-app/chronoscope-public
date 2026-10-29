@@ -2025,25 +2025,6 @@ svg {
   position: relative;
   flex: 0 0 auto;
 }
-.renderer-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex: 0 0 auto;
-  padding: 6px 8px;
-  color: var(--muted);
-  font-size: 11px;
-  white-space: nowrap;
-}
-.renderer-status svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
 .renderer-status[data-warning="true"] {
   color: var(--selection-ink);
   background: var(--selection-bg);

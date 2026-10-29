@@ -128,7 +128,7 @@ fn invalid_measurement_ranges_are_rejected_without_replacing_the_scene() {
 #[test]
 fn every_catalog_preview_points_to_a_real_saved_view() {
     let dir = tempfile::tempdir().unwrap();
-    assert_eq!(demos::DEMOS.len(), 13);
+    assert_eq!(demos::DEMOS.len(), 16);
     for demo in demos::DEMOS {
         let project = demos::load(demo.id, dir.path()).unwrap();
         for preview in demo.previews {

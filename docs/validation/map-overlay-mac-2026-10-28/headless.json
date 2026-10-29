@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "map: description overlay absent while clusters, density, heat and bloom still render",
+    "space-time: description overlay absent while clusters, density, heat and bloom still render",
+    "globe: description overlay absent while clusters, density, heat and bloom still render"
+  ],
+  "publicRequests": 0,
+  "errors": []
+}

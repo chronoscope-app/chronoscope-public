@@ -78,7 +78,6 @@ export class DisplayLayer {
       (this.options.mode !== "auto" || !!this.packet?.aggregated)
     );
   }
-  legend = document.createElement("div");
   hits: Hit[] = [];
   /** Public diagnostics describe real Cesium resources, useful to MCP/UI tests. */
   diagnostics = {
@@ -120,12 +119,7 @@ export class DisplayLayer {
     this.playback = active;
     this.exposure = undefined;
   }
-  constructor(private view: CesiumDisplayContext) {
-    this.legend.className = "display-scale-legend";
-    this.legend.hidden = true;
-    this.legend.setAttribute("aria-label", "Display summary scale");
-    view.host.append(this.legend);
-  }
+  constructor(private view: CesiumDisplayContext) {}
   private clear(keepAtlas = false) {
     if (!keepAtlas) {
       cancelAnimationFrame(this.transitionFrame);
@@ -171,7 +165,6 @@ export class DisplayLayer {
   dispose() {
     this.disposed = true;
     this.clear();
-    this.legend.remove();
   }
   get updating() {
     return !!this.pendingRebuild;
@@ -183,9 +176,20 @@ export class DisplayLayer {
     // Cache metadata changes do not change pixels. Include every spatial/style
     // input so terrain, mode, time scaling and selected cells still invalidate.
     const { cache_hit: _cache, revision: _revision, ...visual } = packet || {};
+    // Track geometry/style does not affect density, heat or bloom. Keep the
+    // current atlas and worker when a user adjusts only a track control.
+    const {
+      show_tracks: _tracks,
+      show_trails: _trails,
+      track_opacity: _trackOpacity,
+      trail_opacity: _trailOpacity,
+      trail_pixels: _pixels,
+      trail_gap_minutes: _gap,
+      ...layerOptions
+    } = options;
     const key = JSON.stringify([
       packet ? visual : null,
-      options,
+      layerOptions,
       v.mode,
       v.bounds,
       v.lo,
@@ -242,14 +246,10 @@ export class DisplayLayer {
       o.mode === "heatmap" ||
       (o.mode === "density" && this.view.mode !== "space-time");
     this.view.setSelection?.([...this.view.selected]);
-    this.legend.hidden = !this.active;
     if (!this.active || !p) {
       this.view.requestRender();
       return;
     }
-    this.legend.textContent = `${o.mode === "heatmap" ? "Ground heat map" : o.bloom ? "Ground bloom" : o.mode === "auto" ? "Clusters" : o.mode}${o.mode === "heatmap" && o.bloom ? " + bloom" : ""} · ${p.count.toLocaleString()} located events · ${p.bins.length.toLocaleString()} cells · ${p.time_bin_minutes ? `${p.time_bin_minutes.toLocaleString()} min UTC slabs` : "current time window"} · summaries, not measured locations`;
-    if (o.mode === "heatmap")
-      this.legend.textContent = `Smoothed ${o.heat_weight === "value" ? "numeric-value" : "record-count"} heat · ${p.count.toLocaleString()} records · ${o.heat_max ? `display saturation at ${o.heat_max} kernel units` : "relative to the current peak"} · overlap is not independent activity`;
     if (!p.bins.length) {
       if (this.playback && this.atlas) await this.replaceAtlas(undefined);
       this.view.requestRender();
@@ -608,7 +608,6 @@ export class DisplayLayer {
       );
       this.diagnostics.densityInstances = instances.length;
     }
-    this.legend.textContent += ` · ${maximum.toLocaleString()} maximum events/cell`;
   }
   private async groundEffects() {
     const p = this.packet,
@@ -723,7 +722,6 @@ export class DisplayLayer {
             heatCeiling: event.data.ceiling,
             pending: false,
           });
-          this.legend.textContent += ` · ground-only, filtered time window · approximate kernel overlap`;
         } catch (error) {
           this.diagnostics.error = String(error);
           this.diagnostics.pending = false;

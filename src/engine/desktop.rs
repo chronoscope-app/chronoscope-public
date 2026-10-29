@@ -191,6 +191,8 @@ impl Engine {
             crate::schema::validate_output(
                 if pending.command == "assist_ui" {
                     "assist_ui"
+                } else if pending.command == "view_reset" {
+                    "view_reset"
                 } else {
                     "view_status"
                 },

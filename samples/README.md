@@ -1,6 +1,6 @@
 # Real-world samples
 
-Open **Help → Demo datasets** for all 13 bundled offline projects, including the website earthquake and crime examples. [New event/statistics demos, sources and interpretation](../docs/PRIORITY-DEMOS.md). You can also open these files directly:
+Open **Help → Demo datasets** for all 16 bundled offline projects, including the website earthquake and crime examples. [New event/statistics demos, sources and interpretation](../docs/PRIORITY-DEMOS.md). You can also open these files directly:
 
 - `animal-gps-black-rock-forest-2023-03.chronoscope`: 3,439 observations of two bobcats and one fisher in New York.
 - `animal-gps-white-storks-2018.chronoscope`: 6,090 observations of three migrating storks.
@@ -15,6 +15,9 @@ Open **Help → Demo datasets** for all 13 bundled offline projects, including t
 - `nasa-firms-south-america-2026-10.chronoscope`: 50,713 VIIRS detections in a South America bounding box, 19–25 October 2026; FRP-weighted heat and original points.
 - `world-bank-electricity-1990-2023.chronoscope`: 169 mapped countries over 34 annual observations, with fixed percentage coloring and missing values preserved.
 - `jhu-covid-weekly-2020.chronoscope`: 6,509 cumulative reported-case observations at 283 administrative reference points, weekly January–June 2020 snapshots.
+- `flights-lhr-zrh-100-2025.chronoscope`: 88,018 samples from 100 distinct flights; reported altitude, Time Height and ground views.
+- `starlink-128-predicted-orbits-2024.chronoscope`: 46,208 original predicted states from 128 satellites over six hours, with altitude and Time Height views.
+- `falcon9-launch-history-2010-2026.chronoscope`: 700 launches across three pads and sixteen years; launch locations, not ascent trajectories. [Space demo sources and stress fixture](../docs/SPACE-DEMOS.md).
 - `public/*.csv`: matching importable observation tables.
 
 See [wildlife sources and interpretation](../docs/WILDLIFE-DEMOS.md), [real-world demos, sources, units and reproduction](../docs/REAL-WORLD-DEMOS.md), [hurricane provenance](public/SOURCES.md), and [hurricane guide](../docs/NOAA-HURRICANE-DEMO.md). The source data is embedded in each project; map imagery is referenced rather than embedded. Normal startup remains empty.

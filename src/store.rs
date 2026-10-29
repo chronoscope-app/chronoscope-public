@@ -589,10 +589,10 @@ impl DataStore {
                     .connection
                     .execute_batch("RELEASE centroid_upgrade")
                     .map_err(err)?;
-                project.version = 6;
+                project.version = 7;
             }
         }
-        project.version = 6;
+        project.version = 7;
         project.time_resolution = "fractional_second".into();
         store.set_selection(&project.selected)?;
         Ok((store, project))
@@ -614,6 +614,9 @@ impl DataStore {
                 "(SELECT text FROM attributes WHERE r=e.r AND key=?)".into()
             } else {
                 match name {
+                    "altitude" => { json_fields.push(expressions.len()); "json_extract(e.payload,'$.altitude')".to_owned() },
+                    "altitude_m" => "json_extract(e.payload,'$.altitude.meters')".to_owned(),
+                    "altitude_reference" => "json_extract(e.payload,'$.altitude.reference')".to_owned(),
                     "time_utc" => "utc_time(e.time)".to_owned(),
                     "year_utc" => "utc_year(e.time)".to_owned(),
                     "location_kind" => "json_extract(e.payload,'$.location_kind')".to_owned(),
@@ -707,7 +710,7 @@ impl DataStore {
         offset: usize,
         limit: usize,
     ) -> Result<Vec<Event>, String> {
-        let mut q=self.connection.prepare(&format!("SELECT e.id,e.entity,e.time,e.end,e.lat,e.lon,e.value,json_extract(e.payload,'$.location_kind') FROM {table} o JOIN events e ON e.r=o.r WHERE o.pos>? AND o.pos<=? ORDER BY o.pos")).map_err(err)?;
+        let mut q=self.connection.prepare(&format!("SELECT e.id,e.entity,e.time,e.end,e.lat,e.lon,e.value,json_extract(e.payload,'$.location_kind'),json_extract(e.payload,'$.altitude') FROM {table} o JOIN events e ON e.r=o.r WHERE o.pos>? AND o.pos<=? ORDER BY o.pos")).map_err(err)?;
         let rows = q
             .query_map(
                 params![offset as i64, offset.saturating_add(limit) as i64],
@@ -1157,6 +1160,12 @@ impl DataStore {
             | "end" | "source_row" | "mgrs_precision" | "geometry_wkt" | "tags" => {
                 format!("coalesce(cast(e.{field} AS TEXT),'')")
             }
+            "altitude_m" => {
+                "coalesce(cast(json_extract(e.payload,'$.altitude.meters') AS TEXT),'')".into()
+            }
+            "altitude_reference" => {
+                "coalesce(json_extract(e.payload,'$.altitude.reference'),'')".into()
+            }
             "location_kind" => "coalesce(json_extract(e.payload,'$.location_kind'),'')".into(),
             _ => {
                 args.push(SqlValue::Text(
@@ -1311,6 +1320,27 @@ impl DataStore {
                 args.push(SqlValue::Text(p.value.clone()));
                 continue;
             }
+            if p.field == "altitude_m" {
+                if let Some(value) = p.value.parse::<f64>().ok().filter(|v| v.is_finite()) {
+                    let op = match p.op {
+                        Operator::Equals => Some("="),
+                        Operator::NotEquals => Some("<>"),
+                        Operator::Greater => Some(">"),
+                        Operator::Less => Some("<"),
+                        _ => None,
+                    };
+                    if let Some(op) = op {
+                        let expression = "json_extract(e.payload,'$.altitude.meters')";
+                        parts.push(if p.op == Operator::NotEquals {
+                            format!("({expression} IS NULL OR {expression}{op}?)")
+                        } else {
+                            format!("{expression}{op}?")
+                        });
+                        args.push(SqlValue::Real(value));
+                        continue;
+                    }
+                }
+            }
             if matches!(p.field.as_str(), "value" | "lat" | "lon") {
                 if let Some(value) = p.value.parse::<f64>().ok().filter(|v| v.is_finite()) {
                     let op = match p.op {
@@ -1356,6 +1386,8 @@ impl DataStore {
                     "coalesce(canonical_number(e.{0},e.payload,'{0}'),'')",
                     p.field
                 )
+            } else if matches!(p.field.as_str(), "altitude_m" | "altitude_reference") {
+                Self::facet_expression(&p.field, &mut args)
             } else if let Some(col) = column {
                 format!("coalesce(cast(e.{col} AS TEXT),'')")
             } else {
@@ -1373,11 +1405,12 @@ impl DataStore {
                     format!("instr(unicode_lower({expr}),?)>0")
                 }
                 Operator::Equals | Operator::NotEquals => {
-                    let numeric = if matches!(p.field.as_str(), "value" | "lat" | "lon") {
-                        p.value.parse::<f64>().ok().filter(|v| v.is_finite())
-                    } else {
-                        None
-                    };
+                    let numeric =
+                        if matches!(p.field.as_str(), "value" | "lat" | "lon" | "altitude_m") {
+                            p.value.parse::<f64>().ok().filter(|v| v.is_finite())
+                        } else {
+                            None
+                        };
                     if let Some(value) = numeric {
                         args.push(SqlValue::Real(value));
                         format!(
@@ -1558,6 +1591,16 @@ impl DataStore {
         let (join, order) = if let Some(attr) = sort.strip_prefix("attribute:") {
             values.insert(0, SqlValue::Text(attr.into()));
             ("LEFT JOIN attributes a ON a.r=e.r AND a.key=?".to_string(),format!("(a.num IS NULL) {direction}, a.num {direction},coalesce(a.text,'') {direction},e.id_key {direction}"))
+        } else if matches!(sort, "altitude_m" | "altitude_reference") {
+            let expr = if sort == "altitude_m" {
+                "json_extract(e.payload,'$.altitude.meters')"
+            } else {
+                "json_extract(e.payload,'$.altitude.reference')"
+            };
+            (
+                String::new(),
+                format!("{expr} {direction},e.id_key {direction}"),
+            )
         } else {
             let col = match sort {
                 "id" => "id_key",
@@ -1780,7 +1823,7 @@ impl DataStore {
                 .map_err(err)?;
             layer.asset = PathBuf::from(name);
         }
-        portable.version = 6;
+        portable.version = 7;
         portable.time_resolution = "fractional_second".into();
         destination.execute("INSERT INTO meta(key,value) VALUES('project',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value",[serde_json::to_string(&portable).map_err(err)?]).map_err(err)?;
         // Portable files exclude undo history and deleted payload remnants.
@@ -1929,7 +1972,7 @@ impl DataStore {
             q.execute([1 + (i as i64 * (count as i64 - 1) / (budget as i64 - 1))])
                 .map_err(err)?;
         }
-        let mut q=self.connection.prepare(&format!("SELECT e.id,e.entity,e.time,e.end,e.lat,e.lon,e.value,json_extract(e.payload,'$.location_kind') FROM render_positions p JOIN {table} o ON o.pos=p.pos JOIN events e ON e.r=o.r ORDER BY p.pos")).map_err(err)?;
+        let mut q=self.connection.prepare(&format!("SELECT e.id,e.entity,e.time,e.end,e.lat,e.lon,e.value,json_extract(e.payload,'$.location_kind'),json_extract(e.payload,'$.altitude') FROM render_positions p JOIN {table} o ON o.pos=p.pos JOIN events e ON e.r=o.r ORDER BY p.pos")).map_err(err)?;
         let rows = q.query_map([], compact_row).map_err(err)?;
         let events = rows.collect::<Result<Vec<_>, _>>().map_err(err)?;
         Ok((events, count))
@@ -1979,7 +2022,7 @@ impl DataStore {
                 .map_err(err)?;
             let mut endpoints = vec![];
             for (cmp, order) in [("<", "DESC"), (">", "ASC")] {
-                let sql=format!("SELECT e.id,e.entity,e.time,e.end,e.lat,e.lon,e.value,json_extract(e.payload,'$.location_kind') FROM events e JOIN {anchors} o ON e.r=o.r WHERE e.entity=? AND e.source=? AND e.time {cmp} ? ORDER BY e.time {order},e.id_key {order} LIMIT 1");
+                let sql=format!("SELECT e.id,e.entity,e.time,e.end,e.lat,e.lon,e.value,json_extract(e.payload,'$.location_kind'),json_extract(e.payload,'$.altitude') FROM events e JOIN {anchors} o ON e.r=o.r WHERE e.entity=? AND e.source=? AND e.time {cmp} ? ORDER BY e.time {order},e.id_key {order} LIMIT 1");
                 if let Some(anchor) = self
                     .connection
                     .query_row(&sql, params![event.entity, source, event.time], compact_row)
@@ -2124,6 +2167,7 @@ impl DataStore {
             "va.num"
         } else {
             match field {
+                "altitude_m" => "json_extract(e.payload,'$.altitude.meters')",
                 "value" => "e.value",
                 "lat" => "e.lat",
                 "lon" => "e.lon",
@@ -2154,7 +2198,20 @@ fn compact_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Event> {
     let id = id.parse().map_err(|e| {
         rusqlite::Error::FromSqlConversionFailure(0, rusqlite::types::Type::Text, Box::new(e))
     })?;
+    let altitude = row
+        .get::<_, Option<String>>(8)?
+        .map(|s| {
+            serde_json::from_str::<crate::altitude::Altitude>(&s).map_err(|e| {
+                rusqlite::Error::FromSqlConversionFailure(
+                    8,
+                    rusqlite::types::Type::Text,
+                    Box::new(e),
+                )
+            })
+        })
+        .transpose()?;
     Ok(Event {
+        altitude,
         location_kind: row.get(7)?,
         id,
         entity: row.get(1)?,

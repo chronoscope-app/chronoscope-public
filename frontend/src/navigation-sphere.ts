@@ -30,13 +30,17 @@ export function navigationTools() {
     </div>
     </div><span class="navigation-divider"></span>
     <div class="navigation-time-group" id="navigation-time-group">
-      <button type="button" id="time-elevation" class="navigation-tool" data-tooltip-disabled aria-label="Time height" aria-expanded="false" aria-controls="time-elevation-popup">${glyph(icons.time)}</button>
+      <button type="button" id="time-elevation" class="navigation-tool" data-tooltip-disabled aria-label="Time height and altitude" aria-expanded="false" aria-controls="time-elevation-popup">${glyph(icons.time)}</button>
       <div class="time-elevation-popup" id="time-elevation-popup" role="group" aria-labelledby="time-elevation-title" hidden>
-        <div class="time-popup-title"><strong id="time-elevation-title">Time height</strong><output id="time-elevation-value"></output></div>
+        <div class="time-popup-title"><strong id="time-elevation-title">Vertical display</strong><output id="time-elevation-value"></output></div>
+        <div id="height-mode-selector" class="height-mode-selector" role="radiogroup" aria-label="Height source" data-altitude="false">
+          <button type="button" id="height-mode-time" role="radio" aria-checked="true" tabindex="0">Time Height</button>
+          <button type="button" id="height-mode-altitude" role="radio" aria-checked="false" tabindex="-1">Altitude</button>
+        </div>
         <label id="time-height-label" for="time-height" class="sr-only">Time height</label><input id="time-height" type="range" min="0" max="5" step=".1" value="2.8" aria-label="Time height">
         <label id="globe-time-height-label" for="globe-time-height" class="sr-only" hidden>Time elevation</label><input id="globe-time-height" type="range" min="0" max="100" step="1" value="50" aria-label="Globe time height" hidden>
-        <div class="time-height-endpoints" aria-hidden="true"><span>Off</span><span>Higher</span></div>
-        <p>Display height, not physical altitude.</p>
+        <div id="time-height-endpoints" class="time-height-endpoints" aria-hidden="true"><span>Off</span><span>Higher</span></div>
+        <p id="height-mode-note">Time Height raises Events by timestamp. Altitude uses imported physical heights in Globe.</p>
       </div>
     </div>
   </div>`;

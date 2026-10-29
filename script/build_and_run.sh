@@ -11,7 +11,7 @@ if [[ -n "${CHRONOSCOPE_BUILD_ENV:-}" ]]; then source "$CHRONOSCOPE_BUILD_ENV"; 
 if ! python3 -c 'import sys; sys.path.insert(0, "scripts"); from guarded_run import is_guarded; sys.exit(0 if is_guarded() else 1)'; then
   exec python3 scripts/guarded_run.py -- bash "$0" "$@"
 fi
-# Stop only this checkout's app, retaining other installed copies.
+# Stop only this checkout's running app before rebuilding it.
 TARGET_DIR="${CARGO_TARGET_DIR:-$ROOT_DIR/target}"
 APP_BUNDLE="$TARGET_DIR/debug/bundle/macos/Chronoscope.app"
 if [[ "$MODE" != --build-only ]]; then
@@ -23,6 +23,7 @@ npm run bundle -- --debug --bundles app --config src-tauri/tauri.macos.conf.json
 # ad hoc signature is for local use; it is not Developer ID/notarization.
 /usr/bin/codesign --force --sign - "$APP_BUNDLE"
 /usr/bin/codesign --verify --strict "$APP_BUNDLE"
+python3 scripts/install_macos_app.py "$APP_BUNDLE"
 [[ "$MODE" == --build-only ]] && exit 0
 case "$MODE" in
  --debug) exec lldb -- "$APP_BUNDLE/Contents/MacOS/chronoscope-desktop";;

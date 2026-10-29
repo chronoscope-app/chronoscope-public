@@ -146,6 +146,19 @@ enum Command {
 enum ViewCommand {
     /// Inspect the actual rendered camera, backend, loading and layer readiness.
     Status,
+    /// Choose Globe height: timestamp elevation, physical altitude, or ground.
+    Height {
+        #[arg(value_parser = ["time", "altitude", "ground"])]
+        mode: String,
+        /// Time Height multiplier (0.05–20); valid only with time.
+        #[arg(long)]
+        scale: Option<f64>,
+    },
+    /// Reload map graphics, preserving Events, camera and workspace. Requires --confirm.
+    Reset {
+        #[arg(long, required = true)]
+        confirm: bool,
+    },
     /// Fit Events or an enabled native GIS layer.
     Fit {
         #[arg(long, conflicts_with = "whole_globe")]
@@ -392,6 +405,20 @@ fn run() -> Result<(), String> {
         )?,
         Command::View { command } => match command {
             ViewCommand::Status => invoke("view_status", json!({}))?,
+            ViewCommand::Reset { confirm } => invoke("view_reset", json!({"confirm":confirm}))?,
+            ViewCommand::Height { mode, scale } => {
+                if scale.is_some() && mode != "time" {
+                    return Err("INVALID_ARGUMENT: --scale applies only to Time Height".into());
+                }
+                if attached.is_none() {
+                    return Err("UNAVAILABLE: use --attach for live Globe height controls".into());
+                }
+                let mut args = json!({"mode":"globe","globe_time":mode=="time","globe_altitude":mode=="altitude"});
+                if let Some(scale) = scale {
+                    args["globe_time_scale"] = json!(scale);
+                }
+                invoke("view_set", args)?
+            }
             ViewCommand::Fit { layer, whole_globe } => invoke(
                 "view_navigate",
                 match layer {

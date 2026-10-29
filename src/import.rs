@@ -51,6 +51,11 @@ pub struct Mapping {
     pub end: Option<usize>,
     pub lat: Option<usize>,
     pub lon: Option<usize>,
+    pub altitude: Option<usize>,
+    #[serde(default)]
+    pub altitude_reference_column: Option<usize>,
+    pub altitude_unit: crate::altitude::AltitudeUnit,
+    pub altitude_reference: crate::altitude::AltitudeReference,
     pub category: Option<usize>,
     pub label: Option<usize>,
     pub value: Option<usize>,
@@ -82,6 +87,10 @@ impl Default for Mapping {
             end: None,
             lat: None,
             lon: None,
+            altitude: None,
+            altitude_reference_column: None,
+            altitude_unit: Default::default(),
+            altitude_reference: Default::default(),
             category: None,
             label: None,
             value: None,
@@ -116,7 +125,74 @@ impl Mapping {
                 )
             })
         };
+        let normalize = |h: &str| {
+            h.chars()
+                .filter(|c| c.is_ascii_alphanumeric())
+                .flat_map(char::to_lowercase)
+                .collect::<String>()
+        };
+        let altitude = headers
+            .iter()
+            .position(|h| {
+                let h = normalize(h);
+                (h.contains("ellipsoid") || h.contains("wgs84"))
+                    && (h.contains("altitude") || h.contains("height"))
+                    || h == "geoaltitude"
+                    || h == "geometricaltitude"
+            })
+            .or_else(|| {
+                headers.iter().position(|h| {
+                    matches!(
+                        normalize(h).as_str(),
+                        "alt"
+                            | "altm"
+                            | "altitude"
+                            | "altitudem"
+                            | "altitudemeters"
+                            | "altitudekm"
+                            | "altitudeft"
+                            | "altitudefeet"
+                            | "height"
+                            | "heightm"
+                            | "heightegm96m"
+                            | "heightreportedm"
+                            | "heightkm"
+                            | "heightft"
+                            | "elevation"
+                            | "elevationm"
+                            | "altitudeegm96m"
+                            | "altitudereportedkm"
+                            | "altitudereportedm"
+                            | "baroaltitude"
+                    )
+                })
+            });
+        let altitude_name = altitude.map(|i| normalize(&headers[i])).unwrap_or_default();
         Self {
+            altitude,
+            altitude_reference_column: headers
+                .iter()
+                .position(|h| normalize(h) == "altitudereference"),
+            altitude_unit: if altitude_name.ends_with("ft") || altitude_name.ends_with("feet") {
+                crate::altitude::AltitudeUnit::Feet
+            } else if altitude_name.ends_with("km") {
+                crate::altitude::AltitudeUnit::Kilometers
+            } else {
+                crate::altitude::AltitudeUnit::Meters
+            },
+            altitude_reference: if altitude_name.contains("ellipsoid")
+                || altitude_name.contains("wgs84")
+                || altitude_name == "geoaltitude"
+                || altitude_name == "geometricaltitude"
+            {
+                crate::altitude::AltitudeReference::Ellipsoid
+            } else if altitude_name.contains("egm96") {
+                crate::altitude::AltitudeReference::Egm96
+            } else if altitude_name.contains("reported") {
+                crate::altitude::AltitudeReference::Reported
+            } else {
+                crate::altitude::AltitudeReference::Unspecified
+            },
             geometry_wkt: find(&["wkt", "geometry", "geom", "geometrywkt", "wellknowntext"]),
             entity: find(&[
                 "entity", "entityid", "target", "name", "track", "trackid", "device", "person",
@@ -385,6 +461,8 @@ pub fn convert_reporting(
         mapping.end,
         mapping.lat,
         mapping.lon,
+        mapping.altitude,
+        mapping.altitude_reference_column,
         mapping.category,
         mapping.label,
         mapping.value,
@@ -560,6 +638,7 @@ pub fn convert_reporting(
                 }
             };
             let mut event = Event {
+                altitude: None,
                 location_kind: None,
                 geometry_wkt,
                 mgrs_precision,
@@ -584,6 +663,23 @@ pub fn convert_reporting(
                 source: format!("{source} / {}", table.sheet),
                 source_row: table.row_numbers.get(index).copied().unwrap_or(index + 2),
             };
+            if let Some(value) = number(mapping.altitude)? {
+                let reference = if let Some(column) = mapping.altitude_reference_column {
+                    let raw = row.get(column).map(String::as_str).unwrap_or("").trim();
+                    if raw.is_empty() {
+                        mapping.altitude_reference
+                    } else {
+                        serde_json::from_value(serde_json::Value::String(raw.into()))
+                            .map_err(|_| "Invalid altitude reference; use ellipsoid, egm96, reported or unspecified")?
+                    }
+                } else {
+                    mapping.altitude_reference
+                };
+                event.altitude = Some(crate::altitude::Altitude {
+                    meters: mapping.altitude_unit.meters(value),
+                    reference,
+                });
+            }
             event.derive_polygon_centroid()?;
             event.validate()?;
             Ok(event)

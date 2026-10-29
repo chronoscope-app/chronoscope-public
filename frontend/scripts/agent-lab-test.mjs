@@ -184,3 +184,86 @@ test("Readiness cannot succeed when its status response arrives after the deadli
     /UNAVAILABLE: view did not settle before the readiness deadline/,
   );
 });
+
+const { createAgentView } = await import(
+  moduleUrl(
+    fs.readFileSync(new URL("../src/agent-view.ts", import.meta.url), "utf8"),
+  )
+);
+function resetHost(recover = async () => {}) {
+  let workspace = "original",
+    calls = 0;
+  const diagnostics = {
+    recovering: false,
+    effectError: "",
+    globeAltitude: true,
+  };
+  const live = createAgentView({
+    view: {
+      ready: Promise.resolve(),
+      diagnostics: () => ({ ...diagnostics }),
+      recoverRenderer: async () => {
+        calls++;
+        await recover(diagnostics);
+      },
+      viewer: { render() {} },
+      gis: { descriptors: [] },
+      scene: { globe: { show: true, tilesLoaded: true } },
+      displayLayer: { diagnostics: { pending: false } },
+      host: { clientWidth: 800, clientHeight: 600 },
+    },
+    snapshot: () => ({ workspace_id: workspace, revision: 1 }),
+    mode: () => "globe",
+    captureScene: () => ({ globe_altitude: true }),
+  });
+  return {
+    live,
+    calls: () => calls,
+    replace: () => {
+      workspace = "replacement";
+    },
+  };
+}
+test("map reset rejects missing/false confirmation before touching graphics", async () => {
+  const h = resetHost();
+  for (const confirm of [undefined, false])
+    await assert.rejects(
+      h.live("view_reset", { confirm }),
+      /requires confirm:true/,
+    );
+  assert.equal(h.calls(), 0);
+});
+test("map reset returns successful live state only after recovery finishes", async () => {
+  const gate = deferred(),
+    h = resetHost(() => gate.promise);
+  let completed = false;
+  const reply = h.live("view_reset", { confirm: true }).then((r) => {
+    completed = true;
+    return r;
+  });
+  await new Promise(setImmediate);
+  assert.equal(completed, false);
+  gate.resolve();
+  const result = await reply;
+  assert.equal(result.reset, true);
+  assert.equal(result.scene.globe_altitude, true);
+  assert.equal(h.calls(), 1);
+});
+test("swallowed graphics recovery failures cannot become successful reset receipts", async () => {
+  const h = resetHost(async (d) => {
+    d.effectError = "fixture failure";
+  });
+  await assert.rejects(
+    h.live("view_reset", { confirm: true }),
+    /map reset failed: fixture failure/,
+  );
+});
+test("workspace replacement during reset cannot return success for another document", async () => {
+  const gate = deferred(),
+    h = resetHost(() => gate.promise),
+    reply = h.live("view_reset", { confirm: true });
+  await new Promise(setImmediate);
+  h.replace();
+  gate.resolve();
+  await assert.rejects(reply, /workspace changed during map reset/);
+});

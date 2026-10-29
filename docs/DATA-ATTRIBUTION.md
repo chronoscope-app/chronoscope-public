@@ -9,3 +9,5 @@ Normal desktop/CLI/MCP workspace CSV export writes `<output>.attribution.json` a
 CSV-sidecar **reimport is not automatic**. Importing/replacing a workspace from CSV reads its rows, not the companion; keep the sidecar and supply its credit separately. Replacement import intentionally does not inherit an unrelated previous workspace’s credit. Appending rows retains the current workspace credit but does not acquire incoming sidecar metadata. For a provenance-preserving round trip use a `.chronoscope` project. Aggregate carries existing credit and appends the aggregation parameters/change annotation, including through undo/redo.
 
 The checked-in sample CSV has its companion. [Full wildlife provenance](WILDLIFE-DEMOS.md) · [Other public data](../samples/public/SOURCES.md).
+
+The altitude examples embed flight credits and retain CSV sidecars. See [Altitude demos and source transformations](ALTITUDE-DEMOS.md). [Starlink and Falcon 9 examples](SPACE-DEMOS.md) embed CC BY 4.0 credit to Guo et al./SpaceX and Jonathan McDowell/GCAT. Altitude workspaces use format 7; the version-6 provenance fields remain supported.

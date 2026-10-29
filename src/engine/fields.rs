@@ -72,6 +72,8 @@ impl Engine {
                     | "mgrs_precision"
                     | "geometry_wkt"
                     | "location_kind"
+                    | "altitude_m"
+                    | "altitude_reference"
                     | "attrs"
                     | "time_utc"
                     | "year_utc"
@@ -224,6 +226,8 @@ impl Engine {
                         | "mgrs_precision"
                         | "geometry_wkt"
                         | "location_kind"
+                        | "altitude_m"
+                        | "altitude_reference"
                         | "time_utc"
                         | "year_utc"
                 )

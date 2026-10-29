@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "starlink-orbits: preview 0 opens exact scene, count and source semantics",
+    "starlink-orbits: preview 1 opens exact scene, count and source semantics",
+    "falcon9-launches: preview 0 opens exact scene, count and source semantics",
+    "falcon9-launches: preview 1 opens exact scene, count and source semantics",
+    "Retired rocket demo is absent from picker/API and cannot replace the workspace"
+  ],
+  "publicRequests": 0,
+  "errors": []
+}

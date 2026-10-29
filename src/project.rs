@@ -135,6 +135,8 @@ pub struct SceneState {
     pub playback_fade: Option<bool>,
     /// Encode UTC event time as display elevation in Globe, never source altitude.
     pub globe_time: bool,
+    /// Physical Event altitude in Globe, mutually exclusive with time height.
+    pub globe_altitude: bool,
     /// Multiplier for the terrain-relative Globe time display (default 1).
     pub globe_time_scale: Option<f64>,
     pub camera_zoom: Option<f64>,
@@ -164,6 +166,9 @@ pub struct SceneState {
 }
 impl SceneState {
     pub fn validate(&self) -> Result<(), String> {
+        if self.globe_time && self.globe_altitude {
+            return Err("Time Height and Altitude cannot both be enabled".into());
+        }
         if self.measurement.as_ref().is_some_and(|m| {
             m.title.trim().is_empty()
                 || m.title.len() > 128
@@ -394,7 +399,7 @@ impl Project {
             gis_layers: Vec::new(),
             resources_external: false,
             resource_dir: None,
-            version: 6,
+            version: 7,
             mode: ViewMode::default(),
             dataset,
             filter: Filter::default(),
@@ -405,7 +410,7 @@ impl Project {
         }
     }
     pub fn validate(&self) -> Result<(), String> {
-        if ![1, 2, 3, 4, 5, 6].contains(&self.version)
+        if ![1, 2, 3, 4, 5, 6, 7].contains(&self.version)
             || self.format != format_name()
             || !matches!(
                 self.time_resolution.as_str(),
@@ -554,7 +559,7 @@ pub fn save(path: &Path, project: &Project) -> Result<(), String> {
         let scratch = tempfile::tempdir().map_err(|e| e.to_string())?;
         let mut store = crate::store::DataStore::new(scratch.path())?;
         let mut metadata = project.clone();
-        metadata.version = 6;
+        metadata.version = 7;
         store.load_events(std::mem::take(&mut metadata.dataset.events))?;
         return store.save_as(path, &metadata);
     }
@@ -637,7 +642,7 @@ fn migrate(mut p: Project) -> Result<Project, String> {
     p.validate()?;
     // Old minute-aligned data keeps its original instants; lost detail is not invented.
     p.time_resolution = resolution_name();
-    p.version = 6;
+    p.version = 7;
     p.validate()?;
     Ok(p)
 }
@@ -877,6 +882,8 @@ fn stage_csv(
             "source_row",
             "geometry_wkt",
             "location_kind",
+            "altitude_m",
+            "altitude_reference",
         ]
         .into_iter()
         .map(str::to_owned)
@@ -908,6 +915,10 @@ fn stage_csv(
                 e.source_row.to_string(),
                 safe_text(e.geometry_wkt.as_deref().unwrap_or("")),
                 e.location_kind.clone().unwrap_or_default(),
+                e.altitude.map(|a| a.meters.to_string()).unwrap_or_default(),
+                e.altitude
+                    .map(|a| a.reference.as_str().to_owned())
+                    .unwrap_or_default(),
             ];
             row.extend(
                 keys.iter()

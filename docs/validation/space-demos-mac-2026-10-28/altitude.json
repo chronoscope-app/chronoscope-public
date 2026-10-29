@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "checks": [
+    "zero, EGM96 conversion and 250 km reported altitude match independent WGS84 coordinates; missing/unknown omitted",
+    "single sliding selector is mutually exclusive; slider stays visible and disabled in Altitude, retains scale, and zero Time Height gives ground; altitude survives save/reopen",
+    "automation reset requires explicit confirmation and returns live altitude state after successful recovery",
+    "reset icon follows Preferences; Enter/Escape cancel; confirmed reset retains altitude, camera and dataset"
+  ],
+  "errors": [],
+  "flights-lhr-zrh-100-2025": {
+    "points": 88018,
+    "records": 88018,
+    "entities": 100,
+    "altitude": {
+      "known": 88018,
+      "omitted": 0,
+      "approximate": 88018,
+      "minimum": 20.58,
+      "maximum": 12166.86
+    },
+    "stems": 88018
+  },
+  "starlink-128-predicted-orbits-2024": {
+    "points": 11648,
+    "records": 46208,
+    "entities": 128,
+    "altitude": {
+      "known": 11648,
+      "omitted": 0,
+      "approximate": 0,
+      "minimum": 290554.639,
+      "maximum": 595659.387
+    },
+    "stems": 0
+  }
+}

@@ -284,6 +284,42 @@ Use `--attach` or a persistent `session` for connection setup/calls; a one-shot 
 `select_query` accepts `table_range: {"anchor":"exact-id", "target":"exact-id", "sort_by":"time", "descending":false}` with the usual `source`, `apply_filter`, `filter`, `display_cell` and selection `mode`. Both endpoints must exist in the chosen table scope. The inclusive range uses the same stable ordering as the attribute table, crosses pages without sending row payloads, and preserves exact unsigned 64-bit IDs. It can replace or add to the current selection.
 
 
+## Globe height selection and altitude (0.16.1)
+
+The CLI shortcuts operate on the attached Globe and match its sliding Time Height / Altitude control:
+
+```sh
+chronoscope --attach view height altitude
+chronoscope --attach view height time --scale 2
+chronoscope --attach view height ground
+```
+
+`--scale` is valid only with `time`, between 0.05 and 20. The shortcuts select Globe mode explicitly. They configure the saved scene; inspect actual presentation with `view status` or `chronoscope_view_status`. Space-time keeps its independent `view_set.time_height` (0–5).
+
+MCP uses `chronoscope_view_set`, also available as `chronoscope --attach call view_set --args '…'`:
+
+| Selection | Arguments | UI behavior |
+| --- | --- | --- |
+| Altitude | `{"mode":"globe","globe_altitude":true}` | Physical height; Time Height slider remains visible and disabled |
+| Time Height | `{"mode":"globe","globe_time":true,"globe_time_scale":2}` | Timestamp elevation; slider is enabled |
+| Ground | `{"mode":"globe","globe_time":false,"globe_altitude":false}` | Time Height selected at zero |
+
+Enabling either boolean disables the other. Setting both true in one request is rejected. The Time Height scale is retained while Altitude is active. `view_status.scene` reports these persisted fields; `diagnostics.globeAltitude`, `globeTime` and `altitude` describe the loaded representation. Missing or unresolved heights and inferred locations are omitted from Altitude rendering; queries retain every Event. Physical altitude has no time scaling or terrain exaggeration. EGM96 heights are converted using the bundled geoid; reported heights are explicitly approximate.
+
+`import_preview`, `import_validate`, `import_review` and `import_commit` share the desktop mapping: `altitude` is a column index, `altitude_unit` is `meters`, `feet` or `kilometers`, and `altitude_reference` is `ellipsoid`, `egm96`, `reported` or `unspecified`. Optional `altitude_reference_column` overrides the reference per nonempty row. Unknown reference retains the height without plotting it. Use a JSON `--mapping` file with CLI `import` for explicit mapping; automatic detection recognizes unit/reference-qualified headers. No barometric-to-geometric conversion is inferred.
+
+`dataset_schema` exposes canonical `altitude_m` and `altitude_reference`. Both support queries, field profiles and semantic roles; `altitude_m` also supports numeric statistics/charts. For example:
+
+```sh
+chronoscope --attach call field_profile --args '{"fields":["altitude_m","altitude_reference"],"scope":"all"}'
+chronoscope --attach call query --args '{"fields":["id","entity","altitude_m","altitude_reference"],"limit":20}'
+chronoscope --attach call edit --args '{"id":"1","changes":{"altitude":{"meters":12000,"reference":"ellipsoid"}}}'
+```
+
+`altitude:null` clears the value; zero remains a valid height. JSON Events retain `{meters,reference}`; CSV export/reimport preserves normalized metres and mixed references. Portable altitude projects use format 7.
+
+`demo_catalog` includes `flight-altitude` (100 flights, 88,018 samples) and `starlink-orbits` (128 satellites, 46,208 predicted states) and `falcon9-launches` (700 launch-pad Events, 2010–2026), each with Altitude and Time Height preview metadata. `demo_open {"id":"starlink-orbits"}` opens the altitude scene; `restore_view {"index":1}` chooses its Time Height preview. `falcon9-launches` opens Time Height and has a launch-site map preview. The retired `rocket-altitude` ID is rejected. [Sources, attribution and approximate-height caveats](ALTITUDE-DEMOS.md).
+
 ## Globe time elevation (CesiumJS)
 
 `view_set` accepts `globe_time` (boolean, default false) and `globe_time_scale` (0.05–20, default 1; independent of Space-time `time_height`). For example, `chronoscope --attach call view_set --args '{"mode":"globe","globe_time":true,"globe_time_scale":1,"fit":true}'` enables it and fits the view. In stdio MCP, call `chronoscope_view_set` with the same arguments. These fields also persist through `scene_sync`, named views and portable workspaces. Older workspaces default to surface events.
@@ -342,7 +378,7 @@ Time elevation places the newest events at ground level and the oldest events at
 
 Heat map and bloom both overlay the Events layer in every map view. `display.show_points` independently controls event markers. New display defaults use `track_opacity:0.25` and `trail_opacity:0.25`; existing saved strengths are retained. Views sliders preview during input and persist the final value after a gesture. Effect generation coalesces pending input, retaining the preceding ground image while its replacement renders.
 
-The renderer indicator beside Notifications can refresh all map graphics while retaining workspace data, selection, camera and resources. An unexpected render failure triggers one automatic recovery. `view_status.diagnostics.lastRenderError` retains the most recent renderer stack for diagnosis, while `renderErrorCount` counts errors in the current graphics session. A warning remaining after automatic recovery can be retried by clicking the indicator.
+The Reset map icon follows Preferences and uses a confirmation dialog with Cancel focused by default. CLI `chronoscope --attach view reset --confirm` and MCP `chronoscope_view_reset {"confirm":true}` expose the same graphics reload. Omitted/false confirmation is rejected before graphics are touched; explicit API confirmation does not open another modal. Data, filters, selection, camera and resources are retained. A successful result has `reset:true` plus the live `view_status` fields. A failed recovery returns an error. The command requires an attached responsive desktop and is excluded from batches, saved navigation recipes, dry runs and idempotency controls. After a timeout inspect `view_status` before retrying. Map-layer reloads may contact the configured imagery providers. An unexpected render failure still triggers one automatic recovery. `view_status.diagnostics.lastRenderError` retains the most recent renderer stack for diagnosis, while `renderErrorCount` counts errors in the current graphics session. A warning remaining after automatic recovery can be retried by explicitly confirming Reset map.
 
 ## Entity-preserving visual clusters
 

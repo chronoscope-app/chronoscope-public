@@ -1,0 +1,18 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "name": "Docked Event table",
+      "identity": {
+        "row": false,
+        "head": false,
+        "close": false,
+        "col": false,
+        "hovered": true
+      },
+      "closed": false,
+      "playing": true
+    }
+  ],
+  "errors": []
+}

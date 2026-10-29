@@ -1,0 +1,9 @@
+{
+  "version": "0.16.4",
+  "cli": "chronoscope 0.16.4",
+  "source_commit": "4782ec0418ef8be45bd0140d3e03fee00c968a9d",
+  "binary_sha256": "67cde54f2daa7be62d7c6cdd5658f1741e1a6cdc4f40f2aab27391c6c8524796",
+  "signature_verified": true,
+  "installed_in_user_applications": true,
+  "native_gui_launched": false
+}
