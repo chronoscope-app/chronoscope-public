@@ -4,9 +4,9 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
-## 0.16.9 — experimental preview candidate, 2026-10-29
+## 0.16.9 — experimental preview, 2026-10-29
 
-Prepared for owner-authorized Windows x64 and Apple Silicon macOS builds. Published downloads remain 0.16.4 until the exact 0.16.9 packages pass the hosted release checks. This preview also includes the 0.16.7 fade, light-mode visibility and idle CPU fixes below.
+[Windows x64 and Apple Silicon macOS downloads](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.9) passed exact-package native hosted checks. Windows source is `19b4587994bb08083d4693e10e0df2d2f0bfc3f4`; macOS source is `c5c532749397edbfc8b023fd1171fa0ac2a46d14`. Application code, assets and dependency locks are byte-identical; the later commit repairs only the notice validator and its tests. Exact source archives, dependency sources, notices, checksums and validation receipts accompany the downloads. This preview also includes the 0.16.7 fade, light-mode visibility and idle CPU fixes below. [Validation](docs/validation/release-0.16.9-publication/README.md).
 
 - Replace the London–Zurich flight sample with 175 original Philippine flights across six airports and seven consecutive UTC days (March 1–7, 2026). Keep 11,018 reported-altitude observations, original timestamps, route colors, a one-day playback view, two refreshed previews and reproducible CC BY 4.0 source credit.
 

@@ -4,15 +4,15 @@
 
 ## Included source and limitations
 
-- Chronoscope 0.16.9 release-candidate source, current sample datasets, license/NOTICE texts, full maintained GLib vendor source, and the selected 16 README screenshots and their credits. Published desktop packages remain the [0.16.4 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.4). Application names, protocols and commands remain Chronoscope.
+- Chronoscope 0.16.9 main-branch source, current sample datasets, license/NOTICE texts, full maintained GLib vendor source, and the selected 16 README screenshots and their credits. Published desktop packages are the [0.16.9 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.9). Application names, protocols and commands remain Chronoscope.
 - Privacy/connections guidance, guided issue forms, local verification instructions and release/distribution gates. Canonical project links target this repository.
 - Current media replacements and provenance are described in [THIRD_PARTY.md](../THIRD_PARTY.md) and the [media ledger](MEDIA-RIGHTS.json). Historical ledger rows describe retired objects, not files or Git objects imported into this repository. Public vessel and wildlife identifiers are credited published data, not a claim of anonymized human tracks.
 - The maintained [GLib security backport](../vendor/glib/BACKPORT.md) retains complete source, original licenses and its exact patch record. Version-based alerts may still flag the unchanged upstream crate version; do not dismiss alerts or infer runtime clearance from static checks.
 - Older validation documents and changelog entries retain dated measurements and source identifiers as historical context. They are not a claim that old commits, artifacts or private audit evidence can be retrieved here, or that the new snapshot has been natively rebuilt or tested on every platform.
 
-## 0.16.9 release preparation — 2026-10-29
+## 0.16.9 experimental preview packages — 2026-10-29
 
-The owner authorized promotion of current Next/main, manual GitHub-hosted Windows and Apple Silicon macOS builds, and publication after exact-package checks. The candidate includes automatic memory/graphics budgets and the compact seven-day flight demo. Downloads remain 0.16.4 until the new packages and matching sources are published. Existing tags and release assets are preserved.
+The owner authorized and published [0.16.9 downloads](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.9) after local verification and exact-package native hosted checks. Windows source is `19b4587994bb08083d4693e10e0df2d2f0bfc3f4`; macOS source is `c5c532749397edbfc8b023fd1171fa0ac2a46d14`. Only the notice validator and its tests differ; application code, assets and dependency locks match byte for byte. Both exact application source archives, hash-verified locked dependency sources, licenses, checksums and native receipts are attached. All published assets passed anonymous download/hash verification. Windows is unsigned; macOS is ad hoc signed and not notarized. [Acceptance scope and evidence](validation/release-0.16.9-publication/README.md). Historical releases/tags/assets are preserved, and workflows remain manual-only.
 
 ## Historical 0.16.4 preview packages — 2026-10-29
 

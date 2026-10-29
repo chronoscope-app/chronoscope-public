@@ -1,0 +1,9 @@
+{
+  "windows_source": "19b4587994bb08083d4693e10e0df2d2f0bfc3f4",
+  "macos_source": "c5c532749397edbfc8b023fd1171fa0ac2a46d14",
+  "different_files": [
+    "scripts/test_validate_tester_download.py",
+    "scripts/validate_tester_download.py"
+  ],
+  "application_code_assets_and_dependency_locks_byte_identical": true
+}

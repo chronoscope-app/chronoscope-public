@@ -1,0 +1,10 @@
+{
+  "installed": "/Users/user/Applications/Chronoscope.app",
+  "version": "0.16.9",
+  "cli_version": "chronoscope 0.16.9",
+  "package_sha256": "c08573db36b21d0f4ed46c2f888157e793912345c5f91b2a1b979a2e6e9d06a2",
+  "installed_executable_sha256": "488c775ec7f6136b90cfc906f9047b8763de2ca8b15bda0e6a8e368eb246e84b",
+  "matches_exact_hosted_validated_release": true,
+  "optimized_release": true,
+  "source_commit": "c5c532749397edbfc8b023fd1171fa0ac2a46d14"
+}

@@ -1,25 +1,23 @@
-# Installation and platform status
+# Installation and preview status
 
-Current release: **[0.16.4 experimental desktop preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.4)**, published 2026-10-29. Windows uses application source `b5146aa48db73b60bc9ef7353758cd90782d70f3`; macOS uses `498b888a93bc95d5491dec1915a4c624354cd1c3`. Application code, assets and dependency locks are byte-identical; the later commit repairs Mac validation cleanup. Both packages were built and checked on manually dispatched GitHub-hosted runners. Older previews remain separate historical builds.
+Current desktop downloads are the [0.16.9 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.9) for Windows x64 and Apple Silicon macOS. Windows was built from `19b4587994bb08083d4693e10e0df2d2f0bfc3f4`; macOS from `c5c532749397edbfc8b023fd1171fa0ac2a46d14`. Application code, assets and dependency locks are byte-identical; the later commit repairs the notice validator and its tests. Exact source archives for both builds and matching dependency sources/notices are attached to the same release.
 
-Release candidate source is **0.16.9**, including continuous playback fade, clearer light-mode markers, idle CPU improvements, automatic resource budgets and a seven-day, six-airport flight demo. The owner authorized promotion and hosted Windows/macOS release builds; the downloads below remain 0.16.4 until the exact replacement packages pass validation and are published. See the [changelog](../CHANGELOG.md), [resource-budget validation](performance/AUTOMATIC_RESOURCE_BUDGETS_2026-10-29.md), and [flight-demo validation](validation/flight-week-mac-2026-10-29/README.md).
+This preview includes automatic memory/graphics budgets, continuous Fade, clearer light-mode markers, idle CPU improvements and 175 flights across six airports over seven days. See the [changelog](../CHANGELOG.md) and [release-specific validation](validation/release-0.16.9-publication/README.md).
 
 ## Preview downloads
 
 | Platform | Download | Installation and trust status |
 | --- | --- | --- |
-| Windows x64 | [ZIP with current-user installer](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-windows-x86_64.zip) | Extract the complete ZIP and run its installer. Unsigned. Microsoft Edge WebView2 Evergreen Runtime must already be installed; it is not bundled. |
-| Apple Silicon macOS | [App archive](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-macos-arm64.tar.xz) | Extract the complete archive and copy Chronoscope.app to Applications. Ad hoc signed, not notarized. Fresh quarantined-download acceptance on a user's Mac remains unverified. |
+| Windows x64 | [ZIP with current-user installer](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.9/chronoscope-windows-x86_64.zip) | Extract the complete ZIP and run its installer. Unsigned. Microsoft WebView2 Evergreen Runtime must already be installed; it is not bundled. |
+| Apple Silicon macOS | [App archive](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.9/chronoscope-macos-arm64.tar.xz) | Extract the complete archive and copy Chronoscope.app to Applications. Ad hoc signed, not notarized. Fresh quarantined-download acceptance remains unverified. |
 
-Keep the accompanying third-party notices and source-access instructions. The release includes exact application and locked dependency sources, license notices, `SHA256SUMS.txt`, `RELEASE-MANIFEST.json` and per-platform native validation receipts.
+Keep the accompanying third-party notices and source-access instructions. The release includes exact application and locked dependency sources, license notices, `SHA256SUMS.txt`, `RELEASE-MANIFEST.json` and per-platform native validation receipts. All published assets were independently downloaded without GitHub credentials and checked against their SHA-256 hashes. Older releases and tags are preserved.
 
-## Verification and limitations
+Both exact packages passed native hosted checks of the extracted desktop CLI/agent/MCP, GUI launch and an attached engine query. Mac checks also verify the strict bundle seal, App Intents metadata and weak-linked frameworks. These are narrow automated checks, not manual installation, physical GPU/smart-card, normal quarantined-download or production acceptance. Local Mac flight canvas captures were unavailable while its screen was locked; actual saved scenes and moving-window playback passed headless Chrome checks. Back up projects before preview testing.
 
-Native runners checked the exact downloaded packages: hashes, architecture, physical notices, actual packaged desktop CLI/agent/MCP smoke tests, GUI launch and an attached engine query. Mac checks also verified the strict bundle seal, App Intents metadata and weak-linked frameworks. These are narrow automated checks, not real-device, GPU, manual installer, smart-card or production acceptance. Back up projects before preview testing.
+No Linux or Intel Mac binary is included. Broad Mac distribution still needs Developer ID signing/notarization and fresh-download acceptance. The Apple model diagnostic requires macOS 26+; Apple Intelligence is not an SI Chat provider.
 
-Windows remains unsigned. Broad Mac distribution still needs Developer ID signing/notarization and fresh-download acceptance. The Apple model readiness diagnostic requires macOS 26+; Apple Intelligence is not an SI Chat provider. No Linux or Intel Mac binary is included in this release; source builds do not establish native acceptance on those platforms.
-
-See the [release checklist](RELEASE-CHECKLIST.md), [distribution obligations](DISTRIBUTION.md), [changelog](../CHANGELOG.md) and [local security checks](SECURITY-CHECKS.md).
+See the [release checklist](RELEASE-CHECKLIST.md), [distribution obligations](DISTRIBUTION.md) and [local security checks](SECURITY-CHECKS.md).
 
 ## Build from source
 
