@@ -60,6 +60,7 @@ fn agent_playback_configuration_exposes_fade() {
     let schema = chronoscope::schema::command_schema("view_playback").unwrap();
     let text = serde_json::to_string(&schema).unwrap();
     assert!(text.contains("fade"));
+    assert!(text.contains("fade_amount"));
     assert_eq!(
         chronoscope::schema::domain_output_schema("view_playback")["properties"]["fade"]["type"],
         "boolean"
@@ -69,6 +70,65 @@ fn agent_playback_configuration_exposes_fade() {
         &json!({"action":"configure","fade":false})
     )
     .is_ok());
+    for amount in [0, 1, 50, 100] {
+        assert!(chronoscope::schema::validate(
+            "view_playback",
+            &json!({"action":"configure","fade_amount":amount})
+        )
+        .is_ok());
+    }
+    for amount in [json!(-1), json!(101), json!(0.5), json!("50")] {
+        assert!(chronoscope::schema::validate(
+            "view_playback",
+            &json!({"action":"configure","fade_amount":amount})
+        )
+        .is_err());
+    }
+}
+
+#[test]
+fn fade_amount_roundtrips_saved_views_and_legacy_controls_without_changing_events() {
+    let dir = tempfile::tempdir().unwrap();
+    let e = Engine::new(
+        Project::new(chronoscope::demo::dataset()),
+        dir.path().join("profile"),
+    )
+    .unwrap();
+    let before = e.invoke("events", json!({"limit":1000})).unwrap();
+    e.invoke("view_set", json!({"playback_fade_amount":100}))
+        .unwrap();
+    let scene = e.invoke("snapshot", json!({"compact":true})).unwrap()["scene"].clone();
+    assert_eq!(scene["playback_fade_amount"], 100);
+    assert_eq!(scene["playback_fade"], true);
+    e.invoke(
+        "save_view",
+        json!({"name":"Recent positions","scene":scene}),
+    )
+    .unwrap();
+    let file = dir.path().join("fade.chronoscope");
+    e.invoke("save", json!({"path":file})).unwrap();
+    e.invoke("view_set", json!({"playback_fade":false}))
+        .unwrap();
+    let off = e.invoke("snapshot", json!({"compact":true})).unwrap()["scene"].clone();
+    assert_eq!(off["playback_fade_amount"], 0);
+    assert_eq!(off["playback_fade"], false);
+    e.invoke("view_set", json!({"playback_fade":true})).unwrap();
+    assert_eq!(
+        e.invoke("snapshot", json!({"compact":true})).unwrap()["scene"]["playback_fade_amount"],
+        50
+    );
+    e.invoke("open", json!({"path":file})).unwrap();
+    let restored = e.invoke("restore_view", json!({"index":0})).unwrap();
+    assert_eq!(restored["scene"]["playback_fade_amount"], 100);
+    assert_eq!(
+        e.invoke("events", json!({"limit":1000})).unwrap()["events"],
+        before["events"]
+    );
+    for amount in [json!(-1), json!(101), json!(2.5), json!("high")] {
+        assert!(e
+            .invoke("view_set", json!({"playback_fade_amount":amount}))
+            .is_err());
+    }
 }
 
 #[test]

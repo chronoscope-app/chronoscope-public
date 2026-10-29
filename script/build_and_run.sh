@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 MODE="${1:-run}"
-case "$MODE" in run|--verify|--build-only|--debug|--logs|--telemetry) ;; *) echo "Usage: $0 [--verify|--build-only|--debug|--logs|--telemetry]" >&2; exit 2;; esac
+case "$MODE" in run|--verify|--build-only|--debug-build-only|--debug|--logs|--telemetry) ;; *) echo "Usage: $0 [--verify|--build-only|--debug-build-only|--debug|--logs|--telemetry]" >&2; exit 2;; esac
 # Optional local toolchain setup; no machine-specific paths are checked in.
 if [[ -n "${CHRONOSCOPE_BUILD_ENV:-}" ]]; then source "$CHRONOSCOPE_BUILD_ENV"; fi
 # Acquire the shared resource guard before stopping or building this app.
@@ -13,18 +13,28 @@ if ! python3 -c 'import sys; sys.path.insert(0, "scripts"); from guarded_run imp
 fi
 # Stop only this checkout's running app before rebuilding it.
 TARGET_DIR="${CARGO_TARGET_DIR:-$ROOT_DIR/target}"
-APP_BUNDLE="$TARGET_DIR/debug/bundle/macos/Chronoscope.app"
-if [[ "$MODE" != --build-only ]]; then
+PROFILE=debug
+BUILD_ONLY=false
+case "$MODE" in
+ --build-only) PROFILE=release; BUILD_ONLY=true;;
+ --debug-build-only) BUILD_ONLY=true;;
+esac
+APP_BUNDLE="$TARGET_DIR/$PROFILE/bundle/macos/Chronoscope.app"
+if [[ "$BUILD_ONLY" != true ]]; then
   for task_pid in $(pgrep -f "^$APP_BUNDLE/Contents/MacOS/chronoscope-desktop$" || true); do kill "$task_pid"; done
 fi
 if [[ ! -d frontend/node_modules ]]; then npm --prefix frontend ci; fi
-npm run bundle -- --debug --bundles app --config src-tauri/tauri.macos.conf.json --config '{"build":{"beforeBuildCommand":"npm --prefix frontend run build -- --configLoader runner"}}'
-# Seal the local debug bundle's resources as well as its executable. This
+BUILD_ARGS=(--bundles app --config src-tauri/tauri.macos.conf.json --config '{"build":{"beforeBuildCommand":"npm --prefix frontend run build -- --configLoader runner"}}')
+# Daily-use copies need the optimized backend. Interactive diagnostics retain
+# debug builds; --debug-build-only packages one without opening the desktop.
+if [[ "$PROFILE" == debug ]]; then BUILD_ARGS=(--debug "${BUILD_ARGS[@]}"); fi
+npm run bundle -- "${BUILD_ARGS[@]}"
+# Seal the local bundle's resources as well as its executable. This
 # ad hoc signature is for local use; it is not Developer ID/notarization.
 /usr/bin/codesign --force --sign - "$APP_BUNDLE"
 /usr/bin/codesign --verify --strict "$APP_BUNDLE"
 python3 scripts/install_macos_app.py "$APP_BUNDLE"
-[[ "$MODE" == --build-only ]] && exit 0
+[[ "$BUILD_ONLY" == true ]] && exit 0
 case "$MODE" in
  --debug) exec lldb -- "$APP_BUNDLE/Contents/MacOS/chronoscope-desktop";;
  *)

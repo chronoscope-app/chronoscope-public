@@ -148,6 +148,12 @@ const dialogs = new DialogController(() => {
   pending?.(false);
 });
 let playTimer: number | undefined;
+let playbackHistory: {
+  workspace: string;
+  width: number;
+  last: [number | null, number | null];
+  bounds: [number, number];
+} | undefined;
 let playbackPreserveFrame = false;
 let timeScrubbing = false;
 let timeScrubGeneration = 0;
@@ -2528,7 +2534,9 @@ function timeWindow(
   end: number,
   delay = 0,
   progressive = false,
+  playback = false,
 ): Promise<void> {
+  if (!playback) playbackHistory = undefined;
   const [lo, hi] = snapshot.time_bounds;
   return filter(
     {
@@ -3029,6 +3037,7 @@ function captureScene(): Scene {
     table_column_offset: tables.tableColumnOffset,
     time_height: view.timeHeight,
     playback_fade: view.playbackFade,
+    playback_fade_amount: view.playbackFadeAmount,
     globe_time: view.globeTime,
     globe_altitude: view.globeAltitude,
     globe_time_scale: view.globeTimeScale,
@@ -3083,8 +3092,8 @@ async function applyRestoredScene(scene: SceneState) {
     view.restoreViewStates(scene.view_states || {});
     renderBudget = scene.render_budget === 100000 ? 100000 : 20000;
     view.timeHeight = scene.time_height ?? 2.8;
-    view.setPlaybackFade(scene.playback_fade ?? true);
-    ($("#playback-fade") as HTMLInputElement).checked = view.playbackFade;
+    view.setPlaybackFade(scene.playback_fade_amount ?? (scene.playback_fade === false ? 0 : 50));
+    updatePlaybackFadeControl();
     view.setGlobeTimeScale(scene.globe_time_scale ?? 1);
     view.setGlobeTime(!!scene.globe_time);
     view.setGlobeAltitude(!!scene.globe_altitude);
@@ -3524,8 +3533,17 @@ const playbackIncrement = new PlaybackIncrement(
   },
 );
 timeRail.mountPlayback();
-$("#playback-fade").addEventListener("change", () => {
-  view.setPlaybackFade(check("#playback-fade"));
+function updatePlaybackFadeControl() {
+  const amount = view.playbackFadeAmount;
+  const slider = $("#playback-fade") as HTMLInputElement;
+  slider.value = String(amount);
+  slider.setAttribute("aria-valuetext", amount === 0 ? "Off; retain history until looping"
+    : `${amount}% fade; ${amount === 100 ? "latest few time slices" : amount < 50 ? "longer history" : amount === 50 ? "standard history" : "shorter history"}`);
+  $("#playback-fade-value").textContent = amount === 0 ? "Off" : `${amount}%`;
+}
+$("#playback-fade").addEventListener("input", () => {
+  view.setPlaybackFade(Number(input("#playback-fade")));
+  updatePlaybackFadeControl();
   view.onSceneChange();
 });
 async function togglePlayback() {
@@ -3538,7 +3556,7 @@ async function togglePlayback() {
     // A full-range sweep only moves the cursor; pausing it must retain the
     // same no-filter fast path as its animation frames.
     if (playbackWindow && (playbackWindow[0] !== 0 || playbackWindow[1] !== 1))
-      await timeWindow(...playbackWindow)
+      await timeWindow(...playbackWindow, 0, false, true)
         .catch((error) => toast(String(error), true))
         .finally(() => {
           playbackPreserveFrame = playTimer !== undefined;
@@ -3548,17 +3566,23 @@ async function togglePlayback() {
   }
   const [lo, hi] = snapshot.time_bounds;
   const span = Math.max(1e-9, hi - lo);
-  const startAt = Math.max(
+  const windowStart = Math.max(
     0,
     Math.min(1, ((snapshot.filter.start ?? lo) - lo) / span),
   );
-  const endAt = Math.max(
-    startAt,
+  const windowEnd = Math.max(
+    windowStart,
     snapshot.filter.end === null
       ? 1
       : Math.min(1, (snapshot.filter.end - lo) / span),
   );
-  const width = endAt - startAt;
+  const retained = playbackHistory?.workspace === snapshot.workspace_id &&
+    playbackHistory.bounds[0] === lo && playbackHistory.bounds[1] === hi &&
+    playbackHistory.last[0] === snapshot.filter.start &&
+    playbackHistory.last[1] === snapshot.filter.end ? playbackHistory : undefined;
+  const width = retained?.width ?? windowEnd - windowStart;
+  const startAt = retained ? Math.max(0, Math.min(1 - width, windowEnd - width)) : windowStart;
+  const endAt = startAt + width;
   playbackWindow = [startAt, endAt];
   const travel = 1 - width;
   const initialFocus = focus;
@@ -3567,7 +3591,7 @@ async function togglePlayback() {
     performance.now(),
     playbackIncrement.value,
   );
-  const trailWindow = new PlaybackWindow(startAt, view.playbackFade);
+  const trailWindow = new PlaybackWindow(windowStart, view.playbackFadeAmount);
   playbackPreserveFrame = true;
   view.setPlayback(true);
   let lastUpdate = -Infinity;
@@ -3576,14 +3600,19 @@ async function togglePlayback() {
     if (playTimer === undefined) return;
     const phase = playbackClock!.seconds(now) / span;
     const movingStart = travel > 1e-9 ? (startAt + phase) % travel : 0;
+    const movingEnd = travel > 1e-9 ? movingStart + width
+      : view.playbackFadeAmount > 50 ? (initialFocus + phase) % 1 : 1;
     const [start, end] = trailWindow.advance(
       movingStart,
-      movingStart + width,
-      view.playbackFade,
+      movingEnd,
+      view.playbackFadeAmount,
+      view.playbackHistorySpan / span,
+      width,
     );
     playbackWindow = [start, end];
     focus =
-      travel > 1e-9 ? movingStart + width / 2 : (initialFocus + phase) % 1;
+      view.playbackFadeAmount > 50 ? end
+        : travel > 1e-9 ? movingStart + width / 2 : (initialFocus + phase) % 1;
     updateTimeFocus();
     const cursor = $("#histogram").querySelector<HTMLElement>(".cursor");
     if (cursor) cursor.style.top = `${focus * 100}%`;
@@ -3594,6 +3623,7 @@ async function togglePlayback() {
     const current = filterIntent.desired(snapshot.filter);
     const nextStart = start === 0 ? null : lo + (hi - lo) * start;
     const nextEnd = end === 1 ? null : lo + (hi - lo) * end;
+    playbackHistory = { workspace: snapshot.workspace_id, width, last: [nextStart, nextEnd], bounds: [lo, hi] };
     // One data refresh at a time. Never accumulate work behind the render clock.
     if (
       !playbackUpdating &&
@@ -3603,7 +3633,7 @@ async function togglePlayback() {
     ) {
       lastUpdate = now;
       playbackUpdating = true;
-      void timeWindow(start, end)
+      void timeWindow(start, end, 0, false, true)
         .catch((error) => {
           if (playTimer !== undefined) $("#play").click();
           toast(String(error), true);
@@ -3626,9 +3656,9 @@ async function agentPlayback(args: Record<string, any>) {
     if (args.speed !== undefined) playbackSpeed.setValue(args.speed);
     if (args.increment_seconds !== undefined)
       playbackIncrement.setValue(args.increment_seconds);
-    if (args.fade !== undefined) {
-      view.setPlaybackFade(args.fade);
-      ($("#playback-fade") as HTMLInputElement).checked = view.playbackFade;
+    if (args.fade_amount !== undefined || args.fade !== undefined) {
+      view.setPlaybackFade(args.fade_amount ?? args.fade);
+      updatePlaybackFadeControl();
       await syncScene(captureScene(), undefined, workspace);
     }
   } else if (args.action === "seek" || args.action === "step") {
@@ -3667,6 +3697,7 @@ async function agentPlayback(args: Record<string, any>) {
   return {
     playing: playTimer !== undefined,
     fade: view.playbackFade,
+    fade_amount: view.playbackFadeAmount,
     speed: playbackSpeed.value,
     increment_seconds: playbackIncrement.value,
     time:

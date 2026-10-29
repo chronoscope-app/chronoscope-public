@@ -1,0 +1,14 @@
+{
+  "application_source": "d01b0bca604b530d51e34f9fa034a2a241127734",
+  "profile": "release",
+  "installed_app": "/Users/user/Applications/Chronoscope.app",
+  "bundle_version": "0.16.7",
+  "bundle_build": "0.16.7",
+  "cli_version": "chronoscope 0.16.7",
+  "installed_sha256": "7584ae2fd3d2dea1e0f80a3ddc6a9e0c5c512f359bfbded01a7cbf8fb9f99c03",
+  "built_sha256": "7584ae2fd3d2dea1e0f80a3ddc6a9e0c5c512f359bfbded01a7cbf8fb9f99c03",
+  "chronoscope_app_copies": [
+    "Chronoscope.app"
+  ],
+  "strict_signature_valid": true
+}

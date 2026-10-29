@@ -134,7 +134,7 @@ fn decimal(value: &str) -> Result<u64, EngineError> {
     Ok(parsed)
 }
 
-fn cooperative_lock<'a, T>(
+pub(super) fn cooperative_lock<'a, T>(
     lock: &'a Mutex<T>,
     label: &str,
 ) -> Result<MutexGuard<'a, T>, EngineError> {

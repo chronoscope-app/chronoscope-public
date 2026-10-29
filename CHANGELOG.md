@@ -4,6 +4,19 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+## 0.16.7 — source preview, 2026-10-29
+
+Source update for Public/main. Published desktop downloads remain at [0.16.4](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.4). The local Mac build passed headless checks; fresh native fade captures remain unverified because live MCP requests timed out in the locked session, including with an older control build. [Validation details](docs/validation/fade-light-mac-2026-10-29/README.md).
+
+### Fixed
+
+- Remove opaque white outlines from unselected light-mode entity markers, clusters and point geometry while retaining distinct selection edges.
+- Replace the Fade switch with a 0–100 slider: higher values shorten visible playback history and departure fades; maximum retains roughly the latest three time slices, including simultaneous entities. Persist the percentage in views/workspaces and expose matching MCP and CLI controls.
+- Build optimized local macOS app copies with `script/build_and_run.sh --build-only`, reducing dataset-opening CPU versus the prior debug build. Retain an explicit `--debug-build-only` option for diagnostics.
+- Reduce Cesium update cadence after a scene settles; restore full cadence immediately for interaction, playback and resource loading. Keep rendering on demand.
+- Recheck the current filesystem root when using a streaming import ticket for validation, review or commit, including background jobs. A preview created with broader access no longer authorizes a later read outside the caller's root.
+- Keep field profiles, charts and pattern scans bound to their inherited workspace after waiting for the analytics worker. Capture metadata and the SQLite read view at a committed operation boundary, including cached pattern lookups.
+
 ## 0.16.4 — experimental preview, 2026-10-29
 
 [Windows x64 and Apple Silicon macOS downloads](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.4) use per-platform source commits: Windows `b5146aa48db73b60bc9ef7353758cd90782d70f3` and macOS `498b888a93bc95d5491dec1915a4c624354cd1c3`. Application code, assets and dependency locks are byte-identical; the later commit repairs Mac validation cleanup. Both exact packages passed narrow native hosted validation. Windows is unsigned; macOS is ad hoc signed and not notarized. Matching source companions, notices, checksums and validation receipts accompany the downloads.

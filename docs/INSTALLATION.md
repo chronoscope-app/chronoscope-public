@@ -2,6 +2,8 @@
 
 Current release: **[0.16.4 experimental desktop preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.4)**, published 2026-10-29. Windows uses application source `b5146aa48db73b60bc9ef7353758cd90782d70f3`; macOS uses `498b888a93bc95d5491dec1915a4c624354cd1c3`. Application code, assets and dependency locks are byte-identical; the later commit repairs Mac validation cleanup. Both packages were built and checked on manually dispatched GitHub-hosted runners. Older previews remain separate historical builds.
 
+Current main-branch source is **0.16.7**, adding continuous playback fade, clearer light-mode markers, idle CPU improvements and import/analysis isolation fixes. These changes are available in source builds; the downloads below remain 0.16.4. See the [changelog](../CHANGELOG.md) and [local Mac validation limits](validation/fade-light-mac-2026-10-29/README.md).
+
 ## Preview downloads
 
 | Platform | Download | Installation and trust status |

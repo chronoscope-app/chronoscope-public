@@ -32,7 +32,11 @@ impl Engine {
     pub(super) fn pattern_scan(&self, args: Value) -> Result<Value, String> {
         let c = config(&args)?;
         {
+            let _gate =
+                super::view_identity::cooperative_lock(&self.operation, "Workspace operation")
+                    .map_err(|e| e.to_string())?;
             let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+            self.check_workspace_locked(&s)?;
             if args["expected_revision"]
                 .as_u64()
                 .is_some_and(|r| r != s.revision)
@@ -67,7 +71,11 @@ impl Engine {
             }
         };
         let (read, filter, selected, revision, scan_id) = {
+            let _gate =
+                super::view_identity::cooperative_lock(&self.operation, "Workspace operation")
+                    .map_err(|e| e.to_string())?;
             let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+            self.check_workspace_locked(&s)?;
             if args["expected_revision"]
                 .as_u64()
                 .is_some_and(|r| r != s.revision)
@@ -191,7 +199,11 @@ impl Engine {
             }
         };
         let (read, filter, selected, revision) = {
+            let _gate =
+                super::view_identity::cooperative_lock(&self.operation, "Workspace operation")
+                    .map_err(|e| e.to_string())?;
             let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+            self.check_workspace_locked(&s)?;
             if key(&s, &cached.config)? != id
                 || args["expected_revision"]
                     .as_u64()

@@ -195,7 +195,7 @@ pub fn domain_output_schema(command: &str) -> Value {
                 "window",
                 "workspace_id",
             ];
-            json!({"fade":{"type":"boolean"},"playing":{"type":"boolean"},"speed":{"type":"number"},"increment_seconds":{"type":"number"},"time":{"type":"number"},"window":{"type":"array","items":{"type":["number","null"]},"minItems":2,"maxItems":2},"workspace_id":{"type":"string"}})
+            json!({"fade_amount":{"type":"integer","minimum":0,"maximum":100},"fade":{"type":"boolean"},"playing":{"type":"boolean"},"speed":{"type":"number"},"increment_seconds":{"type":"number"},"time":{"type":"number"},"window":{"type":"array","items":{"type":["number","null"]},"minItems":2,"maxItems":2},"workspace_id":{"type":"string"}})
         }
         "view_profile" => {
             required = vec![

@@ -32,7 +32,11 @@ impl Engine {
         // Pin one revision, then release the workspace lock before scans and
         // disk-backed distinct/group operations. Navigation remains responsive.
         let (read, filter, selected, revision) = {
+            let _gate =
+                super::view_identity::cooperative_lock(&self.operation, "Workspace operation")
+                    .map_err(|e| e.to_string())?;
             let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+            self.check_workspace_locked(&s)?;
             if args["expected_revision"]
                 .as_u64()
                 .is_some_and(|r| r != s.revision)

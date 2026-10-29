@@ -6,7 +6,11 @@ impl Engine {
             .map_err(|e| format!("INVALID_ARGUMENT: {e}"))?;
         config.validate()?;
         let (read, filter, selection, revision) = {
+            let _gate =
+                super::view_identity::cooperative_lock(&self.operation, "Workspace operation")
+                    .map_err(|e| e.to_string())?;
             let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+            self.check_workspace_locked(&s)?;
             if args["expected_revision"]
                 .as_u64()
                 .is_some_and(|r| r != s.revision)

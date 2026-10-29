@@ -159,6 +159,9 @@ mod scenarios;
 mod view_identity;
 mod view_snapshot;
 pub use view_identity::CanonicalViewIdentity;
+#[cfg(test)]
+#[path = "engine/read_snapshot_tests.rs"]
+mod read_snapshot_tests;
 mod workspace;
 
 type Observer = Arc<dyn Fn(Value) + Send + Sync>;
@@ -2220,6 +2223,9 @@ impl Engine {
                             }
                             "time_height" => scene.time_height = v.as_f64(),
                             "playback_fade" => scene.playback_fade = v.as_bool(),
+                            "playback_fade_amount" => {
+                                scene.playback_fade_amount = v.as_u64().map(|v| v as u8)
+                            }
                             "globe_time" => {
                                 scene.globe_time = v.as_bool().unwrap();
                                 if scene.globe_time {
@@ -2296,6 +2302,11 @@ impl Engine {
                     }
                     if args.get("fit").and_then(Value::as_bool) == Some(true) {
                         scene.view_states.remove(&scene.mode);
+                    }
+                    if let Some(amount) = args["playback_fade_amount"].as_u64() {
+                        scene.playback_fade = Some(amount > 0);
+                    } else if let Some(enabled) = args["playback_fade"].as_bool() {
+                        scene.playback_fade_amount = Some(if enabled { 50 } else { 0 });
                     }
                     scene.validate()?;
                 }

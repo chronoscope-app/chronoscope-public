@@ -360,7 +360,7 @@ try {
   assert(await page.locator("#globe-time-height").isEnabled());
   assert.equal(
     await page.locator("#time-elevation-value").textContent(),
-    "Off",
+    "Ground",
   );
   await page.keyboard.press("Escape");
   check(
@@ -380,23 +380,24 @@ try {
   );
   assert.equal(
     await page.locator("#time-elevation-value").textContent(),
-    "Off",
+    "Ground",
   );
   await page.keyboard.press("Escape");
   await page.locator("#time-rail-playback").click();
-  assert(await page.locator("#playback-fade").isChecked());
+  assert.equal(await page.locator("#playback-fade").inputValue(), "50");
   assert(
     (await page.locator("#time-rail-playback-popup").boundingBox()).width <=
       220,
   );
-  const switchStyle = await page.locator("#playback-fade").evaluate((e) => ({
-    appearance: getComputedStyle(e).appearance,
+  const sliderStyle = await page.locator("#playback-fade").evaluate((e) => ({
+    type: e.type,
     width: e.getBoundingClientRect().width,
     height: e.getBoundingClientRect().height,
   }));
-  assert.deepEqual(switchStyle, { appearance: "none", width: 30, height: 18 });
+  assert.equal(sliderStyle.type, "range");
+  assert(sliderStyle.width >= 100 && sliderStyle.height >= 16);
   await capture("playback-fade-controls");
-  await page.locator("#playback-fade").uncheck();
+  await setSlider("#playback-fade", 0);
   assert.equal(
     await page.evaluate(
       () => window.__chronoscope.captureScene().playback_fade,
@@ -469,12 +470,12 @@ try {
     return {
       on,
       off,
-      checked: document.querySelector("#playback-fade").checked,
+      amount: Number(document.querySelector("#playback-fade").value),
     };
   });
   assert.equal(configured.on.fade, true);
   assert.equal(configured.off.fade, false);
-  assert.equal(configured.checked, false);
+  assert.equal(configured.amount, 0);
   check(
     "The attached CLI/MCP playback configure action shares the UI Fade setting",
   );
@@ -507,7 +508,7 @@ try {
   );
   await resetWindow();
   await page.locator("#time-rail-playback").click();
-  await page.locator("#playback-fade").check();
+  await setSlider("#playback-fade", 50);
   await page.keyboard.press("Escape");
   await page.locator("#play").click();
   await page.waitForFunction(
@@ -520,7 +521,7 @@ try {
     JSON.stringify(playback),
   );
   await page.locator("#time-rail-playback").click();
-  await page.locator("#playback-fade").uncheck();
+  await setSlider("#playback-fade", 0);
   await page.keyboard.press("Escape");
   await page.waitForFunction(() => {
     const f = window.__chronoscope.snapshot.filter;

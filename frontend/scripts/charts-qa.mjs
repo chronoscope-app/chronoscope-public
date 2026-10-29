@@ -135,13 +135,18 @@ try {
       .count(),
   );
   check("Exact count chart and imported numeric fields are available", {});
-  const positions = await page.evaluate(() => ({
-    nav: document.querySelector(".sphere-navigator").getBoundingClientRect()
-      .top,
-    canvas: document.querySelector(".scene-top-right").getBoundingClientRect()
-      .top,
-  }));
-  assert.equal(positions.nav, positions.canvas);
+  const positions = await page.evaluate(() => {
+    const nav = document
+      .querySelector(".sphere-navigator")
+      .getBoundingClientRect();
+    const scene = document.querySelector("#scene").getBoundingClientRect();
+    return {
+      topInset: nav.top - scene.top,
+      rightInset: scene.right - nav.right,
+    };
+  });
+  assert(positions.topInset >= 0 && positions.topInset <= 32);
+  assert(positions.rightInset >= 0 && positions.rightInset <= 24);
   await page.mouse.move(600, 300);
   await page.locator("#chart-expand").hover();
   await page.waitForTimeout(600);
@@ -149,7 +154,7 @@ try {
   await page.waitForTimeout(650);
   assert.equal(await page.locator("#control-tooltip.visible").count(), 1);
   check(
-    "Navigation aligns with canvas tools; tooltips wait one second",
+    "Navigation stays inside the map's top-right corner; tooltips wait one second",
     positions,
   );
   await config("aggregate", "mean");

@@ -21,6 +21,13 @@ before public promotion.
 
 ## Build locally
 
+For the daily-use local copy, `./script/build_and_run.sh --build-only` builds an
+optimized release app, verifies its local signature and installs it in
+`~/Applications` without opening a window. Use `--debug-build-only` when a debug
+bundle is specifically needed. Interactive Run/`--verify`/`--debug` modes retain
+debug builds for diagnostics. Debug backend timings do not describe release
+dataset-loading performance.
+
 Tester builds select full Xcode26.6 (macOS SDK26.5), Rust1.98.0 and Node.js22 on standard macos-26 Apple Silicon runners. SDK27-only branches have been removed while retaining the existing26.x fallbacks. Native compilation, overlay linkage and App Intents metadata remain required checks; no old-macOS or real-device acceptance is implied. From this
 repository:
 

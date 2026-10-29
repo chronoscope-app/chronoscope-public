@@ -1,0 +1,303 @@
+{
+  "run_id": "20261029T102329Z-f023942a",
+  "source_revision": "9eac91a586746435c805c37767ae3712f40e6ddf",
+  "dirty": true,
+  "cli_build_profile": "debug",
+  "native_build_profile": null,
+  "platform": "darwin",
+  "tier": "fast",
+  "started_utc": "2026-10-29T10:23:29.857808+00:00",
+  "test_infrastructure_sha256": {
+    "scripts/validate_local.py": "e0cbb062a06741c9320db762746ffcd3816240463f34ec892a552b1d57e118be",
+    "scripts/validation_runtime.py": "d01da35096d26f0b1110266c53906bd6543db174c13a7f6a9e722256ac837a9d",
+    "scripts/validation_suites.py": "172eb9bd2dcd1310b819f556062fc465b154e972345d7eb7e53530d6d05c4c94",
+    "scripts/validation-suites.json": "b1ec68349c3b0e953fa4350cdc23c79796484154f253e81e19159b3ab28ba487",
+    "scripts/source_checks.py": "147a9607ae1dff5b3b938e53fd99ab5ccbc351717bbca8faab00c3590b2ad62c",
+    "frontend/scripts/qa-runtime.mjs": "cfb0cb16998618db245e0596aed04f2f8a4bfeaccfe7b57817b934cd8d80a9d4",
+    "frontend/scripts/qa-config.mjs": "c824639fc8c6d05cac690e8ac675a8ba6f50e5f88a93ec47c63bc251ee574e7b",
+    "frontend/scripts/local-browser.mjs": "a45008a3b7773d854b1f94e8ee504d50faced0dd6efd53aba91a4f2b136391f6",
+    "frontend/scripts/workspace-qa-helpers.mjs": "16b677bfab6629efa869ac59366cde56d9e4af944b2346f089537534421e6e77"
+  },
+  "passed": true,
+  "github_runners_used": false,
+  "checks": [
+    {
+      "name": "test_validation_runner",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "scripts/test_validation_runner.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/test_validation_runner.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 3.024
+    },
+    {
+      "name": "test_guarded_run",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "scripts/test_guarded_run.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/test_guarded_run.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 2.778
+    },
+    {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/rust-format.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.513
+    },
+    {
+      "name": "test_glib_backport",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "scripts/test_glib_backport.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/test_glib_backport.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.453
+    },
+    {
+      "name": "test_workarounds",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "scripts/test_workarounds.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/test_workarounds.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.056
+    },
+    {
+      "name": "test_release_preflight",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "scripts/test_release_preflight.py"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/test_release_preflight.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.092
+    },
+    {
+      "name": "core-clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/core-clippy.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.333
+    },
+    {
+      "name": "rust-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--test",
+        "playback_display"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/rust-tests.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.963
+    },
+    {
+      "name": "cli-build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "-p",
+        "chronoscope",
+        "--bin",
+        "chronoscope"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/cli-build.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.215
+    },
+    {
+      "name": "frontend-build",
+      "command": [
+        "/Users/user/Documents/Codex/chronoscope mac/.local-build/tools/bin/npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "build",
+        "--",
+        "--configLoader",
+        "runner"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/frontend-build.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 7.098
+    },
+    {
+      "name": "generated-contracts",
+      "command": [
+        "node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/generated-contracts.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.192
+    },
+    {
+      "name": "frontend-unit-tests",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "test"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/frontend-unit-tests.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 7.717
+    },
+    {
+      "name": "table-playback-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/table-playback-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/table-playback-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 29.431,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "156.0.8078.48",
+          "headless": true,
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "a962efc4a0fd72cfad1bb8ac351773616bdef956d605b356d17fb592fb49d85c"
+    },
+    {
+      "name": "playback-fade-qa",
+      "command": [
+        "/Users/user/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "frontend/scripts/playback-fade-qa.mjs"
+      ],
+      "log": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a/logs/playback-fade-qa.log",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 3.142,
+      "browser_launches": [
+        {
+          "executable": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+          "version": "156.0.8078.48",
+          "headless": true,
+          "angle": "metal"
+        }
+      ],
+      "suite_sha256": "69f83c539cbb65ccbcc1cf0457bca95c962c825298df04d16d4dfae0d78a3814"
+    }
+  ],
+  "unrun_browser_suites": [
+    "altitude-qa.mjs",
+    "analytics-qa.mjs",
+    "assistant-qa.mjs",
+    "balanced-terrain-qa.mjs",
+    "basemap-qa.mjs",
+    "cesium-context-qa.mjs",
+    "cesium-effects-pixels-qa.mjs",
+    "cesium-globe-time-qa.mjs",
+    "cesium-parity-qa.mjs",
+    "cesium-terrain-qa.mjs",
+    "chart-shortcuts-qa.mjs",
+    "chart-workflow-qa.mjs",
+    "charts-qa.mjs",
+    "charts-timezone-qa.mjs",
+    "cluster-identity-qa.mjs",
+    "detachable-tables-qa.mjs",
+    "display-recovery-qa.mjs",
+    "empty-workspace-qa.mjs",
+    "event-table-qa.mjs",
+    "field-roles-qa.mjs",
+    "focused-ai-qa.mjs",
+    "gis-files-qa.mjs",
+    "guided-workflows-qa.mjs",
+    "import-grid-qa.mjs",
+    "integration-smoke-qa.mjs",
+    "map-notifications-qa.mjs",
+    "mcp-live-qa.mjs",
+    "navigation-preferences-qa.mjs",
+    "navigation-qa.mjs",
+    "navigation-sphere-qa.mjs",
+    "notifications-qa.mjs",
+    "pan-direction-qa.mjs",
+    "patterns-qa.mjs",
+    "playback-reuse-qa.mjs",
+    "playback-speed-qa.mjs",
+    "playback-transitions-qa.mjs",
+    "presentation-ui-qa.mjs",
+    "priority-demos-qa.mjs",
+    "real-demos-qa.mjs",
+    "renderer-reuse-qa.mjs",
+    "si-certificate-qa.mjs",
+    "si-rich-chat-qa.mjs",
+    "si-settings-qa.mjs",
+    "sidebar-time-qa.mjs",
+    "space-demos-qa.mjs",
+    "space-time-window-qa.mjs",
+    "spectrum-qa.mjs",
+    "subsecond-qa.mjs",
+    "time-rail-qa.mjs",
+    "toolbar-dialogs-qa.mjs",
+    "track-style-qa.mjs",
+    "vector-gis-qa.mjs",
+    "view-sync-qa.mjs",
+    "viewport-pan-qa.mjs",
+    "webmcp-disabled-qa.mjs",
+    "welcome-qa.mjs",
+    "wkt-wmts-qa.mjs",
+    "workspace-boundaries-qa.mjs"
+  ],
+  "manual_checks_not_run": {
+    "native_focused_ai_qa.py": "Requires an explicitly launched disposable profile and an available on-device model.",
+    "test_native_pki.py": "Opt-in native certificate test; changes temporary trust/keychain state.",
+    "test_app_capture.py": "Linux Xvfb native app capture; needs installed native display prerequisites."
+  },
+  "evidence_directory": "/Users/user/Documents/Codex/chronoscope mac/.qa/fade-0.16.7-validation/runs/20261029T102329Z-f023942a",
+  "limitations": [
+    "Native results apply to this operating system only.",
+    "Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.",
+    "Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks."
+  ],
+  "cli_sha256": "b03473322595971020f8065ad871ba8e3c358368b9430b89dad9b1952adf0308",
+  "finished_utc": "2026-10-29T10:24:28.186901+00:00"
+}

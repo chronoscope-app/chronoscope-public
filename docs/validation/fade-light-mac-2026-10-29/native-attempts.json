@@ -1,0 +1,36 @@
+{
+  "computer_use_performed": false,
+  "screen_locked": true,
+  "native_validation_complete": false,
+  "attempts": [
+    {
+      "label": "release-0.16.7",
+      "version": "0.16.7",
+      "failed_at": "view_navigate after fixture setup",
+      "passed": false,
+      "error": "UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying"
+    },
+    {
+      "label": "release-0.16.7-readiness",
+      "version": "0.16.7",
+      "failed_at": "initial view_status before fixture changes",
+      "passed": false,
+      "error": "UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying"
+    },
+    {
+      "label": "locked-control-0.16.5",
+      "version": "0.16.5",
+      "baseline": true,
+      "failed_at": "initial view_status before fixture changes",
+      "passed": false,
+      "error": "UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying"
+    }
+  ],
+  "cleanup": "Each attempt closed its MCP transport and terminated only the app PID it launched. All used isolated profiles.",
+  "not_verified": [
+    "native near/far captures of 0.16.7",
+    "installed CLI-to-live-frontend fade configuration",
+    "native playback history at high and low fade"
+  ],
+  "interpretation": "The unchanged older app also times out in this locked session. This does not establish native rendering correctness for the new build; headless browser and installed stdio MCP checks are separate evidence."
+}
