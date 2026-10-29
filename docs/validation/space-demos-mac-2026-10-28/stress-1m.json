@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "requested_rows": 1000000,
+  "source_records": 43361358,
+  "timings_seconds": {
+    "capabilities": 0.5431006250146311,
+    "import_preview": 1.4325959580019116,
+    "import_commit": 141.74494200001936,
+    "snapshot": 0.013412083993898705,
+    "query": 0.7778435829968657,
+    "render_data": 6.069091833021957,
+    "statistics": 1.4391707079776097,
+    "save": 20.66979616699973
+  },
+  "render_cap": 100000,
+  "source_sha256": "669cda18d73666a5781fcbe29546b69eb8ea4b933056d905a030ae7cbec2ed5e",
+  "app_version": "0.16.3",
+  "loaded_rows": 1000000,
+  "exact_count": 1000000,
+  "render_packet": {
+    "located_count": 1000000,
+    "stride": 48,
+    "max_points": 100000
+  },
+  "altitude_statistics": {
+    "evaluated_count": 1000000,
+    "field": "altitude_m",
+    "method": "average 0.17.0 streaming variance/covariance/Pearson; accurate 0.4.1 Neumaier compensated sum/mean. Finite numeric values only; missing/non-numeric values excluded explicitly. Pearson correlation describes linear association, not causation.",
+    "other_field": null,
+    "paired": null,
+    "revision": 3,
+    "sampled": false,
+    "scope": {
+      "filter_sha256": "16f00af38aa95d540e765c259902bb8a1b16559b86d99ceb44b113a29b899555",
+      "selected_only": false,
+      "source": null
+    },
+    "summary": {
+      "count": 1000000,
+      "max": 567549.041,
+      "mean": 424972.79564637,
+      "min": 248867.827,
+      "missing": 0,
+      "standard_deviation_population": 84430.32777350371,
+      "standard_deviation_sample": 84430.36998869925,
+      "sum": 424972795646.37,
+      "variance_population": 7128480247.941272
+    }
+  },
+  "workspace_bytes": 2196860928
+}

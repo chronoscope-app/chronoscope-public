@@ -121,9 +121,13 @@ try {
       }
       const tracks = [];
       for (let i = 0; i < v.trails.length; i++)
-        tracks.push(
-          v.trails.get(i).material.uniforms.color.toCssHexString().slice(0, 7),
-        );
+        if (v.trails.get(i).show)
+          tracks.push(
+            v.trails
+              .get(i)
+              .material.uniforms.color.toCssHexString()
+              .slice(0, 7),
+          );
       return {
         colors,
         clusters,

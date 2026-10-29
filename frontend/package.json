@@ -1,6 +1,6 @@
 {
   "name": "chronoscope-ui",
-  "version": "0.15.2",
+  "version": "0.16.4",
   "private": true,
   "type": "module",
   "scripts": {
@@ -66,10 +66,16 @@
     "test:navigation-preferences": "node scripts/navigation-preferences-qa.mjs",
     "build:raw": "tsc && vite build",
     "test:priority-demos": "node scripts/priority-demos-qa.mjs",
-    "test:import-grid": "node scripts/import-grid-qa.mjs"
+    "test:import-grid": "node scripts/import-grid-qa.mjs",
+    "test:renderer-reuse": "node scripts/renderer-reuse-qa.mjs",
+    "test:track-style": "node scripts/track-style-qa.mjs",
+    "test:playback-reuse": "node scripts/playback-reuse-qa.mjs",
+    "test:altitude": "node scripts/altitude-qa.mjs",
+    "test:table-playback": "node scripts/table-playback-qa.mjs",
+    "test:space-demos": "node scripts/space-demos-qa.mjs"
   },
   "dependencies": {
-    "@tauri-apps/api": "^2",
+    "@tauri-apps/api": "2.12.4",
     "@tauri-apps/plugin-dialog": "^2",
     "cesium": "1.146.0",
     "dompurify": "^3.4.17",
@@ -80,7 +86,7 @@
     "marked": "^18.1.1"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2",
+    "@tauri-apps/cli": "2.12.4",
     "@types/katex": "^0.16.8",
     "esbuild": "^0.25.12",
     "playwright": "^1.64.0",

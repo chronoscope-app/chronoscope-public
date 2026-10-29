@@ -21,6 +21,8 @@ pub fn field_feedback(table: &RawTable, mapping: &Mapping) -> BTreeMap<String, F
         &mut mapping.entity,
         &mut mapping.lat,
         &mut mapping.lon,
+        &mut mapping.altitude,
+        &mut mapping.altitude_reference_column,
         &mut mapping.category,
         &mut mapping.label,
         &mut mapping.value,
@@ -84,6 +86,13 @@ pub fn field_feedback(table: &RawTable, mapping: &Mapping) -> BTreeMap<String, F
         ("category", mapping.category, false, true),
         ("label", mapping.label, false, true),
         ("value", mapping.value, false, true),
+        ("altitude", mapping.altitude, false, true),
+        (
+            "altitude_reference_column",
+            mapping.altitude_reference_column,
+            false,
+            true,
+        ),
         ("related_to", mapping.related_to, false, true),
         ("geometry_wkt", mapping.geometry_wkt, false, true),
         (
@@ -176,6 +185,12 @@ pub fn field_feedback(table: &RawTable, mapping: &Mapping) -> BTreeMap<String, F
                     "lon" => {
                         probe.lon = column;
                         probe.lat = Some(timestamp + 1);
+                    }
+                    "altitude" | "altitude_reference_column" => {
+                        probe.altitude = mapping.altitude;
+                        probe.altitude_reference_column = mapping.altitude_reference_column;
+                        probe.altitude_unit = mapping.altitude_unit;
+                        probe.altitude_reference = mapping.altitude_reference;
                     }
                     "value" => {
                         probe.value = column;

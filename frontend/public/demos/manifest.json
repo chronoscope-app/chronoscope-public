@@ -4568,6 +4568,1016 @@
         "start": 1586044800
       },
       "sha256": "ca9eb5838c08f3f958e71fe196967b662acfbe8b790dc2c1d90fe7a861a1efd0"
+    },
+    {
+      "file": "flight-altitude-globe.jpg",
+      "demo": "flight-altitude",
+      "source_url": "https://doi.org/10.5281/zenodo.18916312",
+      "license": "CC BY 4.0 · El Ouanbi and Amellal / OpenSky telemetry",
+      "saved_view_index": 0,
+      "events": 88018,
+      "visible": 88018,
+      "scene": {
+        "mode": "globe",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            5237133.96019216,
+            375050.0571043724,
+            5480335.105984564
+          ],
+          "direction": [
+            -0.851447259630481,
+            -0.06097521006204242,
+            -0.5208834685662758
+          ],
+          "up": [
+            -0.5195529065044024,
+            -0.037207058046318936,
+            0.8536277948698517
+          ]
+        },
+        "view_states": {
+          "globe": {
+            "center": [
+              4.096164622764024,
+              49.3556241364604,
+              0
+            ],
+            "ground_width": 1471789.9284727566,
+            "heading": 0,
+            "tilt": 17.96409263901434,
+            "footprint": [
+              [
+                -11.050455698304756,
+                55.68650363263942,
+                0
+              ],
+              [
+                19.242784980459856,
+                55.68650362787375,
+                0
+              ],
+              [
+                12.551472848610246,
+                44.30199591210982,
+                0
+              ],
+              [
+                -4.359143608535247,
+                44.30199592283015,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                5237133.96019216,
+                375050.0571043724,
+                5480335.105984564
+              ],
+              "direction": [
+                -0.851447259630481,
+                -0.06097521006204242,
+                -0.5208834685662758
+              ],
+              "up": [
+                -0.5195529065044024,
+                -0.037207058046318936,
+                0.8536277948698517
+              ]
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 0.65,
+          "track_opacity": 0.55,
+          "trail_opacity": 0.12,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 2,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_altitude": true,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -0.8542633056640625,
+          47.18395168498411,
+          9.055762657752403,
+          51.4782559669624
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "d70f149de584a6c89aee94a2379760c46950a5a79d2bf981dce28352f323b044"
+    },
+    {
+      "file": "flight-altitude-time.jpg",
+      "demo": "flight-altitude",
+      "source_url": "https://doi.org/10.5281/zenodo.18916312",
+      "license": "CC BY 4.0 · El Ouanbi and Amellal / OpenSky telemetry",
+      "saved_view_index": 1,
+      "events": 88018,
+      "visible": 88018,
+      "scene": {
+        "mode": "globe",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            5263268.031633232,
+            376491.85204610345,
+            5502971.431466282
+          ],
+          "direction": [
+            -0.8515922069658152,
+            -0.06091605543582742,
+            -0.5206533849167134
+          ],
+          "up": [
+            -0.5193264301136361,
+            -0.037148434834564446,
+            0.8537681493091488
+          ]
+        },
+        "view_states": {
+          "globe": {
+            "center": [
+              4.091510115556982,
+              49.41276788996304,
+              0
+            ],
+            "ground_width": 1513467.4470751882,
+            "heading": 1.167450136563275e-8,
+            "tilt": 18.036678413472984,
+            "footprint": [
+              [
+                -11.666508632174935,
+                55.932637081030975,
+                0
+              ],
+              [
+                19.849528916799617,
+                55.93263706281871,
+                0
+              ],
+              [
+                12.780803658508837,
+                44.20500126297399,
+                0
+              ],
+              [
+                -4.597783391747216,
+                44.20500131623422,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                5263268.031633232,
+                376491.85204610345,
+                5502971.431466282
+              ],
+              "direction": [
+                -0.8515922069658152,
+                -0.06091605543582742,
+                -0.5206533849167134
+              ],
+              "up": [
+                -0.5193264301136361,
+                -0.037148434834564446,
+                0.8537681493091488
+              ]
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 0.65,
+          "track_opacity": 0.55,
+          "trail_opacity": 0.12,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 2,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": true,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -0.8542633056640625,
+          47.18395168498411,
+          9.055762657752403,
+          51.4782559669624
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "79a5b6da670dbe192a65e6ca420a56a234ccd40cb722b54ace9589cfe873bcc5"
+    },
+    {
+      "file": "starlink-orbits-globe.jpg",
+      "demo": "starlink-orbits",
+      "source_url": "https://doi.org/10.6084/m9.figshare.33446503.v1",
+      "license": "CC BY 4.0 · Guo et al. / SpaceX operator predictions",
+      "saved_view_index": 0,
+      "events": 46208,
+      "visible": 11648,
+      "scene": {
+        "mode": "globe",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            20319591.98019891,
+            0,
+            0
+          ],
+          "direction": [
+            -1,
+            0,
+            2.220446049250313e-16
+          ],
+          "up": [
+            2.220446049250313e-16,
+            2.220446049250313e-16,
+            1
+          ]
+        },
+        "view_states": {
+          "globe": {
+            "center": [
+              -8.027614071382083e-15,
+              2.7995885969215833e-14,
+              -4.6566128730773926e-9
+            ],
+            "ground_width": 16098205.571425783,
+            "heading": 0,
+            "tilt": 4.150188715754652e-14,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                20319591.98019891,
+                0,
+                0
+              ],
+              "direction": [
+                -1,
+                0,
+                2.220446049250313e-16
+              ],
+              "up": [
+                2.220446049250313e-16,
+                2.220446049250313e-16,
+                1
+              ]
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": false,
+          "show_centroids": true,
+          "point_scale": 0.4,
+          "track_opacity": 0.55,
+          "trail_opacity": 0,
+          "show_tracks": true,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 2,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_altitude": true,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -82,
+          180,
+          82
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": 1732606242,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "cc506a08cd7a86a13f3936c62f572fa730306bd9fd92b178102f1ecf0b232c26"
+    },
+    {
+      "file": "starlink-orbits-time.jpg",
+      "demo": "starlink-orbits",
+      "source_url": "https://doi.org/10.6084/m9.figshare.33446503.v1",
+      "license": "CC BY 4.0 · Guo et al. / SpaceX operator predictions",
+      "saved_view_index": 1,
+      "events": 46208,
+      "visible": 46208,
+      "scene": {
+        "mode": "globe",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            21497721.627416484,
+            0,
+            0
+          ],
+          "direction": [
+            -1,
+            0,
+            2.220446049250313e-16
+          ],
+          "up": [
+            2.220446049250313e-16,
+            2.220446049250313e-16,
+            1
+          ]
+        },
+        "view_states": {
+          "globe": {
+            "center": [
+              -8.70599162575849e-15,
+              3.036169235795366e-14,
+              0
+            ],
+            "ground_width": 17458592.50934847,
+            "heading": 0,
+            "tilt": 4.395472311896899e-14,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                21497721.627416484,
+                0,
+                0
+              ],
+              "direction": [
+                -1,
+                0,
+                2.220446049250313e-16
+              ],
+              "up": [
+                2.220446049250313e-16,
+                2.220446049250313e-16,
+                1
+              ]
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": false,
+          "show_centroids": true,
+          "point_scale": 0.4,
+          "track_opacity": 0.55,
+          "trail_opacity": 0,
+          "show_tracks": true,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 2,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": true,
+        "globe_altitude": false,
+        "globe_time_scale": 20,
+        "focus": 0.45,
+        "bounds": [
+          -180,
+          -82,
+          180,
+          82
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "07fa23f6184a710ebdcc3051151d43c6009c84568f7317de73e228de7258b630"
+    },
+    {
+      "file": "falcon9-launches-time.jpg",
+      "demo": "falcon9-launches",
+      "source_url": "https://planet4589.org/space/gcat/",
+      "license": "CC BY 4.0 · Jonathan McDowell / GCAT",
+      "saved_view_index": 0,
+      "events": 700,
+      "visible": 700,
+      "scene": {
+        "mode": "globe",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -2899240.298830642,
+            -15143473.618412754,
+            4138183.5279337857
+          ],
+          "direction": [
+            0.1863958970349953,
+            0.9735934446235138,
+            -0.13180430248910846
+          ],
+          "up": [
+            0.024784002866179294,
+            0.12945318596531194,
+            0.9912757567122075
+          ]
+        },
+        "view_states": {
+          "globe": {
+            "center": [
+              -100.83821127088157,
+              26.677867040659297,
+              -3.15826851088799e-9
+            ],
+            "ground_width": 11317235.48738521,
+            "heading": 359.9999999277975,
+            "tilt": 19.103998525490887,
+            "footprint": [
+              [
+                -180,
+                -90,
+                0
+              ],
+              [
+                180,
+                -90,
+                0
+              ],
+              [
+                180,
+                90,
+                0
+              ],
+              [
+                -180,
+                90,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                -2899240.298830642,
+                -15143473.618412754,
+                4138183.5279337857
+              ],
+              "direction": [
+                0.1863958970349953,
+                0.9735934446235138,
+                -0.13180430248910846
+              ],
+              "up": [
+                0.024784002866179294,
+                0.12945318596531194,
+                0.9912757567122075
+              ]
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1.1,
+          "track_opacity": 0,
+          "trail_opacity": 0,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": true,
+        "globe_altitude": false,
+        "globe_time_scale": 20,
+        "focus": 0.45,
+        "bounds": [
+          -126,
+          22,
+          -75,
+          40
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "5cac12927266d088fd99eda72d1787a21a3bd25a6f823e917d04f58afd2b6e6e"
+    },
+    {
+      "file": "falcon9-launches-map.jpg",
+      "demo": "falcon9-launches",
+      "source_url": "https://planet4589.org/space/gcat/",
+      "license": "CC BY 4.0 · Jonathan McDowell / GCAT",
+      "saved_view_index": 1,
+      "events": 700,
+      "visible": 700,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -11187608.824723994,
+            3450904.2145914803,
+            1791160.562250475
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204460492503126e-16,
+            1,
+            2.2204460492503126e-16
+          ],
+          "frustum_width": 5678407.225364883
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -100.5,
+              30.999999999999993,
+              0.0009667561021256278
+            ],
+            "ground_width": 5678407.225364883,
+            "heading": 359.99999928907573,
+            "tilt": 0,
+            "footprint": [
+              [
+                -125.93680481283423,
+                50.50382352941177,
+                -0.009159574494630363
+              ],
+              [
+                -75.06319518716577,
+                50.50382352941174,
+                -0.0022941181390006933
+              ],
+              [
+                -75.06319518716579,
+                11.496176470588239,
+                0.002615512791382913
+              ],
+              [
+                -125.93680481283423,
+                11.496176470588246,
+                0.0021835451839339022
+              ]
+            ],
+            "camera": {
+              "position": [
+                -11187608.824723994,
+                3450904.214591481,
+                1791160.562250475
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.2204460492503126e-16,
+                1,
+                2.220446049250312e-16
+              ],
+              "frustum_width": 5678407.225364883
+            }
+          }
+        },
+        "render_budget": 100000,
+        "display": {
+          "mode": "density",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1.1,
+          "track_opacity": 0,
+          "trail_opacity": 0,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 20,
+        "focus": 0.45,
+        "bounds": [
+          -126,
+          22,
+          -75,
+          40
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "b5c2ac71fd07e3dace7cb8a56e095d5c61574b5f99753420b6b7780ca53704a6"
     }
   ]
 }

@@ -36,7 +36,7 @@ export function numericCount(schema: FieldSchema, field: string): number {
 }
 export const numericRoleAllowed = (field: string) =>
   field.startsWith("attribute:") ||
-  ["value", "lat", "lon", "time", "end", "year_utc"].includes(field);
+  ["value", "lat", "lon", "time", "end", "year_utc", "altitude_m"].includes(field);
 
 /** Bounded, searchable editor for dataset metadata; never a row-data editor. */
 export class FieldRolesEditor {

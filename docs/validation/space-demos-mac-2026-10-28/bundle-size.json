@@ -1,0 +1,36 @@
+{
+  "limit_bytes": 5000000,
+  "total_bytes": 3261304,
+  "files": [
+    {
+      "file": "samples/starlink-128-predicted-orbits-2024.chronoscope",
+      "bytes": 3198647,
+      "sha256": "1ecdb113f4f8d0f3bb6baeaf2fc0aeef444a76dc1776e10b45ae8ca16baaf370"
+    },
+    {
+      "file": "frontend/public/demos/starlink-orbits-globe.jpg",
+      "bytes": 23553,
+      "sha256": "cc506a08cd7a86a13f3936c62f572fa730306bd9fd92b178102f1ecf0b232c26"
+    },
+    {
+      "file": "frontend/public/demos/starlink-orbits-time.jpg",
+      "bytes": 23212,
+      "sha256": "07fa23f6184a710ebdcc3051151d43c6009c84568f7317de73e228de7258b630"
+    },
+    {
+      "file": "samples/public/starlink-128-predicted-orbits-2024.csv.attribution.json",
+      "bytes": 972,
+      "sha256": "eec9c3526bf3de75309df6f15eb15c246a797ef86fb82e5520a3f88cfa5d99f8"
+    },
+    {
+      "file": "samples/public/space-provenance.json",
+      "bytes": 6528,
+      "sha256": "74b37cf73949adbfc215cd184b05350bfbb240984444a66793bd6e88bb35c426"
+    },
+    {
+      "file": "docs/SPACE-DEMOS.md",
+      "bytes": 8392,
+      "sha256": "f5690b7afac42ee0231e4feac377762cd9a9bcad207777bca896ee4107354fe5"
+    }
+  ]
+}

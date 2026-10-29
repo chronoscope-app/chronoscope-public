@@ -52,6 +52,8 @@ pub fn mapping() -> Value {
         "entity",
         "lat",
         "lon",
+        "altitude",
+        "altitude_reference_column",
         "category",
         "label",
         "value",
@@ -90,6 +92,14 @@ pub fn mapping() -> Value {
             "excel1904",
             "time_of_day",
         ]),
+    );
+    props.insert(
+        "altitude_unit".into(),
+        choice(&["meters", "feet", "kilometers"]),
+    );
+    props.insert(
+        "altitude_reference".into(),
+        choice(&["unspecified", "ellipsoid", "egm96", "reported"]),
     );
     props.insert("decimal_comma".into(), boolean());
     object(Value::Object(props), &[])
@@ -134,7 +144,7 @@ fn cesium_camera() -> Value {
 }
 pub fn scene() -> Value {
     object(
-        json!({"measurement":nullable(object(json!({"latest_per_entity":boolean(),"title":{"type":"string","minLength":1,"maxLength":128},"unit":{"type":"string","maxLength":32},"minimum":{"type":"number"},"maximum":{"type":"number"}}), &["title","unit","minimum","maximum"])),"renderer":choice(&["","cesium"]),"cesium_camera":nullable(cesium_camera()),"view_states":{"type":"object","maxProperties":3,"propertyNames":{"enum":["space-time","map","globe"]},"additionalProperties":object(json!({"center":vector(3),"ground_width":{"type":"number","minimum":0.01,"maximum":1e10},"heading":{"type":"number","minimum":0,"exclusiveMaximum":360},"tilt":{"type":"number","minimum":0,"maximum":89.5},"footprint":list(vector(3),4),"camera":nullable(cesium_camera())}),&["center","ground_width","heading","tilt"])},"entity_colors":{"type":"object","maxProperties":10000,"propertyNames":{"maxLength":8192},"additionalProperties":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}},"display":nullable(display_options()),"mode":choice(&["","space-time","map","globe"]),"position":nullable(vector(3)),"target":nullable(vector(3)),"playback_fade":nullable(boolean()),"globe_time":boolean(),"globe_time_scale":nullable(json!({"type":"number","minimum":0.05,"maximum":20})),"time_height":nullable(json!({"type":"number","minimum":0,"maximum":5})),"camera_up":nullable(vector(3)),"camera_zoom":nullable(json!({"type":"number","minimum":0.1,"maximum":100})),"render_budget":nullable(json!({"enum":[20000,100000]})),"table_source":nullable(string()),"gis_table":nullable(string()),"table_attributes":boolean(),"table_respect_filters":boolean(),"table_sort":string(),"table_descending":boolean(),"table_column_offset":integer(0,528),"focus":nullable(json!({"type":"number","minimum":0,"maximum":1})),"bounds":nullable(vector(4)),"table_open":boolean(),"inspector_tab":choice(&["","inspect","patterns","charts","views"]),"expanded":boolean(),"chart":nullable(chart()),"chart_presets":list(object(json!({"name":{"type":"string","minLength":1,"maxLength":128},"config":chart()}),&["name","config"]),32)}),
+        json!({"measurement":nullable(object(json!({"latest_per_entity":boolean(),"title":{"type":"string","minLength":1,"maxLength":128},"unit":{"type":"string","maxLength":32},"minimum":{"type":"number"},"maximum":{"type":"number"}}), &["title","unit","minimum","maximum"])),"renderer":choice(&["","cesium"]),"cesium_camera":nullable(cesium_camera()),"view_states":{"type":"object","maxProperties":3,"propertyNames":{"enum":["space-time","map","globe"]},"additionalProperties":object(json!({"center":vector(3),"ground_width":{"type":"number","minimum":0.01,"maximum":1e10},"heading":{"type":"number","minimum":0,"exclusiveMaximum":360},"tilt":{"type":"number","minimum":0,"maximum":89.5},"footprint":list(vector(3),4),"camera":nullable(cesium_camera())}),&["center","ground_width","heading","tilt"])},"entity_colors":{"type":"object","maxProperties":10000,"propertyNames":{"maxLength":8192},"additionalProperties":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}},"display":nullable(display_options()),"mode":choice(&["","space-time","map","globe"]),"position":nullable(vector(3)),"target":nullable(vector(3)),"playback_fade":nullable(boolean()),"globe_time":boolean(),"globe_altitude":boolean(),"globe_time_scale":nullable(json!({"type":"number","minimum":0.05,"maximum":20})),"time_height":nullable(json!({"type":"number","minimum":0,"maximum":5})),"camera_up":nullable(vector(3)),"camera_zoom":nullable(json!({"type":"number","minimum":0.1,"maximum":100})),"render_budget":nullable(json!({"enum":[20000,100000]})),"table_source":nullable(string()),"gis_table":nullable(string()),"table_attributes":boolean(),"table_respect_filters":boolean(),"table_sort":string(),"table_descending":boolean(),"table_column_offset":integer(0,528),"focus":nullable(json!({"type":"number","minimum":0,"maximum":1})),"bounds":nullable(vector(4)),"table_open":boolean(),"inspector_tab":choice(&["","inspect","patterns","charts","views"]),"expanded":boolean(),"chart":nullable(chart()),"chart_presets":list(object(json!({"name":{"type":"string","minLength":1,"maxLength":128},"config":chart()}),&["name","config"]),32)}),
         &[],
     )
 }
@@ -143,7 +153,7 @@ fn vector(n: usize) -> Value {
 }
 pub fn changes() -> Value {
     object(
-        json!({"geometry_wkt":nullable(json!({"type":"string","maxLength":524288})),"entity":string(),"time":number(),"end":nullable(number()),"lat":nullable(json!({"type":"number","minimum":-90,"maximum":90})),"lon":nullable(json!({"type":"number","minimum":-180,"maximum":180})),"category":string(),"label":string(),"value":nullable(number()),"related_to":string(),"tags":list(string(),1024),"note":string()}),
+        json!({"geometry_wkt":nullable(json!({"type":"string","maxLength":524288})),"entity":string(),"time":number(),"end":nullable(number()),"lat":nullable(json!({"type":"number","minimum":-90,"maximum":90})),"lon":nullable(json!({"type":"number","minimum":-180,"maximum":180})),"altitude":nullable(object(json!({"meters":{"type":"number","minimum":-12000,"maximum":100000000},"reference":choice(&["unspecified","ellipsoid","egm96","reported"])}),&["meters"])),"category":string(),"label":string(),"value":nullable(number()),"related_to":string(),"tags":list(string(),1024),"note":string()}),
         &[],
     )
 }
@@ -508,7 +518,7 @@ pub fn command_schema(command: &str) -> Option<Value> {
         ),
         "scene_sync" => (json!({"scene":scene()}), vec!["scene"]),
         "view_set" => (
-            json!({"chart":nullable(chart()),"chart_presets":list(object(json!({"name":{"type":"string","minLength":1,"maxLength":128},"config":chart()}),&["name","config"]),32),"entity_colors":{"type":"object","maxProperties":10000,"propertyNames":{"maxLength":8192},"additionalProperties":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}},"display":nullable(display_options()),"mode":choice(&["space-time","map","globe"]),"render_budget":{"enum":[20000,100000]},"fit":boolean(),"bounds":vector(4),"playback_fade":boolean(),"globe_time":boolean(),"globe_time_scale":{"type":"number","minimum":0.05,"maximum":20},"time_height":{"type":"number","minimum":0,"maximum":5},"focus":{"type":"number","minimum":0,"maximum":1},"gis_table":nullable(string()),"table_open":boolean(),"inspector_tab":choice(&["inspect","patterns","charts","views"])}),
+            json!({"chart":nullable(chart()),"chart_presets":list(object(json!({"name":{"type":"string","minLength":1,"maxLength":128},"config":chart()}),&["name","config"]),32),"entity_colors":{"type":"object","maxProperties":10000,"propertyNames":{"maxLength":8192},"additionalProperties":{"type":"string","pattern":"^#[0-9a-fA-F]{6}$"}},"display":nullable(display_options()),"mode":choice(&["space-time","map","globe"]),"render_budget":{"enum":[20000,100000]},"fit":boolean(),"bounds":vector(4),"playback_fade":boolean(),"globe_time":boolean(),"globe_altitude":boolean(),"globe_time_scale":{"type":"number","minimum":0.05,"maximum":20},"time_height":{"type":"number","minimum":0,"maximum":5},"focus":{"type":"number","minimum":0,"maximum":1},"gis_table":nullable(string()),"table_open":boolean(),"inspector_tab":choice(&["inspect","patterns","charts","views"])}),
             vec![],
         ),
         "view_recording" => (
@@ -520,6 +530,10 @@ pub fn command_schema(command: &str) -> Option<Value> {
             vec![],
         ),
         "view_status" => (json!({}), vec![]),
+        "view_reset" => (
+            json!({"confirm":{"const":true,"description":"Explicitly confirm a graphics reload; preserves Events, filters, selection, camera and saved workspace."}}),
+            vec!["confirm"],
+        ),
         "view_navigate" => (
             json!({"action":choice(&["fit","fit_layer","look_at","zoom","north_up"]),"layer_id":{"type":"string","pattern":"^[0-9a-fA-F]{32}$"},"center":{"type":"array","prefixItems":[{"type":"number","minimum":-180,"maximum":180},{"type":"number","minimum":-90,"maximum":90},{"type":"number","minimum":-12000,"maximum":10000000}],"items":false,"minItems":3,"maxItems":3},"distance_m":{"type":"number","minimum":1,"maximum":100000000},"heading_degrees":{"type":"number","minimum":0,"maximum":360},"tilt_degrees":{"type":"number","minimum":0,"maximum":89},"factor":{"type":"number","minimum":0.05,"maximum":20},"whole_globe":boolean()}),
             vec!["action"],
@@ -535,6 +549,11 @@ pub fn command_schema(command: &str) -> Option<Value> {
         _ => return None,
     };
     let mut schema = object(props, &required);
+    if command == "view_set" {
+        schema["properties"]["globe_altitude"]["description"] = json!("Use physical altitude in Globe; enabling it disables globe_time. Missing/unresolved heights are omitted from rendering, not queries. Altitude keeps the Time Height slider visible but disabled.");
+        schema["properties"]["globe_time"]["description"] = json!("Use timestamp-based display elevation in Globe; enabling it disables globe_altitude. Set both false for ground placement.");
+        schema["properties"]["globe_time_scale"]["description"] = json!("Retained Time Height multiplier (0.05–20); ignored in Altitude. time_height independently controls Space-time.");
+    }
     if command == "view_recording" {
         let mut start = schema["properties"].clone();
         start["action"] = json!({"const":"start"});

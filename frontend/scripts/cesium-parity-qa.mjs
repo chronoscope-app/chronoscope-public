@@ -68,6 +68,8 @@ try {
   await api("preferences", {
     preferences: {
       ...prefs,
+      date_format: "iso",
+      time_format: "24h",
       theme: "dark",
       map: { ...prefs.map, enabled: false },
       basemap: "none",
@@ -83,6 +85,9 @@ try {
   await api("preferences", {
     preferences: {
       ...loadedPreferences,
+      // Import-preview assertions below use canonical ISO dates and 24-hour time.
+      date_format: "iso",
+      time_format: "24h",
       map: { ...loadedPreferences.map, enabled: false },
       basemap: "none",
       map_layers: [],
@@ -100,7 +105,10 @@ try {
     },
   });
   browser = await chromium.launch();
-  page = await browser.newPage({ viewport: { width: 1800, height: 1100 } });
+  page = await browser.newPage({
+    viewport: { width: 1800, height: 1100 },
+    locale: "en-US",
+  });
   page.setDefaultTimeout(60000);
   await page.addInitScript(() => {
     window.__chronoscopeCspViolations = [];
@@ -229,10 +237,10 @@ try {
     v.rebuildTrails();
     const selected =
       v.selections.length === 1 &&
-      stems !== v.stemsPrimitive &&
+      stems === v.stemsPrimitive &&
       track !== v.trails.get(0);
     v.setDisplayOptions({ ...options, show_trails: false });
-    const hidden = v.stemSegments === 0;
+    const hidden = v.diagnostics().stemSegments === 0;
     v.setDisplayOptions(options);
     const restored = v.stemSegments > 0;
     const camera = v.captureCamera(),
@@ -464,9 +472,13 @@ try {
       camera: v.captureCamera(),
       viewport: v.onViewportChange,
       changed: v.onSceneChange,
+      renderLoop: v.viewer.useDefaultRenderLoop,
     };
     v.onViewportChange = () => {};
     v.onSceneChange = () => {};
+    // Lifetime checks should not depend on software GPU frame cost. Fade rAF
+    // callbacks still run; screenshot() explicitly renders real WebGL frames.
+    v.viewer.useDefaultRenderLoop = false;
     const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     try {
       v.setPlayback(false);
@@ -504,21 +516,36 @@ try {
         [epoch, epoch + 800],
       );
       const born = v.outgoing.find((x) => x.id === "persist-1").started;
-      await wait(450);
+      // Follow the renderer's declared lifetime; Next's departure fade is now
+      // shorter than the legacy fixture's two fixed 450 ms waits.
+      const departure = v.diagnostics().fadeDurationsMs.departure;
+      const step = departure * 0.15;
+      await wait(step);
       await v.setData(
         points.slice(3),
         ["Afterimages"],
         [-86, 24, -83, 28],
         [epoch, epoch + 800],
       );
-      await wait(450);
+      await wait(step);
       await v.setData(
         points.slice(4),
         ["Afterimages"],
         [-86, 24, -83, 28],
         [epoch, epoch + 800],
       );
+      // setData schedules the fade callback; sample its color only after that
+      // callback has actually run, rather than immediately after the packet.
+      await new Promise(requestAnimationFrame);
+      await new Promise(requestAnimationFrame);
       const ghost = v.outgoing.find((x) => x.id === "persist-1");
+      const timing = {
+        elapsed: performance.now() - born,
+        departure,
+        ghostStarted: ghost?.started,
+        born,
+        alpha: ghost?.glyph.color.alpha,
+      };
       const retained =
         !!ghost &&
         ghost.started === born &&
@@ -530,7 +557,7 @@ try {
       const currentOnly =
         v.pointById.size === 8 && !v.glyphById.has("persist-1");
       const image = await v.screenshot();
-      await wait(1700);
+      await wait(departure + 100);
       const oldestExpired =
         !v.outgoing.some((x) => x.id === "persist-1") &&
         v.fadingTriangles.length === 0;
@@ -553,6 +580,7 @@ try {
       const clearedOnHide =
         v.outgoing.length === 0 && v.diagnostics().fadingStemSegments === 0;
       return {
+        timing,
         retained,
         triangleRetained,
         stemsRetained,
@@ -578,6 +606,7 @@ try {
       v.restoreCamera(saved.camera);
       v.onViewportChange = saved.viewport;
       v.onSceneChange = saved.changed;
+      v.viewer.useDefaultRenderLoop = saved.renderLoop;
     }
   });
   fs.writeFileSync(
@@ -585,8 +614,9 @@ try {
     Buffer.from(persistence.image.split(",")[1], "base64"),
   );
   delete persistence.image;
-  for (const [name, passed] of Object.entries(persistence))
-    assert.equal(passed, true, name);
+  const { timing, ...persistenceChecks } = persistence;
+  for (const [name, passed] of Object.entries(persistenceChecks))
+    assert.equal(passed, true, `${name}: ${JSON.stringify(timing)}`);
   await page.emulateMedia({ reducedMotion: "reduce" });
   const reduced = await page.evaluate(() => {
     const v = window.__chronoscope.view;

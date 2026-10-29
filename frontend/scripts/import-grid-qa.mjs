@@ -50,7 +50,7 @@ await withLocalApp("import-grid", async ({ page, api, out, root, pass }) => {
       .first()
       .locator("[data-field]")
       .count(),
-    8,
+    9,
   );
   await state("time", "invalid");
   await state("lat", "valid");

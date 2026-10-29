@@ -90,3 +90,35 @@ console.log(
 );
 
 assert.equal(time(-0.0000000001), "1970-01-01 00:00:00");
+// Altitude packet extension: preserve metres, datum, zero and missing separately.
+{
+  const original = packet(5),
+    bytes = Buffer.alloc(5 * 48),
+    raw = Buffer.from(original.data, "base64");
+  for (let i = 0; i < 5; i++) {
+    raw.copy(bytes, i * 48, i * 32, (i + 1) * 32);
+    bytes.writeDoubleLE(i ? i * 1000 : NaN, i * 48 + 32);
+    bytes[i * 48 + 40] = i;
+  }
+  bytes.writeDoubleLE(0, 48 + 32);
+  const p = { ...original, stride: 48, data: bytes.toString("base64") },
+    rows = decode(p);
+  assert.equal(rows[0].altitude, undefined);
+  assert.deepEqual(rows[1].altitude, { meters: 0, reference: "ellipsoid" });
+  assert.deepEqual(rows[2].altitude, { meters: 2000, reference: "egm96" });
+  assert.equal(rows[3].altitude.reference, "reported");
+  assert.equal(rows[4].altitude.reference, "unspecified");
+  for (const mutate of [
+    (b) => (b[40] = 9),
+    (b) => b.writeDoubleLE(Infinity, 80),
+    (b) => (b[41] = 1),
+    (b) => b.writeDoubleLE(12, 32),
+  ]) {
+    const bad = Buffer.from(bytes);
+    mutate(bad);
+    assert.throws(
+      () => decode({ ...p, data: bad.toString("base64") }),
+      /Invalid render packet/,
+    );
+  }
+}

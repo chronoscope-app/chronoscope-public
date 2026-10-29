@@ -146,12 +146,19 @@ mod analytics;
 mod assist;
 mod charts;
 mod desktop;
+mod view_host;
+pub use view_host::{
+    HardwareAcceleration, NativeRecordingBackend, NativeRecordingHost, NativeRecordingHostProvider,
+    NativeViewBackend, NativeViewHost,
+};
 mod fields;
 mod imports;
 mod patterns;
 mod recovery;
 mod scenarios;
+mod view_identity;
 mod view_snapshot;
+pub use view_identity::CanonicalViewIdentity;
 mod workspace;
 
 type Observer = Arc<dyn Fn(Value) + Send + Sync>;
@@ -173,6 +180,8 @@ pub struct Engine {
     pub(crate) jobs: crate::jobs::Jobs,
     observer: Arc<Mutex<Option<Observer>>>,
     captures: Arc<Mutex<BTreeMap<String, DesktopReply>>>,
+    native_view_host: Arc<Mutex<Option<NativeViewHost>>>,
+    native_recording_host_provider: Arc<Mutex<Option<NativeRecordingHostProvider>>>,
     state: Arc<Mutex<State>>,
     operation: Arc<Mutex<()>>,
     analytics_worker: Arc<Mutex<()>>,
@@ -392,6 +401,8 @@ impl Engine {
             resource_epoch: Arc::new(std::sync::atomic::AtomicU64::new(0)),
             observer: Arc::new(Mutex::new(None)),
             captures: Arc::new(Mutex::new(BTreeMap::new())),
+            native_view_host: Arc::new(Mutex::new(None)),
+            native_recording_host_provider: Arc::new(Mutex::new(None)),
             state: Arc::new(Mutex::new(State {
                 project,
                 store,
@@ -581,6 +592,7 @@ impl Engine {
             command,
             "view_capture"
                 | "view_status"
+                | "view_reset"
                 | "view_navigate"
                 | "view_recording"
                 | "view_profile"
@@ -977,9 +989,12 @@ impl Engine {
             ),
             "file_probe" | "gis_layers" | "gis_load" | "gis_set" | "gis_remove" | "gis_read"
             | "gis_table" => self.invoke_gis(command, args),
-            "capabilities" => Ok(
-                json!({"version":env!("CARGO_PKG_VERSION"),"commands":crate::schema::COMMANDS,"storage":"indexed_sqlite","renderer":{"engine":"CesiumJS","backend":"WebGL2","webgpu_backend":false,"modes":["space-time","map","globe"],"attached_tools":["view_status","view_navigate","view_capture","view_recording","view_profile","view_wait","view_playback","view_scenario"],"profiling":{"maximum_samples":6000,"maximum_active":2,"cpu_only":true,"video_companion":true},"scenarios":{"maximum_recipes":16,"maximum_steps":80,"maximum_seconds":120,"persistent_recipes":true},"playback_actions":["status","play","pause","configure","seek","step"],"capture":{"default_target":"app","targets":["app","map"],"windows":["main","si-chat"],"app_snapshot":"native WebView visible content; desktop only","video":{"command":"view_recording","platform":"macOS 15+","backend":"ScreenCaptureKit app window","format":"H.264 MP4","audio":false,"maximum_seconds":120,"maximum_bytes":268435456,"maximum_dimensions":[1920,1080]}},"navigation":["fit","fit_layer","look_at","zoom","north_up"],"geographic_input":"WGS84 longitude, latitude, ellipsoid metres; heading clockwise from north; tilt zero=nadir","hardware_acceleration":"inspect on the target host; not inferred from API availability"},"max_csv_bytes":2147483648u64,"max_events":50000000u64,"render_budget":20000,"render_budget_options":[20000,100000],"display":{"default_mode":"auto","cluster_threshold":2000,"ui_max_cells":4000,"max_time_slabs":32,"heatmap_default":false,"bloom_default":false,"spatial_culling_default":true,"trail_tolerance_pixels":2,"exact_membership":true,"cold_query":"proportional to matching rows; cached base grids"},"page_limit":1000,"exact_ids":"decimal_u64_strings","time_resolution":"fractional_second","time_storage":"IEEE 754 binary64 Unix seconds; approximately 0.24 microsecond spacing near 2026; finer source strings retained","mutation_controls":["expected_revision","expected_workspace","dry_run","idempotency_key"],"batch":"atomic workspace operations","excel":"bounded workbook ingestion","analytics":{"discovery":"analytics_discover","describe":"analytics_describe","run":"analytics_run","result":"analytics_result","list":"analytics_list","remove":"analytics_remove","capabilities":crate::analytics::registry::NAMES,"sampling":"none","result_storage":"portable project database","max_results":32,"timeout_seconds":300},"analysis":"explicit bounded input budget","mcp_client":{"transports":["stdio","streamable_http"],"session_only":true,"explicit_tool_grants":true,"max_connections":16,"max_tools_per_connection":256,"max_response_bytes":2097152,"operation_timeout_seconds":60,"oauth":false,"browser_webmcp":cfg!(feature = "experimental-browser-webmcp")},"assistant":{"name":"Super Intelligence","commands_prefix":"si_","protocol":"OpenAI-compatible Chat Completions tools","providers":["openai-compatible"],"analysis_commands":["analysis_context","analysis_prepare","analysis_execute"],"app_intents":{"minimum_macos":"13.0","packaged_desktop":true,"actions":["workspace_summary","show_view","select_entity","recommend_analyses","find_track_gaps"]},"max_steps":16,"max_tool_calls":32,"key_storage":"session memory","file_access":"optional connection-scoped root","history":{"storage":"session memory","max_messages":32,"max_bytes":98304,"clear_command":"si_clear"}},"focused_ai":{"commands":["assist_status","assist_explain","assist_tags","assist_tags_apply"],"desktop_ui":"assist_ui","providers":["apple-local","connected"],"chat_history":false,"action_tools":false,"max_tag_events":25,"max_text_bytes_per_event":4000,"apply":"explicit additive review, expected workspace and revision, one Undo","cancellation":"job_cancel"},"aggregation":{"method":"fixed UTC windows and WGS84 anchored radius","streaming_import":true,"lossy":true,"partitions":["entity","category","source"]},"time_only_markers":"display-only geodesic triangles; source coordinates remain null","gis":{"formats":["shapefile","geopackage","geojson","topojson","kml","kmz","czml","gpx","tiles3d","gltf","glb"],"native_reference_layers":true,"event_import":true,"portable_assets":true,"max_layers":64,"max_reference_features":50000,"external_links":false},"geometry":{"polygon_anchor":"derived area-weighted WGS84 authalic surface centroid; holes subtract, multipart adds; can lie outside polygon", "format":"OGC WKT / EWKT SRID=4326","topology":"GeoRust validation and exact rectangle intersection","z_m":"preserved, not used as height/time"},"wmts":{"multiple_sources":true,"max_layers":64,"layer_preferences":"map_layers","layer_properties":["enabled","opacity","order","min_zoom","max_zoom"],"zoom":"view-centre projected camera resolution, minimum inclusive and maximum exclusive","transport":"direct disk cache, no proxy required","tile_plan":"paged full requested coverage","default_concurrency":8,"default_interval_ms":0}}),
-            ),
+            "capabilities" => {
+                let mut capabilities = json!({"version":env!("CARGO_PKG_VERSION"),"commands":crate::schema::COMMANDS,"storage":"indexed_sqlite","renderer":{"engine":"CesiumJS","backend":"WebGL2","webgpu_backend":false,"modes":["space-time","map","globe"],"attached_tools":["view_status","view_reset","view_navigate","view_capture","view_recording","view_profile","view_wait","view_playback","view_scenario"],"profiling":{"maximum_samples":6000,"maximum_active":2,"cpu_only":true,"video_companion":true},"scenarios":{"maximum_recipes":16,"maximum_steps":80,"maximum_seconds":120,"persistent_recipes":true},"playback_actions":["status","play","pause","configure","seek","step"],"capture":{"default_target":"app","targets":["app","map"],"windows":["main","si-chat"],"app_snapshot":"native WebView visible content; desktop only","video":{"command":"view_recording","platform":"macOS 15+","backend":"ScreenCaptureKit app window","format":"H.264 MP4","audio":false,"maximum_seconds":120,"maximum_bytes":268435456,"maximum_dimensions":[1920,1080]}},"navigation":["fit","fit_layer","look_at","zoom","north_up"],"geographic_input":"WGS84 longitude, latitude, ellipsoid metres; heading clockwise from north; tilt zero=nadir","hardware_acceleration":"inspect on the target host; not inferred from API availability"},"max_csv_bytes":2147483648u64,"max_events":50000000u64,"render_budget":20000,"render_budget_options":[20000,100000],"display":{"default_mode":"auto","cluster_threshold":2000,"ui_max_cells":4000,"max_time_slabs":32,"heatmap_default":false,"bloom_default":false,"spatial_culling_default":true,"trail_tolerance_pixels":2,"exact_membership":true,"cold_query":"proportional to matching rows; cached base grids"},"page_limit":1000,"exact_ids":"decimal_u64_strings","time_resolution":"fractional_second","time_storage":"IEEE 754 binary64 Unix seconds; approximately 0.24 microsecond spacing near 2026; finer source strings retained","mutation_controls":["expected_revision","expected_workspace","dry_run","idempotency_key"],"batch":"atomic workspace operations","excel":"bounded workbook ingestion","analytics":{"discovery":"analytics_discover","describe":"analytics_describe","run":"analytics_run","result":"analytics_result","list":"analytics_list","remove":"analytics_remove","capabilities":crate::analytics::registry::NAMES,"sampling":"none","result_storage":"portable project database","max_results":32,"timeout_seconds":300},"analysis":"explicit bounded input budget","mcp_client":{"transports":["stdio","streamable_http"],"session_only":true,"explicit_tool_grants":true,"max_connections":16,"max_tools_per_connection":256,"max_response_bytes":2097152,"operation_timeout_seconds":60,"oauth":false,"browser_webmcp":cfg!(feature = "experimental-browser-webmcp")},"assistant":{"name":"Super Intelligence","commands_prefix":"si_","protocol":"OpenAI-compatible Chat Completions tools","providers":["openai-compatible"],"analysis_commands":["analysis_context","analysis_prepare","analysis_execute"],"app_intents":{"minimum_macos":"13.0","packaged_desktop":true,"actions":["workspace_summary","show_view","select_entity","recommend_analyses","find_track_gaps"]},"max_steps":16,"max_tool_calls":32,"key_storage":"session memory","file_access":"optional connection-scoped root","history":{"storage":"session memory","max_messages":32,"max_bytes":98304,"clear_command":"si_clear"}},"focused_ai":{"commands":["assist_status","assist_explain","assist_tags","assist_tags_apply"],"desktop_ui":"assist_ui","providers":["apple-local","connected"],"chat_history":false,"action_tools":false,"max_tag_events":25,"max_text_bytes_per_event":4000,"apply":"explicit additive review, expected workspace and revision, one Undo","cancellation":"job_cancel"},"aggregation":{"method":"fixed UTC windows and WGS84 anchored radius","streaming_import":true,"lossy":true,"partitions":["entity","category","source"]},"time_only_markers":"display-only geodesic triangles; source coordinates remain null","gis":{"formats":["shapefile","geopackage","geojson","topojson","kml","kmz","czml","gpx","tiles3d","gltf","glb"],"native_reference_layers":true,"event_import":true,"portable_assets":true,"max_layers":64,"max_reference_features":50000,"external_links":false},"geometry":{"polygon_anchor":"derived area-weighted WGS84 authalic surface centroid; holes subtract, multipart adds; can lie outside polygon", "format":"OGC WKT / EWKT SRID=4326","topology":"GeoRust validation and exact rectangle intersection","z_m":"preserved, not used as height/time"},"wmts":{"multiple_sources":true,"max_layers":64,"layer_preferences":"map_layers","layer_properties":["enabled","opacity","order","min_zoom","max_zoom"],"zoom":"view-centre projected camera resolution, minimum inclusive and maximum exclusive","transport":"direct disk cache, no proxy required","tile_plan":"paged full requested coverage","default_concurrency":8,"default_interval_ms":0}});
+                self.apply_native_view_host(&mut capabilities)?;
+                self.apply_native_recording_host(&mut capabilities)?;
+                Ok(capabilities)
+            }
             "diagnostics" => {
                 let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
                 Ok(
@@ -1184,14 +1199,14 @@ impl Engine {
                     .as_bool()
                     .unwrap_or(false)
                 {
-                    s.store.connection.query_row("SELECT count(value),count(lat),count(lon),count(time),count(end) FROM events", [], |r| {
-                        Ok(json!({"value":r.get::<_,u64>(0)?,"lat":r.get::<_,u64>(1)?,"lon":r.get::<_,u64>(2)?,"time":r.get::<_,u64>(3)?,"end":r.get::<_,u64>(4)?}))
+                    s.store.connection.query_row("SELECT count(value),count(lat),count(lon),count(time),count(end),count(json_extract(payload,'$.altitude.meters')) FROM events", [], |r| {
+                        Ok(json!({"value":r.get::<_,u64>(0)?,"lat":r.get::<_,u64>(1)?,"lon":r.get::<_,u64>(2)?,"time":r.get::<_,u64>(3)?,"end":r.get::<_,u64>(4)?,"altitude_m":r.get::<_,u64>(5)?}))
                     }).map_err(|e| e.to_string())?
                 } else {
                     json!({})
                 };
                 Ok(
-                    json!({"canonical":["id","entity","time","end","lat","lon","category","label","value","related_to","tags","note","source","source_row","mgrs_precision","geometry_wkt","location_kind"],"numeric_fields":["value","lat","lon","time","end"],"numeric_counts":numeric_counts,"field_roles":s.project.field_roles.iter().filter(|(field,_)| !field.starts_with("attribute:") || attributes.iter().any(|name| field.strip_prefix("attribute:")==Some(name.as_str()))).collect::<BTreeMap<_,_>>(),"attribute_types":types,"attribute_types_scope":"entire dataset, irrespective of display filters; imported attributes remain strings; numeric means finite Rust f64 parsing, without inferred units","derived":{"time_utc":"read-only ISO 8601 UTC projection of time","year_utc":"read-only integer UTC calendar year of time"},"attributes":attributes,"attribute_count":count,"next_attribute_offset":if next<count {Some(next)} else {None},"attributes_limited":next<count,"id_type":"decimal string","time_type":"UTC Unix seconds including fractional seconds","coordinates":"WGS84 DD","null_location":"no point location; polygons may use explicitly derived surface centroids, labelled by location_kind","geometry":"OGC WKT, WGS84 X=longitude/Y=latitude; original Z/M retained, not used as height/time"}),
+                    json!({"canonical":["id","entity","time","end","lat","lon","category","label","value","related_to","tags","note","source","source_row","mgrs_precision","geometry_wkt","location_kind","altitude_m","altitude_reference"],"numeric_fields":["value","lat","lon","time","end","altitude_m"],"numeric_counts":numeric_counts,"field_roles":s.project.field_roles.iter().filter(|(field,_)| !field.starts_with("attribute:") || attributes.iter().any(|name| field.strip_prefix("attribute:")==Some(name.as_str()))).collect::<BTreeMap<_,_>>(),"attribute_types":types,"attribute_types_scope":"entire dataset, irrespective of display filters; imported attributes remain strings; numeric means finite Rust f64 parsing, without inferred units","derived":{"time_utc":"read-only ISO 8601 UTC projection of time","year_utc":"read-only integer UTC calendar year of time"},"attributes":attributes,"attribute_count":count,"next_attribute_offset":if next<count {Some(next)} else {None},"attributes_limited":next<count,"id_type":"decimal string","time_type":"UTC Unix seconds including fractional seconds","coordinates":"WGS84 DD","null_location":"no point location; polygons may use explicitly derived surface centroids, labelled by location_kind","geometry":"OGC WKT, WGS84 X=longitude/Y=latitude; original Z/M retained, not used as height/time"}),
                 )
             }
             "events" | "attribute_table" | "query" => {
@@ -1281,6 +1296,8 @@ impl Engine {
                     "mgrs_precision",
                     "geometry_wkt",
                     "location_kind",
+                    "altitude_m",
+                    "altitude_reference",
                 ];
                 let columns: Vec<_> = canonical
                     .into_iter()
@@ -1592,6 +1609,20 @@ impl Engine {
                     f.selected_only = true
                 }
                 let viewport = viewport_bounds(&args)?;
+                let altitude_mode =
+                    s.project.scene.mode == "globe" && s.project.scene.globe_altitude;
+                if altitude_mode {
+                    f.predicates.push(crate::model::Predicate {
+                        field: "altitude_m".into(),
+                        op: crate::model::Operator::Greater,
+                        value: "-12001".into(),
+                    });
+                    f.predicates.push(crate::model::Predicate {
+                        field: "altitude_reference".into(),
+                        op: crate::model::Operator::NotEquals,
+                        value: "unspecified".into(),
+                    });
+                }
                 let (mut rows, count) = s.store.render_viewport(&f, budget, viewport.as_ref())?;
                 let mut selected_located_count = if f.selected_only {
                     count
@@ -1618,7 +1649,7 @@ impl Engine {
                         .chain(selected_rows)
                         .collect();
                 }
-                let inferred_filter = if args["include_time_only"] == true {
+                let inferred_filter = if args["include_time_only"] == true && !altitude_mode {
                     &s.project.filter
                 } else {
                     &f
@@ -1631,6 +1662,9 @@ impl Engine {
                         (budget / 4).clamp(2, 5000)
                     },
                 )?;
+                if altitude_mode {
+                    inferred.clear();
+                }
                 if let Some(viewport) = &viewport {
                     inferred.retain(|e| {
                         e.location()
@@ -1659,7 +1693,12 @@ impl Engine {
                     .collect::<BTreeSet<_>>()
                     .into_iter()
                     .collect();
-                let mut bytes = Vec::with_capacity(rows.len() * 32);
+                let stride = if rows.iter().any(|e| e.altitude.is_some()) {
+                    48
+                } else {
+                    32
+                };
+                let mut bytes = Vec::with_capacity(rows.len() * stride);
                 let mut ids = vec![];
                 let mut centroid_ids = vec![];
                 for e in rows {
@@ -1673,12 +1712,22 @@ impl Engine {
                         &(names.binary_search(&e.entity).unwrap() as u32).to_le_bytes(),
                     );
                     bytes.extend_from_slice(&(e.value.unwrap_or(1.) as f32).to_le_bytes());
+                    if stride == 48 {
+                        bytes.extend_from_slice(
+                            &e.altitude
+                                .map(|a| a.meters)
+                                .unwrap_or(f64::NAN)
+                                .to_le_bytes(),
+                        );
+                        bytes.push(e.altitude.map(|a| a.reference.code()).unwrap_or(0));
+                        bytes.extend_from_slice(&[0; 7]);
+                    }
                     ids.push(e.id.to_string())
                 }
                 use base64::Engine;
                 serde_json::to_value(crate::api::PackedRender {
                     revision: s.revision,
-                    stride: 32,
+                    stride,
                     data: base64::engine::general_purpose::STANDARD.encode(bytes),
                     rendered_count: ids.len(),
                     ids,
@@ -2148,6 +2197,12 @@ impl Engine {
             }
             "scene_sync" | "view_set" => {
                 let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
+                if command == "view_set"
+                    && args["globe_time"] == true
+                    && args["globe_altitude"] == true
+                {
+                    return Err("Time Height and Altitude cannot both be enabled".into());
+                }
                 if command == "scene_sync" {
                     let scene: SceneState = arg(&args, "scene")?;
                     scene.validate()?;
@@ -2165,7 +2220,18 @@ impl Engine {
                             }
                             "time_height" => scene.time_height = v.as_f64(),
                             "playback_fade" => scene.playback_fade = v.as_bool(),
-                            "globe_time" => scene.globe_time = v.as_bool().unwrap(),
+                            "globe_time" => {
+                                scene.globe_time = v.as_bool().unwrap();
+                                if scene.globe_time {
+                                    scene.globe_altitude = false;
+                                }
+                            }
+                            "globe_altitude" => {
+                                scene.globe_altitude = v.as_bool().unwrap();
+                                if scene.globe_altitude {
+                                    scene.globe_time = false;
+                                }
+                            }
                             "globe_time_scale" => scene.globe_time_scale = v.as_f64(),
                             "render_budget" => scene.render_budget = v.as_u64().map(|v| v as usize),
                             "entity_colors" => {
@@ -2300,9 +2366,9 @@ impl Engine {
                                 .extension()
                                 .is_some_and(|e| e.eq_ignore_ascii_case("json"))
                             {
-                                "json_v6"
+                                "json_v7"
                             } else {
-                                "zip_v6"
+                                "zip_v7"
                             }
                         }
                         Err(e)

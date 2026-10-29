@@ -66,6 +66,8 @@ fn expression(c: &rusqlite::Connection, f: &str, args: &mut Vec<Sql>) -> Result<
         return Ok("(SELECT text FROM attributes a WHERE a.r=e.r AND a.key=?)".into());
     }
     Ok(match f {
+        "altitude_m" => "json_extract(e.payload,'$.altitude.meters')".into(),
+        "altitude_reference" => "json_extract(e.payload,'$.altitude.reference')".into(),
         "time_utc" => "utc_time(e.time)".into(),
         "year_utc" => "utc_year(e.time)".into(),
         "tags" | "attrs" | "location_kind" => format!("json_extract(e.payload,'$.{f}')"),

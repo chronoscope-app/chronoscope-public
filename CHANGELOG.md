@@ -4,9 +4,21 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
-These changes are in the current source and are planned for the next preview. They are not included in the existing 0.15.2 downloads. Platform build and validation results are recorded separately; this list does not certify a new downloadable release.
+## 0.16.4 — experimental preview, 2026-10-28
+
+Windows x64 and Apple Silicon macOS packages are prepared from one frozen Public source commit and validated separately before publication. Both remain experimental: Windows unsigned, macOS ad hoc signed and not notarized.
 
 ### Added
+
+- Replace the five-rocket demo with 128 Starlink satellites (46,208 predicted positions) and 700 Falcon 9 launches spanning 2010–2026 at three launch pads. Retain source dates, coordinate assumptions and credit; keep the full 43-million-state source as an optional local stress fixture.
+
+- Keep attribute-table controls and retained rows attached during playback, so close clicks, hover, focus and scroll remain stable in docked and detached Event/GIS tables.
+
+- Expose confirmed map graphics reload as MCP `view_reset` and CLI `view reset --confirm`; add `view height time|altitude|ground` shortcuts, height/import discovery details and matching generated contracts.
+
+- Show physical altitude in Globe with a sliding Time Height / Altitude selector and a persistent elevation slider (disabled in Altitude), explicit units/references on import, EGM96 conversion, and saved height mode. Add offline examples with 88,018 samples from 100 distinct flights; the earlier JAXA rocket example is replaced by the SpaceX demos above. [Sources, caveats and reproduction](docs/ALTITUDE-DEMOS.md).
+- Replace the renderer badge with a Reset map icon after Preferences. Confirm the graphics reload with Cancel focused by default; retain the dataset and camera.
+- Pin native Tauri core to 2.12.5 (build 2.7.4; JavaScript API/CLI 2.12.4). Keep app and bundle metadata aligned so native titles identify the build.
 
 - Keep Event and GIS attribute tables in one detachable tab group, with left-aligned tab titles, table-local search and continuous horizontal column loading. Retain tab state and linked selection when moving or docking the group. Give SI chat clear Detach/Dock controls while preserving drafts and active requests.
 - Expand Help → Demo datasets from six to thirteen offline examples. Include the existing website earthquake/crime samples and shorter hurricane workspace, full-year USGS earthquakes, NASA FIRMS South America detections, World Bank electricity access and historical JHU CSSE COVID snapshots. Preview images open their exact saved scenes and year filters.
@@ -22,6 +34,8 @@ These changes are in the current source and are planned for the next preview. Th
 
 ### Improved
 
+- Remove the bottom-left display description overlay from map views, including heat-map smoothing, density, clustering and bloom text.
+
 - Make the playback popup compact and give Fade the same switch style as other toggles. With Fade enabled, departing markers, tracks and trails fade more quickly. With Fade disabled, playback retains a growing filtered history until the next loop; the map, table, selection and query scope agree. The setting persists in saved views and workspaces and is available to MCP clients.
 - Organize Preferences into General, Workspace, Display and Agent access. Draft edits survive category changes and agent setup; Save applies all categories and Cancel discards form edits.
 - Default new profiles to System appearance and follow live system light/dark changes. Retain explicit saved Light/Dark choices. Changing appearance or date/time display preserves the camera and loaded map/terrain resources. Remove the distracting terrain-status banner from the map; terrain details remain available in Layers and Terrain settings.
@@ -32,6 +46,8 @@ These changes are in the current source and are planned for the next preview. Th
 - Add a welcome workspace with Open data, offline demos, recent saved workspaces and keyboard hints. Dialogs keep keyboard focus and return it to the initiating control when dismissed.
 
 ### Fixed
+
+- Update Tokio to 1.53.3 to address RUSTSEC-2026-0386 (AsyncFd I/O safety). Retain matching dependency notices and source.
 
 - Share identical in-flight imagery requests and retain loaded imagery during viewport refreshes, avoiding empty replacement canvases. Keep stationary cameras from triggering unnecessary redraws.
 - Preserve the full Event selection during slower double-click zoom, including off-screen Events and selections larger than the displayed subset. Prevent delayed restoration from overwriting newer selections, edits or workspace changes.

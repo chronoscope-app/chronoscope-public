@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "source_commit": "d43c938e5e68edf648c4ed7bad42581537dfc9ba",
+  "app_version": "0.16.3",
+  "binary_sha256": "55f4e11596fe3fa532dd7e96f49093bb8da4f201a0319020cd6a5e18984fc0a5",
+  "signature": "ad hoc, codesign --verify --strict passed",
+  "native_gui_tested": false,
+  "demo_catalog_count": 16,
+  "demos": {
+    "starlink-orbits": {
+      "count": 46208,
+      "entities": 128,
+      "categories": 1,
+      "globe_altitude": true,
+      "globe_time": false,
+      "filter": {
+        "bounds": null,
+        "end": 1732606242.0,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      }
+    },
+    "falcon9-launches": {
+      "count": 700,
+      "entities": 700,
+      "categories": 3,
+      "globe_altitude": false,
+      "globe_time": true,
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      }
+    }
+  },
+  "large_source_resources_absent": true
+}

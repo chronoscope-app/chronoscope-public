@@ -3,6 +3,22 @@
 Chronoscope uses CesiumJS WebGL2 for its geographic views. The installed app is
 **Chronoscope.app**, with bundle identifier `org.chronoscope.desktop`.
 
+## Current Next performance handoff — 2026-10-28
+
+For current development use `chronoscope-app/chronoscope-next/main`. Renderer
+resource reuse, track styling caches and adaptive playback markers are committed
+through `45ef153`; native Mac trail/stem profiling and refresh-scoped position
+sharing are committed through `12d9052`. Read the
+[Mac follow-up](performance/MAC_TRAIL_STEM_PROFILING_2026-10-28.md) for matched
+observations and retained adverse results. Topology/run/chunk reuse remains planned.
+Read the [Next performance report](performance/NEXT_PERFORMANCE_REPORT.md) and
+[Mac Codex task handoff](handoffs/2026-10-28-renderer-performance-mac.md) for local
+commands, native validation still needed, retained fallbacks and a copy-ready
+brief. October 28 software-renderer gains do not establish Mac/native FPS.
+Rebuild the app from the updated source; an installed older bundle is unchanged.
+Run locally, keep workflows manual-only, and obtain separate user authorization
+before public promotion.
+
 ## Build locally
 
 Tester builds select full Xcode26.6 (macOS SDK26.5), Rust1.98.0 and Node.js22 on standard macos-26 Apple Silicon runners. SDK27-only branches have been removed while retaining the existing26.x fallbacks. Native compilation, overlay linkage and App Intents metadata remain required checks; no old-macOS or real-device acceptance is implied. From this

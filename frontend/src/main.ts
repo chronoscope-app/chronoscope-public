@@ -1,3 +1,5 @@
+import type { SnapshotModel, SnapshotRequestIntent, SnapshotData, SnapshotApplication } from "./view-snapshot";
+import { SceneTransitions, type RestoreCommit } from "./scene-transitions";
 import { MeasurementLegend } from "./measurement-style";
 import { preferenceEffects } from "./preference-effects";
 import { WorkspaceFiles } from "./workspace-files";
@@ -150,7 +152,7 @@ let playbackPreserveFrame = false;
 let timeScrubbing = false;
 let timeScrubGeneration = 0;
 $("#app").innerHTML = `
-<header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Map servers">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open SI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button></div><button type="button" class="renderer-status" id="backend" aria-label="Renderer starting; refresh map"></button><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
+<header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Map servers">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open SI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button><button type="button" class="icon renderer-status" id="backend" aria-label="Reset map" title="Reset map"></button></div><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
 <main class="workspace"><aside class="sidebar"><section class="sidebar-pinned" id="search-section" aria-label="Search and selection"><input id="search" placeholder="Search events…" aria-label="Search events"><button id="reset-filters">Reset filters</button><div class="selection-tools" id="selection-tools"><div class="selection-summary"><strong id="pinned-selection-count" role="status">0 selected</strong><button id="clear" aria-label="Clear selection">Clear</button></div><div class="selection-actions"><button class="secondary" id="select-all">Select visible</button><label class="check-row"><input type="checkbox" id="selected-only" aria-label="Selected events only"> Show only</label></div></div></section><div class="sidebar-scroll"><details open class="sidebar-facet" id="entity-section"><summary><span>Entities</span><select id="entity-field" aria-label="Entity list field" title="Group the list by another column; source track identities stay unchanged"><option value="entity">Entity</option></select></summary><div class="facet-sort" role="group" aria-label="Sort entities"><button id="entity-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="entity-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div class="facet-controls"><input id="entity-search" placeholder="Find an entity…" aria-label="Find entity"><button id="all-entities">Enable all</button></div><div id="entities"></div><div class="facet-footer"><small id="entity-list-count"></small><button id="entity-show-all">Show all</button></div></details><details open class="sidebar-facet" id="category-section"><summary><span>Categories</span><select id="category-field" aria-label="Category list field" title="Group the list by another column"><option value="category">Category</option></select></summary><div class="facet-sort" role="group" aria-label="Sort categories"><button id="category-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="category-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div id="categories"></div><div class="facet-footer"><small id="category-list-count"></small><button id="category-show-all">Show all</button></div></details><div class="divider"></div><details id="time-section"><summary>Exact time range</summary><label class="field">Start / UTC<input id="exact-start" placeholder="Unbounded"></label><label class="field">End / UTC<input id="exact-end" placeholder="Unbounded"></label><button id="exact-apply" class="secondary">Apply range</button></details><details id="rules-section"><summary>Attribute rules</summary><label class="field">Field<input id="rule-field" placeholder="value, confidence, category…"></label><select id="rule-op"><option>Contains</option><option>Equals</option><option>NotEquals</option><option>Greater</option><option>Less</option><option>IsEmpty</option></select><label class="field">Value<input id="rule-value"></label><button id="add-rule" class="secondary">Add AND rule</button><div id="rules"></div></details><details id="bounds-section"><summary>Geographic bounds</summary><label class="field">West, South, East, North<input id="bounds" placeholder="-80,43,-79,44"></label><button id="apply-bounds" class="secondary">Apply region</button></details><section id="layers-section"><div class="section-head"><span class="caps">Layers</span></div><div id="layer-list"></div><div class="source-foot">WGS84 · UTC</div></section></div></aside>
 <section class="center"><div class="scene-container" id="scene"><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel">${attributeTableMarkup}</section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
 <aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="Super Intelligence chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
@@ -251,7 +253,24 @@ const rendererStatus = new RendererStatus($("#backend"));
 rendererStatus.update("Initializing renderer");
 const view = new SpaceTimeView($("#scene"), (s) => rendererStatus.update(s));
 $("#backend").addEventListener("click", () => {
-  void view.recoverRenderer().catch((error) => toast(String(error), true));
+  const dialog = modal(
+    `${head("Reset map?")}<p class="description">The map will briefly disappear while its graphics and visible map layers reload. Your Events, filters, selections, camera and saved workspace are kept.</p><footer><button type="button" id="reset-map-cancel" autofocus>Cancel</button><button type="button" id="reset-map-confirm" class="primary">Reset map</button></footer>`,
+    true,
+  );
+  const cancel = dialog.querySelector<HTMLButtonElement>("#reset-map-cancel")!;
+  const confirm = dialog.querySelector<HTMLButtonElement>("#reset-map-confirm")!;
+  cancel.onclick = closeModal;
+  confirm.onclick = () => {
+    closeModal();
+    void view.recoverRenderer().catch((error) => toast(String(error), true));
+  };
+  dialog.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && event.repeat) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  });
+  cancel.focus();
 });
 view.onGisError = (id, message) => {
   toast(`GIS layer: ${message}`, true);
@@ -318,7 +337,8 @@ const viewsPanel = new ViewsPanel($("#inspector-content"), {
 const chartsPanel = new ChartsPanel($("#inspector-content"), {
   rolesChanged: () => refresh(false),
   changed: async () => {
-    await call("scene_sync", { scene: captureScene() });
+    await sceneIdle();
+    await syncScene(captureScene());
     await refresh(false);
   },
   selected: () => refresh(false),
@@ -401,11 +421,49 @@ const timeRange = new TimeRange(
 installTooltips();
 let projectPath: string | null = null;
 const editor = new EditorController();
+/** Serialize local scene RPC acknowledgements, not UI transitions or refreshes.
+ * No coordinator drain belongs inside this queue: its callers may own that turn.
+ */
+let sceneSyncWork: Promise<unknown> = Promise.resolve();
+function syncScene(
+  scene: Scene,
+  expectedRevision?: number,
+  expectedWorkspace = snapshot.workspace_id,
+) {
+  const work = sceneSyncWork
+    .catch(() => {})
+    .then(async () => {
+      if (snapshot.workspace_id !== expectedWorkspace)
+        throw Error("CONFLICT: workspace changed before scene synchronization");
+      const fence = {
+        workspace: expectedWorkspace,
+        revision: snapshot.revision,
+        expectedRevision,
+      };
+      const result = await call("scene_sync", {
+        scene,
+        expected_workspace: expectedWorkspace,
+        ...(expectedRevision === undefined
+          ? {}
+          : { expected_revision: expectedRevision }),
+      });
+      if (snapshot.workspace_id !== expectedWorkspace)
+        throw Error("CONFLICT: workspace changed before scene acknowledgement");
+      editor.acknowledgeScene(fence, snapshot.workspace_id, result);
+      if (view.nativeSnapshots) queueRepresentation("metadata-reconcile", true);
+      return result;
+    });
+  sceneSyncWork = work;
+  return work;
+}
 const workspace = new WorkspaceController({
   settle: async () => {
     await editor.idle();
     await filterIntent.flush();
     await viewsPanel.idle();
+    // Save/close/autosave must observe queued toolbar intent and complete UI
+    // restoration, not just the engine's already-committed snapshot.
+    await sceneIdle();
   },
   status: () => call("workspace_status"),
   autosave: () => call("autosave_unsaved"),
@@ -518,12 +576,36 @@ let renderLOD = false,
   geometryLOD = false,
   renderedCount = 0;
 let viewportDataGeneration = 0;
-async function refresh(render = true, resources = true) {
+let refreshWork: Promise<unknown> = Promise.resolve();
+let cameraSaveWork: Promise<unknown> = Promise.resolve();
+let flushSceneSync: () => Promise<unknown> = async () => {};
+let snapshotRequestSerial = 0;
+function snapshotIntent(lane: SnapshotRequestIntent["lane"], refreshGeneration: number, viewportGeneration: number, scoped = false): SnapshotRequestIntent {
+  return Object.freeze({ ui_request_id: String(++snapshotRequestSerial), lane,
+    refresh_generation: refreshGeneration, viewport_generation: viewportGeneration, mode,
+    ...(scoped ? { expected_workspace: snapshot.workspace_id, expected_revision: snapshot.revision } : {}) });
+}
+function snapshotApplication(model: SnapshotModel, data: SnapshotData | null, rebuild = false): SnapshotApplication {
+  const state = model.snapshot as Snapshot;
+  const [lo, hi] = data?.timeBounds || [view.lo, view.hi];
+  const epoch = state.time_bounds[0] + (state.time_bounds[1] - state.time_bounds[0]) * focus;
+  return Object.freeze({ data, measurement: state.scene.measurement ? Object.freeze({ ...state.scene.measurement }) : null,
+    display: Object.freeze({ ...displayOptions }), displayPacket: data ? model.display || null : view.displayLayer.packet || null,
+    globeTime: !!state.scene.globe_time, globeAltitude: !!state.scene.globe_altitude, globeTimeScale: state.scene.globe_time_scale ?? view.globeTimeScale, timeHeight: view.timeHeight,
+    theme: view.theme, selection: Object.freeze([...(model.selected as string[])]), rebuild,
+    focus: hi > lo ? (epoch - lo) / (hi - lo) : 0, awaitEffects: !view.playback });
+}
+function refresh(render = true, resources = true): Promise<void> {
+  const work = runRefresh(render, resources);
+  refreshWork = Promise.all([refreshWork, work.catch(() => {})]).then(() => {});
+  return work;
+}
+async function runRefresh(render = true, resources = true) {
   viewportDataGeneration++;
   tables.tableSerial++;
   const generation = ++serial;
   const scopeKey = JSON.stringify([
-    snapshot?.filter,
+    tables.tableRespectFilters && !gisTable.layerId ? snapshot?.filter : null,
     tables.tableSource,
     tables.tableRespectFilters,
     tables.tableSort,
@@ -543,7 +625,7 @@ async function refresh(render = true, resources = true) {
     renderLOD ||
     geometryLOD ||
     view.displayLayer.active;
-  const model = await call("view_snapshot_v1", {
+  const model = await view.requestSnapshot({
     version: 1,
     generation: String(generation),
     include_render: includeRender,
@@ -566,12 +648,18 @@ async function refresh(render = true, resources = true) {
           },
         }
       : {}),
+  }, snapshotIntent("refresh", generation, viewportDataGeneration)).catch((error: unknown) => {
+    // Native offers can reject before the original post-read generation guard.
+    // Only a demonstrably obsolete cancellation gets that silent-drop behavior.
+    if (generation !== serial && (error as { name?: unknown } | null)?.name === "AbortError") return undefined;
+    throw error;
   });
+  if (!model) return;
   // Validate the complete point payload before publishing any new UI state.
   const decoded = model.render ? decode(model.render) : null;
   const s = model.snapshot as Snapshot;
   if (generation !== serial) return;
-  snapshot = s;
+  snapshot = { ...s };
   welcome.update(
     s.workspace_id,
     s.count === 0 && !(s.gis_layers || []).length,
@@ -581,7 +669,7 @@ async function refresh(render = true, resources = true) {
   await view.gis.sync((s.gis_layers || []) as GisLayer[]);
   if (generation !== serial) return;
   tables.tableScopeKey = JSON.stringify([
-    s.filter,
+    tables.tableRespectFilters && !gisTable.layerId ? s.filter : null,
     tables.tableSource,
     tables.tableRespectFilters,
     tables.tableSort,
@@ -594,21 +682,17 @@ async function refresh(render = true, resources = true) {
     JSON.stringify(s.scene.entity_colors || {});
   customEntityColors = { ...s.scene.entity_colors };
   setEntityColors(customEntityColors);
-  view.setMeasurement(s.scene.measurement ?? null);
   measurementLegend.update(s.scene.measurement);
   entityLegend.element.hidden = !!s.scene.measurement;
-  if (colorChanged) view.rebuild(true);
   displayOptions = viewsPanel.liveOptions || {
     ...defaultDisplay,
     ...s.scene.display,
   };
-  view.setDisplayOptions(displayOptions);
-  view.setGlobeTime(!!s.scene.globe_time);
   updateNavigationControls();
   renderBudget = s.scene.render_budget === 100000 ? 100000 : 20000;
   projectPath = s.lifecycle?.source ?? null;
   preferences = s.preferences;
-  if (setDateTimeDisplay(preferences)) view.rebuild(true);
+  const dateDisplayChanged = setDateTimeDisplay(preferences);
   await view.setBasemap(preferences.basemap || "none");
   $("#save").title = s.lifecycle?.dirty
     ? "Save unsaved changes (Ctrl/Cmd+S)"
@@ -657,6 +741,7 @@ async function refresh(render = true, resources = true) {
     model.selected,
   );
   if (generation !== serial) return;
+  let data: SnapshotData | null = null;
   if (model.render) {
     const packed = model.render;
     renderLOD = packed.lod || !!model.display?.aggregated;
@@ -693,48 +778,35 @@ async function refresh(render = true, resources = true) {
     geometryLOD = geometries.limited;
     view.geometryLimited = geometries.limited;
     view.renderLOD = packed.lod;
-    const dataChanged = await view.setData(
-      points,
-      names,
-      overrideBounds ||
-        (playbackPreserveFrame || timeScrubbing || displayPreserveFrame
-          ? [...view.bounds]
-          : bounds(coverage)),
-      sceneTimeBounds(s),
-      geometries.features,
-      () => generation === serial,
-      true,
-    );
-    if (generation !== serial) return;
-    updateTimeFocus();
-    const effectsAlreadyUpdating = view.displayLayer.updating;
-    const effects = view.displayLayer.set(
-      model.display || null,
-      displayOptions,
-    );
-    // Ground imagery has its own coalesced transition. Do not hold the next
-    // exact data/time update behind worker generation or an imagery crossfade.
-    if (view.playback) {
-      if (!effectsAlreadyUpdating)
-        void effects.catch((e) => toast(String(e), true));
-    } else await effects;
-    view.rebuildTrails();
-    if (generation !== serial) return;
-    if (
-      dataChanged &&
-      resources &&
-      !restoringScene &&
-      !playbackPreserveFrame &&
-      !timeScrubbing
-    ) {
-      if (terrainInfo) rebuildTerrain().catch((e) => toast(String(e), true));
-      else if (mapsEnabled())
-        loadRasters().catch((e) => toast(String(e), true));
-    }
+    data = Object.freeze({ points: Object.freeze(points), names: Object.freeze(names),
+      studyBounds: Object.freeze([...(overrideBounds || (playbackPreserveFrame || timeScrubbing || displayPreserveFrame ? [...view.bounds] : bounds(coverage)))]) as Readonly<Bounds>,
+      timeBounds: Object.freeze([...sceneTimeBounds(s)]) as readonly [number, number],
+      geometries: Object.freeze([...geometries.features]) });
   }
-  const selected = model.selected as string[];
+  const publication = await view.publishSnapshot(model, snapshotApplication(model, data, colorChanged || dateDisplayChanged), () => generation === serial);
   if (generation !== serial) return;
-  view.setSelection(selected);
+  if (publication.kind === "stale") {
+    if (view.nativeSnapshots) queueRepresentation("metadata-reconcile", true);
+    return;
+  }
+  if (publication.kind === "needs-representation") {
+    queueRepresentation("metadata-reconcile", true);
+    return;
+  }
+  const dataChanged = publication.dataChanged;
+  if (
+    dataChanged &&
+    resources &&
+    !restoringScene &&
+    !playbackPreserveFrame &&
+    !timeScrubbing
+  ) {
+    if (terrainInfo) rebuildTerrain().catch((e) => toast(String(e), true));
+    else if (mapsEnabled())
+      loadRasters().catch((e) => toast(String(e), true));
+  }
+
+  if (generation !== serial) return;
   updateNavigationControls();
   entityLegend.content.innerHTML =
     Object.keys(s.entities)
@@ -744,7 +816,7 @@ async function refresh(render = true, resources = true) {
           `<span class="legend-item"><i style="background:${entityColor(name)}"></i><span class="legend-label">${esc(name)}</span></span>`,
       )
       .join("") +
-    '<span class="legend-item" title="Triangles have no observed coordinates. Their trail position is estimated between visible located events of the same entity and source."><span class="legend-label">● Observed location · △ Time only (estimated position)</span></span>';
+    '<span class="legend-item" title="Triangles have no observed coordinates. Their trail position is estimated between visible located events of the same entity and source."><span class="legend-label">● Source location · △ Time only (estimated position)</span></span>';
   status(
     `${s.visible.toLocaleString()} matching events · ${view.displayLayer.active ? `${view.displayLayer.packet!.bins.length} display cells + selected evidence` : renderedCount.toLocaleString() + " markers"} · budget ${renderBudget.toLocaleString()}${view.geometryLimited ? " · geometry budget reached; refine filters" : ""}${renderLOD ? ` · ${renderedCount.toLocaleString()} representative markers · backend queries and Select visible remain exact` : view.trailsLimited ? " · stem/track geometry limited; refine filters" : ""}`,
   );
@@ -1190,9 +1262,11 @@ const filterIntent = new FilterIntent<Filter>(
   },
   (filter, revision) => call("filter", { filter, expected_revision: revision }),
   async () => {
-    tableSelection.anchor = null;
-    tableSelection.activeId = null;
-    tables.resetTableScroll();
+    if (tables.tableRespectFilters && !gisTable.layerId) {
+      tableSelection.anchor = null;
+      tableSelection.activeId = null;
+      tables.resetTableScroll();
+    }
     await refresh();
   },
 );
@@ -1370,6 +1444,7 @@ function savedViews() {
     void (async () => {
       if (button.id === "save-view" || button.id === "save-group") {
         const name = input("#view-name");
+        await sceneIdle();
         await call(button.id === "save-view" ? "save_view" : "save_group", {
           name,
           ...(button.id === "save-view" ? { scene: captureScene() } : {}),
@@ -1380,20 +1455,22 @@ function savedViews() {
         button.dataset.viewIndex !== undefined ||
         button.dataset.groupIndex !== undefined
       ) {
-        const restored = await call(
-          button.dataset.viewIndex !== undefined
-            ? "restore_view"
-            : "restore_group",
-          {
-            index: Number(
-              button.dataset.viewIndex ?? button.dataset.groupIndex,
-            ),
-          },
-        );
-        closeModal();
+        const restore = () =>
+          call(
+            button.dataset.viewIndex !== undefined
+              ? "restore_view"
+              : "restore_group",
+            {
+              index: Number(
+                button.dataset.viewIndex ?? button.dataset.groupIndex,
+              ),
+            },
+          );
         if (button.dataset.viewIndex !== undefined)
-          await restoreScene(restored.scene);
-        else await refresh();
+          await restoreCommand(restore);
+        else await restore();
+        closeModal();
+        if (button.dataset.viewIndex === undefined) await refresh();
       }
     })().catch((error) => toast(String(error), true));
   });
@@ -1639,12 +1716,19 @@ const mapLayerMenu = () => mapSettings.mapLayerMenu();
 let mapLoadGeneration = 0;
 const activeMapJobs = new Set<string>();
 const viewportDataRefresh = new ViewportRefresh(
-  async () => {
+  async (superseded) => {
     if (restoringScene) return;
-    const bounds = view.visibleDataBounds() || view.visibleBounds();
-    if (bounds) await refreshViewportData(bounds);
+    for (;;) { const observed = refreshWork; await observed.catch(() => {}); if (observed === refreshWork) break; }
+    if (superseded()) return;
+    const goal = representationGoal;
+    representationGoal = undefined;
+    if (goal && goal.workspace !== snapshot.workspace_id) return;
+    await view.navigationIdle();
+    if (superseded()) return;
+    const bounds = view.visibleDataBounds() || view.visibleBounds() || goal?.fallback || null;
+    if (bounds || goal?.force) await runViewportData(bounds, goal?.force, superseded, goal?.lane);
   },
-  (e) => toast(String(e), true),
+  (e) => { if (!String(e).includes("CONFLICT:")) toast(String(e), true); },
 );
 const viewportResourceRefresh = new ViewportRefresh(
   refreshViewportResources,
@@ -1652,6 +1736,7 @@ const viewportResourceRefresh = new ViewportRefresh(
 );
 function cancelViewportRefresh() {
   viewportDataRefresh.cancel();
+  representationGoal = undefined;
   viewportResourceRefresh.cancel();
 }
 let terrainLoadGeneration = 0;
@@ -1974,27 +2059,23 @@ function displayLevel() {
     ),
   );
 }
-let viewportPending: Bounds | null = null,
-  viewportRunning = false;
-async function refreshViewportData(bounds: Bounds) {
-  viewportPending = bounds;
-  if (viewportRunning) {
-    viewportDataGeneration++;
-    return;
-  }
-  viewportRunning = true;
-  try {
-    while (viewportPending) {
-      const next = viewportPending;
-      viewportPending = null;
-      await runViewportData(next);
-    }
-  } finally {
-    viewportRunning = false;
-  }
+type RepresentationGoal = { workspace: string; force: boolean; lane: "viewport" | "metadata-reconcile"; fallback?: Bounds };
+let representationGoal: RepresentationGoal | undefined;
+function queueRepresentation(lane: "viewport" | "metadata-reconcile", force = false, fallback?: Bounds) {
+  representationGoal = { workspace: snapshot.workspace_id, force: force || !!representationGoal?.force,
+    lane: force ? lane : representationGoal?.lane || lane, fallback: fallback ? [...fallback] : undefined };
+  return viewportDataRefresh.request();
 }
-async function runViewportData(bounds: Bounds) {
-  if (displayOptions.mode === "heatmap" && displayOptions.spatial_culling) {
+async function refreshViewportData(bounds?: Bounds) {
+  const ticket = queueRepresentation("viewport", false, bounds);
+  // This is an outer caller barrier. Publication callbacks enqueue replacements
+  // without waiting on their own active request.
+  void viewportDataRefresh.flush();
+  const outcome = await ticket.done;
+  if (outcome.kind === "failed") throw outcome.error;
+}
+async function runViewportData(bounds: Bounds | null, force = false, superseded = () => false, lane: "viewport" | "metadata-reconcile" = "viewport") {
+  if (bounds && displayOptions.mode === "heatmap" && displayOptions.spatial_culling) {
     const z = view.mapZoom(),
       scale =
         displayOptions.heat_reference_zoom == null
@@ -2022,48 +2103,41 @@ async function runViewportData(bounds: Bounds) {
     ];
   }
   if (
-    !renderLOD &&
+    !force && !renderLOD &&
     !geometryLOD &&
     !displayOptions.spatial_culling &&
     !view.displayLayer.active
   )
     return;
   const generation = ++viewportDataGeneration,
-    revision = snapshot.revision;
-  const current = () =>
-    generation === viewportDataGeneration && revision === snapshot.revision;
+    revision = snapshot.revision, workspace = snapshot.workspace_id, refreshGeneration = serial;
+  const current = () => !superseded() && generation === viewportDataGeneration
+    && revision === snapshot.revision && workspace === snapshot.workspace_id && refreshGeneration === serial;
   try {
-    const model = await call("view_snapshot_v1", {
+    const model = await view.requestSnapshot({
       version: 1,
       generation: String(generation),
       include_render: true,
       display_level: displayLevel(),
       max_points: renderBudget,
-      ...(displayOptions.spatial_culling ? { bounds } : {}),
+      ...(displayOptions.spatial_culling && bounds ? { bounds } : {}),
       selection_ids: [],
-    });
-    if (!current() || model.snapshot.revision !== revision) return;
+    }, snapshotIntent(lane, refreshGeneration, generation, true));
+    if (!current() || model.snapshot.revision !== revision || model.snapshot.workspace_id !== workspace) return;
     const packet = model.render,
       geometries = model.geometries,
       names = [...packet.entities];
     for (const f of geometries.features)
       if (!names.includes(f.entity)) names.push(f.entity);
     view.geometryLimited = geometries.limited;
-    await view.setData(
-      decode(packet),
-      names,
-      [...view.bounds],
-      sceneTimeBounds(snapshot),
-      geometries.features,
-      current,
-      true,
-    );
+    const data: SnapshotData = Object.freeze({ points: Object.freeze(decode(packet)), names: Object.freeze(names),
+      studyBounds: Object.freeze([...view.bounds]) as Readonly<Bounds>,
+      timeBounds: Object.freeze([...sceneTimeBounds(model.snapshot as Snapshot)]) as readonly [number, number],
+      geometries: Object.freeze([...geometries.features]) });
+    const publication = await view.publishSnapshot(model, snapshotApplication(model, data), current);
     if (!current()) return;
-    updateTimeFocus();
-    await view.displayLayer.set(model.display || null, displayOptions);
-    if (!current()) return;
-    view.setSelection(model.selected);
-    view.rebuildTrails();
+    if (publication.kind === "stale") { if (view.nativeSnapshots) queueRepresentation("metadata-reconcile", true); return; }
+    if (publication.kind === "needs-representation") { queueRepresentation("metadata-reconcile", true); return; }
     renderLOD = packet.lod || !!model.display?.aggregated;
     renderedCount = packet.rendered_count;
     status(
@@ -2072,13 +2146,13 @@ async function runViewportData(bounds: Bounds) {
         : `${snapshot.visible.toLocaleString()} visible events · ${renderedCount.toLocaleString()} viewport markers`,
     );
   } catch (e) {
-    if (current() && !String(e).includes("CONFLICT:")) toast(String(e), true);
+    if (current()) throw e;
   }
 }
 function scheduleViewportResources() {
   if (restoringScene) return;
   // Slow imagery must not hold up event/cluster updates during navigation.
-  viewportDataRefresh.request();
+  queueRepresentation("viewport");
   viewportResourceRefresh.request();
 }
 async function refreshViewportResources(superseded: () => boolean) {
@@ -2233,17 +2307,17 @@ const siHooks = {
   configure: siConnection,
   before: async () => {
     await filterIntent.flush();
-    await call("scene_sync", {
-      scene: captureScene(),
-      expected_revision: snapshot.revision,
-    });
+    await sceneIdle();
+    await syncScene(captureScene(), snapshot.revision);
   },
   after: async () => {
+    await sceneIdle();
     await refresh();
-    await restoreScene(snapshot.scene);
+    await restoreScene(snapshot.scene, snapshot.revision);
   },
   capture: async () => {
     await filterIntent.flush();
+    await sceneIdle();
     const source = await view.screenshot();
     const image = await new Promise<HTMLImageElement>((resolve, reject) => {
       const picture = new Image();
@@ -2514,10 +2588,12 @@ $("#entities").addEventListener("change", (event) => {
   const color = event.target as HTMLInputElement;
   const name = color.dataset.entityColor;
   if (name === undefined) return;
-  customEntityColors = { ...customEntityColors, [name]: color.value };
-  setEntityColors(customEntityColors);
+  const value = color.value;
   void (async () => {
-    await call("scene_sync", { scene: captureScene() });
+    await sceneIdle();
+    customEntityColors = { ...customEntityColors, [name]: value };
+    setEntityColors(customEntityColors);
+    await syncScene(captureScene());
     view.rebuild(true);
     await refresh(true, false);
   })().catch((error) => toast(String(error), true));
@@ -2585,12 +2661,16 @@ $("#inspector-content").addEventListener("click", async (event) => {
       b.dataset.viewIndex !== undefined ||
       b.dataset.groupIndex !== undefined
     ) {
-      const restored = await call(
-        b.dataset.viewIndex !== undefined ? "restore_view" : "restore_group",
-        { index: Number(b.dataset.viewIndex ?? b.dataset.groupIndex) },
-      );
-      if (b.dataset.viewIndex !== undefined) await restoreScene(restored.scene);
-      else await refresh();
+      const restore = () =>
+        call(
+          b.dataset.viewIndex !== undefined ? "restore_view" : "restore_group",
+          { index: Number(b.dataset.viewIndex ?? b.dataset.groupIndex) },
+        );
+      if (b.dataset.viewIndex !== undefined) await restoreCommand(restore);
+      else {
+        await restore();
+        await refresh();
+      }
       return;
     }
     switch (b.id) {
@@ -2628,7 +2708,7 @@ $("#inspector-content").addEventListener("click", async (event) => {
       }
       case "undo":
       case "redo":
-        await call(b.id);
+        await restoreCommand(() => call(b.id as "undo" | "redo"));
         await refresh();
         break;
       case "suggest-tags":
@@ -2646,6 +2726,7 @@ $("#inspector-content").addEventListener("click", async (event) => {
         break;
       case "save-view":
       case "save-group":
+        await sceneIdle();
         await call(b.id === "save-view" ? "save_view" : "save_group", {
           name: input("#view-name"),
           scene: captureScene(),
@@ -2699,62 +2780,72 @@ function updateNavigationControls() {
     mode === "map"
       ? "Drag to pan the flat map; scroll to zoom. Time filtering remains in the timeline."
       : "Drag to move; middle-drag rotates/tilts; right-drag or wheel zooms. Shift-click adds selection.";
-  const timeHeight = mode === "space-time";
-  $("#time-height").hidden = !timeHeight;
-  $("#time-height-label").hidden = !timeHeight;
+  const spaceTime = mode === "space-time";
+  const altitude = mode === "globe" && view.globeAltitude;
+  const time = spaceTime ? view.timeHeight > 0 : view.globeTime;
+  $("#time-height").hidden = !spaceTime;
+  $("#time-height-label").hidden = !spaceTime;
   $("#globe-time-height").hidden = mode !== "globe";
   $("#globe-time-height-label").hidden = mode !== "globe";
+  ($("#time-height") as HTMLInputElement).disabled = altitude;
+  ($("#globe-time-height") as HTMLInputElement).disabled = altitude;
+  $("#time-height-endpoints").dataset.disabled = String(altitude);
+  $("#height-mode-selector").dataset.altitude = String(altitude);
   $("#navigation-time-group").hidden = mode === "map";
-  const timeLabel = mode === "globe" ? "Time elevation" : "Time height";
-  $("#time-elevation-title").textContent = timeLabel;
-  $("#time-elevation").setAttribute("aria-label", timeLabel);
-  $("#time-elevation").classList.toggle(
-    "active",
-    (timeHeight && view.timeHeight > 0) || view.globeTime,
-  );
+  $("#height-mode-time").setAttribute("aria-checked", String(!altitude));
+  $("#height-mode-time").tabIndex = altitude ? -1 : 0;
+  $("#height-mode-altitude").tabIndex = altitude ? 0 : -1;
+  $("#height-mode-altitude").setAttribute("aria-checked", String(altitude));
+  ($("#height-mode-altitude") as HTMLButtonElement).disabled = mode !== "globe";
+  $("#height-mode-altitude").title = mode === "globe" ? "Use imported physical altitude" : "Altitude is available in Globe";
+  $("#time-elevation-title").textContent = "Vertical display";
+  $("#time-elevation").setAttribute("aria-label", "Time height and altitude");
+  $("#time-elevation").classList.toggle("active", time || altitude);
   navigation.update();
-  ($("#globe-time-height") as HTMLInputElement).value = String(
-    globeElevationSlider(view.globeTime, view.globeTimeScale),
-  );
+  ($("#globe-time-height") as HTMLInputElement).value = String(globeElevationSlider(view.globeTime || altitude, view.globeTimeScale));
   const height = view.timeHeightMeters;
-  $("#time-elevation-value").textContent =
-    mode !== "globe"
-      ? view.timeHeight === 0
-        ? "Off"
-        : `${view.timeHeight.toFixed(1)}×`
-      : !view.globeTime
-        ? "Off"
-        : height >= 1000
-          ? `${(height / 1000).toFixed(height < 10000 ? 1 : 0)} km`
-          : `${Math.round(height)} m`;
-  (
-    $(
-      mode === "globe" ? "#globe-time-height" : "#time-height",
-    ) as HTMLInputElement
-  ).setAttribute(
-    "aria-valuetext",
-    $("#time-elevation-value").textContent || "Off",
-  );
+  const formatHeight = (h: number) => Math.abs(h) >= 1000 ? `${(h / 1000).toFixed(1)} km` : `${Math.round(h)} m`;
+  const summary = view.altitudeSummary();
+  $("#time-elevation-value").textContent = altitude
+    ? summary.known ? `${formatHeight(summary.minimum)} – ${formatHeight(summary.maximum)}` : "No altitude"
+    : !time ? "Ground" : spaceTime ? `${view.timeHeight.toFixed(1)}×` : formatHeight(height);
+  $("#height-mode-note").textContent = altitude
+    ? `Physical height in metres; no time scaling. ${summary.known.toLocaleString()} loaded points. ${summary.approximate ? "Reported heights are approximate because their vertical reference is unknown. " : ""}Points without a usable altitude are omitted. Ground display effects are paused.`
+    : "Time Height raises Events by timestamp. Altitude uses imported physical heights in Globe. Set Time Height to zero to place Events on the ground.";
+  ($(mode === "globe" ? "#globe-time-height" : "#time-height") as HTMLInputElement).setAttribute("aria-valuetext", altitude ? `${formatHeight(height)} (Time Height only)` : $("#time-elevation-value").textContent || "Ground");
 }
+const sceneTransitions = new SceneTransitions();
 let viewModeGeneration = 0;
 let viewModeWork: Promise<void> = Promise.resolve();
+// Internal restores apply a mode without synthesizing a new user intent.
+function applyViewMode(next: ViewMode, remember: boolean) {
+  globeElevationGeneration++;
+  cancelViewportRefresh();
+  void cancelMap();
+  mode = next;
+  document
+    .querySelectorAll<HTMLElement>("[data-view]")
+    .forEach((button) =>
+      button.classList.toggle("active", button.dataset.view === mode),
+    );
+  view.setMode(mode, remember);
+  updateNavigationControls();
+  layers();
+  if (lastRaster) view.setRasters(lastRaster).catch(() => {});
+}
 document.querySelectorAll<HTMLElement>("[data-view]").forEach((b) =>
   b.addEventListener("click", () => {
-    if (!restoringScene) welcome.dismiss();
+    welcome.dismiss();
+    const next = b.dataset.view! as ViewMode;
     const generation = ++viewModeGeneration;
-    globeElevationGeneration++;
-    cancelViewportRefresh();
-    void cancelMap();
-    mode = b.dataset.view! as ViewMode;
-    document
-      .querySelectorAll("[data-view]")
-      .forEach((e) => e.classList.toggle("active", e === b));
-    view.setMode(mode, !restoringScene);
-    updateNavigationControls();
-    layers();
-    if (!restoringScene && snapshot)
-      viewModeWork = (async () => {
-        await call("scene_sync", { scene: captureScene() });
+    // Register immediately, even during a restoration. Later clicks supersede
+    // queued work, while a started command finishes before the next transition.
+    viewModeWork = sceneTransitions
+      .enqueue(async () => {
+        if (generation !== viewModeGeneration) return;
+        applyViewMode(next, true);
+        if (!snapshot) return;
+        await syncScene(captureScene());
         if (generation !== viewModeGeneration) return;
         await refresh(true, false);
         if (generation !== viewModeGeneration) return;
@@ -2763,18 +2854,18 @@ document.querySelectorAll<HTMLElement>("[data-view]").forEach((b) =>
         cancelViewportRefresh();
         if (terrainInfo) await rebuildTerrain();
         else await loadRasters();
-      })().catch((e) => toast(String(e), true));
-    if (lastRaster) view.setRasters(lastRaster).catch(() => {});
+      })
+      .catch((e) => toast(String(e), true));
   }),
 );
 on("#sync-views", async () => {
   const button = $("#sync-views") as HTMLButtonElement;
   button.disabled = true;
   try {
-    await viewModeWork;
     await filterIntent.flush();
+    await sceneIdle();
     view.syncViews();
-    await call("scene_sync", { scene: captureScene() });
+    await syncScene(captureScene());
     await refresh(false, false);
     toast(
       `Synced ${mode === "space-time" ? "Time" : mode === "map" ? "Map" : "Globe"} bounds and orientation to the other views`,
@@ -2856,13 +2947,12 @@ view.onCluster = (bin) => {
   });
 };
 async function applyDisplay(next: DisplayOptions) {
-  await call("scene_sync", {
-    scene: {
-      ...captureScene(),
-      display: next,
-      measurement:
-        next.mode === "points" && !next.bloom ? view.measurement : null,
-    },
+  await sceneIdle();
+  await syncScene({
+    ...captureScene(),
+    display: next,
+    measurement:
+      next.mode === "points" && !next.bloom ? view.measurement : null,
   });
   displayOptions = viewsPanel.liveOptions || next;
   view.setDisplayOptions(displayOptions);
@@ -2883,12 +2973,11 @@ function measurementSettings() {
     <label class="check-row"><input id="measurement-latest" type="checkbox" ${current?.latest_per_entity ? "checked" : ""}> Show the latest polygon per entity within the time window</label>
     <p id="measurement-error" role="alert"></p><footer><button type="button" id="measurement-clear">Use entity colors</button><span class="spacer"></span><button class="primary" type="submit">Apply scale</button></footer></form>`);
   const save = async (measurement: SceneState["measurement"]) => {
+    await sceneIdle();
     const display = measurement
       ? { ...displayOptions, mode: "points" as const, bloom: false }
       : displayOptions;
-    await call("scene_sync", {
-      scene: { ...captureScene(), measurement, display },
-    });
+    await syncScene({ ...captureScene(), measurement, display });
     closeModal();
     await refresh(true, false);
   };
@@ -2941,6 +3030,7 @@ function captureScene(): Scene {
     time_height: view.timeHeight,
     playback_fade: view.playbackFade,
     globe_time: view.globeTime,
+    globe_altitude: view.globeAltitude,
     globe_time_scale: view.globeTimeScale,
     focus,
     bounds: overrideBounds,
@@ -2951,7 +3041,27 @@ function captureScene(): Scene {
   };
 }
 let restoringScene = false;
-async function restoreScene(scene: SceneState = {}) {
+function restoreScene(scene: SceneState = {}, revision?: number) {
+  return sceneTransitions.restore(revision, () => applyRestoredScene(scene));
+}
+// The command and its local UI application occupy one queue turn. Its emitted
+// engine event may arrive first; commit joins/claims that same revision.
+function restoreCommand<T>(
+  action: () => Promise<T>,
+  prepare?: (result: T) => void | Promise<void>,
+) {
+  viewModeGeneration++;
+  return sceneTransitions.command(async (commit) => {
+    const result = await action();
+    await prepare?.(result);
+    if (result && typeof result === "object" && "scene" in result) {
+      const restored = result as { scene: SceneState; revision?: number };
+      await commit(restored.revision, () => applyRestoredScene(restored.scene));
+    }
+    return result;
+  });
+}
+async function applyRestoredScene(scene: SceneState) {
   globeElevationGeneration++;
   displayPreserveFrame = false;
   restoringScene = true;
@@ -2977,10 +3087,11 @@ async function restoreScene(scene: SceneState = {}) {
     ($("#playback-fade") as HTMLInputElement).checked = view.playbackFade;
     view.setGlobeTimeScale(scene.globe_time_scale ?? 1);
     view.setGlobeTime(!!scene.globe_time);
+    view.setGlobeAltitude(!!scene.globe_altitude);
     focus = scene.focus ?? 0.45;
     $("#time-height").setAttribute("value", String(view.timeHeight));
     ($("#time-height") as HTMLInputElement).value = String(view.timeHeight);
-    document.querySelector<HTMLElement>(`[data-view="${mode}"]`)?.click();
+    applyViewMode(mode, false);
     tables.tableOpen = !!scene.table_open;
     // Older workspaces may request a compact table; every event table now
     // restores the complete attribute columns using the same source/scope.
@@ -3072,11 +3183,14 @@ async function recoveryNotifications() {
               if (!(await guardUnsaved("open recovered work"))) return;
               if (playTimer !== undefined) $("#play").click();
               await task("Opening recovered work…", async () => {
-                const result = await call("open", { path });
-                projectPath = path;
-                lastRaster = null;
-                mapUnavailable = false;
-                await restoreScene(result.scene);
+                await restoreCommand(
+                  () => call("open", { path }),
+                  () => {
+                    projectPath = path;
+                    lastRaster = null;
+                    mapUnavailable = false;
+                  },
+                );
               });
             },
           },
@@ -3113,9 +3227,12 @@ async function recoveryNotifications() {
             if (!(await guardUnsaved("recover another workspace"))) return;
             if (playTimer !== undefined) $("#play").click();
             await task("Recovering workspace…", async () => {
-              const recovered = await call("recovery_restore", { id: c.id });
-              projectPath = (await call("workspace_status")).source;
-              await restoreScene(recovered.scene);
+              const recovered = await restoreCommand(
+                () => call("recovery_restore", { id: c.id }),
+                async () => {
+                  projectPath = (await call("workspace_status")).source;
+                },
+              );
               await call("recovery_checkpoint");
               await call("recovery_discard", {
                 id: recovered.source_checkpoint,
@@ -3157,6 +3274,9 @@ function reportRecoveryError(error: unknown) {
     },
   ]);
 }
+// WorkspaceFiles issues its engine command inside the supplied task. Keep its
+// opened callback in that same transition turn, including document identity.
+let fileSceneCommit: RestoreCommit | undefined;
 const workspaceFiles = new WorkspaceFiles({
   settle: () => filterIntent.flush(),
   guard: guardUnsaved,
@@ -3169,10 +3289,24 @@ const workspaceFiles = new WorkspaceFiles({
     projectPath = path;
     lastRaster = null;
     mapUnavailable = false;
-    await restoreScene(result.scene);
+    if (fileSceneCommit)
+      await fileSceneCommit(result.revision, () =>
+        applyRestoredScene(result.scene),
+      );
+    else await restoreScene(result.scene, result.revision);
     welcome.remember(path, snapshot.count);
   },
-  task,
+  task: (label, action) => {
+    viewModeGeneration++;
+    return sceneTransitions.command(async (commit) => {
+      fileSceneCommit = commit;
+      try {
+        return await task(label, action);
+      } finally {
+        fileSceneCommit = undefined;
+      }
+    });
+  },
   notice: (message) => toast(message),
 });
 const welcome = new Welcome($(".workspace"), {
@@ -3233,26 +3367,25 @@ let globeElevationGeneration = 0;
 $("#globe-time-height").addEventListener("input", () => {
   if (!snapshot || restoringScene || mode !== "globe") return;
   const value = Number(input("#globe-time-height"));
-  view.setGlobeTime(
-    value > 0,
-    value > 0 ? globeElevationScale(value) : view.globeTimeScale,
-  );
+  const workspace = snapshot.workspace_id;
+  const desiredEnabled = value > 0;
+  const desiredScale = desiredEnabled ? globeElevationScale(value) : view.globeTimeScale;
+  view.setGlobeTime(desiredEnabled, desiredScale);
   updateNavigationControls();
   const generation = ++globeElevationGeneration;
-  const workspace = snapshot.workspace_id;
   const current = () =>
     generation === globeElevationGeneration &&
     snapshot.workspace_id === workspace;
   globeElevationWork = globeElevationWork
     .catch(() => {})
     .then(async () => {
+      // Do not reconcile an older canonical scene over this unpersisted input.
+      await transitionIdle();
       if (!current()) return;
       displayPreserveFrame = true;
       try {
-        await call("scene_sync", {
-          scene: captureScene(),
-          expected_workspace: workspace,
-        });
+        await syncScene(Object.freeze({ ...captureScene(), globe_time: desiredEnabled, globe_altitude: false,
+          globe_time_scale: desiredScale }), undefined, workspace);
         if (!current()) return;
         await refresh(true, false);
         if (!current()) return;
@@ -3262,6 +3395,35 @@ $("#globe-time-height").addEventListener("input", () => {
       }
     })
     .catch((error) => toast(String(error), true));
+});
+for (const kind of ["time", "altitude"] as const) {
+  $("#height-mode-" + kind).addEventListener("click", () => {
+    if (!snapshot || restoringScene || mode === "map" || (kind === "altitude" && mode !== "globe")) return;
+    if (mode === "space-time" || view.globeAltitude === (kind === "altitude")) return;
+    const workspace = snapshot.workspace_id;
+    if (kind === "altitude") view.setGlobeAltitude(true);
+    else view.setGlobeTime(true);
+    updateNavigationControls();
+    const desired = Object.freeze({ ...captureScene() });
+    const generation = ++globeElevationGeneration;
+    const current = () => generation === globeElevationGeneration && snapshot.workspace_id === workspace;
+    globeElevationWork = globeElevationWork.catch(() => {}).then(async () => {
+      await transitionIdle(); if (!current()) return;
+      await syncScene(desired, undefined, workspace); if (!current()) return;
+      await refresh(true, false); if (!current()) return;
+      await refreshViewportData(view.visibleDataBounds() || [...view.bounds]);
+      updateNavigationControls();
+    }).catch(error => toast(String(error), true));
+  });
+}
+$("#height-mode-selector").addEventListener("keydown", (event) => {
+  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+  event.preventDefault();
+  event.stopPropagation();
+  const buttons = [...$("#height-mode-selector").querySelectorAll<HTMLButtonElement>("button")].filter(button => !button.disabled);
+  const target = buttons[event.key === "ArrowRight" || event.key === "End" ? buttons.length - 1 : 0];
+  target?.focus();
+  target?.click();
 });
 $("#time-height").addEventListener("input", () => {
   view.timeHeight = Number(input("#time-height"));
@@ -3467,10 +3629,7 @@ async function agentPlayback(args: Record<string, any>) {
     if (args.fade !== undefined) {
       view.setPlaybackFade(args.fade);
       ($("#playback-fade") as HTMLInputElement).checked = view.playbackFade;
-      await call("scene_sync", {
-        scene: captureScene(),
-        expected_workspace: workspace,
-      });
+      await syncScene(captureScene(), undefined, workspace);
     }
   } else if (args.action === "seek" || args.action === "step") {
     if (playTimer !== undefined) await togglePlayback();
@@ -3550,7 +3709,7 @@ function helpMenu() {
 async function demoDatasets() {
   const { demos } = await call("demo_catalog");
   const picker = modal(
-    `${head("Demo datasets")}<p class="description">Explore real observations with saved views. All ${demos.length} datasets are bundled for offline use.</p><div class="demo-grid">${demos
+    `${head("Demo datasets")}<p class="description">Explore observations, predicted orbits and launch history with saved views. All ${demos.length} datasets are bundled for offline use.</p><div class="demo-grid">${demos
       .map(
         (demo) =>
           `<section class="demo-card"><div class="demo-previews">${demo.previews
@@ -3574,18 +3733,22 @@ async function demoDatasets() {
       if (!(await guardUnsaved("open a demo dataset"))) return;
       if (playTimer !== undefined) $("#play").click();
       await task("Opening demo dataset…", async () => {
-        const result = await call("demo_open", {
-          id: demo.id as EngineContracts["demo_open"]["args"]["id"],
-        });
-        projectPath = null;
-        lastRaster = null;
-        mapUnavailable = false;
-        // Every preview opens its actual saved scene and filter, including year.
-        const restored =
-          viewIndex === undefined
-            ? result
-            : await call("restore_view", { index: viewIndex });
-        await restoreScene(restored.scene);
+        await restoreCommand(
+          async () => {
+            const result = await call("demo_open", {
+              id: demo.id as EngineContracts["demo_open"]["args"]["id"],
+            });
+            // Every preview opens its actual saved scene and filter, including year.
+            return viewIndex === undefined
+              ? result
+              : call("restore_view", { index: viewIndex });
+          },
+          () => {
+            projectPath = null;
+            lastRaster = null;
+            mapUnavailable = false;
+          },
+        );
       });
     };
     on(`[data-demo-id="${demo.id}"]`, () => openDemo());
@@ -3659,7 +3822,9 @@ window.addEventListener("keydown", (e) => {
     else if (!editable && key === "a") run(() => $("#select-all").click());
     else if (!editable && (key === "z" || key === "y"))
       run(async () => {
-        await call(key === "y" || e.shiftKey ? "redo" : "undo");
+        await restoreCommand(() =>
+          call(key === "y" || e.shiftKey ? "redo" : "undo"),
+        );
         await refresh();
       });
     return;
@@ -3708,6 +3873,7 @@ const liveViewRequest = createAgentView({
   snapshot: () => snapshot,
   mode: () => mode,
   captureScene,
+  syncScene,
   fitGisLayer,
 });
 
@@ -3716,14 +3882,13 @@ const agentLab = createAgentLab({
   snapshot: () => snapshot,
   live: liveViewRequest,
   setView: async (args) => {
-    const result = await call("view_set", args);
+    const result = await restoreCommand(() => call("view_set", args));
     if (!("scene" in result))
       throw Error(
         "INVALID_ARGUMENT: scenarios require an executed view change",
       );
     await refresh(false, false);
-    await restoreScene(result.scene);
-    await viewModeWork;
+    await sceneIdle();
   },
   playback: agentPlayback,
   record: recordAppWindow,
@@ -3737,6 +3902,28 @@ async function agentRequest(kind: string, args: Record<string, any> = {}) {
   return liveViewRequest(kind, args);
 }
 
+let drainSceneEvents: () => Promise<unknown> = async () => {};
+function transitionIdle() { return sceneTransitions.idle(() => drainSceneEvents()); }
+async function sceneIdle() {
+  for (;;) {
+    await transitionIdle();
+    await flushSceneSync();
+    const refresh = refreshWork, scene = sceneSyncWork, camera = cameraSaveWork;
+    await Promise.all([refresh.catch(() => {}), scene.catch(() => {}), camera.catch(() => {}), viewportDataRefresh.drain()]);
+    await transitionIdle();
+    if (representationGoal && !restoringScene) { viewportDataRefresh.request(); continue; }
+    if (refresh !== refreshWork || scene !== sceneSyncWork || camera !== cameraSaveWork) continue;
+    const generation = viewportDataRefresh.generation;
+    try { await view.snapshotIdle(); }
+    catch (error) {
+      if (refresh !== refreshWork || scene !== sceneSyncWork || camera !== cameraSaveWork
+        || generation !== viewportDataRefresh.generation || representationGoal) continue;
+      throw error;
+    }
+    if (refresh === refreshWork && scene === sceneSyncWork && camera === cameraSaveWork
+      && generation === viewportDataRefresh.generation && !representationGoal) return;
+  }
+}
 async function initialize() {
   await view.ready;
   projectPath = (await call("workspace_status")).source;
@@ -3750,7 +3937,7 @@ async function initialize() {
     overrideBounds = terrainInfo.bounds;
   await refresh(true, false);
   layers();
-  if (snapshot.scene) await restoreScene(snapshot.scene);
+  if (snapshot.scene) await restoreScene(snapshot.scene, snapshot.revision);
   else {
     view.fit();
     if (terrainInfo) await rebuildTerrain();
@@ -3774,29 +3961,35 @@ async function initialize() {
       }
     });
     let syncTimer: ReturnType<typeof setTimeout>;
-    view.onSceneChange = () => {
-      if (restoringScene) return;
-      clearTimeout(syncTimer);
-      syncTimer = setTimeout(async () => {
+    let sceneSyncGeneration = 0, sceneSyncPending = false;
+    const cancelSceneSync = () => { sceneSyncGeneration++; sceneSyncPending = false; clearTimeout(syncTimer); };
+    const runSceneSync = () => {
+      if (!sceneSyncPending) return cameraSaveWork;
+      sceneSyncPending = false; clearTimeout(syncTimer);
+      const generation = sceneSyncGeneration;
+      const work = (async () => {
         if (restoringScene) return;
         try {
+          await transitionIdle();
+          if (generation !== sceneSyncGeneration) return;
           const scene = captureScene();
-          const result = await call("scene_sync", {
-            scene,
-            expected_revision: snapshot.revision,
-          });
-          if (result.revision >= snapshot.revision) {
-            snapshot.revision = result.revision;
-            snapshot.scene = scene;
-          }
-        } catch (error) {
-          if (!String(error).includes("CONFLICT:")) toast(String(error), true);
-        }
-      }, 600);
+          const result = await syncScene(scene, snapshot.revision);
+          if (result.revision >= snapshot.revision) { snapshot.revision = result.revision; snapshot.scene = scene; }
+        } catch (error) { if (!String(error).includes("CONFLICT:")) toast(String(error), true); }
+      })();
+      cameraSaveWork = work;
+      return work;
+    };
+    flushSceneSync = runSceneSync;
+    view.onSceneChange = () => {
+      if (restoringScene) return;
+      cancelSceneSync(); sceneSyncPending = true;
+      syncTimer = setTimeout(runSceneSync, 600);
     };
     let eventTimer: ReturnType<typeof setTimeout> | undefined;
     let guiSync: Promise<void> = Promise.resolve();
     let pendingEngineRevision = 0;
+    let pendingRestoreRevision: number | undefined;
     let restorePending = false,
       themePending = false,
       terrainPending = false,
@@ -3805,7 +3998,9 @@ async function initialize() {
       clearTimeout(eventTimer);
       eventTimer = undefined;
       const requestedRevision = pendingEngineRevision;
+      const restoreRevision = pendingRestoreRevision;
       pendingEngineRevision = 0;
+      pendingRestoreRevision = undefined;
       const restore = restorePending,
         retTheme = themePending,
         retTerrain = terrainPending,
@@ -3837,8 +4032,20 @@ async function initialize() {
                 : terrainInfo?.bounds || null;
             if (!terrainInfo) await view.setTerrain(null);
           }
-          await refresh();
-          if (restore) await restoreScene(snapshot.scene);
+          const publish = async () => {
+            await refresh();
+            if (restore) await applyRestoredScene(snapshot.scene);
+          };
+          if (restore) {
+            await sceneTransitions.restore(restoreRevision, publish);
+            // A coalesced non-restore change still needs publication even when
+            // its older restore echo was already applied by the direct caller.
+            if (
+              restoreRevision !== undefined &&
+              requestedRevision > restoreRevision
+            )
+              await refresh();
+          } else await publish();
           if (retTheme) {
             theme();
             mapUnavailable = false;
@@ -3850,6 +4057,14 @@ async function initialize() {
       guiSync.catch((error) => toast(String(error), true));
       return guiSync;
     };
+    drainSceneEvents = async () => {
+      for (;;) {
+        if (eventTimer) flushChanges();
+        const observed = guiSync;
+        await observed;
+        if (!eventTimer && observed === guiSync) return;
+      }
+    };
     let desktopRequests: Promise<unknown> = Promise.resolve();
     await listen<any>("engine-event", (e) => {
       const event = e.payload;
@@ -3858,6 +4073,7 @@ async function initialize() {
         [
           "capture",
           "view_status",
+          "view_reset",
           "view_navigate",
           "view_recording",
           "view_profile",
@@ -3873,7 +4089,9 @@ async function initialize() {
           .then(async () => {
             try {
               await filterIntent.flush();
-              await guiSync;
+              // This consumer runs outside the scene coordinator. Joining its
+              // full drain here cannot wait on our own queue turn.
+              await sceneIdle();
               if (Date.now() > event.expires_at_ms)
                 throw Error(
                   "UNAVAILABLE: desktop request expired before execution",
@@ -3913,16 +4131,18 @@ async function initialize() {
                     chartsPanel.idle().catch(() => {}),
                     new Promise((resolve) => setTimeout(resolve, 2000)),
                   ]);
-                if (target === "app") {
-                  // A failed graphics context must not prevent capturing its UI.
-                  try {
-                    view.requestRender();
-                  } catch {}
-                }
                 const data_url =
                   target === "map"
                     ? await view.screenshot()
-                    : await captureAppWindow(label);
+                    : label === "main"
+                      ? await view.captureConsistent(
+                          () => captureAppWindow(label),
+                          () => ({
+                            revision: snapshot.revision,
+                            workspace_id: snapshot.workspace_id,
+                          }),
+                        )
+                      : await captureAppWindow(label);
                 await call("view_response", {
                   request_id: event.request_id,
                   data_url,
@@ -3932,7 +4152,7 @@ async function initialize() {
                   event.kind,
                   event.arguments,
                 );
-                if (event.kind === "view_navigate") clearTimeout(syncTimer);
+                if (event.kind === "view_navigate") cancelSceneSync();
                 await call("view_response", {
                   request_id: event.request_id,
                   result,
@@ -3979,6 +4199,18 @@ async function initialize() {
         guiSync.catch((error) => toast(String(error), true));
         return;
       }
+      const restoresScene = [
+        "view_set",
+        "restore_view",
+        "open",
+        "demo_open",
+        "undo",
+        "redo",
+        "recovery_restore",
+      ].includes(event.command);
+      // A completed local application owns this revision, even when its echo
+      // arrives after newer user navigation. It must not cancel that work.
+      if (restoresScene && sceneTransitions.hasApplied(event.revision)) return;
       const mapChange = [
         "preferences",
         "wmts_auth_set",
@@ -3993,6 +4225,7 @@ async function initialize() {
         "open",
         "undo",
         "redo",
+        "recovery_restore",
       ].includes(event.command);
       const clearCache = event.command === "wmts_cache_clear";
       if (mapChange || catalogChange || clearCache) {
@@ -4002,6 +4235,7 @@ async function initialize() {
       }
       if (
         event.revision <= snapshot.revision &&
+        !restoresScene &&
         !mapChange &&
         !catalogChange &&
         !clearCache
@@ -4015,13 +4249,19 @@ async function initialize() {
           "demo_open",
           "undo",
           "redo",
+          "recovery_restore",
         ].includes(event.command)
       )
-        clearTimeout(syncTimer);
+        cancelSceneSync();
       pendingEngineRevision = Math.max(
         pendingEngineRevision,
         event.revision || 0,
       );
+      if (restoresScene)
+        pendingRestoreRevision = Math.max(
+          pendingRestoreRevision ?? 0,
+          event.revision || 0,
+        );
       restorePending ||= [
         "view_set",
         "restore_view",
@@ -4029,6 +4269,7 @@ async function initialize() {
         "demo_open",
         "undo",
         "redo",
+        "recovery_restore",
       ].includes(event.command);
       themePending ||=
         mapChange || ["terrain_load", "terrain_unload"].includes(event.command);
@@ -4043,6 +4284,8 @@ async function initialize() {
     });
   }
   view.onViewportChange = scheduleViewportResources;
+  view.onRepresentationInvalidated = () => { if (snapshot) queueRepresentation("metadata-reconcile", true); };
+  view.onSnapshotError = error => toast(String(error), true);
   void recoveryNotifications().catch(reportRecoveryError);
   setInterval(async () => {
     if (busy || !preferences.auto_save_unsaved) return;
@@ -4074,6 +4317,7 @@ ready.catch((e) => {
   ready,
   editorIdle: () => editor.idle(),
   viewModeIdle: () => viewModeWork,
+  sceneIdle,
   filterIdle: () => filterIntent.flush(),
   displayIdle: () => viewsPanel.idle(),
   chartsIdle: () => chartsPanel.idle(),

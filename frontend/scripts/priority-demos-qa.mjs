@@ -25,7 +25,7 @@ for (const [id, count] of [
       await page.locator("#help").click();
       await page.locator("#demo-datasets").click();
       await page.locator("[data-demo-id]").first().waitFor();
-      assert.equal(await page.locator("[data-demo-id]").count(), 13);
+      assert.equal(await page.locator("[data-demo-id]").count(), 16);
       await page.locator(`[data-demo-preview="${id}"]`).first().click();
       await page.waitForFunction(
         (n) =>

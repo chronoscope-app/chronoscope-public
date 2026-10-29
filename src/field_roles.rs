@@ -30,7 +30,10 @@ pub fn validate(roles: &Roles) -> Result<(), String> {
 }
 
 pub fn numeric_canonical(field: &str) -> bool {
-    matches!(field, "value" | "lat" | "lon" | "time" | "end" | "year_utc")
+    matches!(
+        field,
+        "value" | "lat" | "lon" | "time" | "end" | "year_utc" | "altitude_m"
+    )
 }
 
 pub fn schema(nullable: bool) -> serde_json::Value {

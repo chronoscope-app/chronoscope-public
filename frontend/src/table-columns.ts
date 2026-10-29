@@ -1,3 +1,4 @@
+import { tableMarkup } from "./table-dom";
 // Fixed column geometry makes the complete horizontal range reachable while
 // keeping both the network projection and DOM bounded to one visible window.
 export const TABLE_COLUMN_WIDTH = 200;
@@ -29,10 +30,12 @@ export function columnWindow(
   const table = host.querySelector<HTMLTableElement>("table")!;
   table.style.width = `${Math.max(1, total) * TABLE_COLUMN_WIDTH}px`;
   table.setAttribute("aria-colcount", String(total));
-  host.querySelector("colgroup")!.innerHTML =
+  tableMarkup(
+    host.querySelector("colgroup")!,
     (left ? `<col style="width:${left}px">` : "") +
-    `<col style="width:${TABLE_COLUMN_WIDTH}px">`.repeat(count) +
-    (right ? `<col style="width:${right}px">` : "");
+      `<col style="width:${TABLE_COLUMN_WIDTH}px">`.repeat(count) +
+      (right ? `<col style="width:${right}px">` : ""),
+  );
   const spacer = (tag: "th" | "td", pixels: number) =>
     pixels
       ? `<${tag} class="table-column-spacer" aria-hidden="true" style="width:${pixels}px"></${tag}>`

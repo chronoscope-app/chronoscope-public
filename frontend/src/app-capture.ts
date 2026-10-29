@@ -21,7 +21,7 @@ export async function captureAppWindow(label: "main" | "si-chat" = "main") {
 export async function recordAppWindow(args: Record<string, unknown>) {
   if (!native)
     throw Error(
-      "UNAVAILABLE: video recording requires the native macOS desktop",
+      "UNAVAILABLE: video recording requires an attached native desktop",
     );
   return invoke<Record<string, unknown>>("record_app_window", { args });
 }

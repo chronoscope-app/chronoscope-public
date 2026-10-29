@@ -1,0 +1,10 @@
+[
+  {
+    "title": "GCAT Falcon 9 launch list and launch-point table · 2026-10-27 snapshot",
+    "creator": "Jonathan McDowell, https://planet4589.org",
+    "source_url": "https://planet4589.org/space/gcat/",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "changes": "Select LV_Type exactly Falcon 9, retaining all 700 launch records including failures and the Dragon in-flight abort test; exclude five Falcon 9R development hops. Place each launch at its published launch-pad location, not a vehicle trajectory. Preserve UTC dates and source precision; minute-only times become one-minute intervals and question-mark times retain an approximate flag. VSFBS/VS refer to the same Vandenberg SLC-4E launch point. No flight coordinates or physical altitude are inferred. All original launch columns are retained as attributes."
+  }
+]

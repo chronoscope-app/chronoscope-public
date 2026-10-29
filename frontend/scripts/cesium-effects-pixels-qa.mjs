@@ -42,6 +42,10 @@ try {
   await api("preferences", {
     preferences: {
       ...prefs,
+      // Axis assertions below require English month names and a 24-hour clock;
+      // system date/time preferences vary across local test hosts.
+      date_format: "mdy-long",
+      time_format: "24h",
       map: { ...prefs.map, enabled: false },
       basemap: "none",
       map_layers: [],
@@ -79,6 +83,7 @@ try {
   const newPage = async () => {
     const page = await browser.newPage({
       viewport: { width: 1800, height: 1100 },
+      locale: "en-US",
     });
     page.on("pageerror", (error) => errors.push(error.message));
     await page.route("**/*", async (route) => {

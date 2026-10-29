@@ -92,7 +92,7 @@ pub fn domain_output_schema(command: &str) -> Value {
     let mut properties = json!({"revision":{"type":"integer","minimum":1}});
     let mut required = vec![];
     let fields = match command {
-        "view_status" | "view_navigate" => {
+        "view_status" | "view_navigate" | "view_reset" => {
             required = vec![
                 "revision",
                 "renderer",
@@ -106,7 +106,7 @@ pub fn domain_output_schema(command: &str) -> Value {
                 "gis_layers",
                 "diagnostics",
             ];
-            json!({"renderer":{"const":"cesium"},"backend":{"const":"WebGL2"},"webgpu_api_available":{"type":"boolean"},"hardware_acceleration":{"const":"unknown"},"mode":choice(&["space-time","map","globe"]),"scene":scene(),"viewport":object(json!({"width":integer(0,65536),"height":integer(0,65536)}),&["width","height"]),"loading":object(json!({"imagery":boolean(),"effects":boolean(),"gis":integer(0,64)}),&["imagery","effects","gis"]),"gis_layers":list(object(json!({"id":string(),"format":string(),"enabled":boolean(),"loaded":boolean(),"ready":boolean(),"error":nullable(string())}),&["id","format","enabled","loaded","ready","error"]),64),"diagnostics":{"type":"object"}})
+            json!({"renderer":choice(&["cesium","wgpu-native"]),"backend":choice(&["WebGL2","Metal","Vulkan","Dx12"]),"webgpu_api_available":{"type":"boolean"},"hardware_acceleration":choice(&["unknown","hardware","software"]),"mode":choice(&["space-time","map","globe"]),"scene":scene(),"viewport":object(json!({"width":integer(0,65536),"height":integer(0,65536)}),&["width","height"]),"loading":object(json!({"imagery":boolean(),"effects":boolean(),"gis":integer(0,64)}),&["imagery","effects","gis"]),"gis_layers":list(object(json!({"id":string(),"format":string(),"enabled":boolean(),"loaded":boolean(),"ready":boolean(),"error":nullable(string())}),&["id","format","enabled","loaded","ready","error"]),64),"diagnostics":{"type":"object"}})
         }
         "file_probe" => {
             required = vec!["kind", "format"];
@@ -229,7 +229,7 @@ pub fn domain_output_schema(command: &str) -> Value {
                 "started_unix_ms",
                 "error",
             ];
-            json!({"path":{"type":"string"},"uri":{"type":"string"},"state":{"enum":["starting","recording","stopping","complete","failed"]},"backend":{"const":"screencapturekit"},"mime_type":{"const":"video/mp4"},"window":{"enum":["main","si-chat"]},"fps":{"type":"integer","minimum":15,"maximum":60},"max_seconds":{"type":"number","minimum":1,"maximum":120},"width":{"type":"integer","minimum":0,"maximum":1920},"height":{"type":"integer","minimum":0,"maximum":1080},"duration_seconds":{"type":"number","minimum":0},"bytes":{"type":"integer","minimum":0},"started_unix_ms":{"type":"number"},"error":{"type":["string","null"]}})
+            json!({"path":{"type":"string"},"uri":{"type":"string"},"state":{"enum":["starting","recording","stopping","complete","failed"]},"backend":{"enum":["screencapturekit","ffmpeg-native-composite"]},"mime_type":{"const":"video/mp4"},"window":{"enum":["main","si-chat"]},"fps":{"type":"integer","minimum":15,"maximum":60},"max_seconds":{"type":"number","minimum":1,"maximum":120},"width":{"type":"integer","minimum":0,"maximum":1920},"height":{"type":"integer","minimum":0,"maximum":1080},"duration_seconds":{"type":"number","minimum":0},"bytes":{"type":"integer","minimum":0},"started_unix_ms":{"type":"number"},"error":{"type":["string","null"]},"source_width":{"type":"integer","minimum":0,"maximum":16384},"source_height":{"type":"integer","minimum":0,"maximum":16384},"wall_duration_seconds":{"type":"number","minimum":0},"timeline_started_unix_ms":{"type":["integer","null"],"minimum":0,"maximum":18446744073709551615u64},"captured_frames":{"type":"integer","minimum":0,"maximum":4294967295u64},"encoded_frames":{"type":"integer","minimum":0,"maximum":7200},"held_frames":{"type":"integer","minimum":0,"maximum":7200},"missed_capture_slots":{"type":"integer","minimum":0,"maximum":4294967295u64},"capture_failures":{"type":"integer","minimum":0,"maximum":4294967295u64},"last_capture_error":{"type":["string","null"],"maxLength":2048},"capture_timestamps_us":{"type":"array","maxItems":7200,"items":{"type":"array","prefixItems":[{"type":"integer","minimum":0,"maximum":18446744073709551615u64},{"type":"integer","minimum":0,"maximum":18446744073709551615u64},{"type":"integer","minimum":0,"maximum":7199}],"items":false,"minItems":3,"maxItems":3}},"timestamp_basis":{"type":"string","maxLength":2048},"source_scope":{"type":"string","maxLength":2048},"scaling":{"type":"string","maxLength":2048},"capture_transport":{"type":"string","maxLength":2048},"audio":{"const":false}})
         }
         "view_capture" => {
             required = vec!["data_url", "mime_type", "target", "window"];
@@ -237,7 +237,7 @@ pub fn domain_output_schema(command: &str) -> Value {
         }
         "save" => {
             required = vec!["saved", "format"];
-            json!({"saved":{"type":"string"},"format":{"enum":["json_v6","zip_v6","sqlite_v3"]}})
+            json!({"saved":{"type":"string"},"format":{"enum":["json_v7","zip_v7","sqlite_v3"]}})
         }
         "open" | "demo_open" => {
             required = vec!["ok", "scene"];
@@ -580,7 +580,7 @@ pub fn domain_output_schema(command: &str) -> Value {
                 "rendered_count",
                 "lod",
             ];
-            json!({"ids":{"type":"array","items":id()},"stride":{"const":32},"data":{"type":"string","contentEncoding":"base64"},"entities":{"type":"array","items":{"type":"string"}},"inferred_ids":{"type":"array","items":id()},"inferred_markers":{"type":"array","items":{"type":"object"}},"unlocated_count":{"type":"integer","minimum":0},"located_count":{"type":"integer","minimum":0},"rendered_count":{"type":"integer","minimum":0},"lod":{"type":"boolean"}})
+            json!({"ids":{"type":"array","items":id()},"stride":{"enum":[32,48]},"data":{"type":"string","contentEncoding":"base64"},"entities":{"type":"array","items":{"type":"string"}},"inferred_ids":{"type":"array","items":id()},"inferred_markers":{"type":"array","items":{"type":"object"}},"unlocated_count":{"type":"integer","minimum":0},"located_count":{"type":"integer","minimum":0},"rendered_count":{"type":"integer","minimum":0},"lod":{"type":"boolean"}})
         }
         _ => json!({}),
     };
@@ -607,7 +607,22 @@ pub fn domain_output_schema(command: &str) -> Value {
     if versioned && !required.contains(&"revision") {
         required.push("revision");
     }
-    let output = json!({"type":"object","properties":properties,"required":required,"additionalProperties":true});
+    if command == "view_reset" {
+        properties["reset"] = json!({"const":true});
+        required.push("reset");
+    }
+    let mut output = json!({"type":"object","properties":properties,"required":required,"additionalProperties":true});
+    if matches!(command, "view_status" | "view_navigate" | "view_reset") {
+        // Full branches retain every shared required field in generated desktop
+        // contracts as well as correlating renderer/backend at runtime.
+        let mut cesium = output.clone();
+        cesium["properties"]["renderer"] = json!({"const":"cesium"});
+        cesium["properties"]["backend"] = json!({"const":"WebGL2"});
+        cesium["properties"]["hardware_acceleration"] = json!({"const":"unknown"});
+        output["properties"]["renderer"] = json!({"const":"wgpu-native"});
+        output["properties"]["backend"] = choice(&["Metal", "Vulkan", "Dx12"]);
+        output = json!({"oneOf":[cesium, output]});
+    }
     with_plan(command, output)
 }
 fn with_plan(command: &str, mut output: Value) -> Value {

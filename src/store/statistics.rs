@@ -162,6 +162,8 @@ impl DataStore {
                     " LEFT JOIN attributes {alias} ON {alias}.r=e.r AND {alias}.key=? "
                 ));
                 Ok(format!("{alias}.num"))
+            } else if name == "altitude_m" {
+                Ok("json_extract(e.payload,'$.altitude.meters')".into())
             } else if matches!(name, "value" | "lat" | "lon" | "time" | "end") {
                 Ok(format!("e.{name}"))
             } else {

@@ -1,0 +1,19 @@
+{
+  "source_commit": "c6a5b64e91bc675cb82116334942acd5d454f3db",
+  "app_version": "0.16.2",
+  "bundle_binary_sha256": "7b8433093e86b665dcbd5ed7386cd84e9365f0ed95dee758e138124bd1706156",
+  "frontend_tests_passed": 150,
+  "browser_checks_passed": {
+    "playback-report.json": 5,
+    "event-table-report.json": 14,
+    "detached-table-report.json": 15
+  },
+  "validation_runner_tests_passed": 20,
+  "version_metadata_tests_passed": 5,
+  "generated_contracts_match": true,
+  "installed_app_title": "Chronoscope 0.16.2",
+  "applications_chronoscope_copies": 1,
+  "tauri_core": "2.12.5",
+  "hosted_workflows_started": 0,
+  "public_promotion": false
+}

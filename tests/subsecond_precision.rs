@@ -205,7 +205,7 @@ fn indexed_order_filters_edits_undo_render_and_portable_roundtrips() {
     let file = dir.path().join("precise.chronoscope");
     checked(&e, "save", json!({"path":file}));
     let loaded = project::load_with_resources(&file, dir.path()).unwrap();
-    assert_eq!(loaded.version, 6);
+    assert_eq!(loaded.version, 7);
     assert_eq!(loaded.time_resolution, "fractional_second");
     let restored = loaded.dataset.events.iter().find(|v| v.id == 2).unwrap();
     assert_eq!(restored.time, events[1].time + 0.0625);
@@ -328,7 +328,7 @@ fn old_minute_workspace_migrates_without_rescaling_or_inventing_detail() {
     let loaded = project::load_with_resources(&path, dir.path()).unwrap();
     assert_eq!(loaded.dataset.events[0].time, p.dataset.events[0].time);
     assert_eq!(loaded.time_resolution, "fractional_second");
-    assert_eq!(loaded.version, 6);
+    assert_eq!(loaded.version, 7);
 }
 
 #[test]

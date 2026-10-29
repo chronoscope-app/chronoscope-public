@@ -1,0 +1,300 @@
+{
+  "baselineCommit": "6cf4ac151b1b400cca2e87b4e659a9bb414b4b77",
+  "candidateSourceSha256": {
+    "frontend/src/view.ts": "5e6787fdafe3ec072f2455894181da60cf02f55e5c03523245373fe9496242ae",
+    "frontend/src/cesium-display-layer.ts": "0337d6adc8030133a18e7f3023f41d61c61b10ee630cdc0174706c66fa6658dd",
+    "frontend/scripts/track-style-qa.mjs": "05eeb7d3a9aa74b7689b579ea476dad6116b113038d9de35feec982673640918"
+  },
+  "environment": {
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "softwareRenderer": true,
+    "viewport": [
+      1400,
+      900
+    ],
+    "deviceScale": 1
+  },
+  "measurements": [
+    {
+      "events": 10000,
+      "repeats": 3,
+      "updatesPerSample": 12,
+      "cpuMs": {
+        "baselineMedian": 507.1,
+        "candidateMedian": 1.2,
+        "reductionPercent": 99.763
+      },
+      "toggleCpuMs": {
+        "baselineMedian": 228,
+        "candidateMedian": 1.1,
+        "reductionPercent": 99.518
+      },
+      "opacityBytes": {
+        "baselineMedian": 3526432,
+        "candidateMedian": 0,
+        "reductionPercent": 100
+      },
+      "toggleBytes": {
+        "baselineMedian": 3529856,
+        "candidateMedian": 3424,
+        "reductionPercent": 99.903
+      }
+    },
+    {
+      "events": 100000,
+      "repeats": 3,
+      "updatesPerSample": 12,
+      "cpuMs": {
+        "baselineMedian": 5105.1,
+        "candidateMedian": 1,
+        "reductionPercent": 99.98
+      },
+      "toggleCpuMs": {
+        "baselineMedian": 2311,
+        "candidateMedian": 1.3,
+        "reductionPercent": 99.944
+      },
+      "opacityBytes": {
+        "baselineMedian": 42790384,
+        "candidateMedian": 0,
+        "reductionPercent": 100
+      },
+      "toggleBytes": {
+        "baselineMedian": 42790384,
+        "candidateMedian": 0,
+        "reductionPercent": 100
+      }
+    }
+  ],
+  "memory": {
+    "events": 100000,
+    "renderedHideShowCycles": 100,
+    "buffersBefore": {
+      "count": 30,
+      "bytes": 62792532
+    },
+    "buffersAfter": {
+      "count": 30,
+      "bytes": 62792532
+    },
+    "jsHeapBeforeBytes": 109724892,
+    "jsHeapAfterBytes": 110307148,
+    "jsHeapDeltaBytes": 582256,
+    "baselineTracksOnly": {
+      "label": "tracks-only",
+      "buffers": {
+        "count": 26,
+        "bytes": 41397340
+      },
+      "allocatedPolylines": 100,
+      "cachedVertices": 58878,
+      "visiblePolylines": 100
+    },
+    "candidateTracksOnly": {
+      "label": "tracks-only",
+      "buffers": {
+        "count": 30,
+        "bytes": 62792532
+      },
+      "allocatedPolylines": 200,
+      "cachedVertices": 117756,
+      "visiblePolylines": 100
+    },
+    "extraHiddenBufferBytes": 21395192,
+    "buffersAfterHiddenInvalidation": {
+      "count": 21,
+      "bytes": 20002148
+    },
+    "replacedDataCollectible": true,
+    "scope": "WebGL buffer objects and post-GC JavaScript heap; excludes textures, driver and other processes"
+  },
+  "globeBudget": {
+    "beforeVertices": 212000,
+    "afterVertices": 206000,
+    "fallbacks": 1
+  },
+  "visualComparisons": [
+    {
+      "name": "globe-both.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "globe-dim.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "globe-ground.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "globe-lazy-tracks.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "globe-lazy-trails.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "globe-off.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "globe-restore.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "globe-tracks.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "map-both.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "map-dim.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "map-ground.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "map-lazy-tracks.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "map-lazy-trails.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "map-off.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "map-restore.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "map-tracks.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "space-time-both.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "space-time-dim.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "space-time-ground.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "space-time-lazy-tracks.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "space-time-lazy-trails.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "space-time-off.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "space-time-restore.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    {
+      "name": "space-time-tracks.png",
+      "pixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    }
+  ],
+  "realControls": {
+    "baseline": {
+      "dragPreviewMs": [
+        201.90000000596046,
+        316.2000000178814,
+        68.89999997615814
+      ],
+      "atlasPreserved": true,
+      "effectRestarts": 2,
+      "events": 192
+    },
+    "candidate": {
+      "dragPreviewMs": [
+        173.40000000596046,
+        168.40000000596046,
+        165
+      ],
+      "atlasPreserved": true,
+      "effectRestarts": 0,
+      "events": 192
+    },
+    "note": "Three two-animation-frame previews on 192 rendered events; correctness and restart checks, not an FPS or statistically reliable end-to-end speed claim"
+  },
+  "validation": {
+    "passed": true,
+    "rustIntegrationTests": 10,
+    "frontendTestFiles": 29,
+    "browserSuites": [
+      "track-style",
+      "renderer-reuse",
+      "cluster-identity",
+      "cesium-context",
+      "cesium-effects-pixels",
+      "cesium-globe-time"
+    ],
+    "githubRunnersUsed": false
+  },
+  "visualComparisonScope": "Fresh controlled scenes with identical camera/imagery state; state-transition stress checks compare cached geometry with a forced fresh rebuild."
+}

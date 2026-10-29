@@ -39,11 +39,11 @@ fn c07_scalar_event_projection_and_wide_attribute_windows_are_exact() {
             json!({"column_offset":512,"column_limit":32}),
         )
         .unwrap();
-    assert_eq!(last["total_columns"], 529);
-    assert_eq!(last["columns"].as_array().unwrap().len(), 17);
+    assert_eq!(last["total_columns"], 531);
+    assert_eq!(last["columns"].as_array().unwrap().len(), 19);
     assert_eq!(last["events"][0]["attribute:field511"], "raw Évidence 511");
     assert!(last["events"][0].get("attrs").is_none());
-    assert_eq!(last["events"][0].as_object().unwrap().len(), 18);
+    assert_eq!(last["events"][0].as_object().unwrap().len(), 20);
 }
 #[test]
 fn c07_unlocated_projection_has_null_coordinate_formats_instead_of_failing() {

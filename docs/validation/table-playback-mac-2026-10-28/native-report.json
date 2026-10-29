@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "source_commit": "c6a5b64e91bc675cb82116334942acd5d454f3db",
+  "app_version": "0.16.2",
+  "runtime": "macOS WKWebView",
+  "dataset_events": 3568,
+  "held_close_ms": 1500,
+  "unfiltered_table_closed_during_playback": true,
+  "filtered_table_closed_during_playback": true,
+  "playback_still_active_after_both_closes": true,
+  "ui_evidence": "Native accessibility state after CUA pointer input: table close button absent, Pause toggle on; Time window advanced.",
+  "render_error_count": 0,
+  "bundle_binary_sha256": "7b8433093e86b665dcbd5ed7386cd84e9365f0ed95dee758e138124bd1706156"
+}

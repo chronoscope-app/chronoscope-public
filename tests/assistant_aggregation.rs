@@ -16,6 +16,7 @@ use std::{
 };
 fn event(id: u64, time: i64, lat: Option<f64>, lon: Option<f64>) -> Event {
     Event {
+        altitude: None,
         location_kind: None,
         id,
         entity: "Track A".into(),

@@ -1,0 +1,11 @@
+# Native WebView snapshots
+
+`snapshot(window).await -> Result<Vec<u8>, String>` preserves the existing PNG API and macOS snapshot configuration. `snapshot_with_geometry(window).await -> Result<Snapshot, String>` additionally returns copied plain Rust geometry. No native handle crosses the completion callback and no new serialization dependency is needed.
+
+`Snapshot` contains `png` and `geometry`. `geometry.pixel_size` comes from PNG IHDR; `geometry.macos` is `None` on Linux/Windows. macOS metadata contains request/completion WK bounds and superview frame, flipped orientation, safe-area rect/insets, window non-obscured content rect converted into WK coordinates, page zoom, backing scale, NSImage point size and bitmap pixel size. Snapshot rect/width remain their existing default (`None`); recent updates are included. These measurements do not guess a DOM viewport, title-bar size, CSS-to-pixel transform or physical screen visibility. Consumers should compare both phases and collect DOM viewport/layout metadata before deriving a mapping.
+
+Tauri dispatches the native call on the main thread. Each view admits at most one native snapshot. A caller still gets the existing eight-second timeout, but timeout/future cancellation closes its reply and leaves admission held by the native callback. Linux passes an actual `gio::Cancellable` and requests `TRANSPARENT_BACKGROUND`; explicit opaque CSS still paints normally. Windows CapturePreview has no cancellation parameter, so a timed-out operation stays quarantined until completion/callback destruction. macOS uses the same callback-owned permit. Late results are discarded; callbacks do not accumulate from repeated requests. Recording behavior is unchanged.
+
+The safe application-facing API keeps platform FFI here. This is an internal WebView snapshot, not an OS screenshot or CUA operation. It requires a live application/WebView/event loop; actual occlusion/lock freshness and coordinate alignment need runtime validation per platform.
+
+Focused tests exercise reply cancellation/admission lifetime, independent views, callback destruction, exactly-once completion, native geometry retention, PNG dimensions and bounded PNG output. On Linux an additional test checks actual GIO cancellation. The tests do not substitute for an actual WebView geometry probe.

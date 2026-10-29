@@ -1,0 +1,65 @@
+{
+  "baselineRevision": "1211acfeef212ffeaf15163e7b582c6880cf314d",
+  "candidateRendererCommit": "3ddc015",
+  "softwareRenderer": true,
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "viewport": [
+    1400,
+    900
+  ],
+  "deviceScale": 1,
+  "singlePairedObservation": true,
+  "selectionCallsPerSample": 8,
+  "samples": [
+    {
+      "events": 10000,
+      "baselineSelectionCpuMs": 71.1,
+      "candidateSelectionCpuMs": 0.4,
+      "baselineWebglBufferBytes": 1044120,
+      "candidateWebglBufferBytes": 5160
+    },
+    {
+      "events": 100000,
+      "baselineSelectionCpuMs": 568.7,
+      "candidateSelectionCpuMs": 0.2,
+      "baselineWebglBufferBytes": 10389696,
+      "candidateWebglBufferBytes": 96
+    }
+  ],
+  "pixels": {
+    "space-time": {
+      "totalPixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    "map": {
+      "totalPixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    },
+    "globe": {
+      "totalPixels": 1260000,
+      "changedPixels": 0,
+      "maxChannelDifference": 0
+    }
+  },
+  "githubRunnersUsed": false,
+  "candidateViewSha256": "08ce9aebad2bcdb2dd0557e509c815f4e53723e1189b5b443e7bf22c50b0c49d",
+  "validation": {
+    "frontendTestFiles": 29,
+    "rustIntegrationTests": 10,
+    "rustFormatting": "passed",
+    "coreClippy": "passed",
+    "productionFrontendBuild": "passed",
+    "generatedContracts": "passed",
+    "browserSuites": {
+      "renderer-reuse": "passed",
+      "cesium-parity": "passed (21 checks)",
+      "cesium-effects-pixels": "passed",
+      "cesium-globe-time": "passed",
+      "cesium-context": "passed",
+      "cluster-identity": "passed"
+    },
+    "parityFixtureSha256": "7f3d3c2f26087c4d2deb0f311ede289852819773d417d6a441099a328d483003"
+  }
+}

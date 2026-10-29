@@ -171,6 +171,7 @@ commands! {
     SceneSync => "scene_sync", Always, false, false, true, false, false;
     ViewSet => "view_set", Always, true, false, true, true, false;
     ViewStatus => "view_status", Never, false, false, false, true, false;
+    ViewReset => "view_reset", Never, false, false, false, true, false;
     ViewNavigate => "view_navigate", Always, false, false, false, true, false;
     ViewRecording => "view_recording", Never, false, false, false, true, false;
     ViewProfile => "view_profile", Never, false, false, false, true, false;

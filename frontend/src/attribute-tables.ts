@@ -1,5 +1,6 @@
 import { call } from "./bridge";
 import { TableSelection } from "./table-selection";
+import { tableMarkup, tableRows } from "./table-dom";
 import {
   columnWindow,
   columnWindowOffset,
@@ -226,7 +227,7 @@ export function createAttributeTables(
       ($("#table-search") as HTMLInputElement).value = tableSearch;
     }
     tableScopeKey = JSON.stringify([
-      hooks.snapshot().filter,
+      tableRespectFilters && !gisTable.layerId ? hooks.snapshot().filter : null,
       tableSource,
       tableRespectFilters,
       tableSort,
@@ -237,12 +238,15 @@ export function createAttributeTables(
     saveTab();
     const focusKey =
       $("#table-tabs").querySelector<HTMLElement>(":focus")?.dataset.tableTab;
-    $("#table-tabs").innerHTML = [...tabs.values()]
-      .map(
-        (value, i) =>
-          `<div class="attribute-tab"><button role="tab" id="attribute-tab-${i}" aria-controls="attribute-table-content" aria-selected="${value.key === activeTab}" tabindex="${value.key === activeTab ? 0 : -1}" data-table-tab="${esc(value.key)}" title="${esc(label(value))}">${esc(label(value))}</button><button ${value.key === activeTab ? 'id="close-table"' : ""} class="attribute-tab-close" data-close-tab="${esc(value.key)}" aria-label="Close ${esc(label(value))}">×</button></div>`,
-      )
-      .join("");
+    tableMarkup(
+      $("#table-tabs"),
+      [...tabs.values()]
+        .map(
+          (value, i) =>
+            `<div class="attribute-tab"><button role="tab" id="attribute-tab-${i}" aria-controls="attribute-table-content" aria-selected="${value.key === activeTab}" tabindex="${value.key === activeTab ? 0 : -1}" data-table-tab="${esc(value.key)}" title="${esc(label(value))}">${esc(label(value))}</button><button ${value.key === activeTab ? 'id="close-table"' : ""} class="attribute-tab-close" data-close-tab="${esc(value.key)}" aria-label="Close ${esc(label(value))}">×</button></div>`,
+        )
+        .join(""),
+    );
     if (focusKey)
       [...$("#table-tabs").querySelectorAll<HTMLElement>("[data-table-tab]")]
         .find((el) => el.dataset.tableTab === focusKey)
@@ -445,7 +449,7 @@ export function createAttributeTables(
       tableSort,
       tableDescending,
       tableRespectFilters,
-      hooks.snapshot().filter,
+      tableRespectFilters && !gisTable.layerId ? hooks.snapshot().filter : null,
       gisTable.sort,
       gisTable.descending,
     ]);
@@ -483,8 +487,8 @@ export function createAttributeTables(
           "aria-rowcount",
           String(r.count + 1),
         );
-        $(".table-scroll").scrollTop = storedTop;
-        $(".table-scroll").scrollLeft = storedLeft;
+        storedTop = scroll.scrollTop;
+        storedLeft = scroll.scrollLeft;
         saveTab();
         if (!receiving && notify) hooks.changed?.();
         return;
@@ -530,6 +534,10 @@ export function createAttributeTables(
           ? "Display cell members"
           : tableSource || "All sources",
       );
+      // Read the live viewport after asynchronous reads, before patching rows.
+      // A playback response must not restore a position from before a wheel event.
+      storedTop = scroll.scrollTop;
+      storedLeft = scroll.scrollLeft;
       const window = columnWindow(
         host,
         tableColumnOffset,
@@ -556,8 +564,10 @@ export function createAttributeTables(
           ? `Original · ${c.slice(10)}`
           : titles[c] || c.replaceAll("_", " "),
       ]);
-      $("#table-head").innerHTML =
-        `<tr>${window.before("th")}${headers.map(([c, title], i) => `<th aria-colindex="${tableColumnOffset + i + 1}" aria-sort="${tableSort === c ? (tableDescending ? "descending" : "ascending") : "none"}"><button data-table-sort="${esc(c)}" aria-label="Sort by ${esc(c)}" title="${esc(title)}">${esc(title)}${tableSort === c ? (tableDescending ? " ↓" : " ↑") : ""}</button></th>`).join("")}${window.after("th")}</tr>`;
+      tableMarkup(
+        $("#table-head"),
+        `<tr>${window.before("th")}${headers.map(([c, title], i) => `<th aria-colindex="${tableColumnOffset + i + 1}" aria-sort="${tableSort === c ? (tableDescending ? "descending" : "ascending") : "none"}"><button data-table-sort="${esc(c)}" aria-label="Sort by ${esc(c)}" title="${esc(title)}">${esc(title)}${tableSort === c ? (tableDescending ? " ↓" : " ↑") : ""}</button></th>`).join("")}${window.after("th")}</tr>`,
+      );
       const value = (e: any, c: string) => {
         if (c.startsWith("attribute:"))
           return e[c] ?? e.attrs?.[c.slice(10)] ?? "";
@@ -573,16 +583,19 @@ export function createAttributeTables(
         rows > 0
           ? `<tr class="table-spacer" aria-hidden="true"><td colspan="${window.span}" style="height:${rows * tableRowUnit()}px"></td></tr>`
           : "";
-      $("#table-body").innerHTML =
+      tableRows(
+        $("#table-body"),
         spacer(r.offset) +
-        (r.events
-          .map(
-            (e: any, index: number) =>
-              `<tr tabindex="${e.id === tableSelection.activeId || (!tableSelection.activeId && index === 0) ? 0 : -1}" aria-rowindex="${page * 50 + index + 2}" data-event="${esc(e.id)}" aria-selected="${exactSelected.has(e.id)}" class="${exactSelected.has(e.id) ? "selected" : ""}">${window.before("td")}${columns.map((c, i) => `<td aria-colindex="${tableColumnOffset + i + 1}" title="${esc(value(e, c))}">${esc(value(e, c))}</td>`).join("")}${window.after("td")}</tr>`,
-          )
-          .join("") ||
-          `<tr><td colspan="${window.span}">No events in this scope.</td></tr>`) +
-        spacer(Math.max(0, tableTotal - r.offset - r.events.length));
+          (r.events
+            .map(
+              (e: any, index: number) =>
+                `<tr tabindex="${e.id === tableSelection.activeId || (!tableSelection.activeId && index === 0) ? 0 : -1}" aria-rowindex="${page * 50 + index + 2}" data-event="${esc(e.id)}" aria-selected="${exactSelected.has(e.id)}" class="${exactSelected.has(e.id) ? "selected" : ""}">${window.before("td")}${columns.map((c, i) => `<td aria-colindex="${tableColumnOffset + i + 1}" title="${esc(value(e, c))}">${esc(value(e, c))}</td>`).join("")}${window.after("td")}</tr>`,
+            )
+            .join("") ||
+            `<tr><td colspan="${window.span}">No events in this scope.</td></tr>`) +
+          spacer(Math.max(0, tableTotal - r.offset - r.events.length)),
+        "data-event",
+      );
       $(".table-scroll table").setAttribute(
         "aria-rowcount",
         String(tableTotal + 1),

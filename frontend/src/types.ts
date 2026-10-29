@@ -92,6 +92,10 @@ export interface Packed {
   entities: string[];
 }
 export interface Point {
+  altitude?: {
+    meters: number;
+    reference: "ellipsoid" | "egm96" | "reported" | "unspecified";
+  };
   inferred?: boolean;
   centroid?: boolean;
   id: string;
@@ -138,7 +142,7 @@ export function decode(p: Packed): Point[] {
   };
   if (
     !p ||
-    p.stride !== 32 ||
+    (p.stride !== 32 && p.stride !== 48) ||
     !Array.isArray(p.ids) ||
     p.ids.length > 100000 ||
     p.rendered_count !== p.ids.length ||
@@ -159,7 +163,7 @@ export function decode(p: Packed): Point[] {
       return invalid();
     ids.add(id);
   }
-  const expected = p.ids.length * 32,
+  const expected = p.ids.length * p.stride,
     padding = p.data.endsWith("==") ? 2 : p.data.endsWith("=") ? 1 : 0;
   if (
     p.data.length !== 4 * Math.ceil(expected / 3) ||
@@ -184,7 +188,7 @@ export function decode(p: Packed): Point[] {
   for (const id of inferred) if (!ids.has(id)) return invalid();
   const result: Point[] = [];
   for (let i = 0; i < p.ids.length; i++) {
-    const o = i * 32,
+    const o = i * p.stride,
       lon = view.getFloat64(o, true),
       lat = view.getFloat64(o + 8, true),
       epoch = view.getFloat64(o + 16, true),
@@ -203,7 +207,31 @@ export function decode(p: Packed): Point[] {
       !Number.isFinite(value)
     )
       return invalid();
+    let altitude: Point["altitude"];
+    if (p.stride === 48) {
+      const meters = view.getFloat64(o + 32, true),
+        reference = view.getUint8(o + 40);
+      for (let j = 41; j < 48; j++) if (view.getUint8(o + j)) return invalid();
+      if (reference === 0) {
+        if (!Number.isNaN(meters)) return invalid();
+      } else {
+        if (
+          ![1, 2, 3, 4].includes(reference) ||
+          !Number.isFinite(meters) ||
+          meters < -12000 ||
+          meters > 100000000
+        )
+          return invalid();
+        altitude = {
+          meters,
+          reference: (
+            ["", "ellipsoid", "egm96", "reported", "unspecified"] as const
+          )[reference] as NonNullable<Point["altitude"]>["reference"],
+        };
+      }
+    }
     result.push({
+      ...(altitude ? { altitude } : {}),
       id: p.ids[i],
       inferred: inferred.has(p.ids[i]),
       centroid: centroids.has(p.ids[i]),

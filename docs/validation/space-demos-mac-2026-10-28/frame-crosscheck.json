@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "controls": 8,
+  "independent_ITRS_max_difference_m": 13.058741905256339,
+  "comparison": "Astropy with bundled IERS polar motion vs Skyfield built-in timescale without polar-motion table; same MEME J2000 source assumption"
+}

@@ -64,6 +64,7 @@ pub fn dataset() -> Dataset {
                 ""
             };
             events.push(Event {
+                altitude: None,
                 location_kind: None,
                 geometry_wkt: None,
                 mgrs_precision: None,

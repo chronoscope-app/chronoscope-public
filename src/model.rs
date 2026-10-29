@@ -13,6 +13,8 @@ pub struct Event {
     pub lat: Option<f64>,
     pub lon: Option<f64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub altitude: Option<crate::altitude::Altitude>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mgrs_precision: Option<u8>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub geometry_wkt: Option<String>,
@@ -56,6 +58,9 @@ impl Event {
         Ok(())
     }
     pub fn validate(&self) -> Result<(), String> {
+        if let Some(altitude) = self.altitude {
+            altitude.validate()?;
+        }
         if self.entity.trim().is_empty() {
             return Err("Entity must not be empty".into());
         }
@@ -243,6 +248,11 @@ impl Predicate {
                 "category" => e.category.clone(),
                 "label" => e.label.clone(),
                 "related_to" => e.related_to.clone(),
+                "altitude_m" => e.altitude.map(|a| a.meters.to_string()).unwrap_or_default(),
+                "altitude_reference" => e
+                    .altitude
+                    .map(|a| a.reference.as_str().to_owned())
+                    .unwrap_or_default(),
                 "value" => e.value.map(|v| v.to_string()).unwrap_or_default(),
                 "tags" => e.tags.iter().cloned().collect::<Vec<_>>().join(","),
                 field => e.attrs.get(field).cloned().unwrap_or_default(),

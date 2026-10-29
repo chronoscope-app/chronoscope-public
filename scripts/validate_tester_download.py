@@ -30,8 +30,8 @@ ROOT = Path(__file__).resolve().parent.parent
 # The measured offline Balanced pack alone is 84.7 MiB; retain a bounded cap.
 MAX_ARCHIVE = 256 * 1024 * 1024
 MAX_EXPANDED = 1024 * 1024 * 1024
-# Reviewed GIS additions: bufrw, dbase, geozero (two licenses), scroll, shapefile.
-NOTICE_COUNT = 1499
+# Reviewed Tauri 2.12.5, altitude/SpaceX dataset notices and Tokio 1.53.3 inputs.
+NOTICE_COUNT = 1531
 
 
 def require(condition, message):

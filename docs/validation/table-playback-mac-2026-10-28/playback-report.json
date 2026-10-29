@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Docked Event table",
+      "identity": {
+        "row": true,
+        "head": true,
+        "close": true,
+        "col": true,
+        "hovered": true
+      },
+      "closed": true,
+      "playing": true
+    },
+    {
+      "name": "Detached Event table",
+      "identity": {
+        "row": true,
+        "head": true,
+        "close": true,
+        "col": true,
+        "hovered": true
+      },
+      "closed": true,
+      "playing": true
+    },
+    {
+      "name": "Docked GIS table",
+      "identity": {
+        "row": true,
+        "head": true,
+        "close": true,
+        "col": true,
+        "hovered": true
+      },
+      "closed": true,
+      "playing": true
+    },
+    {
+      "name": "Detached GIS table",
+      "identity": {
+        "row": true,
+        "head": true,
+        "close": true,
+        "col": true,
+        "hovered": true
+      },
+      "closed": true,
+      "playing": true
+    },
+    {
+      "name": "Filtered table continues to update during playback and matches exact Rust rows after pause",
+      "rows": 100
+    }
+  ],
+  "errors": []
+}
