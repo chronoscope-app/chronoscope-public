@@ -112,13 +112,11 @@ try {
       name +
         " exercises a scrolled table: " +
         JSON.stringify(
-          await surface
-            .locator(".table-scroll")
-            .evaluate((el) => ({
-              height: el.clientHeight,
-              extent: el.scrollHeight,
-              top: el.scrollTop,
-            })),
+          await surface.locator(".table-scroll").evaluate((el) => ({
+            height: el.clientHeight,
+            extent: el.scrollHeight,
+            top: el.scrollTop,
+          })),
         ),
     );
     const row = surface.locator(rowSelector).first();
@@ -193,10 +191,20 @@ try {
     await page.waitForSelector('.table-scroll[aria-busy="false"]');
   }
   async function detachedProbe(name, rowSelector) {
+    const respectFilters = await page
+      .locator("#table-respect-filters")
+      .isChecked();
     const opened = page.waitForEvent("popup");
     await page.click("#table-popout");
     const popup = await opened;
     popup.on("pageerror", (e) => report.errors.push(e.message));
+    // A popup's first default page can finish before the main window's state
+    // arrives. Measure scroll retention only after that scope is applied.
+    await popup.waitForFunction(
+      (expected) =>
+        document.querySelector("#table-respect-filters")?.checked === expected,
+      respectFilters,
+    );
     await popup.waitForSelector(rowSelector);
     await popup.waitForSelector('.table-scroll[aria-busy="false"]');
     await probe(popup, name, rowSelector);

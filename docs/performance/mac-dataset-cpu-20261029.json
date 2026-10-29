@@ -1,0 +1,344 @@
+{
+  "format": 1,
+  "date": "2026-10-29",
+  "platform": "macOS / native WKWebView",
+  "method": "Cumulative process user+system CPU from ps time; 100% is one core. One native five-second idle sample per demo; two fresh-profile backend trials per configuration. GPU execution time and active FPS are not measured.",
+  "native_baseline": {
+    "version": "0.16.5",
+    "cases": [
+      {
+        "demo": "starlink-orbits",
+        "engine_open_ms": 4285.946,
+        "settled_open_ms": 5955.358,
+        "idle_seconds": 5.058218,
+        "idle_cpu_ms_by_process_kind": {
+          "app": 270.0,
+          "webkit_gpu": 30.0,
+          "webkit_webcontent": 410.0,
+          "webkit_networking": 0.0,
+          "wmts_helper": 0.0
+        },
+        "idle_cpu_percent_one_core": 14.0366,
+        "idle_rendered_frames": 0,
+        "points": 11648,
+        "update_rate_limit_hz": null,
+        "render_errors": 0,
+        "navigation_playback_wakeup_verified": null
+      },
+      {
+        "demo": "hurricanes",
+        "engine_open_ms": 456.249,
+        "settled_open_ms": 2798.961,
+        "idle_seconds": 5.059068,
+        "idle_cpu_ms_by_process_kind": {
+          "app": 260.0,
+          "webkit_gpu": 20.0,
+          "webkit_webcontent": 410.0,
+          "webkit_networking": 0.0,
+          "wmts_helper": 0.0
+        },
+        "idle_cpu_percent_one_core": 13.6389,
+        "idle_rendered_frames": 0,
+        "points": 3568,
+        "update_rate_limit_hz": null,
+        "render_errors": 0,
+        "navigation_playback_wakeup_verified": null
+      },
+      {
+        "demo": "falcon9-launches",
+        "engine_open_ms": 215.074,
+        "settled_open_ms": 1535.207,
+        "idle_seconds": 5.029814,
+        "idle_cpu_ms_by_process_kind": {
+          "app": 250.0,
+          "webkit_gpu": 20.0,
+          "webkit_webcontent": 350.0,
+          "webkit_networking": 0.0,
+          "wmts_helper": 0.0
+        },
+        "idle_cpu_percent_one_core": 12.3265,
+        "idle_rendered_frames": 0,
+        "points": 700,
+        "update_rate_limit_hz": null,
+        "render_errors": 0,
+        "navigation_playback_wakeup_verified": null
+      }
+    ]
+  },
+  "native_candidate": {
+    "version": "0.16.6",
+    "cases": [
+      {
+        "demo": "starlink-orbits",
+        "engine_open_ms": 1097.479,
+        "settled_open_ms": 2631.424,
+        "idle_seconds": 5.044753,
+        "idle_cpu_ms_by_process_kind": {
+          "wmts_helper": 0.0,
+          "app": 220.0,
+          "webkit_gpu": 20.0,
+          "webkit_webcontent": 310.0,
+          "webkit_networking": 0.0
+        },
+        "idle_cpu_percent_one_core": 10.9024,
+        "idle_rendered_frames": 0,
+        "points": 11648,
+        "update_rate_limit_hz": 10,
+        "render_errors": 0,
+        "navigation_playback_wakeup_verified": true
+      },
+      {
+        "demo": "hurricanes",
+        "engine_open_ms": 125.568,
+        "settled_open_ms": 2406.414,
+        "idle_seconds": 5.063985,
+        "idle_cpu_ms_by_process_kind": {
+          "wmts_helper": 0.0,
+          "app": 220.0,
+          "webkit_gpu": 20.0,
+          "webkit_webcontent": 310.0,
+          "webkit_networking": 0.0
+        },
+        "idle_cpu_percent_one_core": 10.861,
+        "idle_rendered_frames": 0,
+        "points": 3568,
+        "update_rate_limit_hz": 10,
+        "render_errors": 0,
+        "navigation_playback_wakeup_verified": true
+      },
+      {
+        "demo": "falcon9-launches",
+        "engine_open_ms": 83.948,
+        "settled_open_ms": 1405.002,
+        "idle_seconds": 5.034288,
+        "idle_cpu_ms_by_process_kind": {
+          "wmts_helper": 0.0,
+          "app": 210.0,
+          "webkit_gpu": 20.0,
+          "webkit_webcontent": 220.0,
+          "webkit_networking": 0.0
+        },
+        "idle_cpu_percent_one_core": 8.9387,
+        "idle_rendered_frames": 0,
+        "points": 700,
+        "update_rate_limit_hz": 10,
+        "render_errors": 0,
+        "navigation_playback_wakeup_verified": true
+      }
+    ]
+  },
+  "backend_trials": {
+    "debug-baseline": {
+      "version": "0.16.5",
+      "trials": [
+        {
+          "trial": 0,
+          "id": "starlink-orbits",
+          "elapsedMs": 4306.3459580007475,
+          "cpuMs": 4270.0,
+          "count": 46208,
+          "visible": 11648
+        },
+        {
+          "trial": 0,
+          "id": "flight-altitude",
+          "elapsedMs": 5968.04870798951,
+          "cpuMs": 5940.0,
+          "count": 88018,
+          "visible": 88018
+        },
+        {
+          "trial": 0,
+          "id": "hurricanes",
+          "elapsedMs": 442.16670899186283,
+          "cpuMs": 439.9999999999995,
+          "count": 3568,
+          "visible": 3568
+        },
+        {
+          "trial": 0,
+          "id": "falcon9-launches",
+          "elapsedMs": 178.9206249814015,
+          "cpuMs": 179.99999999999972,
+          "count": 700,
+          "visible": 700
+        },
+        {
+          "trial": 1,
+          "id": "starlink-orbits",
+          "elapsedMs": 4327.130208024755,
+          "cpuMs": 4300.0,
+          "count": 46208,
+          "visible": 11648
+        },
+        {
+          "trial": 1,
+          "id": "flight-altitude",
+          "elapsedMs": 6034.525750001194,
+          "cpuMs": 6010.0,
+          "count": 88018,
+          "visible": 88018
+        },
+        {
+          "trial": 1,
+          "id": "hurricanes",
+          "elapsedMs": 441.4630419923924,
+          "cpuMs": 439.9999999999995,
+          "count": 3568,
+          "visible": 3568
+        },
+        {
+          "trial": 1,
+          "id": "falcon9-launches",
+          "elapsedMs": 178.34320801193826,
+          "cpuMs": 180.00000000000148,
+          "count": 700,
+          "visible": 700
+        }
+      ]
+    },
+    "release-baseline": {
+      "version": "0.16.5",
+      "trials": [
+        {
+          "trial": 0,
+          "id": "starlink-orbits",
+          "elapsedMs": 1030.4533329908736,
+          "cpuMs": 1020.0,
+          "count": 46208,
+          "visible": 11648
+        },
+        {
+          "trial": 0,
+          "id": "flight-altitude",
+          "elapsedMs": 1231.9011249928735,
+          "cpuMs": 1210.0,
+          "count": 88018,
+          "visible": 88018
+        },
+        {
+          "trial": 0,
+          "id": "hurricanes",
+          "elapsedMs": 111.4011249737814,
+          "cpuMs": 110.00000000000031,
+          "count": 3568,
+          "visible": 3568
+        },
+        {
+          "trial": 0,
+          "id": "falcon9-launches",
+          "elapsedMs": 49.824582994915545,
+          "cpuMs": 49.99999999999982,
+          "count": 700,
+          "visible": 700
+        },
+        {
+          "trial": 1,
+          "id": "starlink-orbits",
+          "elapsedMs": 1022.8975420177449,
+          "cpuMs": 1000.0,
+          "count": 46208,
+          "visible": 11648
+        },
+        {
+          "trial": 1,
+          "id": "flight-altitude",
+          "elapsedMs": 1234.6467089955695,
+          "cpuMs": 1219.9999999999998,
+          "count": 88018,
+          "visible": 88018
+        },
+        {
+          "trial": 1,
+          "id": "hurricanes",
+          "elapsedMs": 108.8585410034284,
+          "cpuMs": 110.00000000000031,
+          "count": 3568,
+          "visible": 3568
+        },
+        {
+          "trial": 1,
+          "id": "falcon9-launches",
+          "elapsedMs": 50.24312500609085,
+          "cpuMs": 49.99999999999982,
+          "count": 700,
+          "visible": 700
+        }
+      ]
+    },
+    "installed_release": {
+      "version": "0.16.6",
+      "executable_sha256": "9fa8f2ba655b067f7e892cbef18b84883278c210485d3269171cd958e7556ef8",
+      "trials": [
+        {
+          "trial": 0,
+          "demo": "starlink-orbits",
+          "elapsed_ms": 1036.0404590028338,
+          "cpu_ms": 1020.0,
+          "count": 46208,
+          "visible": 11648
+        },
+        {
+          "trial": 0,
+          "demo": "flight-altitude",
+          "elapsed_ms": 1235.7988329895306,
+          "cpu_ms": 1220.0,
+          "count": 88018,
+          "visible": 88018
+        },
+        {
+          "trial": 0,
+          "demo": "hurricanes",
+          "elapsed_ms": 110.1907919801306,
+          "cpu_ms": 110.00000000000031,
+          "count": 3568,
+          "visible": 3568
+        },
+        {
+          "trial": 0,
+          "demo": "falcon9-launches",
+          "elapsed_ms": 50.75612501241267,
+          "cpu_ms": 49.99999999999982,
+          "count": 700,
+          "visible": 700
+        },
+        {
+          "trial": 1,
+          "demo": "starlink-orbits",
+          "elapsed_ms": 1032.8569580160547,
+          "cpu_ms": 1020.0,
+          "count": 46208,
+          "visible": 11648
+        },
+        {
+          "trial": 1,
+          "demo": "flight-altitude",
+          "elapsed_ms": 1241.605375020299,
+          "cpu_ms": 1220.0,
+          "count": 88018,
+          "visible": 88018
+        },
+        {
+          "trial": 1,
+          "demo": "hurricanes",
+          "elapsed_ms": 110.47037498792633,
+          "cpu_ms": 109.99999999999987,
+          "count": 3568,
+          "visible": 3568
+        },
+        {
+          "trial": 1,
+          "demo": "falcon9-launches",
+          "elapsed_ms": 50.09849998168647,
+          "cpu_ms": 40.000000000000036,
+          "count": 700,
+          "visible": 700
+        }
+      ]
+    }
+  },
+  "native_baseline_source": "c4f4bf6",
+  "native_baseline_sha256": "14ee42f6c5ee95e47a21cc22348989af77412eab1b7a51699908703c60245f1f",
+  "native_candidate_source": "a91bd89",
+  "native_candidate_sha256": "9fa8f2ba655b067f7e892cbef18b84883278c210485d3269171cd958e7556ef8"
+}

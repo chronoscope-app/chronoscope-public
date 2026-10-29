@@ -291,9 +291,9 @@ export class DisplayLayer {
               this.view.theme === "light" ? "#7c4b00" : "#ffd27a",
             )
           : this.view.theme === "light"
-            ? Color.WHITE
+            ? Color.TRANSPARENT
             : Color.BLACK.withAlpha(0.8),
-        outlineWidth: 1,
+        outlineWidth: bin.selected_count || this.view.theme !== "light" ? 1 : 0,
         id: { kind: "cluster", bin },
       });
     const largest = p.bins

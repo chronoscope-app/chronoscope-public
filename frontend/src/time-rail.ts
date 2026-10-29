@@ -249,12 +249,12 @@ export class TimeRail {
       settings.append(row);
     }
     const fade = document.createElement("label");
-    fade.className = "time-rail-setting";
+    fade.className = "time-rail-fade";
     fade.htmlFor = "playback-fade";
     fade.innerHTML =
-      '<span>Fade</span><input id="playback-fade" type="checkbox" role="switch" aria-label="Fade playback history" checked>';
+      '<span>Fade</span><output id="playback-fade-value" for="playback-fade">50%</output><input id="playback-fade" type="range" min="0" max="100" step="1" value="50" aria-label="Fade playback history"><small><span>Linger</span><span>Faster</span></small>';
     fade.title =
-      "On: move the time window and fade departing events and trails. Off: retain playback history until the next loop.";
+      "Higher fade keeps a shorter history and fades entities and trails faster. Maximum keeps the latest few time slices. Zero retains history until the next loop.";
     settings.append(fade);
     // Menu expansion changes the flyout height. Reposition in the same task,
     // before the next paint, rather than waiting for the next resize frame.

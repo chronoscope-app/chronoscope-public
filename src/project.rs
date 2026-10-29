@@ -133,6 +133,10 @@ pub struct SceneState {
     pub time_height: Option<f64>,
     /// None preserves the default fading playback of older workspaces.
     pub playback_fade: Option<bool>,
+    /// 0 retains history; 1–100 shortens history and departure lifetime.
+    /// Missing values retain the legacy false/true (0/50) behavior.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub playback_fade_amount: Option<u8>,
     /// Encode UTC event time as display elevation in Globe, never source altitude.
     pub globe_time: bool,
     /// Physical Event altitude in Globe, mutually exclusive with time height.
@@ -257,6 +261,7 @@ impl SceneState {
             || self
                 .time_height
                 .is_some_and(|v| !v.is_finite() || !(0. ..=5.).contains(&v))
+            || self.playback_fade_amount.is_some_and(|v| v > 100)
             || self
                 .globe_time_scale
                 .is_some_and(|v| !v.is_finite() || !(0.05..=20.).contains(&v))

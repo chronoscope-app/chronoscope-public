@@ -186,18 +186,6 @@ impl Engine {
                 .ok_or("Preview a file first (import ticket missing or expired)")?
                 .clone()
         };
-        // CSV reviews reread the source. A ticket created by the GUI must not
-        // grant a later scoped caller access outside its current file root.
-        // Packaged GIS/Excel samples are already loaded, bounded data.
-        if pending.streaming {
-            if let Some(root) = crate::operation::scope() {
-                crate::mcp::scoped(
-                    pending.path.to_str().ok_or("Invalid import source path")?,
-                    &root,
-                    false,
-                )?;
-            }
-        }
         pending.check()?;
         let mapping: Mapping = arg(&args, "mapping")?;
         let sheet = args["sheet"].as_u64().unwrap_or(0) as usize;

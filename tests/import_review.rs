@@ -6,6 +6,107 @@ fn preview(e: &Engine, path: &std::path::Path) -> Value {
     json!({"import_id":p["import_id"],"sheet":0,"mapping":p["sheets"][0]["mapping"]})
 }
 
+fn scoped_tool(e: &Engine, root: &std::path::Path, command: &str, args: Value) -> Value {
+    chronoscope::mcp::handle(
+        e,
+        root,
+        json!({
+            "jsonrpc":"2.0","id":1,"method":"tools/call",
+            "params":{"name":format!("chronoscope_{command}"),"arguments":args}
+        }),
+    )
+    .unwrap()["result"]
+        .clone()
+}
+
+#[test]
+fn streaming_ticket_rechecks_current_root_for_validation_review_and_commit() {
+    let dir = tempfile::tempdir().unwrap();
+    let narrow = dir.path().join("narrow");
+    std::fs::create_dir(&narrow).unwrap();
+    std::fs::write(
+        dir.path().join("data.csv"),
+        "entity,timestamp,latitude,longitude,value\nA,2026-10-01T12:00:00Z,40,-70,3\n",
+    )
+    .unwrap();
+    let e = Engine::new(Project::empty(), dir.path().join("profile")).unwrap();
+    let p = scoped_tool(&e, dir.path(), "import_preview", json!({"path":"data.csv"}));
+    let p = &p["structuredContent"];
+    let args = json!({"import_id":p["import_id"],"sheet":0,"mapping":p["sheets"][0]["mapping"]});
+    let before = e.invoke("snapshot", json!({"compact":true})).unwrap();
+    for command in ["import_validate", "import_review", "import_commit"] {
+        let denied = scoped_tool(&e, &narrow, command, args.clone());
+        assert_eq!(denied["isError"], true, "{command}: {denied}");
+        assert!(denied.to_string().contains("outside the MCP --root scope"));
+        assert_eq!(
+            e.invoke("snapshot", json!({"compact":true})).unwrap(),
+            before
+        );
+    }
+    let allowed = scoped_tool(&e, dir.path(), "import_commit", args);
+    assert_ne!(allowed["isError"], true, "{allowed}");
+    assert_eq!(
+        e.invoke("snapshot", json!({"compact":true})).unwrap()["count"],
+        1
+    );
+}
+
+#[test]
+fn gui_streaming_ticket_cannot_escape_background_job_root() {
+    let dir = tempfile::tempdir().unwrap();
+    let narrow = dir.path().join("narrow");
+    std::fs::create_dir(&narrow).unwrap();
+    let path = dir.path().join("data.csv");
+    std::fs::write(
+        &path,
+        "entity,timestamp,latitude,longitude,value\nA,2026-10-01T12:00:00Z,40,-70,3\n",
+    )
+    .unwrap();
+    let e = Engine::new(Project::empty(), dir.path().join("profile")).unwrap();
+    let args = preview(&e, &path);
+    for (root, expected) in [
+        (&narrow, "failed"),
+        (&dir.path().to_path_buf(), "completed"),
+    ] {
+        let job = scoped_tool(
+            &e,
+            root,
+            "job_start",
+            json!({"command":"import_commit","arguments":args}),
+        );
+        let job_id = job["structuredContent"]["job_id"].clone();
+        assert!(job_id.is_string(), "{job}");
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(5);
+        let result = loop {
+            let result = scoped_tool(&e, root, "job_result", json!({"job_id":job_id}));
+            let status = result["structuredContent"]["status"]
+                .as_str()
+                .unwrap()
+                .to_owned();
+            if !["queued", "running"].contains(&status.as_str()) {
+                break result["structuredContent"].clone();
+            }
+            assert!(std::time::Instant::now() < deadline, "job did not finish");
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        };
+        assert_eq!(result["status"], expected, "{result}");
+        if expected == "failed" {
+            assert!(result["error"]["message"]
+                .as_str()
+                .unwrap()
+                .contains("outside the MCP --root scope"));
+            assert_eq!(
+                e.invoke("snapshot", json!({"compact":true})).unwrap()["count"],
+                0
+            );
+        }
+    }
+    assert_eq!(
+        e.invoke("snapshot", json!({"compact":true})).unwrap()["count"],
+        1
+    );
+}
+
 #[test]
 fn full_review_and_complete_rejection_export_leave_the_workspace_unchanged() {
     let dir = tempfile::tempdir().unwrap();

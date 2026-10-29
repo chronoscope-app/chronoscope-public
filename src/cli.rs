@@ -146,6 +146,11 @@ enum Command {
 enum ViewCommand {
     /// Inspect the actual rendered camera, backend, loading and layer readiness.
     Status,
+    /// Set playback fade: 0 retains history, 100 keeps only recent positions.
+    Fade {
+        #[arg(value_parser = clap::value_parser!(u8).range(0..=100))]
+        amount: u8,
+    },
     /// Choose Globe height: timestamp elevation, physical altitude, or ground.
     Height {
         #[arg(value_parser = ["time", "altitude", "ground"])]
@@ -405,6 +410,15 @@ fn run() -> Result<(), String> {
         )?,
         Command::View { command } => match command {
             ViewCommand::Status => invoke("view_status", json!({}))?,
+            ViewCommand::Fade { amount } => {
+                if attached.is_none() {
+                    return Err("UNAVAILABLE: use --attach for live playback fade controls".into());
+                }
+                invoke(
+                    "view_playback",
+                    json!({"action":"configure","fade_amount":amount}),
+                )?
+            }
             ViewCommand::Reset { confirm } => invoke("view_reset", json!({"confirm":confirm}))?,
             ViewCommand::Height { mode, scale } => {
                 if scale.is_some() && mode != "time" {

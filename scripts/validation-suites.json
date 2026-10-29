@@ -5,6 +5,7 @@
       "bridge-test.mjs",
       "si-chat-test.mjs",
       "camera-stability-test.mjs",
+      "idle-scene-updates-test.mjs",
       "cesium-effects-math-test.mjs",
       "cesium-geometry-test.mjs",
       "cesium-resource-test.mjs",
@@ -91,7 +92,8 @@
       "playback-reuse-qa.mjs",
       "altitude-qa.mjs",
       "table-playback-qa.mjs",
-      "space-demos-qa.mjs"
+      "space-demos-qa.mjs",
+      "playback-fade-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -116,7 +118,8 @@
     "priority-demos-qa.mjs",
     "renderer-reuse-qa.mjs",
     "track-style-qa.mjs",
-    "playback-reuse-qa.mjs"
+    "playback-reuse-qa.mjs",
+    "playback-fade-qa.mjs"
   ],
   "smoke": [
     "integration-smoke-qa.mjs",
@@ -164,7 +167,8 @@
         "playback-transitions-qa.mjs",
         "sidebar-time-qa.mjs",
         "time-rail-qa.mjs",
-        "subsecond-qa.mjs"
+        "subsecond-qa.mjs",
+        "playback-fade-qa.mjs"
       ],
       "rust": [
         "subsecond_precision",

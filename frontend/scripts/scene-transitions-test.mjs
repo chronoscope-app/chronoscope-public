@@ -1115,6 +1115,7 @@ test("actual restore callback graph keeps chart/display/camera notifications out
     setTerrain: async () => {},
     setDisplayOptions: emit,
     restoreViewStates: emit,
+    playbackFadeAmount: 50,
     setPlaybackFade: emit,
     setGlobeTimeScale: emit,
     setGlobeTime: emit,
@@ -1157,11 +1158,9 @@ test("actual restore callback graph keeps chart/display/camera notifications out
   });
   vm.runInContext(
     transpile(
-      originalMainNode(
-        (node) =>
-          ts.isFunctionDeclaration(node) &&
-          node.name?.text === "applyRestoredScene",
-      ).text,
+      ["updatePlaybackFadeControl", "applyRestoredScene"].map((name) =>
+        originalMainNode((node) => ts.isFunctionDeclaration(node) && node.name?.text === name).text,
+      ).join("\n"),
     ),
     ui.context,
   );

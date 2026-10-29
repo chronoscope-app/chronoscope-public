@@ -21,6 +21,10 @@ At most two traces run concurrently; eight sessions and 6,000 samples per trace
 are retained. Completion removes the render listener. Samples include frame
 intervals, CPU submission time, imagery/terrain loading, terrain-provider changes,
 render errors and context recoveries. These are CPU measurements, not GPU timing.
+Live `view_status` diagnostics also report `performance.updateRateLimitHz`: 10
+after a scene settles, or null for full display cadence during interaction,
+playback and loading. This describes update passes, not rendered FPS; rendering
+remains on demand. CLI `--attach view status` exposes the same diagnostics.
 Raw long intervals remain available and are included in the summary percentile.
 Gaps over 250 ms are counted separately; they may be intentional request-render
 idle periods or stalls. Correlate them with input and scenario timestamps.
@@ -104,3 +108,12 @@ added.
 
 This implements the [MCP Apps interface](https://modelcontextprotocol.io/extensions/apps/overview)
 and subscriptions for the server's negotiated 2025-era MCP protocol versions.
+
+Playback Fade is an integer slider shared by UI, MCP and CLI: configure
+`view_playback` with `fade_amount:0..100`, or run
+`chronoscope --attach view fade 75`. Higher values retain less visible history
+and shorten departing marker/track/stem afterimages. Maximum keeps roughly three
+recent time slices while preserving simultaneous entities. Status returns
+`fade_amount` and the compatible boolean `fade`; `view_set.playback_fade_amount`
+stores the choice in scenes and saved views. Legacy false/true maps to 0/50,
+and an explicit percentage wins if both are supplied.

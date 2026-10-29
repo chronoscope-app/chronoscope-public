@@ -1,0 +1,81 @@
+{
+  "next_commit": "96c5734127de0c0514905aeb751dd482cac0d504",
+  "public_parent": "8dfd13057fe940ca519b3f4a8d0f2e1e9fe4b2f5",
+  "next_tracked_files": 3280,
+  "next_files_byte_identical": true,
+  "preserved_public_only_files": [
+    "docs/validation/public-promotion-0.16.4-2026-10-28/README.md",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/README.md",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/report.json",
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-23e567f-2026-10-26/README.md",
+    "docs/validation/public-promotion-23e567f-2026-10-26/report.json",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/README.md",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/report.json",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/README.md",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/report.json",
+    "docs/validation/public-promotion-82107e5-2026-10-26/README.md",
+    "docs/validation/public-promotion-82107e5-2026-10-26/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json"
+  ],
+  "owner_authorized_promotion": true,
+  "hosted_builds_started": false,
+  "download_release_changed": false,
+  "application_version": "0.16.7",
+  "source_checks_revision": "8b862ec98c0fd8be94c564cdd214e28b496d8707",
+  "source_checks_run_id": "20261029T103541Z-26bcc17d",
+  "source_checks_passed": true,
+  "source_gate_followup_changes": [
+    "CHANGELOG.md",
+    "docs/INSTALLATION.md",
+    "docs/PUBLICATION-STATUS.md"
+  ],
+  "rust_passed": 478,
+  "rust_ignored": 1,
+  "frontend_unit_passed": 154,
+  "dependency_audit": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "cargo-audit",
+        "exit_code": 0,
+        "vulnerabilities": 0,
+        "database": {
+          "advisory-count": 1381,
+          "last-commit": "40f5be6fb12ed93fc591bf4ab23b7d793b3f2239",
+          "last-updated": "2026-10-28T09:50:03+01:00"
+        },
+        "warnings": {
+          "unmaintained": 6,
+          "yanked": 1
+        }
+      },
+      {
+        "name": "npm-audit",
+        "exit_code": 0,
+        "vulnerabilities": {
+          "info": 0,
+          "low": 0,
+          "moderate": 0,
+          "high": 0,
+          "critical": 0,
+          "total": 0
+        }
+      }
+    ]
+  },
+  "known_limitations": [
+    "Native 0.16.7 capture/playback checks timed out under the locked session; an older unchanged control also timed out. Fresh native fade visuals are unverified.",
+    "Windows/Linux native acceptance is not established by Mac/headless source checks.",
+    "Existing 0.16.4 downloads and all historical release tags/assets remain unchanged."
+  ],
+  "source_export": "Only tracked Next files, without private Next ancestry or ignored profiles/stress data.",
+  "workflows": "Manual-only and byte-identical to Next and prior Public."
+}

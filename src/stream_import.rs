@@ -103,6 +103,18 @@ impl PendingImport {
         })
     }
     pub fn check(&self) -> Result<(), String> {
+        // Streaming tickets reread their source, so possession of a ticket
+        // cannot grant access beyond the current caller's filesystem root.
+        // Bounded GIS/Excel samples are already loaded and do not reread it.
+        if self.streaming {
+            if let Some(root) = crate::operation::scope() {
+                crate::mcp::scoped(
+                    self.path.to_str().ok_or("Invalid import source path")?,
+                    &root,
+                    false,
+                )?;
+            }
+        }
         if self.path.canonicalize().map_err(|e| e.to_string())? != self.path {
             return Err("Import path changed after preview; preview it again".into());
         }

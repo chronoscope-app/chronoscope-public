@@ -5,6 +5,8 @@ import { captureCamera, restoreCamera } from "./cesium-camera-state";
 import { applySceneAppearance } from "./scene-appearance";
 import { TOOLTIP_DELAY_MS } from "./tooltips";
 import { cameraStabilizer } from "./camera-stability";
+import { idleSceneUpdates } from "./idle-scene-updates";
+import { fadeAmount, departureDuration, recentHistorySpan } from "./playback-window";
 import { GisLayers } from "./gis";
 import {
   Viewer,
@@ -125,6 +127,9 @@ export class SpaceTimeView {
   theme = "dark";
   timeHeight = 2.8;
   playbackFade = true;
+  playbackFadeAmount = 50;
+  private fadeDepartureMs = 800;
+  playbackHistorySpan = 0;
   globeTime = false;
   globeAltitude = false;
   globeTimeScale = 1;
@@ -287,6 +292,7 @@ export class SpaceTimeView {
   private triangleImage = "";
   private renderErrors = 0;
   private idleTimer?: ReturnType<typeof setTimeout>;
+  private idleUpdates?: ReturnType<typeof idleSceneUpdates>;
   private fadeFrame = 0;
   private incomingAt = new Map<string, number>();
   private glyphStarted = new WeakMap<Glyph, number>();
@@ -466,6 +472,25 @@ export class SpaceTimeView {
     this.axisLabels = scene.primitives.add(new LabelCollection());
     this.handles = scene.primitives.add(new PointPrimitiveCollection());
     this.displayLayer = new DisplayLayer(this);
+    this.idleUpdates = idleSceneUpdates(
+      (rate) => {
+        // Cesium accepts undefined to restore display cadence; its declaration
+        // lists only number even though the runtime setter supports both.
+        (this.viewer as { targetFrameRate: number | undefined }).targetFrameRate = rate;
+      },
+      () =>
+        this.playback || !!this.drag || this.renderQueued ||
+        this.scene.mode === SceneMode.MORPHING || !this.scene.globe.tilesLoaded ||
+        this.displayLayer.updating || this.resources.status.basemapPending > 0 ||
+        this.resources.status.terrainPendingTiles > 0,
+    );
+    for (const type of ["pointerdown", "pointermove", "wheel", "keydown", "touchstart", "touchmove"]) {
+      this.host.addEventListener(type, () => this.idleUpdates?.wake(), {
+        capture: true,
+        passive: true,
+        signal: this.abort.signal,
+      });
+    }
     this.triangleImage = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M12 2 23 22H1Z" fill="white" stroke="white" stroke-width="1"/></svg>')}`;
     this.labels.domElement.className = "scene-labels";
     this.labels.domElement.style.pointerEvents = "none";
@@ -480,6 +505,7 @@ export class SpaceTimeView {
     this.resizeObserver.observe(this.host);
     this.camera.percentageChanged = 0.01;
     this.camera.changed.addEventListener(() => {
+      this.idleUpdates?.wake();
       this.cameraDirty = true;
       this.controls.dispatchEvent(new Event("change"));
       this.displayLayer.cameraChanged();
@@ -600,6 +626,8 @@ export class SpaceTimeView {
       this.stopFades();
       clearTimeout(this.idleTimer);
       this.resizeObserver?.disconnect();
+      this.idleUpdates?.dispose();
+      this.idleUpdates = undefined;
       this.abort.abort();
       this.displayLayer.dispose();
       this.resources.dispose();
@@ -787,6 +815,10 @@ export class SpaceTimeView {
         (!timeBounds ||
           (timeBounds[0] === this.lo && timeBounds[1] === this.hi)));
     this.points = points;
+    const recent = recentHistorySpan(points, geometries);
+    // Preserve cadence across empty gaps so a short history can find the next
+    // observation instead of collapsing to an unreachably small time window.
+    if (recent > 0) this.playbackHistorySpan = recent;
     this.names = names;
     this.geometryFeatures = geometries;
     if (bounds) this.bounds = bounds.slice(0, 4) as Bounds;
@@ -910,9 +942,9 @@ export class SpaceTimeView {
                 pixelSize: 8 * this.display.point_scale,
                 outlineColor:
                   this.theme === "light"
-                    ? Color.WHITE
+                    ? Color.TRANSPARENT
                     : Color.BLACK.withAlpha(0.8),
-                outlineWidth: 1,
+                outlineWidth: this.theme === "light" ? 0 : 1,
               });
           // No pick ID: afterimages never enter selection, queries or analysis.
           this.outgoing.push({
@@ -992,7 +1024,8 @@ export class SpaceTimeView {
     this.trianglePoints = this.points.filter((p) => p.inferred);
     this.projectionOmitted = 0;
     const outlineColor =
-      this.theme === "light" ? Color.WHITE : Color.BLACK.withAlpha(0.8);
+      this.theme === "light" ? Color.TRANSPARENT : Color.BLACK.withAlpha(0.8);
+    const outlineWidth = this.theme === "light" ? 0 : 1;
     let glyphIndex = 0;
     for (const p of this.renderPoints) {
       const color = this.measurement
@@ -1030,6 +1063,7 @@ export class SpaceTimeView {
           const point = glyph as PointPrimitive;
           point.pixelSize = 8 * this.display.point_scale;
           point.outlineColor = outlineColor;
+          point.outlineWidth = outlineWidth;
         }
       } else if (p.inferred)
         glyph = (arriving ? this.arrivingTriangles : this.triangles).add({
@@ -1048,7 +1082,7 @@ export class SpaceTimeView {
           color,
           pixelSize: 8 * this.display.point_scale,
           outlineColor,
-          outlineWidth: 1,
+          outlineWidth,
           show,
         });
       if (!resident && arriving) this.arrivalGlyphs.add(glyph);
@@ -1176,8 +1210,8 @@ export class SpaceTimeView {
           id,
           color,
           pixelSize: 7,
-          outlineColor: Color.WHITE,
-          outlineWidth: 1,
+          outlineColor: this.theme === "light" ? Color.TRANSPARENT : Color.WHITE,
+          outlineWidth: this.theme === "light" ? 0 : 1,
         });
       for (const line of feature.shape.lines)
         if (line.length > 1)
@@ -1475,13 +1509,19 @@ export class SpaceTimeView {
     if (installed && accept()) this.lastRaster = data;
     return installed;
   }
-  setPlaybackFade(enabled: boolean) {
-    if (this.playbackFade === enabled) return;
-    this.playbackFade = enabled;
-    this.stopFades();
-    if (this.viewer) this.rebuild(true);
+  setPlaybackFade(value: boolean | number) {
+    const amount = fadeAmount(value);
+    if (this.playbackFadeAmount === amount && this.playbackFade === (amount > 0)) return;
+    const wasEnabled = this.playbackFade;
+    this.playbackFadeAmount = amount;
+    this.fadeDepartureMs = departureDuration(amount);
+    this.playbackFade = amount > 0;
+    if (!this.playbackFade || !wasEnabled) this.stopFades();
+    else if (this.viewer) this.pruneFades(performance.now());
+    if (this.viewer) this.requestRender();
   }
   setPlayback(active: boolean) {
+    this.idleUpdates?.wake();
     this.playback =
       active && !matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.displayLayer.setPlayback(this.playback);
@@ -1674,7 +1714,7 @@ export class SpaceTimeView {
     this.outgoing = this.outgoing.filter((entry, index) => {
       if (
         index >= excess &&
-        now - entry.started < 800 &&
+        now - entry.started < this.fadeDepartureMs &&
         !current?.has(entry.id)
       )
         return true;
@@ -1692,7 +1732,7 @@ export class SpaceTimeView {
         current && [...cohort.ids].some((id) => current.has(id));
       if (
         index >= excessBatches &&
-        now - cohort.started < 800 &&
+        now - cohort.started < this.fadeDepartureMs &&
         !reentered &&
         segments <= 100000
       )
@@ -1717,19 +1757,19 @@ export class SpaceTimeView {
       }
       this.pruneFades(now);
       for (const { glyph, alpha, started } of this.outgoing) {
-        const f = Math.min(1, (now - started) / 800);
+        const f = Math.min(1, (now - started) / this.fadeDepartureMs);
         const c = Color.clone(glyph.color);
         c.alpha = alpha * (1 - f * f * (3 - 2 * f));
         glyph.color = c;
         if ("outlineColor" in glyph) {
           const outline = Color.clone((glyph as PointPrimitive).outlineColor);
           outline.alpha =
-            (this.theme === "light" ? 1 : 0.8) * (1 - f * f * (3 - 2 * f));
+            (this.theme === "light" ? 0 : 0.8) * (1 - f * f * (3 - 2 * f));
           (glyph as PointPrimitive).outlineColor = outline;
         }
       }
       for (const cohort of this.fadeTrails) {
-        const f = Math.min(1, (now - cohort.started) / 800);
+        const f = Math.min(1, (now - cohort.started) / this.fadeDepartureMs);
         cohort.material.uniforms.color.alpha =
           cohort.alpha * (1 - f * f * (3 - 2 * f));
       }
@@ -3199,6 +3239,7 @@ export class SpaceTimeView {
             }
           : null,
       playbackFade: this.playbackFade,
+      playbackFadeAmount: this.playbackFadeAmount,
       globeTime: this.globeTime,
       globeAltitude: this.globeAltitude,
       altitude: this.altitudeSummary(),
@@ -3226,7 +3267,7 @@ export class SpaceTimeView {
       fadingTrailSegments: this.fadeTrails
         .filter((c) => c.kind === "trails")
         .reduce((n, c) => n + c.segments, 0),
-      fadeDurationsMs: { arrival: 180, departure: 800 },
+      fadeDurationsMs: { arrival: 180, departure: this.fadeDepartureMs },
       arrivingPointCount: this.arrivingPoints.length,
       arrivingTriangleCount: this.arrivingTriangles.length,
       triangleVisibleCount: this.trianglePoints.filter(
@@ -3286,6 +3327,7 @@ export class SpaceTimeView {
       orbitHandles: this.handles.length,
       requestRenderMode: this.scene.requestRenderMode,
       performance: {
+        updateRateLimitHz: this.viewer.targetFrameRate ?? null,
         renderedFrames: this.renderedFrames,
         active,
         sampleFrames: intervals.length,
@@ -3326,6 +3368,7 @@ export class SpaceTimeView {
   }
   requestRender() {
     if (this.viewer && !this.disposed) {
+      this.idleUpdates?.wake();
       this.renderQueued = true;
       this.scene.requestRender();
     }
@@ -3850,6 +3893,8 @@ export class SpaceTimeView {
     if (this.disposed) return;
     this.disposed = true;
     clearTimeout(this.idleTimer);
+    this.idleUpdates?.dispose();
+    this.idleUpdates = undefined;
     this.abort.abort();
     this.resizeObserver?.disconnect();
     this.stopFades();

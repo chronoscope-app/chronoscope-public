@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "version": "0.16.7",
+  "checks": [
+    "Installed stdio MCP advertises numeric fade in live and scene schemas",
+    "Installed release persists 75% fade",
+    "Out-of-range value rejected without changing the scene",
+    "Legacy false maps to zero fade"
+  ],
+  "requires_live_frontend": false
+}

@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "Light-mode ordinary markers have no white halos; selection retains a thin colored edge",
+    "Maximum fade keeps only the latest few timestamps while retaining concurrent entities and exact table membership",
+    "Pausing and resuming does not progressively shrink the playback window",
+    "Lower fade lengthens both history and departure lifetime; API changes update the slider",
+    "Fade percentage persists in portable workspaces and original records remain unchanged"
+  ],
+  "publicRequests": 0,
+  "errors": []
+}

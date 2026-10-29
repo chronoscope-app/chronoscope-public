@@ -1,0 +1,16 @@
+{
+  "version": "0.16.7",
+  "versions": {
+    "Cargo.toml": "0.16.7",
+    "src-tauri/Cargo.toml": "0.16.7",
+    "package.json": "0.16.7",
+    "frontend/package.json": "0.16.7",
+    "src-tauri/tauri.conf.json": "0.16.7",
+    "frontend/package-lock.json:version": "0.16.7",
+    "frontend/package-lock.json:packages/root": "0.16.7",
+    "Cargo.lock:chronoscope": "0.16.7",
+    "Cargo.lock:chronoscope-desktop": "0.16.7"
+  },
+  "unreleased_notes": "### Fixed\n\n- Remove opaque white outlines from unselected light-mode entity markers, clusters and point geometry while retaining distinct selection edges.\n- Replace the Fade switch with a 0\u2013100 slider: higher values shorten visible playback history and departure fades; maximum retains roughly the latest three time slices, including simultaneous entities. Persist the percentage in views/workspaces and expose matching MCP and CLI controls.\n- Build optimized local macOS app copies with `script/build_and_run.sh --build-only`, reducing dataset-opening CPU versus the prior debug build. Retain an explicit `--debug-build-only` option for diagnostics.\n- Reduce Cesium update cadence after a scene settles; restore full cadence immediately for interaction, playback and resource loading. Keep rendering on demand.\n- Recheck the current filesystem root when using a streaming import ticket for validation, review or commit, including background jobs. A preview created with broader access no longer authorizes a later read outside the caller's root.\n- Keep field profiles, charts and pattern scans bound to their inherited workspace after waiting for the analytics worker. Capture metadata and the SQLite read view at a committed operation boundary, including cached pattern lookups.\n\nNext development version: 0.16.7. Public downloads remain at 0.16.4.",
+  "release_candidate_notes_ready": false
+}
