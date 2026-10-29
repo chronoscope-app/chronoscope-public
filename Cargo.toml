@@ -1,6 +1,6 @@
 [package]
 name = "chronoscope"
-version = "0.16.7"
+version = "0.16.9"
 edition = "2021"
 rust-version = "1.96"
 description = "Rust space-time engine, CLI and MCP server"
@@ -39,6 +39,7 @@ chrono = { version = "0.4", features = ["serde"] }
 csv = "1.3"
 serde = { version = "1", features = ["derive", "rc"] }
 serde_json = { version = "1", features = ["float_roundtrip"] }
+sysinfo = { version = "=0.40.0", default-features = false, features = ["system"] }
 tempfile = "3"
 zip = { version = "9", default-features = false, features = ["deflate"] }
 clap = { version = "4", features = ["derive"] }

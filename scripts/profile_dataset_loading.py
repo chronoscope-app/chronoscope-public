@@ -18,7 +18,7 @@ import threading
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-DEMOS = [('starlink-orbits', 46208), ('flight-altitude', 88018),
+DEMOS = [('starlink-orbits', 46208), ('flight-altitude', 11018),
          ('hurricanes', 3568), ('falcon9-launches', 700)]
 
 

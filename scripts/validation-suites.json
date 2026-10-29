@@ -31,7 +31,8 @@
       "preferences-controller-test.mjs",
       "scene-ack-test.mjs",
       "scene-transitions-test.mjs",
-      "view-snapshot-test.mjs"
+      "view-snapshot-test.mjs",
+      "resource-governor-test.mjs"
     ],
     "browser": [
       "integration-smoke-qa.mjs",
@@ -93,7 +94,9 @@
       "altitude-qa.mjs",
       "table-playback-qa.mjs",
       "space-demos-qa.mjs",
-      "playback-fade-qa.mjs"
+      "playback-fade-qa.mjs",
+      "resource-pressure-qa.mjs",
+      "flight-week-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -119,7 +122,9 @@
     "renderer-reuse-qa.mjs",
     "track-style-qa.mjs",
     "playback-reuse-qa.mjs",
-    "playback-fade-qa.mjs"
+    "playback-fade-qa.mjs",
+    "resource-pressure-qa.mjs",
+    "flight-week-qa.mjs"
   ],
   "smoke": [
     "integration-smoke-qa.mjs",
@@ -187,11 +192,13 @@
         "spectrum-qa.mjs",
         "renderer-reuse-qa.mjs",
         "track-style-qa.mjs",
-        "playback-reuse-qa.mjs"
+        "playback-reuse-qa.mjs",
+        "resource-pressure-qa.mjs"
       ],
       "rust": [
         "display_lod",
-        "map_presets"
+        "map_presets",
+        "resource_pressure"
       ]
     },
     "maps": {
@@ -286,7 +293,8 @@
     "altitude": {
       "browser": [
         "altitude-qa.mjs",
-        "space-demos-qa.mjs"
+        "space-demos-qa.mjs",
+        "flight-week-qa.mjs"
       ],
       "rust": [
         "altitude",

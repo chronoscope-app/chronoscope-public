@@ -1,0 +1,6 @@
+objc2-io-kit 0.3.2
+Chosen license: MIT (upstream offers Zlib OR Apache-2.0 OR MIT).
+The registry package omits separate license files. Upstream licensing statement:
+https://raw.githubusercontent.com/madsmtm/objc2/7b1abfd750a2cacaea71d6a56ecfb83cb7de560b/LICENSE.md
+Commit from the registry package .cargo_vcs_info.json; path framework-crates/objc2-io-kit.
+Full registry source remains required in a future distribution source companion.

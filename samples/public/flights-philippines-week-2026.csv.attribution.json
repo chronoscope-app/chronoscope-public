@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Authentic and Modified ADS-B Flight Data of Major Philippine Domestic Routes",
+    "creator": "Alexander Bañados, University of the Philippines Diliman; original-flight data collected via Flightradar24",
+    "source_url": "https://doi.org/10.5281/zenodo.20534917",
+    "related_source_url": "https://doi.org/10.17632/tjh279d4f7.1",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "changes": "Only original dataset/raw flight CSVs; no modified-altitude, speed, position, poison or sequence-window data. March 1–7, 2026 UTC; five flights per route per day, spread across available departure times (175 flights; six airports). Retain first and last rows and original rows at least 45 seconds apart. Preserve original Unix timestamps, coordinates and altitude_meters without added interpolation or date shifts. Heights use reported/approximate metres: the physical datum and upstream processing are unspecified; zero is retained as reported, not certified ground elevation. Colors distinguish the five routes. Hexadecimal flight IDs come from original filenames; source_flight_id preserves upstream cells, some of which were corrupted to floating-point notation or inf. Source filenames, rows, aircraft type and airport codes retained. Archive regions verified by pinned SHA-256; original members verified by ZIP CRC/length and recorded SHA-256. No endorsement implied."
+  }
+]

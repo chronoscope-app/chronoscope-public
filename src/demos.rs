@@ -44,12 +44,12 @@ pub struct Demo {
 pub const DEMOS: &[Demo] = &[
     Demo {
         id: "flight-altitude",
-        name: "100 flights · London to Zurich",
-        description: "88,018 samples from 100 distinct flights in 2025. Corrected barometric heights are approximate reported metres, not precise ellipsoid altitude.",
-        source_url: "https://doi.org/10.5281/zenodo.18916312",
-        license: "CC BY 4.0 · El Ouanbi and Amellal / OpenSky telemetry",
+        name: "A week of flights · 6 Philippine airports",
+        description: "175 flights and 11,018 samples across March 1–7, 2026 UTC: Manila, Cebu, Davao, Iloilo, Caticlan and Puerto Princesa. Reported altitude is approximate; original timestamps are preserved.",
+        source_url: "https://doi.org/10.5281/zenodo.20534917",
+        license: "CC BY 4.0 · Alexander Bañados / original flight data via Flightradar24",
         previews: &[Preview { key: "globe", label: "Altitude", view_index: 0 }, Preview { key: "time", label: "Time Height", view_index: 1 }],
-        bytes: include_bytes!("../samples/flights-lhr-zrh-100-2025.chronoscope"),
+        bytes: include_bytes!("../samples/flights-philippines-week-2026.chronoscope"),
     },
     Demo {
         id: "starlink-orbits",

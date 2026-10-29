@@ -1,0 +1,24 @@
+{
+  "passed": false,
+  "checks": [
+    "Installed native MCP opens 175 flights across seven original UTC days"
+  ],
+  "frontend_readiness": [
+    {
+      "attempt": 1,
+      "ready": false,
+      "error": "{'content': [{'text': 'UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying', 'type': 'text'}], 'isError': True, 'structuredContent': {'error': {'code': 'UNAVAILABLE', 'message': 'UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying'}}}"
+    },
+    {
+      "attempt": 2,
+      "ready": true
+    }
+  ],
+  "version": "0.16.9",
+  "binary_sha256": "3e533d971997c6401e273f74d234382ce92e13d835e30eb8bf0db0d20a18006b",
+  "time_bounds": [
+    1772323644.0,
+    1772927900.0
+  ],
+  "error": "AssertionError({'content': [{'text': 'UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying', 'type': 'text'}], 'isError': True, 'structuredContent': {'error': {'code': 'UNAVAILABLE', 'message': 'UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying'}}})"
+}

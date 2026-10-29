@@ -8,6 +8,9 @@ impl Engine {
         let mut result = json!({"version":1,"snapshot":snapshot});
         if args["include_render"] == true {
             let mut request = json!({"max_points":args["max_points"].as_u64().or_else(||result["snapshot"]["scene"]["render_budget"].as_u64()).unwrap_or(20000)});
+            if let Some(cap) = args["resource_max_points"].as_u64() {
+                request["max_points"] = json!(request["max_points"].as_u64().unwrap().min(cap));
+            }
             if let Some(bounds) = args.get("bounds") {
                 request["bounds"] = bounds.clone();
             }
@@ -47,6 +50,9 @@ impl Engine {
                     "entity"
                 };
                 let mut grid = json!({"level":args["display_level"].as_u64().unwrap_or(4),"time_bin_minutes":minutes,"partition":partition,"weight":if options.mode=="heatmap"{options.heat_weight.as_str()}else{"count"},"max_cells":4000});
+                if let Some(cap) = args["resource_max_points"].as_u64() {
+                    grid["max_cells"] = json!(4000_u64.min(cap));
+                }
                 // Cesium GeographicProjection supports polar coordinates in all modes.
                 // The summary edge cells already extend to the poles.
                 grid["flat"] = json!(false);
@@ -86,6 +92,9 @@ impl Engine {
             }
             let render = self.invoke_raw("render_data", request)?;
             let mut request = json!({"limit":1000,"max_vertices":200000});
+            if let Some(cap) = args["resource_max_vertices"].as_u64() {
+                request["max_vertices"] = json!(cap);
+            }
             if let Some(bounds) = args.get("bounds") {
                 request["bounds"] = bounds.clone();
             }

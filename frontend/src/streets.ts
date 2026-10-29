@@ -94,11 +94,27 @@ export class StreetsImageryProvider implements ImageryProvider {
   private cancelRender?: () => void;
   private fatalError?: Error;
   private cache = new Map<string, HTMLCanvasElement>();
+  private cacheLimit = 24;
+  private resetRenderer = false;
   renderedTiles = 0;
   alignmentErrorPixels = 0;
   maximumRequestedLevel = 0;
   lastError = "";
   constructor(private requestRender: () => void) {}
+  setCacheLimit(limit: number) {
+    if (limit === this.cacheLimit) return;
+    this.cacheLimit = Math.max(2, Math.min(24, Math.floor(limit)));
+    while (this.cache.size > this.cacheLimit) this.cache.delete(this.cache.keys().next().value!);
+    // The rasterizer is hidden; existing Cesium imagery stays installed. Release
+    // its vector cache at a safe job boundary, then recreate lazily if needed.
+    this.resetRenderer = true;
+    if (!this.busy) this.releaseRenderer();
+  }
+  private releaseRenderer() {
+    this.map?.remove(); this.map = undefined;
+    this.container?.remove(); this.container = undefined;
+    this.resetRenderer = false;
+  }
   get pending() {
     return this.queue.length + Number(this.busy);
   }
@@ -149,7 +165,7 @@ export class StreetsImageryProvider implements ImageryProvider {
         fadeDuration: 0,
         refreshExpiredTiles: false,
         pixelRatio: 1,
-        maxTileCacheSize: 48,
+        maxTileCacheSize: this.cacheLimit * 2,
         canvasContextAttributes: {
           preserveDrawingBuffer: true,
           antialias: false,
@@ -245,13 +261,14 @@ export class StreetsImageryProvider implements ImageryProvider {
     this.busy = true;
     try {
       while (this.queue.length && !this.closed) {
+        if (this.resetRenderer) this.releaseRenderer();
         const work = this.queue.shift()!;
         try {
           if (work.request?.cancelled)
             throw Error("Street map request cancelled");
           const image = await this.render(work);
           this.cache.set(`${work.level}/${work.x}/${work.y}`, image);
-          while (this.cache.size > 24)
+          while (this.cache.size > this.cacheLimit)
             this.cache.delete(this.cache.keys().next().value!);
           this.renderedTiles++;
           this.lastError = "";
@@ -265,6 +282,7 @@ export class StreetsImageryProvider implements ImageryProvider {
       }
     } finally {
       this.busy = false;
+      if (this.resetRenderer) this.releaseRenderer();
       this.requestRender();
     }
   }
@@ -273,8 +291,7 @@ export class StreetsImageryProvider implements ImageryProvider {
     this.cancelRender?.();
     for (const work of this.queue.splice(0))
       work.reject(Error("Street map closed"));
-    this.map?.remove();
-    this.container?.remove();
+    this.releaseRenderer();
     this.cache.clear();
   }
 }

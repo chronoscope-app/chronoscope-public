@@ -5457,6 +5457,22 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "ntapi",
+    "version": "0.4.3",
+    "archive_sha256": "c3b335231dfd352ffb0f8017f3b6027a4917f7df785ea2143d8af2adc66980ae",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "cf90d659de5c1e6418267ab8043b756e65508ee5d8d50b29eb2d2fe444c2c3eb"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "11a7964ccc0dd115d16720ab1d826c5d03e52838748ffaba3d21bae8bcacd82a"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "num",
     "version": "0.4.3",
     "archive_sha256": "35bd024e8b2ff75562e5f34e7f4905839deb4b22955ef5e73d2fea1b9813cb23",
@@ -5841,6 +5857,22 @@
       {
         "path": "src/tests/copying.rs",
         "sha256": "23d608079a47693a26dfc8a5cb01894ad0136a50714d46221d9380aa4a4b4423"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "objc2-io-kit",
+    "version": "0.3.2",
+    "archive_sha256": "33fafba39597d6dc1fb709123dfa8289d39406734be322956a69f0931c73bb15",
+    "notices": [
+      {
+        "path": "UPSTREAM-LICENSE.md",
+        "sha256": "7f976f7e9cb2d87df7230606feb932c3f21ac0e664045a775b600046ff850c54"
+      },
+      {
+        "path": "SOURCE.txt",
+        "sha256": "2176a74b285b508e490ef2e62db4b22e0287f6098288099edea8fe41ef0315e2"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -8731,6 +8763,18 @@
       {
         "path": "LICENSE",
         "sha256": "219920e865eee70b7dcfc948a86b099e7f4fe2de01bcca2ca9a20c0a033f2b59"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "sysinfo",
+    "version": "0.40.0",
+    "archive_sha256": "110e37d98880fd804cd47509b90a8444f7aaaab655ae625e83cd442a8bc2ebf2",
+    "notices": [
+      {
+        "path": "LICENSE",
+        "sha256": "1f14f9ce70a5fdedab449bb32cd7d3f20e6e9d18c2a2b74221fc203db8684d43"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"

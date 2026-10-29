@@ -294,7 +294,7 @@ try {
     "reset icon follows Preferences; Enter/Escape cancel; confirmed reset retains altitude, camera and dataset",
   );
   for (const [stem, count, entities, visible] of [
-    ["flights-lhr-zrh-100-2025", 88018, 100, 88018],
+    ["flights-philippines-week-2026", 11018, 175, 11018],
     ["starlink-128-predicted-orbits-2024", 46208, 128, 11648],
   ]) {
     await api("open", {

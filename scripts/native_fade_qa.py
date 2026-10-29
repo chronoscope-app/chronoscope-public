@@ -19,6 +19,7 @@ def main():
     p.add_argument('--app', type=Path, required=True)
     p.add_argument('--label', required=True)
     p.add_argument('--baseline', action='store_true')
+    p.add_argument('--capture-only', action='store_true', help='Validate OS sampling and near/far captures without animation assertions')
     a = p.parse_args()
     assert a.label not in ('.', '..') and len(a.label) <= 80 and all((c.isalnum() or c in '._-' for c in a.label)), 'Invalid label'
     app = a.app.resolve()
@@ -39,7 +40,7 @@ def main():
     subprocess.run(['/usr/bin/open', '-n', '--env', 'CHRONOSCOPE_DATA_DIR=' + str(profile), str(app)], check=True)
     pid = None
     client = None
-    report = {'passed': False, 'checks': [], 'baseline': a.baseline}
+    report = {'passed': False, 'checks': [], 'baseline': a.baseline, 'capture_only': a.capture_only}
 
     def publish():
         (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
@@ -57,9 +58,32 @@ def main():
             time.sleep(0.2)
         assert pid, 'QA app PID unavailable'
         client = NativeMcp(binary, profile, out)
-        report['version'] = client.call('capabilities')['version']
-        report['initial'] = client.call('view_status')
+        capabilities = client.call('capabilities')
+        report['version'] = capabilities['version']
+        report['frontend_readiness'] = []
+        # Agent connection precedes the frontend listener. A read-only request
+        # sent during startup can expire before the UI is ready; retry only
+        # this readiness observation, never a navigation or playback mutation.
+        for attempt in range(3):
+            try:
+                report['initial'] = client.call('view_status')
+                report['frontend_readiness'].append({'attempt': attempt + 1, 'ready': True})
+                break
+            except RuntimeError as error:
+                report['frontend_readiness'].append({'attempt': attempt + 1, 'ready': False, 'error': str(error)})
+                publish()
+                if 'UNAVAILABLE' not in str(error) or attempt == 2:
+                    raise
+                time.sleep(1)
         check('Native frontend ready before fixture changes')
+        if 'system_resources' in capabilities['commands']:
+            sample = client.call('system_resources')
+            assert sample['supported'] and sample['total_bytes'] > 0, sample
+            assert 0 <= sample['available_bytes'] <= sample['total_bytes'], sample
+            governor = report['initial']['diagnostics']['resourceGovernor']
+            assert governor['automatic'] and governor['memory']['supported'], governor
+            report['system_resources'] = sample
+            check('Native OS memory sample and automatic renderer diagnostics are available')
         client.call('preferences', {'preferences': {'theme': 'light', 'basemap': 'none', 'terrain_builtin': False, 'terrain_path': None, 'map_layers': [], 'auto_save_unsaved': False}})
         report['light_ready'] = client.call('view_status')
         exchange = profile / 'agent-files'
@@ -91,7 +115,7 @@ def main():
             assert status['diagnostics']['renderErrorCount'] == 0, status
             report[name] = status
             check('Light entities at ' + name + ' distance captured through app MCP')
-        if not a.baseline:
+        if not (a.baseline or a.capture_only):
             result = subprocess.run([str(binary), '--data-dir', str(profile), '--attach', 'view', 'fade', '100'], capture_output=True, text=True, timeout=30)
             assert result.returncode == 0, result.stderr
             state = client.call('view_playback', {'action': 'status'})
@@ -102,6 +126,8 @@ def main():
             client.call('view_playback', {'action': 'pause'})
             snap = client.call('snapshot', {'compact': True})
             status = client.call('view_status')
+            report['maximum'] = {'snapshot': snap, 'status': status}
+            assert snap['filter']['start'] is not None and snap['filter']['end'] is not None, 'Native playback did not advance in two seconds; a locked/occluded session may suspend animation. Playback is unverified.'
             width = snap['filter']['end'] - snap['filter']['start']
             assert abs(width - 2) < 0.01, (width, snap)
             assert 2 <= snap['visible'] <= 6, snap

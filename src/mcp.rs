@@ -112,6 +112,7 @@ pub fn tools() -> Vec<Value> {
  "demo_open"=>"Replace the current workspace with an editable copy of a bundled real-world demo, including its saved views. Use demo_catalog for IDs. Does not overwrite the bundled original; save your copy separately.",
  "export"=>"Stream exact filtered events as formula-protected CSV. Dataset credit is written to a companion path returned as attribution; share both files. overwrite defaults false for agent calls and covers the sidecar too.",
  "capabilities"=>"Discover engine limits, version, storage and supported agent workflows.",
+ "system_resources"=>"Read cached OS RAM availability and swap use for automatic rendering pressure control. Bytes, not process or GPU allocation estimates. Refreshed at most once per five seconds; no process names, provider calls or settings changes. Live adaptive limits are in view_status diagnostics.resourceGovernor.",
  "diagnostics"=>"Bounded, privacy-conscious runtime health and indexed query cache statistics.",
  "wmts_auth_status"=>"Inspect native automatic TLS client-authentication availability and local origin overrides. No keys/PINs are returned. macOS/Windows use OS certificate/PIN handling; Linux needs PKCS#11 middleware and a certificate URI.",
  "wmts_auth_set"=>"Set an optional local HTTPS-origin identity override, or disabled for anonymous requests. No key files, PINs, PIN sources or module paths accepted. Default macOS/Windows authentication is automatic. Never part of saved projects.",

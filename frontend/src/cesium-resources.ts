@@ -527,7 +527,8 @@ export class CesiumResources {
   private streetsProvider?: StreetsImageryProvider;
   private basemapGeneration = 0;
   private basemap = "none";
-  private previousScreenSpaceError?: number;
+  private resourceScreenError = 1;
+  private resourceStreetCanvases = 24;
   private removeRenderListener: (() => void) | undefined;
   private mode = "space-time";
   constructor(
@@ -586,6 +587,13 @@ export class CesiumResources {
       this.terrainGeneration++;
     }
   }
+  setResourceLimits(tiles: number, screenError: number, streetCanvases: number) {
+    this.resourceScreenError = screenError;
+    this.resourceStreetCanvases = streetCanvases;
+    this.viewer.scene.globe.tileCacheSize = tiles;
+    this.viewer.scene.globe.maximumScreenSpaceError = Math.max(this.basemap === "streets" ? 1 : 2, screenError);
+    this.streetsProvider?.setCacheLimit(streetCanvases);
+  }
   async setBasemap(mode: "streets" | "none") {
     if (
       this.disposed ||
@@ -594,18 +602,7 @@ export class CesiumResources {
       return;
     const generation = ++this.basemapGeneration;
     this.basemap = mode;
-    if (mode === "streets") {
-      this.previousScreenSpaceError ??=
-        this.viewer.scene.globe.maximumScreenSpaceError;
-      this.viewer.scene.globe.maximumScreenSpaceError = Math.min(
-        this.previousScreenSpaceError,
-        1,
-      );
-    } else if (this.previousScreenSpaceError !== undefined) {
-      this.viewer.scene.globe.maximumScreenSpaceError =
-        this.previousScreenSpaceError;
-      this.previousScreenSpaceError = undefined;
-    }
+    this.viewer.scene.globe.maximumScreenSpaceError = Math.max(mode === "streets" ? 1 : 2, this.resourceScreenError);
     this.streetsProvider?.dispose();
     if (
       this.streetsLayer &&
@@ -618,6 +615,7 @@ export class CesiumResources {
       const { StreetsImageryProvider } = await import("./streets");
       if (this.disposed || generation !== this.basemapGeneration) return;
       this.streetsProvider = new StreetsImageryProvider(this.requestRender);
+      this.streetsProvider.setCacheLimit(this.resourceStreetCanvases);
       this.streetsLayer = this.viewer.imageryLayers.addImageryProvider(
         this.streetsProvider,
         this.baseLayer ? 1 : 0,

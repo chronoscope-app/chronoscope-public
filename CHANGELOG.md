@@ -4,6 +4,14 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+## 0.16.9 — experimental preview candidate, 2026-10-29
+
+Prepared for owner-authorized Windows x64 and Apple Silicon macOS builds. Published downloads remain 0.16.4 until the exact 0.16.9 packages pass the hosted release checks. This preview also includes the 0.16.7 fade, light-mode visibility and idle CPU fixes below.
+
+- Replace the London–Zurich flight sample with 175 original Philippine flights across six airports and seven consecutive UTC days (March 1–7, 2026). Keep 11,018 reported-altitude observations, original timestamps, route colors, a one-day playback view, two refreshed previews and reproducible CC BY 4.0 source credit.
+
+- Automatically bound framebuffer resolution, multisampling, map caches, rendered observations, interpolation and playback afterimages according to OS memory availability and measured rendering/geometry cost. Use conservative budgets on small-memory and recognized integrated/software graphics systems, with gradual recovery. Preserve source records, exact queries and saved settings; expose read-only OS sampling and active limits through CLI/MCP.
+
 ## 0.16.7 — source preview, 2026-10-29
 
 Source update for Public/main. Published desktop downloads remain at [0.16.4](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.4). The local Mac build passed headless checks; fresh native fade captures remain unverified because live MCP requests timed out in the locked session, including with an older control build. [Validation details](docs/validation/fade-light-mac-2026-10-29/README.md).

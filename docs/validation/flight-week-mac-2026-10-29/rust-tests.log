@@ -1,0 +1,35 @@
+Resource guard: 65% memory available; one low-priority process tree
+   Compiling chronoscope v0.16.9 (/Users/user/Documents/Codex/chronoscope mac)
+    Finished `test` profile [unoptimized] target(s) in 15.79s
+     Running tests/altitude.rs (target/debug/deps/altitude-f4ca0024d8ee13f9)
+
+running 5 tests
+test altitude_packets_filter_only_rendering_and_keep_time_modes_mutually_exclusive ... ok
+test csv_roundtrip_keeps_mixed_references_and_rejects_invalid_altitude ... ok
+test flight_demo_spans_seven_days_with_five_routes_every_day ... ok
+test real_examples_have_many_distinct_tracks_and_preserved_credit ... ok
+test unit_detection_reference_and_zero_are_preserved ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.55s
+
+     Running tests/real_demos.rs (target/debug/deps/real_demos-947a665164f78bb4)
+
+running 4 tests
+test bundled_demos_are_editable_copies_with_original_attributes_and_saved_views ... ignored, full bundled-data matrix; run validate_local.py --tier full
+test invalid_demo_id_preserves_current_workspace_and_scoped_mcp_can_open_known_demos ... ok
+test representative_demo_is_an_editable_portable_copy ... ok
+test seal_dive_values_intervals_and_saved_chart_keep_the_published_meaning ... ok
+
+test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 11.00s
+
+     Running tests/space_demos.rs (target/debug/deps/space_demos-3d01c68acae104cd)
+
+running 4 tests
+test bundled_starlink_data_previews_and_credit_stay_below_five_megabytes ... ok
+test falcon_history_preserves_pads_dates_failures_and_unknown_flight_altitude ... ok
+test retired_rocket_demo_cannot_replace_a_workspace_and_new_ids_are_discoverable ... ok
+test starlink_keeps_original_cadence_unique_catalog_ids_and_geographic_height ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.11s
+
+Resource guard: peak owned RSS 1523 MiB, CPU 120%

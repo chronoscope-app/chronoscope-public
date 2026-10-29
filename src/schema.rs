@@ -315,13 +315,15 @@ pub fn command_schema(command: &str) -> Option<Value> {
             vec!["job_id"],
         ),
         "revision" | "undo" | "redo" | "delete" | "terrain_unload" | "terrain_info" | "demo"
-        | "capabilities" | "diagnostics" | "demo_catalog" => (json!({}), vec![]),
+        | "capabilities" | "system_resources" | "diagnostics" | "demo_catalog" => {
+            (json!({}), vec![])
+        }
         "demo_open" => (
             json!({"id":choice(&crate::demos::DEMOS.iter().map(|demo| demo.id).collect::<Vec<_>>())}),
             vec!["id"],
         ),
         "view_snapshot_v1" => (
-            json!({"display_level":integer(0,24),"version":{"const":1},"generation":{"type":"string","minLength":1,"maxLength":64},"include_render":boolean(),"include_statistics":boolean(),"include_inspector":boolean(),"selection_ids":list(id(),100000),"max_points":integer(100,100000),"bounds":vector(4),"page":{"oneOf":[object(json!({"command":{"const":"events"},"args":command_schema("events").unwrap()}),&["command","args"]),object(json!({"command":{"const":"attribute_table"},"args":command_schema("attribute_table").unwrap()}),&["command","args"])]}}),
+            json!({"display_level":integer(0,24),"version":{"const":1},"generation":{"type":"string","minLength":1,"maxLength":64},"include_render":boolean(),"include_statistics":boolean(),"include_inspector":boolean(),"selection_ids":list(id(),100000),"max_points":integer(100,100000),"resource_max_points":integer(100,100000),"resource_max_vertices":integer(1000,200000),"bounds":vector(4),"page":{"oneOf":[object(json!({"command":{"const":"events"},"args":command_schema("events").unwrap()}),&["command","args"]),object(json!({"command":{"const":"attribute_table"},"args":command_schema("attribute_table").unwrap()}),&["command","args"])]}}),
             vec!["version", "generation"],
         ),
         "snapshot" => (

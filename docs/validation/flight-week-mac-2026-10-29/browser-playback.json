@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "Demo picker opens a complete seven-day, 175-flight altitude dataset with two previews",
+    "Day playback crosses UTC dates, retains a 24-hour window and continues showing flights",
+    "Flight workspace, credit and previews remain compact (413118 bytes)"
+  ],
+  "publicRequests": 0,
+  "errors": []
+}

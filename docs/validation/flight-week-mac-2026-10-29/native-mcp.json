@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "checks": [
+    "Installed native MCP opens 175 flights across seven original UTC days",
+    "Native altitude scene and capture",
+    "Native time-height scene and capture",
+    "Native saved 24-hour window"
+  ],
+  "frontend_readiness": [
+    {
+      "attempt": 1,
+      "ready": false,
+      "error": "{'content': [{'text': 'UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying', 'type': 'text'}], 'isError': True, 'structuredContent': {'error': {'code': 'UNAVAILABLE', 'message': 'UNAVAILABLE: desktop request timed out; navigation may have applied, inspect view_status before retrying'}}}"
+    },
+    {
+      "attempt": 2,
+      "ready": true
+    }
+  ],
+  "version": "0.16.9",
+  "binary_sha256": "3e533d971997c6401e273f74d234382ce92e13d835e30eb8bf0db0d20a18006b",
+  "time_bounds": [
+    1772323644.0,
+    1772927900.0
+  ],
+  "altitude": {
+    "points": 11018,
+    "render_errors": 0,
+    "globe_altitude": true,
+    "globe_time": false
+  },
+  "time-height": {
+    "points": 11018,
+    "render_errors": 0,
+    "globe_altitude": false,
+    "globe_time": true
+  },
+  "day_window": {
+    "visible": 1581,
+    "filter": {
+      "bounds": null,
+      "end": 1772410044.0,
+      "facet_fields": {},
+      "facet_hidden": {},
+      "hidden_categories": [],
+      "hidden_entities": [],
+      "hidden_sources": [],
+      "located_only": false,
+      "predicates": [],
+      "search": "",
+      "selected_only": false,
+      "start": 1772323644.0
+    }
+  },
+  "day-window": {
+    "points": 1581,
+    "render_errors": 0,
+    "globe_altitude": true,
+    "globe_time": false
+  },
+  "scope": "Dataset/scene/window checks and app-capture transport only. Whole-app PNGs contained the DOM but blank WebGL panels; native visual rendering was not validated.",
+  "screen_locked": true,
+  "native_visual_validation": "unavailable",
+  "capture_sha256": {
+    "altitude.png": "ed72b68144ba79faa36908b1593b7561f17a5eccc775eba0a106efbeacb5b547",
+    "time-height.png": "ed72b68144ba79faa36908b1593b7561f17a5eccc775eba0a106efbeacb5b547"
+  }
+}

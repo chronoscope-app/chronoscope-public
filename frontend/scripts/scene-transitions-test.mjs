@@ -218,6 +218,7 @@ function toolbar() {
     welcome: { dismiss() {} },
     document: { querySelectorAll: () => buttons },
     view: {
+      resourceLimits: { maxPoints: 100000, arcVertices: 200000 },
       setMode: (mode, remember) => calls.push(["apply", mode, remember]),
       visibleDataBounds: () => null,
       bounds: [0, 0, 1, 1],
