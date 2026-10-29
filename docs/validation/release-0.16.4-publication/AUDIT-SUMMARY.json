@@ -1,0 +1,209 @@
+{
+  "checked_on": "2026-10-28",
+  "scope": "Fresh locked dependency advisories plus release-specific source and package gates; not a complete security or legal review",
+  "rustsec": {
+    "tool": "cargo-audit 0.22.2",
+    "database": {
+      "advisory-count": 1381,
+      "last-commit": "40f5be6fb12ed93fc591bf4ab23b7d793b3f2239",
+      "last-updated": "2026-10-28T09:50:03+01:00"
+    },
+    "vulnerabilities": 0,
+    "warnings": {
+      "unmaintained": [
+        {
+          "name": "paste",
+          "version": "1.0.15",
+          "advisory": "RUSTSEC-2024-0436"
+        },
+        {
+          "name": "proc-macro-error",
+          "version": "1.0.4",
+          "advisory": "RUSTSEC-2024-0370"
+        },
+        {
+          "name": "ttf-parser",
+          "version": "0.25.1",
+          "advisory": "RUSTSEC-2026-0192"
+        },
+        {
+          "name": "zbus_names",
+          "version": "4.3.4",
+          "advisory": "RUSTSEC-2026-0371"
+        },
+        {
+          "name": "zvariant",
+          "version": "5.15.0",
+          "advisory": "RUSTSEC-2026-0370"
+        },
+        {
+          "name": "zvariant_derive",
+          "version": "5.15.0",
+          "advisory": "RUSTSEC-2026-0372"
+        }
+      ],
+      "yanked": [
+        {
+          "name": "clipboard-win",
+          "version": "5.4.1",
+          "advisory": null
+        }
+      ]
+    },
+    "tokio_io_safety_fixed_in": "1.53.3",
+    "yanked_clipboard_note": "Conservative lock inventory; clipboard-win is not in the active workspace target-all dependency graph."
+  },
+  "npm": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "cargo_lock_sha256": "7489abcf154987eda3403ab10e5dc642520beb2f6accb9a4120a54eec7282841",
+  "npm_lock_sha256": "80f41927b7483d74fa2d66ce7cdf6d2e90b430b3dd212231594c394a83c043bb",
+  "real_device_tests": false,
+  "installer_interaction_tested": false,
+  "application_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+  "next_source_commit": "f5302f138243ca8df74661583fb8555f60d46cab",
+  "secret_scan": {
+    "scanner": "gitleaks 8.30.1",
+    "findings": 3,
+    "verified_checksum_false_positives": [
+      {
+        "field": "src/api.rs",
+        "kind": "historical source SHA-256",
+        "verified_against_commit": "d63ff932a1a3692d08b796c3035bc19a45598037"
+      },
+      {
+        "field": "electricity-access-hero.png",
+        "kind": "saved screenshot SHA-256",
+        "image_bytes": 1870868
+      },
+      {
+        "field": "electricity-access-1990.png",
+        "kind": "saved screenshot SHA-256",
+        "image_bytes": 1861532
+      }
+    ],
+    "unreviewed_findings": 0,
+    "scanner_config_changed": false,
+    "scope_public_sha": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+    "repaired_tree_rescanned": true
+  },
+  "local_verification": {
+    "rust_tests_passed": 473,
+    "ignored_full_demo_matrix": 1,
+    "frontend_unit_tests_passed": 150,
+    "packaging_tests_passed": 95,
+    "note": "Full clean Rust/frontend run passed; subsequent packaging-only continuation fixed and passed synchronized Python/JS notice requirements."
+  },
+  "superseded_candidates": [
+    {
+      "public_sha": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+      "builds": {
+        "windows-x86_64": 40805588443,
+        "macos-arm64": 40810943200
+      },
+      "validations": {
+        "windows-x86_64": 40810595256
+      },
+      "reason": "Mac source gate exposed timeout-cleanup EPERM on exited process groups; validation harness repaired and both platforms rebuilding.",
+      "retained_windows_package": true
+    }
+  ],
+  "mac_cleanup_repair": {
+    "guard_tests_passed": 8,
+    "validation_runner_tests_passed": 20,
+    "live_or_unverifiable_permission_errors_remain_errors": true
+  },
+  "application_source_parity": {
+    "windows_source_commit": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+    "macos_source_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+    "only_different_files": [
+      "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+      "scripts/test_guarded_run.py",
+      "scripts/validation_runtime.py"
+    ],
+    "application_code_assets_and_dependency_locks_byte_identical": true,
+    "windows_specific_cleanup_branch_unchanged": true
+  },
+  "source_companions": {
+    "application_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+    "source_files": 3277,
+    "locked_cargo_archives": 834,
+    "locked_npm_archives": 145,
+    "every_locked_registry_source_verified": true,
+    "assets": [
+      {
+        "name": "chronoscope-source.zip",
+        "bytes": 204575992,
+        "sha256": "c4f5f7d4d94be3b5f604a287284650dbba9762e6a2e5c27de8964abc3299745b"
+      },
+      {
+        "name": "chronoscope-source-windows-x86_64.zip",
+        "bytes": 204575355,
+        "sha256": "8e936a521ee79910bbb3d503e4d51baf2b7e14fb14f05dbad81ba5997a67ff95"
+      },
+      {
+        "name": "chronoscope-dependency-sources.tar.xz",
+        "bytes": 445009172,
+        "sha256": "2c50591c5cdcd8239131077fe8cbb2c2060ab4864ab919ade6314df64fc79bd1"
+      },
+      {
+        "name": "chronoscope-licenses.zip",
+        "bytes": 3387167,
+        "sha256": "10fc315b917cbead1eae2f66e7ad5a178d2467e5b29ae1c60feb1dc0299f60ed"
+      }
+    ],
+    "platform_application_commits": {
+      "windows-x86_64": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+      "macos-arm64": "498b888a93bc95d5491dec1915a4c624354cd1c3"
+    },
+    "source_archives": {
+      "windows-x86_64": "chronoscope-source-windows-x86_64.zip",
+      "macos-arm64": "chronoscope-source.zip"
+    },
+    "application_source_parity": {
+      "windows_source_commit": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+      "macos_source_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+      "only_different_files": [
+        "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+        "scripts/test_guarded_run.py",
+        "scripts/validation_runtime.py"
+      ],
+      "application_code_assets_and_dependency_locks_byte_identical": true,
+      "windows_specific_cleanup_branch_unchanged": true
+    }
+  },
+  "platforms": {
+    "windows-x86_64": {
+      "build_run": 40805588443,
+      "validation_run": 40810595256,
+      "source_commit": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+      "reviewed_validation_commit": "b5146aa48db73b60bc9ef7353758cd90782d70f3",
+      "source_archive": "chronoscope-source-windows-x86_64.zip",
+      "package": "chronoscope-windows-x86_64.zip",
+      "sha256": "771c08b325a61b1945705651880c3478ce8e70f7354c93e6e27237c8b1f4a79d",
+      "bytes": 132629292,
+      "validation_status": "passed-narrow",
+      "receipt": "HOSTED-VALIDATION-windows-x86_64.json",
+      "signing": "unsigned"
+    },
+    "macos-arm64": {
+      "build_run": 40811685893,
+      "validation_run": 40817595536,
+      "source_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+      "reviewed_validation_commit": "498b888a93bc95d5491dec1915a4c624354cd1c3",
+      "source_archive": "chronoscope-source.zip",
+      "package": "chronoscope-macos-arm64.tar.xz",
+      "sha256": "cf94c6db8fce533e4480e0363b60bd7922f61451364ac55e7ac91e280d364c11",
+      "bytes": 126737592,
+      "validation_status": "passed-narrow",
+      "receipt": "HOSTED-VALIDATION-macos-arm64.json",
+      "signing": "ad hoc; not notarized"
+    }
+  },
+  "hosted_source_and_contracts_passed_for_both": true
+}

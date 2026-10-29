@@ -1,13 +1,13 @@
 # Installation and platform status
 
-Current release: **[0.15.2 experimental desktop preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.15.2)**, published 2026-10-23. Both packages use application source `ece70335d254c2b09437975c82434ca969f30739` and were built and checked on manually dispatched GitHub-hosted runners. Older previews remain separate historical builds.
+Current release: **[0.16.4 experimental desktop preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.4)**, published 2026-10-29. Windows uses application source `b5146aa48db73b60bc9ef7353758cd90782d70f3`; macOS uses `498b888a93bc95d5491dec1915a4c624354cd1c3`. Application code, assets and dependency locks are byte-identical; the later commit repairs Mac validation cleanup. Both packages were built and checked on manually dispatched GitHub-hosted runners. Older previews remain separate historical builds.
 
 ## Preview downloads
 
 | Platform | Download | Installation and trust status |
 | --- | --- | --- |
-| Windows x64 | [ZIP with current-user installer](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.15.2/chronoscope-windows-x86_64.zip) | Extract the complete ZIP and run its installer. Unsigned. Microsoft Edge WebView2 Evergreen Runtime must already be installed; it is not bundled. |
-| Apple Silicon macOS | [App archive](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.15.2/chronoscope-macos-arm64.tar.xz) | Extract the complete archive and copy Chronoscope.app to Applications. Ad hoc signed, not notarized. Fresh quarantined-download acceptance on a user's Mac remains unverified. |
+| Windows x64 | [ZIP with current-user installer](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-windows-x86_64.zip) | Extract the complete ZIP and run its installer. Unsigned. Microsoft Edge WebView2 Evergreen Runtime must already be installed; it is not bundled. |
+| Apple Silicon macOS | [App archive](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.4/chronoscope-macos-arm64.tar.xz) | Extract the complete archive and copy Chronoscope.app to Applications. Ad hoc signed, not notarized. Fresh quarantined-download acceptance on a user's Mac remains unverified. |
 
 Keep the accompanying third-party notices and source-access instructions. The release includes exact application and locked dependency sources, license notices, `SHA256SUMS.txt`, `RELEASE-MANIFEST.json` and per-platform native validation receipts.
 
