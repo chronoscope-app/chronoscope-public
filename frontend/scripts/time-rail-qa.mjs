@@ -250,6 +250,68 @@ try {
   check(
     "Up/down keys match vertical chronology; moving the window translates both bounds",
   );
+  const restoredFilter = (await api("snapshot")).filter;
+  for (const [a, b, dy] of [
+    [0.5, 0.500001, 32],
+    [0.5, 0.5, 32],
+    [0, 0.000001, 32],
+    [0.999999, 1, -32],
+  ]) {
+    await api("filter", {
+      filter: { start: lo + (hi - lo) * a, end: lo + (hi - lo) * b },
+    });
+    await page.evaluate(() => window.__chronoscope.refresh(false, false));
+    await idle();
+    const grip = await page.locator(".time-range-grip").boundingBox();
+    const x = grip.x + grip.width / 2,
+      y = grip.y + grip.height / 2;
+    if (a === 0.5 && b > a) {
+      await page
+        .locator("#time-rail")
+        .screenshot({ path: path.join(dir, "narrow-window-rail.png") });
+      report.screenshots.push("narrow-window-rail.png");
+    }
+    assert(
+      await page.evaluate(
+        ({ x, y }) =>
+          !!document.elementFromPoint(x, y)?.closest("#time-range-window"),
+        { x, y },
+      ),
+      "Close time brackets must not cover the window grab bar",
+    );
+    const oldStart = Number(
+      await page.locator("#window-start").getAttribute("aria-valuenow"),
+    );
+    const oldEnd = Number(
+      await page.locator("#window-end").getAttribute("aria-valuenow"),
+    );
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    assert.equal(
+      await page.locator("#time-range-track").getAttribute("data-drag-part"),
+      "move",
+    );
+    await page.mouse.move(x, y + dy, { steps: 4 });
+    await page.mouse.up();
+    await idle();
+    const movedStart = Number(
+      await page.locator("#window-start").getAttribute("aria-valuenow"),
+    );
+    const movedEnd = Number(
+      await page.locator("#window-end").getAttribute("aria-valuenow"),
+    );
+    assert(dy > 0 ? movedStart > oldStart : movedStart < oldStart);
+    assert(Math.abs(movedEnd - movedStart - (oldEnd - oldStart)) < 1e-10);
+    const moved = (await api("snapshot")).filter;
+    assert(Math.abs(moved.start - (lo + (hi - lo) * movedStart)) < 0.002);
+    assert(Math.abs(moved.end - (lo + (hi - lo) * movedEnd)) < 0.002);
+  }
+  await api("filter", { filter: restoredFilter });
+  await page.evaluate(() => window.__chronoscope.refresh(false, false));
+  await idle();
+  check(
+    "Overlapping brackets leave the grab bar reachable at the middle and both rail ends; dragging moves both exact bounds without resizing",
+  );
   const bin = await page.evaluate(() => {
     const s = window.__chronoscope.snapshot,
       [lo, hi] = s.time_bounds;
@@ -407,6 +469,16 @@ try {
     JSON.stringify(report, null, 2) + "\n",
   );
   await browser?.close();
-  server.kill();
-  fs.rmSync(profile, { recursive: true, force: true });
+  if (server.exitCode === null) {
+    const stopped = new Promise((resolve) => server.once("exit", resolve));
+    server.kill();
+    await stopped;
+  }
+  assert(path.resolve(profile).startsWith(path.resolve(dir) + path.sep));
+  fs.rmSync(profile, {
+    recursive: true,
+    force: true,
+    maxRetries: 10,
+    retryDelay: 100,
+  });
 }
