@@ -46,6 +46,7 @@ export class ResourceGovernor {
   sample: MemorySample | null = null;
   changes = 0;
   private slow = 0;
+  private expensiveGeometry = 0;
   private healthySince: number | undefined;
   private swap: number | undefined;
   private sampleAt: number | undefined;
@@ -61,7 +62,7 @@ export class ResourceGovernor {
       this.changes++;
     }
   }
-  update(memory: MemorySample | null, renderMs: number | null, now: number, geometryWorkMs = 0): boolean {
+  update(memory: MemorySample | null, renderMs: number | null, now: number, geometryWorkMs = 0, cadenceCost = 0): boolean {
     const valid = memory?.supported && Number.isFinite(memory.total_bytes) && memory.total_bytes > 0 &&
       Number.isFinite(memory.available_bytes) && memory.available_bytes >= 0 && memory.sample_age_ms < 15000;
     if (valid) { this.sample = memory; this.sampleAt = now; }
@@ -81,29 +82,36 @@ export class ResourceGovernor {
     }
     // Draw CPU time is a pressure proxy, not a GPU-memory measurement. An idle
     // scene supplies null, rather than mistaking intentional 10 Hz updates for lag.
-    this.slow = renderMs !== null && renderMs > 45 ? this.slow + 1 : 0;
+    this.slow = Math.max(renderMs ?? 0, cadenceCost) > 45 ? this.slow + 1 : 0;
     if (this.slow >= 3) {
       const graphicsDemand = Math.min(3, this.level + 1);
       if (graphicsDemand > demand) { demand = graphicsDemand; reason = "sustained-render-cost"; }
       this.slow = 0;
     }
-    if (geometryWorkMs > 250 && Math.min(3, this.level + 1) > demand) {
+    // A load, seek or quality change can require one expensive rebuild. Require
+    // repeated pressure checks before lowering every graphics budget for it.
+    this.expensiveGeometry = geometryWorkMs > 250 ? this.expensiveGeometry + 1 : 0;
+    if (this.expensiveGeometry >= 3 && Math.min(3, this.level + 1) > demand) {
       demand = Math.min(3, this.level + 1);
       reason = "expensive-geometry-work";
+      this.expensiveGeometry = 0;
     }
     const old = this.level;
     if (demand > old) {
       this.level = demand; this.healthySince = undefined;
     } else if (demand < old && valid &&
       memory.available_bytes > Math.max(1.75 * GiB, memory.total_bytes * .25) &&
-      (renderMs === null || renderMs < 22)) {
+      (renderMs === null || renderMs < 22) && cadenceCost <= 36 && geometryWorkMs <= 250) {
       this.healthySince ??= now;
       if (now - this.healthySince >= 45000) {
         this.level--; this.healthySince = now;
       }
     } else this.healthySince = undefined;
     this.reason = this.level > demand ? "recovery-hold" : reason;
-    if (old !== this.level) this.changes++;
+    if (old !== this.level) {
+      this.changes++;
+      this.slow = this.expensiveGeometry = 0;
+    }
     return old !== this.level;
   }
   diagnostics(now = performance.now()) {

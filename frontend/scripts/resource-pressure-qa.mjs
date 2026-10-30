@@ -68,6 +68,23 @@ await withLocalApp("resource-pressure", async ({ page, api, out, pass }) => {
   assert.equal(final.renderErrorCount, 0);
   assert.equal(final.fadingPointCount, 0);
   pass("Playback remains available under critical limits without afterimage allocations");
+  // A cheap real animation isolates recovery policy from overload. Keep the
+  // actual clock, render loop and resource-check timer: no synthetic time jumps.
+  memory = { ...memory, total_bytes: 32 * 1024 ** 3, available_bytes: 20 * 1024 ** 3 };
+  await page.evaluate(async () => {
+    const view = window.__chronoscope.view;
+    view.setDisplayOptions({ ...view.display, show_points: false, show_tracks: false, show_trails: false });
+    await window.__chronoscope.liveViewRequest("view_playback", { action: "play" });
+  });
+  await page.waitForFunction(() => {
+    const d = window.__chronoscope.view.diagnostics();
+    return d.resourceGovernor.profile === "full";
+  }, undefined, { timeout: 175000 });
+  const recovered = await page.evaluate(() => window.__chronoscope.view.diagnostics());
+  assert.equal(recovered.renderErrorCount, 0);
+  assert.equal(await page.evaluate(() => window.__chronoscope.view.playback), true);
+  await page.evaluate(() => window.__chronoscope.liveViewRequest("view_playback", { action: "pause" }));
+  pass("Real continuous playback recovers through all capped profiles when memory and render headroom return");
   await page.screenshot({ path: path.join(out, "automatic-critical.png") });
-  fs.writeFileSync(path.join(out, "measurements.json"), JSON.stringify({ injectedPressure: true, before, after, final }, null, 2));
+  fs.writeFileSync(path.join(out, "measurements.json"), JSON.stringify({ injectedPressure: true, before, after, final, recovered }, null, 2));
 });

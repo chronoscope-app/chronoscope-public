@@ -168,6 +168,7 @@ impl PendingImport {
         let mut rejected = 0;
         let mut reasons = vec![];
         let mut raw_seen = 0u64;
+        let bulk = accumulator.is_none() && store.count()? == 0;
         let mut flush = |batch: &RawTable| -> Result<(), String> {
             let report = import::convert_reporting(
                 batch,
@@ -188,11 +189,15 @@ impl PendingImport {
                     reasons.push(r)
                 }
             }
-            for event in report.events {
-                if let Some(accumulator) = accumulator.as_mut() {
-                    accumulator.push(&event)?;
-                } else {
-                    store.insert(&event)?;
+            if bulk {
+                store.insert_import_batch(&report.events)?;
+            } else {
+                for event in report.events {
+                    if let Some(accumulator) = accumulator.as_mut() {
+                        accumulator.push(&event)?;
+                    } else {
+                        store.insert(&event)?;
+                    }
                 }
             }
             Ok(())
@@ -202,6 +207,9 @@ impl PendingImport {
             .execute_batch("SAVEPOINT ingestion")
             .map_err(|e| e.to_string())?;
         let result = (|| {
+            if bulk {
+                store.begin_bulk_import()?;
+            }
             if self.streaming {
                 let mut batch = RawTable {
                     sheet: table.sheet.clone(),
@@ -254,6 +262,9 @@ impl PendingImport {
                 }
             }
             self.check()?;
+            if bulk {
+                store.finish_bulk_import()?;
+            }
             Ok(())
         })();
         let result = result.and_then(|()| {

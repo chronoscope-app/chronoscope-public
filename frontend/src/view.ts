@@ -408,10 +408,10 @@ export class SpaceTimeView {
     this.resourceActiveTotal = this.resourceActiveIntervals = 0;
     if (!this.playback && !this.drag) this.resourceActiveLast = 0;
     const renderMs = frameCount >= 3 && performance.now() - this.lastRendered < 6000
-      ? Math.max(mean(this.renderTimes), activeCadence) : null;
+      ? mean(this.renderTimes) : null;
     this.lastResourceGeometryMs = this.resourceGeometryMs;
     this.resourceGeometryMs = 0;
-    if (this.resourceGovernor.update(sample, renderMs, performance.now(), this.lastResourceGeometryMs)) {
+    if (this.resourceGovernor.update(sample, renderMs, performance.now(), this.lastResourceGeometryMs, activeCadence)) {
       this.stopFades();
       this.playbackMarkersDirty = true;
       this.applyResourceGraphics();

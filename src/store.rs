@@ -9,6 +9,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
+mod bulk_import;
 mod display;
 pub mod statistics;
 mod summary;

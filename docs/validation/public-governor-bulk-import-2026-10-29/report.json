@@ -1,0 +1,11 @@
+{
+  "next_commit": "d8a499c0ef27befd823a55381fca4654c3742c99",
+  "public_parent": "a54aa96ddb157fc33b733793fbb2be9799121fa5",
+  "source_files": 3329,
+  "source_export": "Tracked Next files only; independent Public ancestry; historical Public-only validation receipts preserved.",
+  "owner_authorization": "Fix governor and dedicated bulk import, test, then push Next/main and promote Public/main. Keep VFX local.",
+  "validation": "docs/validation/windows-governor-bulk-import-2026-10-29/report.json",
+  "vfx_included": false,
+  "hosted_workflows_dispatched": false,
+  "release_assets_modified": false
+}
