@@ -6,7 +6,7 @@ impl Engine {
     pub(super) fn view_snapshot_v1(&self, args: Value) -> Result<Value, String> {
         let snapshot=self.invoke_raw("snapshot",json!({"selection_limit":20000,"include_statistics":args["include_statistics"].as_bool().unwrap_or(false)}))?;
         let mut result = json!({"version":1,"snapshot":snapshot});
-        if args["include_render"] == true {
+        if args["include_render"] == true || args["include_display"] == true {
             let mut request = json!({"max_points":args["max_points"].as_u64().or_else(||result["snapshot"]["scene"]["render_budget"].as_u64()).unwrap_or(20000)});
             if let Some(cap) = args["resource_max_points"].as_u64() {
                 request["max_points"] = json!(request["max_points"].as_u64().unwrap().min(cap));
@@ -90,17 +90,19 @@ impl Engine {
                 }
                 result["display"] = display;
             }
-            let render = self.invoke_raw("render_data", request)?;
-            let mut request = json!({"limit":1000,"max_vertices":200000});
-            if let Some(cap) = args["resource_max_vertices"].as_u64() {
-                request["max_vertices"] = json!(cap);
+            if args["include_render"] == true {
+                let render = self.invoke_raw("render_data", request)?;
+                let mut request = json!({"limit":1000,"max_vertices":200000});
+                if let Some(cap) = args["resource_max_vertices"].as_u64() {
+                    request["max_vertices"] = json!(cap);
+                }
+                if let Some(bounds) = args.get("bounds") {
+                    request["bounds"] = bounds.clone();
+                }
+                let shapes = self.invoke_raw("render_geometries", request)?;
+                result["render"] = render;
+                result["geometries"] = shapes;
             }
-            if let Some(bounds) = args.get("bounds") {
-                request["bounds"] = bounds.clone();
-            }
-            let shapes = self.invoke_raw("render_geometries", request)?;
-            result["render"] = render;
-            result["geometries"] = shapes;
         }
         if let Some(page) = args.get("page") {
             let page = self.invoke_raw(page["command"].as_str().unwrap(), page["args"].clone())?;

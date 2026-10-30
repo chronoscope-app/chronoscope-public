@@ -250,7 +250,7 @@ pub fn domain_output_schema(command: &str) -> Value {
         }
         "terrain_sample" => {
             required = vec!["elevation_m", "datum"];
-            json!({"elevation_m":{"type":["number","null"]},"datum":{"type":"string"}})
+            json!({"elevation_m":{"type":["number","null"]},"datum":{"type":"string"},"elevations_m":{"type":"array","items":{"type":["number","null"]},"maxItems":100000}})
         }
         "terrain_load" => {
             required = vec!["tiles", "bounds"];

@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checks": [
+    "Full application imports 100k real records and retains ordinary workspace controls",
+    "Play and Smooth playback controls cancel pending preparation without late activation",
+    "GPU clock stays active while the authoritative engine publishes changing time filters",
+    "GPU picking resolves an actual visible event ID",
+    "Selecting during accelerated playback returns coherently to the full renderer",
+    "Pause commits the displayed window and restores exact canonical membership",
+    "Sidebar changes invalidate the prepared pool without losing ordinary search",
+    "Map and Time use the integrated GPU playback path without renderer errors",
+    "Experimental workspace saves through the normal Chronoscope engine"
+  ],
+  "publicRequests": 0,
+  "errors": []
+}

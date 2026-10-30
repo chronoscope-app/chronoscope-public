@@ -4,6 +4,10 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+- Extend prepared graphics to paused navigation, Map/Globe time scrubbing, selections, and compatible mixed display layers. Reuse polygon meshes when changing selection.
+- Keep the current drawing visible until its replacement is ready; cancel obsolete preparation safely, preserve the stopped Time frame on cancellation, and retry preparation when terrain becomes available.
+- Retain the resource governor, exact engine filters/source IDs, altitude omissions, weighted heatmaps and standard-renderer fallbacks. Large representation changes can still pause while geometry is prepared.
+
 ## 0.16.9 — experimental preview, 2026-10-29
 
 [Windows x64 and Apple Silicon macOS downloads](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.9) passed exact-package native hosted checks. Windows source is `19b4587994bb08083d4693e10e0df2d2f0bfc3f4`; macOS source is `c5c532749397edbfc8b023fd1171fa0ac2a46d14`. Application code, assets and dependency locks are byte-identical; the later commit repairs only the notice validator and its tests. Exact source archives, dependency sources, notices, checksums and validation receipts accompany the downloads. This preview also includes the 0.16.7 fade, light-mode visibility and idle CPU fixes below. [Validation](docs/validation/release-0.16.9-publication/README.md).

@@ -1,0 +1,50 @@
+{
+  "next_source": "4834867b0704c2376d80e29faaa22a6a2b973321",
+  "public_parent": "0e8af62ce8511ef81b4a6638eaa450e64102a132",
+  "source_files_byte_identical": 3379,
+  "preserved_public_receipts": 25,
+  "purpose": "Owner-authorized promotion of completed resident graphics and transition fixes. New incremental upload experiment excluded.",
+  "verification": {
+    "local_frontend_tests": 172,
+    "browser_interaction_reference_handoff_checks": 27,
+    "windows_native_report": "Recorded after native checks complete",
+    "prior_native_active_sessions_minutes": 30,
+    "source_identity_restored": true,
+    "source_preflight": "passed"
+  },
+  "secret_review": {
+    "scanner": "gitleaks 8.30.1",
+    "findings": [
+      {
+        "path": "chronoscope-public-ready/docs/validation/release-0.16.9-publication/SOURCE-MANIFEST-RELEASE.json",
+        "line": 3,
+        "rule": "generic-api-key",
+        "reason": "Verified Git commit identifier"
+      },
+      {
+        "path": "chronoscope-public-ready/docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 35,
+        "rule": "generic-api-key",
+        "reason": "Verified SHA256 of the named tracked source/image file"
+      },
+      {
+        "path": "chronoscope-public-ready/docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 50,
+        "rule": "generic-api-key",
+        "reason": "Verified SHA256 of the named tracked source/image file"
+      },
+      {
+        "path": "chronoscope-public-ready/docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 51,
+        "rule": "generic-api-key",
+        "reason": "Verified SHA256 of the named tracked source/image file"
+      }
+    ],
+    "unreviewed_findings": 0,
+    "config_relaxed": false
+  },
+  "canary_detected": true,
+  "workflows_dispatched": false,
+  "download_assets_changed": false,
+  "new_version_tag_created": false
+}

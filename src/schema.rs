@@ -323,7 +323,7 @@ pub fn command_schema(command: &str) -> Option<Value> {
             vec!["id"],
         ),
         "view_snapshot_v1" => (
-            json!({"display_level":integer(0,24),"version":{"const":1},"generation":{"type":"string","minLength":1,"maxLength":64},"include_render":boolean(),"include_statistics":boolean(),"include_inspector":boolean(),"selection_ids":list(id(),100000),"max_points":integer(100,100000),"resource_max_points":integer(100,100000),"resource_max_vertices":integer(1000,200000),"bounds":vector(4),"page":{"oneOf":[object(json!({"command":{"const":"events"},"args":command_schema("events").unwrap()}),&["command","args"]),object(json!({"command":{"const":"attribute_table"},"args":command_schema("attribute_table").unwrap()}),&["command","args"])]}}),
+            json!({"display_level":integer(0,24),"version":{"const":1},"generation":{"type":"string","minLength":1,"maxLength":64},"include_render":boolean(),"include_display":boolean(),"include_statistics":boolean(),"include_inspector":boolean(),"selection_ids":list(id(),100000),"max_points":integer(100,100000),"resource_max_points":integer(100,100000),"resource_max_vertices":integer(1000,200000),"bounds":vector(4),"page":{"oneOf":[object(json!({"command":{"const":"events"},"args":command_schema("events").unwrap()}),&["command","args"]),object(json!({"command":{"const":"attribute_table"},"args":command_schema("attribute_table").unwrap()}),&["command","args"])]}}),
             vec!["version", "generation"],
         ),
         "snapshot" => (
@@ -339,7 +339,7 @@ pub fn command_schema(command: &str) -> Option<Value> {
             vec![],
         ),
         "render_data" => (
-            json!({"include_time_only":boolean(),"max_points":integer(100,100000),"bounds":vector(4),"selected_only":boolean(),"expected_revision":integer(1,i64::MAX)}),
+            json!({"include_time_only":boolean(),"playback_pool":boolean(),"max_points":integer(100,100000),"bounds":vector(4),"selected_only":boolean(),"expected_revision":integer(1,i64::MAX)}),
             vec![],
         ),
         "events" => (
@@ -494,7 +494,7 @@ pub fn command_schema(command: &str) -> Option<Value> {
         ),
         "preferences" => (json!({"preferences":preferences()}), vec![]),
         "terrain_sample" => (
-            json!({"latitude":{"type":"number","minimum":-90,"maximum":90},"longitude":{"type":"number","minimum":-180,"maximum":180}}),
+            json!({"latitude":{"type":"number","minimum":-90,"maximum":90},"longitude":{"type":"number","minimum":-180,"maximum":180},"coordinates":list(vector(2),100000),"expected_revision":integer(1,i64::MAX)}),
             vec!["latitude", "longitude"],
         ),
         "terrain_mesh" => (

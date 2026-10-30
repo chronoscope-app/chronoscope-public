@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "platform": "Windows 11 x64",
+  "runtime": "Tauri / Microsoft WebView2",
+  "checks": [
+    "Release Windows app launches and exposes its attached native engine",
+    "Windows package discovers the bundled Balanced terrain",
+    "Bundled wildlife demo loads 3439 events and supports exact queries and selection",
+    "Native map view renders events and produces a real WebView2 capture without renderer errors",
+    "Native globe view renders events and produces a real WebView2 capture without renderer errors",
+    "Native space-time view renders events and produces a real WebView2 capture without renderer errors",
+    "Filter/reset and portable save/reopen preserve all events and the saved selection",
+    "Native playback configure, seek, step, play and pause work through attached MCP",
+    "Native flights-philippines-week-2026: 175 tracks, 11018 displayed altitude events, no renderer errors",
+    "Native starlink-128-predicted-orbits-2024: 128 tracks, 11648 displayed altitude events, no renderer errors",
+    "Rebuilt installed native engine imports all 100,000 original events",
+    "Installed native app renders the compact time window with the updated rail",
+    "Full native space-time: 100k imported events use GPU playback and pause cleanly",
+    "Full native map: 100k imported events use GPU playback and pause cleanly",
+    "Full native globe: 100k imported events use GPU playback and pause cleanly"
+  ],
+  "native_import_100k_ms": 5031.000000002678,
+  "playback": [
+    {
+      "mode": "space-time",
+      "rendered_fps": 60.00499001993568,
+      "frame_p95_ms": 19.399999998509884,
+      "render_errors": 0,
+      "resident": {
+        "drawPrimitives": 4,
+        "pointCount": 100000,
+        "preparationMs": 427.20000000298023,
+        "preparedBytes": 22387200,
+        "segmentCount": 99900,
+        "window": [
+          1735690200.252,
+          1735702188.252
+        ]
+      }
+    },
+    {
+      "mode": "map",
+      "rendered_fps": 60.009960159368205,
+      "frame_p95_ms": 20.899999998509884,
+      "render_errors": 0,
+      "resident": {
+        "drawPrimitives": 3,
+        "pointCount": 100000,
+        "preparationMs": 416.1000000014901,
+        "preparedBytes": 15987200,
+        "segmentCount": 99900,
+        "window": [
+          1735690202.904,
+          1735702190.904
+        ]
+      }
+    },
+    {
+      "mode": "globe",
+      "rendered_fps": 60.14194994400157,
+      "frame_p95_ms": 18.69999999552965,
+      "render_errors": 0,
+      "resident": {
+        "drawPrimitives": 3,
+        "pointCount": 100000,
+        "preparationMs": 397.29999999701977,
+        "preparedBytes": 15987200,
+        "segmentCount": 99900,
+        "window": [
+          1735690202.298,
+          1735702190.298
+        ]
+      }
+    }
+  ]
+}

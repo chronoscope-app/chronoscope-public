@@ -235,6 +235,7 @@ function toolbar() {
       calls.push(["refresh", context.mode]);
     },
     refreshViewportData: async () => {},
+    scheduleInteraction() {},
     rebuildTerrain: async () => {},
     loadRasters: async () => {},
     toast: (error) => {

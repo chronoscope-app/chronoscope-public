@@ -230,7 +230,7 @@ small {
 #app {
   height: 100dvh;
   display: grid;
-  grid-template-rows: 48px minmax(0, 1fr) 28px;
+  grid-template-rows: 48px minmax(0, 1fr) 30px 28px;
   grid-template-columns: minmax(0, 1fr);
 }
 .topbar {
@@ -3063,3 +3063,8 @@ svg {
 .table-panel th button {
   display: block;
 }
+/* Keep the standard-renderer fallback available without changing workspaces. */
+.smooth-playback-controls { display: flex; align-items: center; gap: 18px; padding: 0 16px; background: var(--panel); color: var(--text); font-size: 12px; border-top: 1px solid var(--line); }
+.smooth-playback-controls label { display: flex; gap: 6px; align-items: center; white-space: nowrap; }
+.smooth-playback-controls input { width: auto; }
+.smooth-playback-controls span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

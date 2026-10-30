@@ -1,0 +1,237 @@
+{
+  "passed": true,
+  "control_playback_reuse_enabled": true,
+  "method": "Local Windows hardware Chrome renderer-only A/B; real render loop. Same 100k source points, 20% moving time window, points plus tracks. Baseline installs a 20k packet at up to 10 Hz with production playback reuse enabled; resident preview advances GPU window every frame. No engine query/import cost measured.",
+  "limitations": [
+    "Governor held at full in both variants to isolate renderer cost.",
+    "Prototype uses 1px straight GL_LINES and shader-clipped endpoints; conventional tracks use wider polylines. Not visual parity.",
+    "No picking, selection, inferred glyphs, durations, terrain, date-line, bloom, fade-history parity or engine-filter synchronization. Regional Globe only.",
+    "CPU prepared synchronously once; background-worker/chunk prefetch remains future work. Render-loop timings are not physical presentation/GPU execution latency."
+  ],
+  "cases": [
+    {
+      "resident": false,
+      "repeat": 1,
+      "elapsed_ms": 15062.10000000149,
+      "frames": 153,
+      "fps": 10.157946103132025,
+      "frame_p95_ms": 135.80000000074506,
+      "frame_p99_ms": 142.40000000037253,
+      "frame_max_ms": 146.7000000011176,
+      "gaps_over_50_ms": 123,
+      "valid_focus": true,
+      "packetUpdates": 124,
+      "maxPacketMs": 122.10000000149012,
+      "renderErrors": 0,
+      "governorProfile": "full",
+      "graphics": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "framebuffer": [
+          1440,
+          960
+        ],
+        "resolutionScale": 1
+      },
+      "playbackMarkerPatches": 120,
+      "markerBuilds": 3
+    },
+    {
+      "resident": true,
+      "repeat": 1,
+      "elapsed_ms": 15016.5,
+      "frames": 902,
+      "fps": 60.06725934805048,
+      "frame_p95_ms": 17.40000000037253,
+      "frame_p99_ms": 17.90000000037253,
+      "frame_max_ms": 30.5,
+      "gaps_over_50_ms": 0,
+      "valid_focus": true,
+      "packetUpdates": 0,
+      "maxPacketMs": 0,
+      "renderErrors": 0,
+      "governorProfile": "full",
+      "graphics": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "framebuffer": [
+          1440,
+          960
+        ],
+        "resolutionScale": 1
+      },
+      "prototype": {
+        "pointCount": 100000,
+        "segmentCount": 99900,
+        "preparedBytes": 9593600,
+        "preparationMs": 301.40000000037253,
+        "window": [
+          1735689780.1752,
+          1735689979.1752
+        ],
+        "drawPrimitives": 2
+      },
+      "pixelChanges": 912490,
+      "playbackMarkerPatches": 0,
+      "markerBuilds": 0
+    },
+    {
+      "resident": true,
+      "repeat": 2,
+      "elapsed_ms": 15009.900000000373,
+      "frames": 902,
+      "fps": 60.09367151013515,
+      "frame_p95_ms": 17.300000000745058,
+      "frame_p99_ms": 18,
+      "frame_max_ms": 19.600000001490116,
+      "gaps_over_50_ms": 0,
+      "valid_focus": true,
+      "packetUpdates": 0,
+      "maxPacketMs": 0,
+      "renderErrors": 0,
+      "governorProfile": "full",
+      "graphics": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "framebuffer": [
+          1440,
+          960
+        ],
+        "resolutionScale": 1
+      },
+      "prototype": {
+        "pointCount": 100000,
+        "segmentCount": 99900,
+        "preparedBytes": 9593600,
+        "preparationMs": 317.8999999985099,
+        "window": [
+          1735689780.1008,
+          1735689979.1008
+        ],
+        "drawPrimitives": 2
+      },
+      "pixelChanges": 912490,
+      "playbackMarkerPatches": 0,
+      "markerBuilds": 0
+    },
+    {
+      "resident": false,
+      "repeat": 2,
+      "elapsed_ms": 15193.700000001118,
+      "frames": 163,
+      "fps": 10.728130738397363,
+      "frame_p95_ms": 130.5,
+      "frame_p99_ms": 146.40000000037253,
+      "frame_max_ms": 172.5,
+      "gaps_over_50_ms": 125,
+      "valid_focus": true,
+      "packetUpdates": 127,
+      "maxPacketMs": 148.69999999925494,
+      "renderErrors": 0,
+      "governorProfile": "full",
+      "graphics": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "framebuffer": [
+          1440,
+          960
+        ],
+        "resolutionScale": 1
+      },
+      "playbackMarkerPatches": 123,
+      "markerBuilds": 4
+    },
+    {
+      "resident": false,
+      "repeat": 3,
+      "elapsed_ms": 15177.60000000149,
+      "frames": 158,
+      "fps": 10.41007800969748,
+      "frame_p95_ms": 131.09999999962747,
+      "frame_p99_ms": 142,
+      "frame_max_ms": 149.59999999962747,
+      "gaps_over_50_ms": 126,
+      "valid_focus": true,
+      "packetUpdates": 128,
+      "maxPacketMs": 121.70000000111759,
+      "renderErrors": 0,
+      "governorProfile": "full",
+      "graphics": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "framebuffer": [
+          1440,
+          960
+        ],
+        "resolutionScale": 1
+      },
+      "playbackMarkerPatches": 124,
+      "markerBuilds": 3
+    },
+    {
+      "resident": true,
+      "repeat": 3,
+      "elapsed_ms": 15005.10000000149,
+      "frames": 901,
+      "fps": 60.046250941340645,
+      "frame_p95_ms": 17.300000000745058,
+      "frame_p99_ms": 17.90000000037253,
+      "frame_max_ms": 27.199999999254942,
+      "gaps_over_50_ms": 0,
+      "valid_focus": true,
+      "packetUpdates": 0,
+      "maxPacketMs": 0,
+      "renderErrors": 0,
+      "governorProfile": "full",
+      "graphics": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "vendor": "Google Inc. (NVIDIA)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "framebuffer": [
+          1440,
+          960
+        ],
+        "resolutionScale": 1
+      },
+      "prototype": {
+        "pointCount": 100000,
+        "segmentCount": 99900,
+        "preparedBytes": 9593600,
+        "preparationMs": 290.2999999988824,
+        "window": [
+          1735689780.0444,
+          1735689979.0444
+        ],
+        "drawPrimitives": 2
+      },
+      "pixelChanges": 912490,
+      "playbackMarkerPatches": 0,
+      "markerBuilds": 0
+    }
+  ],
+  "summary": {
+    "conventional_packets": {
+      "median_rendered_fps": 10.41007800969748,
+      "median_frame_p95_ms": 131.09999999962747,
+      "median_frame_p99_ms": 142.40000000037253,
+      "worst_frame_ms": 172.5,
+      "total_gaps_over_50_ms": 374
+    },
+    "resident_gpu": {
+      "median_rendered_fps": 60.06725934805048,
+      "median_frame_p95_ms": 17.300000000745058,
+      "median_frame_p99_ms": 17.90000000037253,
+      "worst_frame_ms": 30.5,
+      "total_gaps_over_50_ms": 0
+    }
+  },
+  "source_sha256": {
+    "frontend/src/resident-playback.ts": "fb44e4287078af98323a134f29c9a2d721657bb6ce8883f2fb1244f93f4f015b",
+    "frontend/src/view.ts": "bc146f5bcbf654a092869c849d86630977b4863ae5a6565ff4668685a86fbe6e"
+  }
+}
