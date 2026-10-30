@@ -102,18 +102,24 @@
   inset: 8px -9px;
 }
 .time-rail .time-range-grip {
+  /* Separate move/resize hit lanes keep even a subpixel window draggable. */
+  left: -4px;
   padding: 1px 0;
   font-size: 13px;
-  width: 13px;
+  width: 24px;
+  min-height: 28px;
+  display: grid;
+  place-items: center;
   text-align: center;
   color: var(--accent);
+  pointer-events: auto;
 }
 .time-rail .time-range-handle {
-  width: 48px;
-  min-width: 48px;
+  width: 32px;
+  min-width: 32px;
   height: 24px;
-  /* Center on the rail, compensating for the track's asymmetric padding. */
-  left: calc(50% - 4px);
+  /* Leave the grab bar's left lane clear when the two brackets overlap. */
+  left: calc(50% + 6px);
   bottom: auto;
   transform: translate(-50%, -50%);
   border: 0;
