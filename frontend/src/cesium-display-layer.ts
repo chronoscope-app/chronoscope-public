@@ -29,6 +29,7 @@ import type {
 import { heatColor } from "./display-math";
 import { entityColor } from "./types";
 import type { GroundEffectRequest } from "./cesium-effects-math";
+import { CanvasAtlasProvider } from "./canvas-atlas-provider";
 
 export interface CesiumDisplayContext {
   viewer: Viewer;
@@ -94,6 +95,9 @@ export class DisplayLayer {
     heatCeiling: 0,
     pending: false,
     error: "",
+    workerStarts: 0,
+    groundEffectBuilds: 0,
+    optimizedPlayback: false,
   };
   private points?: PointPrimitiveCollection;
   private labels?: LabelCollection;
@@ -109,6 +113,13 @@ export class DisplayLayer {
   private requestedKey = "";
   private pendingRebuild?: Promise<void>;
   private playback = false;
+  private optimizedPlayback = false;
+  setOptimizedPlayback(active: boolean) {
+    if (this.optimizedPlayback === active) return;
+    this.optimizedPlayback=active; this.diagnostics.optimizedPlayback=active;
+    this.renderKey="";
+    if (!active && this.worker && !this.finishWorker) { this.worker.terminate(); this.worker=undefined; }
+  }
   private exposure?: number;
   private transitionFrame = 0;
   private transitionTimer?: ReturnType<typeof setTimeout>;
@@ -118,6 +129,7 @@ export class DisplayLayer {
     if (this.playback === active) return;
     this.playback = active;
     this.exposure = undefined;
+    this.renderKey = "";
   }
   constructor(private view: CesiumDisplayContext) {}
   private clear(keepAtlas = false) {
@@ -132,8 +144,7 @@ export class DisplayLayer {
       }
     }
     this.generation++;
-    this.worker?.terminate();
-    this.worker = undefined;
+    if (!keepAtlas || !this.optimizedPlayback) { this.worker?.terminate(); this.worker=undefined; }
     this.finishWorker?.();
     this.finishWorker = undefined;
     clearTimeout(this.cameraTimer);
@@ -452,7 +463,7 @@ export class DisplayLayer {
     generation: number,
   ) {
     if (bounds[2] <= bounds[0] || bounds[3] <= bounds[1]) return;
-    const provider = await SingleTileImageryProvider.fromUrl(
+    const provider = this.optimizedPlayback ? new CanvasAtlasProvider(canvas,bounds) : await SingleTileImageryProvider.fromUrl(
       canvas.toDataURL("image/png"),
       {
         rectangle: Rectangle.fromDegrees(
@@ -613,7 +624,7 @@ export class DisplayLayer {
     const p = this.packet,
       o = this.options;
     if (!p || !p.bins.length || this.disposed) return;
-    this.worker?.terminate();
+    if (!this.optimizedPlayback) { this.worker?.terminate(); this.worker=undefined; }
     this.finishWorker?.();
     const generation = ++this.generation;
     const metres = this.metresPerPixel();
@@ -675,20 +686,22 @@ export class DisplayLayer {
     Object.assign(this.diagnostics, { pending: true, error: "" });
     await new Promise<void>((resolve) => {
       this.finishWorker = resolve;
-      const worker = new Worker(
+      const worker = this.worker || new Worker(
         new URL("./cesium-effects-worker.ts", import.meta.url),
         { type: "module" },
       );
-      this.worker = worker;
+      if (this.worker !== worker) this.diagnostics.workerStarts++;
+      this.worker = worker; this.diagnostics.groundEffectBuilds++;
       const finish = () => {
-        worker.terminate();
+        if (!this.optimizedPlayback) worker.terminate();
         if (this.worker === worker) {
-          this.worker = undefined;
-          this.finishWorker = undefined;
+          if (!this.optimizedPlayback) this.worker = undefined;
+          if (this.finishWorker === resolve) this.finishWorker = undefined;
         }
         resolve();
       };
       worker.onmessage = async (event: MessageEvent) => {
+        if (event.data.id !== generation) return;
         if (generation !== this.generation || this.disposed) {
           finish();
           return;
@@ -729,6 +742,7 @@ export class DisplayLayer {
         finish();
       };
       worker.onerror = (error) => {
+        worker.terminate(); if (this.worker===worker) this.worker=undefined;
         this.diagnostics.error = error.message;
         this.diagnostics.pending = false;
         finish();

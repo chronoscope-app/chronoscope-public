@@ -1,0 +1,233 @@
+{
+  "passed": true,
+  "native_playback_seconds": 15,
+  "auto_save_unsaved": true,
+  "playing": false,
+  "diagnostics": {
+    "allocatedMarkerSlots": 9344,
+    "allocatedTrackPolylines": 438,
+    "allocatedTrackVertices": 25946,
+    "altitude": {
+      "approximate": 0,
+      "known": 9216,
+      "maximum": 595659.387,
+      "minimum": 290554.639,
+      "omitted": 0
+    },
+    "arrivingPointCount": 0,
+    "arrivingTriangleCount": 0,
+    "axisLabels": 0,
+    "contextRecoveries": 0,
+    "displayTimeBounds": [
+      1732600842,
+      1732622442
+    ],
+    "effectError": "",
+    "engine": "CesiumJS",
+    "experimentalPlayback": {
+      "active": true,
+      "kind": "resident",
+      "resident": {
+        "curvedTracks": {
+          "batches": 1,
+          "coarsened": 0,
+          "dateLineCuts": 456,
+          "interpolated": 83880,
+          "runs": 584,
+          "vertices": 131000
+        },
+        "drawPrimitives": 1,
+        "pointCount": 46208,
+        "preparationMs": 494.20000000298023,
+        "preparedBytes": 49558080,
+        "segmentCount": 46080,
+        "selectedCount": 0,
+        "window": [
+          1732601741.394,
+          1732606061.394
+        ]
+      },
+      "terrainSamples": 0
+    },
+    "fadeDurationsMs": {
+      "arrival": 180,
+      "departure": 800
+    },
+    "fadingPointCount": 0,
+    "fadingStemSegments": 0,
+    "fadingTrackSegments": 0,
+    "fadingTrailSegments": 0,
+    "fadingTriangleCount": 0,
+    "geodesicRendering": {
+      "geometry": {
+        "coarsened": 0,
+        "interpolated": 0,
+        "remainingInterpolation": 200000,
+        "remainingSegments": 0,
+        "sourceSegments": 0
+      },
+      "maximumAddedVertices": 400000,
+      "sourceEndpointBudget": 400000,
+      "trails": {
+        "coarsened": 0,
+        "interpolated": 16605,
+        "remainingInterpolation": 183395,
+        "remainingSegments": 0,
+        "sourceSegments": 9122
+      }
+    },
+    "geometryFeatures": 0,
+    "geometryPrimitives": 2,
+    "geometryReuse": {
+      "builds": 11,
+      "selectionStyleUpdates": 0
+    },
+    "globeAltitude": true,
+    "globeTime": false,
+    "globeTimeScale": 1,
+    "graphics": {
+      "framebuffer": [
+        986,
+        874
+      ],
+      "renderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "resolutionScale": 1,
+      "vendor": "Google Inc. (NVIDIA)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+    },
+    "lastRenderError": "",
+    "lastResourceGeometryMs": 0,
+    "navigation": {
+      "active": false,
+      "flatOnly": false,
+      "freeLook": false,
+      "gestureMaximumTiltDegrees": 85,
+      "inertia": false,
+      "keyboardFocus": "map",
+      "northUpOnly": false
+    },
+    "orbitHandles": 0,
+    "performance": {
+      "active": true,
+      "fps": 57.65904286001238,
+      "frameP95Ms": 17.80000000447035,
+      "renderCpuP95Ms": 2.2000000029802322,
+      "renderedFrames": 1722,
+      "sampleFrames": 120,
+      "updateRateLimitHz": null
+    },
+    "playbackFade": true,
+    "playbackFadeAmount": 50,
+    "pointCount": 9216,
+    "recovering": false,
+    "renderErrorCount": 0,
+    "requestRenderMode": true,
+    "resourceGovernor": {
+      "automatic": true,
+      "changes": 0,
+      "gpuMemoryMeasured": false,
+      "graphicsRenderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "limits": {
+        "afterimages": 100000,
+        "arcVertices": 200000,
+        "fadeCohorts": 256,
+        "fadeSegments": 100000,
+        "maxPixels": 8000000,
+        "maxPoints": 100000,
+        "maxScale": 1.5,
+        "name": "full",
+        "screenError": 1,
+        "streetCanvases": 24,
+        "tiles": 100
+      },
+      "memory": {
+        "available_bytes": 8048611328,
+        "sample_age_ms": 0,
+        "scope": "host",
+        "supported": true,
+        "swap_used_bytes": 0,
+        "total_bytes": 16869605376
+      },
+      "memorySampleAgeMs": 3829.39999999851,
+      "profile": "full",
+      "reason": "healthy",
+      "recoveryHoldMs": 45000
+    },
+    "resourceReuse": {
+      "markerCollectionBuilds": 1,
+      "markerCollectionReuses": 10,
+      "playbackMarkerCompactions": 0,
+      "playbackMarkerOrderFallbacks": 0,
+      "playbackMarkerPatches": 0,
+      "playbackMarkerReuses": 0,
+      "playbackMarkerSmallRebuilds": 0,
+      "stemGeometryBuilds": 0,
+      "trackPositionReuses": 0,
+      "trackPositionSharingEnabled": false,
+      "trailGeometryBuilds": 12,
+      "trailGlobeStreamRebuilds": 0,
+      "trailSorts": 11,
+      "trailStyleUpdates": 12
+    },
+    "sceneMode": 3,
+    "selectionCount": 0,
+    "spaceTimeFloor": null,
+    "stemSegments": 0,
+    "terrain": {
+      "basemap": "none",
+      "basemapAlignmentErrorPixels": 0,
+      "basemapError": "",
+      "basemapMaximumLevel": 0,
+      "basemapPending": 0,
+      "basemapRenderedTiles": 0,
+      "geoidModel": "NGA EGM96 15-minute; H+N",
+      "imageryLayers": 1,
+      "imageryRequestedTiles": 0,
+      "mode": "globe",
+      "terrainActive": false,
+      "terrainCovered": 0,
+      "terrainPendingTiles": 0,
+      "terrainProviderChanges": 2,
+      "tileCount": 0,
+      "verticalDatum": "egm96"
+    },
+    "timeHeightMeters": 50000,
+    "trackCpuStages": {
+      "ordering": {
+        "calls": 11,
+        "lastMs": 0.5,
+        "maxMs": 0.5,
+        "totalMs": 2.5
+      },
+      "projectionSimplification": {
+        "calls": 12,
+        "lastMs": 15.400000005960464,
+        "maxMs": 26.100000001490116,
+        "totalMs": 106.50000001490116
+      },
+      "runs": {
+        "calls": 12,
+        "lastMs": 0.29999999701976776,
+        "maxMs": 1.5,
+        "totalMs": 4.200000002980232
+      },
+      "trailConstruction": {
+        "calls": 3066,
+        "lastMs": 0,
+        "maxMs": 0.30000000447034836,
+        "totalMs": 68.30000005662441
+      },
+      "trailCoordinates": {
+        "calls": 1533,
+        "lastMs": 0.20000000298023224,
+        "maxMs": 8.399999998509884,
+        "totalMs": 266.69999995827675
+      }
+    },
+    "trackPolylines": 219,
+    "trailInputEdges": 9216,
+    "trailOutputEdges": 9122,
+    "triangleCount": 0,
+    "triangleVisibleCount": 0
+  }
+}

@@ -65,6 +65,7 @@ import { trailEdges } from "./display-math";
 import { timeAxisTicks, timeElevationFraction } from "./time-axis";
 import { groundWindow, spaceTimePadding } from "./space-time-frame";
 import { flatLineGeometry, flatLineVertexShader } from "./flat-lines";
+import { ResidentPlayback } from "./resident-playback";
 import {
   geodesicPositions,
   projectedFrustumBounds,
@@ -224,6 +225,135 @@ export class SpaceTimeView {
   // workload regressed, so retain canonical conversion in other runtimes.
   private trackPositionSharingEnabled = native && /Mac/.test(navigator.platform);
   private trackPositionReuses = 0;
+  createResidentPlayback(points: Point[]) {
+    if (this.mode !== "globe") throw Error("Local resident preview currently supports Globe only");
+    return new ResidentPlayback(this.scene, points, p => this.pos(p), entity => safeColor(this.names[entity] || String(entity), this.theme));
+  }
+  private resident?: ResidentPlayback;
+  private residentPreparation = 0;
+  private pendingResident?: ResidentPlayback;
+  private residentNames: string[] = [];
+  private residentSourcePoints?: Point[];
+  private smoothHeatmap = false;
+  private residentTerrainSamples = 0;
+  private residentRepresentationDirty = false;
+  private geometryStyles=new Map<string,{color:Color;points:PointPrimitive[];lines:Polyline[];fills:PickId[]}>();
+  private geometryFill?:Primitive;
+  private geometryBuilds=0;
+  private geometryStyleUpdates=0;
+  get residentPlaybackActive() { return !!this.resident; }
+  get smoothPlaybackActive() { return !!this.resident || this.smoothHeatmap; }
+  get smoothHeatmapActive() { return this.smoothHeatmap; }
+  get residentEffectsActive() { return !!this.resident && !this.globeAltitude && (this.display.mode === "heatmap" || this.display.bloom); }
+  private canResidentGroundEffects() {
+    return !this.display.spatial_culling && !this.globeAltitude && (this.display.mode === "heatmap" || this.display.bloom);
+  }
+  canSmoothHeatmap() {
+    return !this.measurement && this.display.mode === "heatmap" && !this.display.bloom && !this.display.spatial_culling &&
+      !this.display.show_points && !this.display.show_tracks && !this.display.show_trails &&
+      !this.globeAltitude && !this.selected.size && !this.geometryFeatures.length;
+  }
+  beginSmoothHeatmap() {
+    this.endResidentPlayback(); this.smoothHeatmap = true;
+    this.displayLayer.setOptimizedPlayback(true);
+  }
+  residentPlaybackReason() {
+    if (this.canSmoothHeatmap()) return "";
+    if (this.measurement || (!this.canResidentGroundEffects() && (this.displayLayer.active || !["points", "auto"].includes(this.display.mode)))) return "Choose Points in Views for smooth playback";
+    if (this.geometryFeatures.length) return "Geometry scenes use standard playback";
+    return "";
+  }
+  async beginResidentPlayback(points: Point[], names: string[], timeBounds: [number, number],
+    accept = () => true, revision?: number) {
+    const reason = this.residentPlaybackReason();
+    if (reason) throw Error(reason);
+    const preparation = ++this.residentPreparation;
+    const valid = () => preparation === this.residentPreparation && !this.disposed && accept();
+    await this.resources.prepareAltitude(points);
+    const drawable = points.filter(p => this.altitudeVisible(p));
+    if (!drawable.length) return false;
+    const samples = this.terrain && this.mode !== "map" ? await this.resources.prepareGround(drawable,async coordinates => {
+      const first=coordinates[0];
+      const result=await call("terrain_sample",{longitude:first[0],latitude:first[1],coordinates,expected_revision:revision});
+      return result.elevations_m as (number|null)[];
+    },accept) : new Map<string,number>();
+    if (!valid()) return false;
+    this.stopFades();
+    const previousTimeBounds: [number,number] = [this.lo,this.hi];
+    const ground=(p:Point) => this.position(p.lat,p.lon,undefined,true,samples.get(`${p.lat},${p.lon}`));
+    const position=(p:Point) => this.mode === "globe" && this.globeAltitude ? this.pos(p)
+      : this.position(p.lat,p.lon,p.time,false,samples.get(`${p.lat},${p.lon}`));
+    const west=drawable.reduce((n,p)=>Math.min(n,p.lon),Infinity), east=drawable.reduce((n,p)=>Math.max(n,p.lon),-Infinity);
+    // Compute prepared positions in the target Time frame without publishing
+    // that frame while the old drawing is still visible or preparation cancels.
+    let candidate: ResidentPlayback;
+    if (this.mode === "space-time") [this.lo,this.hi] = timeBounds;
+    try {
+    candidate = new ResidentPlayback(this.scene, drawable, position, entity => safeColor(names[entity] || String(entity), this.theme), {
+      points: this.display.show_points, tracks: this.display.show_tracks,
+      pointScale: this.display.point_scale, trackOpacity: this.display.show_tracks ? this.display.track_opacity : this.display.trail_opacity,
+      gapSeconds: this.display.trail_gap_minutes * 60,
+      ground: this.display.show_trails && (this.mode === "space-time" || this.globeTime || this.globeAltitude) ? ground : undefined,
+      stemOpacity: (this.theme === "light" ? 0.4 : 0.15) * this.display.trail_opacity,
+      groundTracks: this.display.show_trails ? ground : undefined,
+      trailOpacity: this.display.trail_opacity,
+      curvedTracks: !!this.terrain || this.globeAltitude || east-west>120 || west < -170 || east>170,
+      maximumStep: this.terrain ? 1000 : 200000,
+    }, true);
+    } finally { [this.lo,this.hi] = previousTimeBounds; }
+    // Any subsequent scene or data rebuild invalidates this staged candidate.
+    const generation = this.residentPreparation;
+    const candidateValid = () => generation === this.residentPreparation && !this.disposed && accept();
+    this.pendingResident = candidate;
+    try {
+      if (!await candidate.prepare(candidateValid) || !candidateValid()) {
+        candidate.destroy(); return false;
+      }
+    } catch (error) { candidate.destroy(); throw error; }
+    finally { if (this.pendingResident === candidate) this.pendingResident = undefined; }
+    if (this.mode === "space-time") {
+      [this.lo,this.hi] = timeBounds;
+      this.rebuild(true);
+    }
+    this.endResidentPlayback();
+    this.resident = candidate;
+    this.residentNames = names;
+    this.residentSourcePoints = drawable.length === points.length ? undefined : points;
+    candidate.setWindow(this.lo, this.hi);
+    this.residentTerrainSamples=samples.size;
+    this.residentRepresentationDirty=true;
+    if (this.residentEffectsActive) this.displayLayer.setOptimizedPlayback(true);
+    this.selections.removeAll();
+    this.resident.setSelection([...this.selected],Color.fromCssColorString(this.theme === "light" ? "#7c4b00" : "#ffd27a"));
+    this.glyphs.show = this.triangles.show = this.arrivingPoints.show = this.arrivingTriangles.show = this.trails.show = false;
+    if (this.stemsPrimitive) this.stemsPrimitive.show = false;
+    this.requestRender();
+    return true;
+  }
+  residentPlaybackWindow(start: number, end: number, membership=false) {
+    this.resident?.setWindow(start, end);
+    if(membership && this.resident) {
+      this.renderPoints=this.resident.visiblePoints();
+      this.points=this.residentSourcePoints?.filter(p=>p.time>=start && p.time<=end) || this.renderPoints;
+      this.projectionOmitted=this.points.length-this.renderPoints.length;
+      this.names=this.residentNames;
+      this.pointById=new Map(this.points.map(p=>[p.id,p]));
+    }
+    if (this.resident) this.requestRender();
+  }
+  endResidentPlayback() {
+    this.residentPreparation++;
+    this.smoothHeatmap=false; this.displayLayer?.setOptimizedPlayback(false);
+    this.residentTerrainSamples=0;
+    if (!this.resident) return;
+    this.resident.destroy();
+    this.resident = undefined;
+    this.residentNames = [];
+    this.residentSourcePoints = undefined;
+    this.selectionRenderKey="";
+    this.glyphs.show = this.triangles.show = this.arrivingPoints.show = this.arrivingTriangles.show = this.trails.show = true;
+    this.requestRender();
+  }
   private trackEventPosition(point: Point, owned = false) {
     // Only share within the synchronous marker -> stem/trail refresh below.
     // Camera-only refreshes and all other callers recompute positions, avoiding
@@ -697,6 +827,7 @@ export class SpaceTimeView {
       packet = this.displayLayer.packet,
       gisLayers = this.gis.descriptors;
     try {
+      this.endResidentPlayback();
       this.stopFades();
       clearTimeout(this.idleTimer);
       clearTimeout(this.resourceTimer);
@@ -751,8 +882,9 @@ export class SpaceTimeView {
     lon: number,
     epoch?: number,
     groundOnly = false,
+    sampledGround?: number,
   ): Cartesian3 {
-    let height = this.groundHeight(lat, lon) + 2;
+    let height = (sampledGround ?? this.groundHeight(lat, lon)) + 2;
     if (
       !groundOnly &&
       this.mode !== "map" &&
@@ -827,13 +959,13 @@ export class SpaceTimeView {
     const dataChanged = data ? await this.setData([...data.points], [...data.names], [...data.studyBounds], [...data.timeBounds], [...data.geometries], accept, true) : false;
     if (!accept()) return { kind: "stale" };
     this.setFocus(application.focus);
-    if (data) {
+    if (data || application.displayPacket !== this.displayLayer.packet) {
       const effectsAlreadyUpdating = this.displayLayer.updating;
       const effects = this.displayLayer.set(application.displayPacket, application.display);
       if (application.awaitEffects) await effects;
       else if (!effectsAlreadyUpdating) void effects.catch(error => this.onSnapshotError(error));
       if (!accept()) return { kind: "stale" };
-      this.rebuildTrails();
+      if (data) this.rebuildTrails();
     }
     this.setSelection([...application.selection]);
     return { kind: "accepted", dataChanged };
@@ -877,7 +1009,7 @@ export class SpaceTimeView {
           p.centroid === q.centroid
         );
       });
-    if (same) return false;
+    if (same && !this.residentRepresentationDirty) return false;
     const old = this.playback
       ? this.playbackFade
         ? new Map(this.renderPoints.map((p) => [p.id, p]))
@@ -899,6 +1031,7 @@ export class SpaceTimeView {
     if (bounds) this.bounds = bounds.slice(0, 4) as Bounds;
     if (timeBounds) [this.lo, this.hi] = timeBounds;
     this.rebuild(true, old, !displayPacketWillFollow, markerPositionsUnchanged);
+    this.residentRepresentationDirty=false;
     return true;
   }
   setTheme(theme: string) {
@@ -965,6 +1098,7 @@ export class SpaceTimeView {
     markerPositionsUnchanged = false,
   ) {
     if (!this.viewer || this.disposed) return;
+    this.endResidentPlayback();
     const rebuildStarted = performance.now();
     this.generation++;
     this.trailOrder = [];
@@ -1244,6 +1378,7 @@ export class SpaceTimeView {
   }
   buildGeometryFeatures() {
     this.shapes.removeAll();
+    this.geometryStyles.clear();this.geometryFill=undefined;this.geometryBuilds++;
     const segments = this.geometryFeatures.reduce(
       (total, feature) =>
         total +
@@ -1271,30 +1406,29 @@ export class SpaceTimeView {
       .map((f) => f.id)
       .join("|");
     for (const feature of this.geometryFeatures) {
+      const baseColor=this.measurement ? Color.fromCssColorString(measurementColor(feature.value,this.measurement)) : safeColor(feature.entity,this.theme);
+      const style={color:baseColor,points:[] as PointPrimitive[],lines:[] as Polyline[],fills:[] as PickId[]};
+      this.geometryStyles.set(feature.id,style);
       const color = this.selected.has(feature.id)
           ? this.theme === "light"
             ? Color.fromCssColorString("#7c4b00")
             : Color.fromCssColorString("#ffd27a")
-          : this.measurement
-            ? Color.fromCssColorString(
-                measurementColor(feature.value, this.measurement),
-              )
-            : safeColor(feature.entity, this.theme),
+          : baseColor,
         id: PickId = { kind: "geometry", id: feature.id };
       const position = ([lon, lat]: [number, number]) =>
         this.position(lat, lon, feature.time);
       for (const p of feature.shape.points)
-        vertices.add({
+        style.points.push(vertices.add({
           position: position(p),
           id,
           color,
           pixelSize: 7,
           outlineColor: this.theme === "light" ? Color.TRANSPARENT : Color.WHITE,
           outlineWidth: this.theme === "light" ? 0 : 1,
-        });
+        }));
       for (const line of feature.shape.lines)
         if (line.length > 1)
-          lines.add({
+          style.lines.push(lines.add({
             positions:
               this.mode === "globe"
                 ? geodesicPositions(
@@ -1308,7 +1442,7 @@ export class SpaceTimeView {
             material: Material.fromType("Color", {
               color: color.withAlpha(0.9),
             }),
-          });
+          }));
       for (const polygon of feature.shape.polygons) {
         if (!polygon[0] || polygon[0].length < 3) continue;
         const hierarchy = new PolygonHierarchy(
@@ -1318,6 +1452,7 @@ export class SpaceTimeView {
             .filter((r) => r.length >= 3)
             .map((r) => new PolygonHierarchy(r.map(position))),
         );
+        const fillId:PickId={...id};style.fills.push(fillId);
         polygonInstances.push(
           new GeometryInstance({
             geometry: new PolygonGeometry({
@@ -1325,7 +1460,7 @@ export class SpaceTimeView {
               perPositionHeight: true,
               vertexFormat: PerInstanceColorAppearance.VERTEX_FORMAT,
             }),
-            id,
+            id:fillId,
             attributes: {
               color: ColorGeometryInstanceAttribute.fromColor(
                 color.withAlpha(this.measurement ? 0.92 : 0.25),
@@ -1335,7 +1470,7 @@ export class SpaceTimeView {
         );
         for (const ring of polygon)
           if (ring.length > 1)
-            lines.add({
+            style.lines.push(lines.add({
               positions:
                 this.mode === "globe"
                   ? geodesicPositions(
@@ -1349,11 +1484,11 @@ export class SpaceTimeView {
               material: Material.fromType("Color", {
                 color: color.withAlpha(0.9),
               }),
-            });
+            }));
       }
     }
     if (polygonInstances.length)
-      this.shapes.add(
+      this.geometryFill=this.shapes.add(
         new Primitive({
           geometryInstances: polygonInstances,
           appearance: new PerInstanceColorAppearance({
@@ -1370,6 +1505,11 @@ export class SpaceTimeView {
   setSelection(ids: string[]) {
     const previousSelection = this.selected;
     this.selected = new Set(ids);
+    if (this.resident) {
+      this.selections.removeAll();
+      this.resident.setSelection(ids,Color.fromCssColorString(this.theme === "light" ? "#7c4b00" : "#ffd27a"));
+      this.requestRender();return;
+    }
     // Engine refreshes often publish the same selection. Preserve native GPU
     // resources unless their evidence, style or summary representation changed.
     const renderKey = JSON.stringify([
@@ -1388,8 +1528,24 @@ export class SpaceTimeView {
       .filter((f) => this.selected.has(f.id))
       .map((f) => f.id)
       .join("|");
-    if (this.shapes && geometryKey !== this.geometrySelectionKey)
-      this.buildGeometryFeatures();
+    if (this.shapes && geometryKey !== this.geometrySelectionKey) {
+      if(this.geometryFill && !this.geometryFill.ready) this.buildGeometryFeatures();
+      else {
+        this.geometrySelectionKey=geometryKey;
+        for(const id of new Set([...previousSelection,...this.selected])) {
+          if(previousSelection.has(id)===this.selected.has(id)) continue;
+          const style=this.geometryStyles.get(id);if(!style) continue;
+          const color=this.selected.has(id) ? Color.fromCssColorString(this.theme==="light" ? "#7c4b00" : "#ffd27a") : style.color;
+          for(const point of style.points)point.color=color;
+          for(const line of style.lines)line.material.uniforms.color=color.withAlpha(.9);
+          for(const fill of style.fills) {
+            const attributes=this.geometryFill?.getGeometryInstanceAttributes(fill);
+            if(attributes) attributes.color=ColorGeometryInstanceAttribute.toValue(color.withAlpha(this.measurement ? .92 : .25));
+          }
+          this.geometryStyleUpdates++;
+        }
+      }
+    }
     if (!this.selections) return;
     this.selections.removeAll();
     const visibilityKey = JSON.stringify([
@@ -1563,11 +1719,15 @@ export class SpaceTimeView {
   ) {
     await this.ready;
     if (!accept() || this.disposed) return false;
+    const providerChanges = this.resources.status.terrainProviderChanges;
     await this.resources.setTerrain(data, this.exaggeration, accept, source);
     if (!accept() || this.disposed) return false;
     this.terrain = data;
     this.terrainSource = data ? source : undefined;
     this.terrainGeneration++;
+    if ((this.resident || this.pendingResident) && source && providerChanges === this.resources.status.terrainProviderChanges) {
+      this.requestRender(); return true;
+    }
     this.rebuild(true);
     return true;
   }
@@ -1606,6 +1766,7 @@ export class SpaceTimeView {
       active && !matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.displayLayer.setPlayback(this.playback);
     if (!this.playback) {
+      if(this.resident) { this.stopFades();this.requestRender();return; }
       const consolidate =
         this.playbackMarkersDirty ||
         this.arrivingPoints?.length || this.arrivingTriangles?.length;
@@ -2213,6 +2374,7 @@ export class SpaceTimeView {
     });
   }
   rebuildTrails() {
+    if (this.resident) return;
     if (!this.trails || this.disposed) return;
     const mask =
       Number(this.display.show_tracks && this.display.track_opacity > 0) |
@@ -3268,8 +3430,8 @@ export class SpaceTimeView {
     return true;
   }
   projectEvent(id: string): { x: number; y: number } | null {
-    const p = this.pointById.get(id),
-      projected = p && this.project(this.pos(p));
+    const p = this.resident ? this.resident.visiblePoint(id) : this.pointById.get(id),
+      projected = p && this.project(this.resident?.pointPosition(id) || this.pos(p));
     return projected ? { x: projected.x, y: projected.y } : null;
   }
   diagnostics() {
@@ -3284,6 +3446,9 @@ export class SpaceTimeView {
     const debug = gl?.getExtension("WEBGL_debug_renderer_info");
     return {
       engine: "CesiumJS",
+      geometryReuse:{builds:this.geometryBuilds,selectionStyleUpdates:this.geometryStyleUpdates},
+      experimentalPlayback: { active: this.smoothPlaybackActive, kind:this.resident ? "resident" : this.smoothHeatmap ? "heatmap" : null,
+        resident: this.resident?.diagnostics() || null, terrainSamples:this.residentTerrainSamples },
       graphics: {
         renderer:
           gl?.getParameter(debug ? debug.UNMASKED_RENDERER_WEBGL : gl.RENDERER) ?? null,
@@ -3467,12 +3632,21 @@ export class SpaceTimeView {
       const pixel = new Cartesian2(x, y),
         hit = this.scene.pick(pixel, 7, 7),
         first = hit?.id as PickId | undefined;
+      if (this.resident && hit?.id?.residentEntity !== undefined) {
+        const id = this.resident.pick(hit.id.residentEntity, x, y, p => this.project(this.resident!.pointPosition(p.id) || this.pos(p)),!!hit.id.residentSelection);
+        if (id) return { kind: "event", id };
+      }
       if (first?.kind) return first;
       const gis = this.gis.pick(hit);
       if (gis) return gis;
       // Track/axis strokes can be nearer than their coincident marker. Walk the real GPU pick stack;
       // never invent an event ID for a whole entity's track.
       const stack = this.scene.drillPick(pixel, 16, 7, 7);
+      if (this.resident) for (const candidate of stack) {
+        if (candidate.id?.residentEntity === undefined) continue;
+        const id=this.resident.pick(candidate.id.residentEntity,x,y,p => this.project(this.resident!.pointPosition(p.id) || this.pos(p)),!!candidate.id.residentSelection);
+        if (id) return {kind:"event",id};
+      }
       const item = stack.find(
         (hit) =>
           hit.id?.kind === "event" ||
@@ -3703,12 +3877,12 @@ export class SpaceTimeView {
                 : "";
         const point =
           id && (id.kind === "event" || id.kind === "geometry")
-            ? this.pointById.get(id.id)
+            ? this.resident?.point(id.id) || this.pointById.get(id.id)
             : undefined;
         if (id?.kind === "cluster")
           this.tooltip.textContent = `${id.bin.count.toLocaleString()} events · click to zoom; Shift-click selects evidence`;
         else if (point)
-          this.tooltip.textContent = `${this.names[point.entity] || "Event"} · ${time(point.time)} UTC${point.inferred ? " · Location unknown · inferred display position" : point.centroid ? " · Polygon centroid (derived surface location)" : ""}`;
+          this.tooltip.textContent = `${(this.resident ? this.residentNames : this.names)[point.entity] || "Event"} · ${time(point.time)} UTC${point.inferred ? " · Location unknown · inferred display position" : point.centroid ? " · Polygon centroid (derived surface location)" : ""}`;
         else if (id?.kind === "orbit")
           this.tooltip.textContent = `Drag ${id.side} handle to rotate`;
         else {
@@ -3781,8 +3955,8 @@ export class SpaceTimeView {
             !!s && s.x >= left && s.x <= right && s.y >= top && s.y <= bottom
           );
         };
-        const ids = this.renderPoints
-          .filter((p) => inside(this.pos(p)))
+        const ids = (this.resident ? this.resident.visiblePoints() : this.renderPoints)
+          .filter((p) => inside(this.resident?.pointPosition(p.id) || this.pos(p)))
           .map((p) => p.id);
         const cells = this.displayLayer.active
           ? this.displayLayer.inBox(
@@ -3974,6 +4148,7 @@ export class SpaceTimeView {
     return result.toDataURL("image/png");
   }
   dispose() {
+    this.endResidentPlayback();
     this.hideTooltip();
     this.cancelPendingPick();
     if (this.disposed) return;

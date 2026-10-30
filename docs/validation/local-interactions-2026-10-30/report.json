@@ -1,0 +1,765 @@
+{
+  "completed_utc": "2026-10-30T15:36:21.902546+00:00",
+  "local_only": true,
+  "branch": "codex/resident-interactions-local",
+  "verification_commit": "f73df56612b968bcaa42025041c9dbe55490c32b",
+  "base_next_main": "389ffcd5c412db74c541b321daa38d0cc3535589",
+  "build": {
+    "source_commit": "83ed3e5ea91bcd487734f28a0b30ab30c3de2323",
+    "binary_sha256": "f049839417b41d524480eff1d37e1c55ff24699cc588c0100cc7e957388e053e",
+    "bytes": 67375616,
+    "embedded_main": "assets/main-DplR_I5e.js",
+    "product_name": "Chronoscope Interaction Lab",
+    "identifier": "org.chronoscope.interaction-lab",
+    "published": false
+  },
+  "unit_tests": 172,
+  "integration": {
+    "passed": true,
+    "checks": [
+      "Governor pressure releases prepared buffers and recovery permits preparation again",
+      "map: paused navigation retains its prepared graphics",
+      "map: pointer scrubbing preserves buffers and commits exact membership",
+      "map: selection updates a timed GPU overlay without rebuilding the study",
+      "map: repeated play/pause keeps exact stopped membership",
+      "Governor pressure releases prepared buffers and recovery permits preparation again",
+      "globe: paused navigation retains its prepared graphics",
+      "globe: pointer scrubbing preserves buffers and commits exact membership",
+      "globe: selection updates a timed GPU overlay without rebuilding the study",
+      "globe: repeated play/pause keeps exact stopped membership",
+      "Governor pressure releases prepared buffers and recovery permits preparation again",
+      "space-time: paused navigation retains its prepared graphics",
+      "space-time: selection updates a timed GPU overlay without rebuilding the study",
+      "space-time: repeated play/pause keeps exact stopped membership",
+      "Same-count coordinate edits invalidate the prepared-data cache",
+      "GPU clipping separates millisecond events inside a decade-long study",
+      "Mixed point/heatmap/bloom playback pauses to exact weighted summary cells",
+      "Multipart polygon selection patches GPU colors, retains meshes and preserves holes"
+    ],
+    "publicRequests": 0,
+    "errors": []
+  },
+  "references": {
+    "passed": true,
+    "checks": [
+      "Prepared altitude retains engine membership, omits unknown heights and preserves independent WGS84/EGM96 controls",
+      "Globe time elevation preserves its full-study axis and canonical geographic height scale after filtering and pause",
+      "Prepared ground positions preserve sampled terrain, exaggeration and EGM96 references"
+    ],
+    "publicRequests": 0,
+    "errors": []
+  },
+  "handoffs": {
+    "passed": true,
+    "pixelChecks": [
+      {
+        "enabled": false,
+        "visible": 92233
+      },
+      {
+        "enabled": true,
+        "visible": 86175
+      },
+      {
+        "enabled": false,
+        "visible": 92233
+      },
+      {
+        "enabled": true,
+        "visible": 86175
+      },
+      {
+        "enabled": false,
+        "visible": 92233
+      },
+      {
+        "enabled": true,
+        "visible": 86175
+      },
+      {
+        "enabled": false,
+        "visible": 92233
+      },
+      {
+        "enabled": true,
+        "visible": 86175
+      },
+      {
+        "enabled": false,
+        "visible": 92233
+      },
+      {
+        "enabled": true,
+        "visible": 86175
+      },
+      {
+        "enabled": false,
+        "visible": 92233
+      },
+      {
+        "enabled": true,
+        "visible": 86175
+      }
+    ],
+    "soak": {
+      "elapsedMs": 64496.20000000298,
+      "frames": 3853,
+      "missingBuffers": 0,
+      "maxInterval": 50.899999998509884,
+      "selectionWrites": 20,
+      "diag": {
+        "engine": "CesiumJS",
+        "geometryReuse": {
+          "builds": 12,
+          "selectionStyleUpdates": 0
+        },
+        "experimentalPlayback": {
+          "active": true,
+          "kind": "resident",
+          "resident": {
+            "pointCount": 100000,
+            "segmentCount": 99900,
+            "preparedBytes": 3600000,
+            "preparationMs": 191.09999999403954,
+            "selectedCount": 0,
+            "window": [
+              1735689763.2405,
+              1735689963.0405
+            ],
+            "drawPrimitives": 1,
+            "curvedTracks": null
+          },
+          "terrainSamples": 0
+        },
+        "graphics": {
+          "renderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+          "vendor": "Google Inc. (NVIDIA)",
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+          "framebuffer": [
+            826,
+            854
+          ],
+          "resolutionScale": 1
+        },
+        "trackCpuStages": {
+          "ordering": {
+            "calls": 2,
+            "totalMs": 0,
+            "lastMs": 0,
+            "maxMs": 0
+          },
+          "projectionSimplification": {
+            "calls": 3,
+            "totalMs": 0,
+            "lastMs": 0,
+            "maxMs": 0
+          },
+          "runs": {
+            "calls": 3,
+            "totalMs": 0.30000000447034836,
+            "lastMs": 0,
+            "maxMs": 0.20000000298023224
+          }
+        },
+        "navigation": {
+          "inertia": false,
+          "freeLook": false,
+          "northUpOnly": false,
+          "flatOnly": true,
+          "gestureMaximumTiltDegrees": 85,
+          "keyboardFocus": "map",
+          "active": false
+        },
+        "spaceTimeFloor": null,
+        "playbackFade": true,
+        "playbackFadeAmount": 50,
+        "globeTime": false,
+        "globeAltitude": false,
+        "altitude": {
+          "known": 0,
+          "omitted": 20000,
+          "approximate": 0,
+          "minimum": 0,
+          "maximum": 0
+        },
+        "globeTimeScale": 1,
+        "timeHeightMeters": 43094.87541908285,
+        "displayTimeBounds": [
+          1735689600,
+          1735690599
+        ],
+        "contextRecoveries": 0,
+        "recovering": false,
+        "renderErrorCount": 0,
+        "lastRenderError": "",
+        "sceneMode": 2,
+        "pointCount": 20000,
+        "triangleCount": 0,
+        "allocatedMarkerSlots": 20000,
+        "resourceGovernor": {
+          "automatic": true,
+          "profile": "full",
+          "reason": "healthy",
+          "changes": 0,
+          "memory": {
+            "available_bytes": 7035613184,
+            "sample_age_ms": 0,
+            "scope": "host",
+            "supported": true,
+            "swap_used_bytes": 0,
+            "total_bytes": 16869605376
+          },
+          "limits": {
+            "name": "full",
+            "maxPoints": 100000,
+            "maxPixels": 8000000,
+            "maxScale": 1.5,
+            "tiles": 100,
+            "screenError": 1,
+            "streetCanvases": 24,
+            "afterimages": 100000,
+            "fadeSegments": 100000,
+            "fadeCohorts": 256,
+            "arcVertices": 200000
+          },
+          "graphicsRenderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+          "memorySampleAgeMs": 1326.5,
+          "recoveryHoldMs": 45000,
+          "gpuMemoryMeasured": false
+        },
+        "lastResourceGeometryMs": 0,
+        "fadingPointCount": 0,
+        "fadingTriangleCount": 0,
+        "fadingStemSegments": 0,
+        "fadingTrackSegments": 0,
+        "fadingTrailSegments": 0,
+        "fadeDurationsMs": {
+          "arrival": 180,
+          "departure": 800
+        },
+        "arrivingPointCount": 0,
+        "arrivingTriangleCount": 0,
+        "triangleVisibleCount": 0,
+        "selectionCount": 0,
+        "geometryFeatures": 0,
+        "geometryPrimitives": 2,
+        "trackPolylines": 0,
+        "allocatedTrackPolylines": 0,
+        "allocatedTrackVertices": 0,
+        "stemSegments": 0,
+        "resourceReuse": {
+          "markerCollectionBuilds": 1,
+          "markerCollectionReuses": 11,
+          "playbackMarkerPatches": 0,
+          "playbackMarkerReuses": 0,
+          "playbackMarkerOrderFallbacks": 0,
+          "playbackMarkerCompactions": 0,
+          "playbackMarkerSmallRebuilds": 0,
+          "stemGeometryBuilds": 0,
+          "trailSorts": 2,
+          "trailGeometryBuilds": 3,
+          "trailStyleUpdates": 11,
+          "trailGlobeStreamRebuilds": 0,
+          "trackPositionReuses": 0,
+          "trackPositionSharingEnabled": false
+        },
+        "trailInputEdges": 0,
+        "trailOutputEdges": 0,
+        "geodesicRendering": {
+          "geometry": {
+            "remainingSegments": 0,
+            "remainingInterpolation": 200000,
+            "interpolated": 0,
+            "coarsened": 0,
+            "sourceSegments": 0
+          },
+          "trails": {
+            "remainingSegments": 0,
+            "remainingInterpolation": 200000,
+            "interpolated": 0,
+            "coarsened": 0,
+            "sourceSegments": 0
+          },
+          "maximumAddedVertices": 400000,
+          "sourceEndpointBudget": 400000
+        },
+        "axisLabels": 0,
+        "orbitHandles": 0,
+        "requestRenderMode": true,
+        "performance": {
+          "updateRateLimitHz": null,
+          "renderedFrames": 4018,
+          "active": true,
+          "sampleFrames": 120,
+          "fps": 56.726860168329644,
+          "frameP95Ms": 19.899999998509884,
+          "renderCpuP95Ms": 1.7000000029802322
+        },
+        "terrain": {
+          "basemap": "none",
+          "basemapPending": 0,
+          "basemapError": "",
+          "basemapRenderedTiles": 0,
+          "basemapAlignmentErrorPixels": 0,
+          "basemapMaximumLevel": 0,
+          "imageryLayers": 1,
+          "tileCount": 0,
+          "imageryRequestedTiles": 0,
+          "terrainActive": false,
+          "terrainProviderChanges": 0,
+          "terrainPendingTiles": 0,
+          "terrainCovered": 0,
+          "verticalDatum": "unresolved-msl",
+          "geoidModel": null,
+          "mode": "map"
+        },
+        "effectError": ""
+      },
+      "actualCount": 20000
+    }
+  },
+  "performance": {
+    "complete": true,
+    "method": "Fresh native Tauri/WebView2 process and private profile per case; same dataset/styles/governor; 20% visible time window. 8s idle, 20s paused pan/zoom/tilt, 20s time-rail scrubbing (real pointer capture followed by RAF pointer-move events), then 15s selected playback after 5s warm-up. CPU/private RAM and Windows-attributed GPU counters sampled at 1Hz. CPU normalized over all logical processors. FPS is postRender cadence, not presentation latency. Background saving is disabled during the comparison. Basemap and terrain are off to isolate event/effect rendering; separate reference checks cover terrain and altitude correctness.",
+    "machine": {
+      "logical_processors": 16,
+      "ram_bytes": 16869605376,
+      "gpu": "Quadro RTX 3000"
+    },
+    "limitations": [
+      "Short single trials per phase and case; hardware/process scheduling can vary.",
+      "Windows GPU memory is attributed allocation accounting, not unique physical VRAM residency.",
+      "Prepared point/track styling and fading retain existing experimental differences.",
+      "Baseline viewport culling can return a subset of the exact engine window; candidate retains the complete prepared window."
+    ],
+    "measurements": [
+      {
+        "dataset": "100k-map",
+        "build": "Next",
+        "phase": "idle",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 0.0,
+        "frame_p95_ms": null,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 0.53,
+        "private_ram_mib": 378.0,
+        "gpu_3d_percent": 0.0,
+        "gpu_dedicated_mib": 287.6,
+        "gpu_shared_mib": 19.2
+      },
+      {
+        "dataset": "100k-map",
+        "build": "Next",
+        "phase": "paused-navigation",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 57.33,
+        "frame_p95_ms": 18.8,
+        "gaps_over_50ms": 13,
+        "cpu_percent": 7.73,
+        "private_ram_mib": 454.9,
+        "gpu_3d_percent": 22.87,
+        "gpu_dedicated_mib": 263.8,
+        "gpu_shared_mib": 17.1
+      },
+      {
+        "dataset": "100k-map",
+        "build": "Next",
+        "phase": "scrubbing",
+        "governor_profile": "balanced",
+        "prepared_active": false,
+        "fps": 30.12,
+        "frame_p95_ms": 219.8,
+        "gaps_over_50ms": 36,
+        "cpu_percent": 11.95,
+        "private_ram_mib": 643.6,
+        "gpu_3d_percent": 16.26,
+        "gpu_dedicated_mib": 272.0,
+        "gpu_shared_mib": 21.2
+      },
+      {
+        "dataset": "100k-map",
+        "build": "Next",
+        "phase": "selected-playback",
+        "governor_profile": "balanced",
+        "prepared_active": false,
+        "fps": 21.79,
+        "frame_p95_ms": 226.9,
+        "gaps_over_50ms": 27,
+        "cpu_percent": 10.8,
+        "private_ram_mib": 691.9,
+        "gpu_3d_percent": 16.32,
+        "gpu_dedicated_mib": 254.1,
+        "gpu_shared_mib": 19.9
+      },
+      {
+        "dataset": "global-altitude",
+        "build": "Next",
+        "phase": "idle",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 0.0,
+        "frame_p95_ms": null,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 0.56,
+        "private_ram_mib": 758.8,
+        "gpu_3d_percent": 0.0,
+        "gpu_dedicated_mib": 271.3,
+        "gpu_shared_mib": 89.6
+      },
+      {
+        "dataset": "global-altitude",
+        "build": "Next",
+        "phase": "paused-navigation",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 58.4,
+        "frame_p95_ms": 19.1,
+        "gaps_over_50ms": 8,
+        "cpu_percent": 7.21,
+        "private_ram_mib": 635.8,
+        "gpu_3d_percent": 24.88,
+        "gpu_dedicated_mib": 230.4,
+        "gpu_shared_mib": 22.7
+      },
+      {
+        "dataset": "global-altitude",
+        "build": "Next",
+        "phase": "scrubbing",
+        "governor_profile": "balanced",
+        "prepared_active": false,
+        "fps": 30.88,
+        "frame_p95_ms": 150.2,
+        "gaps_over_50ms": 58,
+        "cpu_percent": 12.23,
+        "private_ram_mib": 762.2,
+        "gpu_3d_percent": 15.01,
+        "gpu_dedicated_mib": 239.8,
+        "gpu_shared_mib": 24.1
+      },
+      {
+        "dataset": "global-altitude",
+        "build": "Next",
+        "phase": "selected-playback",
+        "governor_profile": "balanced",
+        "prepared_active": false,
+        "fps": 25.92,
+        "frame_p95_ms": 139.6,
+        "gaps_over_50ms": 32,
+        "cpu_percent": 10.89,
+        "private_ram_mib": 797.2,
+        "gpu_3d_percent": 13.74,
+        "gpu_dedicated_mib": 221.0,
+        "gpu_shared_mib": 23.1
+      },
+      {
+        "dataset": "mixed-heatmap",
+        "build": "Next",
+        "phase": "idle",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 0.0,
+        "frame_p95_ms": null,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 0.78,
+        "private_ram_mib": 581.3,
+        "gpu_3d_percent": 0.45,
+        "gpu_dedicated_mib": 340.3,
+        "gpu_shared_mib": 13.1
+      },
+      {
+        "dataset": "mixed-heatmap",
+        "build": "Next",
+        "phase": "paused-navigation",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 59.14,
+        "frame_p95_ms": 23.3,
+        "gaps_over_50ms": 2,
+        "cpu_percent": 6.41,
+        "private_ram_mib": 648.8,
+        "gpu_3d_percent": 24.96,
+        "gpu_dedicated_mib": 331.6,
+        "gpu_shared_mib": 17.2
+      },
+      {
+        "dataset": "mixed-heatmap",
+        "build": "Next",
+        "phase": "scrubbing",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 57.74,
+        "frame_p95_ms": 31.9,
+        "gaps_over_50ms": 7,
+        "cpu_percent": 16.63,
+        "private_ram_mib": 836.9,
+        "gpu_3d_percent": 28.35,
+        "gpu_dedicated_mib": 343.9,
+        "gpu_shared_mib": 16.4
+      },
+      {
+        "dataset": "mixed-heatmap",
+        "build": "Next",
+        "phase": "selected-playback",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 59.55,
+        "frame_p95_ms": 25.8,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 12.89,
+        "private_ram_mib": 838.9,
+        "gpu_3d_percent": 29.2,
+        "gpu_dedicated_mib": 341.0,
+        "gpu_shared_mib": 16.2
+      },
+      {
+        "dataset": "polygons",
+        "build": "Next",
+        "phase": "idle",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 0.0,
+        "frame_p95_ms": null,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 0.37,
+        "private_ram_mib": 767.3,
+        "gpu_3d_percent": 0.0,
+        "gpu_dedicated_mib": 287.0,
+        "gpu_shared_mib": 16.0
+      },
+      {
+        "dataset": "polygons",
+        "build": "Next",
+        "phase": "polygon-selection-stress",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 59.35,
+        "frame_p95_ms": 22,
+        "gaps_over_50ms": 1,
+        "cpu_percent": 8.59,
+        "private_ram_mib": 544.5,
+        "gpu_3d_percent": 16.3,
+        "gpu_dedicated_mib": 232.5,
+        "gpu_shared_mib": 10.6
+      },
+      {
+        "dataset": "100k-map",
+        "build": "Lab",
+        "phase": "idle",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 0.0,
+        "frame_p95_ms": null,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 0.65,
+        "private_ram_mib": 733.5,
+        "gpu_3d_percent": 0.0,
+        "gpu_dedicated_mib": 293.2,
+        "gpu_shared_mib": 63.0
+      },
+      {
+        "dataset": "100k-map",
+        "build": "Lab",
+        "phase": "paused-navigation",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 59.98,
+        "frame_p95_ms": 18.1,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 3.03,
+        "private_ram_mib": 490.4,
+        "gpu_3d_percent": 19.49,
+        "gpu_dedicated_mib": 248.1,
+        "gpu_shared_mib": 39.8
+      },
+      {
+        "dataset": "100k-map",
+        "build": "Lab",
+        "phase": "scrubbing",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 59.96,
+        "frame_p95_ms": 18.5,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 8.0,
+        "private_ram_mib": 513.1,
+        "gpu_3d_percent": 19.74,
+        "gpu_dedicated_mib": 262.7,
+        "gpu_shared_mib": 40.7
+      },
+      {
+        "dataset": "100k-map",
+        "build": "Lab",
+        "phase": "selected-playback",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 60.11,
+        "frame_p95_ms": 17.9,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 6.98,
+        "private_ram_mib": 539.5,
+        "gpu_3d_percent": 24.41,
+        "gpu_dedicated_mib": 261.8,
+        "gpu_shared_mib": 41.6
+      },
+      {
+        "dataset": "mixed-heatmap",
+        "build": "Lab",
+        "phase": "idle",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 0.0,
+        "frame_p95_ms": null,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 0.51,
+        "private_ram_mib": 623.8,
+        "gpu_3d_percent": 0.0,
+        "gpu_dedicated_mib": 363.6,
+        "gpu_shared_mib": 28.0
+      },
+      {
+        "dataset": "mixed-heatmap",
+        "build": "Lab",
+        "phase": "paused-navigation",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 58.12,
+        "frame_p95_ms": 24.4,
+        "gaps_over_50ms": 5,
+        "cpu_percent": 7.93,
+        "private_ram_mib": 739.0,
+        "gpu_3d_percent": 28.55,
+        "gpu_dedicated_mib": 320.0,
+        "gpu_shared_mib": 19.4
+      },
+      {
+        "dataset": "mixed-heatmap",
+        "build": "Lab",
+        "phase": "scrubbing",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 59.97,
+        "frame_p95_ms": 20.9,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 11.65,
+        "private_ram_mib": 836.7,
+        "gpu_3d_percent": 30.52,
+        "gpu_dedicated_mib": 322.2,
+        "gpu_shared_mib": 21.4
+      },
+      {
+        "dataset": "mixed-heatmap",
+        "build": "Lab",
+        "phase": "selected-playback",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 60.09,
+        "frame_p95_ms": 20,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 9.24,
+        "private_ram_mib": 801.1,
+        "gpu_3d_percent": 33.85,
+        "gpu_dedicated_mib": 312.4,
+        "gpu_shared_mib": 18.7
+      },
+      {
+        "dataset": "polygons",
+        "build": "Lab",
+        "phase": "idle",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 0.0,
+        "frame_p95_ms": null,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 0.33,
+        "private_ram_mib": 807.6,
+        "gpu_3d_percent": 0.0,
+        "gpu_dedicated_mib": 297.0,
+        "gpu_shared_mib": 67.6
+      },
+      {
+        "dataset": "polygons",
+        "build": "Lab",
+        "phase": "polygon-selection-stress",
+        "governor_profile": "full",
+        "prepared_active": false,
+        "fps": 59.98,
+        "frame_p95_ms": 17.7,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 2.43,
+        "private_ram_mib": 398.5,
+        "gpu_3d_percent": 18.17,
+        "gpu_dedicated_mib": 212.5,
+        "gpu_shared_mib": 13.5
+      },
+      {
+        "dataset": "global-altitude",
+        "build": "Lab",
+        "phase": "idle",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 0.0,
+        "frame_p95_ms": null,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 0.6,
+        "private_ram_mib": 1145.0,
+        "gpu_3d_percent": 0.0,
+        "gpu_dedicated_mib": 387.4,
+        "gpu_shared_mib": 177.8
+      },
+      {
+        "dataset": "global-altitude",
+        "build": "Lab",
+        "phase": "paused-navigation",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 59.87,
+        "frame_p95_ms": 18.3,
+        "gaps_over_50ms": 1,
+        "cpu_percent": 4.31,
+        "private_ram_mib": 609.3,
+        "gpu_3d_percent": 20.45,
+        "gpu_dedicated_mib": 325.2,
+        "gpu_shared_mib": 115.4
+      },
+      {
+        "dataset": "global-altitude",
+        "build": "Lab",
+        "phase": "scrubbing",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 60.02,
+        "frame_p95_ms": 18.6,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 6.05,
+        "private_ram_mib": 650.1,
+        "gpu_3d_percent": 19.64,
+        "gpu_dedicated_mib": 331.4,
+        "gpu_shared_mib": 111.5
+      },
+      {
+        "dataset": "global-altitude",
+        "build": "Lab",
+        "phase": "selected-playback",
+        "governor_profile": "full",
+        "prepared_active": true,
+        "fps": 60.03,
+        "frame_p95_ms": 17.7,
+        "gaps_over_50ms": 0,
+        "cpu_percent": 7.14,
+        "private_ram_mib": 763.5,
+        "gpu_3d_percent": 25.49,
+        "gpu_dedicated_mib": 334.1,
+        "gpu_shared_mib": 113.5
+      }
+    ]
+  },
+  "remaining_limits": [
+    "Time manual scrubbing uses canonical renderer",
+    "100k events and 2048 entities for prepared point/track studies",
+    "No general GPU heatmap rewrite",
+    "Existing prepared track/fade styling differences"
+  ],
+  "automation": "Waiting heartbeat stopped before work began; no duplicate continuation scheduled."
+}

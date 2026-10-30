@@ -106,6 +106,16 @@ fn defaults_unload_restart_restore_custom_replacement_and_portable_save() {
     chronoscope::balanced_terrain::set_resource_path(pack);
     let profile = tempfile::tempdir().unwrap();
     let engine = Engine::new(Project::empty(), profile.path().into()).unwrap();
+    let (a_lat,a_lon)=position(20.,30.);
+    let (b_lat,b_lon)=position(5.,5.);
+    let a=engine.invoke("terrain_sample",json!({"latitude":a_lat,"longitude":a_lon})).unwrap();
+    let b=engine.invoke("terrain_sample",json!({"latitude":b_lat,"longitude":b_lon})).unwrap();
+    let batch=engine.invoke("terrain_sample",json!({"latitude":a_lat,"longitude":a_lon,"coordinates":[[a_lon,a_lat],[b_lon,b_lat],[a_lon,a_lat]]})).unwrap();
+    chronoscope::schema::validate_output("terrain_sample",&batch).unwrap();
+    assert_eq!(batch["elevation_m"],a["elevation_m"]);
+    assert_eq!(batch["elevations_m"],json!([a["elevation_m"],b["elevation_m"],a["elevation_m"]]));
+    assert!(b["elevation_m"].is_null());
+    assert!(engine.invoke("terrain_sample",json!({"latitude":a_lat,"longitude":a_lon,"coordinates":[[181.,0.]]})).is_err());
     let polar = engine
         .invoke(
             "terrain_mesh",

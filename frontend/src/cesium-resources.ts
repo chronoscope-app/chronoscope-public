@@ -510,6 +510,23 @@ export class CesiumResources {
         : null;
     return altitude.meters;
   }
+  async prepareGround(points: readonly Point[], sample: (coordinates: [number,number][]) => Promise<(number|null)[]>, accept: () => boolean) {
+    const provider = this.terrainProvider;
+    const result = new Map<string,number>();
+    if (!provider) return result;
+    const geoid = provider.verticalDatum === "egm96" ? await loadGeoid() : undefined;
+    const unique = [...new Map(points.map(p => [`${p.lat},${p.lon}`,p])).values()];
+    for (let offset=0;offset<unique.length;offset+=5000) {
+      if (!accept() || this.terrainProvider !== provider) throw new DOMException("Playback preparation cancelled","AbortError");
+      const batch=unique.slice(offset,offset+5000);
+      const elevations=await sample(batch.map(p => [p.lon,p.lat]));
+      if (elevations.length!==batch.length) throw Error("Terrain sample count mismatch");
+      batch.forEach((p,i) => result.set(`${p.lat},${p.lon}`, elevations[i] === null ? 0
+        : elevations[i]! * provider.exaggeration + (geoid ? geoidUndulation(geoid,p.lat,p.lon) : 0)));
+    }
+    if (!accept() || this.terrainProvider !== provider) throw new DOMException("Playback preparation cancelled","AbortError");
+    return result;
+  }
   private disposed = false;
   private generation = 0;
   private terrainGeneration = 0;

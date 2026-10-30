@@ -1610,6 +1610,12 @@ impl Engine {
                 let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
                 let budget = args["max_points"].as_u64().unwrap_or(20000) as usize;
                 let mut f = s.project.filter.clone();
+                let playback_pool = args["playback_pool"].as_bool().unwrap_or(false);
+                if playback_pool {
+                    // Read-only preparation: retain every non-temporal predicate.
+                    f.start = None;
+                    f.end = None;
+                }
                 if args["selected_only"].as_bool().unwrap_or(false) {
                     f.selected_only = true
                 }
@@ -1629,6 +1635,29 @@ impl Engine {
                     });
                 }
                 let (mut rows, count) = s.store.render_viewport(&f, budget, viewport.as_ref())?;
+                if playback_pool {
+                    let all = s.store.ordered(&f, None, "time", false)?;
+                    if s.store.table_count(&all)? != count || count > budget {
+                        return Err("UNAVAILABLE: GPU playback requires at most 100,000 located instantaneous point events".into());
+                    }
+                    // Compact render rows intentionally omit duration and WKT.
+                    // Check those fields in the authoritative indexed store.
+                    for field in ["end", "geometry_wkt"] {
+                        let mut rich = f.clone();
+                        rich.predicates.push(crate::model::Predicate {
+                            field: field.into(),
+                            op: crate::model::Operator::NotEquals,
+                            value: String::new(),
+                        });
+                        let table = s.store.ordered(&rich, None, "time", false)?;
+                        if s.store.table_count(&table)? > 0 {
+                            return Err(
+                                "UNAVAILABLE: duration and geometry records use standard playback"
+                                    .into(),
+                            );
+                        }
+                    }
+                }
                 let mut selected_located_count = if f.selected_only {
                     count
                 } else if rows.len() == count {
@@ -1654,11 +1683,12 @@ impl Engine {
                         .chain(selected_rows)
                         .collect();
                 }
-                let inferred_filter = if args["include_time_only"] == true && !altitude_mode {
-                    &s.project.filter
-                } else {
-                    &f
-                };
+                let inferred_filter =
+                    if !playback_pool && args["include_time_only"] == true && !altitude_mode {
+                        &s.project.filter
+                    } else {
+                        &f
+                    };
                 let (mut inferred, unlocated_count, inferred_metadata) = s.store.inferred_markers(
                     inferred_filter,
                     if count < budget {
@@ -1667,6 +1697,9 @@ impl Engine {
                         (budget / 4).clamp(2, 5000)
                     },
                 )?;
+                if playback_pool && unlocated_count > 0 {
+                    return Err("UNAVAILABLE: GPU playback requires located point events".into());
+                }
                 if altitude_mode {
                     inferred.clear();
                 }
@@ -2630,22 +2663,49 @@ impl Engine {
                 if !latitude.is_finite() || !longitude.is_finite() {
                     return Err("Invalid coordinates".into());
                 }
-                let value = self
-                    .terrain
-                    .lock()
-                    .map_err(|_| "Terrain unavailable")?
-                    .as_mut()
-                    .ok_or("Load DTED first")?
-                    .sample(latitude, longitude)?;
+                let coordinates: Option<Vec<[f64; 2]>> = args
+                    .get("coordinates")
+                    .map(|v| serde_json::from_value(v.clone()).map_err(|e| e.to_string()))
+                    .transpose()?;
+                if coordinates.as_ref().is_some_and(|points| {
+                    points.iter().any(|[lon, lat]| {
+                        !lon.is_finite()
+                            || !lat.is_finite()
+                            || !(-180.0..=180.0).contains(lon)
+                            || !(-90.0..=90.0).contains(lat)
+                    })
+                }) {
+                    return Err("INVALID_ARGUMENT: invalid terrain sample coordinates".into());
+                }
+                let mut terrain = self.terrain.lock().map_err(|_| "Terrain unavailable")?;
+                let catalog = terrain.as_mut().ok_or("Load DTED first")?;
+                let value = catalog.sample(latitude, longitude)?;
+                let elevations = coordinates
+                    .map(|points| {
+                        points
+                            .iter()
+                            .enumerate()
+                            .map(|(i, [lon, lat])| {
+                                if i % 1024 == 0 {
+                                    crate::operation::check()?;
+                                }
+                                catalog.sample(*lat, *lon)
+                            })
+                            .collect::<Result<Vec<_>, String>>()
+                    })
+                    .transpose()?;
+                drop(terrain);
                 let builtin = self
                     .state
                     .lock()
                     .map_err(|_| "Workspace unavailable")?
                     .preferences
                     .terrain_builtin;
-                Ok(
-                    json!({"elevation_m":value,"datum":if builtin { "EGM96 MSL" } else { "DTED MSL" }}),
-                )
+                let mut result = json!({"elevation_m":value,"datum":if builtin { "EGM96 MSL" } else { "DTED MSL" }});
+                if let Some(elevations) = elevations {
+                    result["elevations_m"] = json!(elevations);
+                }
+                Ok(result)
             }
             _ => Err(format!("Unknown engine command: {command}")),
         }

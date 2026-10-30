@@ -148,6 +148,110 @@ const dialogs = new DialogController(() => {
   pending?.(false);
 });
 let playTimer: number | undefined;
+let smoothPlaybackEnabled = true;
+try {
+  smoothPlaybackEnabled = localStorage.getItem("chronoscope-smooth-playback") !== "false";
+} catch { /* Storage may be unavailable; playback still works with defaults. */ }
+let residentIdentity: string | undefined;
+let playbackPreparing = false;
+let playbackPreparation = 0;
+let currentDataIdentity = "";
+let residentDataIdentity = "";
+let residentPurpose: "playback" | "navigation" | undefined;
+let residentTimeFilter = "";
+let interactionGeneration = 0;
+let interactionWork: Promise<boolean> | undefined;
+let interactionTimer: ReturnType<typeof setTimeout> | undefined;
+let interactionBlocked = "";
+let preparedPool: { key:string; data:string; points: ReturnType<typeof decode>; names:string[] } | undefined;
+function playbackIdentity(state: Snapshot) {
+  const { start: _start, end: _end, ...filter } = state.filter;
+  // Camera navigation is allowed; changes to evidence, styling or selection
+  // return to the canonical renderer before the next snapshot is published.
+  const { mode, display, measurement, globe_time, globe_altitude, globe_time_scale, time_height, entity_colors, bounds } = state.scene;
+  const scene = { mode, display, measurement, globe_time, globe_altitude, globe_time_scale, time_height, entity_colors, bounds };
+  return JSON.stringify([state.workspace_id, state.count, filter, scene,
+    state.filter.selected_only || state.selection_limited ? [state.selected,state.selected_count] : null,
+    state.layers.map(({ visible: _visible, ...layer }) => layer), state.preferences]);
+}
+function endSmoothPlayback(reason = "Ready") {
+  residentIdentity = undefined;
+  residentDataIdentity = "";residentPurpose=undefined;
+  view.endResidentPlayback();
+  const label = document.querySelector<HTMLElement>("#vfx-playback-state");
+  if (label) label.textContent = reason;
+}
+function hasTimeElevation() { return mode==="space-time" || (mode==="globe" && view.globeTime); }
+function residentWindow() {
+  if (!snapshot) return;
+  const filter=filterIntent.desired(snapshot.filter),[lo,hi]=snapshot.time_bounds;
+  view.residentPlaybackWindow(filter.start ?? lo,filter.end ?? hi,true);
+  if(view.residentPlaybackActive) {
+    renderedCount=view.renderPoints.length;
+    if(!hasTimeElevation() && !view.playback && !timeScrubbing) {
+      const coverage=[...view.points];
+      for(const layer of snapshot.gis_layers || []) if(layer.enabled && layer.bounds) {
+        const [west,south,east,north]=layer.bounds;
+        coverage.push({lat:south,lon:west} as any,{lat:north,lon:east} as any);
+      }
+      view.bounds=overrideBounds || bounds(coverage);
+    }
+  }
+}
+async function prepareInteraction(purpose:"playback"|"navigation") {
+  if(!snapshot || !smoothPlaybackEnabled || view.resourceLimits.name!=="full" || snapshot.selection_limited || !snapshot.count || view.residentPlaybackReason()) return false;
+  if(view.smoothPlaybackActive && !(purpose==="playback" && residentPurpose==="navigation" && mode==="space-time")) {
+    residentPurpose=purpose;return true;
+  }
+  if(interactionWork) { await interactionWork;return prepareInteraction(purpose); }
+  const identity=playbackIdentity(snapshot),stamp=currentDataIdentity,key=identity+stamp;
+  if(interactionBlocked===key) return false;
+  const generation=++interactionGeneration;
+  const accepted=()=>generation===interactionGeneration && smoothPlaybackEnabled && view.resourceLimits.name==="full" && identity===playbackIdentity(snapshot) && stamp===currentDataIdentity;
+  const work=(async()=>{
+    try {
+      if(view.canSmoothHeatmap()) view.beginSmoothHeatmap();
+      else {
+        let pool=preparedPool;
+        if(pool?.key!==key) {
+          const packed=await call("render_data",{playback_pool:true,max_points:100000,expected_revision:snapshot.revision});
+          if(!accepted()) return false;
+          const points=decode(packed);
+          if(points.some(p=>p.inferred||p.centroid)) throw Error("Standard renderer required");
+          preparedPool=pool={key,data:stamp,points,names:[...packed.entities]};
+        }
+        const fixedTime=purpose==="navigation" && mode==="space-time";
+        const bounds=fixedTime ? [view.lo,view.hi] as [number,number] : snapshot.time_bounds;
+        const points=fixedTime ? pool.points.filter(p=>p.time>=(snapshot.filter.start ?? -Infinity) && p.time<=(snapshot.filter.end ?? Infinity)) : pool.points;
+        if(!points.length || !await view.beginResidentPlayback(points,pool.names,bounds,accepted,snapshot.revision)) return false;
+      }
+      if(!accepted()) return false;
+      residentIdentity=identity;residentDataIdentity=stamp;residentPurpose=purpose;
+      residentTimeFilter=JSON.stringify([snapshot.filter.start,snapshot.filter.end]);
+      residentWindow();view.setSelection(snapshot.selected);
+      if(view.residentPlaybackActive) { renderLOD=false;view.renderLOD=false;renderedCount=view.renderPoints.length; }
+      $("#vfx-playback-state").textContent=purpose==="playback" ? "Smooth playback active" : "Smooth navigation and time controls";
+      return true;
+    } catch(error) {
+      if(accepted()) { interactionBlocked=key;console.info("Smooth interaction fallback:",error); }
+      return false;
+    }
+  })();
+  interactionWork=work;
+  try {return await work;} finally {
+    if(interactionWork===work) interactionWork=undefined;
+    // A terrain/view refinement can cancel a staged candidate after the scene
+    // queue is idle. Retry the current identity, never leave it stranded.
+    if (!view.smoothPlaybackActive && accepted() && interactionBlocked!==key) scheduleInteraction();
+  }
+}
+function scheduleInteraction() {
+  clearTimeout(interactionTimer);
+  if(!smoothPlaybackEnabled || view.resourceLimits.name!=="full" || view.smoothPlaybackActive || playbackPreparing || playTimer!==undefined || timeScrubbing || restoringScene) return;
+  interactionTimer=setTimeout(()=>{void sceneIdle().then(()=>{
+    if(!view.smoothPlaybackActive && !playbackPreparing && playTimer===undefined && !timeScrubbing && !restoringScene) return prepareInteraction("navigation");
+  }).catch(error=>console.info("Interaction preparation cancelled:",error));},180);
+}
 let playbackHistory: {
   workspace: string;
   width: number;
@@ -157,6 +261,7 @@ let playbackHistory: {
 let playbackPreserveFrame = false;
 let timeScrubbing = false;
 let timeScrubGeneration = 0;
+let timeScrubCommit = -Infinity;
 $("#app").innerHTML = `
 <header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Map servers">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open SI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button><button type="button" class="icon renderer-status" id="backend" aria-label="Reset map" title="Reset map"></button></div><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
 <main class="workspace"><aside class="sidebar"><section class="sidebar-pinned" id="search-section" aria-label="Search and selection"><input id="search" placeholder="Search events…" aria-label="Search events"><button id="reset-filters">Reset filters</button><div class="selection-tools" id="selection-tools"><div class="selection-summary"><strong id="pinned-selection-count" role="status">0 selected</strong><button id="clear" aria-label="Clear selection">Clear</button></div><div class="selection-actions"><button class="secondary" id="select-all">Select visible</button><label class="check-row"><input type="checkbox" id="selected-only" aria-label="Selected events only"> Show only</label></div></div></section><div class="sidebar-scroll"><details open class="sidebar-facet" id="entity-section"><summary><span>Entities</span><select id="entity-field" aria-label="Entity list field" title="Group the list by another column; source track identities stay unchanged"><option value="entity">Entity</option></select></summary><div class="facet-sort" role="group" aria-label="Sort entities"><button id="entity-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="entity-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div class="facet-controls"><input id="entity-search" placeholder="Find an entity…" aria-label="Find entity"><button id="all-entities">Enable all</button></div><div id="entities"></div><div class="facet-footer"><small id="entity-list-count"></small><button id="entity-show-all">Show all</button></div></details><details open class="sidebar-facet" id="category-section"><summary><span>Categories</span><select id="category-field" aria-label="Category list field" title="Group the list by another column"><option value="category">Category</option></select></summary><div class="facet-sort" role="group" aria-label="Sort categories"><button id="category-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="category-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div id="categories"></div><div class="facet-footer"><small id="category-list-count"></small><button id="category-show-all">Show all</button></div></details><div class="divider"></div><details id="time-section"><summary>Exact time range</summary><label class="field">Start / UTC<input id="exact-start" placeholder="Unbounded"></label><label class="field">End / UTC<input id="exact-end" placeholder="Unbounded"></label><button id="exact-apply" class="secondary">Apply range</button></details><details id="rules-section"><summary>Attribute rules</summary><label class="field">Field<input id="rule-field" placeholder="value, confidence, category…"></label><select id="rule-op"><option>Contains</option><option>Equals</option><option>NotEquals</option><option>Greater</option><option>Less</option><option>IsEmpty</option></select><label class="field">Value<input id="rule-value"></label><button id="add-rule" class="secondary">Add AND rule</button><div id="rules"></div></details><details id="bounds-section"><summary>Geographic bounds</summary><label class="field">West, South, East, North<input id="bounds" placeholder="-80,43,-79,44"></label><button id="apply-bounds" class="secondary">Apply region</button></details><section id="layers-section"><div class="section-head"><span class="caps">Layers</span></div><div id="layer-list"></div><div class="source-foot">WGS84 · UTC</div></section></div></aside>
@@ -404,21 +509,29 @@ const timeRange = new TimeRange(
     const cursor = $("#histogram").querySelector<HTMLElement>(".cursor");
     if (cursor) cursor.style.top = `${focus * 100}%`;
     const generation = timeScrubGeneration;
-    const update = timeWindow(start, end, 0, true);
+    if(mode!=="space-time") view.residentPlaybackWindow(lo+(hi-lo)*start,lo+(hi-lo)*end);
+    const now=performance.now();
+    const update=final || now-timeScrubCommit>=250
+      ? (timeScrubCommit=now,timeWindow(start,end,0,true)) : Promise.resolve();
     void (
       final
-        ? update.finally(() => {
+        ? update.finally(async () => {
             if (generation !== timeScrubGeneration) return;
             timeScrubbing = false;
             view.setPlayback(playTimer !== undefined);
+            if(hasTimeElevation() && playTimer===undefined) await refresh(true,false,true);
             view.onSceneChange();
+            scheduleInteraction();
           })
         : update
     ).catch((e) => toast(String(e), true));
   },
   () => {
     timeScrubGeneration++;
+    timeScrubCommit=-Infinity;
     timeScrubbing = true;
+    interactionGeneration++;
+    if(mode==="space-time") endSmoothPlayback();
     if (playTimer !== undefined) $("#play").click();
     view.setPlayback(true);
   },
@@ -596,17 +709,18 @@ function snapshotApplication(model: SnapshotModel, data: SnapshotData | null, re
   const [lo, hi] = data?.timeBounds || [view.lo, view.hi];
   const epoch = state.time_bounds[0] + (state.time_bounds[1] - state.time_bounds[0]) * focus;
   return Object.freeze({ data, measurement: state.scene.measurement ? Object.freeze({ ...state.scene.measurement }) : null,
-    display: Object.freeze({ ...displayOptions }), displayPacket: data ? model.display || null : view.displayLayer.packet || null,
+    display: Object.freeze({ ...displayOptions }), displayPacket: model.display !== undefined ? model.display || null : data ? null : view.displayLayer.packet || null,
     globeTime: !!state.scene.globe_time, globeAltitude: !!state.scene.globe_altitude, globeTimeScale: state.scene.globe_time_scale ?? view.globeTimeScale, timeHeight: view.timeHeight,
-    theme: view.theme, selection: Object.freeze([...(model.selected as string[])]), rebuild,
+    theme: view.theme, selection: Object.freeze([...(view.residentPlaybackActive && !state.selection_limited ? state.selected : model.selected as string[])]), rebuild,
     focus: hi > lo ? (epoch - lo) / (hi - lo) : 0, awaitEffects: !view.playback });
 }
-function refresh(render = true, resources = true): Promise<void> {
-  const work = runRefresh(render, resources);
+function refresh(render = true, resources = true, canonical = false): Promise<void> {
+  const work = runRefresh(render, resources,canonical);
   refreshWork = Promise.all([refreshWork, work.catch(() => {})]).then(() => {});
   return work;
 }
-async function runRefresh(render = true, resources = true) {
+async function runRefresh(render = true, resources = true,canonical=false) {
+  if(canonical) interactionGeneration++;
   viewportDataGeneration++;
   tables.tableSerial++;
   const generation = ++serial;
@@ -625,16 +739,17 @@ async function runRefresh(render = true, resources = true) {
   }
   const requestedTablePage = tables.page;
   const requestedTableSerial = tables.tableSerial;
-  const includeRender =
+  const includeRender = canonical || (!view.smoothPlaybackActive && (
     render ||
     !!snapshot?.filter.selected_only ||
     renderLOD ||
     geometryLOD ||
-    view.displayLayer.active;
+    view.displayLayer.active));
   const model = await view.requestSnapshot({
     version: 1,
     generation: String(generation),
     include_render: includeRender,
+    include_display: view.smoothHeatmapActive || view.residentEffectsActive,
     resource_max_points: view.resourceLimits.maxPoints,
     resource_max_vertices: view.resourceLimits.arcVertices,
     display_level: displayLevel(),
@@ -642,7 +757,7 @@ async function runRefresh(render = true, resources = true) {
     include_statistics: false,
     // Render snapshots already include selection membership for every returned
     // point/shape. Send retained IDs only when reusing the current render data.
-    selection_ids: includeRender
+    selection_ids: includeRender || view.smoothPlaybackActive
       ? []
       : [
           ...view.points.map((p) => p.id),
@@ -667,6 +782,12 @@ async function runRefresh(render = true, resources = true) {
   const decoded = model.render ? decode(model.render) : null;
   const s = model.snapshot as Snapshot;
   if (generation !== serial) return;
+  const stamp=JSON.stringify([model.stamp?.store_id,model.stamp?.data_revision]);
+  if (view.smoothPlaybackActive && !canonical && (residentIdentity !== playbackIdentity(s) || residentDataIdentity!==stamp || s.selection_limited || (residentPurpose==="navigation" && (mode==="space-time" || (mode==="globe" && view.globeTime && !timeScrubbing && !view.playback)) && residentTimeFilter!==JSON.stringify([s.filter.start,s.filter.end])) || (view.smoothHeatmapActive && s.selected_count>0))) {
+    return runRefresh(true, resources,true);
+  }
+  currentDataIdentity=stamp;
+  if(preparedPool && preparedPool.data!==stamp) preparedPool=undefined;
   snapshot = { ...s };
   welcome.update(
     s.workspace_id,
@@ -792,6 +913,8 @@ async function runRefresh(render = true, resources = true) {
       geometries: Object.freeze([...geometries.features]) });
   }
   const publication = await view.publishSnapshot(model, snapshotApplication(model, data, colorChanged || dateDisplayChanged), () => generation === serial);
+  if (canonical && publication.kind === "accepted") endSmoothPlayback();
+  if(playTimer===undefined) residentWindow();
   if (generation !== serial) return;
   if (publication.kind === "stale") {
     if (view.nativeSnapshots) queueRepresentation("metadata-reconcile", true);
@@ -828,6 +951,7 @@ async function runRefresh(render = true, resources = true) {
   status(
     `${s.visible.toLocaleString()} matching events · ${view.displayLayer.active ? `${view.displayLayer.packet!.bins.length} display cells + selected evidence` : renderedCount.toLocaleString() + " markers"} · budget ${renderBudget.toLocaleString()}${view.geometryLimited ? " · geometry budget reached; refine filters" : ""}${renderLOD ? ` · ${renderedCount.toLocaleString()} representative markers · backend queries and Select visible remain exact` : view.trailsLimited ? " · stem/track geometry limited; refine filters" : ""}`,
   );
+  scheduleInteraction();
 }
 function facetField(kind: "entity" | "category") {
   return snapshot.filter.facet_fields?.[kind] || kind;
@@ -1275,7 +1399,7 @@ const filterIntent = new FilterIntent<Filter>(
       tableSelection.activeId = null;
       tables.resetTableScroll();
     }
-    await refresh();
+    await refresh(!view.smoothPlaybackActive);
   },
 );
 function filter(
@@ -2040,12 +2164,19 @@ async function rebuildTerrain(
   Object.freeze(t.bounds);
   Object.freeze(t.elevations);
   Object.freeze(t);
+  const previousTerrainProvider = view.resources.status.terrainProviderChanges;
   await view.setTerrain(
     t,
     () => generation === terrainLoadGeneration,
     terrainSource(),
   );
   if (generation !== terrainLoadGeneration) return;
+  if (view.resources.status.terrainProviderChanges !== previousTerrainProvider) {
+    // A one-off failure against the previous/missing provider must not disable
+    // preparation for an otherwise unchanged study after terrain becomes ready.
+    interactionBlocked = "";
+    scheduleInteraction();
+  }
   await loadRasters(region, superseded);
 }
 function displayLevel() {
@@ -2083,6 +2214,14 @@ async function refreshViewportData(bounds?: Bounds) {
   if (outcome.kind === "failed") throw outcome.error;
 }
 async function runViewportData(bounds: Bounds | null, force = false, superseded = () => false, lane: "viewport" | "metadata-reconcile" = "viewport") {
+  if (view.smoothPlaybackActive) {
+    if(view.resourceLimits.name!=="full") {
+      preparedPool=undefined;
+      await refresh(true,false,true);return;
+    }
+    if(view.smoothHeatmapActive || view.residentEffectsActive) await refresh(false,false);
+    return;
+  }
   if (bounds && displayOptions.mode === "heatmap" && displayOptions.spatial_culling) {
     const z = view.mapZoom(),
       scale =
@@ -2155,6 +2294,7 @@ async function runViewportData(bounds: Bounds | null, force = false, superseded 
         ? `${model.display.count.toLocaleString()} located records · ${model.display.bins.length.toLocaleString()} display cells · exact source records retained`
         : `${snapshot.visible.toLocaleString()} visible events · ${renderedCount.toLocaleString()} viewport markers`,
     );
+    scheduleInteraction();
   } catch (e) {
     if (current()) throw e;
   }
@@ -2542,6 +2682,10 @@ function timeWindow(
 ): Promise<void> {
   if (!playback) playbackHistory = undefined;
   const [lo, hi] = snapshot.time_bounds;
+  if(!playback && mode==="space-time" && residentPurpose==="navigation") {
+    interactionGeneration++;endSmoothPlayback();
+  }
+  if(mode!=="space-time" || playback) view.residentPlaybackWindow(lo+(hi-lo)*start,lo+(hi-lo)*end);
   return filter(
     {
       start: start === 0 ? null : lo + (hi - lo) * start,
@@ -3145,6 +3289,7 @@ async function applyRestoredScene(scene: SceneState) {
     void loadRasters().catch((e) => toast(String(e), true));
   else if (lastRaster) await view.setRasters(lastRaster);
   void refreshViewportData(view.visibleDataBounds() || [...view.bounds]);
+  scheduleInteraction();
 }
 function guardUnsaved(action: string): Promise<boolean> {
   return workspace.guard(action);
@@ -3527,6 +3672,26 @@ $("#histogram").addEventListener("pointerdown", async (e) => {
 let playbackUpdating = false;
 let playbackWindow: [number, number] | null = null;
 let playbackClock: PlaybackClock | undefined;
+const vfxControls = document.createElement("div");
+vfxControls.className = "smooth-playback-controls";
+vfxControls.innerHTML = `<strong>Graphics</strong><label title="Prepare supported scenes for smoother navigation, playback, and Map/Globe time scrubbing."><input type="checkbox" id="vfx-smooth-playback"> Smooth graphics</label><span id="vfx-playback-state" role="status">Ready</span>`;
+$(".statusbar").before(vfxControls);
+($("#vfx-smooth-playback") as HTMLInputElement).checked = smoothPlaybackEnabled;
+$("#vfx-smooth-playback").addEventListener("change", async () => {
+  smoothPlaybackEnabled = check("#vfx-smooth-playback");
+  try { localStorage.setItem("chronoscope-smooth-playback", String(smoothPlaybackEnabled)); }
+  catch { /* Keep the current choice for this session when storage is unavailable. */ }
+  playbackPreparation++;
+  interactionGeneration++;
+  if (playbackPreparing) {
+    playbackPreparing = false;
+    $("#play").innerHTML = icon("play") + " Play";
+  }
+  if (view.smoothPlaybackActive) {
+    await refresh(true,true,true);
+    if(!smoothPlaybackEnabled) $("#vfx-playback-state").textContent="Standard playback";
+  } else if(smoothPlaybackEnabled) scheduleInteraction();
+});
 const playbackSpeed = new PlaybackSpeed($("#play"), (speed) => {
   playbackClock?.setSpeed(speed);
 });
@@ -3551,23 +3716,50 @@ $("#playback-fade").addEventListener("input", () => {
   view.onSceneChange();
 });
 async function togglePlayback() {
+  if (playbackPreparing) {
+    playbackPreparation++;
+    interactionGeneration++;
+    playbackPreparing = false;
+    $("#play").innerHTML = icon("play") + " Play";
+    return;
+  }
   if (playTimer !== undefined) {
     cancelAnimationFrame(playTimer);
     playTimer = undefined;
     playbackClock = undefined;
     view.setPlayback(false);
     $("#play").innerHTML = icon("play") + " Play";
-    // A full-range sweep only moves the cursor; pausing it must retain the
-    // same no-filter fast path as its animation frames.
-    if (playbackWindow && (playbackWindow[0] !== 0 || playbackWindow[1] !== 1))
-      await timeWindow(...playbackWindow, 0, false, true)
-        .catch((error) => toast(String(error), true))
-        .finally(() => {
-          playbackPreserveFrame = playTimer !== undefined;
-        });
-    else playbackPreserveFrame = false;
+    if(playbackWindow && (playbackWindow[0]!==0 || playbackWindow[1]!==1)) await timeWindow(...playbackWindow,0,false,true);
+    await filterIntent.flush();
+    await refresh(hasTimeElevation(),false,hasTimeElevation());
+    playbackPreserveFrame=false;
+    if(view.smoothPlaybackActive) residentPurpose="navigation";
+    scheduleInteraction();
     return;
   }
+  const preparation = ++playbackPreparation;
+  playbackPreparing = true;
+  $("#play").innerHTML = icon("pause") + " Preparing…";
+  try {
+    await filterIntent.flush();
+    // Fence settings and camera writes before requesting a revision-bound pool.
+    await sceneIdle();
+    await refresh(false, false);
+  } catch (error) {
+    if (preparation === playbackPreparation) {
+      playbackPreparing = false;
+      $("#play").innerHTML = icon("play") + " Play";
+    }
+    throw error;
+  }
+  if (preparation !== playbackPreparation) return;
+  if (smoothPlaybackEnabled) {
+    const begun=await prepareInteraction("playback");
+    if(preparation!==playbackPreparation) return;
+    if(!begun) $("#vfx-playback-state").textContent=view.residentPlaybackReason() || "Standard playback";
+  } else $("#vfx-playback-state").textContent="Standard playback";
+  if (preparation !== playbackPreparation) return;
+  playbackPreparing = false;
   const [lo, hi] = snapshot.time_bounds;
   const span = Math.max(1e-9, hi - lo);
   const windowStart = Math.max(
@@ -3602,6 +3794,7 @@ async function togglePlayback() {
   $("#play").innerHTML = icon("pause") + " Pause";
   const frame = (now: number) => {
     if (playTimer === undefined) return;
+    if (residentIdentity && !view.smoothPlaybackActive) endSmoothPlayback("Standard playback · graphics changed");
     const phase = playbackClock!.seconds(now) / span;
     const movingStart = travel > 1e-9 ? (startAt + phase) % travel : 0;
     const movingEnd = travel > 1e-9 ? movingStart + width
@@ -3627,12 +3820,13 @@ async function togglePlayback() {
     const current = filterIntent.desired(snapshot.filter);
     const nextStart = start === 0 ? null : lo + (hi - lo) * start;
     const nextEnd = end === 1 ? null : lo + (hi - lo) * end;
+    view.residentPlaybackWindow(lo + span * start, lo + span * end);
     playbackHistory = { workspace: snapshot.workspace_id, width, last: [nextStart, nextEnd], bounds: [lo, hi] };
     // One data refresh at a time. Never accumulate work behind the render clock.
     if (
       !playbackUpdating &&
       !busy &&
-      now - lastUpdate >= 50 &&
+      now - lastUpdate >= (view.smoothPlaybackActive ? 250 : 50) &&
       (current.start !== nextStart || current.end !== nextEnd)
     ) {
       lastUpdate = now;

@@ -1,0 +1,320 @@
+{
+  "integration_source": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+  "previous_next_main": "1c05df91b2e609f5ad9ae23aef033496cadef125",
+  "merged_feature_head": "d6f6360921a05ea52d72582c02e75bc34971aac7",
+  "validated_utc": "2026-10-30T13:22:18.742057+00:00",
+  "build": {
+    "source_commit": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+    "binary_sha256": "9b4e5d6a859d4530e71c51fad61f31b0603fad70fe9625fd20f1e7f7ca132130",
+    "embedded_main": "assets/main-DKtsRdh6.js",
+    "identifier": "org.chronoscope.desktop",
+    "product_name": "Chronoscope",
+    "built_utc": "2026-10-30T13:20:18.254831+00:00"
+  },
+  "platform": "Windows x64 / native Tauri-WebView2 plus offline Chromium UI checks",
+  "hosted_workflows_started": false,
+  "installed_user_apps_replaced": false,
+  "public_main_before": "0e8af62ce8511ef81b4a6638eaa450e64102a132",
+  "checks": {
+    "next-vfx-contracts": {
+      "name": "next-vfx-contracts",
+      "command": [
+        "node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "source_revision": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+      "started_utc": "2026-10-30T13:16:06.562783+00:00",
+      "finished_utc": "2026-10-30T13:16:06.960554+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.391
+    },
+    "next-vfx-coverage": {
+      "name": "next-vfx-coverage",
+      "command": [
+        "node",
+        "frontend/scripts/vfx-coverage-qa.mjs"
+      ],
+      "source_revision": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+      "started_utc": "2026-10-30T13:07:09.934968+00:00",
+      "finished_utc": "2026-10-30T13:08:21.501701+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 71.563
+    },
+    "next-vfx-frontend-build": {
+      "name": "next-vfx-frontend-build",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "build"
+      ],
+      "source_revision": "4cbf83619bb59a5bb85abc53966738f0d28e2e09",
+      "started_utc": "2026-10-30T13:04:28.112619+00:00",
+      "finished_utc": "2026-10-30T13:05:07.049611+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 38.938
+    },
+    "next-vfx-frontend-tests": {
+      "name": "next-vfx-frontend-tests",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "test"
+      ],
+      "source_revision": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+      "started_utc": "2026-10-30T13:06:04.139149+00:00",
+      "finished_utc": "2026-10-30T13:06:33.695607+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 29.547
+    },
+    "next-vfx-full-app": {
+      "name": "next-vfx-full-app",
+      "command": [
+        "node",
+        "frontend/scripts/vfx-full-app-qa.mjs"
+      ],
+      "source_revision": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+      "started_utc": "2026-10-30T13:06:14.413337+00:00",
+      "finished_utc": "2026-10-30T13:06:50.303694+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 35.891
+    },
+    "next-vfx-notices": {
+      "name": "next-vfx-notices",
+      "command": [
+        "python",
+        "scripts/package_notices.py",
+        "--check",
+        "frontend/dist/third-party"
+      ],
+      "source_revision": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+      "started_utc": "2026-10-30T13:16:07.126868+00:00",
+      "finished_utc": "2026-10-30T13:16:08.340792+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 1.218
+    },
+    "next-vfx-playback-transitions": {
+      "name": "next-vfx-playback-transitions",
+      "command": [
+        "node",
+        "frontend/scripts/playback-transitions-qa.mjs"
+      ],
+      "source_revision": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+      "started_utc": "2026-10-30T13:10:42.226755+00:00",
+      "finished_utc": "2026-10-30T13:10:51.890599+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 9.672
+    },
+    "next-vfx-rust-regressions": {
+      "name": "next-vfx-rust-regressions",
+      "command": [
+        "cargo",
+        "test",
+        "--lib",
+        "--test",
+        "playback_pool",
+        "--test",
+        "subsecond_precision",
+        "--test",
+        "display_snapshot",
+        "--test",
+        "balanced_terrain"
+      ],
+      "source_revision": "4cbf83619bb59a5bb85abc53966738f0d28e2e09",
+      "started_utc": "2026-10-30T13:04:38.331862+00:00",
+      "finished_utc": "2026-10-30T13:08:15.958213+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 217.625
+    },
+    "next-vfx-table-playback": {
+      "name": "next-vfx-table-playback",
+      "command": [
+        "node",
+        "frontend/scripts/table-playback-qa.mjs"
+      ],
+      "source_revision": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+      "started_utc": "2026-10-30T13:12:52.001014+00:00",
+      "finished_utc": "2026-10-30T13:13:27.260119+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 35.265
+    },
+    "next-vfx-windows-release": {
+      "name": "next-vfx-windows-release",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "tauri",
+        "--",
+        "build",
+        "--no-bundle",
+        "--",
+        "--locked"
+      ],
+      "source_revision": "67d3c61c69a243b2f0765f85418b918dd7a4aa8a",
+      "started_utc": "2026-10-30T13:09:32.207093+00:00",
+      "finished_utc": "2026-10-30T13:20:15.470244+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 643.265
+    }
+  },
+  "frontend_unit_checks": 171,
+  "rust_checks": 78,
+  "full_app": {
+    "passed": true,
+    "checks": [
+      "Normal Chronoscope identity and Smooth playback preference survive reload",
+      "Full application imports 100k real records and retains ordinary workspace controls",
+      "Play and Smooth playback controls cancel pending preparation without late activation",
+      "GPU clock stays active while the authoritative engine publishes changing time filters",
+      "GPU picking resolves an actual visible event ID",
+      "Selecting during accelerated playback returns coherently to the full renderer",
+      "Pause commits the displayed window and restores exact canonical membership",
+      "Sidebar changes invalidate the prepared pool without losing ordinary search",
+      "Map and Time use the integrated GPU playback path without renderer errors",
+      "Experimental workspace saves through the normal Chronoscope engine"
+    ],
+    "publicRequests": 0,
+    "errors": []
+  },
+  "extended_coverage": {
+    "passed": true,
+    "checks": [
+      "flights-altitude: prepared playback, changing filters, navigation and exact pause membership",
+      "orbits-altitude: prepared playback, changing filters, navigation and exact pause membership",
+      "orbits-map: prepared playback, changing filters, navigation and exact pause membership",
+      "terrain: prepared playback, changing filters, navigation and exact pause membership",
+      "terrain-time-stems: prepared playback, changing filters, navigation and exact pause membership",
+      "Batched tracks clip to the exact GPU time window",
+      "Direct-canvas heatmap retains standard rendered pixels",
+      "Heatmap reuses its worker during playback and retains exact weighted cells on pause",
+      "Measurement scenes retain the full standard renderer",
+      "Direct-canvas heatmap also drapes over Balanced terrain in Globe"
+    ],
+    "publicRequests": 0,
+    "errors": []
+  },
+  "table_playback": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "Docked Event table",
+        "identity": {
+          "row": true,
+          "head": true,
+          "close": true,
+          "col": true,
+          "hovered": true
+        },
+        "closed": true,
+        "playing": true
+      },
+      {
+        "name": "Detached Event table",
+        "identity": {
+          "row": true,
+          "head": true,
+          "close": true,
+          "col": true,
+          "hovered": true
+        },
+        "closed": true,
+        "playing": true
+      },
+      {
+        "name": "Docked GIS table",
+        "identity": {
+          "row": true,
+          "head": true,
+          "close": true,
+          "col": true,
+          "hovered": true
+        },
+        "closed": true,
+        "playing": true
+      },
+      {
+        "name": "Detached GIS table",
+        "identity": {
+          "row": true,
+          "head": true,
+          "close": true,
+          "col": true,
+          "hovered": true
+        },
+        "closed": true,
+        "playing": true
+      },
+      {
+        "name": "Filtered table continues to update during playback and matches exact Rust rows after pause",
+        "rows": 100
+      }
+    ],
+    "errors": []
+  },
+  "native": {
+    "passed": true,
+    "checks": [
+      "Release Windows app launches and exposes its attached native engine",
+      "Windows package discovers the bundled Balanced terrain",
+      "Bundled wildlife demo loads 3439 events and supports exact queries and selection",
+      "Native map view renders events and produces a real WebView2 capture without renderer errors",
+      "Native globe view renders events and produces a real WebView2 capture without renderer errors",
+      "Native space-time view renders events and produces a real WebView2 capture without renderer errors",
+      "Filter/reset and portable save/reopen preserve all events and the saved selection",
+      "Native playback configure, seek, step, play and pause work through attached MCP",
+      "Native flights-philippines-week-2026: 175 tracks, 11018 displayed altitude events, no renderer errors",
+      "Native starlink-128-predicted-orbits-2024: 128 tracks, 11648 displayed altitude events, no renderer errors",
+      "Rebuilt installed native engine imports all 100,000 original events",
+      "Installed native app renders the compact time window with the updated rail",
+      "Full native space-time: 100k imported events use GPU playback and pause cleanly",
+      "Full native map: 100k imported events use GPU playback and pause cleanly",
+      "Full native globe: 100k imported events use GPU playback and pause cleanly"
+    ],
+    "binary_sha256": "9b4e5d6a859d4530e71c51fad61f31b0603fad70fe9625fd20f1e7f7ca132130",
+    "import_100k_ms": 4844.000000004598,
+    "playback": [
+      {
+        "mode": "space-time",
+        "render_fps": 60.004990019990146
+      },
+      {
+        "mode": "map",
+        "render_fps": 59.92092908323752
+      },
+      {
+        "mode": "globe",
+        "render_fps": 60.04447739067961
+      }
+    ]
+  },
+  "limits": [
+    "GPU tracks/fades and stable full-study Time axis retain the documented experimental differences.",
+    "Short functional/native checks do not establish long-session or frame-by-frame flicker-free behavior.",
+    "No macOS or Linux native GUI validation was performed in this Windows integration."
+  ]
+}

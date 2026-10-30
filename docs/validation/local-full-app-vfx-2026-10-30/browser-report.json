@@ -1,0 +1,70 @@
+{
+  "passed": true,
+  "platform": "Windows 11 x64",
+  "runtime": "Hardware Chrome / ANGLE D3D11 / NVIDIA Quadro RTX 3000",
+  "scope": "Full Chronoscope application, 100k synthetic CSV records imported through the engine, normal Play and engine filters",
+  "checks": [
+    "Full application imports 100k real records and retains ordinary workspace controls",
+    "GPU clock stays active while the authoritative engine publishes changing time filters",
+    "GPU picking resolves an actual visible event ID",
+    "Selecting during accelerated playback returns coherently to the full renderer",
+    "Pause commits the displayed window and restores exact canonical membership",
+    "Sidebar changes invalidate the prepared pool without losing ordinary search",
+    "Map and Time use the integrated GPU playback path without renderer errors",
+    "Experimental workspace saves through the normal Chronoscope engine",
+    "Full-app hardware comparison shows a significant playback improvement without renderer errors"
+  ],
+  "average_fps": {
+    "standard": 41.768527965700876,
+    "smooth": 60.04156203849295
+  },
+  "samples": [
+    {
+      "smooth": false,
+      "elapsedMs": 10002.19999999553,
+      "frames": 423,
+      "fps": 42.32031375061921,
+      "p95": 150.89999999850988,
+      "p99": 176.60000000149012,
+      "worst": 200.60000000149012,
+      "over50ms": 22
+    },
+    {
+      "smooth": true,
+      "elapsedMs": 10004.20000000298,
+      "frames": 600,
+      "fps": 60.04323112638416,
+      "p95": 18.200000002980232,
+      "p99": 21.600000001490116,
+      "worst": 22.599999994039536,
+      "over50ms": 0
+    },
+    {
+      "smooth": true,
+      "elapsedMs": 10003.79999999702,
+      "frames": 599,
+      "fps": 60.03989295060174,
+      "p95": 18.69999999552965,
+      "p99": 22.899999998509884,
+      "worst": 27.299999997019768,
+      "over50ms": 0
+    },
+    {
+      "smooth": false,
+      "elapsedMs": 10027.30000000447,
+      "frames": 413,
+      "fps": 41.21674218078254,
+      "p95": 153.59999999403954,
+      "p99": 169.19999999552965,
+      "worst": 181.5,
+      "over50ms": 24
+    }
+  ],
+  "method": "Normal full-app Play, live engine filters and sidebar, same imported 100k regional point records and 20% moving window. Two ten-second samples per renderer in standard/GPU/GPU/standard order. Real quality governor enabled.",
+  "limitations": [
+    "Render-loop timings do not measure physical presentation or GPU execution latency.",
+    "GPU tracks use thin straight segments and time clipping; departure afterimages differ from the canonical renderer.",
+    "Acceleration is restricted to regional instantaneous located point datasets <=100k events and <=2048 entities; unsupported scenes retain the full standard renderer."
+  ],
+  "synthetic_fixture": true
+}
