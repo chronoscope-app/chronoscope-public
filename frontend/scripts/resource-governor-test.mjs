@@ -59,10 +59,43 @@ test("Intel UHD starts balanced with ample RAM; expensive geometry work also wor
   const g = new ResourceGovernor(); g.setGraphicsRenderer("Mesa Intel(R) UHD Graphics 620");
   g.update(ram(16, 10), null, 0); assert.equal(g.level, 1);
   assert.equal(g.reason, "integrated-or-software-graphics");
-  g.update(ram(16, 10), null, 1000, 300); assert.equal(g.level, 2);
+  g.update(ram(16, 10), null, 1000, 300); assert.equal(g.level, 1);
+  g.update(ram(16, 10), null, 6000, 300); assert.equal(g.level, 1);
+  g.update(ram(16, 10), null, 11000, 300); assert.equal(g.level, 2);
   assert.equal(g.reason, "expensive-geometry-work");
   const masked = new ResourceGovernor(); masked.setGraphicsRenderer("Apple GPU");
-  masked.update(ram(16, 10), null, 0, 1000); assert.equal(masked.level, 1);
+  masked.update(ram(16, 10), null, 0, 1000); assert.equal(masked.level, 0);
   const arc = new ResourceGovernor(); arc.setGraphicsRenderer("Intel Arc A770");
   arc.update(ram(16, 10), null, 0); assert.equal(arc.level, 0);
+});
+
+test("transient geometry spikes do not ratchet quality down and healthy gaps reset pressure", () => {
+  const g = new ResourceGovernor(), healthy = ram(16, 8);
+  for (const [now, work] of [[0, 400], [5000, 400], [10000, 0], [15000, 400], [20000, 400]])
+    g.update(healthy, 5, now, work, 30);
+  assert.equal(g.level, 0);
+  g.update(healthy, 5, 25000, 400, 30);
+  assert.equal(g.level, 1);
+  assert.equal(g.reason, "expensive-geometry-work");
+});
+
+test("healthy playback recovers at each governor cap without requiring idle or exceeding the cap", () => {
+  const g = new ResourceGovernor(), healthy = ram(16, 8);
+  g.update(ram(16, 1.2), null, 0);
+  assert.equal(g.level, 2);
+  for (let now = 5000; now <= 95000; now += 5000) {
+    const cap = g.limits.maxFps ?? 60;
+    g.update(healthy, 5, now, 0, activeCadenceCost(1000, cap, cap));
+  }
+  assert.equal(g.level, 0);
+});
+
+test("missed cadence still reduces quality and sustained slow playback cannot recover", () => {
+  const g = new ResourceGovernor(), healthy = ram(16, 8);
+  for (const now of [0, 5000, 10000]) g.update(healthy, 5, now, 0, 60);
+  assert.equal(g.level, 1);
+  for (let now = 15000; now < 120000; now += 5000) g.update(healthy, 5, now, 0, 40);
+  assert.equal(g.level, 1);
+  g.update(ram(16, .2), 5, 120000, 0, 30);
+  assert.equal(g.level, 3);
 });

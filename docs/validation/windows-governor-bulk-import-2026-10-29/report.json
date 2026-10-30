@@ -1,0 +1,154 @@
+{
+  "passed": true,
+  "source_commit": "43a1743afbb8dd5d47877fc4c37fe2bf8a735183",
+  "platform": "Windows 11 x64",
+  "rust": {
+    "passed": 477,
+    "failed": 0,
+    "ignored": 1
+  },
+  "frontend": {
+    "unit_tests_passed": 164,
+    "unit_tests_failed": 0,
+    "typescript_and_production_build": true,
+    "import_grid_checks_passed": 8
+  },
+  "governor": {
+    "unit_scenarios": 10,
+    "real_clock_browser_pressure_and_recovery": true,
+    "browser_method": "Windows hardware Chrome/ANGLE D3D11, injected memory samples, real animation/resource-check timers; continuous playback recovers critical -> reduced -> balanced -> full.",
+    "changes": [
+      "Separate active cadence pressure from CPU submission headroom so target cadence can recover.",
+      "Require three consecutive expensive-geometry checks; healthy samples reset the streak.",
+      "Retain emergency memory/swap protection, capacity floors and existing point/pixel/FPS limits."
+    ]
+  },
+  "bulk_import": {
+    "scope": "Fresh, non-aggregated staging stores; existing nonempty append and aggregation paths retain general insertion.",
+    "changes": [
+      "Bounded multi-row insertion preserving event IDs, original attributes and validation.",
+      "Retain primary/unique constraints, build secondary indexes after loading.",
+      "Spool search/spatial rows in disk-backed TEMP tables and populate their indexes in complete passes.",
+      "Bounded 128 MiB main / 16 MiB TEMP cache targets during import; restore normal cache targets before publication."
+    ],
+    "correctness": [
+      "Full Rust matrix including import review, append, save/open and transactions.",
+      "2,205-event exact parity against general insertion: event/attribute rows, search text/results, spatial rows/results, canonical indexes, u64 IDs, fractions, missing locations and polygon centroids.",
+      "Duplicate failure and cancelled index construction roll back rows and schema; retry succeeds."
+    ],
+    "data_loss": false,
+    "schema_changed": false
+  },
+  "comparison": {
+    "completed": true,
+    "fixture_sha256": "8b177a0671352dd1419f43d9137e24b54091a91b79ecfd35d0f941c4ba64acb0",
+    "cases": [
+      {
+        "label": "before",
+        "repeat": 1,
+        "binary_sha256": "be51d6b5496f556b31c76726d9989aa4c4525ff6e95e8b1e73dc530a51f28d8b",
+        "preview_ms": 140.58750000003783,
+        "commit_ms": 6957.559500000571,
+        "total_ms": 7098.147000000608,
+        "accepted": 100000,
+        "import_peak_private_resident_bytes": 51171328
+      },
+      {
+        "label": "after",
+        "repeat": 1,
+        "binary_sha256": "198caf8d91d31a52b85c00614e42c7fcb669ee8fe25a3bce89d128b391194652",
+        "preview_ms": 363.9165000004141,
+        "commit_ms": 4346.747000001415,
+        "total_ms": 4710.663500001829,
+        "accepted": 100000,
+        "import_peak_private_resident_bytes": 195141632
+      },
+      {
+        "label": "after",
+        "repeat": 2,
+        "binary_sha256": "198caf8d91d31a52b85c00614e42c7fcb669ee8fe25a3bce89d128b391194652",
+        "preview_ms": 361.3287999996828,
+        "commit_ms": 4393.298000000868,
+        "total_ms": 4754.626800000551,
+        "accepted": 100000,
+        "import_peak_private_resident_bytes": 192450560
+      },
+      {
+        "label": "before",
+        "repeat": 2,
+        "binary_sha256": "be51d6b5496f556b31c76726d9989aa4c4525ff6e95e8b1e73dc530a51f28d8b",
+        "preview_ms": 135.53929999943648,
+        "commit_ms": 7426.4948,
+        "total_ms": 7562.034099999437,
+        "accepted": 100000,
+        "import_peak_private_resident_bytes": 51200000
+      },
+      {
+        "label": "before",
+        "repeat": 3,
+        "binary_sha256": "be51d6b5496f556b31c76726d9989aa4c4525ff6e95e8b1e73dc530a51f28d8b",
+        "preview_ms": 176.9285000009404,
+        "commit_ms": 7251.73839999843,
+        "total_ms": 7428.666899999371,
+        "accepted": 100000,
+        "import_peak_private_resident_bytes": 51687424
+      },
+      {
+        "label": "after",
+        "repeat": 3,
+        "binary_sha256": "198caf8d91d31a52b85c00614e42c7fcb669ee8fe25a3bce89d128b391194652",
+        "preview_ms": 355.3100999997696,
+        "commit_ms": 4676.402000000962,
+        "total_ms": 5031.712100000732,
+        "accepted": 100000,
+        "import_peak_private_resident_bytes": 195297280
+      }
+    ],
+    "method": "Sequential fresh optimized Windows CLI sessions; same warm synthetic CSV; baseline and modified binaries alternate. 100k: three repetitions each; 1m: one each. Complete command-response timing; import private-resident sampling at 200 ms.",
+    "median_total_ms": {
+      "before": 7428.666899999371,
+      "after": 4754.626800000551
+    },
+    "speedup": 1.562407989623604
+  },
+  "million_comparison": {
+    "completed": true,
+    "fixture_sha256": "bf0b02207f1dd4bda68ac23947041c95f4244fa78101d6dda17ead188c4f6796",
+    "cases": [
+      {
+        "label": "before",
+        "repeat": 1,
+        "binary_sha256": "be51d6b5496f556b31c76726d9989aa4c4525ff6e95e8b1e73dc530a51f28d8b",
+        "preview_ms": 732.905099999698,
+        "commit_ms": 81821.10449999891,
+        "total_ms": 82554.00959999861,
+        "accepted": 1000000,
+        "import_peak_private_resident_bytes": 52998144
+      },
+      {
+        "label": "after",
+        "repeat": 1,
+        "binary_sha256": "198caf8d91d31a52b85c00614e42c7fcb669ee8fe25a3bce89d128b391194652",
+        "preview_ms": 944.6336000000883,
+        "commit_ms": 58814.11900000057,
+        "total_ms": 59758.75260000066,
+        "accepted": 1000000,
+        "import_peak_private_resident_bytes": 316526592
+      }
+    ],
+    "method": "Sequential fresh optimized Windows CLI sessions; same warm synthetic CSV; baseline and modified binaries alternate. 100k: three repetitions each; 1m: one each. Complete command-response timing; import private-resident sampling at 200 ms.",
+    "median_total_ms": {
+      "before": 82554.00959999861,
+      "after": 59758.75260000066
+    },
+    "speedup": 1.3814546992401193
+  },
+  "limitations": [
+    "Only Windows was executed here; no macOS build/visual acceptance.",
+    "The governor integration test is browser-based; it is not a rebuilt native Tauri package test.",
+    "CSV/OS caches are warm; single-host results, three paired 100k repetitions and one paired million-event sample.",
+    "Faster ingestion uses a larger bounded cache than the original 32 MiB target; measured process peaks are included.",
+    "Source promotion does not publish a new installer or replace existing release assets.",
+    "The separate resident GPU VFX prototype remains local and is excluded from this change."
+  ]
+}
