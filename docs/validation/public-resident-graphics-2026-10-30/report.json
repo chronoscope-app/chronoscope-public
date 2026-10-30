@@ -7,7 +7,29 @@
   "verification": {
     "local_frontend_tests": 172,
     "browser_interaction_reference_handoff_checks": 27,
-    "windows_native_report": "Recorded after native checks complete",
+    "windows_native_report": {
+      "source": "4834867b0704c2376d80e29faaa22a6a2b973321",
+      "binary_sha256": "36aa800a50dc486018074786ec636df0b2e7c17f3808dbea7d58413d953f7e21",
+      "checks": [
+        "Release Windows app launches and exposes its attached native engine",
+        "Windows package discovers the bundled Balanced terrain",
+        "Bundled wildlife demo loads 3439 events and supports exact queries and selection",
+        "Native map view renders events and produces a real WebView2 capture without renderer errors",
+        "Native globe view renders events and produces a real WebView2 capture without renderer errors",
+        "Native space-time view renders events and produces a real WebView2 capture without renderer errors",
+        "Filter/reset and portable save/reopen preserve all events and the saved selection",
+        "Native playback configure, seek, step, play and pause work through attached MCP",
+        "Native flights-philippines-week-2026: 175 tracks, 11018 displayed altitude events, no renderer errors",
+        "Native starlink-128-predicted-orbits-2024: 128 tracks, 11648 displayed altitude events, no renderer errors",
+        "Rebuilt installed native engine imports all 100,000 original events",
+        "Installed native app renders the compact time window with the updated rail",
+        "Full native map: 100k GPU playback and correct stopped renderer",
+        "Full native globe: 100k GPU playback and correct stopped renderer",
+        "Full native space-time: 100k GPU playback and correct stopped renderer"
+      ],
+      "native_import_100k_ms": 5625.0,
+      "method": "12 native functional checks plus 3 isolated playback checks on the same optimized native binary. A legacy test assertion requiring GPU rendering off on pause was replaced with exact stopped engine-window counts. One overloaded run exercised automatic quality reduction; final playback checks ran after compilation finished. Prior 30-minute transition measurements remain in local-transitions validation."
+    },
     "prior_native_active_sessions_minutes": 30,
     "source_identity_restored": true,
     "source_preflight": "passed"
@@ -41,10 +63,14 @@
       }
     ],
     "unreviewed_findings": 0,
-    "config_relaxed": false
+    "config_relaxed": false,
+    "public_reachable_history_commits_scanned": 49,
+    "public_reachable_history_findings": 4,
+    "history_findings_review": "Same four verified commit/file/image hashes as the current-tree review; no credentials or unreviewed findings."
   },
   "canary_detected": true,
   "workflows_dispatched": false,
   "download_assets_changed": false,
-  "new_version_tag_created": false
+  "new_version_tag_created": false,
+  "source_changes": "Completed Interaction Lab and Transition Lab merged into the normal Chronoscope source. Incremental GPU upload work at e91beaf and its descendants remains excluded."
 }
