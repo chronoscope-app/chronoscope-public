@@ -162,6 +162,8 @@ let residentTimeFilter = "";
 let interactionGeneration = 0;
 let interactionWork: Promise<boolean> | undefined;
 let interactionTimer: ReturnType<typeof setTimeout> | undefined;
+let interactionRecovery = false;
+let interactionRetry = false;
 let interactionBlocked = "";
 let preparedPool: { key:string; data:string; points: ReturnType<typeof decode>; names:string[] } | undefined;
 function playbackIdentity(state: Snapshot) {
@@ -233,7 +235,19 @@ async function prepareInteraction(purpose:"playback"|"navigation") {
       $("#vfx-playback-state").textContent=purpose==="playback" ? "Smooth playback active" : "Smooth navigation and time controls";
       return true;
     } catch(error) {
-      if(accepted()) { interactionBlocked=key;console.info("Smooth interaction fallback:",error); }
+      if(accepted()) {
+        // Revision conflicts are expected while settings/filter acknowledgements
+        // settle. They do not establish that this scene is unsupported.
+        if (String(error).includes("CONFLICT") || (error as { name?: string })?.name === "AbortError") {
+          interactionRetry = true;
+          await refresh(false, false);
+        } else interactionBlocked=key;
+        console.info("Smooth interaction fallback:",error);
+        // In Time, playback can require a full-study pool while a smaller
+        // stopped-window renderer is still visible. A failed replacement must
+        // publish canonical data before playback, not keep that partial pool.
+        if(view.smoothPlaybackActive) await refresh(true,false,true);
+      }
       return false;
     }
   })();
@@ -242,15 +256,32 @@ async function prepareInteraction(purpose:"playback"|"navigation") {
     if(interactionWork===work) interactionWork=undefined;
     // A terrain/view refinement can cancel a staged candidate after the scene
     // queue is idle. Retry the current identity, never leave it stranded.
-    if (!view.smoothPlaybackActive && accepted() && interactionBlocked!==key) scheduleInteraction();
+    if (!view.smoothPlaybackActive && accepted() && interactionBlocked!==key) {
+      interactionRetry = true;
+      if (!interactionRecovery) { interactionRetry=false; scheduleInteraction(); }
+    }
   }
 }
 function scheduleInteraction() {
-  clearTimeout(interactionTimer);
-  if(!smoothPlaybackEnabled || view.resourceLimits.name!=="full" || view.smoothPlaybackActive || playbackPreparing || playTimer!==undefined || timeScrubbing || restoringScene) return;
-  interactionTimer=setTimeout(()=>{void sceneIdle().then(()=>{
-    if(!view.smoothPlaybackActive && !playbackPreparing && playTimer===undefined && !timeScrubbing && !restoringScene) return prepareInteraction("navigation");
-  }).catch(error=>console.info("Interaction preparation cancelled:",error));},180);
+  if (interactionTimer !== undefined || interactionRecovery || !smoothPlaybackEnabled || view.resourceLimits.name!=="full" || view.smoothPlaybackActive || playbackPreparing || timeScrubbing || restoringScene) return;
+  interactionTimer=setTimeout(()=>{
+    interactionTimer=undefined;
+    if (interactionRecovery || view.smoothPlaybackActive || playbackPreparing || timeScrubbing || restoringScene) return;
+    // During playback, fence the moving filter long enough to obtain a coherent
+    // revision-bound pool and stage its replacement. The clock continues and the
+    // next tick catches the canonical window up after the handoff.
+    const recoveringPlayback = playTimer !== undefined;
+    interactionRecovery = recoveringPlayback;
+    void (async()=>{
+      if (recoveringPlayback) await filterIntent.flush();
+      await sceneIdle();
+      if (!view.smoothPlaybackActive && !playbackPreparing && !timeScrubbing && !restoringScene)
+        await prepareInteraction(playTimer !== undefined ? "playback" : "navigation");
+    })().catch(error=>console.info("Interaction preparation cancelled:",error)).finally(()=>{
+      interactionRecovery=false;
+      if (interactionRetry) { interactionRetry=false; scheduleInteraction(); }
+    });
+  },180);
 }
 let playbackHistory: {
   workspace: string;
@@ -660,6 +691,7 @@ function bounds(points: { lat: number; lon: number }[]): Bounds {
 let nativeIconThemeWork: Promise<void> = Promise.resolve();
 let lastNativeIconPreference: string | null | undefined;
 function theme() {
+  $("#si").textContent = preferences.ai_toolbar_si ? "SI" : "AI";
   const t =
     preferences.theme === "system"
       ? matchMedia("(prefers-color-scheme:dark)").matches
@@ -3794,7 +3826,10 @@ async function togglePlayback() {
   $("#play").innerHTML = icon("pause") + " Pause";
   const frame = (now: number) => {
     if (playTimer === undefined) return;
-    if (residentIdentity && !view.smoothPlaybackActive) endSmoothPlayback("Standard playback · graphics changed");
+    if (residentIdentity && !view.smoothPlaybackActive) {
+      endSmoothPlayback("Standard playback · graphics changed");
+      scheduleInteraction();
+    }
     const phase = playbackClock!.seconds(now) / span;
     const movingStart = travel > 1e-9 ? (startAt + phase) % travel : 0;
     const movingEnd = travel > 1e-9 ? movingStart + width
@@ -3825,6 +3860,7 @@ async function togglePlayback() {
     // One data refresh at a time. Never accumulate work behind the render clock.
     if (
       !playbackUpdating &&
+      !interactionRecovery &&
       !busy &&
       now - lastUpdate >= (view.smoothPlaybackActive ? 250 : 50) &&
       (current.start !== nextStart || current.end !== nextEnd)

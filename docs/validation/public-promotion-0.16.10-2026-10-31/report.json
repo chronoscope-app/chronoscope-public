@@ -1,0 +1,114 @@
+{
+  "version": "0.16.10",
+  "next_commit": "034270e7657b6ba0c7cf60342c7aeab4dbba0374",
+  "public_parent": "6bcd11debd9032c1deb61abb02ea7984acbae1f9",
+  "next_tracked_files": 3408,
+  "next_files_byte_identical": true,
+  "preserved_public_only_files": [
+    "docs/validation/public-governor-bulk-import-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/README.md",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/report.json",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/README.md",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/report.json",
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-23e567f-2026-10-26/README.md",
+    "docs/validation/public-promotion-23e567f-2026-10-26/report.json",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/README.md",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/report.json",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/README.md",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/report.json",
+    "docs/validation/public-promotion-82107e5-2026-10-26/README.md",
+    "docs/validation/public-promotion-82107e5-2026-10-26/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json",
+    "docs/validation/public-resident-graphics-2026-10-30/report.json"
+  ],
+  "removed_retired_preview_files": [
+    "frontend/public/demos/covid-april.jpg",
+    "frontend/public/demos/covid-june.jpg",
+    "frontend/public/demos/falcon9-launches-map.jpg",
+    "frontend/public/demos/falcon9-launches-time.jpg"
+  ],
+  "owner_authorization": "Promote Next to Public, run the GitHub runners, and post to Releases.",
+  "private_next_ancestry_imported": false,
+  "workflows": "Manual-only; byte-identical to Next.",
+  "local_gate": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "test_validation_runner",
+        "exit_code": 0
+      },
+      {
+        "name": "test_guarded_run",
+        "exit_code": 0
+      },
+      {
+        "name": "rust-format",
+        "exit_code": 0
+      },
+      {
+        "name": "test_glib_backport",
+        "exit_code": 0
+      },
+      {
+        "name": "test_workarounds",
+        "exit_code": 0
+      },
+      {
+        "name": "test_release_preflight",
+        "exit_code": 0
+      },
+      {
+        "name": "core-clippy",
+        "exit_code": 0
+      },
+      {
+        "name": "rust-tests",
+        "exit_code": 0
+      },
+      {
+        "name": "frontend-unit-tests",
+        "exit_code": 0
+      },
+      {
+        "name": "test_publication_cleanup",
+        "exit_code": 0
+      },
+      {
+        "name": "test_package_distribution",
+        "exit_code": 0
+      },
+      {
+        "name": "test_tester_packaging",
+        "exit_code": 0
+      },
+      {
+        "name": "test_validate_tester_download",
+        "exit_code": 0
+      }
+    ],
+    "rust_passed": 489,
+    "frontend_passed": 175,
+    "source_revision": "034270e7657b6ba0c7cf60342c7aeab4dbba0374"
+  },
+  "audit": {
+    "rust_vulnerabilities": 0,
+    "npm_vulnerabilities": 0,
+    "retained_rust_advisory_warnings": {
+      "unmaintained": 6,
+      "yanked": 1
+    },
+    "source_scan_unresolved_credentials": 0
+  },
+  "hosted_builds": "Owner authorized standard Windows x64 and Apple Silicon macOS builds, one at a time, plus exact-package validation and release publication. Existing zero-dollar hard stops preserved."
+}

@@ -490,8 +490,11 @@ try {
   }));
   await page.locator("#play").click();
   await page.waitForFunction(
-    (end) => window.__chronoscope.snapshot.filter.end > end,
-    base + 33,
+    // The metadata snapshot can arrive before its queued renderer publication.
+    // Observe the retained Events as well as clock progress before asserting.
+    ({end,count}) => window.__chronoscope.snapshot.filter.end > end &&
+      window.__chronoscope.view.points.length > count,
+    {end:base + 33,count:initial.ids.length},
   );
   let playback = await page.evaluate(() => ({
     filter: window.__chronoscope.snapshot.filter,
@@ -653,6 +656,13 @@ try {
     JSON.stringify(report, null, 2) + "\n",
   );
   await browser?.close();
-  server.kill();
-  fs.rmSync(profile, { recursive: true, force: true });
+  // Windows keeps the profile database locked until the child has exited.
+  if(server.exitCode===null && server.signalCode===null) {
+    const closed=new Promise(resolve=>server.once('close',resolve));
+    server.kill();await closed;
+  }
+  const cleanup=fs.realpathSync(profile),base=fs.realpathSync(qaPaths.data);
+  if(path.dirname(cleanup)!==base || !path.basename(cleanup).startsWith('profile-'))
+    throw Error('Unexpected test profile cleanup scope');
+  await fs.promises.rm(cleanup, { recursive: true, force: true, maxRetries:8, retryDelay:100 });
 }

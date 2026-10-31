@@ -2,6 +2,35 @@
 use super::*;
 
 impl DataStore {
+    /// Compile-time demos can exceed the legacy JSON row budget. Stage their
+    /// complete data with the same deferred-index path as a fresh CSV import.
+    pub(crate) fn load_bundled_events(&mut self, events: &[Event]) -> Result<(), String> {
+        self.connection
+            .execute_batch("SAVEPOINT bundled_events")
+            .map_err(err)?;
+        let result = (|| {
+            self.begin_bulk_import()?;
+            for batch in events.chunks(2048) {
+                self.insert_import_batch(batch)?;
+            }
+            self.finish_bulk_import()
+        })();
+        match result {
+            Ok(()) => {
+                self.connection
+                    .execute_batch("RELEASE bundled_events")
+                    .map_err(err)?;
+                self.changed()
+            }
+            Err(error) => {
+                self.connection
+                    .execute_batch("ROLLBACK TO bundled_events; RELEASE bundled_events")
+                    .map_err(err)?;
+                Err(error)
+            }
+        }
+    }
+
     pub(crate) fn begin_bulk_import(&self) -> Result<(), String> {
         if self.count()? != 0 {
             return Err("Bulk import requires an empty staging store".into());
@@ -188,6 +217,29 @@ mod tests {
             .unwrap()
             .collect::<Result<_, _>>()
             .unwrap()
+    }
+
+    #[test]
+    fn bundled_load_is_atomic_and_preserves_the_fresh_store_after_failure() {
+        let dir = tempfile::tempdir().unwrap();
+        let mut store = DataStore::new(dir.path()).unwrap();
+        let mut rows = events();
+        rows[2204].id = rows[0].id;
+        assert!(store.load_bundled_events(&rows).is_err());
+        assert_eq!(store.count().unwrap(), 0);
+        assert_eq!(
+            contents(
+                &store,
+                "SELECT count(*) FROM sqlite_temp_master WHERE name LIKE 'bulk_%'"
+            ),
+            vec![vec![SqlValue::Integer(0)]]
+        );
+        let valid = events();
+        store.load_bundled_events(&valid).unwrap();
+        assert_eq!(store.count().unwrap(), valid.len());
+        assert!(store.load_bundled_events(&valid[..1]).is_err());
+        assert_eq!(store.count().unwrap(), valid.len());
+        assert_eq!(store.get(valid[1001].id).unwrap().unwrap(), valid[1001]);
     }
 
     #[test]

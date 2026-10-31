@@ -40,14 +40,18 @@ fn mcp_discovers_altitude_mapping_height_flags_demos_and_confirmed_reset() {
     assert!(mapping.to_string().contains("altitude_reference_column"));
     assert!(mapping.to_string().contains("kilometers"));
     let catalog = e.invoke("demo_catalog", json!({})).unwrap();
-    for name in ["flight-altitude", "starlink-orbits", "falcon9-launches"] {
+    for (name, previews) in [
+        ("flight-altitude", 2),
+        ("starlink-orbits", 2),
+        ("idf-uav", 3),
+    ] {
         let demo = catalog["demos"]
             .as_array()
             .unwrap()
             .iter()
             .find(|d| d["id"] == name)
             .unwrap();
-        assert_eq!(demo["previews"].as_array().unwrap().len(), 2);
+        assert_eq!(demo["previews"].as_array().unwrap().len(), previews);
     }
     assert!(
         e.invoke("capabilities", json!({})).unwrap()["renderer"]["attached_tools"]

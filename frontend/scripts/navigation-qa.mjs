@@ -411,6 +411,12 @@ try {
     );
   }
   await page.click('[data-view="map"]');
+  // Prepared navigation intentionally retains the complete eligible pool.
+  // Exercise the original off-screen-selection rollback in the canonical
+  // renderer, where viewport culling can actually omit those selected rows.
+  await page.locator('#vfx-smooth-playback').setChecked(false);
+  await page.evaluate(()=>window.__chronoscope.sceneIdle());
+  await page.waitForFunction(()=>!window.__chronoscope.view.residentPlaybackActive);
   await fit();
   // Reproduce the actual slow-double-click bug with off-screen selections.
   const preserved = ["1", "2"];

@@ -32,7 +32,7 @@ MAX_ARCHIVE = 256 * 1024 * 1024
 MAX_EXPANDED = 1024 * 1024 * 1024
 # Reviewed 0.16.9 inputs, including the five new sysinfo/ntapi/IOKit notice files.
 # Exact source paths and hashes are also enforced by verify_notices below.
-NOTICE_COUNT = 1536
+NOTICE_COUNT = 1540
 
 
 def require(condition, message):

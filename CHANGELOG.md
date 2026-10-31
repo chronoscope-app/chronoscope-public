@@ -4,9 +4,21 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+## 0.16.10 — experimental preview, 2026-10-31
+
+- Keep an Earth overview's center inside the globe viewport during navigation, preserving intentional oblique views. N and compass Home also recenter an overview or recover a camera aimed past Earth without changing orbital zoom; regional North retains the current ground focus and tilt.
+- Use standard rendering for raw timed tracks when Cesium's longitude splitting cannot retain their custom attributes. A failed full-study preparation safely replaces a stopped Time-window buffer before playback.
+- Reduce prepared point/track rebuild stalls by yielding CPU geometry work and warming bounded GPU upload pages between frames. Retain the old drawing until the replacement is ready, with exact time clipping, picking and cancellation cleanup. Windows measurements and memory/readiness tradeoffs are recorded in `docs/validation/local-upload-2026-10-30`; optimized macOS native rendering and recovery were also checked locally.
 - Extend prepared graphics to paused navigation, Map/Globe time scrubbing, selections, and compatible mixed display layers. Reuse polygon meshes when changing selection.
 - Keep the current drawing visible until its replacement is ready; cancel obsolete preparation safely, preserve the stopped Time frame on cancellation, and retry preparation when terrain becomes available.
 - Retain the resource governor, exact engine filters/source IDs, altitude omissions, weighted heatmaps and standard-renderer fallbacks. Large representation changes can still pause while geometry is prepared.
+
+- Resume Smooth graphics reliably after view/configuration changes and retry temporary preparation conflicts without permanently disabling the scene.
+- Add the complete usable IDF fixed-wing UAV GPS dataset: 399,331 positions in 224 nonempty logs, with reported altitude, aligned elapsed-time playback, original fields and credits, three previews and five saved views. The artificial 2000-01-01 date is a display anchor, not a flight date.
+- Remove COVID and Falcon 9 launch-pad history from the demo picker; keep Starlink last.
+- Add a General preference to label the AI toolbar button SI, with a tooltip pointing to the setting.
+- Update Vite to the patched 6.4.5 development toolchain (GHSA-8g5g-mxqh-grgj).
+- Include IDF provenance in both notice packagers and pin the exact-package validation gate to the reviewed 1,540-file notice inventory.
 
 ## 0.16.9 — experimental preview, 2026-10-29
 

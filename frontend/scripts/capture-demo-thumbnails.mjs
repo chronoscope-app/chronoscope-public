@@ -19,11 +19,14 @@ await withLocalApp("demo-thumbnails", async ({ page, api, root, pass }) => {
   for (const demo of demos.filter(
     (demo) => !requested || requested.includes(demo.id),
   )) {
+    // Restore each scene on one editable copy, including large bundled demos.
+    await page.evaluate(async (id) => {
+      await window.__chronoscope.call("demo_open", { id });
+    }, demo.id);
     for (const preview of demo.previews) {
       const result = await page.evaluate(
-        async ({ id, index }) => {
+        async ({ index }) => {
           const c = window.__chronoscope;
-          await c.call("demo_open", { id });
           const restored = await c.call("restore_view", { index });
           await c.restoreScene({ ...restored.scene, expanded: true });
           return {
@@ -33,7 +36,7 @@ await withLocalApp("demo-thumbnails", async ({ page, api, root, pass }) => {
             filter: c.snapshot.filter,
           };
         },
-        { id: demo.id, index: preview.view_index },
+        { index: preview.view_index },
       );
       await page.waitForFunction(
         () =>

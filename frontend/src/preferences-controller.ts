@@ -29,6 +29,7 @@ type PreferencesDraft = {
   coordinates: Preferences["coordinates"];
   dateFormat: Preferences["date_format"];
   timeFormat: Preferences["time_format"];
+  aiToolbarSi: boolean;
   autoSave: boolean;
   budget: number;
 };
@@ -50,7 +51,7 @@ export function createPreferencesController(hooks: Hooks) {
     const renderBudget = hooks.budget();
     const dialog = modal(
       `${head("Preferences")}${preferencesLayout({
-        general: `<div class="modal-grid"><label class="field">Appearance<select id="pref-theme">${["system", "light", "dark"].map((t) => `<option value="${t}" ${t === (draft?.theme ?? preferences.theme) ? "selected" : ""}>${t[0].toUpperCase() + t.slice(1)}</option>`).join("")}</select></label><label class="field">Display coordinates<select id="pref-coordinates">${["dd", "utm", "mgrs"].map((t) => `<option ${t === (draft?.coordinates ?? preferences.coordinates) ? "selected" : ""}>${t}</option>`).join("")}</select></label><label class="field">Date format<select id="pref-date-format">${dateFormats.map(([value, label]) => `<option value="${value}" ${value === (draft?.dateFormat ?? preferences.date_format ?? "system") ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field">Time format<select id="pref-time-format">${timeFormats.map(([value, label]) => `<option value="${value}" ${value === (draft?.timeFormat ?? preferences.time_format ?? "system") ? "selected" : ""}>${label}</option>`).join("")}</select></label></div><p class="description">Dates and times are displayed in UTC. These choices change readouts only; exact editing, imports, exports and stored timestamps retain their original precision.</p>`,
+        general: `<div class="modal-grid"><label class="field">Appearance<select id="pref-theme">${["system", "light", "dark"].map((t) => `<option value="${t}" ${t === (draft?.theme ?? preferences.theme) ? "selected" : ""}>${t[0].toUpperCase() + t.slice(1)}</option>`).join("")}</select></label><label class="field">Display coordinates<select id="pref-coordinates">${["dd", "utm", "mgrs"].map((t) => `<option ${t === (draft?.coordinates ?? preferences.coordinates) ? "selected" : ""}>${t}</option>`).join("")}</select></label><label class="field">Date format<select id="pref-date-format">${dateFormats.map(([value, label]) => `<option value="${value}" ${value === (draft?.dateFormat ?? preferences.date_format ?? "system") ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field">Time format<select id="pref-time-format">${timeFormats.map(([value, label]) => `<option value="${value}" ${value === (draft?.timeFormat ?? preferences.time_format ?? "system") ? "selected" : ""}>${label}</option>`).join("")}</select></label></div><label class="check-row"><input id="pref-ai-toolbar-si" type="checkbox" ${(draft?.aiToolbarSi ?? preferences.ai_toolbar_si) ? "checked" : ""}> Label the AI toolbar button SI</label><p class="description">Dates and times are displayed in UTC. These choices change readouts only; exact editing, imports, exports and stored timestamps retain their original precision.</p>`,
         workspace: `<label class="check-row"><input id="pref-autosave" type="checkbox" ${(draft?.autoSave ?? lifecycle.auto_save_unsaved) ? "checked" : ""}> Automatically save unsaved work</label><p class="description">Saves a copy every 30 seconds and before switching workspaces or quitting. Previous-session work is saved here automatically, without recovery prompts.</p><div class="notice mono">${esc(lifecycle.document_directory)}</div>`,
         display: `<label class="field">Marker budget<select id="pref-render-budget"><option value="20000" ${(draft?.budget ?? renderBudget) === 20000 ? "selected" : ""}>20,000 representatives in Points mode</option><option value="100000" ${(draft?.budget ?? renderBudget) === 100000 ? "selected" : ""}>100,000 representatives (uses more memory)</option></select></label><p class="description">This workspace setting changes the maximum in Points mode. Automatic display uses count clusters above 2,000 located records. Heat map and bloom are off by default. Exact queries and selection retain all matching records.</p>`,
         agents: `<div class="notice mono agent-commands">${esc(agent.cli ? `"${agent.cli}" agent enable\n"${agent.cli}" --attach call snapshot\n"${agent.cli}" mcp --attach` : "chronoscope agent enable\nchronoscope --attach call snapshot\nchronoscope mcp --attach")}</div><p class="description">Enable once here or run <code>agent enable</code> from a terminal. No folder is required: agents can operate the live workspace and exchange files in a private app folder. Access stays enabled across launches. Optionally choose a different folder for importing/exporting files. The app executable shown above also runs the CLI; a separate CLI download or administrator install is unnecessary.</p><div class="notice">SI agent access: ${agent.enabled ? `enabled · ${esc(agent.root)}<br>Connection: ${esc(agent.descriptor)}` : "disabled"}</div>${native ? `<button id="agent-toggle" class="secondary">${agent.enabled ? "Disable SI agent access" : "Enable SI agent access"}</button><button id="agent-folder">Choose file-access folder…</button><button id="agent-default-folder">Use default folder</button><button id="agent-config">MCP setup</button>` : ""}`,
@@ -62,6 +63,7 @@ export function createPreferencesController(hooks: Hooks) {
       coordinates: input("#pref-coordinates") as Preferences["coordinates"],
       dateFormat: input("#pref-date-format") as Preferences["date_format"],
       timeFormat: input("#pref-time-format") as Preferences["time_format"],
+      aiToolbarSi: check("#pref-ai-toolbar-si"),
       autoSave: check("#pref-autosave"),
       budget: Number(input("#pref-render-budget")),
     });
@@ -131,6 +133,7 @@ export function createPreferencesController(hooks: Hooks) {
         coordinates: input("#pref-coordinates") as Preferences["coordinates"],
         date_format: input("#pref-date-format") as Preferences["date_format"],
         time_format: input("#pref-time-format") as Preferences["time_format"],
+        ai_toolbar_si: check("#pref-ai-toolbar-si"),
         auto_save_unsaved: check("#pref-autosave"),
       };
       const nextBudget =

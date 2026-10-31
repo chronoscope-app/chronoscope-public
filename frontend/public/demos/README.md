@@ -8,6 +8,6 @@ The wildlife previews visualize and downsample observations from **Scott LaPoint
 
 To regenerate locally, build the CLI and frontend, then run `npm --prefix frontend run capture:demo-thumbnails`. The script uses isolated temporary profiles and blocks public HTTP requests. This is an explicit asset-generation command, not part of normal builds or hosted CI.
 
-The new earthquake, fire, electricity-access and COVID source interpretation and limits are documented in [the demo guide](../../../docs/PRIORITY-DEMOS.md). Numeric legends are captured with the real app scene. Thumbnails are letterboxed to preserve the scene aspect ratio.
+The new earthquake, fire and electricity-access source interpretation and limits are documented in [the demo guide](../../../docs/PRIORITY-DEMOS.md). Numeric legends are captured with the real app scene. Thumbnails are letterboxed to preserve the scene aspect ratio.
 
 The flight and rocket previews retain their approximate reported-altitude interpretation. [Sources and transformations](../../../docs/ALTITUDE-DEMOS.md).

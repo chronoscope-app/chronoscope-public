@@ -995,7 +995,7 @@ dependencies = [
 
 [[package]]
 name = "chronoscope"
-version = "0.16.9"
+version = "0.16.10"
 dependencies = [
  "accurate",
  "average",
@@ -1053,7 +1053,7 @@ version = "0.1.0"
 
 [[package]]
 name = "chronoscope-desktop"
-version = "0.16.9"
+version = "0.16.10"
 dependencies = [
  "base64 0.22.1",
  "chronoscope",

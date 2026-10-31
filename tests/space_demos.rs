@@ -1,6 +1,6 @@
 use chronoscope::{altitude::AltitudeReference, demos, engine::Engine, project::Project};
 use serde_json::{json, Value};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 #[test]
 fn starlink_keeps_original_cadence_unique_catalog_ids_and_geographic_height() {
@@ -54,60 +54,6 @@ fn starlink_keeps_original_cadence_unique_catalog_ids_and_geographic_height() {
 }
 
 #[test]
-fn falcon_history_preserves_pads_dates_failures_and_unknown_flight_altitude() {
-    let dir = tempfile::tempdir().unwrap();
-    let p = demos::load("falcon9-launches", dir.path()).unwrap();
-    p.validate().unwrap();
-    assert_eq!(p.dataset.events.len(), 700);
-    let entities: BTreeSet<_> = p.dataset.events.iter().map(|e| &e.entity).collect();
-    assert_eq!(entities.len(), 700);
-    let mut pads = BTreeMap::new();
-    for e in &p.dataset.events {
-        *pads.entry(e.category.as_str()).or_insert(0) += 1;
-        assert!(e.altitude.is_none());
-        assert_eq!(e.attrs["LV_Type"], "Falcon 9");
-        assert!(e.attrs["position_kind"].contains("not flight trajectory"));
-        assert!((-121.0..=-80.0).contains(&e.lon.unwrap()));
-        if let Some(end) = e.end {
-            assert_eq!(end - e.time, 60.0);
-        }
-    }
-    assert_eq!(pads.values().sum::<usize>(), 700);
-    assert_eq!(pads["Cape Canaveral · SLC-40"], 349);
-    assert_eq!(pads["Kennedy · LC-39A"], 114);
-    assert_eq!(pads["Vandenberg · SLC-4E"], 237);
-    assert_eq!(
-        p.dataset.events.iter().filter(|e| e.end.is_some()).count(),
-        141
-    );
-    assert_eq!(
-        p.dataset
-            .events
-            .iter()
-            .filter(|e| e.attrs["utc_precision"] == "approximate")
-            .count(),
-        2
-    );
-    assert!(p
-        .dataset
-        .events
-        .iter()
-        .any(|e| e.attrs["LaunchCode"].starts_with("OF")));
-    assert!(p
-        .dataset
-        .events
-        .iter()
-        .any(|e| e.attrs["Flight"] == "Dragon IFA"));
-    assert!(p.dataset.events.first().unwrap().time < 1_280_000_000.0);
-    assert!(p.dataset.events.last().unwrap().time > 1_790_000_000.0);
-    assert!(p.scene.globe_time && !p.scene.globe_altitude);
-    for view in &p.views {
-        let d = view.scene.display.as_ref().unwrap();
-        assert!(!d.show_tracks && !d.show_trails);
-    }
-}
-
-#[test]
 fn retired_rocket_demo_cannot_replace_a_workspace_and_new_ids_are_discoverable() {
     let dir = tempfile::tempdir().unwrap();
     let e = Engine::new(Project::empty(), dir.path().into()).unwrap();
@@ -118,9 +64,14 @@ fn retired_rocket_demo_cannot_replace_a_workspace_and_new_ids_are_discoverable()
     assert_eq!(before, e.invoke("snapshot", json!({})).unwrap());
     let schema = chronoscope::schema::command_schema("demo_open").unwrap();
     let ids = schema["properties"]["id"]["enum"].as_array().unwrap();
-    assert!(ids.contains(&json!("starlink-orbits")) && ids.contains(&json!("falcon9-launches")));
+    assert!(ids.contains(&json!("starlink-orbits")));
     assert!(!ids.contains(&json!("rocket-altitude")));
-    assert_eq!(demos::DEMOS.len(), 16);
+    assert!(!ids.contains(&json!("falcon9-launches")));
+    assert!(e
+        .invoke("demo_open", json!({"id":"falcon9-launches"}))
+        .is_err());
+    assert_eq!(before, e.invoke("snapshot", json!({})).unwrap());
+    assert_eq!(demos::DEMOS.len(), 15);
 }
 
 #[test]

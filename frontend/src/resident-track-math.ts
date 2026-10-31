@@ -16,6 +16,13 @@ export function timeParts(value: number): [number, number] {
  * Duplicate positions split runs so a stationary interval does not shift an
  * incoming track's arrival time to the end of that stationary interval. */
 export function splitTimedTrack(input: readonly TimedTrackVertex[]) {
+  const work=splitTimedTrackSteps(input);
+  while(true){const step=work.next();if(step.done)return step.value;}
+}
+
+/** The same seam/stationary semantics, yielding before large CPU loops can
+ * monopolize a frame during preparation of a single long entity track. */
+export function* splitTimedTrackSteps(input: readonly TimedTrackVertex[]): Generator<void,TimedTrackVertex[][]> {
   const result: TimedTrackVertex[][] = [];
   let current: TimedTrackVertex[] = [];
   const finish = () => {
@@ -27,6 +34,7 @@ export function splitTimedTrack(input: readonly TimedTrackVertex[]) {
     current = [];
   };
   for (let i = 0; i < input.length; i++) {
+    if(i%256===255)yield;
     const vertex = { ...input[i] };
     if (!Number.isFinite(vertex.x + vertex.y + vertex.z + vertex.time))
       throw Error("Invalid track vertex");
@@ -93,4 +101,41 @@ export function stampTrackTimes(
     st[i] = high;
     st[i + 1] = low;
   }
+}
+
+/** Shared seam endpoints retain every original segment and timestamp exactly. */
+export function* pageTimedTrack(nodes: TimedTrackVertex[], limit: number): Generator<TimedTrackVertex[]> {
+  if (!Number.isInteger(limit) || limit < 2) throw Error("Track page size must be at least two");
+  for (let start=0;start<nodes.length-1;start+=limit-1)
+    yield nodes.slice(start,Math.min(nodes.length,start+limit));
+}
+
+/** Exact entity/time/ID order with bounded sort and merge steps. Stable merging
+ * retains source order for equal keys, matching the canonical native sort. */
+export function* orderedTrackIndices(points: readonly {entity:number;time:number;id:string}[]): Generator<void,number[]> {
+  const compare=(a:number,b:number)=>points[a].entity-points[b].entity || points[a].time-points[b].time || points[a].id.localeCompare(points[b].id);
+  let order:number[]=[],sorted=true;
+  for(let i=0;i<points.length;i++) {
+    order.push(i);if(i && compare(i-1,i)>0)sorted=false;
+    if(i%512===511)yield;
+  }
+  if(sorted)return order;
+  for(let offset=0;offset<order.length;offset+=1024) {
+    const run=order.slice(offset,offset+1024).sort(compare);
+    for(let i=0;i<run.length;i++)order[offset+i]=run[i];
+    yield;
+  }
+  let scratch:number[]=new Array(order.length);
+  for(let width=1024;width<order.length;width*=2) {
+    for(let start=0;start<order.length;start+=width*2) {
+      const middle=Math.min(start+width,order.length),end=Math.min(start+width*2,order.length);
+      let a=start,b=middle;
+      for(let out=start;out<end;out++) {
+        scratch[out]=b>=end || (a<middle && compare(order[a],order[b])<=0) ? order[a++] : order[b++];
+        if(out%1024===1023)yield;
+      }
+    }
+    [order,scratch]=[scratch,order];
+  }
+  return order;
 }

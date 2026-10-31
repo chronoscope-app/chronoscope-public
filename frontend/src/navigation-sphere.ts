@@ -134,7 +134,7 @@ export class NavigationSphere {
       event.preventDefault();
       event.stopPropagation();
       view.cancelNavigation();
-      if (event.key === "Home") view.setBearing(0);
+      if (event.key === "Home") view.faceNorth();
       else if (view.mode === "map") {
         view.panPixels(
           event.key === "ArrowLeft" ? -30 : event.key === "ArrowRight" ? 30 : 0,
@@ -265,7 +265,7 @@ export class NavigationSphere {
     );
     this.sphere.dataset.tooltip = flat
       ? "Grab to pan the map"
-      : "Grab to orbit · arrow keys rotate and tilt · Home restores north";
+      : "Grab to orbit · arrow keys rotate and tilt · Home restores north and recenters Globe";
     this.sphere.removeAttribute("title");
     this.zoom.value = String(zoomValue(this.view.navigationDistance()));
     this.zoom.setAttribute(

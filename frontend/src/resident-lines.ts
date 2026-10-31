@@ -13,17 +13,20 @@ import { createArcBudget, geodesicPositions } from "./cesium-geometry";
 import {
   stampTrackTimes,
   timeParts,
-  splitTimedTrack,
+  splitTimedTrackSteps,
+  pageTimedTrack,
   type TimedTrackVertex,
 } from "./resident-track-math";
 import type { Point } from "./types";
 
 /** Persistent, time-clipped polylines. Time uses the standard st attribute,
  * which Cesium preserves when projecting/splitting and combining geometry.
- * All entities share one material and primitive instead of one draw per run. */
+ * Bounded primitive pages share one material instead of one material per run. */
 export class ResidentLines {
   private instances: GeometryInstance[] = [];
-  private primitive?: Primitive;
+  private primitives: Primitive[] = [];
+  private uploads: (() => void)[] = [];
+  largestUploadVertices = 0;
   private material?: Material;
   preparedBytes = 0;
   vertices = 0;
@@ -36,14 +39,15 @@ export class ResidentLines {
     private scene: Scene,
     private epoch: number,
     private span: number,
+    private staged = false,
   ) {}
-  addRun(
+  private *prepareRun(
     nodes: TimedTrackVertex[],
     color: Color,
     opacity: number,
     width = 1.6,
   ) {
-    const chunks = splitTimedTrack(nodes);
+    const chunks = yield* splitTimedTrackSteps(nodes);
     for (let i = 1; i < chunks.length; i++) {
       const a = chunks[i - 1].at(-1)!,
         b = chunks[i][0];
@@ -56,7 +60,7 @@ export class ResidentLines {
       )
         this.dateLineCuts++;
     }
-    for (const chunk of chunks) {
+    for (const section of chunks) for (const chunk of pageTimedTrack(section, 2048)) {
       const geometry = PolylineGeometry.createGeometry(
         new PolylineGeometry({
           positions: chunk.map((v) => new Cartesian3(v.x, v.y, v.z)),
@@ -86,6 +90,7 @@ export class ResidentLines {
           (n, a) => n + bytes(a?.values),
           0,
         ) + bytes(geometry.indices);
+      yield;
     }
   }
   seal() {
@@ -94,9 +99,9 @@ export class ResidentLines {
       fabric: {
         type: "ResidentBatchedPolylineV2",
         uniforms: {
-          windowStart: 0,
+          windowStart: this.staged ? 1 : 0,
           windowStartLow: 0,
-          windowEnd: 1,
+          windowEnd: this.staged ? -1 : 1,
           windowEndLow: 0,
         },
         source: `
@@ -116,22 +121,34 @@ export class ResidentLines {
       /void main\s*\(\s*\)\s*\{/,
       "in vec4 color;\nout vec4 v_residentColor;\nout float v_residentTimeLow;\nvoid main(){v_residentColor=color;v_residentTimeLow=st.t;",
     );
-    this.primitive = this.scene.primitives.add(
-      new Primitive({
-        geometryInstances: this.instances,
-        appearance: new PolylineMaterialAppearance({
-          material: this.material,
-          vertexShaderSource,
-        }),
-        // Cesium's optional st packing is only 12-bit. Keep full float time
-        // precision so narrow moving windows do not jump across a long study.
-        compressVertices: false,
-        asynchronous: false,
-        releaseGeometryInstances: true,
-      }),
-    );
+    // Each public Primitive processes and uploads a bounded page. All pages
+    // share one material/uniform window, avoiding a material/draw per track.
+    let page: GeometryInstance[] = [], vertices = 0;
+    const flush = () => {
+      if (!page.length) return;
+      const instances = page, count = vertices;
+      const upload = () => {
+        this.primitives.push(this.scene.primitives.add(new Primitive({
+          geometryInstances: instances,
+          appearance: new PolylineMaterialAppearance({material: this.material!, vertexShaderSource}),
+          compressVertices: false,
+          asynchronous: false,
+          releaseGeometryInstances: true,
+        })));
+      };
+      this.largestUploadVertices = Math.max(this.largestUploadVertices, count);
+      if (this.staged) this.uploads.push(upload); else upload();
+      page = []; vertices = 0; this.batches++;
+    };
+    for (const instance of this.instances) {
+      const geometry = instance.geometry as ReturnType<typeof PolylineGeometry.createGeometry>;
+      const count = (geometry!.attributes.position!.values!.length / 3);
+      if (vertices + count > 8192) flush();
+      page.push(instance); vertices += count;
+    }
+    flush();
     this.instances = [];
-    this.batches = 1;
+
   }
   *prepareTracks(
     points: Point[],
@@ -146,10 +163,6 @@ export class ResidentLines {
     const budget = createArcBudget(Math.max(0, order.length - 1), 200000);
     let run: TimedTrackVertex[] = [],
       entity = -1;
-    const finish = () => {
-      if (run.length > 1) this.addRun(run, color(entity), opacity, width);
-      run = [];
-    };
     let processed = 0;
     for (const index of order) {
       if (++processed % 256 === 0) yield;
@@ -158,8 +171,10 @@ export class ResidentLines {
       if (
         entity !== point.entity ||
         (last && gap && point.time - last.time > gap)
-      )
-        finish();
+      ) {
+        if(run.length>1)yield* this.prepareRun(run,color(entity),opacity,width);
+        run=[];
+      }
       entity = point.entity;
       const p = position(point);
       if (run.length) {
@@ -177,7 +192,7 @@ export class ResidentLines {
           });
       } else run.push({ ...p, time: point.time, drawNext: true });
     }
-    finish();
+    if(run.length>1)yield* this.prepareRun(run,color(entity),opacity,width);
     this.interpolated += budget.interpolated;
     this.coarsened += budget.coarsened;
   }
@@ -196,7 +211,7 @@ export class ResidentLines {
           { ...position(point), time: point.time, drawNext: false },
         );
       }
-      this.addRun(nodes, Color.fromCssColorString("#99b8c7"), opacity, 1);
+      yield* this.prepareRun(nodes, Color.fromCssColorString("#99b8c7"), opacity, 1);
       yield;
     }
   }
@@ -206,7 +221,10 @@ export class ResidentLines {
   addStems(...args: Parameters<ResidentLines["prepareStems"]>) {
     for (const _ of this.prepareStems(...args)) { /* synchronous small overlays */ }
   }
-  get ready() { return !this.primitive || this.primitive.ready; }
+  takeUpload() { return this.uploads.shift(); }
+  get pendingUploads() { return this.uploads.length; }
+  get uploadedReady() { return this.primitives.every(p => p.ready); }
+  get ready() { return !this.uploads.length && this.uploadedReady; }
   setWindow(start: number, end: number) {
     if (!this.material) return;
     [
@@ -217,9 +235,10 @@ export class ResidentLines {
       timeParts((end - this.epoch) / this.span);
   }
   destroy() {
-    if (this.primitive && !this.scene.isDestroyed()) this.scene.primitives.remove(this.primitive);
+    if (!this.scene.isDestroyed()) for (const primitive of this.primitives) this.scene.primitives.remove(primitive);
     this.material?.destroy();
-    this.primitive = undefined;
+    this.primitives = [];
+    this.uploads = [];
     this.material = undefined;
     this.instances = [];
   }

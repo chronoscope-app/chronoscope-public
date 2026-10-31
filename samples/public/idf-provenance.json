@@ -1,0 +1,32 @@
+{
+  "records": 399331,
+  "logs": 224,
+  "platforms": {
+    "SpeedyBee": 243662,
+    "Pixhawk": 155669
+  },
+  "platform_logs": {
+    "SpeedyBee": 103,
+    "Pixhawk": 121
+  },
+  "empty_gps_logs": [
+    "Speedybee DataSet/processed/GPS/Lap033_gps.csv",
+    "Speedybee DataSet/processed/GPS/Lap034_gps.csv",
+    "Speedybee DataSet/processed/GPS/Lap035_gps.csv",
+    "Speedybee DataSet/processed/GPS/Lap036_gps.csv",
+    "Speedybee DataSet/processed/GPS/Lap037_gps.csv",
+    "Speedybee DataSet/processed/GPS/Lap038_gps.csv",
+    "Speedybee DataSet/processed/GPS/Lap039_gps.csv",
+    "Speedybee DataSet/processed/GPS/Lap040_gps.csv"
+  ],
+  "altitude_range_m": [
+    193.43456,
+    420.0
+  ],
+  "elapsed_range_seconds": [
+    0,
+    541.2335729598999
+  ],
+  "project_sha256": "4bf1b7eb8d47b000883ca209bf0b44bb653ea9ce8bb11074dc7110d2263f7bd4",
+  "project_bytes": 42199227
+}

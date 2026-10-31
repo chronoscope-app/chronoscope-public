@@ -1,0 +1,1638 @@
+{
+  "source_url": "https://doi.org/10.5281/zenodo.16992976",
+  "version": "v1.0",
+  "license": "CC BY 4.0",
+  "files": [
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap001_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap001_gps.csv",
+      "sha256": "611f2d9417f94eaf6399d77bb971cd0dd2eba6c7dac9a8fce8e34bc87474a22e",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap002_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap002_gps.csv",
+      "sha256": "94c2761e3838f2b4c8ae479702bf5a68eca9d18a6ba5661dd76ca1748bbabb8f",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap003_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap003_gps.csv",
+      "sha256": "3a7dcdbe64709d26c02df25b834694486bd2377c4e657b7eb0ce1c3a84eb42cc",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap004_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap004_gps.csv",
+      "sha256": "c004d14f072c859f0a931b340cb99019de239aa63d1db399333643f82ae1d6e9",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap005_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap005_gps.csv",
+      "sha256": "87dc6dd1059970adefe57e8a4c2e3f4a111db4caec5a6feaefbd745bf8486dd7",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap006_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap006_gps.csv",
+      "sha256": "ce3972d05e2c3284350b89664c753952578a755fce7fef83414bdcb48dc4b970",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap007_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap007_gps.csv",
+      "sha256": "361af6176e811cb73ddbaa28a1ffa6d2e4d65f9dbbe15d34aa7ced043bb56422",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap008_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap008_gps.csv",
+      "sha256": "e67480ccd1920dcc8459df6843215a528fb4a71a2576799727825e09db7bc2f5",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap009_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap009_gps.csv",
+      "sha256": "a47b6049a3af75537d28bca255f1fa2945f744110dda39d9da0dbf10672876a2",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap010_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap010_gps.csv",
+      "sha256": "d8aba94ed6fbddacb840efe1ac77c599b017343e4528054cb7457d744932a869",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap011_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap011_gps.csv",
+      "sha256": "4ea98abfdc71fef2696c5e9728192672688371f54955a01a99f34b752c198ec2",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap012_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap012_gps.csv",
+      "sha256": "198a1f288f9730b6bd2719f1c1d52dee83fdc32e1f0fe582749a43905fdc26cc",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap013_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap013_gps.csv",
+      "sha256": "ea87f3abe32840c99fdae07029c757d1486fc2f29a1d176e7b4b236c9885c66e",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap014_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap014_gps.csv",
+      "sha256": "d8509493c63c55533eb026ea2175b1fdde38ce45ddfc7baf02411f45da5eb240",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap015_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap015_gps.csv",
+      "sha256": "982a2b955c66b4ed4179ed8d7031192fdfd5fd33fc9ec6e501b16ce5b684d776",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap016_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap016_gps.csv",
+      "sha256": "4693a6abbb4117e430606a1d01eaa3a0df30d842e54742f9c15813a2ed8b8e7a",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap017_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap017_gps.csv",
+      "sha256": "0947fa4d061280d37cbb5c98787b5920e16cefdf6528af5880b2a4816781cc98",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap018_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap018_gps.csv",
+      "sha256": "2b7e46d01b1a5d21dc5576f55a18bb214be4fed090f172a023b1dd882351d342",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap019_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap019_gps.csv",
+      "sha256": "6edd511e690f9039e85d6015fbb5bec2f003f0ece97c51e094678a7fcd89085c",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap020_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap020_gps.csv",
+      "sha256": "83c97cf139f08d8fbacf392c3f640615b1aa8b83377e2d2862f6e5e5cd3f9023",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap021_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap021_gps.csv",
+      "sha256": "825b5bc248217407b806fe5be760cfb1f3aadd8ceba86818227add8324c08186",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap022_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap022_gps.csv",
+      "sha256": "e472a0659b1857b4d864e2c58e436a3d4a995e042fbba0343327087fc56db02e",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap023_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap023_gps.csv",
+      "sha256": "148a50a720b34209859adb68670719270a094ab60df2c80029deafb9bf4bf19f",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap024_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap024_gps.csv",
+      "sha256": "97277b993ddc84aa5eebdd594f26f5155da95af6244c423c0750aa0d6d252fa1",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap025_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap025_gps.csv",
+      "sha256": "deeb39735f004592716edf4b3338a4fcf39f881551e7a0aff39a2b1910957c80",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap026_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap026_gps.csv",
+      "sha256": "28aaf568bad86b7a34cd7b16e76f58cee81744f816e4ab756f53502e33f8cccd",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap027_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap027_gps.csv",
+      "sha256": "4f68df4fe56b302a935b6d604da67d975c7ab34d1a625e9cf7fdda215ca3925e",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap028_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap028_gps.csv",
+      "sha256": "01a05bad69f90394cdcf84c76b7174abd339eb7a6a6c4ef894609ebb6ac60e4c",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap029_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap029_gps.csv",
+      "sha256": "ed402784cf03d2d504f8f99261d4501cc3bb603dd0891ba74d4d22d926296837",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap030_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap030_gps.csv",
+      "sha256": "74b0259266b6674238aa6664c62ec3d833d80948cafe01c901852d55d81f8219",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap031_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap031_gps.csv",
+      "sha256": "9651c8cb9eea75333638deb19ca8c30e6d03e82a04fcc11b3de1c1b2b9afa1df",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap032_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap032_gps.csv",
+      "sha256": "f04d2a929b9cd7b9b965aa96adb71a199f2458cbafc471dc4f68a5fa669e85b6",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap033_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap033_gps.csv",
+      "sha256": "4ce4a6b38a9eba7d1a58fa8283b5d57eb6a4ef155abce55c51593c049047df62",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap034_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap034_gps.csv",
+      "sha256": "4ce4a6b38a9eba7d1a58fa8283b5d57eb6a4ef155abce55c51593c049047df62",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap035_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap035_gps.csv",
+      "sha256": "4ce4a6b38a9eba7d1a58fa8283b5d57eb6a4ef155abce55c51593c049047df62",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap036_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap036_gps.csv",
+      "sha256": "4ce4a6b38a9eba7d1a58fa8283b5d57eb6a4ef155abce55c51593c049047df62",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap037_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap037_gps.csv",
+      "sha256": "4ce4a6b38a9eba7d1a58fa8283b5d57eb6a4ef155abce55c51593c049047df62",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap038_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap038_gps.csv",
+      "sha256": "4ce4a6b38a9eba7d1a58fa8283b5d57eb6a4ef155abce55c51593c049047df62",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap039_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap039_gps.csv",
+      "sha256": "4ce4a6b38a9eba7d1a58fa8283b5d57eb6a4ef155abce55c51593c049047df62",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap040_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap040_gps.csv",
+      "sha256": "4ce4a6b38a9eba7d1a58fa8283b5d57eb6a4ef155abce55c51593c049047df62",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap041_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap041_gps.csv",
+      "sha256": "66e93cb2c5ad3420e8626c48d6964b50e716e92f0fd93200daa72cd801981f74",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap042_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap042_gps.csv",
+      "sha256": "12bbbd3316fcb78c48c4485e5d44c1131b922f1c098d09918d49b546cd09d6f2",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap043_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap043_gps.csv",
+      "sha256": "0b98d345916a235ff9fa5096d3b1b4c27a363eb1ac8717615d53533fd590a58a",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap044_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap044_gps.csv",
+      "sha256": "487bb4114e45c644bc3fb964a0e9dbe5cc58dd62f5edd1381c1d154719d63334",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap045_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap045_gps.csv",
+      "sha256": "32c8c0040733b3a2eec78e670c4f74c0edf348dd88b80f161802b453c0c52839",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap046_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap046_gps.csv",
+      "sha256": "1773165f013bb083f520e7efa8ba60fa181f43a1e6c59b05fab5370240414576",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap047_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap047_gps.csv",
+      "sha256": "b10ffca29582b1a9a1e509bdda4c2645ae68c70645813b0d5b7703efde6b54b2",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap048_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap048_gps.csv",
+      "sha256": "547012bb2329ba39844526f0b4d8aeed0d3cf7793d6dba48199265ae4c41cfba",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap049_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap049_gps.csv",
+      "sha256": "074886b80a63d99e319fa631785f45c9631b134d7cfe475d2c589fd88391a762",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap050_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap050_gps.csv",
+      "sha256": "6c2484a1dd5e4818193579d984e6fc9b98285de496261f4c925af0b3e18b29c2",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap051_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap051_gps.csv",
+      "sha256": "d2733dd0ad8f72e79af9918e372a33d63d36dc9fcd3155f7213b5632497af7e9",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap052_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap052_gps.csv",
+      "sha256": "546a8115ed89a1943d7b91559983a415844cf15e4516474a9b4038179b1022bf",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap053_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap053_gps.csv",
+      "sha256": "ba58e0b2ab8c8ff518666a5b8aec5e3d1ebf6cc0af8c48a6724b583a27da69d5",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap054_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap054_gps.csv",
+      "sha256": "b1e386f0d982e62c5da9002f8634f90b481693f92841fd601ac52df7033546d7",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap055_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap055_gps.csv",
+      "sha256": "c526f27e8b1832bb13f4d8fdd29c0f470d04658cf555e0130a70bf6e791a95df",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap056_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap056_gps.csv",
+      "sha256": "ee3a464d9a8ed57bb018c739f10d0c20d7d45c54cfda789c0f2923fd056b40f2",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap057_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap057_gps.csv",
+      "sha256": "e04b5ac62fb2ab44e29f34e5d8e39511aafbb8ed9892f22f7657437b5c5a2dd9",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap058_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap058_gps.csv",
+      "sha256": "b39934cf91340d293b219c12d474cfcd17a79905e82b435c576c2782799feccd",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap059_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap059_gps.csv",
+      "sha256": "f932a5b68bca1c7e0570e0f4b549ad92a8748670912a387500ade2a184a45cc4",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap060_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap060_gps.csv",
+      "sha256": "940d5da22c1cf3976d3fd1a7a9d06957468cc0cebaf443d440b0158836026487",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap061_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap061_gps.csv",
+      "sha256": "bebf83dc4bc3d5d6b92123656f501f844da66112b719e5c1c4eead0b95a13606",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap062_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap062_gps.csv",
+      "sha256": "82e79148a4ab334f7ef5bb5da948b38c287318355390381aa54ba2caa2bd10c7",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap063_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap063_gps.csv",
+      "sha256": "9f22399f50d8be8184ddf2443a27ce61c92683ee9f0293a0b855f3ebb20474cd",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap064_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap064_gps.csv",
+      "sha256": "a91cd8651b7f2b034993ec3b83a97f04bbca9cd540e205d229d82fe8238d0846",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap065_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap065_gps.csv",
+      "sha256": "da804376fceb46066a9306a299af8473d2875b90d3ea1643a5a18f7385d9d932",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap066_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap066_gps.csv",
+      "sha256": "6bd7c7588aa55bb0a23e72fb7cf48a582fb4ddb53540e7c453af9d93e6e1f856",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap067_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap067_gps.csv",
+      "sha256": "f3d898fcdc7b4376942d4879de0dfc1a99ff7172e8e1a253d2dbf1c089d87361",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap068.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap068.csv",
+      "sha256": "138488faa49e4b9b7a8b2ef9c61202f1308a78ca5e4b97d2e9e4cb5de838a93c",
+      "gps": false
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap068_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap068_gps.csv",
+      "sha256": "5cafc4b0330759ccb4d7d776b55f9af3b40a71036d8b913f1b17b3be40e846b5",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap069_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap069_gps.csv",
+      "sha256": "a1462034be143aadb0cfb21f7c49c7903ae9fd283a976d42aa548b2e7bde876c",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap070_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap070_gps.csv",
+      "sha256": "20248c1525159815dd3b903bf3d9d274b2313094653bce59fc628e5d7e348fb7",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap071_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap071_gps.csv",
+      "sha256": "bfe79dcde7beb19bc465616c7fe1276c812b08993745fbdb88492554a6c40ba3",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap072_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap072_gps.csv",
+      "sha256": "87fa1ca2ece1d1e272ed7a254576b4ee20ffb273ae7f07f70bcfb67bf6e5cc8d",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap073_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap073_gps.csv",
+      "sha256": "80f573bec0894acbf5c163c681af4302eb449db3892c3177449da282fa2224e2",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap074_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap074_gps.csv",
+      "sha256": "1cbebe23ce7c92cb55a084f14aeec8e8acbb3703f323428831529150e6b1ea1b",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap075_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap075_gps.csv",
+      "sha256": "d6f64a52891474e8bb93d15a495b353de2058b35fdf198ee17e21e80790c04c6",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap076_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap076_gps.csv",
+      "sha256": "93b5cb816f1d3117af96d55ba6a86aaec670a825a63e4f1cf12ad4bee9317481",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap077_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap077_gps.csv",
+      "sha256": "b6da22ee8bcca0e35e5cdda9dc899d2aa18bcbbdbf21181a7aa10f6c01551886",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap078_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap078_gps.csv",
+      "sha256": "0fbb62d612e3c879e1b4a6f5bef03831b10149fb5e98b3ce4672a25019a44d98",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap079_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap079_gps.csv",
+      "sha256": "188a0d2db65788617cbf35ff1b7f11d89d71296d06b81540f8e85595bdeb58e7",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap080_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap080_gps.csv",
+      "sha256": "dca9ac3d18f8476a88811823b582ed18c5745aa4064e62e4c5bb913d879feabf",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap081_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap081_gps.csv",
+      "sha256": "410a51bf1cccbb5f6c4bc3720f09f9fa5a7c0c6c185a5a94ba1f5f74fdb95342",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap082_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap082_gps.csv",
+      "sha256": "accf5f2daa8ac6c7d6cf93df9586a68074e8817ca9fd53a3e3b7ef4ce59232c5",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap083_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap083_gps.csv",
+      "sha256": "c1c2a62e9d214592b389b86d83d01aee927533dcf81fb5d6dcc575e0f3d79c13",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap084_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap084_gps.csv",
+      "sha256": "e413bc8c2758e457b40b95f24547e35371d7c85b3a96994a3e927c8e183e3942",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap085_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap085_gps.csv",
+      "sha256": "3ba1601da1ac79983e09d776a5031a704f85867cdad646f74291636dfcb41476",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap086_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap086_gps.csv",
+      "sha256": "88e447ab2f074a8764da2994aea823d2f458df42cb0f2d5c486b14a642a76cc8",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap087_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap087_gps.csv",
+      "sha256": "2a3fae44b4248d3b148f9cb6ad74598137d17dc2980236e75f69c37a4c046a2e",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap088_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap088_gps.csv",
+      "sha256": "85427d8a52f77c34d6569753b6d0f0baba3d49ed6c7aa2346c6ea1bb561c48ed",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap089_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap089_gps.csv",
+      "sha256": "ec9d1ab64cf2ec7edb36cd1359af15c175ffd093503281e6a3824eb5fbd620a6",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap090_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap090_gps.csv",
+      "sha256": "2ec6beb6565ffa5146f5d32d7236b2da828fde6152006e9d8a22624e8d8f16c9",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap091_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap091_gps.csv",
+      "sha256": "66321e18a7f420462afbab2ae381100dc9e64c74191a7967dcaad234ae201b2f",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap092_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap092_gps.csv",
+      "sha256": "2903bac54fe4d8e68adb51852e3518d516933bba8135dc427f64aea185f70431",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap093_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap093_gps.csv",
+      "sha256": "c93c43d9789034fe47188403c67acc030b2b831f1b20de953004099d42d4ed23",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap094_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap094_gps.csv",
+      "sha256": "e26c26ac5731f00495e9bb65ed8d7b75e608c787080f6e0b5a06b6041fea91ed",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap095_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap095_gps.csv",
+      "sha256": "873d5acedd13221f77c2749400a4ec26ae02da4046b20478cb584db1870abd9b",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap096_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap096_gps.csv",
+      "sha256": "e42e445227b8f04ea434988d2b0f7e8146042c269ba20d2c0919ff8bb4c51c36",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap097_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap097_gps.csv",
+      "sha256": "78c63be7c15aba5bd82652c57db5ae2b4ec51e5a8947a7145cbbe6198afd329f",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap098_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap098_gps.csv",
+      "sha256": "33ef04a8986cc59995609317c80bc49a1d6820c6ee1f2b28fb5d92bf27f72636",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap099_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap099_gps.csv",
+      "sha256": "3d085a501e4c0cdfdda2e993d52b1fed7e8d00513e47f92b490b31853333a493",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap100_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap100_gps.csv",
+      "sha256": "3dfd6d1bfcf6c357094151ae5ef5e3350a75efa177e97323f20cfe49376110a0",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap101_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap101_gps.csv",
+      "sha256": "fc4c022244edd18cbc1163fbbe270b48346352400d8f3620b124db55ddc2c871",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap102_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap102_gps.csv",
+      "sha256": "210d3e69393e54e78da56b498b01f3405b3ee1fff8b6294850e3e0604764978a",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap103_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap103_gps.csv",
+      "sha256": "accca9c4d93849f6bf822368d0e0faa78a9587abb9fb7dde53ab3e649f3b75a9",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap104_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap104_gps.csv",
+      "sha256": "6c12beab4211ea8469e274e2a35191ede6891d0d854a063691ba76e2499bda9d",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap105_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap105_gps.csv",
+      "sha256": "a60bc016703a668c65db7d00b1590b1664fbcd907cd3a3fdae370cb54327ec18",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap106_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap106_gps.csv",
+      "sha256": "a38982c3d92b1fcd5fa6004a2b9b06937bea28680b44f2484491a3919f72e038",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap107_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap107_gps.csv",
+      "sha256": "8023645009d219d0895c1f762486448cfbdf77620bdfcdb1f7707b160dd0d79e",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap108_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap108_gps.csv",
+      "sha256": "fbe5c4fe7fdbb76b192cb9bc91e7e44548ab9671704c9e6409429ac0499ddebc",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap109_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap109_gps.csv",
+      "sha256": "6f9d2c2b0a04b952473fe0ba64dcda4e5c45910e0249ad8c315e36fb302d7c4a",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap110_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap110_gps.csv",
+      "sha256": "8c6c25c561974eaa7c71a09433d7cfaa4894a1fe07f2e0495f89f90aabfa158e",
+      "gps": true
+    },
+    {
+      "platform": "SpeedyBee",
+      "local_path": "speedybee/Lap111_gps.csv",
+      "archive_member": "Speedybee DataSet/processed/GPS/Lap111_gps.csv",
+      "sha256": "7a23cbb6a7b25de86bdd5ca7ac8139b6c79ed946e8c8d771e4fc60b6a6ac5195",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_001_log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_001/log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "sha256": "9d3b613c87e5873f21bea85f0cb139e2bec99aa32e416dac4bb5a17b1a5234a7",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_002_log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_002/log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "sha256": "18b69d3fb809ba7a991c23af264076148d7dc23cb8163f7829bcafbed4a5c683",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_003_log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_003/log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "sha256": "b1781cc35be874b1c705270cb8711519dc862878a322dba6e08ed2d4de850517",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_004_log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_004/log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "sha256": "9892d37e89b7eababbad1dd9ca56acf32eb58e79a24b466f91aaae314cac50bd",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_005_log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_005/log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "sha256": "24a5558b0df75ec2411afe53ed931a925892e12ad1d78c0680b474185163b5b4",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_006_log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_006/log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "sha256": "5e509f0b3cae869a7645a6a8ca67b70e99b8955ecddd5d0c6175f9d1de3f1fd1",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_007_log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_007/log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "sha256": "90de648974d7463c2a1b3081f20b160a9680a86978ad31e0e4d73309858b222b",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_008_log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_008/log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "sha256": "de7009b6137f0e9b237877780408bbb1892800ecb7bc8f0e45bd479230ace7f3",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_009_log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_009/log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "sha256": "b10377d74dd5c4b1393c79c70f775b93bbb6fa8603655c421c5ad943446c69e3",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_010_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_010/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "f1b3d235a2985050e5e0f065dbd44609d34fc3cd443803b90b8775348bd6656a",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_011_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_011/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "0bc283c28981e04b2a102b7d0e6fca15a6637f6b8d19e40d679cc278882aa1ec",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_012_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_012/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "e47eeb0b8fdbf04a370f43a2d0fc485966a13d8c53f84d629aea3019d31cb53f",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_013_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_013/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "33c43a50667281399ea5798c6a76d2c46150055d2735cf92a72cff8d84616870",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_014_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_014/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "f1595d7e84cf63202e184a165c2690c348b189e109830028b61fb707af2ce859",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_015_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_015/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "07dc6444486ead70ad63d0c8155ac34e8881367bbee715dc61222950c7ff9f44",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_016_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_016/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "6fd543fba531ddd8b61e662c92d266a22fa46da2fded4958fd70d9f656b683de",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_017_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_017/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "6ce9885eb5a6bbef185155c32f9dec53e2e23a3d53665aad029d7e43e61d0fcb",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_018_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_018/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "c2304fb8c290b75d10217f76ef0fc8b7f781f039b783163b45c30be40fd6fdb8",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_019_log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_019/log_70_2025-8-21-15-57-48_vehicle_global_position_0.csv",
+      "sha256": "ddfa754676d75fcec90a57cfc15d728d5788ffe76003cc3bc8fb358401a34e6d",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_020_log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_020/log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "sha256": "18095aa023c519cc96393208a4724e08235fe562381de54eae8db762153ba1f6",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_021_log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_021/log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "sha256": "9beba7f93cd36a37aabfa0456d7986be3154ffaea2ba6b8b443436a729817a89",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_022_log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_022/log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "sha256": "aa1cfe80cc8c4ccfd5e62f81123e98b3a3cadca7575dbb55f6b70fea5acc0386",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_023_log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_023/log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "sha256": "a138a99efd5e79657c460a16d2ec163a03aadf6b6aea4df0d4c7d31972f047c0",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_024_log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_024/log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "sha256": "59af9e2e07e15ee6dc9d7eadbed7a0cbd49dff0d8bf0e9624c218321d13e825d",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_025_log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_025/log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "sha256": "8267521fe29de2cbc1769e2fcd0618062f05bc676141ff032698e8743c470ee9",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_026_log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_026/log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "sha256": "a60d6d102c86eb5024e1ab8d4a7c3512fe4a225ab65fb17e583d6e152703eec8",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_027_log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_027/log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "sha256": "729f088753e6676a7b8e0348c9a816ce797cb594e00189c8750f2cb98b0d8e76",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_028_log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_028/log_74_2025-8-21-17-46-14_vehicle_global_position_0.csv",
+      "sha256": "3abf7c2e80f291702f06b6be728fe85593e299e6d9b98df09cd008c80a21fb45",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_029_log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_029/log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "sha256": "79c1d920e868f4cfd3071c8a7884c18c44dd6f994d750e77a679ce35aebb7780",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_030_log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_030/log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "sha256": "6ea571a84f53f2a0d2ee3b26a85e647caec9d7855d1fa40c4847b02e0905c12c",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_031_log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_031/log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "sha256": "58af888ddebbd27df287b777a6502efda52f9ee53e34999b7ef280c9a89053c9",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_032_log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_005/lap_032/log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "sha256": "38738ba5a30d9019d263ee6e8e08e03aafc2661082813fa54163deed4c04904a",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_032_log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_032/log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "sha256": "d40065a44beb14b1e7a60935f49099c43a6ef8fb753632e864a4d201055c42da",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_033_log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_033/log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "sha256": "ce8524668c74851c8ca4c3f61d1e6cbb2957a275e78c6f098b3a8f5c52c93467",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_034_log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_034/log_67_2025-8-21-14-24-48_vehicle_global_position_0.csv",
+      "sha256": "5c72586619720c791a945ae3ca4b0f37c32ee0e46558a8481e7a88136fa8a090",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_035_log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_035/log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "sha256": "3215764b9307a908c10f6397ce2c4ffbf2ae9bef5ef99d52940e17764956abc5",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_036_log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_036/log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "sha256": "ce3c70ed96d204a7a0b31cfe938bd1359b7094b4998326d4e11539ae837249f7",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_037_log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_037/log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "sha256": "8c8ce6619e7b3aa6fbca0308984bc62f403239dbd0a5fca15e94285ea86ac43c",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_038_log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_038/log_84_2025-8-22-10-27-06_vehicle_global_position_0.csv",
+      "sha256": "9e62bfd6e0d3c9685c39f83f048cf7f054f992b854d5656cdec2ba293d1f1771",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_039_log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_039/log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "sha256": "1220529387e5528d08ccc53b166907e44e10c0cebe1e48a2028353dffd723c6d",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_040_log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_040/log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "sha256": "62746ee0f04667c26805e84511ede2fcf893cf70b89307850bcf6155b10681e2",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_041_log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_041/log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "sha256": "7ab02a8e031c129ee05c6cd3ae34333e633541ba50f1f4ecefe774fef29f0ec0",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_042_log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_042/log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "sha256": "74dd226f123c325e5f108bd869868b6a65238dc2d520b130e345805f5f85e8ce",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_043_log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_043/log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "sha256": "d44dadfba922e88fdb4ec80a3671f7eeefeb5b0e5f63642ca68b9416eab4a071",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_044_log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_044/log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "sha256": "5b38ef6f9059a3c73c9174715a21022112a93fa1bfb9dff58487825bd56464a5",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_045_log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_045/log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "sha256": "3ef0814b876ffc200f84f7e7a0d658cf930a72a64afeb60a5cf30239ccbddc4d",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_046_log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_046/log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "sha256": "ddb3b94d5669e86b91ac617ceb7d873543d5ebabcf58fda938fd7fe59f0fa00c",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_047_log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_047/log_85_2025-8-22-11-19-58_vehicle_global_position_0.csv",
+      "sha256": "36c32d4569c33c8a6b502e322bcac8fc1f9c8d457bb0845b5ce0634f1e584dc7",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_048_log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_048/log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "sha256": "12d05c407b3d69243d478a1255e8d620eab72e61926f52240d837d45b7471364",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_049_log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_049/log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "sha256": "a2e5939fbda67ab4137548a0f1832bc97530a73f90a82cc71b34deec00be4a39",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_050_log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_050/log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "sha256": "182b84acefe9af884d8ae59d15988d9f34fea8410b7b906c7b80fba3005e41dd",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_051_log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_051/log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "sha256": "88c63b0e0441f0bf8f8f620469672327a8cc69dae81fc0476b7405e065b739a2",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_052_log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_052/log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "sha256": "6201bf3ae7fd220371cd372ecce55c80d635f2100989025a8c90dfaed79ee5d8",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_053_log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_053/log_86_2025-8-22-12-18-38_vehicle_global_position_0.csv",
+      "sha256": "83f7ff27afc0aa9fc1f393937f82457710b0c7c9eb047fa979df1e85c04d2397",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_054_log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_054/log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "sha256": "6d5cd8cebe237bffc39706393907f51bcda359d559b9ee4eb918fd198d6fd017",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_055_log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_055/log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "sha256": "8b47e49c4ba78c8b8adaa825c2b8f35f28d4c3c1f35127fc154575ca352e264b",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_056_log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_056/log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "sha256": "b527f59669f62e735a76bfd145d0437e9e0baf7a90e6701ca8b7868716c7a37c",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_057_log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_057/log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "sha256": "873250958a200bae619ef26dc2fe98dda2e136b23025507017842dd58044e64f",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_058_log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_058/log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "sha256": "16db057b1089bb1e4f85b8d0c0b92104c1ac0114e8916b81fa4af3e1c1ecc7c1",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_059_log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_059/log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "sha256": "cfe9de604f0720635f779e852c5d590506686fd5f6adc3c31b1c71ce6f1c6186",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_060_log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_060/log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "sha256": "13022a283f4d43686647133bbfba144f66bcde7aa7c8378d08ef36fa442c891a",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_061_log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_061/log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "sha256": "7703f72b6ced6cf3793d94ff5c174934e77b0eb2352e3330e6c1a527ecbe0b1d",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_062_log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_062/log_87_2025-8-22-13-09-40_vehicle_global_position_0.csv",
+      "sha256": "d122847b5eb1104d6367903a40e17368e34b78ceab3ee089798be0e75ea6a578",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_063_log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_063/log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "sha256": "c89563c55c797df5b9977c1aede27f53c8e5097f667ef3f117799be4aab1b89c",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_064_log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_064/log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "sha256": "22d9215ab4f5792490c83087d9c8377333e71d38a216edbb58852f3b19b543be",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_065_log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_065/log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "sha256": "a67caa4b2e247774ded8823da8461001537e9363813a5e16dc59e369ce4ce274",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_066_log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_066/log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "sha256": "96dffef4de17709a72eab1b42d2f70cecb0378dc1200598f5deeef3d44513ce3",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_067_log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_067/log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "sha256": "625b51a5c2119efd571c29a1491467ef6ed7005e4d412bd1cb93b5a031b18522",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_068_log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_068/log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "sha256": "373e66cafa13d2b9dbceae64380306325af1e7ee48773d68e3a03bb54875b4d8",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_069_log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_069/log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "sha256": "c211f039889310a8eae3ca0a6547f656ccc9a90334daa4cc9b43216710df602a",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_070_log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_070/log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "sha256": "cbd046edb3a984331303540a516e39564a0c215a11342a908d7a24cffd698b94",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_071_log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_071/log_88_2025-8-22-14-04-34_vehicle_global_position_0.csv",
+      "sha256": "06f1f016f4ecb8dbcba5fb93bbaf3542a06eb23b39ccb0a7b19e068c8a51ecd0",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_072_log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_072/log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "sha256": "6fce9391e43b248db93bf8b8abbe9fab3673c99b86031da9cbfd68c25b6734fb",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_073_log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_073/log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "sha256": "a00cfe6d437dc7cd1a4a8c634911ce3b50164327e41ffe92ceeb1092d9534568",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_074_log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_074/log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "sha256": "b9cf36da9570a6b1dd30a6b7973ec5b1e097fd42b10e6e19629cc6b882747b94",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_075_log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_075/log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "sha256": "ee08e2d97ffc62c43871691fd01a2740ce13062fccc1d674ac40c152ca8f481b",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_076_log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_076/log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "sha256": "80cbc4aae59f8b675e39ed778dada3250225e606a3e43bfdbc2a0e70151af49a",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_077_log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_077/log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "sha256": "fa2a0acdb56a56893b2007623a2b53fe342216e2b80c54c0d5eb5a76fb34c844",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_078_log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_078/log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "sha256": "cbe8f289a79b35df3665ff68538c94a2f315646dd33845155b6b210c3ab81416",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_079_log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_079/log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "sha256": "62b0544ffecc5bb27aa88e121ba760af5158d359a1185a7383616860659cf3ea",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_080_log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_080/log_92_2025-8-23-09-54-12_vehicle_global_position_0.csv",
+      "sha256": "8fff971c0ebe3798f5751bc8942f45038631f4cd9d00278109e95ef9bdd5e696",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_081_log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_081/log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "sha256": "a012cb2aec8510cebd3092e3d77a8361ead3b059fb00aa1a8e4069c5ddb0e960",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_082_log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_082/log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "sha256": "5edfaf1df45e9d42f2fc046a0b782c8212782d032f21d4dd1d3ee3f3260aa27f",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_083_log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_083/log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "sha256": "495eb024b1f7caca027eff39bbe13e20a2392cf58586629d7406c63b743ec007",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_084_log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_084/log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "sha256": "8a3a6f29771b6500a3ce2a0ca15970a75448bbb506f948f36c9a5ce62cac35ef",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_085_log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_085/log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "sha256": "58ab96661725080f111a7cf202492510f60cb9a8f339113b2e854a3271bd0255",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_086_log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_086/log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "sha256": "d0b347bb6a66384383a6d03e0a673cba8437243b40c25206f18ddc64a027af87",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_087_log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_087/log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "sha256": "c05f714ee011c891bb3f541ca2a9f58bf3785eeb6986352af28e104075408098",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_088_log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_088/log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "sha256": "41a718953805659ab68cba31925c94bd4f7ad61a3900a9fc541cfa925ea33368",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_089_log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_089/log_93_2025-8-23-10-43-56_vehicle_global_position_0.csv",
+      "sha256": "efa989f2191aaeaf6c5132d47c1446a85e45eecf91239cd98be941c396618d4c",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_090_log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_090/log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "sha256": "785622963c731019cf86545344cc41f022c8e5b1c1c8d908ad70f56beeacb4fd",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_091_log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_091/log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "sha256": "7ca60f697822f8368c733e7efee00fdcefb48e0c0dfad63d472a4d74b23f8421",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_092_log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_092/log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "sha256": "4f6206c421a9054673699f81081721e35d1d905eb278cce747e1c3aa4fa3b9db",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_093_log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_093/log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "sha256": "10d9527fea1c6912eea7a52948abee81df2e5a4ee1788a3ffe90cf583222cd84",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_094_log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_094/log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "sha256": "18ee7685b388b3927252c128b13378c67d541fc7b566ddd6683f23f2da0322b6",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_095_log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_095/log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "sha256": "a6b99019fab888e13b8405484847dafd92d00eb3d37e281f9a9b38f8db8cdd93",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_096_log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_096/log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "sha256": "ef23aa67302218231bb7b3b81a06f50d4d1a4e6af342f69760b6acfd02de3a87",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_097_log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_097/log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "sha256": "b3aa4975677e4603bc7f2d3ae4f6473837b76d2234f661cda7c75fab13732eb1",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_098_log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_098/log_112_2025-8-23-12-26-12_vehicle_global_position_0.csv",
+      "sha256": "17bf49729f39c7f4c603123c159caa62dc7c5db04045bb51e3e4d767012fa45b",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_099_log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_099/log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "sha256": "a1c2f057798ffff9b4de377b554d3675f009ef2d40f57f1b40585d6749389e5b",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_100_log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_100/log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "sha256": "b2bd201ce48589cac6561b1dff165f31453737d2d9e17d43c7176fcc05798be0",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_101_log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_101/log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "sha256": "e92dedcab18f140e83c9b9b8a43423d5f178785fbd83e5e396393472dc43aea6",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_102_log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_102/log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "sha256": "5eb9668fe457540f77250ae1c69c6f270ac8f7de6bd1839637f062b4b77d39c7",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_103_log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_103/log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "sha256": "aa05c51c66640926fd80585e292ee33154652667b0815ed4f88ea9e9f0845685",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_104_log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_104/log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "sha256": "9c191f390e155efb5db36dfe49ae28f6807fcbdc3b678ee2c3b64451b2ddc5c9",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_105_log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_105/log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "sha256": "d403f4d2bafe8fd6da51e3b8b55c2e614927ab0248eb3617b38ad7c1011bfe22",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_106_log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_106/log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "sha256": "b692c0e48a6e74dac47b3c54c2bfdd742ef36fc8c2d8844a818d4bad98980586",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_107_log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_107/log_113_2025-8-23-13-14-28_vehicle_global_position_0.csv",
+      "sha256": "7954ef51bd2e0004cd018d4b70de63f9330461a8d3ef5e228056c0e4b93d9209",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_108_log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_108/log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "sha256": "4d57c3872c23df0fa700cc1fd02c7aff6c0cd2e401a5802f5dfc81b3f1bc5b86",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_109_log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_109/log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "sha256": "439f3d03b67cd16ae304dd479b7f6f2b85194207a7e56d45b49f7c298f98bd29",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_110_log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_110/log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "sha256": "4ee0080bdd34326cfd3cf64ef7f6155368732c54e98e5cb42d6e044375f1f6d4",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_111_log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_111/log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "sha256": "90c6b0f45796eab7ed43d3565c01f1094f60597d49de8962553b130f0e77965a",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_112_log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_112/log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "sha256": "b03f5c32742f4d3728ed575bd3a805533b751e3d5a9947fbb08bc749a1218ca9",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_113_log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_113/log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "sha256": "01eafaf2a8e01985d4986c7d0cf8de1793ef564fa84f60ae1ccc83f2edf8a307",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_114_log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_114/log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "sha256": "2b44955a9b615500e9a29b5ad411d0a5241d43096d598a92797290bf7e16a117",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_115_log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_115/log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "sha256": "9413e3d251345be9e38b4fa8204f74ad90072c9f03e338ebb9aaca4b64301758",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_116_log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_116/log_115_2025-8-23-14-06-08_vehicle_global_position_0.csv",
+      "sha256": "96e2390d5a6ee4faca898544a049311ff8daa94a6e1e988a28dd88e5dd558c66",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_117_log_1_2025-7-3-08-59-46_10vueltas_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_117/log_1_2025-7-3-08-59-46_10vueltas_vehicle_global_position_0.csv",
+      "sha256": "4dd86dec5ae915e5dca3f6b74fcc1c3333ea22c5845af74d06303a09c8a432a4",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_118_log_1_2025-7-3-08-59-46_10vueltas_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_118/log_1_2025-7-3-08-59-46_10vueltas_vehicle_global_position_0.csv",
+      "sha256": "d7074c2a0b09de4afc054065967dbf345fd8dd673de7a734e3e52e2a34c9c364",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_119_log_1_2025-7-3-08-59-46_10vueltas_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_119/log_1_2025-7-3-08-59-46_10vueltas_vehicle_global_position_0.csv",
+      "sha256": "c2b7bc1803c15f6a3ead126f0ede80a18226e64d583e38a6f8ad6e079e741e6c",
+      "gps": true
+    },
+    {
+      "platform": "Pixhawk",
+      "local_path": "pixhawk/lap_120_log_1_2025-7-3-08-59-46_10vueltas_vehicle_global_position_0.csv",
+      "archive_member": "Holybro Pixhawk/processed/UnGrouped flights/lap_120/log_1_2025-7-3-08-59-46_10vueltas_vehicle_global_position_0.csv",
+      "sha256": "34ac979b36c66f3179e68f6de6659127d7e51dc2d589b01f0615d873c091c0b9",
+      "gps": true
+    }
+  ]
+}

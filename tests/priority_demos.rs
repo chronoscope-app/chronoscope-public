@@ -8,7 +8,6 @@ fn priority_sources_preserve_measurements_and_disable_journey_lines() {
         ("earthquakes", 8500),
         ("fire-detections", 50713),
         ("electricity-access", 5746),
-        ("covid", 6509),
     ] {
         let project = demos::load(id, dir.path()).unwrap();
         assert_eq!(project.dataset.events.len(), count);
@@ -35,10 +34,6 @@ fn priority_sources_preserve_measurements_and_disable_journey_lines() {
                     event.attrs["confidence"].as_str(),
                     "nominal" | "high"
                 ));
-            } else if id == "covid" {
-                assert!(event.value.unwrap() >= 0.);
-                assert_eq!(event.attrs["value_unit"], "cumulative confirmed cases");
-                assert!(event.attrs["position_method"].contains("not case location"));
             } else {
                 assert!(event.geometry_wkt.is_some());
                 assert_eq!(
@@ -128,7 +123,9 @@ fn invalid_measurement_ranges_are_rejected_without_replacing_the_scene() {
 #[test]
 fn every_catalog_preview_points_to_a_real_saved_view() {
     let dir = tempfile::tempdir().unwrap();
-    assert_eq!(demos::DEMOS.len(), 16);
+    assert_eq!(demos::DEMOS.len(), 15);
+    assert_eq!(demos::DEMOS.last().unwrap().id, "starlink-orbits");
+    assert!(!demos::DEMOS.iter().any(|demo| demo.id == "covid"));
     for demo in demos::DEMOS {
         let project = demos::load(demo.id, dir.path()).unwrap();
         for preview in demo.previews {
