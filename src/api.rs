@@ -79,6 +79,7 @@ pub enum Theme {
 #[serde(rename_all = "lowercase")]
 pub enum CoordinateDisplay {
     Dd,
+    Dms,
     Utm,
     Mgrs,
 }

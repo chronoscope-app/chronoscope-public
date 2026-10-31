@@ -1,0 +1,58 @@
+{
+  "records": 25924,
+  "flights": [
+    {
+      "file": "Jan-11th-2023-10-45AM-Flight-Airdata.csv",
+      "sha256": "66bf7ea4e7dc4823833bdeebd47eb1a1418b5fde1c16fafee2e56e64b93f1e73",
+      "records": 6240,
+      "entity": "UAV · 2023-01-11",
+      "first": 1673423146.0,
+      "last": 1673423771.0,
+      "bounds": [
+        36.8778402247874,
+        0.35780802930936,
+        36.8785368417696,
+        0.358910819192158
+      ],
+      "maximum_height_m": 15.00000048,
+      "located": 6240
+    },
+    {
+      "file": "Jan-12th-2023-02-37PM-Flight-Airdata.csv",
+      "sha256": "c4ca15f3c3a810daa890711d9e0a900a2ce11d31c70689034308ce64b679a753",
+      "records": 7189,
+      "entity": "UAV · 2023-01-12",
+      "first": 1673523463.0,
+      "last": 1673524182.0,
+      "bounds": [
+        36.8659858487751,
+        0.434878873844703,
+        36.8679667392905,
+        0.436847631505912
+      ],
+      "maximum_height_m": 54.8000017536,
+      "located": 7189
+    },
+    {
+      "file": "Jan-20th-2023-02-30PM-Flight-Airdata.csv",
+      "sha256": "71220df59c165412be4960fd370aa6833631c077b109a4991487091cc235d96b",
+      "records": 12495,
+      "entity": "UAV · 2023-01-20",
+      "first": 1674214231.0,
+      "last": 1674215481.0,
+      "bounds": [
+        36.8772677160504,
+        0.387000383460382,
+        36.8829106441939,
+        0.388592319187717
+      ],
+      "maximum_height_m": 40.700001302400004,
+      "located": 12489
+    }
+  ],
+  "source_url": "https://huggingface.co/datasets/imageomics/kabr_airdata",
+  "license": "CC0 1.0",
+  "layer": "KABR UAV flights · Kenya · January 2023",
+  "default_visible": 7189,
+  "project_sha256": "875688047ff40d27595b8ced6350d009b87028f55b63bcc0f0cedfc169f4bc50"
+}

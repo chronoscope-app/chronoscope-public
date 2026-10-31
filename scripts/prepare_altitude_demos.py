@@ -98,7 +98,7 @@ def write(stem, title, events, provenance):
     with table.open('w',newline='') as f:
         w=csv.writer(f,lineterminator='\n');w.writerow(['entity','timestamp','latitude','longitude','altitude_m','altitude_reference','departure_airport','arrival_airport','aircraft_type','route','flight_id','source_flight_id','source_file','source_row'])
         for e in events:
-            w.writerow([e['entity'],dt.datetime.fromtimestamp(e['time'],dt.timezone.utc).isoformat(),e['lat'],e['lon'],e['altitude']['meters'],'reported',e['attrs']['departure_airport'],e['attrs']['arrival_airport'],e['attrs']['aircraft_type'],e['category'],e['attrs']['flight_id'],e['attrs']['source_flight_id'],e['source'],e['source_row']])
+            w.writerow([e['entity'],dt.datetime.fromtimestamp(e['time'],dt.timezone.utc).isoformat(),e['lat'],e['lon'],e['altitude']['meters'],'reported',e['attrs']['departure_airport'],e['attrs']['arrival_airport'],e['attrs']['aircraft_type'],e['category'],e['attrs']['flight_id'],e['attrs']['source_flight_id'],e['attrs']['source_file'],e['source_row']])
     Path(str(table)+'.attribution.json').write_text(json.dumps(provenance,ensure_ascii=False,indent=2)+'\n')
     REPORT[stem]=dict(records=len(events),entities=len({e['entity'] for e in events}),
                       minimum_m=min(e['altitude']['meters'] for e in events),maximum_m=max(e['altitude']['meters'] for e in events),
@@ -213,6 +213,8 @@ def flights(source, download=False):
                     e['category'] = f'Manila → {city}'
                     e['attrs'].update(flight_id=flight_id, source_flight_id=row['flight_id'],
                         departure_airport='RPLL', arrival_airport=airport, aircraft_type=row['aircraft_type'])
+                    e['attrs']['chronoscope_original_source'] = e['source']
+                    e['source'] = 'Philippine flights · March 1–7, 2026'
                     events.append(e)
                 selected.append(dict(source_file=name, sha256=digest, source_records=len(rows),
                     retained_records=len(retained), departure_utc=dt.datetime.fromtimestamp(first_time, dt.timezone.utc).isoformat()))
@@ -222,7 +224,7 @@ def flights(source, download=False):
         source_url='https://doi.org/10.5281/zenodo.20534917',
         related_source_url='https://doi.org/10.17632/tjh279d4f7.1',
         license='CC BY 4.0', license_url='https://creativecommons.org/licenses/by/4.0/',
-        changes='Only original dataset/raw flight CSVs; no modified-altitude, speed, position, poison or sequence-window data. March 1–7, 2026 UTC; five flights per route per day, spread across available departure times (175 flights; six airports). Retain first and last rows and original rows at least 45 seconds apart. Preserve original Unix timestamps, coordinates and altitude_meters without added interpolation or date shifts. Heights use reported/approximate metres: the physical datum and upstream processing are unspecified; zero is retained as reported, not certified ground elevation. Colors distinguish the five routes. Hexadecimal flight IDs come from original filenames; source_flight_id preserves upstream cells, some of which were corrupted to floating-point notation or inf. Source filenames, rows, aircraft type and airport codes retained. Archive regions verified by pinned SHA-256; original members verified by ZIP CRC/length and recorded SHA-256. No endorsement implied.')]
+        changes='Only original dataset/raw flight CSVs; no modified-altitude, speed, position, poison or sequence-window data. March 1–7, 2026 UTC; five flights per route per day, spread across available departure times (175 flights; six airports). Retain first and last rows and original rows at least 45 seconds apart. Preserve original Unix timestamps, coordinates and altitude_meters without added interpolation or date shifts. Heights use reported/approximate metres: the physical datum and upstream processing are unspecified; zero is retained as reported, not certified ground elevation. Colors distinguish the five routes. Hexadecimal flight IDs come from original filenames; source_flight_id preserves upstream cells, some of which were corrupted to floating-point notation or inf. Source filenames, rows, aircraft type and airport codes retained. All files are grouped into one Event layer; original file paths remain in source_file and chronoscope_original_source. Archive regions verified by pinned SHA-256; original members verified by ZIP CRC/length and recorded SHA-256. No endorsement implied.')]
     write(STEM, 'A week of Philippine flights · 175 departures · 6 airports', events, provenance)
     REPORT[STEM].update(first_timestamp=dt.datetime.fromtimestamp(events[0]['time'], dt.timezone.utc).isoformat(),
         last_timestamp=dt.datetime.fromtimestamp(events[-1]['time'], dt.timezone.utc).isoformat(),

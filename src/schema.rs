@@ -76,7 +76,10 @@ pub fn mapping() -> Value {
     ] {
         props.insert(k.into(), string());
     }
-    props.insert("coordinate_system".into(), choice(&["dd", "utm", "mgrs"]));
+    props.insert(
+        "coordinate_system".into(),
+        choice(&["dd", "dms", "utm", "mgrs"]),
+    );
     props.insert("default_zone".into(), integer(0, 60));
     props.insert("offset_minutes".into(), integer(-1440, 1440));
     props.insert("date_order".into(), choice(&["auto", "dmy", "mdy"]));
@@ -187,7 +190,7 @@ fn map_layer() -> Value {
 }
 fn preferences() -> Value {
     object(
-        json!({"ai_toolbar_si":boolean(),"basemap":choice(&["streets","none"]),"theme":choice(&["dark","light","system"]),"coordinates":choice(&["dd","utm","mgrs"]),"date_format":choice(&["system","iso","mdy","mdy-short","dmy","dmy-short","dmy-dots","dmy-long","mdy-long"]),"time_format":choice(&["system","12h","12h-seconds","24h","24h-seconds"]),"map":map_config(),"map_layers":{"anyOf":[{"type":"null"},{"type":"array","maxItems":64,"items":map_layer()}]},"auto_save_unsaved":boolean(),"terrain_path":nullable(string()),"terrain_builtin":boolean(),"terrain_exaggeration":{"type":"number","minimum":0.1,"maximum":20},"terrain_vertical_datum":choice(&["unresolved-msl","egm96","ellipsoid"])}),
+        json!({"ai_toolbar_si":boolean(),"basemap":choice(&["streets","none"]),"theme":choice(&["dark","light","system"]),"coordinates":choice(&["dd","dms","utm","mgrs"]),"date_format":choice(&["system","iso","mdy","mdy-short","dmy","dmy-short","dmy-dots","dmy-long","mdy-long"]),"time_format":choice(&["system","12h","12h-seconds","24h","24h-seconds"]),"map":map_config(),"map_layers":{"anyOf":[{"type":"null"},{"type":"array","maxItems":64,"items":map_layer()}]},"auto_save_unsaved":boolean(),"terrain_path":nullable(string()),"terrain_builtin":boolean(),"terrain_exaggeration":{"type":"number","minimum":0.1,"maximum":20},"terrain_vertical_datum":choice(&["unresolved-msl","egm96","ellipsoid"])}),
         &[],
     )
 }
@@ -464,7 +467,7 @@ pub fn command_schema(command: &str) -> Option<Value> {
             vec!["pattern"],
         ),
         "coordinates" => (
-            json!({"coordinate":{"oneOf":[object(json!({"system":{"const":"dd"},"latitude":{"type":"number","minimum":-90,"maximum":90},"longitude":{"type":"number","minimum":-180,"maximum":180}}),&["system","latitude","longitude"]),object(json!({"system":{"const":"utm"},"zone":integer(1,60),"hemisphere":choice(&["N","S"]),"easting":number(),"northing":number()}),&["system","zone","hemisphere","easting","northing"]),object(json!({"system":{"const":"mgrs"},"reference":string()}),&["system","reference"])]}}),
+            json!({"coordinate":{"oneOf":[object(json!({"system":{"const":"dms"},"latitude":string(),"longitude":string()}),&["system","latitude","longitude"]),object(json!({"system":{"const":"dd"},"latitude":{"type":"number","minimum":-90,"maximum":90},"longitude":{"type":"number","minimum":-180,"maximum":180}}),&["system","latitude","longitude"]),object(json!({"system":{"const":"utm"},"zone":integer(1,60),"hemisphere":choice(&["N","S"]),"easting":number(),"northing":number()}),&["system","zone","hemisphere","easting","northing"]),object(json!({"system":{"const":"mgrs"},"reference":string()}),&["system","reference"])]}}),
             vec!["coordinate"],
         ),
         "edit" => (
@@ -610,6 +613,13 @@ pub fn command_schema(command: &str) -> Option<Value> {
     if matches!(command, "attribute_table" | "query" | "select_query") {
         schema["properties"].as_object_mut().unwrap().insert("table_search".into(),
             json!({"type":"string","maxLength":1024,"description":"Additional table-local text and original-attribute substring search, intersected with the existing filter."}));
+    }
+    if command == "select_query" {
+        schema["properties"].as_object_mut().unwrap().insert("radius".into(),
+            object(json!({"latitude":{"type":"number","minimum":-90,"maximum":90},"longitude":{"type":"number","minimum":-180,"maximum":180},"meters":{"type":"number","exclusiveMinimum":0}}), &["latitude","longitude","meters"]));
+    }
+    if command == "import_commit" {
+        schema["properties"].as_object_mut().unwrap().insert("target_source".into(), json!({"type":"string","maxLength":1024,"description":"Append imported rows into this existing Event source layer, preserving original source provenance in attributes. Requires append=true."}));
     }
     if command == "gis_table" {
         let properties = schema["properties"].as_object_mut().unwrap();

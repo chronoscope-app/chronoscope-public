@@ -107,7 +107,11 @@
       "track-wrap-fallback-qa.mjs",
       "upload-paging-qa.mjs",
       "vfx-coverage-qa.mjs",
-      "vfx-full-app-qa.mjs"
+      "vfx-full-app-qa.mjs",
+      "context-radius-qa.mjs",
+      "dms-qa.mjs",
+      "import-layers-qa.mjs",
+      "kabr-demo-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -180,12 +184,14 @@
         "viewport-pan-qa.mjs",
         "space-time-window-qa.mjs",
         "view-sync-qa.mjs",
-        "globe-framing-qa.mjs"
+        "globe-framing-qa.mjs",
+        "context-radius-qa.mjs"
       ],
       "rust": [
         "canvas_selection",
         "cesium_scene",
-        "cesium_agents"
+        "cesium_agents",
+        "radius_selection"
       ]
     },
     "time": {
@@ -262,7 +268,9 @@
         "welcome-qa.mjs",
         "presentation-ui-qa.mjs",
         "priority-demos-qa.mjs",
-        "table-playback-qa.mjs"
+        "table-playback-qa.mjs",
+        "dms-qa.mjs",
+        "import-layers-qa.mjs"
       ],
       "rust": [
         "autosave",
@@ -274,7 +282,9 @@
         "views_layers",
         "workflows",
         "workspace_boundaries",
-        "priority_demos"
+        "priority_demos",
+        "dms_coordinates",
+        "import_layers"
       ]
     },
     "gis": {
@@ -325,7 +335,8 @@
         "altitude-qa.mjs",
         "space-demos-qa.mjs",
         "flight-week-qa.mjs",
-        "idf-demo-qa.mjs"
+        "idf-demo-qa.mjs",
+        "kabr-demo-qa.mjs"
       ],
       "rust": [
         "altitude",
@@ -333,7 +344,8 @@
         "views_layers",
         "altitude_controls",
         "space_demos",
-        "idf_demo"
+        "idf_demo",
+        "kabr_demo"
       ]
     }
   },

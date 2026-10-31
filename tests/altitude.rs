@@ -173,7 +173,8 @@ fn flight_demo_spans_seven_days_with_five_routes_every_day() {
     let mut airports = BTreeSet::new();
     for e in &p.dataset.events {
         assert!((1772323200.0..1772928000.0).contains(&e.time)); // March 1–8 UTC
-        assert!(e.source.starts_with("dataset/raw/"));
+        assert_eq!(e.source, "Philippine flights · March 1–7, 2026");
+        assert!(e.attrs["chronoscope_original_source"].starts_with("dataset/raw/"));
         assert_eq!(e.altitude.unwrap().reference, AltitudeReference::Reported);
         airports.insert(e.attrs["departure_airport"].clone());
         airports.insert(e.attrs["arrival_airport"].clone());

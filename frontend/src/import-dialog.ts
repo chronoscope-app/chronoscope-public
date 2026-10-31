@@ -49,13 +49,14 @@ interface Preview {
 }
 interface Hooks {
   workspace: () => string;
+  layers: () => { source: string; count: number }[];
   committed: (append: boolean, result: Commit) => Promise<void>;
 }
 const coreFields = [
   ["time", "Timestamp / date"],
   ["entity", "Entity"],
-  ["lat", "Latitude (DD)"],
-  ["lon", "Longitude (DD)"],
+  ["lat", "Latitude (DD / DMS)"],
+  ["lon", "Longitude (DD / DMS)"],
   ["altitude", "Altitude"],
   ["category", "Category"],
   ["label", "Label"],
@@ -65,7 +66,7 @@ const coreFields = [
 const extraFields = [
   ["clock", "Separate time"],
   ["altitude_reference_column", "Altitude reference column"],
-  ["coordinate_column", "Combined DD / UTM coordinate"],
+  ["coordinate_column", "Combined DD / DMS / UTM coordinate"],
   ["easting", "UTM easting"],
   ["northing", "UTM northing"],
   ["zone", "UTM zone"],
@@ -141,6 +142,8 @@ export class ImportDialog {
         throw Error("This source has no worksheets to import.");
       let sheet = 0;
       const drafts = preview.sheets.map((s) => structuredClone(s.mapping));
+      let targetSource = "";
+      const existingLayers = this.hooks.layers();
       let append = appendInitial,
         aggregate = false,
         windowMinutes = 15,
@@ -246,6 +249,11 @@ export class ImportDialog {
           decimal_comma: check("#decimal-comma"),
         });
         append = check("#append-import");
+        targetSource = input("#import-target-layer");
+        if (targetSource) append = true;
+        const appendInput = $<HTMLInputElement>("#append-import");
+        appendInput.checked = append;
+        appendInput.disabled = !!targetSource;
         aggregate = check("#import-aggregate");
         windowMinutes = Number(input("#import-aggregate-window"));
         radius = Number(input("#import-aggregate-radius"));
@@ -265,7 +273,7 @@ export class ImportDialog {
           const required =
             feedback?.required ??
             (key === "time" ||
-              (m.coordinate_system === "dd" &&
+              (["dd", "dms"].includes(m.coordinate_system || "dd") &&
                 m.coordinate_column == null &&
                 ((key === "lat" && m.lon != null) ||
                   (key === "lon" && m.lat != null))) ||
@@ -454,7 +462,7 @@ export class ImportDialog {
                     `<option value="${v}" ${v === delimiter ? "selected" : ""}>${title}</option>`,
                 )
                 .join("")}</select></label>`
-        }</div><div class="import-section-heading"><h3>Match source columns</h3><span>Required fields are marked *</span></div><div class="modal-grid import-field-grid">${coreFields.map(field).join("")}</div><div class="modal-grid import-options"><label class="field">Altitude unit<select id="altitude-unit">${[["meters", "Metres"], ["feet", "Feet"], ["kilometers", "Kilometres"]].map(([v, label]) => `<option value="${v}" ${m.altitude_unit === v ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field">Altitude reference<select id="altitude-reference">${[["unspecified", "Unknown · retain, do not plot"], ["ellipsoid", "WGS84 ellipsoid"], ["egm96", "Mean sea level · EGM96"], ["reported", "Reported height · approximate"]].map(([v, label]) => `<option value="${v}" ${m.altitude_reference === v ? "selected" : ""}>${label}</option>`).join("")}</select></label></div><p class="description">Altitude is optional. Verify the source unit and vertical reference. Pressure altitude and unknown sea-level datums can be shown approximately using Reported height; they are not converted to precise physical height.</p><details id="import-advanced"><summary>Coordinate, date and additional fields</summary><label class="field">Input coordinates<select id="import-crs">${["dd", "utm", "mgrs"].map((v) => `<option ${m.coordinate_system === v ? "selected" : ""}>${v}</option>`).join("")}</select></label><p class="description">Locations are optional. Map both decimal-degree columns, or leave both unmapped to keep records without a location. Input must already use WGS84.</p><div class="modal-grid import-field-grid">${extraFields.map(field).join("")}</div><div class="modal-grid import-options"><label class="field">Default entity<input id="default-entity" value="${esc(m.default_entity || "")}"></label><label class="field">Default UTM zone<input id="default-zone" type="number" min="1" max="60" value="${m.default_zone || ""}"></label><label class="field">Default hemisphere<select id="default-hemisphere">${["", "N", "S"].map((v) => `<option value="${v}" ${m.default_hemisphere === v ? "selected" : ""}>${v || "Choose…"}</option>`).join("")}</select></label><label class="field">Numeric time encoding<select id="time-encoding">${["auto", "unix_seconds", "unix_milliseconds", "unix_microseconds", "unix_nanoseconds", "excel_serial", "excel1904", "time_of_day"].map((v) => `<option value="${v}" ${m.time_encoding === v ? "selected" : ""}>${v.replaceAll("_", " ")}</option>`).join("")}</select></label><label class="field">Default date<input id="default-date" value="${esc(m.default_date || "")}" placeholder="YYYY-MM-DD"></label><label class="field">Custom timestamp format<input id="date-format" value="${esc(m.custom_format || "")}" placeholder="%d/%m/%Y %H:%M:%S"></label><label class="field">Naive UTC offset / minutes<input id="time-offset" type="number" value="${m.offset_minutes || 0}"></label><label class="check-row"><input id="decimal-comma" type="checkbox" ${m.decimal_comma ? "checked" : ""}>Decimal comma numbers</label></div><p class="description">Explicit timestamp offsets take priority over the default offset.</p></details><section aria-label="Source data preview"><h3>Source preview</h3><div class="preview-scroll"><table><thead><tr>${s.headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${s.preview.map((row) => `<tr>${row.map((v) => `<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></section><div class="notice import-detection-notes">${(s.notes || []).map((v) => `<p>${esc(v)}</p>`).join("")}</div><button id="preview-mapping">Refresh sample validation</button><div id="normalized-preview" class="notice" aria-live="polite"></div><details><summary>Aggregate during import (optional)</summary><label class="check-row"><input id="import-aggregate" type="checkbox" ${aggregate ? "checked" : ""}>Keep time/proximity summaries instead of individual rows</label><div class="modal-grid"><label class="field">Time window / minutes<input id="import-aggregate-window" type="number" value="${windowMinutes}"></label><label class="field">Radius / metres<input id="import-aggregate-radius" type="number" value="${radius}"></label></div><p class="description">Lossy. Keep the original source for individual records. The full-file check reviews source rows before aggregation.</p></details><label class="check-row"><input id="append-import" type="checkbox" ${append ? "checked" : ""}>Append to the current workspace</label><p class="description" id="import-replace-note">${append ? "Existing Events will be retained." : "Import will replace the Event dataset. The change can be undone during this session."} Original source columns and row numbers are retained.</p><section id="import-review" aria-live="polite"></section></div><footer><div><p id="import-validation-summary" role="status" aria-live="polite"></p><p id="import-status" role="status" aria-live="polite"></p></div><div class="import-actions"><button data-close-footer>Cancel</button><button id="review-import">Check all rows</button><button id="commit-import" class="primary" disabled>Import Events</button></div></footer>`;
+        }</div><div class="import-section-heading"><h3>Match source columns</h3><span>Required fields are marked *</span></div><div class="modal-grid import-field-grid">${coreFields.map(field).join("")}</div><div class="modal-grid import-options"><label class="field">Altitude unit<select id="altitude-unit">${[["meters", "Metres"], ["feet", "Feet"], ["kilometers", "Kilometres"]].map(([v, label]) => `<option value="${v}" ${m.altitude_unit === v ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field">Altitude reference<select id="altitude-reference">${[["unspecified", "Unknown · retain, do not plot"], ["ellipsoid", "WGS84 ellipsoid"], ["egm96", "Mean sea level · EGM96"], ["reported", "Reported height · approximate"]].map(([v, label]) => `<option value="${v}" ${m.altitude_reference === v ? "selected" : ""}>${label}</option>`).join("")}</select></label></div><p class="description">Altitude is optional. Verify the source unit and vertical reference. Pressure altitude and unknown sea-level datums can be shown approximately using Reported height; they are not converted to precise physical height.</p><details id="import-advanced"><summary>Coordinate, date and additional fields</summary><label class="field">Input coordinates<select id="import-crs">${["dd", "dms", "utm", "mgrs"].map((v) => `<option ${m.coordinate_system === v ? "selected" : ""}>${v}</option>`).join("")}</select></label><p class="description">Locations are optional. Map both latitude/longitude columns (DD or DMS), or leave both unmapped to keep records without a location. Input must already use WGS84.</p><div class="modal-grid import-field-grid">${extraFields.map(field).join("")}</div><div class="modal-grid import-options"><label class="field">Default entity<input id="default-entity" value="${esc(m.default_entity || "")}"></label><label class="field">Default UTM zone<input id="default-zone" type="number" min="1" max="60" value="${m.default_zone || ""}"></label><label class="field">Default hemisphere<select id="default-hemisphere">${["", "N", "S"].map((v) => `<option value="${v}" ${m.default_hemisphere === v ? "selected" : ""}>${v || "Choose…"}</option>`).join("")}</select></label><label class="field">Numeric time encoding<select id="time-encoding">${["auto", "unix_seconds", "unix_milliseconds", "unix_microseconds", "unix_nanoseconds", "excel_serial", "excel1904", "time_of_day"].map((v) => `<option value="${v}" ${m.time_encoding === v ? "selected" : ""}>${v.replaceAll("_", " ")}</option>`).join("")}</select></label><label class="field">Default date<input id="default-date" value="${esc(m.default_date || "")}" placeholder="YYYY-MM-DD"></label><label class="field">Custom timestamp format<input id="date-format" value="${esc(m.custom_format || "")}" placeholder="%d/%m/%Y %H:%M:%S"></label><label class="field">Naive UTC offset / minutes<input id="time-offset" type="number" value="${m.offset_minutes || 0}"></label><label class="check-row"><input id="decimal-comma" type="checkbox" ${m.decimal_comma ? "checked" : ""}>Decimal comma numbers</label></div><p class="description">Explicit timestamp offsets take priority over the default offset.</p></details><section aria-label="Source data preview"><h3>Source preview</h3><div class="preview-scroll"><table><thead><tr>${s.headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${s.preview.map((row) => `<tr>${row.map((v) => `<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></section><div class="notice import-detection-notes">${(s.notes || []).map((v) => `<p>${esc(v)}</p>`).join("")}</div><button id="preview-mapping">Refresh sample validation</button><div id="normalized-preview" class="notice" aria-live="polite"></div><details><summary>Aggregate during import (optional)</summary><label class="check-row"><input id="import-aggregate" type="checkbox" ${aggregate ? "checked" : ""}>Keep time/proximity summaries instead of individual rows</label><div class="modal-grid"><label class="field">Time window / minutes<input id="import-aggregate-window" type="number" value="${windowMinutes}"></label><label class="field">Radius / metres<input id="import-aggregate-radius" type="number" value="${radius}"></label></div><p class="description">Lossy. Keep the original source for individual records. The full-file check reviews source rows before aggregation.</p></details><label class="field">Destination layer<select id="import-target-layer"><option value="">Create a layer for this file / worksheet</option>${existingLayers.map((layer) => `<option value="${esc(layer.source)}" ${targetSource === layer.source ? "selected" : ""}>Add to ${esc(layer.source || "Unattributed data")} · ${layer.count.toLocaleString()} records</option>`).join("")}</select></label><p class="description">Add matching files to an existing layer to keep one entry in Layers. Original file, worksheet, source rows and imported attributes are retained.</p><label class="check-row"><input id="append-import" type="checkbox" ${append ? "checked" : ""}>Append to the current workspace</label><p class="description" id="import-replace-note">${append ? "Existing Events will be retained." : "Import will replace the Event dataset. The change can be undone during this session."} Original source columns and row numbers are retained.</p><section id="import-review" aria-live="polite"></section></div><footer><div><p id="import-validation-summary" role="status" aria-live="polite"></p><p id="import-status" role="status" aria-live="polite"></p></div><div class="import-actions"><button data-close-footer>Cancel</button><button id="review-import">Check all rows</button><button id="commit-import" class="primary" disabled>Import Events</button></div></footer>`;
         $<HTMLButtonElement>("[data-close]").onclick = close;
         $<HTMLDetailsElement>("#import-advanced").open =
           m.coordinate_system !== "dd" ||
@@ -533,6 +541,7 @@ export class ImportDialog {
           const result = await work<Commit>("import_commit", {
             ...args(),
             append,
+            ...(targetSource ? { target_source: targetSource } : {}),
             accept_rejected: review.rejected > 0,
             ...(aggregate
               ? {

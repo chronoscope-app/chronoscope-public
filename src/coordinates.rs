@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 pub enum CoordinateSystem {
     #[default]
     Dd,
+    Dms,
     Utm,
     Mgrs,
 }
@@ -15,6 +16,10 @@ pub enum Coordinate {
     Dd {
         latitude: f64,
         longitude: f64,
+    },
+    Dms {
+        latitude: String,
+        longitude: String,
     },
     Utm {
         zone: i32,
@@ -30,6 +35,7 @@ pub enum Coordinate {
 pub struct Converted {
     pub latitude: f64,
     pub longitude: f64,
+    pub dms: Dms,
     /// Legacy grid field: zone 0 denotes UPS, explicitly identified below.
     pub utm: Coordinate,
     pub grid_system: String,
@@ -37,6 +43,101 @@ pub struct Converted {
     pub mgrs: String,
     pub mgrs_precision: u8,
     pub mgrs_cell_size_m: Option<f64>,
+}
+/// Readable DMS coordinates, rounded to milliseconds of arc for display only.
+#[derive(Clone, Debug, Serialize, Deserialize, schemars::JsonSchema)]
+pub struct Dms {
+    pub latitude: String,
+    pub longitude: String,
+}
+pub fn format_dms(value: f64, latitude: bool) -> String {
+    // Round before decomposing, carrying 60 seconds/minutes into the next unit.
+    let ticks = (value.abs() * 3_600_000.).round() as u64;
+    let degrees = ticks / 3_600_000;
+    let minutes = ticks / 60_000 % 60;
+    let seconds = (ticks % 60_000) as f64 / 1000.;
+    let hemisphere = match (latitude, value < 0.) {
+        (true, false) => 'N',
+        (true, true) => 'S',
+        (false, false) => 'E',
+        (false, true) => 'W',
+    };
+    format!("{degrees}°{minutes:02}′{seconds:06.3}″{hemisphere}")
+}
+/// Accept symbols, colon separators, or three space-separated components.
+/// Hemisphere letters may precede or follow the coordinate; signs must agree.
+pub fn parse_dms(text: &str, latitude: bool) -> Result<f64, String> {
+    static PATTERN: std::sync::OnceLock<regex::Regex> = std::sync::OnceLock::new();
+    let pattern = PATTERN.get_or_init(|| regex::Regex::new(
+        r#"^([NSEW])?\s*([+-]?\d{1,3})(?:\s*[°:]\s*|\s+)(\d{1,2})(?:\s*['′:]\s*|\s+)(\d{1,2}(?:\.\d+)?)\s*["″]?\s*([NSEW])?$"#
+    ).unwrap());
+    let text = text.trim().to_uppercase();
+    let c = pattern
+        .captures(&text)
+        .ok_or("DMS requires degrees, minutes and seconds, for example 40°44′54.0″N")?;
+    if c.get(1).is_some() && c.get(5).is_some() {
+        return Err("Use one DMS hemisphere letter".into());
+    }
+    let direction = c.get(1).or_else(|| c.get(5)).map(|v| v.as_str());
+    if direction.is_some_and(|h| {
+        if latitude {
+            !matches!(h, "N" | "S")
+        } else {
+            !matches!(h, "E" | "W")
+        }
+    }) {
+        return Err("Coordinate hemisphere is on the wrong axis".into());
+    }
+    let degrees: f64 = c[2].parse().map_err(|_| "Invalid DMS degrees")?;
+    let minutes: f64 = c[3].parse().map_err(|_| "Invalid DMS minutes")?;
+    let seconds: f64 = c[4].parse().map_err(|_| "Invalid DMS seconds")?;
+    if minutes >= 60. || !seconds.is_finite() || seconds >= 60. {
+        return Err("DMS minutes and seconds must be less than 60".into());
+    }
+    let negative = direction.map_or(c[2].starts_with('-'), |h| matches!(h, "S" | "W"));
+    if direction.is_some()
+        && ((c[2].starts_with('-') && !negative) || (c[2].starts_with('+') && negative))
+    {
+        return Err("DMS sign conflicts with its hemisphere".into());
+    }
+    let value = degrees.abs() + minutes / 60. + seconds / 3600.;
+    if value > if latitude { 90. } else { 180. } {
+        return Err("DMS coordinate is out of range".into());
+    }
+    Ok(if negative { -value } else { value })
+}
+pub fn parse_dms_pair(text: &str) -> Result<(f64, f64), String> {
+    let text = text
+        .trim()
+        .trim_matches(['(', ')', '[', ']'])
+        .to_uppercase();
+    let split = text
+        .find([';', ','])
+        .map(|i| (i, 1))
+        .or_else(|| {
+            text.char_indices()
+                .find(|(i, c)| *i > 0 && matches!(c, 'N' | 'S'))
+                .map(|(i, _)| (i + 1, 0))
+        })
+        .or_else(|| {
+            text.char_indices()
+                .find(|(i, c)| *i > 0 && matches!(c, 'E' | 'W'))
+                .map(|(i, _)| (i, 0))
+        });
+    if let Some((i, skip)) = split {
+        return Ok((
+            parse_dms(&text[..i], true)?,
+            parse_dms(&text[i + skip..], false)?,
+        ));
+    }
+    let parts: Vec<_> = text.split_whitespace().collect();
+    if parts.len() == 6 {
+        return Ok((
+            parse_dms(&parts[..3].join(" "), true)?,
+            parse_dms(&parts[3..].join(" "), false)?,
+        ));
+    }
+    Err("Combined DMS needs latitude, longitude; separate them with a comma or semicolon".into())
 }
 pub fn normalize_mgrs(reference: &str) -> String {
     reference
@@ -111,6 +212,10 @@ fn convert_checked(input: Coordinate) -> Result<Converted, String> {
             latitude,
             longitude,
         } => wgs84(latitude, longitude)?,
+        Coordinate::Dms {
+            latitude,
+            longitude,
+        } => wgs84(parse_dms(&latitude, true)?, parse_dms(&longitude, false)?)?,
         Coordinate::Utm {
             zone,
             hemisphere,
@@ -157,6 +262,10 @@ fn convert_checked(input: Coordinate) -> Result<Converted, String> {
     Ok(Converted {
         latitude: p.lat(),
         longitude: p.lon(),
+        dms: Dms {
+            latitude: format_dms(p.lat(), true),
+            longitude: format_dms(p.lon(), false),
+        },
         utm: Coordinate::Utm {
             zone: i32::from(utm.zone()),
             hemisphere: if utm.is_north() { "N" } else { "S" }.into(),

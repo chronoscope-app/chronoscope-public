@@ -131,7 +131,7 @@ impl PendingImport {
         store: &DataStore,
         first_id: u64,
     ) -> Result<IngestReport, String> {
-        self.ingest_aggregated(sheet, mapping, store, first_id, None)
+        self.ingest_aggregated(sheet, mapping, store, first_id, None, None)
     }
     pub fn ingest_aggregated(
         &self,
@@ -140,6 +140,7 @@ impl PendingImport {
         store: &DataStore,
         first_id: u64,
         aggregation: Option<crate::aggregation::Options>,
+        target_source: Option<&str>,
     ) -> Result<IngestReport, String> {
         self.ingest_reporting(
             sheet,
@@ -147,9 +148,11 @@ impl PendingImport {
             store,
             first_id,
             aggregation,
+            target_source,
             &mut |_, _, _| Ok(()),
         )
     }
+    #[allow(clippy::too_many_arguments)] // Streaming options plus the rejected-row callback.
     pub fn ingest_reporting(
         &self,
         sheet: usize,
@@ -157,6 +160,7 @@ impl PendingImport {
         store: &DataStore,
         first_id: u64,
         aggregation: Option<crate::aggregation::Options>,
+        target_source: Option<&str>,
         rejected_row: &mut import::RejectedRow<'_>,
     ) -> Result<IngestReport, String> {
         self.check()?;
@@ -170,7 +174,7 @@ impl PendingImport {
         let mut raw_seen = 0u64;
         let bulk = accumulator.is_none() && store.count()? == 0;
         let mut flush = |batch: &RawTable| -> Result<(), String> {
-            let report = import::convert_reporting(
+            let mut report = import::convert_reporting(
                 batch,
                 mapping,
                 &self.sample.source,
@@ -179,6 +183,11 @@ impl PendingImport {
                     .ok_or("Event ID capacity exhausted")?,
                 rejected_row,
             )?;
+            if let Some(target) = target_source {
+                for event in &mut report.events {
+                    import::assign_layer(event, target);
+                }
+            }
             raw_seen = raw_seen
                 .checked_add(batch.rows.len() as u64)
                 .ok_or("Event ID capacity exhausted")?;

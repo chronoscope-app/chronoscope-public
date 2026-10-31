@@ -100,6 +100,15 @@ impl Engine {
                     .unwrap_or_else(|| Mapping::detect(table).mapping);
                 let mut staged = crate::store::DataStore::new(&self.data_dir)?;
                 let append = args["append"].as_bool().unwrap_or(false);
+                let target_source = args["target_source"].as_str();
+                if let Some(target) = target_source {
+                    if !append {
+                        return Err("INVALID_ARGUMENT: merging into a layer requires append".into());
+                    }
+                    if !s.store.has_source(target)? {
+                        return Err("INVALID_ARGUMENT: target layer no longer exists".into());
+                    }
+                }
                 let previous_count = if append { s.store.count()? } else { 0 };
                 if append
                     && args.get("aggregation").is_none()
@@ -126,6 +135,7 @@ impl Engine {
                     args.get("aggregation")
                         .map(|v| serde_json::from_value(v.clone()).map_err(|e| e.to_string()))
                         .transpose()?,
+                    target_source,
                 )?;
                 if rejected > 0 && !args["accept_rejected"].as_bool().unwrap_or(false) {
                     return Ok(
@@ -256,6 +266,7 @@ impl Engine {
             &mapping,
             &staged,
             1,
+            None,
             None,
             &mut |row, cells, reason| {
                 if let Some(w) = writer.as_mut() {

@@ -207,8 +207,8 @@ impl Mapping {
                 "starttime",
             ]),
             end: find(&["end", "endtime", "endtimestamp"]),
-            lat: find(&["latitude", "lat"]),
-            lon: find(&["longitude", "lon", "lng", "long"]),
+            lat: find(&["latitude", "lat", "latitudedms", "latdms"]),
+            lon: find(&["longitude", "lon", "lng", "long", "longitudedms", "londms"]),
             category: find(&["category", "type", "eventtype", "kind"]),
             label: find(&["label", "description", "event", "title", "place"]),
             value: find(&["value", "amount", "magnitude", "mag"]),
@@ -439,6 +439,25 @@ pub fn convert(
 ) -> Result<ImportReport, String> {
     convert_reporting(table, mapping, source, first_id, &mut |_, _, _| Ok(()))
 }
+/// Group rows into one display layer while retaining the original file/sheet.
+pub fn assign_layer(event: &mut Event, target: &str) {
+    if event.source == target {
+        return;
+    }
+    let key = "chronoscope_original_source";
+    // Do not discard a same-named original CSV column.
+    if let Some(original) = event.attrs.remove(key) {
+        let mut preserved = format!("{key}_attribute");
+        while event.attrs.contains_key(&preserved) {
+            preserved.push('_');
+        }
+        event.attrs.insert(preserved, original);
+    }
+    event.attrs.insert(
+        key.into(),
+        std::mem::replace(&mut event.source, target.into()),
+    );
+}
 pub type RejectedRow<'a> = dyn FnMut(usize, &[String], &str) -> Result<(), String> + 'a;
 /// Report every rejection while retaining only a bounded set of UI examples.
 pub fn convert_reporting(
@@ -483,8 +502,10 @@ pub fn convert_reporting(
             return Err("Mapped column is out of range".into());
         }
     }
-    if mapping.coordinate_system == crate::coordinates::CoordinateSystem::Dd
-        && mapping.coordinate_column.is_none()
+    if matches!(
+        mapping.coordinate_system,
+        crate::coordinates::CoordinateSystem::Dd | crate::coordinates::CoordinateSystem::Dms
+    ) && mapping.coordinate_column.is_none()
         && mapping.lat.is_some() != mapping.lon.is_some()
     {
         return Err("Map both coordinate columns or neither".into());
@@ -576,6 +597,37 @@ pub fn convert_reporting(
                             (
                                 parse_dd(get(mapping.lat), true, mapping.decimal_comma)?,
                                 parse_dd(get(mapping.lon), false, mapping.decimal_comma)?,
+                            )
+                        }
+                    }
+                    crate::coordinates::CoordinateSystem::Dms => {
+                        if let Some(c) = mapping.coordinate_column {
+                            let text = get(Some(c));
+                            if text.is_empty() {
+                                (None, None)
+                            } else {
+                                let (lat, lon) = crate::coordinates::parse_dms_pair(text)?;
+                                (Some(lat), Some(lon))
+                            }
+                        } else {
+                            let parse = |text: &str, latitude| {
+                                if text.is_empty() {
+                                    Ok(None)
+                                } else {
+                                    crate::coordinates::parse_dms(
+                                        &if mapping.decimal_comma {
+                                            text.replace(',', ".")
+                                        } else {
+                                            text.into()
+                                        },
+                                        latitude,
+                                    )
+                                    .map(Some)
+                                }
+                            };
+                            (
+                                parse(get(mapping.lat), true)?,
+                                parse(get(mapping.lon), false)?,
                             )
                         }
                     }
@@ -1103,9 +1155,18 @@ impl Mapping {
         }
         if mapping.lat.is_some() && mapping.lon.is_some() {
             if mapping.mgrs.is_some() || mapping.easting.is_some() {
-                notes.push("Multiple coordinate representations are present; DD columns are selected. Change input coordinates to use MGRS or UTM instead.".into());
+                notes.push("Multiple coordinate representations are present; latitude/longitude columns are selected. Change input coordinates to use MGRS or UTM instead.".into());
             }
-            mapping.coordinate_system = C::Dd;
+            mapping.coordinate_system = if mapping
+                .lat
+                .is_some_and(|c| values(c).any(|s| crate::coordinates::parse_dms(s, true).is_ok()))
+                && mapping.lon.is_some_and(|c| {
+                    values(c).any(|s| crate::coordinates::parse_dms(s, false).is_ok())
+                }) {
+                C::Dms
+            } else {
+                C::Dd
+            };
         } else if mapping.mgrs.is_some() {
             mapping.coordinate_system = C::Mgrs;
         } else if mapping.easting.is_some() {
@@ -1115,6 +1176,21 @@ impl Mapping {
                 let sample: Vec<_> = values(c).take(30).collect();
                 if sample.is_empty() {
                     continue;
+                }
+                if sample
+                    .iter()
+                    .filter(|s| crate::coordinates::parse_dms_pair(s).is_ok())
+                    .count()
+                    * 10
+                    >= sample.len() * 8
+                {
+                    mapping.coordinate_column = Some(c);
+                    mapping.coordinate_system = C::Dms;
+                    notes.push(format!(
+                        "Combined DMS latitude/longitude detected in {}.",
+                        table.headers[c]
+                    ));
+                    break;
                 }
                 if sample
                     .iter()

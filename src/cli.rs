@@ -59,7 +59,7 @@ enum Command {
         #[arg(long, default_value_t = 8)]
         max_steps: u64,
     },
-    /// Convert DD, UTM or MGRS; input is a JSON coordinate object.
+    /// Convert DD, DMS, UTM or MGRS; input is a JSON coordinate object.
     Coordinates {
         #[arg(long)]
         input: String,

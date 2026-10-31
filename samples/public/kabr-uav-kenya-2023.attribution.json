@@ -1,0 +1,10 @@
+[
+  {
+    "title": "KABR AirData Drone Telemetry · three complete Kenyan wildlife-monitoring flights",
+    "creator": "Imageomics Institute / KABR project; curated by Jenna Kline",
+    "source_url": "https://huggingface.co/datasets/imageomics/kabr_airdata",
+    "license": "CC0 1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "changes": "Three complete original AirData logs from January 11, 12 and 20, 2023; 25,924 records (25,918 located; six initial zero/zero GPS fixes retained as unlocated), no thinning, interpolation, date shifts or time alignment. Published datetime(utc) seconds are retained exactly, including repeated seconds; original time(millisecond) counters remain attributes. All original fields, filenames and source rows retained in one Event layer, with a distinct entity per flight. Canonical reported altitude and Value use height_above_takeoff(feet) converted by 0.3048 to metres, as an explicitly approximate takeoff-relative display offset above the map reference floor, not an absolute ellipsoid/sea-level altitude or terrain clearance. Source altitude_above_seaLevel(feet) is separately retained verbatim and converted to reported_amsl_m in attributes; no geoid/vertical-datum conversion or terrain-height reconstruction. Small negative source heights are retained. Opens on January 12 only; other flights are available through saved views and Full range. Flight-state categories are original controller states. No endorsement implied."
+  }
+]

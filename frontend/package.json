@@ -74,7 +74,8 @@
     "test:table-playback": "node scripts/table-playback-qa.mjs",
     "test:space-demos": "node scripts/space-demos-qa.mjs",
     "test:flight-week": "node scripts/flight-week-qa.mjs",
-    "test:idf-demo": "node scripts/idf-demo-qa.mjs"
+    "test:idf-demo": "node scripts/idf-demo-qa.mjs",
+    "test:kabr-demo": "node scripts/kabr-demo-qa.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "2.12.4",

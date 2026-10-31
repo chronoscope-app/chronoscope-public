@@ -210,7 +210,10 @@ try {
     else {
       assert(changed(orbitBefore, orbit), mode + " middle orbit");
       assert(orbit.tilt <= 85.001);
-      assert(Math.abs(orbit.bearing - orbitBefore.bearing) > 1);
+      assert(
+        Math.abs(orbit.bearing - orbitBefore.bearing) < 0.01,
+        mode + " middle drag preserves bearing",
+      );
     }
     const orbitStopped = await state();
     await page.waitForTimeout(200);
@@ -219,6 +222,26 @@ try {
       orbitStopped.camera,
       mode + " no middle-drag inertia",
     );
+    await fit();
+    const rotateBefore = await state();
+    await drag("right", 60, 0);
+    const rightRotated = await state();
+    if (mode === "map")
+      sameCamera(
+        rightRotated.camera,
+        rotateBefore.camera,
+        "Map ignores horizontal right drag",
+      );
+    else {
+      assert(
+        Math.abs(rightRotated.bearing - rotateBefore.bearing) > 1,
+        mode + " right drag rotates",
+      );
+      assert(
+        Math.abs(rightRotated.tilt - rotateBefore.tilt) < 0.01,
+        mode + " right drag preserves tilt",
+      );
+    }
     await fit();
     const z = await state();
     await drag("right", 0, 55);
@@ -321,18 +344,6 @@ try {
       selectedBefore.selected,
       mode + " double-click preserves selection",
     );
-    await page.mouse.click(d.x, d.y, { button: "right", clickCount: 2 });
-    await page.waitForTimeout(80);
-    await selectionUnchanged(
-      ids,
-      mode + " right double-click preserves selection",
-    );
-    const rightDouble = await state();
-    assert(
-      metric(rightDouble) > metric(afterDouble),
-      mode + " right double-click zoom out",
-    );
-    assert.deepEqual(rightDouble.selected, selectedBefore.selected);
     await canvas.focus();
     const keyBefore = await state();
     await page.keyboard.press("ArrowRight");
@@ -414,9 +425,11 @@ try {
   // Prepared navigation intentionally retains the complete eligible pool.
   // Exercise the original off-screen-selection rollback in the canonical
   // renderer, where viewport culling can actually omit those selected rows.
-  await page.locator('#vfx-smooth-playback').setChecked(false);
-  await page.evaluate(()=>window.__chronoscope.sceneIdle());
-  await page.waitForFunction(()=>!window.__chronoscope.view.residentPlaybackActive);
+  await page.locator("#vfx-smooth-playback").setChecked(false);
+  await page.evaluate(() => window.__chronoscope.sceneIdle());
+  await page.waitForFunction(
+    () => !window.__chronoscope.view.residentPlaybackActive,
+  );
   await fit();
   // Reproduce the actual slow-double-click bug with off-screen selections.
   const preserved = ["1", "2"];

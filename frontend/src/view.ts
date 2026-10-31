@@ -409,7 +409,8 @@ export class SpaceTimeView {
     y: number;
     restore?: () => void;
   };
-  private rightClick?: { at: number; x: number; y: number };
+  onContextPick: (id: string) => void = () => {};
+  onRadiusQuery: (latitude: number, longitude: number) => void = () => {};
   private inputSuspended = false;
   private drag?: {
     x: number;
@@ -421,7 +422,8 @@ export class SpaceTimeView {
     orbit: boolean;
     pointer: number;
     button: number;
-    navigation?: "orbit" | "zoom";
+    navigation?: "orbit" | "zoom" | "tilt";
+    moved?: boolean;
     anchor: Cartesian2;
   };
   private triangleImage = "";
@@ -1074,7 +1076,6 @@ export class SpaceTimeView {
     if (remember) this.rememberView();
     this.cancelNavigation();
     this.cancelPendingPick();
-    this.rightClick = undefined;
     this.mode = mode;
     this.scene.screenSpaceCameraController.enableRotate = mode !== "map";
     const desired =
@@ -3822,7 +3823,6 @@ export class SpaceTimeView {
             this.clickSequence.y - e.clientY,
           ) <= 5;
         if (!sameClick) this.flushPendingPick();
-        if (e.button !== 2) this.rightClick = undefined;
         canvas.focus({ preventScroll: true });
         this.inputSuspended = false;
         this.scene.screenSpaceCameraController.enableInputs = true;
@@ -3840,7 +3840,7 @@ export class SpaceTimeView {
             ? "zoom"
             : this.mode !== "map" &&
                 (e.button === 1 || (!this.boxMode && (e.ctrlKey || e.shiftKey)))
-              ? "orbit"
+              ? (e.button === 1 ? "tilt" : "orbit")
               : undefined;
         this.drag = {
           x: e.clientX,
@@ -3875,12 +3875,18 @@ export class SpaceTimeView {
           drag.lastX = e.clientX;
           drag.lastY = e.clientY;
           if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) <= 5) return;
+          drag.moved = true;
           this.cancelPendingPick();
-          if (drag.navigation === "zoom")
-            this.zoomAt(
+          if (drag.navigation === "zoom") {
+            if (this.mode !== "map" && dx)
+              this.orient(this.bearing() + dx * 0.3, this.tilt());
+            if (dy) this.zoomAt(
               Math.exp(Math.max(-0.65, Math.min(0.65, dy * 0.008))),
               drag.anchor,
             );
+          } else if (drag.navigation === "tilt") {
+            if (dy) this.orient(this.bearing(), this.tilt() - dy * 0.2);
+          }
           else this.orient(this.bearing() + dx * 0.3, this.tilt() - dy * 0.2);
           return;
         }
@@ -3960,18 +3966,20 @@ export class SpaceTimeView {
         canvas.releasePointerCapture(e.pointerId);
       if (drag.orbit || drag.button === 1) return;
       if (drag.button === 2) {
-        if (distance <= 5) {
-          const last = this.rightClick,
-            now = performance.now();
-          if (
-            last &&
-            now - last.at < 500 &&
-            Math.hypot(last.x - e.clientX, last.y - e.clientY) <= 5
-          ) {
-            this.zoomAt(1 / 1.8, drag.anchor);
-            this.rightClick = undefined;
-          } else this.rightClick = { at: now, x: e.clientX, y: e.clientY };
-        } else this.rightClick = undefined;
+        if (!drag.moved && distance <= 5) {
+          this.cancelPendingPick(true);
+          const id = this.pickId(e.clientX - r.left, e.clientY - r.top);
+          if (id && (id.kind === "event" || id.kind === "geometry"))
+            this.onContextPick(id.id);
+          else if (id?.kind === "gis") this.onGisPick(id.layer, id.id);
+          else {
+            const ground = this.groundAt(drag.anchor);
+            if (ground) {
+              const c = Cartographic.fromCartesian(ground);
+              this.onRadiusQuery(CesiumMath.toDegrees(c.latitude), CesiumMath.toDegrees(c.longitude));
+            }
+          }
+        }
         return;
       }
       if (drag.box && distance > 5) {
@@ -4047,7 +4055,6 @@ export class SpaceTimeView {
     window.addEventListener("pointerup", up, { signal });
     const resetPointer = () => {
       this.drag = undefined;
-      this.rightClick = undefined;
       this.inputSuspended = false;
       this.box.style.display = "none";
       this.scene.screenSpaceCameraController.enableInputs = true;
