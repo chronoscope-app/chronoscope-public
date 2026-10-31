@@ -1,0 +1,666 @@
+{
+  "passed": true,
+  "source_commit": "ce9d72c9cc13d397bf1f6b2d145d33fe02a7a5ff",
+  "version": "0.16.12",
+  "app": "Windows-build-0.16.12-ce9d72c",
+  "binary": "chronoscope-desktop.exe",
+  "binary_sha256": "0bdaa3284fd8480a6e122557d8b67066f865d812eaec82ad186570cc7b2b021a",
+  "validated_utc": "2026-10-31T22:26:19.441862+00:00",
+  "changes": [
+    "Decode street-map payloads using Uint8Array.fromBase64 when supported and a direct typed-array loop on older WebViews; preserve binary, JSON and UTF-8 text payloads without changing cache/concurrency limits.",
+    "Measure active Cesium preUpdate cadence rather than postRender spacing so sparse mouse input does not masquerade as slow rendering. Retain CPU rendering cost, memory availability/capacity, graphics and geometry-pressure checks and slow recovery.",
+    "Use a four-handle screen-space hit test on pointer down. Defer scene hover picking until the existing one-second tooltip delay and retain actual GPU click/context/box selection. Track movement through a gesture so a pan returning to its start cannot become a click.",
+    "Run camera-idle track settling only after the held drag ends; cancel stale hover work on camera changes."
+  ],
+  "frontend_tests_passed": 189,
+  "metadata_tests_passed": 5,
+  "matching_version_entries": 9,
+  "browser_suites": {
+    "flight-pan": {
+      "checks": [
+        "Slow held Globe pan performs no scene picks and retains prepared geometry through three real governor checks",
+        "Hover hints defer scene picking until the existing one-second tooltip delay",
+        "Deferred hover/pan picking preserves genuine flight selection",
+        "Time navigation handles use their screen-space hit test and still orbit without a GPU scene pick",
+        "Real memory-pressure policy still caps geometry without changing the 11,018 source records"
+      ],
+      "public_requests": 0,
+      "errors": []
+    },
+    "navigation": {
+      "checks": [
+        {
+          "name": "globe mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+          "evidence": {
+            "anchorErrorPixels": 1.317934658996517e-06,
+            "fineZoomRatio": 0.2500009509931702,
+            "navigation": {
+              "inertia": false,
+              "freeLook": false,
+              "northUpOnly": false,
+              "flatOnly": false,
+              "gestureMaximumTiltDegrees": 85,
+              "keyboardFocus": "map",
+              "active": false
+            }
+          }
+        },
+        {
+          "name": "space-time mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+          "evidence": {
+            "anchorErrorPixels": 7.944806593866206e-06,
+            "fineZoomRatio": 0.25000000012796875,
+            "navigation": {
+              "inertia": false,
+              "freeLook": false,
+              "northUpOnly": false,
+              "flatOnly": false,
+              "gestureMaximumTiltDegrees": 85,
+              "keyboardFocus": "map",
+              "active": false
+            }
+          }
+        },
+        {
+          "name": "map mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+          "evidence": {
+            "anchorErrorPixels": 1.1237541368510057e-10,
+            "fineZoomRatio": 0.24999999999999994,
+            "navigation": {
+              "inertia": false,
+              "freeLook": false,
+              "northUpOnly": false,
+              "flatOnly": true,
+              "gestureMaximumTiltDegrees": 85,
+              "keyboardFocus": "map",
+              "active": false
+            }
+          }
+        },
+        {
+          "name": "Map fast and slow double-clicks preserve off-screen selections and restore visible highlights",
+          "evidence": {
+            "delaysMs": [
+              300,
+              750
+            ]
+          }
+        },
+        {
+          "name": "Selected-only query and CSV export retain both off-screen and on-screen selections",
+          "evidence": {}
+        },
+        {
+          "name": "Rapid additive map clicks retain both exact records",
+          "evidence": {
+            "ids": [
+              "136",
+              "36"
+            ]
+          }
+        },
+        {
+          "name": "Slower double-click restores selection after initial click feedback",
+          "evidence": {}
+        },
+        {
+          "name": "Escape cancels delayed picking without reselecting a record",
+          "evidence": {}
+        },
+        {
+          "name": "Extreme zoom/tilt remains bounded and never changes event time or Time height",
+          "evidence": {}
+        },
+        {
+          "name": "Select mode keeps Shift-drag box selection and camera position",
+          "evidence": {}
+        },
+        {
+          "name": "Focused O switches Globe/2D",
+          "evidence": {}
+        },
+        {
+          "name": "Space retains timeline play/pause",
+          "evidence": {}
+        },
+        {
+          "name": "Table Shift+Down selects rows without camera navigation",
+          "evidence": {}
+        },
+        {
+          "name": "Shared CLI/MCP view adapter retains full zoom factor semantics",
+          "evidence": {}
+        }
+      ],
+      "public_requests": 0,
+      "errors": []
+    },
+    "navigation-table-cleanup": {
+      "checks": [
+        "Show selected restricts the table without changing workspace filters; All sources has explanatory tooltips",
+        "Shift selection remains inside the selected-only table scope",
+        "Selected table updates when selection changes, including empty selections",
+        "Show selected intersects search and optional workspace filters",
+        "Selected-only tab state survives detaching and docking; the All sources tooltip is visible",
+        "space-time right: repeated horizontal rotations retain their axis within half a pixel",
+        "space-time middle: repeated horizontal rotations retain their axis within half a pixel",
+        "globe right: repeated horizontal rotations retain their axis within half a pixel",
+        "globe middle: repeated horizontal rotations retain their axis within half a pixel",
+        "Synthetic UAV demo is absent from the 14-demo catalog"
+      ],
+      "public_requests": 0,
+      "errors": []
+    },
+    "flight-week": {
+      "checks": [
+        "Demo picker opens a complete seven-day, 175-flight altitude dataset with two previews",
+        "Day playback crosses UTC dates, retains a 24-hour window and continues showing flights",
+        "Flight workspace, credit and previews remain compact (425212 bytes)"
+      ],
+      "public_requests": 0,
+      "errors": []
+    },
+    "release-updates": {
+      "checks": [
+        "Help checks GitHub directly, accepts a published preview, ignores drafts and opens the trusted release page",
+        "A new version appears in Notifications and automatic checking reuses the daily cache",
+        "A development build ahead of Public never advertises an older release as an update",
+        "GitHub rate limiting is shown as a check failure with a retry action",
+        "A late response cannot reopen a closed update dialog or replace another dialog",
+        "Automatic-check preferences survive reload and cancelling Preferences keeps the saved value"
+      ],
+      "public_requests": 0,
+      "errors": []
+    },
+    "resource-pressure": {
+      "checks": [
+        "Injected memory pressure lowers real framebuffer and retained geometry while exact records, selection and preferences remain intact",
+        "Playback remains available under critical limits without afterimage allocations",
+        "Real continuous playback recovers through all capped profiles when memory and render headroom return"
+      ],
+      "public_requests": 0,
+      "errors": []
+    }
+  },
+  "native_hardware": {
+    "cpu": "i7-10875H, 8 cores / 16 logical processors",
+    "gpu": "Quadro RTX 3000, 6 GiB",
+    "ram_bytes": 16869605376
+  },
+  "native_cases": [
+    {
+      "label": "slow-no-maps",
+      "elapsed_ms": 22063,
+      "input_target_hz": 30,
+      "input_events": 600,
+      "raf_intervals": {
+        "n": 1325,
+        "median_ms": 16.69999999999709,
+        "p95_ms": 16.80000000000291,
+        "max_ms": 17.299999999999272,
+        "over_50ms": 0,
+        "over_100ms": 0
+      },
+      "draw_intervals": {
+        "n": 668,
+        "median_ms": 33.19999998807907,
+        "p95_ms": 51,
+        "max_ms": 69,
+        "over_50ms": 97,
+        "over_100ms": 0
+      },
+      "UI_long_tasks": [],
+      "scene_pick_calls": 0,
+      "full_rebuild_calls": 0,
+      "native_base64_calls": 0,
+      "generic_byte_callback_calls": 0,
+      "resource_governor": {
+        "automatic": true,
+        "profile": "full",
+        "reason": "healthy",
+        "changes": 0,
+        "memory": {
+          "available_bytes": 8497819648,
+          "sample_age_ms": 0,
+          "scope": "host",
+          "supported": true,
+          "swap_used_bytes": 0,
+          "total_bytes": 16869605376
+        },
+        "limits": {
+          "name": "full",
+          "maxPoints": 100000,
+          "maxPixels": 8000000,
+          "maxScale": 1.5,
+          "tiles": 100,
+          "screenError": 1,
+          "streetCanvases": 24,
+          "afterimages": 100000,
+          "fadeSegments": 100000,
+          "fadeCohorts": 256,
+          "arcVertices": 200000
+        },
+        "graphicsRenderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "memorySampleAgeMs": 1702.1000000238419,
+        "recoveryHoldMs": 45000,
+        "gpuMemoryMeasured": false
+      },
+      "prepared_renderer": true,
+      "events": 11018,
+      "render_errors": 0,
+      "terrain_and_streets": {
+        "basemap": "none",
+        "basemapPending": 0,
+        "basemapError": "",
+        "basemapRenderedTiles": 0,
+        "basemapAlignmentErrorPixels": 0,
+        "basemapMaximumLevel": 0,
+        "imageryLayers": 1,
+        "tileCount": 0,
+        "imageryRequestedTiles": 0,
+        "terrainActive": false,
+        "terrainProviderChanges": 0,
+        "terrainPendingTiles": 0,
+        "terrainCovered": 0,
+        "verticalDatum": "unresolved-msl",
+        "geoidModel": null,
+        "mode": "globe"
+      },
+      "cpu_total_machine_percent": {
+        "mean": 6.422372090653408,
+        "peak": 7.9741069356219025,
+        "minimum": 4.8225434046636355
+      },
+      "private_resident_MiB": {
+        "mean": 393.8984375,
+        "peak": 561.515625,
+        "minimum": 355.69921875
+      },
+      "gpu_3d_percent": {
+        "mean": 16.69217845652724,
+        "peak": 26.68008457034802,
+        "minimum": 0.0
+      },
+      "gpu_allocation_MiB": {
+        "mean": 257.54829545454544,
+        "peak": 283.19921875,
+        "minimum": 254.76171875
+      }
+    },
+    {
+      "label": "streets-terrain-1",
+      "elapsed_ms": 22051.399999976158,
+      "input_target_hz": 120,
+      "input_events": 925,
+      "raf_intervals": {
+        "n": 1313,
+        "median_ms": 16.69999999999709,
+        "p95_ms": 16.80000000000291,
+        "max_ms": 149.60000000000582,
+        "over_50ms": 1,
+        "over_100ms": 1
+      },
+      "draw_intervals": {
+        "n": 1304,
+        "median_ms": 16.599999994039536,
+        "p95_ms": 20.599999994039536,
+        "max_ms": 152.30000001192093,
+        "over_50ms": 3,
+        "over_100ms": 1
+      },
+      "UI_long_tasks": [
+        {
+          "at": 7520.699999988079,
+          "duration": 148,
+          "name": "self"
+        }
+      ],
+      "scene_pick_calls": 0,
+      "full_rebuild_calls": 0,
+      "native_base64_calls": 294,
+      "generic_byte_callback_calls": 0,
+      "resource_governor": {
+        "automatic": true,
+        "profile": "full",
+        "reason": "healthy",
+        "changes": 0,
+        "memory": {
+          "available_bytes": 7146602496,
+          "sample_age_ms": 0,
+          "scope": "host",
+          "supported": true,
+          "swap_used_bytes": 0,
+          "total_bytes": 16869605376
+        },
+        "limits": {
+          "name": "full",
+          "maxPoints": 100000,
+          "maxPixels": 8000000,
+          "maxScale": 1.5,
+          "tiles": 100,
+          "screenError": 1,
+          "streetCanvases": 24,
+          "afterimages": 100000,
+          "fadeSegments": 100000,
+          "fadeCohorts": 256,
+          "arcVertices": 200000
+        },
+        "graphicsRenderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "memorySampleAgeMs": 1785.7999999821186,
+        "recoveryHoldMs": 45000,
+        "gpuMemoryMeasured": false
+      },
+      "prepared_renderer": true,
+      "events": 11018,
+      "render_errors": 0,
+      "terrain_and_streets": {
+        "basemap": "streets",
+        "basemapPending": 0,
+        "basemapError": "",
+        "basemapRenderedTiles": 82,
+        "basemapAlignmentErrorPixels": 1.6200374375330284e-12,
+        "basemapMaximumLevel": 6,
+        "imageryLayers": 2,
+        "tileCount": 0,
+        "imageryRequestedTiles": 0,
+        "terrainActive": true,
+        "terrainProviderChanges": 1,
+        "terrainPendingTiles": 0,
+        "terrainCovered": 66049,
+        "verticalDatum": "egm96",
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "mode": "globe"
+      },
+      "cpu_total_machine_percent": {
+        "mean": 17.307990739475418,
+        "peak": 25.1190714997062,
+        "minimum": 13.736581363259543
+      },
+      "private_resident_MiB": {
+        "mean": 1355.946986607143,
+        "peak": 1539.0546875,
+        "minimum": 1138.8984375
+      },
+      "gpu_3d_percent": {
+        "mean": 31.22827343356827,
+        "peak": 34.225462114622005,
+        "minimum": 28.578009776767338
+      },
+      "gpu_allocation_MiB": {
+        "mean": 570.0204613095239,
+        "peak": 638.36328125,
+        "minimum": 459.28515625
+      }
+    },
+    {
+      "label": "streets-terrain-2",
+      "elapsed_ms": 22049.40000000596,
+      "input_target_hz": 120,
+      "input_events": 1054,
+      "raf_intervals": {
+        "n": 1324,
+        "median_ms": 16.69999999999709,
+        "p95_ms": 16.80000000000291,
+        "max_ms": 17.19999999999709,
+        "over_50ms": 0,
+        "over_100ms": 0
+      },
+      "draw_intervals": {
+        "n": 1070,
+        "median_ms": 16.900000005960464,
+        "p95_ms": 48.79999998211861,
+        "max_ms": 52.30000001192093,
+        "over_50ms": 26,
+        "over_100ms": 0
+      },
+      "UI_long_tasks": [],
+      "scene_pick_calls": 0,
+      "full_rebuild_calls": 0,
+      "native_base64_calls": 294,
+      "generic_byte_callback_calls": 0,
+      "resource_governor": {
+        "automatic": true,
+        "profile": "full",
+        "reason": "healthy",
+        "changes": 0,
+        "memory": {
+          "available_bytes": 7554314240,
+          "sample_age_ms": 0,
+          "scope": "host",
+          "supported": true,
+          "swap_used_bytes": 0,
+          "total_bytes": 16869605376
+        },
+        "limits": {
+          "name": "full",
+          "maxPoints": 100000,
+          "maxPixels": 8000000,
+          "maxScale": 1.5,
+          "tiles": 100,
+          "screenError": 1,
+          "streetCanvases": 24,
+          "afterimages": 100000,
+          "fadeSegments": 100000,
+          "fadeCohorts": 256,
+          "arcVertices": 200000
+        },
+        "graphicsRenderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "memorySampleAgeMs": 4084.0999999940395,
+        "recoveryHoldMs": 45000,
+        "gpuMemoryMeasured": false
+      },
+      "prepared_renderer": true,
+      "events": 11018,
+      "render_errors": 0,
+      "terrain_and_streets": {
+        "basemap": "streets",
+        "basemapPending": 0,
+        "basemapError": "",
+        "basemapRenderedTiles": 82,
+        "basemapAlignmentErrorPixels": 1.6200374375330284e-12,
+        "basemapMaximumLevel": 6,
+        "imageryLayers": 2,
+        "tileCount": 0,
+        "imageryRequestedTiles": 0,
+        "terrainActive": true,
+        "terrainProviderChanges": 1,
+        "terrainPendingTiles": 0,
+        "terrainCovered": 66049,
+        "verticalDatum": "egm96",
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "mode": "globe"
+      },
+      "cpu_total_machine_percent": {
+        "mean": 10.60008044427206,
+        "peak": 13.45650151557281,
+        "minimum": 8.850128771654587
+      },
+      "private_resident_MiB": {
+        "mean": 1248.3056175595239,
+        "peak": 1354.94921875,
+        "minimum": 1182.03125
+      },
+      "gpu_3d_percent": {
+        "mean": 29.939786817457513,
+        "peak": 32.82083107289834,
+        "minimum": 18.341030606541363
+      },
+      "gpu_allocation_MiB": {
+        "mean": 635.0372023809524,
+        "peak": 637.58984375,
+        "minimum": 634.4375
+      }
+    },
+    {
+      "label": "slow-streets-terrain",
+      "elapsed_ms": 22060.59999999404,
+      "input_target_hz": 30,
+      "input_events": 601,
+      "raf_intervals": {
+        "n": 1325,
+        "median_ms": 16.69999999999709,
+        "p95_ms": 16.80000000000291,
+        "max_ms": 17.19999999999709,
+        "over_50ms": 0,
+        "over_100ms": 0
+      },
+      "draw_intervals": {
+        "n": 633,
+        "median_ms": 33.5,
+        "p95_ms": 52.099999994039536,
+        "max_ms": 68.80000001192093,
+        "over_50ms": 122,
+        "over_100ms": 0
+      },
+      "UI_long_tasks": [],
+      "scene_pick_calls": 0,
+      "full_rebuild_calls": 0,
+      "native_base64_calls": 294,
+      "generic_byte_callback_calls": 0,
+      "resource_governor": {
+        "automatic": true,
+        "profile": "full",
+        "reason": "healthy",
+        "changes": 0,
+        "memory": {
+          "available_bytes": 7572275200,
+          "sample_age_ms": 0,
+          "scope": "host",
+          "supported": true,
+          "swap_used_bytes": 0,
+          "total_bytes": 16869605376
+        },
+        "limits": {
+          "name": "full",
+          "maxPoints": 100000,
+          "maxPixels": 8000000,
+          "maxScale": 1.5,
+          "tiles": 100,
+          "screenError": 1,
+          "streetCanvases": 24,
+          "afterimages": 100000,
+          "fadeSegments": 100000,
+          "fadeCohorts": 256,
+          "arcVertices": 200000
+        },
+        "graphicsRenderer": "ANGLE (NVIDIA, NVIDIA Quadro RTX 3000 (0x00001F36) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "memorySampleAgeMs": 1393,
+        "recoveryHoldMs": 45000,
+        "gpuMemoryMeasured": false
+      },
+      "prepared_renderer": true,
+      "events": 11018,
+      "render_errors": 0,
+      "terrain_and_streets": {
+        "basemap": "streets",
+        "basemapPending": 0,
+        "basemapError": "",
+        "basemapRenderedTiles": 82,
+        "basemapAlignmentErrorPixels": 1.6200374375330284e-12,
+        "basemapMaximumLevel": 6,
+        "imageryLayers": 2,
+        "tileCount": 0,
+        "imageryRequestedTiles": 0,
+        "terrainActive": true,
+        "terrainProviderChanges": 1,
+        "terrainPendingTiles": 0,
+        "terrainCovered": 66049,
+        "verticalDatum": "egm96",
+        "geoidModel": "NGA EGM96 15-minute; H+N",
+        "mode": "globe"
+      },
+      "cpu_total_machine_percent": {
+        "mean": 8.937740691295577,
+        "peak": 10.568268912875846,
+        "minimum": 7.931259954422923
+      },
+      "private_resident_MiB": {
+        "mean": 1190.1454613095239,
+        "peak": 1218.7421875,
+        "minimum": 1156.7421875
+      },
+      "gpu_3d_percent": {
+        "mean": 23.1334942921827,
+        "peak": 36.66018813488667,
+        "minimum": 9.944323008009274
+      },
+      "gpu_allocation_MiB": {
+        "mean": 635.1069568452381,
+        "peak": 635.140625,
+        "minimum": 634.4375
+      }
+    }
+  ],
+  "exact_source_membership": {
+    "count": 11018,
+    "drawn": 11018,
+    "exact": true
+  },
+  "normal_launch_checks": [
+    "Optimized Windows WebView2 application starts at version 0.16.12",
+    "The packaged catalog has 14 demos and no synthetic UAV dataset",
+    "The normal Windows build opens all 11,018 Philippines flight observations in Globe without renderer errors"
+  ],
+  "build_checks": {
+    "frontend": [
+      {
+        "name": "frontend-build",
+        "exit_code": 0,
+        "elapsed_s": 40.39
+      },
+      {
+        "name": "frontend-unit",
+        "exit_code": 0,
+        "elapsed_s": 28.531
+      }
+    ],
+    "unit": [
+      {
+        "name": "frontend-unit",
+        "exit_code": 0,
+        "elapsed_s": 26.469
+      }
+    ],
+    "package-frontend": [
+      {
+        "name": "packaged-frontend",
+        "exit_code": 0,
+        "elapsed_s": 33.016
+      }
+    ],
+    "metadata": [
+      {
+        "name": "version-metadata",
+        "exit_code": 0,
+        "elapsed_s": 1.0
+      }
+    ],
+    "native-build": [
+      {
+        "name": "native-release",
+        "exit_code": 0,
+        "elapsed_s": 667.094
+      }
+    ]
+  },
+  "source_sha256": {
+    "frontend/src/base64-bytes.ts": "39179b2ed3d9f42b3afbd0b7db0b2bddc1e7869b8fa98282e642f855188dceb7",
+    "frontend/src/streets.ts": "34baa2b309424f35ee5b72333042d3a7ccd95a28cad8c02af87d26610c8e7bca",
+    "frontend/src/view.ts": "66673057e6d1cacc1aa66e89ff1e9634e1534476430aa98c8ef23bec6927bfab",
+    "frontend/scripts/base64-bytes-test.mjs": "15013355b9a2d8e3058e38e14774f5f8221034bdd9f13d1bda16e9e1ef25272e",
+    "frontend/scripts/flight-pan-qa.mjs": "6bc76240c48d4e011a27b28bfcc4a331f836ae522bdd4f50592faf464cb09667",
+    "frontend/package.json": "76b1e4d4158c00b070d0bb98259d499200dab56db00c3849e4d2478729cd5f12",
+    "Cargo.toml": "6e1d21c7bff84fd32921ee1afcce87c1cb655b1ec9c6ff4651f160c3cb26093a",
+    "src-tauri/tauri.conf.json": "e6e8085bd8ea7a8075ead73381c30fe3a39c9b3e97282c452a792c93171128a9"
+  },
+  "limits": [
+    "Four bounded 22-second native pan recordings; not a multi-hour endurance test. Tests use a disposable profile and the actual optimized Tauri/WebView2 app, standard memory/caches, and CDP mouse input. Instrumentation only observes native decode calls and governor decisions; it does not override their behavior.",
+    "RAF and Cesium postRender cadence are not monitor presentation latency. Draw intervals follow requested input cadence and should not be read as a continuous FPS guarantee. Input timestamps and raw records remain under .qa/flight-pan-fix/native.",
+    "The first streets/terrain pass retained one 148 ms UI task during initial tile loading. No UI task or RAF gap over 50 ms occurred in the warmed fast and slow streets passes or the no-map slow-input pass. This does not promise every possible loading pause is eliminated.",
+    "CPU is normalized over 16 logical processors. RAM sums private resident memory over the app and child WebView processes. GPU load is attributed 3D engine utilization; GPU allocation is Windows process allocation accounting, not unique physical VRAM residency.",
+    "Native rendered all 11,018 observations throughout; source IDs exactly matched engine output. The memory-pressure browser suite separately proves that real pressure still lowers framebuffer/geometry limits, preserves source records/selection/preferences, keeps playback available and recovers through all capped profiles.",
+    "The source was first tested as an uncommitted tree and committed unchanged as the recorded feature commit. Source hashes match that commit; the follow-up commit contains validation records only.",
+    "Release-update UI uses a fictional 0.16.13 response for the newly versioned app; this is not a published-release claim.",
+    "No hosted runner, Public promotion, release/tag creation or installer execution. The updated local portable Windows executable is validated; existing running builds and user profiles were preserved."
+  ]
+}

@@ -157,6 +157,11 @@ try {
     '[aria-sort="ascending"] [data-table-sort="entity"]',
   );
   assert.equal(await popup.isChecked("#table-respect-filters"), false);
+  await popup.waitForFunction(
+    (position) =>
+      document.querySelector(".table-scroll").scrollTop === position,
+    position,
+  );
   assert.equal(
     await popup.locator(".table-scroll").evaluate((el) => el.scrollTop),
     position,

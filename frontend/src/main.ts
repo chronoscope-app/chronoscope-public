@@ -19,6 +19,7 @@ import { openGuidedAnalysis } from "./guided-analysis";
 import { ImportDialog } from "./import-dialog";
 import { captureAppWindow, recordAppWindow } from "./app-capture";
 import { NotificationCenter, type AppNotification } from "./notifications";
+import { ReleaseUpdates, releasesPage } from "./release-updates";
 import { createAgentView } from "./agent-view";
 import { createAgentLab } from "./agent-lab";
 import type { GisLayer } from "./gis";
@@ -149,9 +150,8 @@ const dialogs = new DialogController(() => {
 });
 let playTimer: number | undefined;
 let smoothPlaybackEnabled = true;
-try {
-  smoothPlaybackEnabled = localStorage.getItem("chronoscope-smooth-playback") !== "false";
-} catch { /* Storage may be unavailable; playback still works with defaults. */ }
+// Rendering is automatic. The override below is only exposed through the QA bridge.
+let graphicsStatus = "Ready";
 let residentIdentity: string | undefined;
 let playbackPreparing = false;
 let playbackPreparation = 0;
@@ -180,8 +180,7 @@ function endSmoothPlayback(reason = "Ready") {
   residentIdentity = undefined;
   residentDataIdentity = "";residentPurpose=undefined;
   view.endResidentPlayback();
-  const label = document.querySelector<HTMLElement>("#vfx-playback-state");
-  if (label) label.textContent = reason;
+  graphicsStatus = reason;
 }
 function hasTimeElevation() { return mode==="space-time" || (mode==="globe" && view.globeTime); }
 function residentWindow() {
@@ -232,7 +231,7 @@ async function prepareInteraction(purpose:"playback"|"navigation") {
       residentTimeFilter=JSON.stringify([snapshot.filter.start,snapshot.filter.end]);
       residentWindow();view.setSelection(snapshot.selected);
       if(view.residentPlaybackActive) { renderLOD=false;view.renderLOD=false;renderedCount=view.renderPoints.length; }
-      $("#vfx-playback-state").textContent=purpose==="playback" ? "Smooth playback active" : "Smooth navigation and time controls";
+      graphicsStatus=purpose==="playback" ? "Smooth playback active" : "Smooth navigation and time controls";
       return true;
     } catch(error) {
       if(accepted()) {
@@ -350,6 +349,18 @@ const notifications = new NotificationCenter(
   $("#notifications") as HTMLButtonElement,
   icon("close"),
 );
+async function openReleasePage(url: string) {
+  if (native) {
+    const { invoke } = await import("@tauri-apps/api/core");
+    await invoke("si_open_link", { url });
+  } else window.open(url, "_blank", "noopener,noreferrer");
+}
+const releaseUpdates = new ReleaseUpdates(appVersion, {
+  fetch: (...args) => window.fetch(...args),
+  storage: { getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) },
+  notify: notices => notifications.replace("updates", notices),
+  open: openReleasePage,
+});
 const tables = createAttributeTables($("#table-panel"), {
   snapshot: () => snapshot,
   refresh: () => refresh(false, false),
@@ -756,15 +767,7 @@ async function runRefresh(render = true, resources = true,canonical=false) {
   viewportDataGeneration++;
   tables.tableSerial++;
   const generation = ++serial;
-  const scopeKey = JSON.stringify([
-    tables.tableRespectFilters && !gisTable.layerId ? snapshot?.filter : null,
-    tables.tableSource,
-    tables.tableRespectFilters,
-    tables.tableSort,
-    tables.tableDescending,
-    tables.tableDisplayCell,
-    tables.tableSearch,
-  ]);
+  const scopeKey = tables.currentScopeKey();
   if (scopeKey !== tables.tableScopeKey) {
     tables.tableScopeKey = scopeKey;
     if (!tables.tableReveal) tables.resetTableScroll();
@@ -1505,12 +1508,14 @@ view.onContextPick = (id) => {
     await select([id], false, true);
   })().catch((error) => toast(String(error), true));
 };
-view.onRadiusQuery = (latitude, longitude) => {
+view.onRadiusQuery = (latitude, longitude, anchor) => {
   const workspace = snapshot.workspace_id;
-  const dialog = modal(
-    `${head("Select within radius")}<div id="radius-coordinates" class="description">Loading coordinates…</div><form id="radius-query"><div class="modal-grid"><label class="field">Radius<input id="query-radius" type="number" min="0" step="any" value="1" required></label><label class="field">Units<select id="query-radius-unit"><option value="1000">Kilometers</option><option value="1">Meters</option></select></label></div><p class="description">Selects all located workspace records within the WGS84 surface radius, including records outside current filters. Polygon records use their derived centroid.</p><p id="radius-error" role="alert"></p><footer><button type="button" data-close>Cancel</button><span class="spacer"></span><button type="submit" class="primary">OK</button></footer></form>`,
-    true,
+  const dialog = dialogs.openPopover(
+    `${head("Select within radius")}<form id="radius-query"><div class="radius-fields"><label class="field">Radius<input id="query-radius" type="number" min="0" step="any" value="1" required></label><label class="field">Units<select id="query-radius-unit"><option value="1000">km</option><option value="1">m</option></select></label></div><details class="radius-location"><summary>Coordinates</summary><div id="radius-coordinates">Loading coordinates…</div></details><p class="radius-scope" title="Includes located records outside current filters. Polygon locations use their derived centroid.">All workspace events</p><p id="radius-error" role="alert"></p><footer><button type="button" data-close>Cancel</button><button type="submit" class="primary">Select</button></footer></form>`,
+    anchor,
   );
+  dialog.id = "radius-popover";
+  dialog.querySelector("[data-close]")?.setAttribute("aria-label", "Close radius selection");
   void call("coordinates", {
     coordinate: { system: "dd", latitude, longitude },
   })
@@ -2777,6 +2782,8 @@ const settings = createPreferencesController({
   closeModal,
   head,
   toast,
+  updateChecks: () => releaseUpdates.automatic,
+  setUpdateChecks: enabled => releaseUpdates.setAutomatic(enabled),
   save: async (nextPreferences, nextBudget) => {
     preferences = nextPreferences;
     await call("preferences", { preferences });
@@ -3051,7 +3058,7 @@ function updateNavigationControls() {
   $("#navigate").dataset.tooltip =
     mode === "map"
       ? "Drag to pan the flat map; scroll to zoom. Time filtering remains in the timeline."
-      : "Drag to move; middle-drag tilts; right-drag rotates horizontally and zooms vertically; wheel zooms. Shift-click adds selection.";
+      : "Drag to move; middle-drag rotates horizontally and tilts vertically; right-drag rotates horizontally and zooms vertically about a fixed focus; wheel zooms. Shift-click adds selection.";
   const spaceTime = mode === "space-time";
   const altitude = mode === "globe" && view.globeAltitude;
   const time = spaceTime ? view.timeHeight > 0 : view.globeTime;
@@ -3243,8 +3250,10 @@ function measurementSettings() {
     <div class="modal-grid"><label class="field">Minimum<input id="measurement-minimum" type="number" required step="any" value="${current?.minimum ?? 0}"></label><label class="field">Maximum<input id="measurement-maximum" type="number" required step="any" value="${current?.maximum ?? 100}"></label></div>
     <label class="field">Unit suffix<input id="measurement-unit" maxlength="32" value="${esc(current?.unit || "")}"></label>
     <label class="check-row"><input id="measurement-latest" type="checkbox" ${current?.latest_per_entity ? "checked" : ""}> Show the latest polygon per entity within the time window</label>
+    <label class="check-row"><input id="measurement-show-legend" type="checkbox" ${!current || measurementLegend.visible ? "checked" : ""}> Show color legend on map</label>
     <p id="measurement-error" role="alert"></p><footer><button type="button" id="measurement-clear">Use entity colors</button><span class="spacer"></span><button class="primary" type="submit">Apply scale</button></footer></form>`);
   const save = async (measurement: SceneState["measurement"]) => {
+    const showLegend = check("#measurement-show-legend");
     await sceneIdle();
     const display = measurement
       ? { ...displayOptions, mode: "points" as const, bloom: false }
@@ -3252,6 +3261,7 @@ function measurementSettings() {
     await syncScene({ ...captureScene(), measurement, display });
     closeModal();
     await refresh(true, false);
+    if (measurement) measurementLegend.setVisible(showLegend);
   };
   on("#measurement-clear", () => save(null));
   $("#measurement-form").addEventListener("submit", (event) => {
@@ -3788,26 +3798,20 @@ $("#histogram").addEventListener("pointerdown", async (e) => {
 let playbackUpdating = false;
 let playbackWindow: [number, number] | null = null;
 let playbackClock: PlaybackClock | undefined;
-const vfxControls = document.createElement("div");
-vfxControls.className = "smooth-playback-controls";
-vfxControls.innerHTML = `<strong>Graphics</strong><label title="Prepare supported scenes for smoother navigation, playback, and Map/Globe time scrubbing."><input type="checkbox" id="vfx-smooth-playback"> Smooth graphics</label><span id="vfx-playback-state" role="status">Ready</span>`;
-$(".statusbar").before(vfxControls);
-($("#vfx-smooth-playback") as HTMLInputElement).checked = smoothPlaybackEnabled;
-$("#vfx-smooth-playback").addEventListener("change", async () => {
-  smoothPlaybackEnabled = check("#vfx-smooth-playback");
-  try { localStorage.setItem("chronoscope-smooth-playback", String(smoothPlaybackEnabled)); }
-  catch { /* Keep the current choice for this session when storage is unavailable. */ }
+async function setSmoothGraphicsForTesting(enabled: boolean) {
+  smoothPlaybackEnabled = enabled;
   playbackPreparation++;
   interactionGeneration++;
   if (playbackPreparing) {
     playbackPreparing = false;
     $("#play").innerHTML = icon("play") + " Play";
   }
+  await sceneIdle();
   if (view.smoothPlaybackActive) {
     await refresh(true,true,true);
-    if(!smoothPlaybackEnabled) $("#vfx-playback-state").textContent="Standard playback";
+    if(!smoothPlaybackEnabled) graphicsStatus="Standard playback";
   } else if(smoothPlaybackEnabled) scheduleInteraction();
-});
+}
 const playbackSpeed = new PlaybackSpeed($("#play"), (speed) => {
   playbackClock?.setSpeed(speed);
 });
@@ -3872,8 +3876,8 @@ async function togglePlayback() {
   if (smoothPlaybackEnabled) {
     const begun=await prepareInteraction("playback");
     if(preparation!==playbackPreparation) return;
-    if(!begun) $("#vfx-playback-state").textContent=view.residentPlaybackReason() || "Standard playback";
-  } else $("#vfx-playback-state").textContent="Standard playback";
+    if(!begun) graphicsStatus=view.residentPlaybackReason() || "Standard playback";
+  } else graphicsStatus="Standard playback";
   if (preparation !== playbackPreparation) return;
   playbackPreparing = false;
   const [lo, hi] = snapshot.time_bounds;
@@ -4041,19 +4045,32 @@ function reviewDelete() {
 }
 function helpMenu() {
   const menu = modal(
-    `${head("Help")}<div class="help-actions"><button id="user-guide" class="primary">Full user guide</button><button id="demo-datasets">Demo datasets</button><button id="keyboard-guide">Keyboard shortcuts</button><button id="about-app">About Chronoscope</button></div>`,
+    `${head("Help")}<div class="help-actions"><button id="user-guide" class="primary">Full user guide</button><button id="demo-datasets">Demo datasets</button><button id="keyboard-guide">Keyboard shortcuts</button><button id="check-updates">Check for updates</button><button id="about-app">About Chronoscope</button></div>`,
     true,
   );
   menu.querySelector(".modal")!.classList.add("help-menu");
   on("#user-guide", () => showHelp());
   on("#demo-datasets", demoDatasets);
   on("#keyboard-guide", () => showHelp(true));
+  on("#check-updates", checkForUpdates);
   on("#about-app", () =>
     modal(
       `${head(`Chronoscope ${appVersion}`)}<p class="description">Rust engine · CesiumJS WebGL2 renderer · Tauri desktop.</p><p class="description">Chronoscope is MIT licensed. CesiumJS and other dependency licenses, notices and public-data credits are bundled with the app.</p>`,
       true,
     ),
   );
+}
+async function checkForUpdates() {
+  const dialog = modal(`${head("Check for updates")}<p role="status">Checking GitHub releases…</p><footer><button data-close>Close</button></footer>`, true);
+  const result = await releaseUpdates.check(true);
+  if (!dialog.isConnected) return;
+  const release = result.release;
+  const newer = releaseUpdates.isNewer(release);
+  const title = result.error ? "Couldn’t check for updates" : newer ? "Update available" : "No newer release";
+  const message = result.error || (release ? `You’re using Chronoscope ${appVersion}. ${newer ? "Available" : "Latest published release"}: ${release.version}${release.preview ? " (experimental preview)" : ""}.` : `You’re using Chronoscope ${appVersion}. No versioned releases are published yet.`);
+  modal(`${head(title)}<p role="status">${esc(message)}</p><p class="description">Checks published releases from Chronoscope Public on GitHub, including experimental previews. Downloads and release notes open in your browser.</p><footer><button id="updates-retry">Check again</button><span class="spacer"></span><button id="updates-release" class="${newer ? "primary" : "secondary"}">${newer ? "View release" : "GitHub releases"}</button><button data-close>Close</button></footer>`, true);
+  on("#updates-retry", checkForUpdates);
+  on("#updates-release", () => openReleasePage(newer && release ? release.url : releasesPage));
 }
 async function demoDatasets() {
   const { demos } = await call("demo_catalog");
@@ -4646,12 +4663,18 @@ async function initialize() {
   }, 30000);
 }
 const ready = initialize();
+void ready.then(() => { if (native) releaseUpdates.start(); }).catch(() => {});
+window.addEventListener("pagehide", () => releaseUpdates.stop());
 ready.catch((e) => {
   toast(String(e), true);
   status("Initialization failed; see error details");
 });
 (window as any).__chronoscope = {
   view,
+  releaseUpdates,
+  checkForUpdates,
+  setSmoothGraphicsForTesting,
+  get graphicsStatus() { return graphicsStatus; },
   openAttributes,
   captureScene,
   liveViewRequest: agentRequest,

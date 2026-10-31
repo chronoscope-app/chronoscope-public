@@ -1,0 +1,63 @@
+{
+  "source_commit": "fe83907576c099e283485cfb57eed048bc1f71f5",
+  "version": "0.16.10",
+  "platform": "Windows 11 x64",
+  "changes": [
+    "Radius selection opens in a compact pointer-anchored non-modal popup, without an overlay or background blur. Escape and outside clicks dismiss it; coordinates are expandable.",
+    "Removed the bottom graphics controls and their reserved 30px grid row. Rendering starts automatically and ignores the retired stored manual opt-out.",
+    "Measurement legends have an accessible close button. Visibility is remembered locally for that scale without changing colors or records, and can be restored in Views > Color by value.",
+    "The resource governor and representation compatibility checks automatically choose eligible prepared rendering or the standard fallback. Renderer comparisons use an internal QA hook, not a user control."
+  ],
+  "explanation": "The KABR sample stores a 0\u201360 m height-above-takeoff color scale in its saved scenes. Loading the sample applies Color by value and displays this legend.",
+  "frontend_unit_tests": {
+    "passed": 175,
+    "failed": 0
+  },
+  "production_frontend_build": true,
+  "browser_suites": {
+    "navigation": 0,
+    "dms": 0,
+    "vfx-full-app": 0,
+    "context-radius": 0,
+    "kabr-demo": 0,
+    "playback-recovery": 0,
+    "terrain-preparation-recovery": 0,
+    "toolbar-dialogs": 0,
+    "resource-pressure": 0
+  },
+  "governor_verified": "Injected critical memory pressure reduced actual framebuffer and geometry, retained exact data/selection/preferences, kept playback available, and recovered automatically through the capped profiles.",
+  "native": {
+    "optimized_build": true,
+    "binary_sha256": "841f2fe2ca7f3663c49b725c23b8efc884a528359a13fbc33ff101d394d0c3a7",
+    "checks": [
+      "Updated native app opens KABR with all 25,924 records and the height color scale",
+      "Map, Time and Globe render the updated interface without renderer errors",
+      "Smooth navigation prepares automatically in the native app without a user switch",
+      "Automatic native playback crosses all three views and pauses without losing source records"
+    ],
+    "render_errors": 0
+  },
+  "source_sha256": {
+    "frontend/src/dialog-controller.ts": "b643f90599a5a0684db00442540b27a2804ded710cc996d6bbd8599e9b26853a",
+    "frontend/src/main.ts": "9d1454bd142a1f21bdca3bc88e0163b8c2f739326458394b3288041074acb6ab",
+    "frontend/src/measurement-style.ts": "7b284f93347e0c351ad7150cea1573259f106d8eb6d1f13d55f7229645d62a9d",
+    "frontend/src/measurement-style.css": "72347a9d69ea0f99bfa925d0634019c1cc10228e0c9e7d3f912e4de8e3a0c688",
+    "frontend/src/style.css": "6fa5a2b4949065f2ebdd88b520bbd315d4c4b046e5d6a939e2a57702cbb60084",
+    "frontend/src/view.ts": "fdcd4793ce5a95b3e505e329d85ef119ecf3fbcc0b837091fd04cb12d6960cfe"
+  },
+  "evidence_sha256": {
+    "frontend-report.json": "e0eae1ca64258913aba8917a8076adf92eb5b338138e414252f3879ade5c845e",
+    "browser-interfaces-report.json": "9bed11e718a14af58c533f55512b30f0ab946879e4db54cbd5d80d400f946a47",
+    "browser-report.json": "323d45e93b88ea8c408123d490eb781417ecda02c5b80697d9c3f411859af1a5",
+    "native-build-report.json": "f10cefdc8e16d5cd9f7ba6cba6e25aefa5162d67175561b88465f86e559bfdef",
+    "native/report.json": "1ad0d1447d1fa2b45e27146b1d419c4417597103ac26e1433fafb60a59782cdd"
+  },
+  "limits": [
+    "Native captures and MCP actions passed; browser tests exercise real mouse and keyboard input. The Windows input helper could not resolve usable control geometry and its window capture was occluded, so direct native OS input is not certified.",
+    "Rust backend, desktop native source and dependency locks are unchanged; the earlier 489-test backend run was not repeated for this frontend-only change.",
+    "Initial assertions tied to retired controls and assumptions that selection/pause must disable prepared rendering were updated to check exact selection and event membership instead. Native verification uses explicit Python UTF-8 mode."
+  ],
+  "public_updated": false,
+  "hosted_workflows_started": false,
+  "release_assets_changed": false
+}

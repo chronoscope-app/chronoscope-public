@@ -46,7 +46,7 @@ await withLocalApp('prepared-handoffs',async({page,api,root,out,pass})=>{
  assert(roi.count>30,JSON.stringify(roi));
  for(let i=0;i<20;i++){
   const enabled=i%2===1;
-  await page.locator('#vfx-smooth-playback').setChecked(enabled);
+  await page.evaluate(enabled => window.__chronoscope.setSmoothGraphicsForTesting(enabled), enabled);
   await page.evaluate(()=>window.__chronoscope.sceneIdle());
   await page.waitForFunction(e=>window.__chronoscope.view.residentPlaybackActive===e,enabled);
   await page.waitForTimeout(50);
@@ -58,7 +58,7 @@ await withLocalApp('prepared-handoffs',async({page,api,root,out,pass})=>{
  assert.equal(frames.filter(f=>f.ready===false).length,0,'Resident exposed before GPU readiness');
  pass(`${frames.length} actual framebuffer samples across 20 renderer handoffs contain event pixels`);
  await page.screenshot({path:path.join(out,'handoffs.png')});
- await page.locator('#vfx-smooth-playback').setChecked(false);
+ await page.evaluate(enabled => window.__chronoscope.setSmoothGraphicsForTesting(enabled), false);
  await page.evaluate(()=>window.__chronoscope.sceneIdle());
  const canceled=await page.evaluate(async()=>{
   const v=window.__chronoscope.view,before=v.scene.primitives.length;

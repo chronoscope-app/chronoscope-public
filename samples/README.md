@@ -1,6 +1,6 @@
-# Real-world samples
+# Bundled samples
 
-Open **Help → Demo datasets** for all 15 bundled offline projects, including the website earthquake and crime examples. [New event/statistics demos, sources and interpretation](../docs/PRIORITY-DEMOS.md). You can also open these files directly:
+Open **Help → Demo datasets** for all 14 bundled offline projects, including the website earthquake and crime examples. [New event/statistics demos, sources and interpretation](../docs/PRIORITY-DEMOS.md). You can also open these files directly:
 
 - `animal-gps-black-rock-forest-2023-03.chronoscope`: 3,439 observations of two bobcats and one fisher in New York.
 - `animal-gps-white-storks-2018.chronoscope`: 6,090 observations of three migrating storks.
@@ -16,7 +16,6 @@ Open **Help → Demo datasets** for all 15 bundled offline projects, including t
 - `world-bank-electricity-1990-2023.chronoscope`: 169 mapped countries over 34 annual observations, with fixed percentage coloring and missing values preserved.
 - `flights-philippines-week-2026.chronoscope`: 11,018 samples from 175 distinct flights across six Philippine airports, March 1–7, 2026 UTC; reported altitude, Time Height and ground views.
 - `starlink-128-predicted-orbits-2024.chronoscope`: 46,208 original predicted states from 128 satellites over six hours, with altitude and Time Height views.
-- `kabr-uav-kenya-2023.chronoscope`: three complete KABR UAV flights on their original January 2023 UTC dates, in one layer. Opens on January 12 only, with Time and takeoff-relative Globe views. [Source, height interpretation and reproduction](../docs/KABR-UAV-DEMO.md).
 - `public/*.csv`: matching importable observation tables.
 
 See [wildlife sources and interpretation](../docs/WILDLIFE-DEMOS.md), [real-world demos, sources, units and reproduction](../docs/REAL-WORLD-DEMOS.md), [hurricane provenance](public/SOURCES.md), and [hurricane guide](../docs/NOAA-HURRICANE-DEMO.md). The source data is embedded in each project; map imagery is referenced rather than embedded. Normal startup remains empty.

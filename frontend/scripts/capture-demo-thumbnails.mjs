@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { withLocalApp } from "./local-browser.mjs";
 const manifestPath = new URL("../public/demos/manifest.json", import.meta.url);
-const streetDemos = new Set(["noaa-ais", "animal-gps", "local-wildlife", "london-crime", "kabr-uav"]);
+const streetDemos = new Set(["noaa-ais", "animal-gps", "local-wildlife", "london-crime"]);
 const requested = process.env.CHRONOSCOPE_DEMO_IDS?.split(",");
 const images = requested
   ? JSON.parse(fs.readFileSync(manifestPath)).images.filter(

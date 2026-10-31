@@ -4,6 +4,20 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+## 0.16.12 — experimental preview, 2026-10-31
+
+- Decode street-map bytes with the browser's native base64 API, with a direct typed-array fallback for older WebViews, avoiding per-character callback allocation on the UI thread.
+- Measure active update-loop cadence for the resource governor so sparse mouse input does not trigger a false render-pressure downgrade. Keep memory, rendering-cost and geometry safeguards.
+- Defer scene hover picking until the pointer rests; use a screen-space hit test for navigation handles and preserve real click, context and box selection. Settle camera-dependent tracks after a drag ends.
+
+## 0.16.11 — experimental preview, 2026-10-31
+
+- Check Chronoscope Public GitHub releases directly, including published previews. Notify desktop users of newer versions, add Help → Check for updates, and provide a daily automatic-check preference. Compare versions with the standard semver package; open the GitHub release for notes and downloads.
+- Remove the synthetic Madagascar UAV demo, its previews and bundled data.
+- Rotate horizontally with either right-button or middle-button dragging in Globe and Time. Hold the rotation pivot fixed throughout each drag to prevent sideways drift.
+- Add a table-local Show selected option to Event attribute tables and explain All sources with tooltips.
+- Keep radius selection in a compact popup beside the pointer, without a blurred backdrop. Make rendering automatic under the resource governor and remove the bottom graphics switch. Add a close button to measurement color legends, with visibility restored from Views → Color by value.
+
 ## 0.16.10 — experimental preview, 2026-10-31
 
 - Keep an Earth overview's center inside the globe viewport during navigation, preserving intentional oblique views. N and compass Home also recenter an overview or recover a camera aimed past Earth without changing orbital zoom; regional North retains the current ground focus and tilt.

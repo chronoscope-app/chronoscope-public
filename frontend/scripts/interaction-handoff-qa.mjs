@@ -71,7 +71,7 @@ await withLocalApp(
       );
       for (let i = 0; i < 12; i++) {
         const enabled = i % 2 === 1;
-        await page.locator("#vfx-smooth-playback").setChecked(enabled);
+        await page.evaluate(enabled => window.__chronoscope.setSmoothGraphicsForTesting(enabled), enabled);
         await page.evaluate(() => window.__chronoscope.sceneIdle());
         await page.waitForFunction(
           (enabled) =>

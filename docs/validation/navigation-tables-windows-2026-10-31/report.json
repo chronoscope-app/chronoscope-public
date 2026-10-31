@@ -1,0 +1,385 @@
+{
+  "passed": true,
+  "version": "0.16.11",
+  "source_commit": "467a316b2eac769a40c339a48e35f61bbf90a575",
+  "validated_utc": "2026-10-31T21:26:23.433791+00:00",
+  "changes": [
+    "Remove the synthetic UAV catalog entry, workspace, generator, preview images, provenance and retired suite",
+    "Pin heading, tilt, range and ground target at the start of each rotation drag; accumulate heading and update range/tilt against that target",
+    "Middle-button horizontal drag rotates; middle vertical drag tilts; right horizontal drag rotates and vertical drag zooms around the fixed target; Map remains flat",
+    "Event attribute tabs offer Show selected, intersecting source, search and optional workspace filters without changing the workspace filter",
+    "Pass selected table scope through Shift/keyboard range selection; retain the option across tab switching and detach/dock",
+    "Explain All sources in the visible tooltip registry and combined tab title; share table scope calculation with the main refresh pipeline"
+  ],
+  "frontend_tests_passed": 186,
+  "rust_tests_passed": 10,
+  "rust_tests_ignored": 1,
+  "browser_suites": {
+    "navigation-table-cleanup": {
+      "checks": [
+        "Show selected restricts the table without changing workspace filters; All sources has explanatory tooltips",
+        "Shift selection remains inside the selected-only table scope",
+        "Selected table updates when selection changes, including empty selections",
+        "Show selected intersects search and optional workspace filters",
+        "Selected-only tab state survives detaching and docking; the All sources tooltip is visible",
+        "space-time right: repeated horizontal rotations retain their axis within half a pixel",
+        "space-time middle: repeated horizontal rotations retain their axis within half a pixel",
+        "globe right: repeated horizontal rotations retain their axis within half a pixel",
+        "globe middle: repeated horizontal rotations retain their axis within half a pixel",
+        "Synthetic UAV demo is absent from the 14-demo catalog"
+      ],
+      "errors": [],
+      "public_requests": 0
+    },
+    "detachable-tables": {
+      "checks": [
+        "Multiple tables share tabs; reopening deduplicates; sort/filter/scroll survive switching",
+        "Detached tabs retain state and row selection updates the main workspace",
+        "Dock returns the whole tab group and its active tab",
+        "Keyboard navigation and closing a tab keep its neighbor open",
+        "Native-style window close returns tabs to the workspace",
+        "GIS tables join the detached group and retain search/sort with linked reference selection",
+        "Reloading the detached page restores its tab group from main",
+        "Removed GIS layers close their tab and retain the neighboring table",
+        "Restoring a scene in the same workspace keeps the other table tabs",
+        "Closing the last detached tab closes its utility window and clears the table surface",
+        "Per-tab demand-loaded columns and both scroll axes survive switching, detaching and docking",
+        "The single left-aligned tab title and per-table search retain independent scope and survive detachment",
+        "Independent tab selection anchors retain exact shift ranges across tab changes and detachment",
+        "Event and GIS tables load bounded column windows on horizontal scroll and search values in unloaded columns",
+        "Display-cell tables preserve their exact member scope across tab switching and native-style detach/dock"
+      ],
+      "errors": [],
+      "public_requests": 0
+    },
+    "navigation": {
+      "checks": [
+        {
+          "name": "globe mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+          "evidence": {
+            "anchorErrorPixels": 1.317934658996517e-06,
+            "fineZoomRatio": 0.2500009509931702,
+            "navigation": {
+              "inertia": false,
+              "freeLook": false,
+              "northUpOnly": false,
+              "flatOnly": false,
+              "gestureMaximumTiltDegrees": 85,
+              "keyboardFocus": "map",
+              "active": false
+            }
+          }
+        },
+        {
+          "name": "space-time mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+          "evidence": {
+            "anchorErrorPixels": 7.944806593866206e-06,
+            "fineZoomRatio": 0.25000000012700474,
+            "navigation": {
+              "inertia": false,
+              "freeLook": false,
+              "northUpOnly": false,
+              "flatOnly": false,
+              "gestureMaximumTiltDegrees": 85,
+              "keyboardFocus": "map",
+              "active": false
+            }
+          }
+        },
+        {
+          "name": "map mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+          "evidence": {
+            "anchorErrorPixels": 1.39179726959192e-09,
+            "fineZoomRatio": 0.24999999999999994,
+            "navigation": {
+              "inertia": false,
+              "freeLook": false,
+              "northUpOnly": false,
+              "flatOnly": true,
+              "gestureMaximumTiltDegrees": 85,
+              "keyboardFocus": "map",
+              "active": false
+            }
+          }
+        },
+        {
+          "name": "Map fast and slow double-clicks preserve off-screen selections and restore visible highlights",
+          "evidence": {
+            "delaysMs": [
+              300,
+              750
+            ]
+          }
+        },
+        {
+          "name": "Selected-only query and CSV export retain both off-screen and on-screen selections",
+          "evidence": {}
+        },
+        {
+          "name": "Rapid additive map clicks retain both exact records",
+          "evidence": {
+            "ids": [
+              "136",
+              "36"
+            ]
+          }
+        },
+        {
+          "name": "Slower double-click restores selection after initial click feedback",
+          "evidence": {}
+        },
+        {
+          "name": "Escape cancels delayed picking without reselecting a record",
+          "evidence": {}
+        },
+        {
+          "name": "Extreme zoom/tilt remains bounded and never changes event time or Time height",
+          "evidence": {}
+        },
+        {
+          "name": "Select mode keeps Shift-drag box selection and camera position",
+          "evidence": {}
+        },
+        {
+          "name": "Focused O switches Globe/2D",
+          "evidence": {}
+        },
+        {
+          "name": "Space retains timeline play/pause",
+          "evidence": {}
+        },
+        {
+          "name": "Table Shift+Down selects rows without camera navigation",
+          "evidence": {}
+        },
+        {
+          "name": "Shared CLI/MCP view adapter retains full zoom factor semantics",
+          "evidence": {}
+        }
+      ],
+      "errors": [],
+      "public_requests": 0
+    },
+    "event-table": {
+      "checks": [
+        "synthetic: Tables picker opens every canonical and imported attribute column",
+        "synthetic: full attribute table sorts canonical columns globally in both directions",
+        "synthetic: Shift+arrow and Shift+click select exactly the displayed sorted range",
+        "synthetic: keyboard navigation/reveal retain sorted order across virtual pages",
+        "synthetic: full layer attributes retain imported columns and sorting",
+        "hurricanes: Tables picker opens every canonical and imported attribute column",
+        "hurricanes: full attribute table sorts canonical columns globally in both directions",
+        "hurricanes: Shift+arrow and Shift+click select exactly the displayed sorted range",
+        "hurricanes: keyboard navigation/reveal retain sorted order across virtual pages",
+        "hurricanes: full layer attributes retain imported columns and sorting",
+        "Picker lists both Event sources and the GIS table, including hidden layers; keyboard and trigger dismissal work",
+        "Hidden source opens its exact full table; filter control and demand-loaded horizontal scrolling retain original fields",
+        "Choosing a hidden GIS reference opens its real properties and sortable feature rows",
+        "An older compact-table workspace restores the full attribute table"
+      ],
+      "errors": [],
+      "public_requests": 0
+    },
+    "navigation-sphere": {
+      "checks": [
+        {
+          "name": "One compass and vertical slider rail; obsolete buttons and bottom strip removed",
+          "evidence": {}
+        },
+        {
+          "name": "Flat compass rose is centered above the slim rail without sphere artwork",
+          "evidence": {
+            "width": 60,
+            "railWidth": 44,
+            "centered": true,
+            "stacked": true,
+            "globeDetails": 0,
+            "roses": 1,
+            "cardinals": "NESW"
+          }
+        },
+        {
+          "name": "globe: compass follows horizontal/vertical drag live, stops on release and preserves data/time/selection",
+          "evidence": {
+            "before": {
+              "bearing": 30.000000000057355,
+              "tilt": 35.000000000091525,
+              "distance": 3600.000005834211,
+              "height": 2.8,
+              "scale": 1,
+              "globeTime": false,
+              "range": [
+                1750147200,
+                1750189740
+              ],
+              "selected": [],
+              "count": 192
+            },
+            "during": {
+              "bearing": 13.200000000154944,
+              "tilt": 43.25000000008627,
+              "distance": 3600.0000050298104,
+              "height": 2.8,
+              "scale": 1,
+              "globeTime": false,
+              "range": [
+                1750147200,
+                1750189740
+              ],
+              "selected": [],
+              "count": 192
+            }
+          }
+        },
+        {
+          "name": "space-time: compass follows horizontal/vertical drag live, stops on release and preserves data/time/selection",
+          "evidence": {
+            "before": {
+              "bearing": 29.999999999999886,
+              "tilt": 34.99999999999996,
+              "distance": 5200.014136832334,
+              "height": 2.8,
+              "scale": 1,
+              "globeTime": false,
+              "range": [
+                1750147200,
+                1750189740
+              ],
+              "selected": [],
+              "count": 192
+            },
+            "during": {
+              "bearing": 13.199999999999818,
+              "tilt": 43.24999999999973,
+              "distance": 5200.014116317925,
+              "height": 2.8,
+              "scale": 1,
+              "globeTime": false,
+              "range": [
+                1750147200,
+                1750189740
+              ],
+              "selected": [],
+              "count": 192
+            }
+          }
+        },
+        {
+          "name": "Compass north tracks camera heading through all quadrants; cardinal labels stay upright",
+          "evidence": {}
+        },
+        {
+          "name": "Zoom and tilt sliders update before release and accept native keyboard input",
+          "evidence": {}
+        },
+        {
+          "name": "Time icon opens on hover/focus; zero-based globe scale works; Escape closes popup",
+          "evidence": {}
+        },
+        {
+          "name": "Same popup controls space-time height, independently of globe scale and timestamps",
+          "evidence": {}
+        },
+        {
+          "name": "2D compass pans; tilt/time controls hide; Events remain intact",
+          "evidence": {}
+        },
+        {
+          "name": "Rail selection/orbit modes and Fit retain their application handlers",
+          "evidence": {}
+        },
+        {
+          "name": "Compass and rail fit large/small windows, with and without attribute table",
+          "evidence": {}
+        },
+        {
+          "name": "Light/dark screenshot captures; cached real street source only when explicitly supplied",
+          "evidence": {}
+        },
+        {
+          "name": "Stacked navigation also frames 1,604 public hurricane Events with tracks",
+          "evidence": {}
+        },
+        {
+          "name": "Strict desktop CSP, zero uncaught errors, zero browser requests to public services",
+          "evidence": {}
+        }
+      ],
+      "errors": [],
+      "public_requests": 0
+    }
+  },
+  "native": {
+    "passed": true,
+    "version": "0.16.11",
+    "source_commit": "467a316b2eac769a40c339a48e35f61bbf90a575",
+    "binary_sha256": "45c5d526dccb4432b53aeb11c321aa63bd24b242eb50972a2c84afe82208fc83",
+    "checks": [
+      "Optimized Windows WebView2 application starts at version 0.16.11",
+      "The packaged catalog has 14 demos and no synthetic UAV dataset",
+      "The optimized native app opens a remaining demo and attribute table without render errors"
+    ],
+    "started_utc": "2026-10-31T21:25:47.875329+00:00",
+    "finished_utc": "2026-10-31T21:26:07.268931+00:00"
+  },
+  "source_sha256": {
+    "frontend/src/view.ts": "4223723e113135e52c70e686367bd8c67b8a7b1c53a209fdba1537489794f40d",
+    "frontend/src/attribute-tables.ts": "0d4b19aa03fb925843ff2e116b91e87180d004fe1a91bc9cb466d069d7d3fde6",
+    "frontend/src/table-selection.ts": "e6285c9951b80d598ae44974aeb13c8f14b7f862b6e20f27e85ee060086e9f4e",
+    "frontend/src/main.ts": "a0278e222ba362f06d588c88869a81d3265f99cf12ed00ef5b279c44441fcff2",
+    "frontend/src/tooltips.ts": "a10b6ebd65eeeb7df00048e011efde67ae651f6e7de04d325b9d54a260b69e35",
+    "frontend/src/contracts.ts": "3a2a8487d734a04b010f3ff0a2414948b919f4484be87e3855e7d99ef8fd51bf",
+    "src/demos.rs": "f2c95bb2c8783a3be70579a93b7bc95928411b92c8372a4935cb2454690b6588",
+    "scripts/package-notices.mjs": "bc9f88746a6b0367f7868e2dba4221ee0ce9870ed542dca8a19fb7f4f01695b2",
+    "scripts/package_notices.py": "73fcec16843ce3d124afbcbd05b578eb51b302b56ee1ee1d3bbd8dd5c043b985"
+  },
+  "build_checks": {
+    "rust": [
+      {
+        "name": "cli-debug",
+        "exit_code": 0,
+        "elapsed_s": 633.484
+      },
+      {
+        "name": "contracts",
+        "exit_code": 0,
+        "elapsed_s": 12.985
+      },
+      {
+        "name": "demo-tests",
+        "exit_code": 0,
+        "elapsed_s": 73.984
+      }
+    ],
+    "unit": [
+      {
+        "name": "frontend-unit",
+        "exit_code": 0,
+        "elapsed_s": 28.562
+      }
+    ],
+    "package-frontend": [
+      {
+        "name": "packaged-frontend",
+        "exit_code": 0,
+        "elapsed_s": 27.797
+      }
+    ],
+    "native-build": [
+      {
+        "name": "native-release",
+        "exit_code": 0,
+        "elapsed_s": 392.0
+      }
+    ]
+  },
+  "limits": [
+    "All validation was local on Windows; no Public promotion, hosted workflows, release assets or tags",
+    "Native checks use the app-owned attached API and application capture; mouse gestures and detached-table interactions use actual Chrome input against the same production frontend and local Rust bridge",
+    "The ignored Rust test is the existing full bundled-data matrix; representative demo opening, removed-ID preservation, altitude controls and the Starlink size/data tests pass",
+    "The feature source was initially validated as an uncommitted tree, then committed unchanged; recorded source hashes match this commit",
+    "Existing user workspaces and older running builds/profiles are preserved; Show selected is local to Event table tabs"
+  ],
+  "public_updated": false,
+  "hosted_workflows_started": false
+}

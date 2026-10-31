@@ -18,7 +18,7 @@ const esc = (s: unknown) =>
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
-export const attributeTableMarkup = `<div class="table-tabs" role="tablist" aria-label="Open attribute tables" id="table-tabs"></div><div class="table-header"><input id="table-search" type="search" maxlength="1024" placeholder="Search this table…" aria-label="Search this table" title="Search record text and original attribute values in this table"><small class="muted" id="table-count" role="status"></small><span class="spacer"></span><label class="check-row" id="table-filter-option" hidden><input id="table-respect-filters" type="checkbox"> Respect workspace filters</label><button id="table-all" hidden>All sources</button><button id="table-popout" title="Move all attribute tabs to a separate window" aria-label="Detach attribute tables">Detach</button></div><div class="table-scroll"><table><colgroup></colgroup><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>`;
+export const attributeTableMarkup = `<div class="table-tabs" role="tablist" aria-label="Open attribute tables" id="table-tabs"></div><div class="table-header"><input id="table-search" type="search" maxlength="1024" placeholder="Search this table…" aria-label="Search this table" title="Search record text and original attribute values in this table"><small class="muted" id="table-count" role="status"></small><span class="spacer"></span><label class="check-row" id="table-filter-option" hidden><input id="table-respect-filters" type="checkbox"> Respect workspace filters</label><label class="check-row" id="table-selected-option" hidden title="Show only selected events within this table’s source, search and filter scope; the map is unchanged"><input id="table-selected-only" type="checkbox"> Show selected</label><button id="table-all" title="Open a combined table of all imported Event layers. Each table has its own search and filter options; GIS layers have separate tables." hidden>All sources</button><button id="table-popout" title="Move all attribute tabs to a separate window" aria-label="Detach attribute tables">Detach</button></div><div class="table-scroll"><table><colgroup></colgroup><thead id="table-head"></thead><tbody id="table-body"></tbody></table></div>`;
 
 export type AttributeTab = {
   key: string;
@@ -27,6 +27,7 @@ export type AttributeTab = {
   sort: string;
   descending: boolean;
   filters: boolean;
+  selectedOnly?: boolean;
   column: number;
   columnCount: number;
   search: string;
@@ -77,6 +78,7 @@ export function createAttributeTables(
   let searchTimer: ReturnType<typeof setTimeout> | undefined;
   let tableSource: string | null = null,
     tableRespectFilters = true,
+    tableSelectedOnly = false,
     tableSort = "time",
     tableDescending = false,
     tableTotal = 0,
@@ -85,6 +87,14 @@ export function createAttributeTables(
     scope: () => ({
       source: tableSource,
       apply_filter: tableRespectFilters,
+      ...(tableSelectedOnly
+        ? {
+            filter: {
+              ...(tableRespectFilters ? hooks.snapshot().filter : {}),
+              selected_only: true,
+            },
+          }
+        : {}),
       table_search: tableSearch,
       ...(tableDisplayCell ? { display_cell: tableDisplayCell } : {}),
       sort_by: tableSort,
@@ -120,6 +130,7 @@ export function createAttributeTables(
       ...(tableDisplayCell ? { display_cell: tableDisplayCell } : {}),
       source: tableSource,
       apply_filter: tableRespectFilters,
+      selected_only: tableSelectedOnly,
       sort_by: tableSort,
       descending: tableDescending,
       column_offset: tableColumnOffset,
@@ -170,6 +181,7 @@ export function createAttributeTables(
       sort: tableSort,
       descending: tableDescending,
       filters: tableRespectFilters,
+      selectedOnly: tableSelectedOnly,
       column: tableColumnOffset,
       columnCount: tableColumnCount,
       search: tableSearch,
@@ -194,6 +206,7 @@ export function createAttributeTables(
     tableSort = value.sort;
     tableDescending = value.descending;
     tableRespectFilters = value.filters;
+    tableSelectedOnly = value.selectedOnly === true;
     clearTimeout(searchTimer);
     tableColumnOffset = value.column;
     tableColumnCount = value.columnCount || 0;
@@ -217,6 +230,20 @@ export function createAttributeTables(
       );
     return value.cell ? "Display cell members" : value.source || "All sources";
   }
+  function currentScopeKey() {
+    const snapshot = hooks.snapshot();
+    return JSON.stringify([
+      tableRespectFilters && !gisTable.layerId ? snapshot?.filter : null,
+      tableSource,
+      tableRespectFilters,
+      tableSelectedOnly,
+      tableSelectedOnly ? snapshot?.revision : null,
+      tableSort,
+      tableDescending,
+      tableDisplayCell,
+      tableSearch,
+    ]);
+  }
   function syncTabs() {
     if (tableOpen && !activeTab) {
       activeTab = currentKey();
@@ -226,15 +253,7 @@ export function createAttributeTables(
       gisTable.search = tableSearch;
       ($("#table-search") as HTMLInputElement).value = tableSearch;
     }
-    tableScopeKey = JSON.stringify([
-      tableRespectFilters && !gisTable.layerId ? hooks.snapshot().filter : null,
-      tableSource,
-      tableRespectFilters,
-      tableSort,
-      tableDescending,
-      tableDisplayCell,
-      tableSearch,
-    ]);
+    tableScopeKey = currentScopeKey();
     saveTab();
     const focusKey =
       $("#table-tabs").querySelector<HTMLElement>(":focus")?.dataset.tableTab;
@@ -243,7 +262,7 @@ export function createAttributeTables(
       [...tabs.values()]
         .map(
           (value, i) =>
-            `<div class="attribute-tab"><button role="tab" id="attribute-tab-${i}" aria-controls="attribute-table-content" aria-selected="${value.key === activeTab}" tabindex="${value.key === activeTab ? 0 : -1}" data-table-tab="${esc(value.key)}" title="${esc(label(value))}">${esc(label(value))}</button><button ${value.key === activeTab ? 'id="close-table"' : ""} class="attribute-tab-close" data-close-tab="${esc(value.key)}" aria-label="Close ${esc(label(value))}">×</button></div>`,
+            `<div class="attribute-tab"><button role="tab" id="attribute-tab-${i}" aria-controls="attribute-table-content" aria-selected="${value.key === activeTab}" tabindex="${value.key === activeTab ? 0 : -1}" data-table-tab="${esc(value.key)}" title="${esc(!value.gis && !value.source && !value.cell ? "Events from all imported event layers in this workspace. Table search, Show selected and Respect workspace filters still apply; GIS layers have separate tables." : label(value))}">${esc(label(value))}</button><button ${value.key === activeTab ? 'id="close-table"' : ""} class="attribute-tab-close" data-close-tab="${esc(value.key)}" aria-label="Close ${esc(label(value))}">×</button></div>`,
         )
         .join(""),
     );
@@ -290,8 +309,11 @@ export function createAttributeTables(
     // Restore scroll after rows establish the new table's scroll extent.
     const position = { top: next.top, left: next.left };
     await table();
-    $(".table-scroll").scrollTop = position.top;
-    $(".table-scroll").scrollLeft = position.left;
+    storedTop = position.top;
+    storedLeft = position.left;
+    $(".table-scroll").scrollTop = storedTop;
+    $(".table-scroll").scrollLeft = storedLeft;
+    saveTab();
     hooks.layout?.();
   }
   async function closeTab(key: string | null) {
@@ -333,6 +355,7 @@ export function createAttributeTables(
     clearTimeout(searchTimer);
     ($("#table-search") as HTMLInputElement).value = "";
     tableRespectFilters = true;
+    tableSelectedOnly = false;
     tableSort = "time";
     tableDescending = false;
     tableReveal = null;
@@ -449,6 +472,8 @@ export function createAttributeTables(
       tableSort,
       tableDescending,
       tableRespectFilters,
+      tableSelectedOnly,
+      tableSelectedOnly ? hooks.snapshot().revision : null,
       tableRespectFilters && !gisTable.layerId ? hooks.snapshot().filter : null,
       gisTable.sort,
       gisTable.descending,
@@ -465,6 +490,7 @@ export function createAttributeTables(
         );
         if (!layer) return closeTab(activeTab);
         $("#table-filter-option").hidden = true;
+        $("#table-selected-option").hidden = true;
         $("#table-all").hidden = false;
         host.setAttribute("aria-label", `GIS · ${layer.name}`);
         const r = await gisTable.render(layer, page * 50, tableColumnOffset);
@@ -545,11 +571,14 @@ export function createAttributeTables(
         tableColumnCount,
       );
       $("#table-filter-option").hidden = false;
+      $("#table-selected-option").hidden = false;
+      ($("#table-selected-only") as HTMLInputElement).checked =
+        tableSelectedOnly;
       $("#table-all").hidden = tableSource === null;
       ($("#table-respect-filters") as HTMLInputElement).checked =
         tableRespectFilters;
       $("#table-count").textContent =
-        `${tableTotal.toLocaleString()} events${r.columns_limited ? " · first 512 source fields" : ""}`;
+        `${tableTotal.toLocaleString()} ${tableSelectedOnly ? "selected events" : "events"}${r.columns_limited ? " · first 512 source fields" : ""}`;
       const columns = r.columns as string[];
       const titles: Record<string, string> = {
         time: "Time / UTC",
@@ -644,6 +673,13 @@ export function createAttributeTables(
     table().catch((e) => toast(String(e), true));
   });
   on("#table-all", () => openAttributes(null));
+  $("#table-selected-only").addEventListener("change", () => {
+    tableSelectedOnly = check("#table-selected-only");
+    tableSelection.anchor = tableSelection.activeId = null;
+    tableReveal = null;
+    resetTableScroll();
+    table().catch(hooks.error);
+  });
   function scheduleScroll(event?: Event) {
     if (!tableOpen || hooks.suspended?.() || receiving) return;
     if (event?.type === "scroll") {
@@ -653,6 +689,9 @@ export function createAttributeTables(
     if (tableScrollFrame) return;
     tableScrollFrame = requestAnimationFrame(() => {
       tableScrollFrame = 0;
+      // Detaching or receiving tab state can happen after this frame was queued.
+      // A hidden/unfinished table reports zero scroll and must not replace it.
+      if (!tableOpen || hooks.suspended?.() || receiving) return;
       storedTop = $(".table-scroll").scrollTop;
       storedLeft = $(".table-scroll").scrollLeft;
       const nextPage = Math.floor(
@@ -712,6 +751,7 @@ export function createAttributeTables(
     render: table,
     resetTableScroll,
     tablePageArguments,
+    currentScopeKey,
     openAttributes,
     openGisAttributes,
     capture,

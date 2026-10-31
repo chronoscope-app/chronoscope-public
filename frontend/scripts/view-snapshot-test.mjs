@@ -147,9 +147,9 @@ function harness() {
     clearTimeout,
     console,
     snapshot: initial,
-    interactionGeneration:0,
-    currentDataIdentity:"",
-    preparedPool:undefined,
+    interactionGeneration: 0,
+    currentDataIdentity: "",
+    preparedPool: undefined,
     residentWindow() {},
     scheduleInteraction() {},
     tab: "inspect",
@@ -189,6 +189,9 @@ function harness() {
       tableOpen: false,
       page: 0,
       tableScopeKey: "",
+      currentScopeKey() {
+        return "";
+      },
       resetTableScroll() {},
     },
     viewsPanel: {},

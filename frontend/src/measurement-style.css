@@ -19,6 +19,25 @@
 .measurement-legend strong {
   display: block;
   font-size: 13px;
+  padding-right: 18px;
+}
+.measurement-legend-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+  pointer-events: auto;
+}
+.measurement-legend-close:hover,
+.measurement-legend-close:focus-visible {
+  background: #ffffff24;
 }
 .measurement-ramp {
   height: 10px;

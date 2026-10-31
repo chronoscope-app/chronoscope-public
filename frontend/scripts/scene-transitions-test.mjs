@@ -842,6 +842,8 @@ for (const consumer of ["display", "measurement"]) {
       ui.context.viewsPanel = { liveOptions: undefined };
       ui.context.displayOptions = { mode: "points", bloom: false };
       ui.context.view.setDisplayOptions = () => {};
+      ui.context.check = () => true;
+      ui.context.measurementLegend = { setVisible() {} };
       let work;
       if (consumer === "display") {
         vm.runInContext(

@@ -260,7 +260,8 @@ export class SpaceTimeView {
   }
   residentPlaybackReason() {
     if (this.canSmoothHeatmap()) return "";
-    if (this.measurement || (!this.canResidentGroundEffects() && (this.displayLayer.active || !["points", "auto"].includes(this.display.mode)))) return "Choose Points in Views for smooth playback";
+    if (this.measurement) return "Value colors use standard rendering";
+    if (!this.canResidentGroundEffects() && (this.displayLayer.active || !["points", "auto"].includes(this.display.mode))) return "Choose Points in Views for smooth playback";
     if (this.geometryFeatures.length) return "Geometry scenes use standard playback";
     return "";
   }
@@ -410,7 +411,7 @@ export class SpaceTimeView {
     restore?: () => void;
   };
   onContextPick: (id: string) => void = () => {};
-  onRadiusQuery: (latitude: number, longitude: number) => void = () => {};
+  onRadiusQuery: (latitude: number, longitude: number, anchor: { x: number; y: number }) => void = () => {};
   private inputSuspended = false;
   private drag?: {
     x: number;
@@ -425,6 +426,7 @@ export class SpaceTimeView {
     navigation?: "orbit" | "zoom" | "tilt";
     moved?: boolean;
     anchor: Cartesian2;
+    rotation?: { target: Cartesian3; range: number; heading: number; tilt: number };
   };
   private triangleImage = "";
   private renderErrors = 0;
@@ -704,24 +706,29 @@ export class SpaceTimeView {
     this.camera.percentageChanged = 0.01;
     this.camera.changed.addEventListener(() => {
       this.idleUpdates?.wake();
+      this.hideTooltip();
       this.cameraDirty = true;
       this.controls.dispatchEvent(new Event("change"));
       this.displayLayer.cameraChanged();
       // Viewport loading is throttled separately and must follow a held drag.
       // Keep expensive scene bookkeeping on the trailing idle timer.
       this.onViewportChange();
-      clearTimeout(this.idleTimer);
-      this.idleTimer = setTimeout(() => {
-        if (!this.disposed) {
-          this.rebuildTrails();
-          this.updateAxes();
-          this.onViewportChange();
-          this.onSceneChange();
-        }
-      }, 160);
+      this.settleNavigation();
     });
     const stabilizeCamera = cameraStabilizer(this.camera);
-    scene.preUpdate.addEventListener(() => stabilizeCamera(scene.mode));
+    scene.preUpdate.addEventListener(() => {
+      stabilizeCamera(scene.mode);
+      // Cesium updates at the active cadence even when request-render mode
+      // skips a draw. Slow/sparse pointer events are not slow rendering.
+      const now = performance.now();
+      if (this.playback || this.drag) {
+        if (this.resourceActiveLast) {
+          this.resourceActiveTotal += now - this.resourceActiveLast;
+          this.resourceActiveIntervals++;
+        }
+        this.resourceActiveLast = now;
+      } else this.resourceActiveLast = 0;
+    });
     scene.preRender.addEventListener(() => {
       this.constrainCamera();
       if (this.updateSpaceTimeFloor()) this.updateAxes();
@@ -733,13 +740,6 @@ export class SpaceTimeView {
         interval = now - this.lastRendered;
       this.lastFrameIntervalMs = this.lastRendered ? interval : 0;
       this.lastRenderCpuMs = now - this.renderStarted;
-      if (this.playback || this.drag) {
-        if (this.resourceActiveLast) {
-          this.resourceActiveTotal += now - this.resourceActiveLast;
-          this.resourceActiveIntervals++;
-        }
-        this.resourceActiveLast = now;
-      } else this.resourceActiveLast = 0;
       // Idle gaps are intentional in request-render mode, not dropped frames.
       if (interval > 250) {
         this.frameIntervals = [];
@@ -2750,7 +2750,22 @@ export class SpaceTimeView {
       ),
     };
   }
-  private orient(heading: number, tilt: number) {
+  private rotationAnchor() {
+    const target = Cartesian3.clone(this.centerGround());
+    // Retain one focus for the whole gesture instead of picking the ground
+    // again after each camera change, which accumulates sideways movement.
+    return {
+      target,
+      range: Cartesian3.distance(this.camera.positionWC, this.cameraWorldPosition(target)),
+      heading: this.bearing(),
+      tilt: this.tilt(),
+    };
+  }
+  private orient(
+    heading: number,
+    tilt: number,
+    pivot?: { target: Cartesian3; range: number },
+  ) {
     if (this.mode === "map") {
       const center = Cartographic.fromCartesian(this.centerGround());
       this.lookAtGeographic(
@@ -2766,8 +2781,8 @@ export class SpaceTimeView {
       this.onSceneChange();
       return;
     }
-    const target = this.centerGround(),
-      range = Cartesian3.distance(
+    const target = pivot?.target || this.centerGround(),
+      range = pivot?.range ?? Cartesian3.distance(
         this.camera.positionWC,
         this.cameraWorldPosition(target),
       );
@@ -3655,6 +3670,34 @@ export class SpaceTimeView {
   draw() {
     this.requestRender();
   }
+  private settleNavigation() {
+    clearTimeout(this.idleTimer);
+    this.idleTimer = setTimeout(() => {
+      if (this.disposed || this.drag) return;
+      this.rebuildTrails();
+      this.updateAxes();
+      this.onViewportChange();
+      this.onSceneChange();
+    }, 160);
+  }
+  /** The four on-top navigation handles need no scene-wide GPU pick. */
+  private orbitAt(x: number, y: number): PickId | undefined {
+    if (this.mode !== "space-time" || !this.handles?.show) return;
+    let closest = 11 ** 2;
+    let picked: PickId | undefined;
+    for (let i = 0; i < this.handles.length; i++) {
+      const handle = this.handles.get(i);
+      if (!handle.show || handle.id?.kind !== "orbit") continue;
+      const p = this.project(handle.position);
+      if (!p) continue;
+      const distance = (p.x - x) ** 2 + (p.y - y) ** 2;
+      if (distance <= closest) {
+        closest = distance;
+        picked = handle.id as PickId;
+      }
+    }
+    return picked;
+  }
   private pickId(x: number, y: number): PickId | undefined {
     try {
       const pixel = new Cartesian2(x, y),
@@ -3833,7 +3876,7 @@ export class SpaceTimeView {
         const r = canvas.getBoundingClientRect();
         const id =
           e.button === 0
-            ? this.pickId(e.clientX - r.left, e.clientY - r.top)
+            ? this.orbitAt(e.clientX - r.left, e.clientY - r.top)
             : undefined;
         const navigation =
           e.button === 2
@@ -3854,6 +3897,10 @@ export class SpaceTimeView {
           button: e.button,
           navigation,
           anchor: new Cartesian2(e.clientX - r.left, e.clientY - r.top),
+          rotation:
+            this.mode !== "map" && (navigation || id?.kind === "orbit")
+              ? this.rotationAnchor()
+              : undefined,
         };
         if (this.drag.box || this.drag.orbit || navigation) {
           this.scene.screenSpaceCameraController.enableInputs = false;
@@ -3869,25 +3916,29 @@ export class SpaceTimeView {
         const r = canvas.getBoundingClientRect(),
           drag = this.drag;
         if (drag && drag.pointer !== e.pointerId) return;
+        if (drag && !drag.moved && Math.hypot(e.clientX - drag.x, e.clientY - drag.y) > 5) {
+          drag.moved = true;
+          this.cancelPendingPick();
+        }
         if (drag?.orbit || drag?.navigation) {
           const dx = e.clientX - drag.lastX,
             dy = e.clientY - drag.lastY;
           drag.lastX = e.clientX;
           drag.lastY = e.clientY;
           if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) <= 5) return;
-          drag.moved = true;
-          this.cancelPendingPick();
-          if (drag.navigation === "zoom") {
-            if (this.mode !== "map" && dx)
-              this.orient(this.bearing() + dx * 0.3, this.tilt());
-            if (dy) this.zoomAt(
-              Math.exp(Math.max(-0.65, Math.min(0.65, dy * 0.008))),
-              drag.anchor,
-            );
-          } else if (drag.navigation === "tilt") {
-            if (dy) this.orient(this.bearing(), this.tilt() - dy * 0.2);
+          const rotation = drag.rotation;
+          if (rotation) {
+            rotation.heading += dx * 0.3;
+            if (drag.navigation === "zoom")
+              rotation.range = Math.max(
+                2,
+                Math.min(8e7, rotation.range / Math.exp(Math.max(-0.65, Math.min(0.65, dy * 0.008)))),
+              );
+            else rotation.tilt = Math.max(0, Math.min(85, rotation.tilt - dy * 0.2));
+            this.orient(rotation.heading, rotation.tilt, rotation);
+          } else if (drag.navigation === "zoom" && dy) {
+            this.zoomAt(Math.exp(Math.max(-0.65, Math.min(0.65, dy * 0.008))), drag.anchor);
           }
-          else this.orient(this.bearing() + dx * 0.3, this.tilt() - dy * 0.2);
           return;
         }
         if (drag?.box) {
@@ -3902,48 +3953,31 @@ export class SpaceTimeView {
           this.hideTooltip();
           return;
         }
-        const id = this.pickId(e.clientX - r.left, e.clientY - r.top);
-        canvas.style.cursor =
-          id?.kind === "orbit"
-            ? "grab"
-            : id
-              ? "pointer"
-              : this.boxMode
-                ? "crosshair"
-                : "";
-        const point =
-          id && (id.kind === "event" || id.kind === "geometry")
-            ? this.resident?.point(id.id) || this.pointById.get(id.id)
-            : undefined;
-        if (id?.kind === "cluster")
-          this.tooltip.textContent = `${id.bin.count.toLocaleString()} events · click to zoom; Shift-click selects evidence`;
-        else if (point)
-          this.tooltip.textContent = `${(this.resident ? this.residentNames : this.names)[point.entity] || "Event"} · ${time(point.time)} UTC${point.inferred ? " · Location unknown · inferred display position" : point.centroid ? " · Polygon centroid (derived surface location)" : ""}`;
-        else if (id?.kind === "orbit")
-          this.tooltip.textContent = `Drag ${id.side} handle to rotate`;
-        else {
-          this.hideTooltip();
-          return;
-        }
-        const hoverKey = JSON.stringify(id);
-        if (this.hoverHintKey !== hoverKey) {
-          this.hideTooltip();
-          this.hoverHintKey = hoverKey;
-          this.hoverHintTimer = setTimeout(() => {
-            if (this.disposed || this.hoverHintKey !== hoverKey) return;
-            if (
-              JSON.stringify(
-                this.pickId(e.clientX - r.left, e.clientY - r.top),
-              ) !== hoverKey
-            ) {
-              this.hideTooltip();
-              return;
-            }
-            this.tooltip.style.display = "block";
-          }, TOOLTIP_DELAY_MS);
-        }
-        this.tooltip.style.left = `${Math.min(this.host.clientWidth - 240, e.clientX - r.left + 14)}px`;
-        this.tooltip.style.top = `${e.clientY - r.top + 12}px`;
+        this.hideTooltip();
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        const orbit = this.orbitAt(x, y);
+        canvas.style.cursor = orbit ? "grab" : this.boxMode ? "crosshair" : "";
+        const hoverKey = `${x}/${y}`;
+        this.hoverHintKey = hoverKey;
+        // Hover hints already wait a second. Do the expensive GPU pick once,
+        // at that point, so crossing the canvas to start a pan cannot block it.
+        this.hoverHintTimer = setTimeout(() => {
+          if (this.disposed || this.recovering || this.drag || this.hoverHintKey !== hoverKey) return;
+          const id = this.orbitAt(x, y) || this.pickId(x, y);
+          const point = id && (id.kind === "event" || id.kind === "geometry")
+            ? this.resident?.point(id.id) || this.pointById.get(id.id) : undefined;
+          if (id?.kind === "cluster")
+            this.tooltip.textContent = `${id.bin.count.toLocaleString()} events · click to zoom; Shift-click selects evidence`;
+          else if (point)
+            this.tooltip.textContent = `${(this.resident ? this.residentNames : this.names)[point.entity] || "Event"} · ${time(point.time)} UTC${point.inferred ? " · Location unknown · inferred display position" : point.centroid ? " · Polygon centroid (derived surface location)" : ""}`;
+          else if (id?.kind === "orbit")
+            this.tooltip.textContent = `Drag ${id.side} handle to rotate`;
+          else return;
+          canvas.style.cursor = id?.kind === "orbit" ? "grab" : "pointer";
+          this.tooltip.style.left = `${Math.min(this.host.clientWidth - 240, x + 14)}px`;
+          this.tooltip.style.top = `${y + 12}px`;
+          this.tooltip.style.display = "block";
+        }, TOOLTIP_DELAY_MS);
       },
       { signal },
     );
@@ -3958,6 +3992,7 @@ export class SpaceTimeView {
       }
       if (drag.pointer !== e.pointerId || drag.button !== e.button) return;
       this.drag = undefined;
+      this.settleNavigation();
       this.scene.screenSpaceCameraController.enableInputs = true;
       this.box.style.display = "none";
       const r = canvas.getBoundingClientRect(),
@@ -3976,7 +4011,7 @@ export class SpaceTimeView {
             const ground = this.groundAt(drag.anchor);
             if (ground) {
               const c = Cartographic.fromCartesian(ground);
-              this.onRadiusQuery(CesiumMath.toDegrees(c.latitude), CesiumMath.toDegrees(c.longitude));
+              this.onRadiusQuery(CesiumMath.toDegrees(c.latitude), CesiumMath.toDegrees(c.longitude), { x: e.clientX, y: e.clientY });
             }
           }
         }
@@ -4031,7 +4066,8 @@ export class SpaceTimeView {
         else this.onPick(ids, drag.add);
         return;
       }
-      if (distance > 5) return;
+      // A pan can finish back where it began; it must not become a click.
+      if (drag.moved || distance > 5) return;
       const id = this.pickId(e.clientX - r.left, e.clientY - r.top);
       clearTimeout(this.pendingPick);
       this.pendingPickAction = () => {
@@ -4054,6 +4090,7 @@ export class SpaceTimeView {
     canvas.addEventListener("pointerup", up, { signal });
     window.addEventListener("pointerup", up, { signal });
     const resetPointer = () => {
+      if (this.drag) this.settleNavigation();
       this.drag = undefined;
       this.inputSuspended = false;
       this.box.style.display = "none";

@@ -1,6 +1,6 @@
 {
   "name": "chronoscope-ui",
-  "version": "0.16.10",
+  "version": "0.16.12",
   "private": true,
   "type": "module",
   "scripts": {
@@ -27,10 +27,13 @@
     "test:gis-files": "node scripts/gis-files-qa.mjs",
     "test:vector-gis": "node scripts/vector-gis-qa.mjs",
     "test:notifications": "node scripts/notifications-qa.mjs",
+    "test:release-updates": "node scripts/release-updates-qa.mjs",
     "test:spectrum": "node scripts/spectrum-qa.mjs",
     "test:detachable-tables": "node scripts/detachable-tables-qa.mjs",
     "test:event-table": "node scripts/event-table-qa.mjs",
+    "test:flight-pan": "node scripts/flight-pan-qa.mjs",
     "test:navigation": "node scripts/navigation-qa.mjs",
+    "test:navigation-table-cleanup": "node scripts/navigation-table-cleanup-qa.mjs",
     "test:basemap": "node scripts/basemap-qa.mjs",
     "test:display-recovery": "node scripts/display-recovery-qa.mjs",
     "test:cluster-identity": "node scripts/cluster-identity-qa.mjs",
@@ -74,8 +77,7 @@
     "test:table-playback": "node scripts/table-playback-qa.mjs",
     "test:space-demos": "node scripts/space-demos-qa.mjs",
     "test:flight-week": "node scripts/flight-week-qa.mjs",
-    "test:idf-demo": "node scripts/idf-demo-qa.mjs",
-    "test:kabr-demo": "node scripts/kabr-demo-qa.mjs"
+    "test:idf-demo": "node scripts/idf-demo-qa.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "2.12.4",
@@ -86,11 +88,13 @@
     "geographiclib-geodesic": "2.2.0",
     "katex": "^0.19.0",
     "maplibre-gl": "6.14.0",
-    "marked": "^18.1.1"
+    "marked": "^18.1.1",
+    "semver": "7.8.5"
   },
   "devDependencies": {
     "@tauri-apps/cli": "2.12.4",
     "@types/katex": "^0.16.8",
+    "@types/semver": "7.8.0",
     "esbuild": "^0.25.12",
     "playwright": "^1.64.0",
     "pngjs": "^7.0.0",

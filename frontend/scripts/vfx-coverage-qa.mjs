@@ -426,7 +426,7 @@ await withLocalApp(
       details.push({
         final: await page
           .evaluate(() => ({
-            label: document.querySelector("#vfx-playback-state").textContent,
+            label: window.__chronoscope.graphicsStatus,
             diag: window.__chronoscope.view.diagnostics(),
           }))
           .catch(() => null),

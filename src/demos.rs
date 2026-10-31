@@ -1,4 +1,5 @@
-//! Offline, immutable real-world examples. Opening creates a new editable document.
+//! Offline, immutable examples. Synthetic examples are explicitly labelled.
+//! Opening creates a new editable document.
 use crate::project::Project;
 use schemars::JsonSchema;
 use serde::Serialize;
@@ -50,15 +51,6 @@ pub const DEMOS: &[Demo] = &[
         license: "CC BY 4.0 · Alexander Bañados / original flight data via Flightradar24",
         previews: &[Preview { key: "globe", label: "Altitude", view_index: 0 }, Preview { key: "time", label: "Time Height", view_index: 1 }],
         bytes: include_bytes!("../samples/flights-philippines-week-2026.chronoscope"),
-    },
-    Demo {
-        id: "kabr-uav",
-        name: "UAV takeoff to landing · Kenya",
-        description: "Three complete KABR wildlife-monitoring flights on January 11, 12 and 20, 2023. Opens on the 12-minute January 12 flight. 25,924 records in one layer; six startup records have no GPS fix. Globe height is reported metres above takeoff; original UTC dates and sea-level altitude remain separate.",
-        source_url: "https://huggingface.co/datasets/imageomics/kabr_airdata",
-        license: "CC0 1.0 · Imageomics Institute / KABR; curated by Jenna Kline",
-        previews: &[Preview { key: "time", label: "Time", view_index: 0 }, Preview { key: "globe", label: "Height above takeoff", view_index: 1 }],
-        bytes: include_bytes!("../samples/kabr-uav-kenya-2023.chronoscope"),
     },
     Demo {
         id: "hurricanes",

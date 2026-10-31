@@ -10,6 +10,7 @@ type Scope = Pick<
   | "sort_by"
   | "descending"
   | "table_search"
+  | "filter"
 >;
 interface Host {
   scope: () => Scope;
@@ -65,6 +66,7 @@ export class TableSelection {
               source: scope.source,
               table_search: scope.table_search,
               apply_filter: scope.apply_filter,
+              filter: scope.filter,
               display_cell: scope.display_cell,
               table_range: {
                 anchor,
@@ -142,6 +144,7 @@ export class TableSelection {
               source: scope.source,
               table_search: scope.table_search,
               apply_filter: scope.apply_filter,
+              filter: scope.filter,
               display_cell: scope.display_cell,
               table_range: {
                 anchor,

@@ -1,0 +1,105 @@
+{
+  "passed": true,
+  "version": "0.16.11",
+  "source_commit": "8cc4bc4662c28a9de29379c740a004f29d0a9696",
+  "validated_utc": "2026-10-31T20:19:55.840515+00:00",
+  "design": {
+    "api": "https://api.github.com/repos/chronoscope-app/chronoscope-public/releases?per_page=20",
+    "documentation": "https://docs.github.com/en/rest/releases/releases",
+    "api_version": "2026-03-10",
+    "authentication": "none; fetch credentials omitted",
+    "versions": "npm semver 7.8.5, ISC",
+    "selection": "highest semantic version among published versioned releases, including previews; drafts, unversioned tester tags and missing publish dates excluded",
+    "schedule": "desktop startup and hourly wakeups; successful results reused for 24 hours; failures backed off for one hour; manual checks bypass local throttling",
+    "ui": "quiet existing Notifications bell, Help check, General preference; browser opens the fixed Public GitHub release page",
+    "installation": "user reviews release notes/downloads; no binary download or installer is run"
+  },
+  "frontend_tests_passed": 186,
+  "new_release_client_tests": 11,
+  "browser_suites": [
+    {
+      "name": "release-updates",
+      "exit_code": 0,
+      "elapsed_s": 4.172
+    },
+    {
+      "name": "toolbar-dialogs",
+      "exit_code": 0,
+      "elapsed_s": 10.313
+    },
+    {
+      "name": "notifications",
+      "exit_code": 0,
+      "elapsed_s": 14.906
+    }
+  ],
+  "native": {
+    "passed": true,
+    "version": "0.16.11",
+    "source_commit": "8cc4bc4662c28a9de29379c740a004f29d0a9696",
+    "binary_sha256": "1318c71651ad281fcdc554d1b82d3b0b57bea95fc3667d7a8ae71a811a266d0d",
+    "checks": [
+      "Optimized Windows WebView2 application starts at version 0.16.11",
+      "Native WebView successfully calls the live GitHub Releases API through the production CSP and caches the published version",
+      "The updated packaged frontend opens the synthetic UAV demo with all 17,243 records and no render errors"
+    ],
+    "started_utc": "2026-10-31T20:19:17.100209+00:00",
+    "github_webview_cache": {
+      "automatic": true,
+      "checkedAt": 1793477875055,
+      "attemptedAt": 1793477874636,
+      "tag": "v0.16.9",
+      "preview": true
+    },
+    "finished_utc": "2026-10-31T20:19:21.532969+00:00"
+  },
+  "source_sha256": {
+    "frontend/src/release-updates.ts": "62fe1be7e97cea6d2e63431b814e770291f295bc0f212a71e72c6ce2156efab2",
+    "frontend/src/main.ts": "d6b3429d92456c84932e1109388b7a6eae24f19b171c4fd7b7a104697aceaa63",
+    "frontend/src/preferences-controller.ts": "5fbf6e7548b868ae239ddb3c951622dc09389684c3612b87e9ae2541460ee7d7",
+    "frontend/src/help.ts": "a562ef7b2a3ac2a92372cb1da6fa87b915deea067aefbb093de32a480f39743c",
+    "frontend/package.json": "62b785b34bf0b0949841f18d007800bffe6ac4be8d0ff68950677eb88f36d818",
+    "frontend/package-lock.json": "4355f132343a21697dfab193ba2e05d5f27dac0305b1584c47bba9b06c16719c",
+    "frontend/public/licenses/semver-LICENSE.txt": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b",
+    "src-tauri/tauri.conf.json": "0db8262a1580247fbd7ce0cecda90fe97cffcdb873127e6311817f9f1c2209bb"
+  },
+  "build_checks": {
+    "frontend": [
+      {
+        "name": "frontend-build",
+        "exit_code": 0,
+        "elapsed_s": 29.422
+      },
+      {
+        "name": "frontend-unit",
+        "exit_code": 0,
+        "elapsed_s": 26.0
+      }
+    ],
+    "package-frontend": [
+      {
+        "name": "packaged-frontend",
+        "exit_code": 0,
+        "elapsed_s": 28.265
+      }
+    ],
+    "native-build": [
+      {
+        "name": "native-release",
+        "exit_code": 0,
+        "elapsed_s": 647.109
+      }
+    ]
+  },
+  "limits": [
+    "Newer release UI uses an intercepted version 0.16.12 fixture, not a claim that this release is published",
+    "The native integration check reads only the release-check JSON key in the fresh app-owned WebView profile to verify that the real production CSP/CORS/API request completed",
+    "Browser preview uses the unchanged existing engine bridge; the update client is frontend-only. Native application and frontend both report 0.16.11",
+    "Initial browser test matched unrelated status elements; its selector was scoped to the update dialog and the suite passed on rerun",
+    "Initial native attachment reached the engine before its desktop view listener was ready; the bounded readiness retry was corrected and the already-running app then passed all native checks",
+    "All checks local; no Public promotion, release/tag creation or hosted workflow runs"
+  ],
+  "public_updated": false,
+  "release_created": false,
+  "hosted_workflows_started": false
+}

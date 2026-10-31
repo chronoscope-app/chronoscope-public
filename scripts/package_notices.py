@@ -26,8 +26,6 @@ REQUIRED_FILES = {
     'assets/terrain/README.md',
     'samples/README.md', 'samples/public/SOURCES.md',
     'samples/public/demo-provenance.json', 'samples/public/wildlife-provenance.json',
-    'docs/KABR-UAV-DEMO.md', 'samples/public/kabr-uav-provenance.json',
-    'samples/public/kabr-uav-kenya-2023.attribution.json',
     'docs/ALTITUDE-DEMOS.md', 'samples/public/altitude-provenance.json',
     'samples/public/flights-philippines-week-2026.csv.attribution.json',
     'docs/SPACE-DEMOS.md', 'samples/public/space-provenance.json',

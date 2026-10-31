@@ -42,21 +42,48 @@ export function measurementColor(
 export class MeasurementLegend {
   readonly element = document.createElement("aside");
   private signature = "";
+  private style: MeasurementStyle | null | undefined;
+  private dismissed = new Set<string>();
   constructor(host: HTMLElement) {
+    try {
+      const saved = JSON.parse(localStorage.getItem("chronoscope-hidden-color-legends") || "[]");
+      if (Array.isArray(saved)) this.dismissed = new Set(saved.filter(value => typeof value === "string"));
+    } catch { /* Legend visibility still works when local storage is unavailable. */ }
     this.element.className = "measurement-legend";
     this.element.setAttribute("aria-label", "Measurement color scale");
     this.element.hidden = true;
     host.append(this.element);
   }
+  get visible() { return !!this.style && !this.dismissed.has(this.signature); }
+  setVisible(visible: boolean) {
+    if (!this.style) return;
+    if (visible) this.dismissed.delete(this.signature);
+    else this.dismissed.add(this.signature);
+    try {
+      localStorage.setItem("chronoscope-hidden-color-legends", JSON.stringify([...this.dismissed].slice(-100)));
+    } catch { /* Keep the choice for this session. */ }
+    this.element.hidden = !this.visible;
+  }
   update(style: MeasurementStyle | null | undefined) {
     const signature = JSON.stringify(style ?? null);
     if (signature === this.signature) return;
     this.signature = signature;
-    this.element.hidden = !style;
+    this.style = style;
+    this.element.hidden = !this.visible;
     this.element.replaceChildren();
     if (!style) return;
     const title = document.createElement("strong");
     title.textContent = style.title;
+    const close = document.createElement("button");
+    close.type = "button";
+    close.className = "measurement-legend-close";
+    close.setAttribute("aria-label", "Hide color legend");
+    close.title = "Hide legend · restore in Views → Color by value";
+    close.textContent = "×";
+    close.addEventListener("click", event => {
+      event.stopPropagation();
+      this.setVisible(false);
+    });
     const ramp = document.createElement("div");
     ramp.className = "measurement-ramp";
     const ticks = document.createElement("div");
@@ -70,6 +97,6 @@ export class MeasurementLegend {
     note.textContent = style.latest_per_entity
       ? "Latest year in window · gray = no observation"
       : "Fixed scale · gray = no observation";
-    this.element.append(title, ramp, ticks, note);
+    this.element.append(title, close, ramp, ticks, note);
   }
 }

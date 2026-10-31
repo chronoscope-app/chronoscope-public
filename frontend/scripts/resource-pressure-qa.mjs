@@ -39,6 +39,7 @@ await withLocalApp("resource-pressure", async ({ page, api, out, pass }) => {
   const after = await page.evaluate(() => window.__chronoscope.view.diagnostics());
   fs.writeFileSync(path.join(out, "measurements.json"), JSON.stringify({ injectedPressure: true, before, after }, null, 2));
   assert.equal(after.resourceGovernor.profile, "critical");
+  assert.equal(after.experimentalPlayback.active, false);
   assert(after.graphics.framebuffer[0] * after.graphics.framebuffer[1] <= 500000);
   assert(after.graphics.framebuffer[0] * after.graphics.framebuffer[1] < before.graphics.framebuffer[0] * before.graphics.framebuffer[1]);
   assert(after.allocatedMarkerSlots < before.allocatedMarkerSlots);
@@ -84,6 +85,8 @@ await withLocalApp("resource-pressure", async ({ page, api, out, pass }) => {
   assert.equal(recovered.renderErrorCount, 0);
   assert.equal(await page.evaluate(() => window.__chronoscope.view.playback), true);
   await page.evaluate(() => window.__chronoscope.liveViewRequest("view_playback", { action: "pause" }));
+  await page.evaluate(()=>window.__chronoscope.refresh());
+  await page.waitForFunction(()=>window.__chronoscope.view.residentPlaybackActive,null,{timeout:15000});
   pass("Real continuous playback recovers through all capped profiles when memory and render headroom return");
   await page.screenshot({ path: path.join(out, "automatic-critical.png") });
   fs.writeFileSync(path.join(out, "measurements.json"), JSON.stringify({ injectedPressure: true, before, after, final, recovered }, null, 2));

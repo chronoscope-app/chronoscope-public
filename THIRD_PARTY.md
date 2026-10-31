@@ -22,6 +22,10 @@ The root [MIT license](LICENSE) covers independent Chronoscope application code,
 | `Cargo.lock`, frontend/video package locks | Exact package identity inventories, including optional/dev/target entries. MPL/native LGPL obligations depend on actual shipped components; selected permissive alternatives do not erase AND obligations. See [binary/source-access gate](docs/DISTRIBUTION.md). |
 | `docs/screenshots/current/*.png`; application icons | Current native-app screenshots use public-domain Natural Earth relief, plus credited OpenFreeMap Streets in the gull-density, crime and vessel views, and identified public-domain/CC0 data or OGL v3.0 crime data. First-party UI/branding is MIT; dataset attribution remains applicable. [Gallery and credits](docs/screenshots/current/README.md) · [object ledger](docs/MEDIA-RIGHTS.json). Older screenshots, promo compositions, copied GSAP runtime and unproven audio were retired from HEAD. |
 
+## Release version comparison
+
+The frontend update check uses npm `semver` 7.8.5 (ISC), by Isaac Z. Schlueter and contributors. Its [upstream source](https://github.com/npm/node-semver) and [bundled license](frontend/public/licenses/semver-LICENSE.txt) accompany the exact package identity in the frontend lockfile.
+
 ## OS memory sampling
 
 Automatic memory sampling uses `sysinfo` 0.40.0 (MIT), with only its `system`

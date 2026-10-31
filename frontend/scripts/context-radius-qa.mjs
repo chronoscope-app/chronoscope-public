@@ -93,6 +93,16 @@ try {
   assert(ground);
   await page.mouse.click(ground.x, ground.y, { button: "right" });
   await page.waitForSelector("#radius-query");
+  const popup = await page.locator("#radius-popover").boundingBox();
+  assert(popup && popup.width <= 300 && popup.height <= 250, JSON.stringify(popup));
+  assert(Math.min(Math.abs(popup.x-ground.x),Math.abs(popup.x+popup.width-ground.x)) <= 16);
+  assert(Math.min(Math.abs(popup.y-ground.y),Math.abs(popup.y+popup.height-ground.y)) <= 16);
+  assert.equal(await page.locator(".modal-backdrop").count(),0);
+  assert.equal(await page.locator('#radius-popover [role="dialog"]').getAttribute("aria-modal"),"false");
+  assert.equal(await page.locator("#radius-popover").evaluate(node=>getComputedStyle(node).backdropFilter),"none");
+  await page.screenshot({ path: path.join(out, "radius-compact.png") });
+  check("Radius selection stays small beside the pointer with a clear, interactive background");
+  await page.locator(".radius-location summary").click();
   await page.waitForFunction(() =>
     document.querySelector("#radius-coordinates")?.textContent.includes("MGRS"),
   );
@@ -122,6 +132,12 @@ try {
   assert.equal(await page.locator("#radius-query").count(), 0);
   assert.equal((await api("snapshot")).selected_count, 192);
   check("Cancel preserves selection");
+  await page.mouse.click(ground.x, ground.y, { button: "right" });
+  await page.waitForSelector("#radius-popover");
+  await page.locator(".topbar .brand").click();
+  assert.equal(await page.locator("#radius-popover").count(),0);
+  assert.equal((await api("snapshot")).selected_count,192);
+  check("Clicking elsewhere dismisses the popup without changing selection");
   const event = await find("event");
   assert(event, "rendered event found");
   await page.click('[data-tab="views"]');
@@ -157,6 +173,8 @@ try {
     assert(surface,mode + " ground found");
     await page.mouse.click(surface.x,surface.y,{button:"right"});
     await page.waitForSelector("#radius-query");
+    const box=await page.locator("#radius-popover").boundingBox();
+    assert(box.x>=8 && box.y>=8 && box.x+box.width<=1600-8 && box.y+box.height<=1000-8);
     await page.locator("#query-radius-unit").selectOption("1");
     await page.locator("#query-radius").fill("21000000");
     await page.locator('#radius-query [type="submit"]').click();

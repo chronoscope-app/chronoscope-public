@@ -23,6 +23,8 @@ interface Hooks {
   closeModal(): void;
   head(title: string): string;
   toast(message: string, error?: boolean): void;
+  updateChecks?(): boolean;
+  setUpdateChecks?(enabled: boolean): void;
 }
 type PreferencesDraft = {
   theme: Preferences["theme"];
@@ -31,6 +33,7 @@ type PreferencesDraft = {
   timeFormat: Preferences["time_format"];
   aiToolbarSi: boolean;
   autoSave: boolean;
+  updateChecks: boolean;
   budget: number;
 };
 
@@ -57,6 +60,8 @@ export function createPreferencesController(hooks: Hooks) {
         agents: `<div class="notice mono agent-commands">${esc(agent.cli ? `"${agent.cli}" agent enable\n"${agent.cli}" --attach call snapshot\n"${agent.cli}" mcp --attach` : "chronoscope agent enable\nchronoscope --attach call snapshot\nchronoscope mcp --attach")}</div><p class="description">Enable once here or run <code>agent enable</code> from a terminal. No folder is required: agents can operate the live workspace and exchange files in a private app folder. Access stays enabled across launches. Optionally choose a different folder for importing/exporting files. The app executable shown above also runs the CLI; a separate CLI download or administrator install is unnecessary.</p><div class="notice">SI agent access: ${agent.enabled ? `enabled · ${esc(agent.root)}<br>Connection: ${esc(agent.descriptor)}` : "disabled"}</div>${native ? `<button id="agent-toggle" class="secondary">${agent.enabled ? "Disable SI agent access" : "Enable SI agent access"}</button><button id="agent-folder">Choose file-access folder…</button><button id="agent-default-folder">Use default folder</button><button id="agent-config">MCP setup</button>` : ""}`,
       })}<footer><button data-close>Cancel</button><span class="spacer"></span><button id="save-preferences" class="primary">Save preferences</button></footer>`,
     );
+    const general = dialog.querySelector<HTMLElement>("#pref-ai-toolbar-si")?.closest("label");
+    general?.insertAdjacentHTML("afterend", `<label class="check-row"><input id="pref-updates" type="checkbox" ${(draft?.updateChecks ?? hooks.updateChecks?.() ?? true) ? "checked" : ""}> Check GitHub releases automatically</label><p class="description">Checks once a day for new versions, including experimental previews. Update notices appear in Notifications. You can also use Help → Check for updates.</p>`);
     bindPreferencesLayout(dialog, section);
     const preferenceDraft = (): PreferencesDraft => ({
       theme: input("#pref-theme") as Preferences["theme"],
@@ -65,6 +70,7 @@ export function createPreferencesController(hooks: Hooks) {
       timeFormat: input("#pref-time-format") as Preferences["time_format"],
       aiToolbarSi: check("#pref-ai-toolbar-si"),
       autoSave: check("#pref-autosave"),
+      updateChecks: check("#pref-updates"),
       budget: Number(input("#pref-render-budget")),
     });
     const reopenPreferences = async () => {
@@ -138,7 +144,9 @@ export function createPreferencesController(hooks: Hooks) {
       };
       const nextBudget =
         Number(input("#pref-render-budget")) === 100000 ? 100000 : 20000;
+      const nextUpdateChecks = check("#pref-updates");
       await hooks.save(nextPreferences, nextBudget);
+      hooks.setUpdateChecks?.(nextUpdateChecks);
     });
   }
   return settings;

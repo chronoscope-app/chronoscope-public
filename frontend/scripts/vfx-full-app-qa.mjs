@@ -70,24 +70,17 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
     );
     assert.equal(desktopConfig.productName, "Chronoscope");
     assert.equal(desktopConfig.identifier, "org.chronoscope.desktop");
-    const smoothSwitch = page.locator("#vfx-smooth-playback");
-    assert(await smoothSwitch.isChecked());
-    for (const enabled of [false, true]) {
-      await smoothSwitch.setChecked(enabled);
-      await page.reload();
-      await page.waitForFunction(
-        () =>
-          window.__chronoscope?.snapshot?.count === 100000 &&
-          !window.__chronoscope.busy,
-      );
-      await page.evaluate(() => window.__chronoscope.sceneIdle());
-      assert.equal(await smoothSwitch.isChecked(), enabled);
-    }
+    assert.equal(await page.locator("#vfx-smooth-playback, .smooth-playback-controls").count(), 0);
+    await page.evaluate(() => localStorage.setItem("chronoscope-smooth-playback", "false"));
+    await page.reload();
+    await page.waitForFunction(() => window.__chronoscope?.snapshot?.count === 100000 && !window.__chronoscope.busy);
+    await page.evaluate(() => window.__chronoscope.sceneIdle());
+    await page.waitForFunction(() => window.__chronoscope.view.residentPlaybackActive);
     await page.evaluate(() => window.__chronoscope.liveViewRequest("view_playback", {
       action: "configure", speed: 0.25, increment_seconds: 60, fade_amount: 50,
     }));
     pass(
-      "Normal Chronoscope identity and Smooth playback preference survive reload",
+      "Automatic graphics survives reload and ignores the retired manual opt-out without reserving a bottom bar",
     );
     pass(
       "Full application imports 100k real records and retains ordinary workspace controls",
@@ -106,6 +99,7 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
           !window.__chronoscope.view.playback,
       );
       await page.evaluate(() => window.__chronoscope.filterIdle());
+      await page.evaluate(() => window.__chronoscope.sceneIdle());
     };
     let delayPool = true,
       poolPending = false;
@@ -121,7 +115,16 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
       }
       await route.continue();
     });
-    for (const cancelWithCheckbox of [true, false]) {
+    for (const cancelWithOverride of [true, false]) {
+      // Change a real scene property while the diagnostic renderer is stopped,
+      // so automatic navigation cannot reuse the already-prepared pool.
+      await page.evaluate(async pointScale => {
+        const c=window.__chronoscope;
+        await c.setSmoothGraphicsForTesting(false);
+        const change=await c.call("view_set",{display:{point_scale:pointScale}});
+        await c.restoreScene(change.scene,change.revision);
+        await c.setSmoothGraphicsForTesting(true);
+      },cancelWithOverride ? 0.8 : 0.9);
       poolPending = false;
       await page.locator("#play").click();
       for (let i = 0; i < 100 && !poolPending; i++)
@@ -130,8 +133,8 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
         poolPending,
         "Exercise cancellation while the pool request is pending",
       );
-      if (cancelWithCheckbox)
-        await page.locator("#vfx-smooth-playback").uncheck();
+      if (cancelWithOverride)
+        await page.evaluate(() => window.__chronoscope.setSmoothGraphicsForTesting(false));
       else await page.locator("#play").click();
       await page.waitForTimeout(1000);
       assert(
@@ -142,11 +145,11 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
         ),
       );
       assert((await page.locator("#play").textContent()).includes("Play"));
-      await page.locator("#vfx-smooth-playback").check();
+      await page.evaluate(() => window.__chronoscope.setSmoothGraphicsForTesting(true));
     }
     delayPool = false;
     pass(
-      "Play and Smooth playback controls cancel pending preparation without late activation",
+      "Play and diagnostic renderer override cancel pending preparation without late activation",
     );
     await play();
     await page.waitForFunction(
@@ -195,12 +198,13 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
     pass("GPU picking resolves an actual visible event ID");
     await page.evaluate((id) => window.__chronoscope.select([id]), point.id);
     await page.waitForFunction(
-      () => !window.__chronoscope.view.residentPlaybackActive,
+      id => window.__chronoscope.snapshot.selected.includes(id) && window.__chronoscope.view.selected.has(id),
+      point.id,
     );
     assert.equal((await api("snapshot", { compact: true })).selected_count, 1);
     await pause();
     pass(
-      "Selecting during accelerated playback returns coherently to the full renderer",
+      "Selecting during automatic playback keeps exact engine and renderer selection linked",
     );
     await api("select", { ids: [], mode: "replace" });
     await page.evaluate(() => window.__chronoscope.refresh());
@@ -213,11 +217,7 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
     );
     await pause();
     const stopped = await api("snapshot", { compact: true });
-    assert(
-      !(await page.evaluate(
-        () => window.__chronoscope.view.residentPlaybackActive,
-      )),
-    );
+    assert.equal(await page.evaluate(() => window.__chronoscope.view.playback),false);
     assert(
       stopped.filter.start >= gpuWindow[0] - 1 &&
         stopped.filter.end >= gpuWindow[1] - 1,
@@ -225,6 +225,8 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
     const render = await api("render_data", { max_points: 100000 });
     const visible = await api("query", { limit: 1, fields: ["id"] });
     assert.equal(render.located_count, visible.count);
+    const stoppedIds=await page.evaluate(()=>window.__chronoscope.view.points.map(p=>p.id));
+    assert.deepEqual(stoppedIds.slice().sort(),render.ids.slice().sort());
     pass(
       "Pause commits the displayed window and restores exact canonical membership",
     );
@@ -238,11 +240,10 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
     await page.waitForFunction(
       () => window.__chronoscope.snapshot.filter.search === "Track 007",
     );
-    assert(
-      !(await page.evaluate(
-        () => window.__chronoscope.view.residentPlaybackActive,
-      )),
-    );
+    await page.waitForFunction(()=>{
+      const v=window.__chronoscope.view;
+      return v.points.length>0 && v.points.every(p=>v.names[p.entity]==="Track 007");
+    });
     await pause();
     assert.equal(
       (
@@ -313,7 +314,7 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
     // Full-app hardware A/B: engine requests, sidebar and timeline stay live.
     // Keep the real governor enabled; these are render-loop, not presentation timings.
     for (const smooth of [false, true, true, false]) {
-      await page.locator("#vfx-smooth-playback").setChecked(smooth);
+      await page.evaluate(enabled => window.__chronoscope.setSmoothGraphicsForTesting(enabled), smooth);
       await page.evaluate(async () => {
         const c = window.__chronoscope;
         await c.call("filter", {
@@ -386,7 +387,7 @@ await withLocalApp("vfx-full-app", async ({ page, api, out, root, pass }) => {
   } finally {
     report.lastState = await page
       .evaluate(() => ({
-        label: document.querySelector("#vfx-playback-state").textContent,
+        label: window.__chronoscope.graphicsStatus,
         reason: window.__chronoscope.view.residentPlaybackReason(),
         snapshot: window.__chronoscope.snapshot,
         diagnostics: window.__chronoscope.view.diagnostics(),

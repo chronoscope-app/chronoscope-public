@@ -18,6 +18,7 @@ import {
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { call } from "./bridge";
+import { base64Bytes } from "./base64-bytes";
 
 setWorkerUrl(workerUrl);
 setWorkerCount(1);
@@ -35,7 +36,7 @@ addProtocol("chronoscope-basemap", async (params, controller) => {
       url: decodeURIComponent(params.url.slice(PREFIX.length)),
     });
     controller.signal.throwIfAborted();
-    const bytes = Uint8Array.from(atob(response.data), (s) => s.charCodeAt(0));
+    const bytes = base64Bytes(response.data);
     return {
       data:
         params.type === "json"

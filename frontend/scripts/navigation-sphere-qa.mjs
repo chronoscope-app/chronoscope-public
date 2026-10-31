@@ -297,6 +297,10 @@ try {
   const scaleBefore = (await state()).scale;
   await page.locator("#globe-time-height").focus();
   await page.keyboard.press("ArrowRight");
+  await page.waitForFunction(
+    (scale) => window.__chronoscope.view.globeTimeScale > scale,
+    scaleBefore,
+  );
   assert((await state()).scale > scaleBefore);
   await page.keyboard.press("Escape");
   assert(await page.locator("#time-elevation-popup").isHidden());

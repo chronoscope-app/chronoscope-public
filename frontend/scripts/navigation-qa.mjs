@@ -211,8 +211,8 @@ try {
       assert(changed(orbitBefore, orbit), mode + " middle orbit");
       assert(orbit.tilt <= 85.001);
       assert(
-        Math.abs(orbit.bearing - orbitBefore.bearing) < 0.01,
-        mode + " middle drag preserves bearing",
+        Math.abs(orbit.bearing - orbitBefore.bearing) > 1,
+        mode + " middle drag rotates horizontally",
       );
     }
     const orbitStopped = await state();
@@ -425,7 +425,7 @@ try {
   // Prepared navigation intentionally retains the complete eligible pool.
   // Exercise the original off-screen-selection rollback in the canonical
   // renderer, where viewport culling can actually omit those selected rows.
-  await page.locator("#vfx-smooth-playback").setChecked(false);
+  await page.evaluate(enabled => window.__chronoscope.setSmoothGraphicsForTesting(enabled), false);
   await page.evaluate(() => window.__chronoscope.sceneIdle());
   await page.waitForFunction(
     () => !window.__chronoscope.view.residentPlaybackActive,

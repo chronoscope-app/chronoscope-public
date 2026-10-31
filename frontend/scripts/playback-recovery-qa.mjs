@@ -3,11 +3,19 @@ import path from 'node:path';
 import {withLocalApp} from './local-browser.mjs';
 
 await withLocalApp('playback-recovery',async({page,api,root,pass})=>{
+ await page.evaluate(()=>localStorage.setItem('chronoscope-smooth-playback','false'));
+ await page.reload();
+ await page.waitForFunction(()=>window.__chronoscope?.snapshot && !window.__chronoscope.busy);
+ assert.equal(await page.locator('#vfx-smooth-playback, .smooth-playback-controls').count(),0);
+ const layout=await page.evaluate(()=>({workspace:document.querySelector('.workspace').getBoundingClientRect().bottom,status:document.querySelector('.statusbar').getBoundingClientRect().top,rows:getComputedStyle(document.querySelector('#app')).gridTemplateRows.split(' ').length}));
+ assert.equal(layout.rows,3);assert(Math.abs(layout.workspace-layout.status)<2);
  await api('open',{path:path.join(root,'samples/starlink-128-predicted-orbits-2024.chronoscope')});
  const s=await api('snapshot',{compact:true}),[lo,hi]=s.time_bounds;
  await api('filter',{filter:{start:lo,end:lo+(hi-lo)*.2}});
  const changed=await api('view_set',{mode:'globe',fit:true,globe_altitude:true,display:{mode:'points',show_points:true,show_tracks:true,show_trails:false,bloom:false,spatial_culling:false}});
  await page.evaluate(async scene=>{const c=window.__chronoscope;await c.restoreScene(scene);await c.refresh();await c.sceneIdle();},changed.scene);
+ await page.waitForFunction(()=>window.__chronoscope.view.residentPlaybackActive,null,{timeout:60000});
+ pass('Graphics starts automatically despite a retired stored opt-out, and the removed bar leaves no reserved space');
  await page.evaluate(()=>{
   const v=window.__chronoscope.view, original=v.beginResidentPlayback;
   window.__transientPreparationFailures=0;
@@ -16,9 +24,9 @@ await withLocalApp('playback-recovery',async({page,api,root,pass})=>{
    return original.apply(this,args);
   };
  });
- await page.locator('#vfx-smooth-playback').setChecked(false);
+ await page.evaluate(enabled => window.__chronoscope.setSmoothGraphicsForTesting(enabled), false);
  await page.evaluate(()=>window.__chronoscope.sceneIdle());
- await page.locator('#vfx-smooth-playback').setChecked(true);
+ await page.evaluate(enabled => window.__chronoscope.setSmoothGraphicsForTesting(enabled), true);
  await page.waitForFunction(()=>window.__chronoscope.view.residentPlaybackActive,null,{timeout:60000});
  assert(await page.evaluate(()=>window.__transientPreparationFailures>=2));
  pass('A transient revision conflict retries preparation without reopening the workspace');

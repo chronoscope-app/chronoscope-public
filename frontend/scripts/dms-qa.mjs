@@ -51,6 +51,7 @@ await withLocalApp("dms", async ({ page, api, out, pass }) => {
   });
   assert(ground);
   await page.mouse.click(ground.x,ground.y,{button:"right"});
+  await page.locator(".radius-location summary").click();
   await page.waitForFunction(() => document.querySelector("#radius-coordinates")?.textContent.includes("DMS"));
   assert.match(await page.locator("#radius-coordinates").innerText(),/°\d{2}′\d{2}\.\d{3}″[NS]/);
   await page.screenshot({path:path.join(out,"dms-radius-dialog.png")});

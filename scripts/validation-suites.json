@@ -3,6 +3,7 @@
   "groups": {
     "unit": [
       "bridge-test.mjs",
+      "base64-bytes-test.mjs",
       "si-chat-test.mjs",
       "camera-stability-test.mjs",
       "idle-scene-updates-test.mjs",
@@ -11,6 +12,7 @@
       "cesium-resource-test.mjs",
       "terrain-picking-test.mjs",
       "controllers-test.mjs",
+      "release-updates-test.mjs",
       "display-math-test.mjs",
       "filter-intent-test.mjs",
       "flat-lines-test.mjs",
@@ -58,10 +60,13 @@
       "gis-files-qa.mjs",
       "vector-gis-qa.mjs",
       "map-notifications-qa.mjs",
-      "navigation-qa.mjs",
+      "flight-pan-qa.mjs",
+    "navigation-qa.mjs",
+      "navigation-table-cleanup-qa.mjs",
       "navigation-preferences-qa.mjs",
       "navigation-sphere-qa.mjs",
       "notifications-qa.mjs",
+      "release-updates-qa.mjs",
       "pan-direction-qa.mjs",
       "viewport-pan-qa.mjs",
       "patterns-qa.mjs",
@@ -98,6 +103,7 @@
       "playback-fade-qa.mjs",
       "resource-pressure-qa.mjs",
       "flight-week-qa.mjs",
+      "flight-pan-qa.mjs",
       "idf-demo-qa.mjs",
       "globe-framing-qa.mjs",
       "si-toolbar-label-qa.mjs",
@@ -110,8 +116,7 @@
       "vfx-full-app-qa.mjs",
       "context-radius-qa.mjs",
       "dms-qa.mjs",
-      "import-layers-qa.mjs",
-      "kabr-demo-qa.mjs"
+      "import-layers-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -135,6 +140,7 @@
   },
   "serial_browser": [
     "navigation-qa.mjs",
+    "navigation-table-cleanup-qa.mjs",
     "navigation-preferences-qa.mjs",
     "playback-speed-qa.mjs",
     "playback-transitions-qa.mjs",
@@ -145,6 +151,7 @@
     "playback-fade-qa.mjs",
     "resource-pressure-qa.mjs",
     "flight-week-qa.mjs",
+      "flight-pan-qa.mjs",
     "idf-demo-qa.mjs",
     "resident-reference-qa.mjs",
     "upload-paging-qa.mjs",
@@ -177,7 +184,9 @@
     },
     "navigation": {
       "browser": [
+        "flight-pan-qa.mjs",
         "navigation-qa.mjs",
+        "navigation-table-cleanup-qa.mjs",
         "navigation-preferences-qa.mjs",
         "navigation-sphere-qa.mjs",
         "pan-direction-qa.mjs",
@@ -262,6 +271,7 @@
         "event-table-qa.mjs",
         "detachable-tables-qa.mjs",
         "notifications-qa.mjs",
+        "release-updates-qa.mjs",
         "real-demos-qa.mjs",
         "workspace-boundaries-qa.mjs",
         "toolbar-dialogs-qa.mjs",
@@ -335,8 +345,8 @@
         "altitude-qa.mjs",
         "space-demos-qa.mjs",
         "flight-week-qa.mjs",
-        "idf-demo-qa.mjs",
-        "kabr-demo-qa.mjs"
+      "flight-pan-qa.mjs",
+        "idf-demo-qa.mjs"
       ],
       "rust": [
         "altitude",
@@ -344,8 +354,7 @@
         "views_layers",
         "altitude_controls",
         "space_demos",
-        "idf_demo",
-        "kabr_demo"
+        "idf_demo"
       ]
     }
   },

@@ -63,9 +63,12 @@ const tips: Record<string, string> = {
   save: "Save data and display setup to the current workspace, or choose a file on first save. Ctrl/Cmd+S.",
   "table-respect-filters":
     "Restrict this attribute table to events matching the workspace filters; unchecked shows every row in the selected source.",
+  "table-selected-only":
+    "Show only selected events within this table’s source, search and optional workspace filters. The map is unchanged.",
   "table-search":
     "Search record text and original attribute values in this tab without changing workspace filters.",
-  "table-all": "Open the combined attribute table for all imported sources.",
+  "table-all":
+    "Open a combined table of all imported Event layers. Each table has its own search and filter options; GIS layers have separate tables.",
   maps: "Streets is the default worldwide basemap. Advanced settings manage custom WMTS servers, layers and cache.",
   "wmts-auth":
     "Automatic OS certificate/PIN handling on macOS and Windows, or optional local identity overrides. No PINs or private keys are stored.",
@@ -84,7 +87,7 @@ const tips: Record<string, string> = {
   "reset-filters":
     "Remove all time, entity, category, attribute, search and region restrictions.",
   navigate:
-    "Drag to move; middle-drag rotates and tilts; right-drag or wheel zooms. Click markers to select.",
+    "Drag to move. In Globe and Time, middle-drag rotates and tilts; right-drag rotates and zooms about a fixed focus. Wheel zooms toward the pointer. Click markers to select.",
   "box-select":
     "Drag a rectangle to select visible markers on screen. Hold Shift to add.",
   fit: "Fit event coverage and restore the camera. F.",
