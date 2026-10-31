@@ -1,4 +1,6 @@
-# IDF fixed-wing UAV demo
+# Retired IDF fixed-wing UAV demo
+
+Removed from the bundled catalog on 2026-10-31: aligning 224 independent logs into a 541-second display window made the demo misleading and excessively busy. The following documents the former asset for audit and reproduction; it is no longer an app resource.
 
 Source: [IDF_DS v1.0](https://doi.org/10.5281/zenodo.16992976), César García Gascón, with Javier Bas Bolufer, Pablo Castelló Pedrero and Juan A. Garcia-Manrique, Universitat Politècnica de València / Instituto IDF. IDF is the Instituto de Diseño para la Fabricación y Producción Automatizada.
 
@@ -20,10 +22,4 @@ Original archives: `Speedybee DataSet.zip` (580,834,225 bytes, publisher MD5 `fa
 python3 scripts/prepare_idf_demo.py SOURCE
 ```
 
-This produces the bundled `samples/idf-fixed-wing-gps.demo.zip` and small provenance/attribution records. The compressed payload is an immutable app asset, not a user-openable legacy JSON workspace: its complete data exceeds that format's 64 MiB/250,000-event limits. Only this bounded, compile-time asset uses the demo loader's larger payload budget; external file limits are unchanged. On opening, the demo validates metadata, row identities and individual observations, then populates the standard indexed workspace. User copies save through the normal SQLite workspace path. Full source archives and the rejected CMU/KABR candidates are not app resources.
-
-Generate actual saved-view previews after building the local CLI and frontend:
-
-```sh
-CHRONOSCOPE_DEMO_IDS=idf-uav node frontend/scripts/capture-demo-thumbnails.mjs
-```
+This reproduces `.qa/retired-demos/idf-fixed-wing-gps.demo.zip` as an ignored local audit fixture. It does not add a catalog entry, previews, or app resources. The former enlarged bundled-demo loader has been removed; external workspace limits remain unchanged. Existing user-saved SQLite copies remain ordinary editable workspaces.

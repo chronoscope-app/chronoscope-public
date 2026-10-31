@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the complete usable IDF GPS demo from pinned, locally extracted CSVs.
+"""Reproduce the retired IDF GPS fixture from pinned, locally extracted CSVs.
 
 See docs/IDF-UAV-DEMO.md. No network access, interpolation or row thinning.
 """
@@ -98,7 +98,8 @@ def generate(source):
     saved('Pixhawk · 121 GPS logs', filters=dict(hidden_categories=['SpeedyBee']))
     project = dict(format='chronoscope.workspace', version=7, time_resolution='fractional_second', dataset=dict(name='IDF fixed-wing UAVs · aligned elapsed flight time', events=events),
                    mode='Map', scene=scene, filter=FILTER, selected=[], camera=CAMERA, views=views, groups=[], imports=[], provenance=[CREDIT])
-    target = ROOT/'samples'/f'{STEM}.demo.zip'
+    target = ROOT/'.qa/retired-demos'/f'{STEM}.demo.zip'
+    target.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(target, 'w') as archive:
         entry = zipfile.ZipInfo('manifest.json', (2026,10,31,0,0,0));entry.compress_type=zipfile.ZIP_DEFLATED
         with io.BufferedWriter(archive.open(entry, 'w', force_zip64=True), buffer_size=1048576) as stream:

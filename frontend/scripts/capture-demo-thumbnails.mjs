@@ -5,6 +5,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { withLocalApp } from "./local-browser.mjs";
 const manifestPath = new URL("../public/demos/manifest.json", import.meta.url);
+const streetDemos = new Set(["noaa-ais", "animal-gps", "local-wildlife", "london-crime", "kabr-uav"]);
 const requested = process.env.CHRONOSCOPE_DEMO_IDS?.split(",");
 const images = requested
   ? JSON.parse(fs.readFileSync(manifestPath)).images.filter(
@@ -23,7 +24,13 @@ await withLocalApp("demo-thumbnails", async ({ page, api, root, pass }) => {
     await page.evaluate(async (id) => {
       await window.__chronoscope.call("demo_open", { id });
     }, demo.id);
-    for (const preview of demo.previews) {
+    const streets = streetDemos.has(demo.id);
+    const prefs = await api("preferences");
+    await api("preferences", { preferences: { ...prefs, basemap: streets ? "streets" : "none" } });
+    await api("wmts_access", { settings: { offline: false, concurrency: 4, request_interval_ms: 0 } });
+    // Load London streets beneath the density view before capturing its heat overlay.
+    const capturePreviews = demo.id === "london-crime" ? [...demo.previews].reverse() : demo.previews;
+    for (const preview of capturePreviews) {
       const result = await page.evaluate(
         async ({ index }) => {
           const c = window.__chronoscope;
@@ -45,7 +52,25 @@ await withLocalApp("demo-thumbnails", async ({ page, api, root, pass }) => {
         null,
         { polling: 100 },
       );
+      if (streets) {
+        await page.waitForFunction(() => {
+          const v = window.__chronoscope.view, s = v.resources.status;
+          return s.basemapError || (s.basemap === "streets" && s.basemapRenderedTiles > 0 && s.basemapPending === 0 && v.scene.globe.tilesLoaded);
+        }, null, {timeout: 180000});
+        const status = await page.evaluate(() => window.__chronoscope.view.resources.status);
+        assert.equal(status.basemapError, "", demo.id + ": " + JSON.stringify(status));
+        assert(status.basemapRenderedTiles > 0, demo.id + ": no Streets imagery");
+      }
       await page.waitForTimeout(900);
+      await page.evaluate((streets) => {
+        document.querySelector("#thumbnail-credits")?.remove();
+        if (!streets) return;
+        const credit = document.createElement("div"); credit.id = "thumbnail-credits";
+        credit.textContent = "OpenFreeMap · © OpenMapTiles · © OpenStreetMap contributors";
+        credit.style.cssText = "position:absolute;bottom:2px;right:4px;z-index:100;font:10px sans-serif;background:#ffffffdf;color:#222;padding:2px 4px;pointer-events:none";
+        document.querySelector("#scene").append(credit);
+      }, streets);
+
       const file = `${demo.id}-${preview.key}.jpg`;
       // Capture the app surface, so the fixed measurement legend remains visible.
       const surface = await page.locator("#scene").screenshot({ type: "png" });
@@ -81,6 +106,8 @@ await withLocalApp("demo-thumbnails", async ({ page, api, root, pass }) => {
       images.push({
         file,
         demo: demo.id,
+        basemap: streets ? "streets" : "natural-earth",
+        map_attribution: streets ? ["OpenFreeMap", "© OpenMapTiles", "© OpenStreetMap contributors"] : ["Natural Earth · public domain"],
         source_url: demo.source_url,
         license: demo.license,
         saved_view_index: preview.view_index,
@@ -98,9 +125,9 @@ await withLocalApp("demo-thumbnails", async ({ page, api, root, pass }) => {
     JSON.stringify(
       {
         renderer: "CesiumJS",
-        basemap: "Bundled Natural Earth, public domain",
+        basemap: "Per-image basemap and map_attribution; older entries use Natural Earth, public domain",
         capture:
-          "Actual saved demo scenes and filters, rendered offline; legends included",
+          "Actual saved demo scenes and filters; Streets imagery verified before capture; legends and map credits included",
         images,
       },
       null,

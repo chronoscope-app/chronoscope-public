@@ -43,7 +43,7 @@ fn mcp_discovers_altitude_mapping_height_flags_demos_and_confirmed_reset() {
     for (name, previews) in [
         ("flight-altitude", 2),
         ("starlink-orbits", 2),
-        ("idf-uav", 3),
+        ("kabr-uav", 2),
     ] {
         let demo = catalog["demos"]
             .as_array()

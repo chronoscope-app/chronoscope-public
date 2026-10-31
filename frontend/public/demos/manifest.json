@@ -1,7 +1,7 @@
 {
   "renderer": "CesiumJS",
-  "basemap": "Bundled Natural Earth, public domain",
-  "capture": "Actual saved demo scenes and filters, rendered offline; legends included",
+  "basemap": "Per-image basemap and map_attribution; older entries use Natural Earth, public domain",
+  "capture": "Actual saved demo scenes and filters; Streets imagery verified before capture; legends and map credits included",
   "images": [
     {
       "file": "hurricanes-time.jpg",
@@ -338,1052 +338,6 @@
         "start": null
       },
       "sha256": "6f312bb93b7cd2b7bbcebe18ed7677e8b80ff8e7519057e03b0a218aa5826bd8"
-    },
-    {
-      "file": "noaa-ais-time.jpg",
-      "demo": "noaa-ais",
-      "source_url": "https://coast.noaa.gov/digitalcoast/data/vesseltraffic.html",
-      "license": "NOAA public data",
-      "saved_view_index": 0,
-      "events": 8473,
-      "visible": 8473,
-      "scene": {
-        "mode": "space-time",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            -13619939.698557021,
-            4080478.4981916705,
-            133801.19562486187
-          ],
-          "direction": [
-            5.615572661866098e-17,
-            0.743144825477394,
-            -0.6691306063588585
-          ],
-          "up": [
-            5.056284335792622e-17,
-            0.669130606358858,
-            0.7431448254773945
-          ]
-        },
-        "view_states": {
-          "space-time": {
-            "center": [
-              -122.35,
-              37.990470119136596,
-              -0.007286952817781042
-            ],
-            "ground_width": 230897.10675049346,
-            "heading": 0,
-            "tilt": 47.999999999999964,
-            "footprint": [
-              [
-                -124.37942509957044,
-                40.31598607194741,
-                -0.0019921586604246077
-              ],
-              [
-                -120.32057475286213,
-                40.31598633811114,
-                -0.011721421008607905
-              ],
-              [
-                -121.65598398007867,
-                37.195197994303854,
-                -0.014763111634960066
-              ],
-              [
-                -123.04401597327747,
-                37.19519795803566,
-                -0.00577046888638638
-              ]
-            ],
-            "camera": {
-              "position": [
-                -13619939.698557021,
-                4080478.4981916705,
-                133801.19562486187
-              ],
-              "direction": [
-                5.744487739346729e-17,
-                0.7431448254773938,
-                -0.6691306063588587
-              ],
-              "up": [
-                5.1723599929271524e-17,
-                0.6691306063588578,
-                0.7431448254773947
-              ]
-            }
-          }
-        },
-        "render_budget": 20000,
-        "display": {
-          "mode": "points",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": true,
-          "show_points": true,
-          "show_centroids": true,
-          "point_scale": 1,
-          "track_opacity": 0.25,
-          "trail_opacity": 0.25,
-          "show_tracks": true,
-          "show_trails": true,
-          "trail_pixels": 2,
-          "trail_gap_minutes": 180,
-          "heat_radius": 32,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {
-          "ARTHUR BRUSCO · 367008020": "#65c4e8",
-          "EMPRESS · 367533950": "#ffb3a7",
-          "ENHYDRA · 368052630": "#ffd166",
-          "HARBOR EMPEROR · 366985270": "#ad9feb",
-          "INTINTOLI · 366989360": "#8bd6bc",
-          "LASSEN · 367513170": "#f2a8d3",
-          "PS AUGUSTA · 215193000": "#85b1ff",
-          "PV GOLDEN GATE · 368302170": "#d9be89",
-          "STI VIRTUS · 538005171": "#b2d583",
-          "TRIFORCE · 338157873": "#d59dee"
-        },
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": true,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "globe_time": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": [
-          -122.65,
-          37.45,
-          -122.05,
-          38.15
-        ],
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "82850f42ede6414b212fbf225489b5c2102438bfc0d24522f3596704afc93226"
-    },
-    {
-      "file": "noaa-ais-map.jpg",
-      "demo": "noaa-ais",
-      "source_url": "https://coast.noaa.gov/digitalcoast/data/vesseltraffic.html",
-      "license": "NOAA public data",
-      "saved_view_index": 1,
-      "events": 8473,
-      "visible": 8473,
-      "scene": {
-        "mode": "map",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            -13619939.69855702,
-            4207876.751985742,
-            3669728.0990649415
-          ],
-          "direction": [
-            0,
-            0,
-            -1
-          ],
-          "up": [
-            2.220446082337537e-16,
-            1,
-            2.2204460492503126e-16
-          ],
-          "frustum_width": 102995.74071514269
-        },
-        "view_states": {
-          "map": {
-            "center": [
-              -122.34999999999997,
-              37.79999999999999,
-              0.0002601830765912683
-            ],
-            "ground_width": 102995.74071514269,
-            "heading": 359.99999943944795,
-            "tilt": 0,
-            "footprint": [
-              [
-                -122.81137630662016,
-                38.1537630662021,
-                -0.0000461274743079462
-              ],
-              [
-                -121.88862369337976,
-                38.15376306620211,
-                0.00011786347061419542
-              ],
-              [
-                -121.88862369337976,
-                37.446236933797906,
-                0.00018310568867231856
-              ],
-              [
-                -122.81137630662016,
-                37.446236933797906,
-                -0.00015784724262712482
-              ]
-            ],
-            "camera": {
-              "position": [
-                -13619939.698557017,
-                4207876.751985742,
-                3669728.0990649415
-              ],
-              "direction": [
-                0,
-                0,
-                -1
-              ],
-              "up": [
-                2.220446115424762e-16,
-                1,
-                2.2204460492503126e-16
-              ],
-              "frustum_width": 102995.74071514269
-            }
-          }
-        },
-        "render_budget": 20000,
-        "display": {
-          "mode": "points",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": true,
-          "show_points": true,
-          "show_centroids": true,
-          "point_scale": 1,
-          "track_opacity": 0.25,
-          "trail_opacity": 0.25,
-          "show_tracks": true,
-          "show_trails": true,
-          "trail_pixels": 2,
-          "trail_gap_minutes": 180,
-          "heat_radius": 32,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {
-          "ARTHUR BRUSCO · 367008020": "#65c4e8",
-          "EMPRESS · 367533950": "#ffb3a7",
-          "ENHYDRA · 368052630": "#ffd166",
-          "HARBOR EMPEROR · 366985270": "#ad9feb",
-          "INTINTOLI · 366989360": "#8bd6bc",
-          "LASSEN · 367513170": "#f2a8d3",
-          "PS AUGUSTA · 215193000": "#85b1ff",
-          "PV GOLDEN GATE · 368302170": "#d9be89",
-          "STI VIRTUS · 538005171": "#b2d583",
-          "TRIFORCE · 338157873": "#d59dee"
-        },
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": true,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "globe_time": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": [
-          -122.65,
-          37.45,
-          -122.05,
-          38.15
-        ],
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "bb56fab6a4ef4e1b5f122a853c23eceec3b77d757302dace1ee265114308e764"
-    },
-    {
-      "file": "animal-gps-time.jpg",
-      "demo": "animal-gps",
-      "source_url": "https://doi.org/10.5281/zenodo.6594838",
-      "license": "CC0 1.0 · Stienen et al. / INBO",
-      "saved_view_index": 0,
-      "events": 15697,
-      "visible": 15697,
-      "scene": {
-        "mode": "space-time",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            333958.4723798204,
-            5590359.425363543,
-            114686.7391070259
-          ],
-          "direction": [
-            5.086812494587653e-17,
-            0.7431448254773942,
-            -0.6691306063588582
-          ],
-          "up": [
-            5.5139068171478824e-17,
-            0.6691306063588582,
-            0.7431448254773942
-          ]
-        },
-        "view_states": {
-          "space-time": {
-            "center": [
-              2.999999999999997,
-              51.36326003911061,
-              0
-            ],
-            "ground_width": 197911.7949415767,
-            "heading": 0,
-            "tilt": 47.99999999999999,
-            "footprint": [
-              [
-                1.2604927995560757,
-                53.35655944225384,
-                0
-              ],
-              [
-                4.739507200443885,
-                53.35655944225384,
-                0
-              ],
-              [
-                3.5948708079300458,
-                50.681598229322326,
-                0
-              ],
-              [
-                2.405129192069915,
-                50.68159822932232,
-                1.3174105316582457e-9
-              ]
-            ],
-            "camera": {
-              "position": [
-                333958.47237981856,
-                5590359.425363541,
-                114686.73910702672
-              ],
-              "direction": [
-                5.0868124945876494e-17,
-                0.7431448254773944,
-                -0.6691306063588581
-              ],
-              "up": [
-                5.513906817147879e-17,
-                0.6691306063588583,
-                0.7431448254773941
-              ]
-            }
-          }
-        },
-        "render_budget": 20000,
-        "display": {
-          "mode": "points",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": true,
-          "show_points": true,
-          "show_centroids": true,
-          "point_scale": 1,
-          "track_opacity": 0.25,
-          "trail_opacity": 0.25,
-          "show_tracks": true,
-          "show_trails": true,
-          "trail_pixels": 2,
-          "trail_gap_minutes": 180,
-          "heat_radius": 32,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {
-          "H903183": "#65c4e8",
-          "H907928": "#ffb3a7",
-          "H907929": "#ffd166"
-        },
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": true,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "globe_time": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": [
-          2.7,
-          50.9,
-          3.3,
-          51.5
-        ],
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "d92c4d9069624c83c37d7a6f02e71fae2dc0db1b497e28407217fc5d94e71230"
-    },
-    {
-      "file": "animal-gps-map.jpg",
-      "demo": "animal-gps",
-      "source_url": "https://doi.org/10.5281/zenodo.6594838",
-      "license": "CC0 1.0 · Stienen et al. / INBO",
-      "saved_view_index": 1,
-      "events": 15697,
-      "visible": 15697,
-      "scene": {
-        "mode": "map",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            333958.4723798207,
-            5699557.928615606,
-            7025316.621739928
-          ],
-          "direction": [
-            0,
-            0,
-            -1
-          ],
-          "up": [
-            2.220446049250313e-16,
-            1,
-            2.220446049250313e-16
-          ],
-          "frustum_width": 88489.29836089737
-        },
-        "view_states": {
-          "map": {
-            "center": [
-              3,
-              51.2,
-              -0.0002587568663321892
-            ],
-            "ground_width": 88489.29836089737,
-            "heading": 359.99999805822506,
-            "tilt": 0,
-            "footprint": [
-              [
-                2.603606271777001,
-                51.50393728222996,
-                0.00015939726415088596
-              ],
-              [
-                3.3963937282229972,
-                51.50393728222996,
-                0.00017072594434175306
-              ],
-              [
-                3.3963937282229972,
-                50.89606271777004,
-                0.00014999656092442828
-              ],
-              [
-                2.603606271777,
-                50.896062717770036,
-                0.00009474863941005437
-              ]
-            ],
-            "camera": {
-              "position": [
-                333958.4723798206,
-                5699557.928615607,
-                7025316.621739928
-              ],
-              "direction": [
-                0,
-                0,
-                -1
-              ],
-              "up": [
-                2.220446115424762e-16,
-                1,
-                2.220446049250313e-16
-              ],
-              "frustum_width": 88489.29836089737
-            }
-          }
-        },
-        "render_budget": 20000,
-        "display": {
-          "mode": "points",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": true,
-          "show_points": true,
-          "show_centroids": true,
-          "point_scale": 1,
-          "track_opacity": 0.25,
-          "trail_opacity": 0.25,
-          "show_tracks": true,
-          "show_trails": true,
-          "trail_pixels": 2,
-          "trail_gap_minutes": 180,
-          "heat_radius": 32,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {
-          "H903183": "#65c4e8",
-          "H907928": "#ffb3a7",
-          "H907929": "#ffd166"
-        },
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": true,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "globe_time": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": [
-          2.7,
-          50.9,
-          3.3,
-          51.5
-        ],
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "3fb4b26bc7a76f5d810b4acc0a9d4097f2e349528bce8ebed7555fae1a7c0f54"
-    },
-    {
-      "file": "local-wildlife-time.jpg",
-      "demo": "local-wildlife",
-      "source_url": "https://doi.org/10.5441/001/1.652",
-      "license": "CC BY 4.0 · Scott LaPoint (2026), Hudson Highlands Wildlife Connectivity Project",
-      "saved_view_index": 0,
-      "events": 3439,
-      "visible": 3439,
-      "scene": {
-        "mode": "space-time",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            -8259352.285508737,
-            4571471.78434145,
-            36964.24731962662
-          ],
-          "direction": [
-            5.602733241520002e-17,
-            0.7431448254773944,
-            -0.6691306063588581
-          ],
-          "up": [
-            4.8112936011774646e-17,
-            0.6691306063588586,
-            0.7431448254773941
-          ]
-        },
-        "view_states": {
-          "space-time": {
-            "center": [
-              -74.19502394999999,
-              41.43501472317012,
-              0
-            ],
-            "ground_width": 63788.198990161894,
-            "heading": 0,
-            "tilt": 47.99999999999999,
-            "footprint": [
-              [
-                -74.75567790910856,
-                42.07746748354209,
-                9.313225746154785e-10
-              ],
-              [
-                -73.63436999089144,
-                42.07746748354209,
-                9.313225746154785e-10
-              ],
-              [
-                -74.0032933992161,
-                41.215310894101265,
-                0
-              ],
-              [
-                -74.3867545007839,
-                41.21531089410126,
-                0
-              ]
-            ],
-            "camera": {
-              "position": [
-                -8259352.285508737,
-                4571471.78434145,
-                36964.24731962476
-              ],
-              "direction": [
-                5.654351359914217e-17,
-                0.7431448254773944,
-                -0.6691306063588581
-              ],
-              "up": [
-                4.6243406951295666e-17,
-                0.6691306063588586,
-                0.7431448254773941
-              ]
-            }
-          }
-        },
-        "render_budget": 20000,
-        "display": {
-          "mode": "points",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": true,
-          "show_points": true,
-          "show_centroids": true,
-          "point_scale": 1,
-          "track_opacity": 0.25,
-          "trail_opacity": 0.25,
-          "show_tracks": true,
-          "show_trails": true,
-          "trail_pixels": 2,
-          "trail_gap_minutes": 180,
-          "heat_radius": 32,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {
-          "LYRU_0003": "#65c4e8",
-          "LYRU_0004": "#ffb3a7",
-          "PEPE_0001": "#ffd166"
-        },
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": true,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "globe_time": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": [
-          -74.323892438,
-          41.3523188,
-          -74.06615546200001,
-          41.4124712
-        ],
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "aebd53c910604c74eaa0022c7b00201d51ceaadc51935049185560e3e0046f7d"
-    },
-    {
-      "file": "local-wildlife-map.jpg",
-      "demo": "local-wildlife",
-      "source_url": "https://doi.org/10.5441/001/1.652",
-      "license": "CC BY 4.0 · Scott LaPoint (2026), Hudson Highlands Wildlife Connectivity Project",
-      "saved_view_index": 1,
-      "events": 3439,
-      "visible": 3439,
-      "scene": {
-        "mode": "map",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            -8259352.285508737,
-            4606667.13920611,
-            7006714.888080051
-          ],
-          "direction": [
-            0,
-            0,
-            -1
-          ],
-          "up": [
-            2.2204460823375376e-16,
-            1,
-            2.220446049250313e-16
-          ],
-          "frustum_width": 29804.343834849074
-        },
-        "view_states": {
-          "map": {
-            "center": [
-              -74.19502394999999,
-              41.382394999999995,
-              -0.00003940898196388109
-            ],
-            "ground_width": 29804.343834849074,
-            "heading": 359.999998957932,
-            "tilt": 0,
-            "footprint": [
-              [
-                -74.3285345008663,
-                41.48476502023526,
-                0.000253926987960197
-              ],
-              [
-                -74.0615133991337,
-                41.48476502023527,
-                0.00043710041531107703
-              ],
-              [
-                -74.0615133991337,
-                41.280024979764704,
-                -0.00018554880557804086
-              ],
-              [
-                -74.3285345008663,
-                41.28002497976471,
-                -0.000006040798403794919
-              ]
-            ],
-            "camera": {
-              "position": [
-                -8259352.285508737,
-                4606667.13920611,
-                7006714.888080051
-              ],
-              "direction": [
-                0,
-                0,
-                -1
-              ],
-              "up": [
-                2.220446115424762e-16,
-                1,
-                2.220446049250313e-16
-              ],
-              "frustum_width": 29804.343834849074
-            }
-          }
-        },
-        "render_budget": 20000,
-        "display": {
-          "mode": "points",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": true,
-          "show_points": true,
-          "show_centroids": true,
-          "point_scale": 1,
-          "track_opacity": 0.25,
-          "trail_opacity": 0.25,
-          "show_tracks": true,
-          "show_trails": true,
-          "trail_pixels": 2,
-          "trail_gap_minutes": 180,
-          "heat_radius": 32,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {
-          "LYRU_0003": "#65c4e8",
-          "LYRU_0004": "#ffb3a7",
-          "PEPE_0001": "#ffd166"
-        },
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": true,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "globe_time": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": [
-          -74.323892438,
-          41.3523188,
-          -74.06615546200001,
-          41.4124712
-        ],
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "83e9e113afe60a4288247a9ffcb9bde72668e85c7d6714b2113450f526ba8bde"
     },
     {
       "file": "stork-migration-time.jpg",
@@ -3216,334 +2170,6 @@
       "sha256": "271f60d5250d28b89281e436827df2beb4f2d5c5fb4f464b598920a7f7b390b6"
     },
     {
-      "file": "london-crime-heat.jpg",
-      "demo": "london-crime",
-      "source_url": "https://data.police.uk/about/",
-      "license": "Police.uk / contributing forces · Open Government Licence v3.0",
-      "saved_view_index": 0,
-      "events": 4053,
-      "visible": 4053,
-      "scene": {
-        "mode": "map",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            -14452.609489690709,
-            5734623.289916759,
-            12214504.630876493
-          ],
-          "direction": [
-            0,
-            0,
-            -1
-          ],
-          "up": [
-            2.2204460823375376e-16,
-            1,
-            2.220446049250313e-16
-          ],
-          "frustum_width": 14846.689392658165
-        },
-        "view_states": {
-          "map": {
-            "center": [
-              -0.12983,
-              51.51499749999996,
-              0.09946197090233308
-            ],
-            "ground_width": 14846.689392658165,
-            "heading": 359.9999989781079,
-            "tilt": 0,
-            "footprint": [
-              [
-                -0.19633673775401073,
-                51.56599194235291,
-                0.09847835325979577
-              ],
-              [
-                -0.06332326224598929,
-                51.56599194235291,
-                0.10010052384949143
-              ],
-              [
-                -0.06332326224598932,
-                51.46400305764701,
-                0.10044559549446029
-              ],
-              [
-                -0.1963367377540107,
-                51.464003057647,
-                0.09882342367358987
-              ]
-            ],
-            "camera": {
-              "position": [
-                -14452.609489690709,
-                5734623.289916759,
-                12214504.630876493
-              ],
-              "direction": [
-                0,
-                0,
-                -1
-              ],
-              "up": [
-                2.220446115424762e-16,
-                1,
-                2.220446049250313e-16
-              ],
-              "frustum_width": 14846.689392658165
-            }
-          }
-        },
-        "render_budget": 20000,
-        "display": {
-          "mode": "heatmap",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": false,
-          "show_points": false,
-          "show_centroids": true,
-          "point_scale": 1,
-          "track_opacity": 0.25,
-          "trail_opacity": 0.25,
-          "show_tracks": false,
-          "show_trails": false,
-          "trail_pixels": 2,
-          "trail_gap_minutes": 180,
-          "heat_radius": 28,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {},
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": true,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "globe_time": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": null,
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "0f44f4c50ebb866acf988fbae13c494ce157a23721e90fa72f1d51ba300aa80f"
-    },
-    {
-      "file": "london-crime-density.jpg",
-      "demo": "london-crime",
-      "source_url": "https://data.police.uk/about/",
-      "license": "Police.uk / contributing forces · Open Government Licence v3.0",
-      "saved_view_index": 1,
-      "events": 4053,
-      "visible": 4053,
-      "scene": {
-        "mode": "map",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            -14452.609489690709,
-            5734623.289916759,
-            1725755.967373365
-          ],
-          "direction": [
-            0,
-            0,
-            -1
-          ],
-          "up": [
-            2.2204461815992106e-16,
-            1,
-            2.2204460492503126e-16
-          ],
-          "frustum_width": 14846.689392658165
-        },
-        "view_states": {
-          "map": {
-            "center": [
-              -0.12982999999999995,
-              51.51499749999997,
-              -0.00004265480142069831
-            ],
-            "ground_width": 14846.689392658165,
-            "heading": 359.99999543741876,
-            "tilt": 0,
-            "footprint": [
-              [
-                -0.19633673775401067,
-                51.56599194235292,
-                0.000031701326797445516
-              ],
-              [
-                -0.06332326224598923,
-                51.56599194235292,
-                0.00001102724042528538
-              ],
-              [
-                -0.0633232622459892,
-                51.464003057647034,
-                -0.0000050578267747312
-              ],
-              [
-                -0.19633673775401064,
-                51.46400305764702,
-                0.00000306693413552264
-              ]
-            ],
-            "camera": {
-              "position": [
-                -14452.609489690702,
-                5734623.289916759,
-                1725755.967373365
-              ],
-              "direction": [
-                0,
-                0,
-                -1
-              ],
-              "up": [
-                2.2204461815992106e-16,
-                1,
-                2.220446049250312e-16
-              ],
-              "frustum_width": 14846.689392658165
-            }
-          }
-        },
-        "render_budget": 20000,
-        "display": {
-          "mode": "density",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": false,
-          "show_points": false,
-          "show_centroids": true,
-          "point_scale": 1,
-          "track_opacity": 0.25,
-          "trail_opacity": 0.25,
-          "show_tracks": false,
-          "show_trails": false,
-          "trail_pixels": 2,
-          "trail_gap_minutes": 180,
-          "heat_radius": 28,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {},
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": true,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "globe_time": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": null,
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "921518102ede206ffe0d60fb1dd33164b1cd4ba4a1a1c16abeb6f9c93709d084"
-    },
-    {
       "file": "earthquakes-january-globe.jpg",
       "demo": "earthquakes-january",
       "source_url": "https://earthquake.usgs.gov/fdsnws/event/1/",
@@ -5246,100 +3872,106 @@
       "sha256": "edc8169a2b300374e01b3c48b082d5a9ffb6b369ef05306e678d6ea100e211b9"
     },
     {
-      "file": "idf-uav-globe.jpg",
-      "demo": "idf-uav",
-      "source_url": "https://doi.org/10.5281/zenodo.16992976",
-      "license": "CC BY 4.0 · García Gascón et al. / UPV, Instituto IDF",
+      "file": "noaa-ais-time.jpg",
+      "demo": "noaa-ais",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://coast.noaa.gov/digitalcoast/data/vesseltraffic.html",
+      "license": "NOAA public data",
       "saved_view_index": 0,
-      "events": 399331,
-      "visible": 399331,
+      "events": 8473,
+      "visible": 8473,
       "scene": {
-        "mode": "globe",
+        "mode": "space-time",
         "renderer": "cesium",
         "cesium_camera": {
           "position": [
-            4943595.126930343,
-            -53065.843644244174,
-            4018514.470020161
+            -13619939.698557021,
+            4080478.4981916705,
+            133801.19562486187
           ],
           "direction": [
-            -0.999868256254231,
-            0.01073284749031951,
-            0.012176868229272
+            5.615572661866098e-17,
+            0.743144825477394,
+            -0.6691306063588585
           ],
           "up": [
-            0.012176166753885668,
-            -0.00013070215997828836,
-            0.9999258591916338
+            5.056284335792622e-17,
+            0.669130606358858,
+            0.7431448254773945
           ]
         },
         "view_states": {
-          "globe": {
+          "space-time": {
             "center": [
-              -0.6150042689965707,
-              39.30456703989248,
-              0
+              -122.35,
+              37.99047004429996,
+              0.00012449052237018286
             ],
-            "ground_width": 2195.5429291152864,
+            "ground_width": 230897.09387535506,
             "heading": 0,
-            "tilt": 40.00226743989249,
+            "tilt": 47.999999999999964,
             "footprint": [
               [
-                -0.6345739756207852,
-                39.31898602146294,
+                -124.28194093756014,
+                40.08817018922139,
+                -0.00012648996066569652
+              ],
+              [
+                -120.41805907919253,
+                40.088170159455814,
+                0.0010337631289574474
+              ],
+              [
+                -121.64379793215541,
+                37.223676325562124,
                 0
               ],
               [
-                -0.595434562577447,
-                39.3189860213081,
-                -1.3171694022462033e-9
-              ],
-              [
-                -0.6056095972248238,
-                39.297644031139114,
-                0
-              ],
-              [
-                -0.6243989408164361,
-                39.29764403110544,
+                -123.0562020678446,
+                37.22367632556211,
                 0
               ]
             ],
             "camera": {
               "position": [
-                4943595.126930343,
-                -53065.843644244174,
-                4018514.470020161
+                -13619939.698557021,
+                4080478.4981916705,
+                133801.19562486187
               ],
               "direction": [
-                -0.999868256254231,
-                0.01073284749031951,
-                0.012176868229272
+                5.744487739346729e-17,
+                0.7431448254773938,
+                -0.6691306063588587
               ],
               "up": [
-                0.012176166753885668,
-                -0.00013070215997828836,
-                0.9999258591916338
+                5.1723599929271524e-17,
+                0.6691306063588578,
+                0.7431448254773947
               ]
             }
           }
         },
-        "render_budget": 100000,
+        "render_budget": 20000,
         "display": {
           "mode": "points",
           "cluster_pixels": 48,
           "time_bin_minutes": 0,
           "partition": "all",
-          "spatial_culling": false,
-          "show_points": false,
+          "spatial_culling": true,
+          "show_points": true,
           "show_centroids": true,
-          "point_scale": 0.4,
-          "track_opacity": 0.8,
+          "point_scale": 1,
+          "track_opacity": 0.25,
           "trail_opacity": 0.25,
           "show_tracks": true,
-          "show_trails": false,
-          "trail_pixels": 0,
-          "trail_gap_minutes": 0,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
           "heat_radius": 32,
           "heat_weight": "count",
           "heat_max": null,
@@ -5350,230 +3982,16 @@
           "bloom_threshold": 0.1
         },
         "entity_colors": {
-          "Pixhawk · lap 001 · log 67": "#b95c4c",
-          "Pixhawk · lap 002 · log 67": "#4583aa",
-          "Pixhawk · lap 003 · log 67": "#63976c",
-          "Pixhawk · lap 004 · log 67": "#9c6aab",
-          "Pixhawk · lap 005 · log 67": "#b59b58",
-          "Pixhawk · lap 006 · log 86": "#a66d8a",
-          "Pixhawk · lap 007 · log 67": "#b95c4c",
-          "Pixhawk · lap 008 · log 67": "#4583aa",
-          "Pixhawk · lap 009 · log 74": "#63976c",
-          "Pixhawk · lap 010 · log 70": "#9c6aab",
-          "Pixhawk · lap 011 · log 70": "#b59b58",
-          "Pixhawk · lap 012 · log 70": "#a66d8a",
-          "Pixhawk · lap 013 · log 70": "#b95c4c",
-          "Pixhawk · lap 014 · log 70": "#4583aa",
-          "Pixhawk · lap 015 · log 70": "#63976c",
-          "Pixhawk · lap 016 · log 70": "#9c6aab",
-          "Pixhawk · lap 017 · log 70": "#b59b58",
-          "Pixhawk · lap 018 · log 70": "#a66d8a",
-          "Pixhawk · lap 019 · log 70": "#b95c4c",
-          "Pixhawk · lap 020 · log 74": "#4583aa",
-          "Pixhawk · lap 021 · log 74": "#63976c",
-          "Pixhawk · lap 022 · log 74": "#9c6aab",
-          "Pixhawk · lap 023 · log 74": "#b59b58",
-          "Pixhawk · lap 024 · log 86": "#a66d8a",
-          "Pixhawk · lap 025 · log 74": "#b95c4c",
-          "Pixhawk · lap 026 · log 74": "#4583aa",
-          "Pixhawk · lap 027 · log 74": "#63976c",
-          "Pixhawk · lap 028 · log 74": "#9c6aab",
-          "Pixhawk · lap 029 · log 84": "#b59b58",
-          "Pixhawk · lap 030 · log 84": "#a66d8a",
-          "Pixhawk · lap 031 · log 84": "#b95c4c",
-          "Pixhawk · lap 032 · log 84": "#4583aa",
-          "Pixhawk · lap 032 · log 86": "#63976c",
-          "Pixhawk · lap 033 · log 84": "#9c6aab",
-          "Pixhawk · lap 034 · log 67": "#b59b58",
-          "Pixhawk · lap 035 · log 84": "#a66d8a",
-          "Pixhawk · lap 036 · log 84": "#b95c4c",
-          "Pixhawk · lap 037 · log 84": "#4583aa",
-          "Pixhawk · lap 038 · log 84": "#63976c",
-          "Pixhawk · lap 039 · log 85": "#9c6aab",
-          "Pixhawk · lap 040 · log 85": "#b59b58",
-          "Pixhawk · lap 041 · log 85": "#a66d8a",
-          "Pixhawk · lap 042 · log 85": "#b95c4c",
-          "Pixhawk · lap 043 · log 85": "#4583aa",
-          "Pixhawk · lap 044 · log 85": "#63976c",
-          "Pixhawk · lap 045 · log 85": "#9c6aab",
-          "Pixhawk · lap 046 · log 85": "#b59b58",
-          "Pixhawk · lap 047 · log 85": "#a66d8a",
-          "Pixhawk · lap 048 · log 86": "#b95c4c",
-          "Pixhawk · lap 049 · log 86": "#4583aa",
-          "Pixhawk · lap 050 · log 86": "#63976c",
-          "Pixhawk · lap 051 · log 86": "#9c6aab",
-          "Pixhawk · lap 052 · log 86": "#b59b58",
-          "Pixhawk · lap 053 · log 86": "#a66d8a",
-          "Pixhawk · lap 054 · log 87": "#b95c4c",
-          "Pixhawk · lap 055 · log 87": "#4583aa",
-          "Pixhawk · lap 056 · log 87": "#63976c",
-          "Pixhawk · lap 057 · log 87": "#9c6aab",
-          "Pixhawk · lap 058 · log 87": "#b59b58",
-          "Pixhawk · lap 059 · log 87": "#a66d8a",
-          "Pixhawk · lap 060 · log 87": "#b95c4c",
-          "Pixhawk · lap 061 · log 87": "#4583aa",
-          "Pixhawk · lap 062 · log 87": "#63976c",
-          "Pixhawk · lap 063 · log 88": "#9c6aab",
-          "Pixhawk · lap 064 · log 88": "#b59b58",
-          "Pixhawk · lap 065 · log 88": "#a66d8a",
-          "Pixhawk · lap 066 · log 88": "#b95c4c",
-          "Pixhawk · lap 067 · log 88": "#4583aa",
-          "Pixhawk · lap 068 · log 88": "#63976c",
-          "Pixhawk · lap 069 · log 88": "#9c6aab",
-          "Pixhawk · lap 070 · log 88": "#b59b58",
-          "Pixhawk · lap 071 · log 88": "#a66d8a",
-          "Pixhawk · lap 072 · log 92": "#b95c4c",
-          "Pixhawk · lap 073 · log 92": "#4583aa",
-          "Pixhawk · lap 074 · log 92": "#63976c",
-          "Pixhawk · lap 075 · log 92": "#9c6aab",
-          "Pixhawk · lap 076 · log 92": "#b59b58",
-          "Pixhawk · lap 077 · log 92": "#a66d8a",
-          "Pixhawk · lap 078 · log 92": "#b95c4c",
-          "Pixhawk · lap 079 · log 92": "#4583aa",
-          "Pixhawk · lap 080 · log 92": "#63976c",
-          "Pixhawk · lap 081 · log 93": "#9c6aab",
-          "Pixhawk · lap 082 · log 93": "#b59b58",
-          "Pixhawk · lap 083 · log 93": "#a66d8a",
-          "Pixhawk · lap 084 · log 93": "#b95c4c",
-          "Pixhawk · lap 085 · log 93": "#4583aa",
-          "Pixhawk · lap 086 · log 93": "#63976c",
-          "Pixhawk · lap 087 · log 93": "#9c6aab",
-          "Pixhawk · lap 088 · log 93": "#b59b58",
-          "Pixhawk · lap 089 · log 93": "#a66d8a",
-          "Pixhawk · lap 090 · log 112": "#b95c4c",
-          "Pixhawk · lap 091 · log 112": "#4583aa",
-          "Pixhawk · lap 092 · log 112": "#63976c",
-          "Pixhawk · lap 093 · log 112": "#9c6aab",
-          "Pixhawk · lap 094 · log 112": "#b59b58",
-          "Pixhawk · lap 095 · log 112": "#a66d8a",
-          "Pixhawk · lap 096 · log 112": "#b95c4c",
-          "Pixhawk · lap 097 · log 112": "#4583aa",
-          "Pixhawk · lap 098 · log 112": "#63976c",
-          "Pixhawk · lap 099 · log 113": "#9c6aab",
-          "Pixhawk · lap 100 · log 113": "#b59b58",
-          "Pixhawk · lap 101 · log 113": "#a66d8a",
-          "Pixhawk · lap 102 · log 113": "#b95c4c",
-          "Pixhawk · lap 103 · log 113": "#4583aa",
-          "Pixhawk · lap 104 · log 113": "#63976c",
-          "Pixhawk · lap 105 · log 113": "#9c6aab",
-          "Pixhawk · lap 106 · log 113": "#b59b58",
-          "Pixhawk · lap 107 · log 113": "#a66d8a",
-          "Pixhawk · lap 108 · log 115": "#b95c4c",
-          "Pixhawk · lap 109 · log 115": "#4583aa",
-          "Pixhawk · lap 110 · log 115": "#63976c",
-          "Pixhawk · lap 111 · log 115": "#9c6aab",
-          "Pixhawk · lap 112 · log 115": "#b59b58",
-          "Pixhawk · lap 113 · log 115": "#a66d8a",
-          "Pixhawk · lap 114 · log 115": "#b95c4c",
-          "Pixhawk · lap 115 · log 115": "#4583aa",
-          "Pixhawk · lap 116 · log 115": "#63976c",
-          "Pixhawk · lap 117 · log 1": "#9c6aab",
-          "Pixhawk · lap 118 · log 1": "#b59b58",
-          "Pixhawk · lap 119 · log 1": "#a66d8a",
-          "Pixhawk · lap 120 · log 1": "#b95c4c",
-          "SpeedyBee · lap 001": "#4583aa",
-          "SpeedyBee · lap 002": "#63976c",
-          "SpeedyBee · lap 003": "#9c6aab",
-          "SpeedyBee · lap 004": "#b59b58",
-          "SpeedyBee · lap 005": "#a66d8a",
-          "SpeedyBee · lap 006": "#b95c4c",
-          "SpeedyBee · lap 007": "#4583aa",
-          "SpeedyBee · lap 008": "#63976c",
-          "SpeedyBee · lap 009": "#9c6aab",
-          "SpeedyBee · lap 010": "#b59b58",
-          "SpeedyBee · lap 011": "#a66d8a",
-          "SpeedyBee · lap 012": "#b95c4c",
-          "SpeedyBee · lap 013": "#4583aa",
-          "SpeedyBee · lap 014": "#63976c",
-          "SpeedyBee · lap 015": "#9c6aab",
-          "SpeedyBee · lap 016": "#b59b58",
-          "SpeedyBee · lap 017": "#a66d8a",
-          "SpeedyBee · lap 018": "#b95c4c",
-          "SpeedyBee · lap 019": "#4583aa",
-          "SpeedyBee · lap 020": "#63976c",
-          "SpeedyBee · lap 021": "#9c6aab",
-          "SpeedyBee · lap 022": "#b59b58",
-          "SpeedyBee · lap 023": "#a66d8a",
-          "SpeedyBee · lap 024": "#b95c4c",
-          "SpeedyBee · lap 025": "#4583aa",
-          "SpeedyBee · lap 026": "#63976c",
-          "SpeedyBee · lap 027": "#9c6aab",
-          "SpeedyBee · lap 028": "#b59b58",
-          "SpeedyBee · lap 029": "#a66d8a",
-          "SpeedyBee · lap 030": "#b95c4c",
-          "SpeedyBee · lap 031": "#4583aa",
-          "SpeedyBee · lap 032": "#63976c",
-          "SpeedyBee · lap 041": "#9c6aab",
-          "SpeedyBee · lap 042": "#b59b58",
-          "SpeedyBee · lap 043": "#a66d8a",
-          "SpeedyBee · lap 044": "#b95c4c",
-          "SpeedyBee · lap 045": "#4583aa",
-          "SpeedyBee · lap 046": "#63976c",
-          "SpeedyBee · lap 047": "#9c6aab",
-          "SpeedyBee · lap 048": "#b59b58",
-          "SpeedyBee · lap 049": "#a66d8a",
-          "SpeedyBee · lap 050": "#b95c4c",
-          "SpeedyBee · lap 051": "#4583aa",
-          "SpeedyBee · lap 052": "#63976c",
-          "SpeedyBee · lap 053": "#9c6aab",
-          "SpeedyBee · lap 054": "#b59b58",
-          "SpeedyBee · lap 055": "#a66d8a",
-          "SpeedyBee · lap 056": "#b95c4c",
-          "SpeedyBee · lap 057": "#4583aa",
-          "SpeedyBee · lap 058": "#63976c",
-          "SpeedyBee · lap 059": "#9c6aab",
-          "SpeedyBee · lap 060": "#b59b58",
-          "SpeedyBee · lap 061": "#a66d8a",
-          "SpeedyBee · lap 062": "#b95c4c",
-          "SpeedyBee · lap 063": "#4583aa",
-          "SpeedyBee · lap 064": "#63976c",
-          "SpeedyBee · lap 065": "#9c6aab",
-          "SpeedyBee · lap 066": "#b59b58",
-          "SpeedyBee · lap 067": "#a66d8a",
-          "SpeedyBee · lap 068": "#b95c4c",
-          "SpeedyBee · lap 069": "#4583aa",
-          "SpeedyBee · lap 070": "#63976c",
-          "SpeedyBee · lap 071": "#9c6aab",
-          "SpeedyBee · lap 072": "#b59b58",
-          "SpeedyBee · lap 073": "#a66d8a",
-          "SpeedyBee · lap 074": "#b95c4c",
-          "SpeedyBee · lap 075": "#4583aa",
-          "SpeedyBee · lap 076": "#63976c",
-          "SpeedyBee · lap 077": "#9c6aab",
-          "SpeedyBee · lap 078": "#b59b58",
-          "SpeedyBee · lap 079": "#a66d8a",
-          "SpeedyBee · lap 080": "#b95c4c",
-          "SpeedyBee · lap 081": "#4583aa",
-          "SpeedyBee · lap 082": "#63976c",
-          "SpeedyBee · lap 083": "#9c6aab",
-          "SpeedyBee · lap 084": "#b59b58",
-          "SpeedyBee · lap 085": "#a66d8a",
-          "SpeedyBee · lap 086": "#b95c4c",
-          "SpeedyBee · lap 087": "#4583aa",
-          "SpeedyBee · lap 088": "#63976c",
-          "SpeedyBee · lap 089": "#9c6aab",
-          "SpeedyBee · lap 090": "#b59b58",
-          "SpeedyBee · lap 091": "#a66d8a",
-          "SpeedyBee · lap 092": "#b95c4c",
-          "SpeedyBee · lap 093": "#4583aa",
-          "SpeedyBee · lap 094": "#63976c",
-          "SpeedyBee · lap 095": "#9c6aab",
-          "SpeedyBee · lap 096": "#b59b58",
-          "SpeedyBee · lap 097": "#a66d8a",
-          "SpeedyBee · lap 098": "#b95c4c",
-          "SpeedyBee · lap 099": "#4583aa",
-          "SpeedyBee · lap 100": "#63976c",
-          "SpeedyBee · lap 101": "#9c6aab",
-          "SpeedyBee · lap 102": "#b59b58",
-          "SpeedyBee · lap 103": "#a66d8a",
-          "SpeedyBee · lap 104": "#b95c4c",
-          "SpeedyBee · lap 105": "#4583aa",
-          "SpeedyBee · lap 106": "#63976c",
-          "SpeedyBee · lap 107": "#9c6aab",
-          "SpeedyBee · lap 108": "#b59b58",
-          "SpeedyBee · lap 109": "#a66d8a",
-          "SpeedyBee · lap 110": "#b95c4c",
-          "SpeedyBee · lap 111": "#4583aa"
+          "ARTHUR BRUSCO · 367008020": "#65c4e8",
+          "EMPRESS · 367533950": "#ffb3a7",
+          "ENHYDRA · 368052630": "#ffd166",
+          "HARBOR EMPEROR · 366985270": "#ad9feb",
+          "INTINTOLI · 366989360": "#8bd6bc",
+          "LASSEN · 367513170": "#f2a8d3",
+          "PS AUGUSTA · 215193000": "#85b1ff",
+          "PV GOLDEN GATE · 368302170": "#d9be89",
+          "STI VIRTUS · 538005171": "#b2d583",
+          "TRIFORCE · 338157873": "#d59dee"
         },
         "measurement": null,
         "table_source": null,
@@ -5584,6 +4002,1620 @@
         "table_descending": false,
         "table_column_offset": 0,
         "time_height": 2.8,
+        "playback_fade": true,
+        "playback_fade_amount": 50,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -122.65,
+          37.45,
+          -122.05,
+          38.15
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "ac451ba9756e0291e60d6298115639e949ef7a1a5e273a8a9dca417beeb07f5b"
+    },
+    {
+      "file": "noaa-ais-map.jpg",
+      "demo": "noaa-ais",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://coast.noaa.gov/digitalcoast/data/vesseltraffic.html",
+      "license": "NOAA public data",
+      "saved_view_index": 1,
+      "events": 8473,
+      "visible": 8473,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -13619939.698557023,
+            4207876.751985741,
+            1648054.644165323
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204460492503126e-16,
+            1,
+            2.2204460492503126e-16
+          ],
+          "frustum_width": 108675.65288693365
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -122.35,
+              37.79999999999999,
+              0.0000015652300079515633
+            ],
+            "ground_width": 108675.65288693365,
+            "heading": 359.9999993974129,
+            "tilt": 0,
+            "footprint": [
+              [
+                -122.83681985294119,
+                38.15369485294117,
+                -0.0000288794727414842
+              ],
+              [
+                -121.86318014705883,
+                38.15369485294117,
+                -0.00028070153038520934
+              ],
+              [
+                -121.86318014705883,
+                37.44630514705882,
+                0.0000226933156381324
+              ],
+              [
+                -122.83681985294119,
+                37.44630514705882,
+                0.00004693958376376652
+              ]
+            ],
+            "camera": {
+              "position": [
+                -13619939.698557023,
+                4207876.751985741,
+                1648054.644165323
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.2204460492503126e-16
+              ],
+              "frustum_width": 108675.65288693365
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "ARTHUR BRUSCO · 367008020": "#65c4e8",
+          "EMPRESS · 367533950": "#ffb3a7",
+          "ENHYDRA · 368052630": "#ffd166",
+          "HARBOR EMPEROR · 366985270": "#ad9feb",
+          "INTINTOLI · 366989360": "#8bd6bc",
+          "LASSEN · 367513170": "#f2a8d3",
+          "PS AUGUSTA · 215193000": "#85b1ff",
+          "PV GOLDEN GATE · 368302170": "#d9be89",
+          "STI VIRTUS · 538005171": "#b2d583",
+          "TRIFORCE · 338157873": "#d59dee"
+        },
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "playback_fade_amount": 50,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -122.65,
+          37.45,
+          -122.05,
+          38.15
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "63444958c73f5b6e75a374122e18d08a33dff89daf3c8a3a5f3d6f9e706c1164"
+    },
+    {
+      "file": "animal-gps-time.jpg",
+      "demo": "animal-gps",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://doi.org/10.5281/zenodo.6594838",
+      "license": "CC0 1.0 · Stienen et al. / INBO",
+      "saved_view_index": 0,
+      "events": 15697,
+      "visible": 15697,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            333958.4723798204,
+            5590359.425363543,
+            114686.7391070259
+          ],
+          "direction": [
+            5.086812494587653e-17,
+            0.7431448254773942,
+            -0.6691306063588582
+          ],
+          "up": [
+            5.5139068171478824e-17,
+            0.6691306063588582,
+            0.7431448254773942
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              2.999999999999997,
+              51.36326003911061,
+              0
+            ],
+            "ground_width": 197911.79494157666,
+            "heading": 0,
+            "tilt": 47.99999999999999,
+            "footprint": [
+              [
+                1.344050634048303,
+                53.16128872756094,
+                0
+              ],
+              [
+                4.655949365951658,
+                53.16128872756095,
+                0
+              ],
+              [
+                3.6053160556201664,
+                50.706008280111796,
+                9.313225746154785e-10
+              ],
+              [
+                2.394683944379796,
+                50.70600828011178,
+                9.313225746154785e-10
+              ]
+            ],
+            "camera": {
+              "position": [
+                333958.47237981856,
+                5590359.425363541,
+                114686.73910702672
+              ],
+              "direction": [
+                5.0868124945876494e-17,
+                0.7431448254773944,
+                -0.6691306063588581
+              ],
+              "up": [
+                5.513906817147879e-17,
+                0.6691306063588583,
+                0.7431448254773941
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "H903183": "#65c4e8",
+          "H907928": "#ffb3a7",
+          "H907929": "#ffd166"
+        },
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "playback_fade_amount": 50,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          2.7,
+          50.9,
+          3.3,
+          51.5
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "a1dd965f9e8c242eda42d64fc54017fcff6017d61056fa1753b7744e5673ec32"
+    },
+    {
+      "file": "animal-gps-map.jpg",
+      "demo": "animal-gps",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://doi.org/10.5281/zenodo.6594838",
+      "license": "CC0 1.0 · Stienen et al. / INBO",
+      "saved_view_index": 1,
+      "events": 15697,
+      "visible": 15697,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            333958.47237982065,
+            5699557.928615607,
+            7025473.947892573
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446115424762e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 93369.22290285863
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              2.999999999999999,
+              51.20000000000001,
+              0.000027663890701017485
+            ],
+            "ground_width": 93369.22290285863,
+            "heading": 359.99999805818163,
+            "tilt": 0,
+            "footprint": [
+              [
+                2.5817463235294085,
+                51.50387867647059,
+                0.00008165224583675723
+              ],
+              [
+                3.4182536764705884,
+                51.50387867647059,
+                0.00013582775397380094
+              ],
+              [
+                3.418253676470588,
+                50.896121323529414,
+                0.0000027486551613415164
+              ],
+              [
+                2.5817463235294085,
+                50.896121323529414,
+                0.000015756625819799086
+              ]
+            ],
+            "camera": {
+              "position": [
+                333958.4723798206,
+                5699557.928615608,
+                7025473.947892573
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446181599211e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 93369.22290285863
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "H903183": "#65c4e8",
+          "H907928": "#ffb3a7",
+          "H907929": "#ffd166"
+        },
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "playback_fade_amount": 50,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          2.7,
+          50.9,
+          3.3,
+          51.5
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "764c77427f1382f942381db3b220e5dca84ec3337f68c6cdcc033b83e34c1dc8"
+    },
+    {
+      "file": "local-wildlife-time.jpg",
+      "demo": "local-wildlife",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://doi.org/10.5441/001/1.652",
+      "license": "CC BY 4.0 · Scott LaPoint (2026), Hudson Highlands Wildlife Connectivity Project",
+      "saved_view_index": 0,
+      "events": 3439,
+      "visible": 3439,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -8259352.285508737,
+            4571471.78434145,
+            36964.24731962662
+          ],
+          "direction": [
+            5.602733241520002e-17,
+            0.7431448254773944,
+            -0.6691306063588581
+          ],
+          "up": [
+            4.8112936011774646e-17,
+            0.6691306063588586,
+            0.7431448254773941
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              -74.19502394999999,
+              41.43501472317012,
+              0
+            ],
+            "ground_width": 63788.19899016189,
+            "heading": 0,
+            "tilt": 47.99999999999999,
+            "footprint": [
+              [
+                -74.72874670084911,
+                42.014530521137324,
+                0
+              ],
+              [
+                -73.66130119915088,
+                42.01453052113731,
+                9.313225746154785e-10
+              ],
+              [
+                -73.99992683110705,
+                41.223178404863475,
+                0
+              ],
+              [
+                -74.39012106889295,
+                41.223178404863475,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                -8259352.285508737,
+                4571471.78434145,
+                36964.24731962476
+              ],
+              "direction": [
+                5.654351359914217e-17,
+                0.7431448254773944,
+                -0.6691306063588581
+              ],
+              "up": [
+                4.6243406951295666e-17,
+                0.6691306063588586,
+                0.7431448254773941
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "LYRU_0003": "#65c4e8",
+          "LYRU_0004": "#ffb3a7",
+          "PEPE_0001": "#ffd166"
+        },
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "playback_fade_amount": 50,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -74.323892438,
+          41.3523188,
+          -74.06615546200001,
+          41.4124712
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "daebc94b0a0522e503d5904eabb9d47939e986e6b8bbc235d110b1e8adc65225"
+    },
+    {
+      "file": "local-wildlife-map.jpg",
+      "demo": "local-wildlife",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://doi.org/10.5441/001/1.652",
+      "license": "CC BY 4.0 · Scott LaPoint (2026), Hudson Highlands Wildlife Connectivity Project",
+      "saved_view_index": 1,
+      "events": 3439,
+      "visible": 3439,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -8259352.285508737,
+            4606667.1392061105,
+            7005439.852963358
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204460823375376e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 29804.343834849074
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -74.19502394999999,
+              41.382394999999995,
+              0.000018751307699667744
+            ],
+            "ground_width": 29804.343834849074,
+            "heading": 359.99999909392295,
+            "tilt": 0,
+            "footprint": [
+              [
+                -74.3285345008663,
+                41.47939596322995,
+                0.00003107768911611297
+              ],
+              [
+                -74.0615133991337,
+                41.47939596322994,
+                0.000015382841461251673
+              ],
+              [
+                -74.0615133991337,
+                41.28539403677005,
+                -0.00003232788158152658
+              ],
+              [
+                -74.3285345008663,
+                41.28539403677005,
+                -0.000005694719396466391
+              ]
+            ],
+            "camera": {
+              "position": [
+                -8259352.285508737,
+                4606667.1392061105,
+                7005439.852963358
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446115424762e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 29804.343834849074
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": true,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": true,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {
+          "LYRU_0003": "#65c4e8",
+          "LYRU_0004": "#ffb3a7",
+          "PEPE_0001": "#ffd166"
+        },
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "playback_fade_amount": 50,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          -74.323892438,
+          41.3523188,
+          -74.06615546200001,
+          41.4124712
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "994cc36d56ececc25446951bebaebb3d4b73cd9688407ba8cedece728894379e"
+    },
+    {
+      "file": "london-crime-density.jpg",
+      "demo": "london-crime",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://data.police.uk/about/",
+      "license": "Police.uk / contributing forces · Open Government Licence v3.0",
+      "saved_view_index": 1,
+      "events": 4053,
+      "visible": 4053,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -14452.609489690713,
+            5734623.289916761,
+            6857865.498068105
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.2204460492503126e-16,
+            1,
+            2.2204460492503126e-16
+          ],
+          "frustum_width": 14846.689392658165
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -0.12982999999999997,
+              51.51499749999999,
+              0.000008311247229069496
+            ],
+            "ground_width": 14846.689392658165,
+            "heading": 359.9999979345183,
+            "tilt": 0,
+            "footprint": [
+              [
+                -0.19633673775401075,
+                51.56331740866309,
+                0.0000033194513082577146
+              ],
+              [
+                -0.06332326224598933,
+                51.56331740866309,
+                0.000004308790045932851
+              ],
+              [
+                -0.06332326224598933,
+                51.46667759133689,
+                0.00002221042756193528
+              ],
+              [
+                -0.19633673775401075,
+                51.466677591336875,
+                0.00003223451749545051
+              ]
+            ],
+            "camera": {
+              "position": [
+                -14452.609489690713,
+                5734623.28991676,
+                6857865.498068105
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.2204460492503126e-16
+              ],
+              "frustum_width": 14846.689392658165
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "density",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": false,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 28,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "playback_fade_amount": 50,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": null,
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "e22ae0cdccb44043677b2a7a8b5c6e60c1a539bd3f18d190cb7ce9a7b0d21b6d"
+    },
+    {
+      "file": "london-crime-heat.jpg",
+      "demo": "london-crime",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://data.police.uk/about/",
+      "license": "Police.uk / contributing forces · Open Government Licence v3.0",
+      "saved_view_index": 0,
+      "events": 4053,
+      "visible": 4053,
+      "scene": {
+        "mode": "map",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            -14452.60948969071,
+            5734623.28991676,
+            6855473.849042948
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "up": [
+            2.220446049250313e-16,
+            1,
+            2.220446049250313e-16
+          ],
+          "frustum_width": 14846.689392658165
+        },
+        "view_states": {
+          "map": {
+            "center": [
+              -0.12982999999999997,
+              51.51499749999999,
+              0.000008309789192016605
+            ],
+            "ground_width": 14846.689392658165,
+            "heading": 359.9999978778842,
+            "tilt": 0,
+            "footprint": [
+              [
+                -0.19633673775401073,
+                51.56331740866309,
+                0.0000033194513082577146
+              ],
+              [
+                -0.06332326224598929,
+                51.563317408663075,
+                0.000004308790045932851
+              ],
+              [
+                -0.06332326224598932,
+                51.466677591336875,
+                0.00002221246479272779
+              ],
+              [
+                -0.19633673775401073,
+                51.46667759133689,
+                0.00003223582620358766
+              ]
+            ],
+            "camera": {
+              "position": [
+                -14452.60948969071,
+                5734623.28991676,
+                6855473.849042948
+              ],
+              "direction": [
+                0,
+                0,
+                -1
+              ],
+              "up": [
+                2.220446049250313e-16,
+                1,
+                2.220446049250313e-16
+              ],
+              "frustum_width": 14846.689392658165
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "heatmap",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": false,
+          "show_centroids": true,
+          "point_scale": 1,
+          "track_opacity": 0.25,
+          "trail_opacity": 0.25,
+          "show_tracks": false,
+          "show_trails": false,
+          "trail_pixels": 2,
+          "trail_gap_minutes": 180,
+          "heat_radius": 28,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": null,
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 2.8,
+        "playback_fade": true,
+        "playback_fade_amount": 50,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": null,
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": null,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": null
+      },
+      "sha256": "1483929a8256e0f1b6272cd9ec5f7b52fdb85f03a3e134ffa4dde753060dded2"
+    },
+    {
+      "file": "kabr-uav-time.jpg",
+      "demo": "kabr-uav",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://huggingface.co/datasets/imageomics/kabr_airdata",
+      "license": "CC0 1.0 · Imageomics Institute / KABR; curated by Jenna Kline",
+      "saved_view_index": 0,
+      "events": 25924,
+      "visible": 7189,
+      "scene": {
+        "mode": "space-time",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            4104013.028139418,
+            47999.873965481,
+            580.6440959521569
+          ],
+          "direction": [
+            7.254728570908172e-20,
+            0.7431448254773942,
+            -0.6691306063588582
+          ],
+          "up": [
+            -8.057192342539522e-20,
+            0.6691306063588582,
+            0.7431448254773942
+          ]
+        },
+        "view_states": {
+          "space-time": {
+            "center": [
+              36.866976294032796,
+              0.43698317534915765,
+              0
+            ],
+            "ground_width": 1002.0017674049013,
+            "heading": 0,
+            "tilt": 47.99999999999999,
+            "footprint": [
+              [
+                36.858592437046056,
+                0.44608636156815157,
+                0
+              ],
+              [
+                36.87536015101952,
+                0.44608636156815146,
+                1.4551915228366852e-11
+              ],
+              [
+                36.870040930758,
+                0.43365559487544475,
+                0
+              ],
+              [
+                36.863911657307575,
+                0.43365559487544475,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                4104013.028139418,
+                47999.87396548103,
+                580.6440959502943
+              ],
+              "direction": [
+                7.286201978496221e-20,
+                0.7431448254773942,
+                -0.6691306063588582
+              ],
+              "up": [
+                -8.028853559059417e-20,
+                0.6691306063588582,
+                0.7431448254773942
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 0.4,
+          "track_opacity": 0.9,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": false,
+          "trail_pixels": 0,
+          "trail_gap_minutes": 2,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": {
+          "latest_per_entity": false,
+          "maximum": 60,
+          "minimum": 0,
+          "title": "Height above takeoff · reported",
+          "unit": " m"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 4,
+        "playback_fade": true,
+        "playback_fade_amount": 50,
+        "globe_time": false,
+        "globe_altitude": false,
+        "globe_time_scale": 1,
+        "focus": 0.45,
+        "bounds": [
+          36.8659858487751,
+          0.434878873844703,
+          36.8679667392905,
+          0.436847631505912
+        ],
+        "table_open": false,
+        "inspector_tab": "views",
+        "chart": {
+          "kind": "bar",
+          "scope": "visible",
+          "source": null,
+          "x": "entity",
+          "y": "value",
+          "group": "",
+          "aggregate": "count",
+          "x_axis": "category",
+          "time_bucket": "day",
+          "stacked": false,
+          "y2": "",
+          "trendline": false,
+          "bins": 20,
+          "limit": 2000,
+          "title": "",
+          "x_label": "",
+          "y_label": "",
+          "y2_label": "",
+          "period_a": null,
+          "period_b": null
+        },
+        "chart_presets": [],
+        "expanded": false
+      },
+      "filter": {
+        "bounds": null,
+        "end": 1673524182,
+        "facet_fields": {},
+        "facet_hidden": {},
+        "hidden_categories": [],
+        "hidden_entities": [],
+        "hidden_sources": [],
+        "located_only": false,
+        "predicates": [],
+        "search": "",
+        "selected_only": false,
+        "start": 1673523463
+      },
+      "sha256": "1e34804e42b6c97be0accff99ccd9dff78795f8f2afac213638da811e7cdd5e3"
+    },
+    {
+      "file": "kabr-uav-globe.jpg",
+      "demo": "kabr-uav",
+      "basemap": "streets",
+      "map_attribution": [
+        "OpenFreeMap",
+        "© OpenMapTiles",
+        "© OpenStreetMap contributors"
+      ],
+      "source_url": "https://huggingface.co/datasets/imageomics/kabr_airdata",
+      "license": "CC0 1.0 · Imageomics Institute / KABR; curated by Jenna Kline",
+      "saved_view_index": 1,
+      "events": 25924,
+      "visible": 7189,
+      "scene": {
+        "mode": "globe",
+        "renderer": "cesium",
+        "cesium_camera": {
+          "position": [
+            5102736.043021379,
+            3826645.525525445,
+            47891.353521759585
+          ],
+          "direction": [
+            -0.4408194079540038,
+            -0.33057943832288816,
+            0.8345031363207723
+          ],
+          "up": [
+            0.6676280375796755,
+            0.5006678419538415,
+            0.5510031900731561
+          ]
+        },
+        "view_states": {
+          "globe": {
+            "center": [
+              36.86697629404015,
+              0.43616962724734926,
+              0
+            ],
+            "ground_width": 466.7638717145755,
+            "heading": 0,
+            "tilt": 57.00030637457205,
+            "footprint": [
+              [
+                36.86109690049195,
+                0.4440666497840412,
+                0
+              ],
+              [
+                36.872855687438836,
+                0.4440666494956828,
+                0
+              ],
+              [
+                36.868248033286775,
+                0.4344618064663545,
+                -1.3171091129955827e-9
+              ],
+              [
+                36.86570455478514,
+                0.434461806474001,
+                0
+              ]
+            ],
+            "camera": {
+              "position": [
+                5102736.043021379,
+                3826645.525525445,
+                47891.353521759585
+              ],
+              "direction": [
+                -0.4408194079540038,
+                -0.33057943832288816,
+                0.8345031363207723
+              ],
+              "up": [
+                0.6676280375796755,
+                0.5006678419538415,
+                0.5510031900731561
+              ]
+            }
+          }
+        },
+        "render_budget": 20000,
+        "display": {
+          "mode": "points",
+          "cluster_pixels": 48,
+          "time_bin_minutes": 0,
+          "partition": "all",
+          "spatial_culling": false,
+          "show_points": true,
+          "show_centroids": true,
+          "point_scale": 0.4,
+          "track_opacity": 0.9,
+          "trail_opacity": 0.25,
+          "show_tracks": true,
+          "show_trails": false,
+          "trail_pixels": 0,
+          "trail_gap_minutes": 2,
+          "heat_radius": 32,
+          "heat_weight": "count",
+          "heat_max": null,
+          "heat_reference_zoom": null,
+          "bloom": false,
+          "bloom_strength": 1.3,
+          "bloom_radius": 0.1,
+          "bloom_threshold": 0.1
+        },
+        "entity_colors": {},
+        "measurement": {
+          "latest_per_entity": false,
+          "maximum": 60,
+          "minimum": 0,
+          "title": "Height above takeoff · reported",
+          "unit": " m"
+        },
+        "table_source": null,
+        "gis_table": null,
+        "table_attributes": true,
+        "table_respect_filters": false,
+        "table_sort": "time",
+        "table_descending": false,
+        "table_column_offset": 0,
+        "time_height": 4,
         "playback_fade": true,
         "playback_fade_amount": 50,
         "globe_time": false,
@@ -5591,10 +5623,10 @@
         "globe_time_scale": 1,
         "focus": 0.45,
         "bounds": [
-          -0.6217453016727067,
-          39.2981189,
-          -0.608263236319345,
-          39.3064803
+          36.8659858487751,
+          0.434878873844703,
+          36.8679667392905,
+          0.436847631505912
         ],
         "table_open": false,
         "inspector_tab": "views",
@@ -5625,7 +5657,7 @@
       },
       "filter": {
         "bounds": null,
-        "end": null,
+        "end": 1673524182,
         "facet_fields": {},
         "facet_hidden": {},
         "hidden_categories": [],
@@ -5635,797 +5667,9 @@
         "predicates": [],
         "search": "",
         "selected_only": false,
-        "start": null
+        "start": 1673523463
       },
-      "sha256": "f4c0a16b68822693c4743d175ce15d1f94bf0477e615bee5996425deffd75b7f"
-    },
-    {
-      "file": "idf-uav-time.jpg",
-      "demo": "idf-uav",
-      "source_url": "https://doi.org/10.5281/zenodo.16992976",
-      "license": "CC BY 4.0 · García Gascón et al. / UPV, Instituto IDF",
-      "saved_view_index": 1,
-      "events": 399331,
-      "visible": 399331,
-      "scene": {
-        "mode": "globe",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            4944032.962253752,
-            -53070.55947701064,
-            4019216.5026758295
-          ],
-          "direction": [
-            -0.9316229629300874,
-            0.010000287668347619,
-            -0.36328865821535855
-          ],
-          "up": [
-            -0.363267730157285,
-            0.0038994120440902927,
-            0.9316766342525097
-          ]
-        },
-        "view_states": {
-          "globe": {
-            "center": [
-              -0.6150044543257294,
-              39.3025092258916,
-              9.313225746154785e-10
-            ],
-            "ground_width": 2719.6957817870702,
-            "heading": 0,
-            "tilt": 18.00020753150402,
-            "footprint": [
-              [
-                -0.6332062509509441,
-                39.3133102601123,
-                0
-              ],
-              [
-                -0.5968026575636375,
-                39.31331026011874,
-                0
-              ],
-              [
-                -0.6011634303438937,
-                39.29429295310043,
-                0
-              ],
-              [
-                -0.628845478224997,
-                39.29429295320633,
-                9.313225746154785e-10
-              ]
-            ],
-            "camera": {
-              "position": [
-                4944032.962253752,
-                -53070.55947701064,
-                4019216.5026758295
-              ],
-              "direction": [
-                -0.9316229629300874,
-                0.010000287668347619,
-                -0.36328865821535855
-              ],
-              "up": [
-                -0.363267730157285,
-                0.0038994120440902927,
-                0.9316766342525097
-              ]
-            }
-          }
-        },
-        "render_budget": 100000,
-        "display": {
-          "mode": "points",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": false,
-          "show_points": false,
-          "show_centroids": true,
-          "point_scale": 0.4,
-          "track_opacity": 0.8,
-          "trail_opacity": 0.25,
-          "show_tracks": true,
-          "show_trails": false,
-          "trail_pixels": 0,
-          "trail_gap_minutes": 0,
-          "heat_radius": 32,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {
-          "Pixhawk · lap 001 · log 67": "#b95c4c",
-          "Pixhawk · lap 002 · log 67": "#4583aa",
-          "Pixhawk · lap 003 · log 67": "#63976c",
-          "Pixhawk · lap 004 · log 67": "#9c6aab",
-          "Pixhawk · lap 005 · log 67": "#b59b58",
-          "Pixhawk · lap 006 · log 86": "#a66d8a",
-          "Pixhawk · lap 007 · log 67": "#b95c4c",
-          "Pixhawk · lap 008 · log 67": "#4583aa",
-          "Pixhawk · lap 009 · log 74": "#63976c",
-          "Pixhawk · lap 010 · log 70": "#9c6aab",
-          "Pixhawk · lap 011 · log 70": "#b59b58",
-          "Pixhawk · lap 012 · log 70": "#a66d8a",
-          "Pixhawk · lap 013 · log 70": "#b95c4c",
-          "Pixhawk · lap 014 · log 70": "#4583aa",
-          "Pixhawk · lap 015 · log 70": "#63976c",
-          "Pixhawk · lap 016 · log 70": "#9c6aab",
-          "Pixhawk · lap 017 · log 70": "#b59b58",
-          "Pixhawk · lap 018 · log 70": "#a66d8a",
-          "Pixhawk · lap 019 · log 70": "#b95c4c",
-          "Pixhawk · lap 020 · log 74": "#4583aa",
-          "Pixhawk · lap 021 · log 74": "#63976c",
-          "Pixhawk · lap 022 · log 74": "#9c6aab",
-          "Pixhawk · lap 023 · log 74": "#b59b58",
-          "Pixhawk · lap 024 · log 86": "#a66d8a",
-          "Pixhawk · lap 025 · log 74": "#b95c4c",
-          "Pixhawk · lap 026 · log 74": "#4583aa",
-          "Pixhawk · lap 027 · log 74": "#63976c",
-          "Pixhawk · lap 028 · log 74": "#9c6aab",
-          "Pixhawk · lap 029 · log 84": "#b59b58",
-          "Pixhawk · lap 030 · log 84": "#a66d8a",
-          "Pixhawk · lap 031 · log 84": "#b95c4c",
-          "Pixhawk · lap 032 · log 84": "#4583aa",
-          "Pixhawk · lap 032 · log 86": "#63976c",
-          "Pixhawk · lap 033 · log 84": "#9c6aab",
-          "Pixhawk · lap 034 · log 67": "#b59b58",
-          "Pixhawk · lap 035 · log 84": "#a66d8a",
-          "Pixhawk · lap 036 · log 84": "#b95c4c",
-          "Pixhawk · lap 037 · log 84": "#4583aa",
-          "Pixhawk · lap 038 · log 84": "#63976c",
-          "Pixhawk · lap 039 · log 85": "#9c6aab",
-          "Pixhawk · lap 040 · log 85": "#b59b58",
-          "Pixhawk · lap 041 · log 85": "#a66d8a",
-          "Pixhawk · lap 042 · log 85": "#b95c4c",
-          "Pixhawk · lap 043 · log 85": "#4583aa",
-          "Pixhawk · lap 044 · log 85": "#63976c",
-          "Pixhawk · lap 045 · log 85": "#9c6aab",
-          "Pixhawk · lap 046 · log 85": "#b59b58",
-          "Pixhawk · lap 047 · log 85": "#a66d8a",
-          "Pixhawk · lap 048 · log 86": "#b95c4c",
-          "Pixhawk · lap 049 · log 86": "#4583aa",
-          "Pixhawk · lap 050 · log 86": "#63976c",
-          "Pixhawk · lap 051 · log 86": "#9c6aab",
-          "Pixhawk · lap 052 · log 86": "#b59b58",
-          "Pixhawk · lap 053 · log 86": "#a66d8a",
-          "Pixhawk · lap 054 · log 87": "#b95c4c",
-          "Pixhawk · lap 055 · log 87": "#4583aa",
-          "Pixhawk · lap 056 · log 87": "#63976c",
-          "Pixhawk · lap 057 · log 87": "#9c6aab",
-          "Pixhawk · lap 058 · log 87": "#b59b58",
-          "Pixhawk · lap 059 · log 87": "#a66d8a",
-          "Pixhawk · lap 060 · log 87": "#b95c4c",
-          "Pixhawk · lap 061 · log 87": "#4583aa",
-          "Pixhawk · lap 062 · log 87": "#63976c",
-          "Pixhawk · lap 063 · log 88": "#9c6aab",
-          "Pixhawk · lap 064 · log 88": "#b59b58",
-          "Pixhawk · lap 065 · log 88": "#a66d8a",
-          "Pixhawk · lap 066 · log 88": "#b95c4c",
-          "Pixhawk · lap 067 · log 88": "#4583aa",
-          "Pixhawk · lap 068 · log 88": "#63976c",
-          "Pixhawk · lap 069 · log 88": "#9c6aab",
-          "Pixhawk · lap 070 · log 88": "#b59b58",
-          "Pixhawk · lap 071 · log 88": "#a66d8a",
-          "Pixhawk · lap 072 · log 92": "#b95c4c",
-          "Pixhawk · lap 073 · log 92": "#4583aa",
-          "Pixhawk · lap 074 · log 92": "#63976c",
-          "Pixhawk · lap 075 · log 92": "#9c6aab",
-          "Pixhawk · lap 076 · log 92": "#b59b58",
-          "Pixhawk · lap 077 · log 92": "#a66d8a",
-          "Pixhawk · lap 078 · log 92": "#b95c4c",
-          "Pixhawk · lap 079 · log 92": "#4583aa",
-          "Pixhawk · lap 080 · log 92": "#63976c",
-          "Pixhawk · lap 081 · log 93": "#9c6aab",
-          "Pixhawk · lap 082 · log 93": "#b59b58",
-          "Pixhawk · lap 083 · log 93": "#a66d8a",
-          "Pixhawk · lap 084 · log 93": "#b95c4c",
-          "Pixhawk · lap 085 · log 93": "#4583aa",
-          "Pixhawk · lap 086 · log 93": "#63976c",
-          "Pixhawk · lap 087 · log 93": "#9c6aab",
-          "Pixhawk · lap 088 · log 93": "#b59b58",
-          "Pixhawk · lap 089 · log 93": "#a66d8a",
-          "Pixhawk · lap 090 · log 112": "#b95c4c",
-          "Pixhawk · lap 091 · log 112": "#4583aa",
-          "Pixhawk · lap 092 · log 112": "#63976c",
-          "Pixhawk · lap 093 · log 112": "#9c6aab",
-          "Pixhawk · lap 094 · log 112": "#b59b58",
-          "Pixhawk · lap 095 · log 112": "#a66d8a",
-          "Pixhawk · lap 096 · log 112": "#b95c4c",
-          "Pixhawk · lap 097 · log 112": "#4583aa",
-          "Pixhawk · lap 098 · log 112": "#63976c",
-          "Pixhawk · lap 099 · log 113": "#9c6aab",
-          "Pixhawk · lap 100 · log 113": "#b59b58",
-          "Pixhawk · lap 101 · log 113": "#a66d8a",
-          "Pixhawk · lap 102 · log 113": "#b95c4c",
-          "Pixhawk · lap 103 · log 113": "#4583aa",
-          "Pixhawk · lap 104 · log 113": "#63976c",
-          "Pixhawk · lap 105 · log 113": "#9c6aab",
-          "Pixhawk · lap 106 · log 113": "#b59b58",
-          "Pixhawk · lap 107 · log 113": "#a66d8a",
-          "Pixhawk · lap 108 · log 115": "#b95c4c",
-          "Pixhawk · lap 109 · log 115": "#4583aa",
-          "Pixhawk · lap 110 · log 115": "#63976c",
-          "Pixhawk · lap 111 · log 115": "#9c6aab",
-          "Pixhawk · lap 112 · log 115": "#b59b58",
-          "Pixhawk · lap 113 · log 115": "#a66d8a",
-          "Pixhawk · lap 114 · log 115": "#b95c4c",
-          "Pixhawk · lap 115 · log 115": "#4583aa",
-          "Pixhawk · lap 116 · log 115": "#63976c",
-          "Pixhawk · lap 117 · log 1": "#9c6aab",
-          "Pixhawk · lap 118 · log 1": "#b59b58",
-          "Pixhawk · lap 119 · log 1": "#a66d8a",
-          "Pixhawk · lap 120 · log 1": "#b95c4c",
-          "SpeedyBee · lap 001": "#4583aa",
-          "SpeedyBee · lap 002": "#63976c",
-          "SpeedyBee · lap 003": "#9c6aab",
-          "SpeedyBee · lap 004": "#b59b58",
-          "SpeedyBee · lap 005": "#a66d8a",
-          "SpeedyBee · lap 006": "#b95c4c",
-          "SpeedyBee · lap 007": "#4583aa",
-          "SpeedyBee · lap 008": "#63976c",
-          "SpeedyBee · lap 009": "#9c6aab",
-          "SpeedyBee · lap 010": "#b59b58",
-          "SpeedyBee · lap 011": "#a66d8a",
-          "SpeedyBee · lap 012": "#b95c4c",
-          "SpeedyBee · lap 013": "#4583aa",
-          "SpeedyBee · lap 014": "#63976c",
-          "SpeedyBee · lap 015": "#9c6aab",
-          "SpeedyBee · lap 016": "#b59b58",
-          "SpeedyBee · lap 017": "#a66d8a",
-          "SpeedyBee · lap 018": "#b95c4c",
-          "SpeedyBee · lap 019": "#4583aa",
-          "SpeedyBee · lap 020": "#63976c",
-          "SpeedyBee · lap 021": "#9c6aab",
-          "SpeedyBee · lap 022": "#b59b58",
-          "SpeedyBee · lap 023": "#a66d8a",
-          "SpeedyBee · lap 024": "#b95c4c",
-          "SpeedyBee · lap 025": "#4583aa",
-          "SpeedyBee · lap 026": "#63976c",
-          "SpeedyBee · lap 027": "#9c6aab",
-          "SpeedyBee · lap 028": "#b59b58",
-          "SpeedyBee · lap 029": "#a66d8a",
-          "SpeedyBee · lap 030": "#b95c4c",
-          "SpeedyBee · lap 031": "#4583aa",
-          "SpeedyBee · lap 032": "#63976c",
-          "SpeedyBee · lap 041": "#9c6aab",
-          "SpeedyBee · lap 042": "#b59b58",
-          "SpeedyBee · lap 043": "#a66d8a",
-          "SpeedyBee · lap 044": "#b95c4c",
-          "SpeedyBee · lap 045": "#4583aa",
-          "SpeedyBee · lap 046": "#63976c",
-          "SpeedyBee · lap 047": "#9c6aab",
-          "SpeedyBee · lap 048": "#b59b58",
-          "SpeedyBee · lap 049": "#a66d8a",
-          "SpeedyBee · lap 050": "#b95c4c",
-          "SpeedyBee · lap 051": "#4583aa",
-          "SpeedyBee · lap 052": "#63976c",
-          "SpeedyBee · lap 053": "#9c6aab",
-          "SpeedyBee · lap 054": "#b59b58",
-          "SpeedyBee · lap 055": "#a66d8a",
-          "SpeedyBee · lap 056": "#b95c4c",
-          "SpeedyBee · lap 057": "#4583aa",
-          "SpeedyBee · lap 058": "#63976c",
-          "SpeedyBee · lap 059": "#9c6aab",
-          "SpeedyBee · lap 060": "#b59b58",
-          "SpeedyBee · lap 061": "#a66d8a",
-          "SpeedyBee · lap 062": "#b95c4c",
-          "SpeedyBee · lap 063": "#4583aa",
-          "SpeedyBee · lap 064": "#63976c",
-          "SpeedyBee · lap 065": "#9c6aab",
-          "SpeedyBee · lap 066": "#b59b58",
-          "SpeedyBee · lap 067": "#a66d8a",
-          "SpeedyBee · lap 068": "#b95c4c",
-          "SpeedyBee · lap 069": "#4583aa",
-          "SpeedyBee · lap 070": "#63976c",
-          "SpeedyBee · lap 071": "#9c6aab",
-          "SpeedyBee · lap 072": "#b59b58",
-          "SpeedyBee · lap 073": "#a66d8a",
-          "SpeedyBee · lap 074": "#b95c4c",
-          "SpeedyBee · lap 075": "#4583aa",
-          "SpeedyBee · lap 076": "#63976c",
-          "SpeedyBee · lap 077": "#9c6aab",
-          "SpeedyBee · lap 078": "#b59b58",
-          "SpeedyBee · lap 079": "#a66d8a",
-          "SpeedyBee · lap 080": "#b95c4c",
-          "SpeedyBee · lap 081": "#4583aa",
-          "SpeedyBee · lap 082": "#63976c",
-          "SpeedyBee · lap 083": "#9c6aab",
-          "SpeedyBee · lap 084": "#b59b58",
-          "SpeedyBee · lap 085": "#a66d8a",
-          "SpeedyBee · lap 086": "#b95c4c",
-          "SpeedyBee · lap 087": "#4583aa",
-          "SpeedyBee · lap 088": "#63976c",
-          "SpeedyBee · lap 089": "#9c6aab",
-          "SpeedyBee · lap 090": "#b59b58",
-          "SpeedyBee · lap 091": "#a66d8a",
-          "SpeedyBee · lap 092": "#b95c4c",
-          "SpeedyBee · lap 093": "#4583aa",
-          "SpeedyBee · lap 094": "#63976c",
-          "SpeedyBee · lap 095": "#9c6aab",
-          "SpeedyBee · lap 096": "#b59b58",
-          "SpeedyBee · lap 097": "#a66d8a",
-          "SpeedyBee · lap 098": "#b95c4c",
-          "SpeedyBee · lap 099": "#4583aa",
-          "SpeedyBee · lap 100": "#63976c",
-          "SpeedyBee · lap 101": "#9c6aab",
-          "SpeedyBee · lap 102": "#b59b58",
-          "SpeedyBee · lap 103": "#a66d8a",
-          "SpeedyBee · lap 104": "#b95c4c",
-          "SpeedyBee · lap 105": "#4583aa",
-          "SpeedyBee · lap 106": "#63976c",
-          "SpeedyBee · lap 107": "#9c6aab",
-          "SpeedyBee · lap 108": "#b59b58",
-          "SpeedyBee · lap 109": "#a66d8a",
-          "SpeedyBee · lap 110": "#b95c4c",
-          "SpeedyBee · lap 111": "#4583aa"
-        },
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": false,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "playback_fade_amount": 50,
-        "globe_time": true,
-        "globe_altitude": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": [
-          -0.6217453016727067,
-          39.2981189,
-          -0.608263236319345,
-          39.3064803
-        ],
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "3d31e44437a3d4eebf3430a93e4d618c4e3ef176e2796134934d94ed90861be0"
-    },
-    {
-      "file": "idf-uav-map.jpg",
-      "demo": "idf-uav",
-      "source_url": "https://doi.org/10.5281/zenodo.16992976",
-      "license": "CC BY 4.0 · García Gascón et al. / UPV, Instituto IDF",
-      "saved_view_index": 2,
-      "events": 399331,
-      "visible": 399331,
-      "scene": {
-        "mode": "globe",
-        "renderer": "cesium",
-        "cesium_camera": {
-          "position": [
-            4943021.640440553,
-            -53059.687690203056,
-            4019299.1352724372
-          ],
-          "direction": [
-            -0.773770210677491,
-            0.008305851907796041,
-            -0.6334119306519235
-          ],
-          "up": [
-            -0.6333754415588011,
-            0.006798817720077633,
-            0.7738147879872824
-          ]
-        },
-        "view_states": {
-          "globe": {
-            "center": [
-              -0.6150042689969828,
-              39.30229960003836,
-              0
-            ],
-            "ground_width": 1743.3290670520814,
-            "heading": 0,
-            "tilt": 3.8374179752528087e-11,
-            "footprint": [
-              [
-                -0.6250841536717089,
-                39.30798856749548,
-                9.313225746154785e-10
-              ],
-              [
-                -0.6049243843730352,
-                39.30798856752399,
-                0
-              ],
-              [
-                -0.6049260163440671,
-                39.29660975452063,
-                9.313225746154785e-10
-              ],
-              [
-                -0.6250825217046733,
-                39.29660975443255,
-                0
-              ]
-            ],
-            "camera": {
-              "position": [
-                4943021.640440553,
-                -53059.687690203056,
-                4019299.1352724372
-              ],
-              "direction": [
-                -0.773770210677491,
-                0.008305851907796041,
-                -0.6334119306519235
-              ],
-              "up": [
-                -0.6333754415588011,
-                0.006798817720077633,
-                0.7738147879872824
-              ]
-            }
-          }
-        },
-        "render_budget": 100000,
-        "display": {
-          "mode": "points",
-          "cluster_pixels": 48,
-          "time_bin_minutes": 0,
-          "partition": "all",
-          "spatial_culling": false,
-          "show_points": false,
-          "show_centroids": true,
-          "point_scale": 0.4,
-          "track_opacity": 0.8,
-          "trail_opacity": 0.25,
-          "show_tracks": true,
-          "show_trails": false,
-          "trail_pixels": 0,
-          "trail_gap_minutes": 0,
-          "heat_radius": 32,
-          "heat_weight": "count",
-          "heat_max": null,
-          "heat_reference_zoom": null,
-          "bloom": false,
-          "bloom_strength": 1.3,
-          "bloom_radius": 0.1,
-          "bloom_threshold": 0.1
-        },
-        "entity_colors": {
-          "Pixhawk · lap 001 · log 67": "#b95c4c",
-          "Pixhawk · lap 002 · log 67": "#4583aa",
-          "Pixhawk · lap 003 · log 67": "#63976c",
-          "Pixhawk · lap 004 · log 67": "#9c6aab",
-          "Pixhawk · lap 005 · log 67": "#b59b58",
-          "Pixhawk · lap 006 · log 86": "#a66d8a",
-          "Pixhawk · lap 007 · log 67": "#b95c4c",
-          "Pixhawk · lap 008 · log 67": "#4583aa",
-          "Pixhawk · lap 009 · log 74": "#63976c",
-          "Pixhawk · lap 010 · log 70": "#9c6aab",
-          "Pixhawk · lap 011 · log 70": "#b59b58",
-          "Pixhawk · lap 012 · log 70": "#a66d8a",
-          "Pixhawk · lap 013 · log 70": "#b95c4c",
-          "Pixhawk · lap 014 · log 70": "#4583aa",
-          "Pixhawk · lap 015 · log 70": "#63976c",
-          "Pixhawk · lap 016 · log 70": "#9c6aab",
-          "Pixhawk · lap 017 · log 70": "#b59b58",
-          "Pixhawk · lap 018 · log 70": "#a66d8a",
-          "Pixhawk · lap 019 · log 70": "#b95c4c",
-          "Pixhawk · lap 020 · log 74": "#4583aa",
-          "Pixhawk · lap 021 · log 74": "#63976c",
-          "Pixhawk · lap 022 · log 74": "#9c6aab",
-          "Pixhawk · lap 023 · log 74": "#b59b58",
-          "Pixhawk · lap 024 · log 86": "#a66d8a",
-          "Pixhawk · lap 025 · log 74": "#b95c4c",
-          "Pixhawk · lap 026 · log 74": "#4583aa",
-          "Pixhawk · lap 027 · log 74": "#63976c",
-          "Pixhawk · lap 028 · log 74": "#9c6aab",
-          "Pixhawk · lap 029 · log 84": "#b59b58",
-          "Pixhawk · lap 030 · log 84": "#a66d8a",
-          "Pixhawk · lap 031 · log 84": "#b95c4c",
-          "Pixhawk · lap 032 · log 84": "#4583aa",
-          "Pixhawk · lap 032 · log 86": "#63976c",
-          "Pixhawk · lap 033 · log 84": "#9c6aab",
-          "Pixhawk · lap 034 · log 67": "#b59b58",
-          "Pixhawk · lap 035 · log 84": "#a66d8a",
-          "Pixhawk · lap 036 · log 84": "#b95c4c",
-          "Pixhawk · lap 037 · log 84": "#4583aa",
-          "Pixhawk · lap 038 · log 84": "#63976c",
-          "Pixhawk · lap 039 · log 85": "#9c6aab",
-          "Pixhawk · lap 040 · log 85": "#b59b58",
-          "Pixhawk · lap 041 · log 85": "#a66d8a",
-          "Pixhawk · lap 042 · log 85": "#b95c4c",
-          "Pixhawk · lap 043 · log 85": "#4583aa",
-          "Pixhawk · lap 044 · log 85": "#63976c",
-          "Pixhawk · lap 045 · log 85": "#9c6aab",
-          "Pixhawk · lap 046 · log 85": "#b59b58",
-          "Pixhawk · lap 047 · log 85": "#a66d8a",
-          "Pixhawk · lap 048 · log 86": "#b95c4c",
-          "Pixhawk · lap 049 · log 86": "#4583aa",
-          "Pixhawk · lap 050 · log 86": "#63976c",
-          "Pixhawk · lap 051 · log 86": "#9c6aab",
-          "Pixhawk · lap 052 · log 86": "#b59b58",
-          "Pixhawk · lap 053 · log 86": "#a66d8a",
-          "Pixhawk · lap 054 · log 87": "#b95c4c",
-          "Pixhawk · lap 055 · log 87": "#4583aa",
-          "Pixhawk · lap 056 · log 87": "#63976c",
-          "Pixhawk · lap 057 · log 87": "#9c6aab",
-          "Pixhawk · lap 058 · log 87": "#b59b58",
-          "Pixhawk · lap 059 · log 87": "#a66d8a",
-          "Pixhawk · lap 060 · log 87": "#b95c4c",
-          "Pixhawk · lap 061 · log 87": "#4583aa",
-          "Pixhawk · lap 062 · log 87": "#63976c",
-          "Pixhawk · lap 063 · log 88": "#9c6aab",
-          "Pixhawk · lap 064 · log 88": "#b59b58",
-          "Pixhawk · lap 065 · log 88": "#a66d8a",
-          "Pixhawk · lap 066 · log 88": "#b95c4c",
-          "Pixhawk · lap 067 · log 88": "#4583aa",
-          "Pixhawk · lap 068 · log 88": "#63976c",
-          "Pixhawk · lap 069 · log 88": "#9c6aab",
-          "Pixhawk · lap 070 · log 88": "#b59b58",
-          "Pixhawk · lap 071 · log 88": "#a66d8a",
-          "Pixhawk · lap 072 · log 92": "#b95c4c",
-          "Pixhawk · lap 073 · log 92": "#4583aa",
-          "Pixhawk · lap 074 · log 92": "#63976c",
-          "Pixhawk · lap 075 · log 92": "#9c6aab",
-          "Pixhawk · lap 076 · log 92": "#b59b58",
-          "Pixhawk · lap 077 · log 92": "#a66d8a",
-          "Pixhawk · lap 078 · log 92": "#b95c4c",
-          "Pixhawk · lap 079 · log 92": "#4583aa",
-          "Pixhawk · lap 080 · log 92": "#63976c",
-          "Pixhawk · lap 081 · log 93": "#9c6aab",
-          "Pixhawk · lap 082 · log 93": "#b59b58",
-          "Pixhawk · lap 083 · log 93": "#a66d8a",
-          "Pixhawk · lap 084 · log 93": "#b95c4c",
-          "Pixhawk · lap 085 · log 93": "#4583aa",
-          "Pixhawk · lap 086 · log 93": "#63976c",
-          "Pixhawk · lap 087 · log 93": "#9c6aab",
-          "Pixhawk · lap 088 · log 93": "#b59b58",
-          "Pixhawk · lap 089 · log 93": "#a66d8a",
-          "Pixhawk · lap 090 · log 112": "#b95c4c",
-          "Pixhawk · lap 091 · log 112": "#4583aa",
-          "Pixhawk · lap 092 · log 112": "#63976c",
-          "Pixhawk · lap 093 · log 112": "#9c6aab",
-          "Pixhawk · lap 094 · log 112": "#b59b58",
-          "Pixhawk · lap 095 · log 112": "#a66d8a",
-          "Pixhawk · lap 096 · log 112": "#b95c4c",
-          "Pixhawk · lap 097 · log 112": "#4583aa",
-          "Pixhawk · lap 098 · log 112": "#63976c",
-          "Pixhawk · lap 099 · log 113": "#9c6aab",
-          "Pixhawk · lap 100 · log 113": "#b59b58",
-          "Pixhawk · lap 101 · log 113": "#a66d8a",
-          "Pixhawk · lap 102 · log 113": "#b95c4c",
-          "Pixhawk · lap 103 · log 113": "#4583aa",
-          "Pixhawk · lap 104 · log 113": "#63976c",
-          "Pixhawk · lap 105 · log 113": "#9c6aab",
-          "Pixhawk · lap 106 · log 113": "#b59b58",
-          "Pixhawk · lap 107 · log 113": "#a66d8a",
-          "Pixhawk · lap 108 · log 115": "#b95c4c",
-          "Pixhawk · lap 109 · log 115": "#4583aa",
-          "Pixhawk · lap 110 · log 115": "#63976c",
-          "Pixhawk · lap 111 · log 115": "#9c6aab",
-          "Pixhawk · lap 112 · log 115": "#b59b58",
-          "Pixhawk · lap 113 · log 115": "#a66d8a",
-          "Pixhawk · lap 114 · log 115": "#b95c4c",
-          "Pixhawk · lap 115 · log 115": "#4583aa",
-          "Pixhawk · lap 116 · log 115": "#63976c",
-          "Pixhawk · lap 117 · log 1": "#9c6aab",
-          "Pixhawk · lap 118 · log 1": "#b59b58",
-          "Pixhawk · lap 119 · log 1": "#a66d8a",
-          "Pixhawk · lap 120 · log 1": "#b95c4c",
-          "SpeedyBee · lap 001": "#4583aa",
-          "SpeedyBee · lap 002": "#63976c",
-          "SpeedyBee · lap 003": "#9c6aab",
-          "SpeedyBee · lap 004": "#b59b58",
-          "SpeedyBee · lap 005": "#a66d8a",
-          "SpeedyBee · lap 006": "#b95c4c",
-          "SpeedyBee · lap 007": "#4583aa",
-          "SpeedyBee · lap 008": "#63976c",
-          "SpeedyBee · lap 009": "#9c6aab",
-          "SpeedyBee · lap 010": "#b59b58",
-          "SpeedyBee · lap 011": "#a66d8a",
-          "SpeedyBee · lap 012": "#b95c4c",
-          "SpeedyBee · lap 013": "#4583aa",
-          "SpeedyBee · lap 014": "#63976c",
-          "SpeedyBee · lap 015": "#9c6aab",
-          "SpeedyBee · lap 016": "#b59b58",
-          "SpeedyBee · lap 017": "#a66d8a",
-          "SpeedyBee · lap 018": "#b95c4c",
-          "SpeedyBee · lap 019": "#4583aa",
-          "SpeedyBee · lap 020": "#63976c",
-          "SpeedyBee · lap 021": "#9c6aab",
-          "SpeedyBee · lap 022": "#b59b58",
-          "SpeedyBee · lap 023": "#a66d8a",
-          "SpeedyBee · lap 024": "#b95c4c",
-          "SpeedyBee · lap 025": "#4583aa",
-          "SpeedyBee · lap 026": "#63976c",
-          "SpeedyBee · lap 027": "#9c6aab",
-          "SpeedyBee · lap 028": "#b59b58",
-          "SpeedyBee · lap 029": "#a66d8a",
-          "SpeedyBee · lap 030": "#b95c4c",
-          "SpeedyBee · lap 031": "#4583aa",
-          "SpeedyBee · lap 032": "#63976c",
-          "SpeedyBee · lap 041": "#9c6aab",
-          "SpeedyBee · lap 042": "#b59b58",
-          "SpeedyBee · lap 043": "#a66d8a",
-          "SpeedyBee · lap 044": "#b95c4c",
-          "SpeedyBee · lap 045": "#4583aa",
-          "SpeedyBee · lap 046": "#63976c",
-          "SpeedyBee · lap 047": "#9c6aab",
-          "SpeedyBee · lap 048": "#b59b58",
-          "SpeedyBee · lap 049": "#a66d8a",
-          "SpeedyBee · lap 050": "#b95c4c",
-          "SpeedyBee · lap 051": "#4583aa",
-          "SpeedyBee · lap 052": "#63976c",
-          "SpeedyBee · lap 053": "#9c6aab",
-          "SpeedyBee · lap 054": "#b59b58",
-          "SpeedyBee · lap 055": "#a66d8a",
-          "SpeedyBee · lap 056": "#b95c4c",
-          "SpeedyBee · lap 057": "#4583aa",
-          "SpeedyBee · lap 058": "#63976c",
-          "SpeedyBee · lap 059": "#9c6aab",
-          "SpeedyBee · lap 060": "#b59b58",
-          "SpeedyBee · lap 061": "#a66d8a",
-          "SpeedyBee · lap 062": "#b95c4c",
-          "SpeedyBee · lap 063": "#4583aa",
-          "SpeedyBee · lap 064": "#63976c",
-          "SpeedyBee · lap 065": "#9c6aab",
-          "SpeedyBee · lap 066": "#b59b58",
-          "SpeedyBee · lap 067": "#a66d8a",
-          "SpeedyBee · lap 068": "#b95c4c",
-          "SpeedyBee · lap 069": "#4583aa",
-          "SpeedyBee · lap 070": "#63976c",
-          "SpeedyBee · lap 071": "#9c6aab",
-          "SpeedyBee · lap 072": "#b59b58",
-          "SpeedyBee · lap 073": "#a66d8a",
-          "SpeedyBee · lap 074": "#b95c4c",
-          "SpeedyBee · lap 075": "#4583aa",
-          "SpeedyBee · lap 076": "#63976c",
-          "SpeedyBee · lap 077": "#9c6aab",
-          "SpeedyBee · lap 078": "#b59b58",
-          "SpeedyBee · lap 079": "#a66d8a",
-          "SpeedyBee · lap 080": "#b95c4c",
-          "SpeedyBee · lap 081": "#4583aa",
-          "SpeedyBee · lap 082": "#63976c",
-          "SpeedyBee · lap 083": "#9c6aab",
-          "SpeedyBee · lap 084": "#b59b58",
-          "SpeedyBee · lap 085": "#a66d8a",
-          "SpeedyBee · lap 086": "#b95c4c",
-          "SpeedyBee · lap 087": "#4583aa",
-          "SpeedyBee · lap 088": "#63976c",
-          "SpeedyBee · lap 089": "#9c6aab",
-          "SpeedyBee · lap 090": "#b59b58",
-          "SpeedyBee · lap 091": "#a66d8a",
-          "SpeedyBee · lap 092": "#b95c4c",
-          "SpeedyBee · lap 093": "#4583aa",
-          "SpeedyBee · lap 094": "#63976c",
-          "SpeedyBee · lap 095": "#9c6aab",
-          "SpeedyBee · lap 096": "#b59b58",
-          "SpeedyBee · lap 097": "#a66d8a",
-          "SpeedyBee · lap 098": "#b95c4c",
-          "SpeedyBee · lap 099": "#4583aa",
-          "SpeedyBee · lap 100": "#63976c",
-          "SpeedyBee · lap 101": "#9c6aab",
-          "SpeedyBee · lap 102": "#b59b58",
-          "SpeedyBee · lap 103": "#a66d8a",
-          "SpeedyBee · lap 104": "#b95c4c",
-          "SpeedyBee · lap 105": "#4583aa",
-          "SpeedyBee · lap 106": "#63976c",
-          "SpeedyBee · lap 107": "#9c6aab",
-          "SpeedyBee · lap 108": "#b59b58",
-          "SpeedyBee · lap 109": "#a66d8a",
-          "SpeedyBee · lap 110": "#b95c4c",
-          "SpeedyBee · lap 111": "#4583aa"
-        },
-        "measurement": null,
-        "table_source": null,
-        "gis_table": null,
-        "table_attributes": true,
-        "table_respect_filters": false,
-        "table_sort": "time",
-        "table_descending": false,
-        "table_column_offset": 0,
-        "time_height": 2.8,
-        "playback_fade": true,
-        "playback_fade_amount": 50,
-        "globe_time": false,
-        "globe_altitude": false,
-        "globe_time_scale": 1,
-        "focus": 0.45,
-        "bounds": [
-          -0.6217453016727067,
-          39.2981189,
-          -0.608263236319345,
-          39.3064803
-        ],
-        "table_open": false,
-        "inspector_tab": "views",
-        "chart": {
-          "kind": "bar",
-          "scope": "visible",
-          "source": null,
-          "x": "entity",
-          "y": "value",
-          "group": "",
-          "aggregate": "count",
-          "x_axis": "category",
-          "time_bucket": "day",
-          "stacked": false,
-          "y2": "",
-          "trendline": false,
-          "bins": 20,
-          "limit": 2000,
-          "title": "",
-          "x_label": "",
-          "y_label": "",
-          "y2_label": "",
-          "period_a": null,
-          "period_b": null
-        },
-        "chart_presets": [],
-        "expanded": false
-      },
-      "filter": {
-        "bounds": null,
-        "end": null,
-        "facet_fields": {},
-        "facet_hidden": {},
-        "hidden_categories": [],
-        "hidden_entities": [],
-        "hidden_sources": [],
-        "located_only": false,
-        "predicates": [],
-        "search": "",
-        "selected_only": false,
-        "start": null
-      },
-      "sha256": "5985a5e654fd4e7b78f68fe97cde3d01366fd5ca751a64dc48422ec80e7d793b"
+      "sha256": "9f21c1fef15f9947b7d7732b7e9446cb4e1b97d9d0da800c69bb19bb52d441e6"
     }
   ]
 }

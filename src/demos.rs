@@ -52,13 +52,13 @@ pub const DEMOS: &[Demo] = &[
         bytes: include_bytes!("../samples/flights-philippines-week-2026.chronoscope"),
     },
     Demo {
-        id: "idf-uav",
-        name: "IDF · fixed-wing UAV flight paths",
-        description: "399,331 positions from 224 nonempty SpeedyBee and Pixhawk GPS logs near Valencia, Spain. Playback aligns elapsed time per log on an artificial 2000-01-01 date; flights are not simultaneous. Altitude is reported and approximate.",
-        source_url: "https://doi.org/10.5281/zenodo.16992976",
-        license: "CC BY 4.0 · García Gascón et al. / UPV, Instituto IDF",
-        previews: &[Preview { key: "globe", label: "Altitude", view_index: 0 }, Preview { key: "time", label: "Time Height", view_index: 1 }, Preview { key: "map", label: "Ground tracks", view_index: 2 }],
-        bytes: include_bytes!("../samples/idf-fixed-wing-gps.demo.zip"),
+        id: "kabr-uav",
+        name: "UAV takeoff to landing · Kenya",
+        description: "Three complete KABR wildlife-monitoring flights on January 11, 12 and 20, 2023. Opens on the 12-minute January 12 flight. 25,924 records in one layer; six startup records have no GPS fix. Globe height is reported metres above takeoff; original UTC dates and sea-level altitude remain separate.",
+        source_url: "https://huggingface.co/datasets/imageomics/kabr_airdata",
+        license: "CC0 1.0 · Imageomics Institute / KABR; curated by Jenna Kline",
+        previews: &[Preview { key: "time", label: "Time", view_index: 0 }, Preview { key: "globe", label: "Height above takeoff", view_index: 1 }],
+        bytes: include_bytes!("../samples/kabr-uav-kenya-2023.chronoscope"),
     },
     Demo {
         id: "hurricanes",
@@ -205,47 +205,6 @@ pub fn load(id: &str, data_dir: &Path) -> Result<Project, String> {
         .iter()
         .find(|d| d.id == id)
         .ok_or("INVALID_ARGUMENT: unknown demo dataset")?;
-    if id == "idf-uav" {
-        // This compile-time asset contains more rows than the legacy JSON file
-        // budget. Keep external project limits intact; validate bounded bundled
-        // metadata and each original row before the indexed store receives it.
-        use std::io::Read;
-        let mut archive =
-            zip::ZipArchive::new(std::io::Cursor::new(demo.bytes)).map_err(|e| e.to_string())?;
-        if archive.len() != 1 {
-            return Err("Invalid bundled GPS demo".into());
-        }
-        let mut entry = archive
-            .by_name("manifest.json")
-            .map_err(|e| e.to_string())?;
-        const LIMIT: u64 = 512 * 1024 * 1024;
-        if entry.size() > LIMIT {
-            return Err("Bundled GPS demo exceeds its data budget".into());
-        }
-        let mut bytes = Vec::new();
-        (&mut entry)
-            .take(LIMIT + 1)
-            .read_to_end(&mut bytes)
-            .map_err(|e| e.to_string())?;
-        if bytes.len() as u64 > LIMIT {
-            return Err("Bundled GPS demo exceeds its data budget".into());
-        }
-        let mut project: Project = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
-        drop(bytes);
-        let events = std::mem::take(&mut project.dataset.events);
-        project.validate()?;
-        if events.len() != 399_331 {
-            return Err("Bundled GPS demo has an unexpected row count".into());
-        }
-        for (index, event) in events.iter().enumerate() {
-            event.validate()?;
-            if event.id != (index + 1) as u64 {
-                return Err("Bundled GPS demo has invalid event identities".into());
-            }
-        }
-        project.dataset.events = events;
-        return Ok(project);
-    }
     // Use the normal portable-workspace validator. The private temporary file is
     // never the editable document's source, and disappears after validation.
     let mut file = tempfile::NamedTempFile::new_in(data_dir).map_err(|e| e.to_string())?;

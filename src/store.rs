@@ -1911,6 +1911,15 @@ impl DataStore {
             }
         }
     }
+    pub fn has_source(&self, source: &str) -> Result<bool, String> {
+        self.connection
+            .query_row(
+                "SELECT EXISTS(SELECT 1 FROM events WHERE source=?1)",
+                [source],
+                |row| row.get(0),
+            )
+            .map_err(err)
+    }
     pub fn columns(&self, source: Option<&str>) -> Result<Vec<String>, String> {
         let key = source.map(str::to_owned);
         if let Some(value) = self.column_cache.borrow().get(&key) {

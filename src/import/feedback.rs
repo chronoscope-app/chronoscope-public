@@ -51,19 +51,27 @@ pub fn field_feedback(table: &RawTable, mapping: &Mapping) -> BTreeMap<String, F
                 .and_then(|i| row.get(i))
                 .is_some_and(|v| !v.trim().is_empty())
         };
-        let lat_partner = if present(mapping.lon.or(mapping.lat)) {
+        let zero = if mapping.coordinate_system == CoordinateSystem::Dms {
+            "0 0 0"
+        } else {
             "0"
+        };
+        let lat_partner = if present(mapping.lon.or(mapping.lat)) {
+            zero
         } else {
             ""
         };
         let lon_partner = if present(mapping.lat.or(mapping.lon)) {
-            "0"
+            zero
         } else {
             ""
         };
         row.extend(["2000-01-01T00:00:00Z", lon_partner, lat_partner].map(String::from));
     }
-    let dd = mapping.coordinate_system == CoordinateSystem::Dd;
+    let dd = matches!(
+        mapping.coordinate_system,
+        CoordinateSystem::Dd | CoordinateSystem::Dms
+    );
     let utm = mapping.coordinate_system == CoordinateSystem::Utm;
     let separate = mapping.coordinate_column.is_none();
     let fields = [
@@ -179,10 +187,12 @@ pub fn field_feedback(table: &RawTable, mapping: &Mapping) -> BTreeMap<String, F
                         probe.entity = column;
                     }
                     "lat" => {
+                        probe.coordinate_system = mapping.coordinate_system.clone();
                         probe.lat = column;
                         probe.lon = Some(timestamp + 2);
                     }
                     "lon" => {
+                        probe.coordinate_system = mapping.coordinate_system.clone();
                         probe.lon = column;
                         probe.lat = Some(timestamp + 1);
                     }

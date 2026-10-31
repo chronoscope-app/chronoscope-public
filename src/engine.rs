@@ -75,7 +75,7 @@ impl Default for Preferences {
 impl Preferences {
     pub fn validate(&self) -> Result<(), String> {
         if !matches!(self.theme.as_str(), "dark" | "light" | "system")
-            || !matches!(self.coordinates.as_str(), "dd" | "utm" | "mgrs")
+            || !matches!(self.coordinates.as_str(), "dd" | "dms" | "utm" | "mgrs")
             || !matches!(
                 self.date_format.as_str(),
                 "system"
@@ -1827,6 +1827,41 @@ impl Engine {
                     for id in &ids {
                         if s.store.get(*id)?.is_none() {
                             return Err("Selection refers to missing events".into());
+                        }
+                    }
+                    ids
+                } else if let Some(radius) = args.get("radius") {
+                    let latitude = radius["latitude"].as_f64().ok_or("Invalid latitude")?;
+                    let longitude = radius["longitude"].as_f64().ok_or("Invalid longitude")?;
+                    let meters = radius["meters"].as_f64().ok_or("Invalid radius")?;
+                    if !latitude.is_finite()
+                        || !longitude.is_finite()
+                        || !meters.is_finite()
+                        || !(-90.0..=90.0).contains(&latitude)
+                        || !(-180.0..=180.0).contains(&longitude)
+                        || meters <= 0.0
+                    {
+                        return Err("INVALID_ARGUMENT: invalid radius query".into());
+                    }
+                    let f = query_filter(&s.project, &args, true)?;
+                    let table = s.store.ordered_table(
+                        &f,
+                        args["source"].as_str(),
+                        "time",
+                        false,
+                        None,
+                        "",
+                    )?;
+                    let count = s.store.table_count(&table)?;
+                    let mut ids = BTreeSet::new();
+                    for offset in (0..count).step_by(1000) {
+                        for event in s.store.page(&table, offset, 1000)? {
+                            if event.location().is_some_and(|location| {
+                                crate::analysis::geodesic_distance((latitude, longitude), location)
+                                    <= meters
+                            }) {
+                                ids.insert(event.id);
+                            }
                         }
                     }
                     ids

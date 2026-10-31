@@ -1273,6 +1273,14 @@ function showTablesMenu() {
   menu.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
 }
 
+async function showOnlyLayer(source?: string, gisId?: string) {
+  const operations: EngineContracts["batch"]["args"]["operations"] = [
+    { command: "filter", args: { filter: { ...snapshot.filter, hidden_sources: (snapshot.layers || []).filter((layer) => layer.source !== source).map((layer) => layer.source) } } },
+    ...(snapshot.gis_layers || []).map((layer) => ({ command: "gis_set" as const, args: { id: layer.id, enabled: layer.id === gisId } })),
+  ];
+  await call("batch", { operations, expected_workspace: snapshot.workspace_id });
+  await refresh(false);
+}
 function showLayerMenu(layer: HTMLElement, x: number, y: number) {
   closeLayerMenu();
   const source = layer.dataset.layerSource;
@@ -1286,7 +1294,7 @@ function showLayerMenu(layer: HTMLElement, x: number, y: number) {
   layerMenu.setAttribute("role", "menu");
   layerMenu.innerHTML =
     source !== undefined
-      ? '<button role="menuitem" id="open-attributes">Open attribute table</button>'
+      ? '<button role="menuitem" id="open-attributes">Open attribute table</button><button role="menuitem" id="show-only-layer">Show only this layer</button>'
       : '<button role="menuitem" disabled>Attribute table unavailable · geographic layer</button>';
   document.body.append(layerMenu);
   layerMenu.style.left = `${Math.max(8, Math.min(innerWidth - layerMenu.offsetWidth - 8, x))}px`;
@@ -1297,6 +1305,10 @@ function showLayerMenu(layer: HTMLElement, x: number, y: number) {
       closeLayerMenu();
       openAttributes(source!).catch((e) => toast(String(e), true));
     });
+  layerMenu.querySelector("#show-only-layer")?.addEventListener("click", () => {
+    closeLayerMenu();
+    void showOnlyLayer(source).catch((error) => toast(String(error), true));
+  });
   layerMenu.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
 }
 async function openAttributes(source: string | null) {
@@ -1481,9 +1493,75 @@ view.onPick = (ids, add) => {
       .catch(report);
   };
 };
-function locationLabel(e: any) {
+view.onContextPick = (id) => {
+  void (async () => {
+    tab = "inspect";
+    await paneLayout.inspector.reveal("inspect", true);
+    document
+      .querySelectorAll<HTMLElement>("[data-tab]")
+      .forEach((button) =>
+        button.classList.toggle("active", button.dataset.tab === "inspect"),
+      );
+    await select([id], false, true);
+  })().catch((error) => toast(String(error), true));
+};
+view.onRadiusQuery = (latitude, longitude) => {
+  const workspace = snapshot.workspace_id;
+  const dialog = modal(
+    `${head("Select within radius")}<div id="radius-coordinates" class="description">Loading coordinates…</div><form id="radius-query"><div class="modal-grid"><label class="field">Radius<input id="query-radius" type="number" min="0" step="any" value="1" required></label><label class="field">Units<select id="query-radius-unit"><option value="1000">Kilometers</option><option value="1">Meters</option></select></label></div><p class="description">Selects all located workspace records within the WGS84 surface radius, including records outside current filters. Polygon records use their derived centroid.</p><p id="radius-error" role="alert"></p><footer><button type="button" data-close>Cancel</button><span class="spacer"></span><button type="submit" class="primary">OK</button></footer></form>`,
+    true,
+  );
+  void call("coordinates", {
+    coordinate: { system: "dd", latitude, longitude },
+  })
+    .then((c) => {
+      const u = c.utm as {
+        zone: number;
+        hemisphere: string;
+        easting: number;
+        northing: number;
+      };
+      dialog.querySelector("#radius-coordinates")!.innerHTML =
+        `<dl><dt>Decimal degrees · latitude, longitude</dt><dd>${latitude.toFixed(6)}, ${longitude.toFixed(6)}</dd><dt>DMS · degrees, minutes, seconds</dt><dd>${esc(c.dms.latitude)}, ${esc(c.dms.longitude)}</dd><dt>${esc(c.grid_system)}</dt><dd>${u.zone || ""}${esc(u.hemisphere)} ${u.easting.toFixed(2)} ${u.northing.toFixed(2)}</dd><dt>MGRS</dt><dd>${esc(c.mgrs)}</dd></dl>`;
+    })
+    .catch((error) => {
+      dialog.querySelector("#radius-coordinates")!.textContent = String(error);
+    });
+  const radius = dialog.querySelector<HTMLInputElement>("#query-radius")!;
+  radius.focus();
+  radius.select();
+  dialog.querySelector("form")!.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const meters =
+      radius.valueAsNumber *
+      Number(dialog.querySelector<HTMLSelectElement>("select")!.value);
+    const error = dialog.querySelector<HTMLElement>("#radius-error")!;
+    if (!Number.isFinite(meters) || meters <= 0) {
+      error.textContent = "Enter a radius greater than zero.";
+      radius.focus();
+      return;
+    }
+    const submit = dialog.querySelector<HTMLButtonElement>('[type="submit"]')!;
+    submit.disabled = true;
+    void call("select_query", {
+      radius: { latitude, longitude, meters },
+      apply_filter: false,
+      expected_workspace: workspace,
+      mode: "replace",
+    })
+      .then(async () => {
+        if (dialogs.node === dialog) closeModal();
+        await refresh(false);
+      })
+      .catch((failure) => {
+        error.textContent = String(failure);
+        submit.disabled = false;
+      });
+  });
+};
+function locationLabel(e: any): string {
   if (e.location_kind === "polygon-centroid")
-    return `Centroid · ${e.lat.toFixed(5)}, ${e.lon.toFixed(5)}`;
+    return `Centroid · ${locationLabel({ ...e, location_kind: "point" })}`;
   const c = e.coordinate_formats;
   if (!c)
     return e.geometry_wkt
@@ -1495,6 +1573,7 @@ function locationLabel(e: any) {
       : e.lat != null
         ? `${e.lat.toFixed(5)}, ${e.lon.toFixed(5)}`
         : "No location";
+  if (preferences.coordinates === "dms") return `${c.dms.latitude}, ${c.dms.longitude}`;
   if (preferences.coordinates === "mgrs") return c.mgrs;
   if (preferences.coordinates === "utm") {
     const u = c.utm;
@@ -1750,8 +1829,12 @@ async function gisLayerMenu(id: string) {
   if (!layer) return;
   const model = ["gltf", "glb"].includes(layer.format);
   modal(
-    `${head("GIS layer")}<label class="field">Name<input id="gis-layer-name" value="${esc(layer.name)}"></label><p class="description">${esc((layer.source_format || layer.format).toUpperCase())} · ${layer.feature_count.toLocaleString()} features · ${layer.resource_count.toLocaleString()} packaged files · ${(layer.bytes / 1048576).toFixed(1)} MiB</p><label class="check-row"><input id="gis-layer-enabled" type="checkbox" ${layer.enabled ? "checked" : ""}> Show layer</label>${model ? `<label class="field">Location · longitude, latitude, ellipsoidal height (metres)<input id="gis-layer-position" value="${layer.position!.join(", ")}"></label><label class="field">Scale<input id="gis-layer-scale" type="number" step="any" min="0.000001" max="1000000" value="${layer.scale}"></label>` : ""}${layer.warnings.map((w) => `<p class="description">${esc(w)}</p>`).join("")}${view.gis.errors.has(id) ? `<p class="error">${esc(view.gis.errors.get(id))}</p>` : ""}<div class="row"><button id="gis-layer-fit">Fit layer</button>${layer.feature_count ? '<button id="gis-layer-table">Attribute table</button><button id="gis-layer-events">Import as Events…</button>' : ""}</div><footer><button class="danger" id="gis-layer-remove">Remove layer</button><span class="spacer"></span><button data-close>Cancel</button><button class="primary" id="gis-layer-apply">Apply</button></footer>`,
+    `${head("GIS layer")}<label class="field">Name<input id="gis-layer-name" value="${esc(layer.name)}"></label><p class="description">${esc((layer.source_format || layer.format).toUpperCase())} · ${layer.feature_count.toLocaleString()} features · ${layer.resource_count.toLocaleString()} packaged files · ${(layer.bytes / 1048576).toFixed(1)} MiB</p><label class="check-row"><input id="gis-layer-enabled" type="checkbox" ${layer.enabled ? "checked" : ""}> Show layer</label>${model ? `<label class="field">Location · longitude, latitude, ellipsoidal height (metres)<input id="gis-layer-position" value="${layer.position!.join(", ")}"></label><label class="field">Scale<input id="gis-layer-scale" type="number" step="any" min="0.000001" max="1000000" value="${layer.scale}"></label>` : ""}${layer.warnings.map((w) => `<p class="description">${esc(w)}</p>`).join("")}${view.gis.errors.has(id) ? `<p class="error">${esc(view.gis.errors.get(id))}</p>` : ""}<div class="row"><button id="gis-layer-fit">Fit layer</button><button id="gis-layer-only">Show only this layer</button>${layer.feature_count ? '<button id="gis-layer-table">Attribute table</button><button id="gis-layer-events">Import as Events…</button>' : ""}</div><footer><button class="danger" id="gis-layer-remove">Remove layer</button><span class="spacer"></span><button data-close>Cancel</button><button class="primary" id="gis-layer-apply">Apply</button></footer>`,
   );
+  on("#gis-layer-only", async () => {
+    closeModal();
+    await showOnlyLayer(undefined, id);
+  });
   on("#gis-layer-fit", async () => {
     closeModal();
     await fitGisLayer(id);
@@ -1791,6 +1874,7 @@ async function gisLayerMenu(id: string) {
 }
 
 const importDialog = new ImportDialog({
+  layers: () => snapshot.layers || [],
   workspace: () => snapshot.workspace_id,
   committed: async (append, result) => {
     if (!append) {
@@ -2967,7 +3051,7 @@ function updateNavigationControls() {
   $("#navigate").dataset.tooltip =
     mode === "map"
       ? "Drag to pan the flat map; scroll to zoom. Time filtering remains in the timeline."
-      : "Drag to move; middle-drag rotates/tilts; right-drag or wheel zooms. Shift-click adds selection.";
+      : "Drag to move; middle-drag tilts; right-drag rotates horizontally and zooms vertically; wheel zooms. Shift-click adds selection.";
   const spaceTime = mode === "space-time";
   const altitude = mode === "globe" && view.globeAltitude;
   const time = spaceTime ? view.timeHeight > 0 : view.globeTime;

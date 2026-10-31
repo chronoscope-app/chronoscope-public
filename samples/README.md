@@ -15,8 +15,8 @@ Open **Help → Demo datasets** for all 15 bundled offline projects, including t
 - `nasa-firms-south-america-2026-10.chronoscope`: 50,713 VIIRS detections in a South America bounding box, 19–25 October 2026; FRP-weighted heat and original points.
 - `world-bank-electricity-1990-2023.chronoscope`: 169 mapped countries over 34 annual observations, with fixed percentage coloring and missing values preserved.
 - `flights-philippines-week-2026.chronoscope`: 11,018 samples from 175 distinct flights across six Philippine airports, March 1–7, 2026 UTC; reported altitude, Time Height and ground views.
-- `idf-fixed-wing-gps.demo.zip`: bundled demo payload containing 399,331 original positions in 224 nonempty SpeedyBee/Pixhawk GPS logs, aligned by elapsed time; use the demo picker and save an editable workspace copy. [Source and interpretation](../docs/IDF-UAV-DEMO.md).
 - `starlink-128-predicted-orbits-2024.chronoscope`: 46,208 original predicted states from 128 satellites over six hours, with altitude and Time Height views.
+- `kabr-uav-kenya-2023.chronoscope`: three complete KABR UAV flights on their original January 2023 UTC dates, in one layer. Opens on January 12 only, with Time and takeoff-relative Globe views. [Source, height interpretation and reproduction](../docs/KABR-UAV-DEMO.md).
 - `public/*.csv`: matching importable observation tables.
 
 See [wildlife sources and interpretation](../docs/WILDLIFE-DEMOS.md), [real-world demos, sources, units and reproduction](../docs/REAL-WORLD-DEMOS.md), [hurricane provenance](public/SOURCES.md), and [hurricane guide](../docs/NOAA-HURRICANE-DEMO.md). The source data is embedded in each project; map imagery is referenced rather than embedded. Normal startup remains empty.

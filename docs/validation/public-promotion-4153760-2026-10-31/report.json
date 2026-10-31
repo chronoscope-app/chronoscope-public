@@ -1,0 +1,148 @@
+{
+  "version": "0.16.10",
+  "next_commit": "4153760745af689b9625a5a5630873bd5b33a888",
+  "public_parent": "e30f6c198e6222b1f56b6973f9bc4ca81af51891",
+  "authorization": "Owner explicitly requested promotion to Public after reviewing Windows test results and symlink-fixture limitations.",
+  "next_tracked_files": 3419,
+  "all_next_files_byte_identical": true,
+  "preserved_public_only_files": [
+    "docs/validation/public-governor-bulk-import-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/README.md",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/report.json",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/README.md",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/report.json",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/README.md",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/report.json",
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-23e567f-2026-10-26/README.md",
+    "docs/validation/public-promotion-23e567f-2026-10-26/report.json",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/README.md",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/report.json",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/README.md",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/report.json",
+    "docs/validation/public-promotion-82107e5-2026-10-26/README.md",
+    "docs/validation/public-promotion-82107e5-2026-10-26/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json",
+    "docs/validation/public-resident-graphics-2026-10-30/report.json"
+  ],
+  "removed_retired_idf_assets": [
+    "frontend/public/demos/idf-uav-globe.jpg",
+    "frontend/public/demos/idf-uav-map.jpg",
+    "frontend/public/demos/idf-uav-time.jpg",
+    "samples/idf-fixed-wing-gps.demo.zip"
+  ],
+  "independent_public_history": true,
+  "private_next_ancestry_imported": false,
+  "validation": {
+    "tested_source": "4153760745af689b9625a5a5630873bd5b33a888",
+    "os": "Windows 11 Pro x64 10.0.26300",
+    "renderer": "Microsoft WebView2 / WebGL2 / NVIDIA Quadro RTX 3000 / ANGLE Direct3D11",
+    "optimized_desktop_sha256": "4ad07a4e88a526c9732d59de6aca4432add2608ea6491f898379ae8be3e3ce95",
+    "rust_tests_passed": 489,
+    "rust_tests_ignored": 1,
+    "rust_assertion_failures": 0,
+    "rust_integration_targets_completed": 76,
+    "frontend_tests_passed": 175,
+    "browser_suites": [
+      "integration-smoke",
+      "dms",
+      "import-layers",
+      "kabr-demo",
+      "context-radius",
+      "si-toolbar-label",
+      "playback-recovery",
+      "navigation",
+      "globe-framing",
+      "track-wrap-fallback",
+      "space-demos",
+      "flight-week",
+      "event-table",
+      "detachable-tables",
+      "upload-paging",
+      "playback-transitions"
+    ],
+    "native_checks": [
+      "Optimized 0.16.10 native Windows app launches, attaches MCP, and discovers packaged Balanced terrain",
+      "KABR opens 25,924 original records in one layer, January 12 has 7,189 displayed events with original telemetry provenance",
+      "All five KABR saved views preserve source records and exact single-flight/all-flight counts",
+      "Map, Time and Globe produce native WebView2 pixels without renderer errors",
+      "Filtering and portable save/reopen retain all KABR records and exact selected IDs",
+      "Updated Philippine flight demo retains 11,018 events, 175 flights and one source layer",
+      "Native Starlink smooth playback recovers through Map, Time, Globe and Map; pause preserves all 46,208 events"
+    ],
+    "rust_timeout": "The initial Cargo invocation reached its 1800-second budget, including compilation. The interrupted target and every later target, plus doc tests, passed in a bounded continuation.",
+    "source_gate_green": false,
+    "symlink_fixture_errors": {
+      "test_guarded_run": 1,
+      "test_package_distribution": 7,
+      "test_tester_packaging": 2
+    },
+    "fixture_error_reason": "All 10 errors were WinError 1314 during symlink creation; this Windows test process lacks the required privilege. Security settings were not changed.",
+    "native_input_limit": "Direct Windows input automation could not activate the captured window after refresh/retry. Native MCP actions and browser mouse/keyboard workflows passed.",
+    "known_documentation_limit": "CHANGELOG still describes the retired IDF demo. Exact tested-source parity is retained; the current catalog and notices use KABR.",
+    "evidence_sha256": {
+      "build-report.json": "b543e70a2eedff650de67941780754d8011c762de145709dba7e7d102bc1beba",
+      "browser-report.json": "cbfa9c215843dd29d100b016176bc0ff19ee892d1bcce04111c43c916b513ba4",
+      "desktop-cli-report.json": "d60d46c1250b101966dfe41c84e25b95a2208ce7c06daf65243f204eb940cc66",
+      "source-report.json": "8c9323a7596fcf30b09d0ba370d3ef2ed59b48a4708734e6e328394aa80fcb4f",
+      "source-continue-report.json": "8f36c35d8c2baaaca0d9d5b63c3afb909ca6548b80b3864c9a6cfb18eb7c348a",
+      "source-tail-report.json": "8f8478c22b8305cf618218ba454e1792fc289b191c8fdbd0962aa9a65863846d",
+      "native/report.json": "e531049c662f78de77ed0a6bfdf3d310f7d05bb954a18bcaf5d3ece007f1e122"
+    }
+  },
+  "promotion_checks": {
+    "source_parity": {
+      "next_files": 3419,
+      "byte_identical": true,
+      "preserved_public_receipts": 28
+    },
+    "source_export": "All Next files pass the existing tracked-file export boundary; regular blobs only. No untracked fixtures, local binaries, profiles or logs are exported.",
+    "focused_candidate_checks": {
+      "version_metadata": true,
+      "publication_cleanup_tests": 12,
+      "download_validator_tests": 39,
+      "staged_whitespace_check": true
+    },
+    "secret_review": {
+      "scanner": "gitleaks 8.30.1",
+      "config_unmodified": true,
+      "tree_findings": 4,
+      "public_history_findings": 4,
+      "public_history_commits_scanned": 52,
+      "unresolved_credentials": 0,
+      "synthetic_canary_detected": true,
+      "verified_findings": [
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "lines": [
+            35,
+            50,
+            51
+          ],
+          "reason": "Verified SHA-256 values against the historical Public src/api.rs blob and both named tracked PNG files."
+        },
+        {
+          "path": "docs/validation/release-0.16.9-publication/SOURCE-MANIFEST-RELEASE.json",
+          "lines": [
+            3
+          ],
+          "reason": "Verified 40-character Git commit identifier against an existing commit object."
+        }
+      ]
+    },
+    "workflows": "Both manual-only workflows are byte-identical to Next and the existing Public parent."
+  },
+  "hosted_workflows_dispatched": false,
+  "release_assets_modified": false,
+  "release_tags_modified": false
+}
