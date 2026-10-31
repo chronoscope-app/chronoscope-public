@@ -1,0 +1,115 @@
+{
+  "verified_merge_source": "f5b70e9a9710eace8072044c1ae714b1ac93a959",
+  "previous_next": "4834867b0704c2376d80e29faaa22a6a2b973321",
+  "imported_local_branch": "7e6c37c771affb0e6ca1a8888d41389b093cc230",
+  "native_windows_renderer_source": "a07a19873eb6fb72ea7d669048e63906c68636a3",
+  "native_windows_binary_sha256": "6910aef92e041e4811a945ea03cc342ddace1e3e45c237d7a3a491e2ecca73c5",
+  "renderer_files_byte_identical_to_native_tested_source": {
+    "frontend/src/resident-playback.ts": "fc5ffd100d27d90038c1331938066299b06e968f8adaa149a03c886c6a7f7185",
+    "frontend/src/resident-lines.ts": "bed69197ee8515e2543bd91cee0ecb30fc44f2e2ca7526c3218d53268cc644ee",
+    "frontend/src/resident-track-math.ts": "fb646c7dabf63c07af4577a42e4ae02579c1353e64704d6452225d1428d0cf82",
+    "frontend/src/view.ts": "1445363f9b69fa9d0e432cb95d7c526e891b47dfb71d9075e1d70974e51001dd"
+  },
+  "normal_application_identity_and_profile_preserved": true,
+  "unit_tests": 175,
+  "targeted_rendering_checks": 7,
+  "handoff_framebuffer_samples": 184,
+  "handoff_swaps": 20,
+  "checks": [
+    {
+      "name": "next-upload-unit",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "test"
+      ],
+      "source_revision": "f5b70e9a9710eace8072044c1ae714b1ac93a959",
+      "started_utc": "2026-10-30T19:43:21.519074+00:00",
+      "finished_utc": "2026-10-30T19:43:47.064809+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 25.547
+    },
+    {
+      "name": "next-upload-frontend",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "build"
+      ],
+      "source_revision": "f5b70e9a9710eace8072044c1ae714b1ac93a959",
+      "started_utc": "2026-10-30T19:43:55.949401+00:00",
+      "finished_utc": "2026-10-30T19:44:29.621954+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 33.672
+    },
+    {
+      "name": "next-upload-contracts",
+      "command": [
+        "node",
+        "scripts/generate_contracts.mjs",
+        "--check"
+      ],
+      "source_revision": "f5b70e9a9710eace8072044c1ae714b1ac93a959",
+      "started_utc": "2026-10-30T19:43:39.663049+00:00",
+      "finished_utc": "2026-10-30T19:43:40.087894+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.437
+    },
+    {
+      "name": "next-upload-preflight",
+      "command": [
+        "python",
+        "scripts/release_preflight.py"
+      ],
+      "source_revision": "f5b70e9a9710eace8072044c1ae714b1ac93a959",
+      "started_utc": "2026-10-30T19:43:39.663049+00:00",
+      "finished_utc": "2026-10-30T19:43:39.998893+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.344
+    },
+    {
+      "name": "next-upload-paging",
+      "command": [
+        "node",
+        "frontend/scripts/upload-paging-qa.mjs"
+      ],
+      "source_revision": "f5b70e9a9710eace8072044c1ae714b1ac93a959",
+      "started_utc": "2026-10-30T19:44:39.392517+00:00",
+      "finished_utc": "2026-10-30T19:44:44.423697+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 5.032
+    },
+    {
+      "name": "next-upload-handoffs",
+      "command": [
+        "node",
+        "frontend/scripts/prepared-handoff-qa.mjs"
+      ],
+      "source_revision": "f5b70e9a9710eace8072044c1ae714b1ac93a959",
+      "started_utc": "2026-10-30T19:44:44.963817+00:00",
+      "finished_utc": "2026-10-30T19:45:09.688156+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 24.719
+    }
+  ],
+  "public_promotion": false,
+  "hosted_workflows_dispatched": false,
+  "native_macos_build_or_performance_tested": false,
+  "mac_test_build_command": "./script/build_and_run.sh --build-only",
+  "mac_test_note": "Pull latest Next main; build optimized normal Chronoscope and use Smooth graphics. This Windows receipt does not establish native Mac performance."
+}

@@ -23,7 +23,7 @@ const server = spawn(
     "--token-file",
     tokenFile,
     "--frontend",
-    path.join(root, "frontend/dist"),
+    process.env.CHRONOSCOPE_QA_FRONTEND || path.join(root, "frontend/dist"),
   ],
   { stdio: ["ignore", "ignore", "pipe"] },
 );
@@ -177,6 +177,7 @@ try {
     "Pan API and arrow keys move geography in the indicated screen direction at rotated headings",
     results,
   );
+  report.renderer = await page.evaluate(()=>window.__chronoscope.view.diagnostics());
   assert.deepEqual(report.errors, []);
   report.passed = true;
 } catch (error) {

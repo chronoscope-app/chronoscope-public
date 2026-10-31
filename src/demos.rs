@@ -52,22 +52,13 @@ pub const DEMOS: &[Demo] = &[
         bytes: include_bytes!("../samples/flights-philippines-week-2026.chronoscope"),
     },
     Demo {
-        id: "starlink-orbits",
-        name: "128 Starlinks · global orbits",
-        description: "46,208 predicted positions over six hours, 26 November 2024; opens a 90-minute window. Original 60-second samples; transformed MEME coordinates assume J2000 equinox. Predictions, not measured flight telemetry.",
-        source_url: "https://doi.org/10.6084/m9.figshare.33446503.v1",
-        license: "CC BY 4.0 · Guo et al. / SpaceX operator predictions",
-        previews: &[Preview { key: "globe", label: "Altitude", view_index: 0 }, Preview { key: "time", label: "Time Height", view_index: 1 }],
-        bytes: include_bytes!("../samples/starlink-128-predicted-orbits-2024.chronoscope"),
-    },
-    Demo {
-        id: "falcon9-launches",
-        name: "700 Falcon 9 launches · 2010–2026",
-        description: "Sixteen years at Cape Canaveral SLC-40, Kennedy LC-39A and Vandenberg SLC-4E, including failures and the in-flight abort test. Locations are launch pads, not vehicle trajectories; altitude is unknown.",
-        source_url: "https://planet4589.org/space/gcat/",
-        license: "CC BY 4.0 · Jonathan McDowell / GCAT",
-        previews: &[Preview { key: "time", label: "Time Height", view_index: 0 }, Preview { key: "map", label: "Launch sites", view_index: 1 }],
-        bytes: include_bytes!("../samples/falcon9-launch-history-2010-2026.chronoscope"),
+        id: "idf-uav",
+        name: "IDF · fixed-wing UAV flight paths",
+        description: "399,331 positions from 224 nonempty SpeedyBee and Pixhawk GPS logs near Valencia, Spain. Playback aligns elapsed time per log on an artificial 2000-01-01 date; flights are not simultaneous. Altitude is reported and approximate.",
+        source_url: "https://doi.org/10.5281/zenodo.16992976",
+        license: "CC BY 4.0 · García Gascón et al. / UPV, Instituto IDF",
+        previews: &[Preview { key: "globe", label: "Altitude", view_index: 0 }, Preview { key: "time", label: "Time Height", view_index: 1 }, Preview { key: "map", label: "Ground tracks", view_index: 2 }],
+        bytes: include_bytes!("../samples/idf-fixed-wing-gps.demo.zip"),
     },
     Demo {
         id: "hurricanes",
@@ -199,16 +190,13 @@ pub const DEMOS: &[Demo] = &[
         bytes: include_bytes!("../samples/atlantic-hurricanes-2021-2025-tracks.chronoscope"),
     },
     Demo {
-        id: "covid",
-        name: "COVID-19 · January–June 2020",
-        description: "Weekly JHU CSSE snapshots of cumulative confirmed cases. Administrative reference points, not individual case locations; missing coordinates excluded. No tracks.",
-        source_url: "https://github.com/CSSEGISandData/COVID-19",
-        license: "Johns Hopkins University / CSSE · CC BY 4.0",
-        previews: &[
-            Preview { key: "june", label: "June 2020", view_index: 0 },
-            Preview { key: "april", label: "April 2020", view_index: 1 },
-        ],
-        bytes: include_bytes!("../samples/jhu-covid-weekly-2020.chronoscope"),
+        id: "starlink-orbits",
+        name: "128 Starlinks · global orbits",
+        description: "46,208 predicted positions over six hours, 26 November 2024; opens a 90-minute window. Original 60-second samples; transformed MEME coordinates assume J2000 equinox. Predictions, not measured flight telemetry.",
+        source_url: "https://doi.org/10.6084/m9.figshare.33446503.v1",
+        license: "CC BY 4.0 · Guo et al. / SpaceX operator predictions",
+        previews: &[Preview { key: "globe", label: "Altitude", view_index: 0 }, Preview { key: "time", label: "Time Height", view_index: 1 }],
+        bytes: include_bytes!("../samples/starlink-128-predicted-orbits-2024.chronoscope"),
     },
 ];
 
@@ -217,6 +205,47 @@ pub fn load(id: &str, data_dir: &Path) -> Result<Project, String> {
         .iter()
         .find(|d| d.id == id)
         .ok_or("INVALID_ARGUMENT: unknown demo dataset")?;
+    if id == "idf-uav" {
+        // This compile-time asset contains more rows than the legacy JSON file
+        // budget. Keep external project limits intact; validate bounded bundled
+        // metadata and each original row before the indexed store receives it.
+        use std::io::Read;
+        let mut archive =
+            zip::ZipArchive::new(std::io::Cursor::new(demo.bytes)).map_err(|e| e.to_string())?;
+        if archive.len() != 1 {
+            return Err("Invalid bundled GPS demo".into());
+        }
+        let mut entry = archive
+            .by_name("manifest.json")
+            .map_err(|e| e.to_string())?;
+        const LIMIT: u64 = 512 * 1024 * 1024;
+        if entry.size() > LIMIT {
+            return Err("Bundled GPS demo exceeds its data budget".into());
+        }
+        let mut bytes = Vec::new();
+        (&mut entry)
+            .take(LIMIT + 1)
+            .read_to_end(&mut bytes)
+            .map_err(|e| e.to_string())?;
+        if bytes.len() as u64 > LIMIT {
+            return Err("Bundled GPS demo exceeds its data budget".into());
+        }
+        let mut project: Project = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+        drop(bytes);
+        let events = std::mem::take(&mut project.dataset.events);
+        project.validate()?;
+        if events.len() != 399_331 {
+            return Err("Bundled GPS demo has an unexpected row count".into());
+        }
+        for (index, event) in events.iter().enumerate() {
+            event.validate()?;
+            if event.id != (index + 1) as u64 {
+                return Err("Bundled GPS demo has invalid event identities".into());
+            }
+        }
+        project.dataset.events = events;
+        return Ok(project);
+    }
     // Use the normal portable-workspace validator. The private temporary file is
     // never the editable document's source, and disappears after validation.
     let mut file = tempfile::NamedTempFile::new_in(data_dir).map_err(|e| e.to_string())?;

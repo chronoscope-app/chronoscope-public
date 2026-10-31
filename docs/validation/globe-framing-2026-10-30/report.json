@@ -1,0 +1,341 @@
+{
+  "verified_application_source": "f5ee62c09e4e17482acf379983f7d3a64331b5f5",
+  "previous_next": "0b8ef3e80eea4bf1bc6a4840cc310a5fea09d3d5",
+  "platform": "Windows 11 hardware Chrome renderer with the real local Rust bridge, isolated profiles and actual mouse/keyboard input. No public map requests. Native Mac validation remains pending; this turn did not rebuild a native Windows binary.",
+  "changes": [
+    "Globe center fallback uses Earth below the camera when the center ray misses Earth, instead of jumping to the dataset center.",
+    "An overview center is kept in the viewport while intentional partly clipped oblique views and close-ups remain available.",
+    "N and focused-compass Home recenter an overview or recover a camera looking into space without changing orbital distance; regional North retains focus/tilt/zoom.",
+    "Wheel navigation focuses the canvas so N works after the gesture.",
+    "Reject raw timed LINES whose bounding sphere would invoke Cesium longitude splitting that cannot retain time/color attributes. Use canonical rendering, replacing any stopped-window subset before starting playback."
+  ],
+  "baseline_reproduction": {
+    "source": "0b8ef3e80eea4bf1bc6a4840cc310a5fea09d3d5",
+    "expected_failure": "N restored heading but kept the overview about 154 pixels below viewport center. Repeated off-center zoom could leave the center ray missing Earth.",
+    "track_error": "A separate pre-existing raw timed-track longitude-splitting error was reproduced on the earlier Upload Lab frontend; the current pan-direction suite renders without it."
+  },
+  "north_measurements": [
+    {
+      "control": "n",
+      "viewport": [
+        586,
+        894
+      ],
+      "center_error_pixels": 0.5832541957854005,
+      "orbital_distance_change_m": 0.0,
+      "bearing_degrees": 1.4179812524162116e-06
+    },
+    {
+      "control": "Home",
+      "viewport": [
+        586,
+        894
+      ],
+      "center_error_pixels": 0.5832541957854005,
+      "orbital_distance_change_m": 0.0,
+      "bearing_degrees": 1.4179812524162116e-06
+    },
+    {
+      "control": "n",
+      "viewport": [
+        1386,
+        894
+      ],
+      "center_error_pixels": 0.9042397263518751,
+      "orbital_distance_change_m": 0.0,
+      "bearing_degrees": 1.4179812524162116e-06
+    },
+    {
+      "control": "Home",
+      "viewport": [
+        1386,
+        894
+      ],
+      "center_error_pixels": 0.9042397263518751,
+      "orbital_distance_change_m": 0.0,
+      "bearing_degrees": 1.4179812524162116e-06
+    }
+  ],
+  "unit_tests": 175,
+  "browser_check_groups": 66,
+  "suites": [
+    {
+      "name": "globe-framing-qa",
+      "passed": true,
+      "checks": [
+        "N and compass Home recenter an Earth overview facing north without changing orbital zoom, records, selection or filters",
+        "An overview globe center stays inside the viewport after an off-screen pose, including date-line and polar views",
+        "Repeated wheel/drag input keeps the overview reachable; wheel focuses the map for N, which also recovers a close camera aimed at the sky",
+        "Regional North preserves the current ground focus, tilt and zoom"
+      ],
+      "report": ".qa\\globe-framing-qa\\3b764767-f116-4a57-8961-2c14130180e5\\report.json"
+    },
+    {
+      "name": "track-wrap-fallback-qa",
+      "passed": true,
+      "checks": [
+        "Time playback switches safely from an eligible stopped window to canonical rendering when full-study raw track wrapping is unsupported",
+        "Fallback playback/pause retains exact engine IDs and never installs geometry with invalid longitude-split attributes"
+      ],
+      "report": ".qa\\track-wrap-fallback-qa\\34f8337e-5fe3-4eba-ba28-63820d1be82a\\report.json"
+    },
+    {
+      "name": "navigation-qa",
+      "passed": true,
+      "checks": [
+        "globe mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+        "space-time mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+        "map mouse, wheel modifiers, double-click, keyboard focus, selection, immediate stop and bounds",
+        "Map fast and slow double-clicks preserve off-screen selections and restore visible highlights",
+        "Selected-only query and CSV export retain both off-screen and on-screen selections",
+        "Rapid additive map clicks retain both exact records",
+        "Slower double-click restores selection after initial click feedback",
+        "Escape cancels delayed picking without reselecting a record",
+        "Extreme zoom/tilt remains bounded and never changes event time or Time height",
+        "Select mode keeps Shift-drag box selection and camera position",
+        "Focused O switches Globe/2D",
+        "Space retains timeline play/pause",
+        "Table Shift+Down selects rows without camera navigation",
+        "Shared CLI/MCP view adapter retains full zoom factor semantics"
+      ],
+      "report": ".qa\\navigation-qa\\3575d3fe-1371-4abb-a417-307600af8655\\profile\\report.json"
+    },
+    {
+      "name": "pan-direction-qa",
+      "passed": true,
+      "checks": [
+        "Pan API and arrow keys move geography in the indicated screen direction at rotated headings"
+      ],
+      "report": ".qa\\pan-direction-qa\\33b9edc2-c3ea-4c2b-b4ca-82dbae227c93\\profile\\report.json"
+    },
+    {
+      "name": "navigation-sphere-qa",
+      "passed": true,
+      "checks": [
+        "One compass and vertical slider rail; obsolete buttons and bottom strip removed",
+        "Flat compass rose is centered above the slim rail without sphere artwork",
+        "globe: compass follows horizontal/vertical drag live, stops on release and preserves data/time/selection",
+        "space-time: compass follows horizontal/vertical drag live, stops on release and preserves data/time/selection",
+        "Compass north tracks camera heading through all quadrants; cardinal labels stay upright",
+        "Zoom and tilt sliders update before release and accept native keyboard input",
+        "Time icon opens on hover/focus; zero-based globe scale works; Escape closes popup",
+        "Same popup controls space-time height, independently of globe scale and timestamps",
+        "2D compass pans; tilt/time controls hide; Events remain intact",
+        "Rail selection/orbit modes and Fit retain their application handlers",
+        "Compass and rail fit large/small windows, with and without attribute table",
+        "Light/dark screenshot captures; cached real street source only when explicitly supplied",
+        "Stacked navigation also frames 1,604 public hurricane Events with tracks",
+        "Strict desktop CSP, zero uncaught errors, zero browser requests to public services"
+      ],
+      "report": ".qa\\navigation-sphere-qa\\bd62e790-fece-4484-ae5c-c8f00a0d9075\\profile\\report.json"
+    },
+    {
+      "name": "navigation-preferences-qa",
+      "passed": true,
+      "checks": [
+        "System appearance follows live OS changes; explicit themes retain camera, viewer and map resources; terrain banner removed",
+        "Redundant canvas icons removed; hand icon identifies drag navigation",
+        "Preferences use keyboard-accessible left categories/right settings, preserve drafts, and Cancel discards edits",
+        "Saved date/time choices update UTC readouts while exact edit fields keep canonical timestamps",
+        "Preferences save across categories and remain usable in light/dark themes and narrow windows",
+        "Globe elevation has one enabled slider: zero flattens Events; keyboard/nonzero/max enable elevation",
+        "Zero Space-time height and Fade off survive portable save/reopen; original coordinates/timestamps stay unchanged",
+        "Old expanded workspaces migrate to normal, reversible pane collapse controls",
+        "The attached CLI/MCP playback configure action shares the UI Fade setting",
+        "Fade off retains earlier playback Events/trails using a growing, exact filter window",
+        "Fade on moves a fixed-width window; toggling off live anchors history without stopping playback",
+        "Markers, entity tracks, ground trails and stems fade out within the faster 800 ms lifetime",
+        "Crowded departing tracks share bounded GPU batches instead of one primitive per entity"
+      ],
+      "report": ".qa\\navigation-preferences-qa\\c2cd423b-0ff0-4082-ab19-e27ef3fb9294\\report.json"
+    },
+    {
+      "name": "resident-interactions-qa",
+      "passed": true,
+      "checks": [
+        "Governor pressure releases prepared buffers and recovery permits preparation again",
+        "map: paused navigation retains its prepared graphics",
+        "map: pointer scrubbing preserves buffers and commits exact membership",
+        "map: selection updates a timed GPU overlay without rebuilding the study",
+        "map: repeated play/pause keeps exact stopped membership",
+        "Governor pressure releases prepared buffers and recovery permits preparation again",
+        "globe: paused navigation retains its prepared graphics",
+        "globe: pointer scrubbing preserves buffers and commits exact membership",
+        "globe: selection updates a timed GPU overlay without rebuilding the study",
+        "globe: repeated play/pause keeps exact stopped membership",
+        "Governor pressure releases prepared buffers and recovery permits preparation again",
+        "space-time: paused navigation retains its prepared graphics",
+        "space-time: selection updates a timed GPU overlay without rebuilding the study",
+        "space-time: repeated play/pause keeps exact stopped membership",
+        "Same-count coordinate edits invalidate the prepared-data cache",
+        "GPU clipping separates millisecond events inside a decade-long study",
+        "Mixed point/heatmap/bloom playback pauses to exact weighted summary cells",
+        "Multipart polygon selection patches GPU colors, retains meshes and preserves holes"
+      ],
+      "report": ".qa\\resident-interactions-qa\\524f90a0-cd0c-4342-a33d-f09499bc4612\\report.json"
+    }
+  ],
+  "command_receipts": [
+    {
+      "name": "globe-unit",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "test"
+      ],
+      "source_revision": "a2ce644d46696fecf184880c0c3377b60900d2d4",
+      "started_utc": "2026-10-30T21:39:02.717680+00:00",
+      "finished_utc": "2026-10-30T21:39:25.717343+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 23.0
+    },
+    {
+      "name": "globe-frontend-final",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "build"
+      ],
+      "source_revision": "a2ce644d46696fecf184880c0c3377b60900d2d4",
+      "started_utc": "2026-10-30T21:37:39.367845+00:00",
+      "finished_utc": "2026-10-30T21:38:05.506819+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 26.141
+    },
+    {
+      "name": "globe-framing-final",
+      "command": [
+        "node",
+        "frontend/scripts/globe-framing-qa.mjs"
+      ],
+      "source_revision": "a2ce644d46696fecf184880c0c3377b60900d2d4",
+      "started_utc": "2026-10-30T21:39:25.867559+00:00",
+      "finished_utc": "2026-10-30T21:39:33.436817+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 7.578
+    },
+    {
+      "name": "track-wrap-fallback",
+      "command": [
+        "node",
+        "frontend/scripts/track-wrap-fallback-qa.mjs"
+      ],
+      "source_revision": "a2ce644d46696fecf184880c0c3377b60900d2d4",
+      "started_utc": "2026-10-30T21:39:33.588385+00:00",
+      "finished_utc": "2026-10-30T21:39:37.753548+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 4.157
+    },
+    {
+      "name": "globe-navigation",
+      "command": [
+        "node",
+        "frontend/scripts/navigation-qa.mjs"
+      ],
+      "source_revision": "a2ce644d46696fecf184880c0c3377b60900d2d4",
+      "started_utc": "2026-10-30T21:39:37.909908+00:00",
+      "finished_utc": "2026-10-30T21:40:00.639654+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 22.734
+    },
+    {
+      "name": "globe-pan-direction",
+      "command": [
+        "node",
+        "frontend/scripts/pan-direction-qa.mjs"
+      ],
+      "source_revision": "a2ce644d46696fecf184880c0c3377b60900d2d4",
+      "started_utc": "2026-10-30T21:40:00.787924+00:00",
+      "finished_utc": "2026-10-30T21:40:06.251242+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 5.469
+    },
+    {
+      "name": "globe-compass",
+      "command": [
+        "node",
+        "frontend/scripts/navigation-sphere-qa.mjs"
+      ],
+      "source_revision": "a2ce644d46696fecf184880c0c3377b60900d2d4",
+      "started_utc": "2026-10-30T21:40:06.409309+00:00",
+      "finished_utc": "2026-10-30T21:40:23.996299+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 17.594
+    },
+    {
+      "name": "globe-navigation-preferences",
+      "command": [
+        "node",
+        "frontend/scripts/navigation-preferences-qa.mjs"
+      ],
+      "source_revision": "f5ee62c09e4e17482acf379983f7d3a64331b5f5",
+      "started_utc": "2026-10-30T21:45:57.401306+00:00",
+      "finished_utc": "2026-10-30T21:46:14.228784+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 16.828
+    },
+    {
+      "name": "globe-interactions",
+      "command": [
+        "node",
+        "frontend/scripts/resident-interactions-qa.mjs"
+      ],
+      "source_revision": "a2ce644d46696fecf184880c0c3377b60900d2d4",
+      "started_utc": "2026-10-30T21:40:40.677170+00:00",
+      "finished_utc": "2026-10-30T21:41:49.768493+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 69.093
+    },
+    {
+      "name": "globe-preflight",
+      "command": [
+        "python",
+        "scripts/release_preflight.py"
+      ],
+      "source_revision": "a2ce644d46696fecf184880c0c3377b60900d2d4",
+      "started_utc": "2026-10-30T21:41:49.936211+00:00",
+      "finished_utc": "2026-10-30T21:41:50.169818+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 0.235
+    }
+  ],
+  "runtime_source_sha256": {
+    "globe-framing.ts": "64faa2e6b388c325e668559ee08fbe2890eb7d375d9ed2acef4f2fb10226de7a",
+    "view.ts": "52649949a03839e0543daa4f869aec713a39fdb1b404058b3af60554055b2c61",
+    "navigation-sphere.ts": "d3619f9805a76e7c16d2ba6ebb30d273c4c64757a5a4823227d016f665e7bf46",
+    "main.ts": "47f02e1431df8f11f95aa50e73cbd5a80b52f44e8bdc7362d7bb44833b677f77",
+    "resident-playback.ts": "852ac36a4d9165638374ebb3b3d0dabdcc6d581f136b8bf6fc52ab90496c3031"
+  },
+  "test_maintenance": [
+    "Canonical off-screen-selection fixture explicitly disables Smooth graphics because prepared navigation retains the complete eligible pool.",
+    "Compass popup assertions use the existing Vertical display heading.",
+    "Playback history checks wait for rendered membership as well as metadata.",
+    "Windows cleanup waits for engine exit and verifies the private test-profile target before removal."
+  ],
+  "public_promotion": false,
+  "hosted_workflows_dispatched": false,
+  "further_performance_optimizations_implemented": false
+}

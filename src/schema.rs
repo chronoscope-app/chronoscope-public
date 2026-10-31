@@ -187,7 +187,7 @@ fn map_layer() -> Value {
 }
 fn preferences() -> Value {
     object(
-        json!({"basemap":choice(&["streets","none"]),"theme":choice(&["dark","light","system"]),"coordinates":choice(&["dd","utm","mgrs"]),"date_format":choice(&["system","iso","mdy","mdy-short","dmy","dmy-short","dmy-dots","dmy-long","mdy-long"]),"time_format":choice(&["system","12h","12h-seconds","24h","24h-seconds"]),"map":map_config(),"map_layers":{"anyOf":[{"type":"null"},{"type":"array","maxItems":64,"items":map_layer()}]},"auto_save_unsaved":boolean(),"terrain_path":nullable(string()),"terrain_builtin":boolean(),"terrain_exaggeration":{"type":"number","minimum":0.1,"maximum":20},"terrain_vertical_datum":choice(&["unresolved-msl","egm96","ellipsoid"])}),
+        json!({"ai_toolbar_si":boolean(),"basemap":choice(&["streets","none"]),"theme":choice(&["dark","light","system"]),"coordinates":choice(&["dd","utm","mgrs"]),"date_format":choice(&["system","iso","mdy","mdy-short","dmy","dmy-short","dmy-dots","dmy-long","mdy-long"]),"time_format":choice(&["system","12h","12h-seconds","24h","24h-seconds"]),"map":map_config(),"map_layers":{"anyOf":[{"type":"null"},{"type":"array","maxItems":64,"items":map_layer()}]},"auto_save_unsaved":boolean(),"terrain_path":nullable(string()),"terrain_builtin":boolean(),"terrain_exaggeration":{"type":"number","minimum":0.1,"maximum":20},"terrain_vertical_datum":choice(&["unresolved-msl","egm96","ellipsoid"])}),
         &[],
     )
 }

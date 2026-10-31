@@ -12,6 +12,8 @@ export const requiredFiles = [
   "assets/terrain/README.md",
   "samples/README.md", "samples/public/SOURCES.md",
   "samples/public/demo-provenance.json", "samples/public/wildlife-provenance.json",
+  "docs/IDF-UAV-DEMO.md", "samples/public/idf-provenance.json",
+  "samples/public/idf-source-manifest.json", "samples/public/idf-fixed-wing-gps.attribution.json",
   "docs/ALTITUDE-DEMOS.md", "samples/public/altitude-provenance.json",
   "samples/public/flights-philippines-week-2026.csv.attribution.json",
   "docs/SPACE-DEMOS.md", "samples/public/space-provenance.json",

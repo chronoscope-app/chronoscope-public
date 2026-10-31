@@ -1,0 +1,229 @@
+{
+  "complete": true,
+  "method": "Full native optimized Windows Tauri/WebView2, disposable profiles, governor enabled. Same full source re-prepared 3 times while navigating, then 120 seconds of continuous playback and pan/zoom/tilt. A normal UI off/on transition reestablishes the application-managed renderer after the direct cancellation test. Frame and RAF gaps include synchronous constructor and initial uploads; preparation duration includes GPU readiness. 1 Hz process CPU, private RAM and Windows attributed GPU counters. No forced GC. 20% time window. No terrain in these paired upload-isolation cases.",
+  "rows": [
+    {
+      "dataset": "100k-map",
+      "variant": "baseline",
+      "median_worst_rebuild_frame_ms": 413.2,
+      "largest_rebuild_frame_ms": 431.9,
+      "median_total_preparation_ms": 425.7,
+      "fps": 59.99,
+      "steady_p99_ms": 22.8,
+      "steady_max_ms": 39,
+      "steady_gaps_over_50ms": 0,
+      "steady_inactive_prepared_frames": 0,
+      "cpu_machine_percent": 9.41,
+      "ram_private_MiB": 705.5,
+      "gpu_3d_percent": 20.54,
+      "gpu_allocated_MiB": 265.2,
+      "steady_seconds": 120.0,
+      "max_upload_vertices": null,
+      "upload_batches": null
+    },
+    {
+      "dataset": "satellites-altitude",
+      "variant": "baseline",
+      "median_worst_rebuild_frame_ms": 1661.6,
+      "largest_rebuild_frame_ms": 1672.5,
+      "median_total_preparation_ms": 2235.9,
+      "fps": 60.04,
+      "steady_p99_ms": 22.1,
+      "steady_max_ms": 27.7,
+      "steady_gaps_over_50ms": 0,
+      "steady_inactive_prepared_frames": 0,
+      "cpu_machine_percent": 8.25,
+      "ram_private_MiB": 845.7,
+      "gpu_3d_percent": 28.7,
+      "gpu_allocated_MiB": 335.5,
+      "steady_seconds": 120.0,
+      "max_upload_vertices": null,
+      "upload_batches": null
+    },
+    {
+      "dataset": "100k-map",
+      "variant": "paged",
+      "median_worst_rebuild_frame_ms": 25.3,
+      "largest_rebuild_frame_ms": 29.3,
+      "median_total_preparation_ms": 1012,
+      "fps": 59.99,
+      "steady_p99_ms": 22.8,
+      "steady_max_ms": 37.4,
+      "steady_gaps_over_50ms": 0,
+      "steady_inactive_prepared_frames": 0,
+      "cpu_machine_percent": 9.4,
+      "ram_private_MiB": 834.3,
+      "gpu_3d_percent": 21.38,
+      "gpu_allocated_MiB": 267.4,
+      "steady_seconds": 120.0,
+      "max_upload_vertices": 8192,
+      "upload_batches": 38
+    },
+    {
+      "dataset": "satellites-altitude",
+      "variant": "paged",
+      "median_worst_rebuild_frame_ms": 48.1,
+      "largest_rebuild_frame_ms": 50.9,
+      "median_total_preparation_ms": 2767.3,
+      "fps": 60.05,
+      "steady_p99_ms": 22.4,
+      "steady_max_ms": 35.3,
+      "steady_gaps_over_50ms": 0,
+      "steady_inactive_prepared_frames": 0,
+      "cpu_machine_percent": 9.57,
+      "ram_private_MiB": 844.4,
+      "gpu_3d_percent": 19.07,
+      "gpu_allocated_MiB": 338.1,
+      "steady_seconds": 120.0,
+      "max_upload_vertices": 8192,
+      "upload_batches": 75
+    }
+  ],
+  "checks": [
+    {
+      "name": "upload-unit-committed",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "test"
+      ],
+      "source_revision": "5071094114c6cdaf4e6a5668cb04964fab23bad7",
+      "started_utc": "2026-10-30T19:02:32.982064+00:00",
+      "finished_utc": "2026-10-30T19:02:58.571598+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 25.594
+    },
+    {
+      "name": "upload-paging-committed",
+      "command": [
+        "node",
+        "frontend/scripts/upload-paging-qa.mjs"
+      ],
+      "source_revision": "a07a19873eb6fb72ea7d669048e63906c68636a3",
+      "started_utc": "2026-10-30T19:04:28.472407+00:00",
+      "finished_utc": "2026-10-30T19:04:33.182657+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 4.719
+    },
+    {
+      "name": "upload-interactions-committed",
+      "command": [
+        "node",
+        "frontend/scripts/resident-interactions-qa.mjs"
+      ],
+      "source_revision": "a07a19873eb6fb72ea7d669048e63906c68636a3",
+      "started_utc": "2026-10-30T19:04:33.342040+00:00",
+      "finished_utc": "2026-10-30T19:05:46.500865+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 73.157
+    },
+    {
+      "name": "upload-pixels-committed",
+      "command": [
+        "node",
+        "frontend/scripts/prepared-handoff-qa.mjs"
+      ],
+      "source_revision": "a07a19873eb6fb72ea7d669048e63906c68636a3",
+      "started_utc": "2026-10-30T19:05:46.657423+00:00",
+      "finished_utc": "2026-10-30T19:06:10.915335+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 24.266
+    },
+    {
+      "name": "upload-references-committed",
+      "command": [
+        "node",
+        "frontend/scripts/resident-reference-qa.mjs"
+      ],
+      "source_revision": "a07a19873eb6fb72ea7d669048e63906c68636a3",
+      "started_utc": "2026-10-30T19:06:11.074128+00:00",
+      "finished_utc": "2026-10-30T19:06:17.693151+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 6.609
+    },
+    {
+      "name": "upload-terrain-recovery-committed",
+      "command": [
+        "node",
+        "frontend/scripts/terrain-preparation-recovery-qa.mjs"
+      ],
+      "source_revision": "a07a19873eb6fb72ea7d669048e63906c68636a3",
+      "started_utc": "2026-10-30T19:06:17.843539+00:00",
+      "finished_utc": "2026-10-30T19:06:23.821732+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 5.985
+    },
+    {
+      "name": "upload-windows",
+      "command": [
+        "npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "tauri",
+        "--",
+        "build",
+        "--no-bundle",
+        "--",
+        "--locked"
+      ],
+      "source_revision": "a07a19873eb6fb72ea7d669048e63906c68636a3",
+      "started_utc": "2026-10-30T19:06:41.675428+00:00",
+      "finished_utc": "2026-10-30T19:14:13.252077+00:00",
+      "platform": "win32",
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_s": 451.578
+    }
+  ],
+  "source_commit": "a07a19873eb6fb72ea7d669048e63906c68636a3",
+  "new_binary_sha256": "6910aef92e041e4811a945ea03cc342ddace1e3e45c237d7a3a491e2ecca73c5",
+  "baseline_source": "4834867b0704c2376d80e29faaa22a6a2b973321",
+  "baseline_binary_sha256": "36aa800a50dc486018074786ec636df0b2e7c17f3808dbea7d58413d953f7e21",
+  "local_only": false,
+  "promoted_completed_work": {
+    "Next": "4834867b0704c2376d80e29faaa22a6a2b973321",
+    "Public": "6bcd11debd9032c1deb61abb02ea7984acbae1f9"
+  },
+  "correctness": "All repeated preparations accepted without missing/unready active buffers, renderer errors or early removal of the old renderer. Canceled candidates released their installed/queued primitives and retained the old drawing. Exact engine-window IDs matched before and after sustained playback. Existing interaction, framebuffer handoff, reference and terrain recovery checks passed.",
+  "limitations": [
+    "Three preparation repetitions per variant/dataset, two consecutive one-minute active navigation/playback phases per case; eight measured steady native minutes total. This is not a multi-hour endurance test.",
+    "Frame times are native WebView2 postRender cadence, not monitor presentation latency.",
+    "Preparation timings include construction, GPU readiness and frame scheduling; smaller uploads can increase total preparation time.",
+    "Paired cases isolate 100k regional and eligible global altitude tracks without basemap/terrain. Separate reference/recovery checks cover true terrain semantics.",
+    "CPU is normalized over 16 logical processors. Windows GPU allocation is attributed allocation accounting, not unique physical VRAM residency.",
+    "CPU work uses a yielding scheduler and bounded geometry pages; individual Cesium/driver operations and garbage collection still do not have a hard maximum frame time."
+  ],
+  "unit_tests": 175,
+  "rendering_interaction_checks": 29,
+  "handoff_framebuffer_samples": 177,
+  "handoff_swaps": 20,
+  "suite_reports": [
+    ".qa\\upload-paging-qa\\bf4a38c9-e10b-4860-91ff-1b83284a4c5d\\report.json",
+    ".qa\\resident-interactions-qa\\53645057-8dbc-4a9c-bc17-034a26cf49da\\report.json",
+    ".qa\\prepared-handoff-qa\\83a98520-7500-4f91-af73-8c37947f3771\\report.json",
+    ".qa\\resident-reference-qa\\b61ca0aa-3f35-4a78-a8fe-f68c94b0f433\\report.json",
+    ".qa\\terrain-preparation-recovery-qa\\57a93546-3e9d-4de5-bfbd-5eabd4be1a67\\report.json"
+  ],
+  "retained_attempts": "Earlier GPU-only prototype and interrupted baseline stress runs remain in ignored .qa/uploads/native; final rows retain only matching binaries and completed native measurements. Baseline satellite steady playback was isolated in a fresh process after direct stress returned to the canonical path.",
+  "promotion": {
+    "destination": "Next main",
+    "authorized_date": "2026-10-30",
+    "normal_app_identity_restored": true,
+    "public_promoted": false,
+    "native_macos_performance_tested": false
+  }
+}

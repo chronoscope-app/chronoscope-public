@@ -1,0 +1,10 @@
+[
+  {
+    "title": "IDF_DS · Fixed-Wing UAS Telemetry Benchmark, v1.0 (2025)",
+    "creator": "César García Gascón; Javier Bas Bolufer, Pablo Castelló Pedrero and Juan A. Garcia-Manrique · Universitat Politècnica de València / Instituto IDF",
+    "source_url": "https://doi.org/10.5281/zenodo.16992976",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "changes": "All 399,331 positions from 224 nonempty published processed GPS logs (103 SpeedyBee, 121 Pixhawk); eight header-only GPS logs and one non-GPS telemetry file excluded. Every original GPS row and field retained, without interpolation or thinning. Each log starts at elapsed zero on the artificial display date 2000-01-01 UTC; these are aligned elapsed flight times, not actual UTC or simultaneous flights. Original microsecond counters and archive member paths remain attributes. SpeedyBee GPS_altitude and Pixhawk alt are retained in metres as approximate reported heights; no vertical datum conversion. The nested, differently recorded Pixhawk lap_032 is kept as a separate log. Zenodo v1.0 metadata specifies CC BY 4.0; the archive README also describes education/research use."
+  }
+]

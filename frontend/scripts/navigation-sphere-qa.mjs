@@ -284,7 +284,7 @@ try {
   );
   assert.equal(
     await page.locator("#time-elevation-title").textContent(),
-    "Time elevation",
+    "Vertical display",
   );
   if (!(await state()).globeTime)
     await page.locator("#globe-time-height").evaluate((el) => {
@@ -311,7 +311,7 @@ try {
   await page.locator("#time-elevation").hover();
   assert.equal(
     await page.locator("#time-elevation-title").textContent(),
-    "Time height",
+    "Vertical display",
   );
   const h0 = await state();
   await page.locator("#time-height").focus();

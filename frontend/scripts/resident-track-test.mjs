@@ -21,7 +21,7 @@ const code = ts.transpileModule(
     },
   },
 ).outputText;
-const { splitTimedTrack, stampTrackTimes, timeParts } = await import(
+const { splitTimedTrack, stampTrackTimes, timeParts, pageTimedTrack, orderedTrackIndices } = await import(
   "data:text/javascript;base64," + Buffer.from(code).toString("base64")
 );
 const node = (x, y, time, drawNext = true, z = 0) => ({
@@ -152,4 +152,35 @@ test("Millisecond-separated events retain their order inside a decade-long study
   assert.equal(ah, bh);
   assert(ah - eh + (al - el) < 0);
   assert(bh - eh + (bl - el) > 0);
+});
+
+test("Paged tracks preserve every timestamped segment once, including hidden connectors", () => {
+  const nodes=Array.from({length:10003},(_,i)=>node(10+i*.01,2,1000+i*i*.001,i%7!==0));
+  const pages=[...pageTimedTrack(nodes,2048)];
+  assert(pages.every(p=>p.length>=2&&p.length<=2048));
+  const edges=pages.flatMap(p=>p.slice(1).map((b,i)=>[p[i],b]));
+  assert.equal(edges.length,nodes.length-1);
+  edges.forEach(([a,b],i)=>{assert.equal(a,nodes[i]);assert.equal(b,nodes[i+1]);});
+  for(let i=1;i<pages.length;i++)assert.equal(pages[i-1].at(-1),pages[i][0]);
+});
+test("Paged track boundaries keep sub-millisecond time precision over a long study", () => {
+  const nodes=Array.from({length:5000},(_,i)=>node(10+i*.01,2,315360000+i*.001));
+  for(const page of pageTimedTrack(nodes,2048)) {
+    const geometry=PolylineGeometry.createGeometry(new PolylineGeometry({positions:page.map(v=>new Cartesian3(v.x,v.y,v.z)),width:2,arcType:ArcType.NONE,vertexFormat:PolylineMaterialAppearance.VERTEX_FORMAT}));
+    const st=geometry.attributes.st.values;stampTrackTimes(st,page,0,631152000);
+    const first=st[0]+st[1],last=st.at(-2)+st.at(-1);
+    assert(Math.abs(first*631152000-page[0].time)<.00001);
+    assert(Math.abs(last*631152000-page.at(-1).time)<.00001);
+  }
+});
+
+test("Yielding track ordering exactly matches stable entity/time/ID sort across large unsorted runs",()=>{
+ const points=Array.from({length:70003},(_,i)=>({entity:(i*337)%127,time:(i*157)%991,id:String((i*19)%2309)}));
+ const expected=points.map((_,i)=>i).sort((a,b)=>points[a].entity-points[b].entity || points[a].time-points[b].time || points[a].id.localeCompare(points[b].id));
+ const work=orderedTrackIndices(points);let yields=0,result;
+ while(true){const step=work.next();if(step.done){result=step.value;break;}yields++;}
+ assert.deepEqual(result,expected);assert(yields>100);
+ const sorted=expected.map(i=>points[i]),ordered=orderedTrackIndices(sorted);let final;
+ while(true){const step=ordered.next();if(step.done){final=step.value;break;}}
+ assert.deepEqual(final,sorted.map((_,i)=>i));
 });

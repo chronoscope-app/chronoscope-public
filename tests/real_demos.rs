@@ -5,7 +5,7 @@ fn check_demos(cases: &[(&str, usize, usize, &str)]) {
     let data = tempfile::tempdir().unwrap();
     let engine = Engine::new(Project::empty(), data.path().into()).unwrap();
     let catalog = engine.invoke("demo_catalog", json!({})).unwrap();
-    assert_eq!(catalog["demos"].as_array().unwrap().len(), 16);
+    assert_eq!(catalog["demos"].as_array().unwrap().len(), 15);
     assert_eq!(engine.invoke("snapshot", json!({})).unwrap()["count"], 0);
     for &(id, count, entities, attribute) in cases {
         let opened = engine.invoke("demo_open", json!({"id":id})).unwrap();

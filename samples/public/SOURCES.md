@@ -28,3 +28,7 @@ Police.uk theft-from-the-person reports in central London, January 2025, OGL v3.
 ## A week of Philippine flights
 
 `flights-philippines-week-2026.csv` retains 11,018 original altitude observations from 175 flights across six airports, March 1–7, 2026 UTC (Alexander Bañados, CC BY 4.0). Only the source archive's original-flight files are used; modified and poison data are excluded. Heights are approximate reported metres with unspecified physical datum. Keep its attribution sidecar. [Selection, source checksums and reproduction](../../docs/ALTITUDE-DEMOS.md).
+
+## IDF fixed-wing UAVs
+
+[IDF_DS v1.0 · García Gascón et al. / UPV, Instituto IDF](https://doi.org/10.5281/zenodo.16992976), CC BY 4.0 according to the Zenodo record. The demo retains 399,331 positions from every usable processed GPS log. [Source inventory and time/altitude interpretation](../../docs/IDF-UAV-DEMO.md). Original GPS fields and counters are retained.

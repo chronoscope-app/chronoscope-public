@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import {withLocalApp} from './local-browser.mjs';
+await withLocalApp('si-toolbar-label',async({page,api,pass})=>{
+ assert.equal((await api('preferences')).ai_toolbar_si,false);
+ assert.equal(await page.locator('#si').textContent(),'AI');
+ assert.match(await page.locator('#si').getAttribute('data-tooltip'),/Preferences → General/);
+ await page.locator('#settings').click();
+ await page.locator('#pref-ai-toolbar-si').setChecked(true);
+ await page.locator('[data-close]').last().click();
+ assert.equal((await api('preferences')).ai_toolbar_si,false);
+ assert.equal(await page.locator('#si').textContent(),'AI');
+ await page.locator('#settings').click();
+ await page.locator('#pref-ai-toolbar-si').setChecked(true);
+ await page.locator('#save-preferences').click();
+ await page.waitForFunction(()=>document.querySelector('#si').textContent==='SI');
+ assert.equal((await api('preferences')).ai_toolbar_si,true);
+ await page.reload();
+ await page.waitForFunction(()=>document.querySelector('#si')?.textContent==='SI');
+ await page.locator('#settings').click();
+ assert(await page.locator('#pref-ai-toolbar-si').isChecked());
+ await page.locator('#pref-ai-toolbar-si').setChecked(false);
+ await page.locator('#save-preferences').click();
+ await page.waitForFunction(()=>document.querySelector('#si').textContent==='AI');
+ pass('AI/SI label saves, survives reload, supports cancellation and returns to AI; tooltip names the setting');
+});

@@ -11,3 +11,5 @@ CSV-sidecar **reimport is not automatic**. Importing/replacing a workspace from 
 The checked-in sample CSV has its companion. [Full wildlife provenance](WILDLIFE-DEMOS.md) · [Other public data](../samples/public/SOURCES.md).
 
 The altitude examples embed flight credits and retain CSV sidecars. See [Altitude demos and source transformations](ALTITUDE-DEMOS.md). [Starlink and Falcon 9 examples](SPACE-DEMOS.md) embed CC BY 4.0 credit to Guo et al./SpaceX and Jonathan McDowell/GCAT. Altitude workspaces use format 7; the version-6 provenance fields remain supported.
+
+The [IDF fixed-wing UAV demo](IDF-UAV-DEMO.md) embeds CC BY 4.0 credit to García Gascón et al. / UPV, Instituto IDF. All usable processed GPS logs are retained; elapsed clocks use an explicit artificial date anchor.

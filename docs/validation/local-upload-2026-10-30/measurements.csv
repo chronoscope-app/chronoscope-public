@@ -1,0 +1,5 @@
+dataset,variant,median_worst_rebuild_frame_ms,largest_rebuild_frame_ms,median_total_preparation_ms,fps,steady_p99_ms,steady_max_ms,steady_gaps_over_50ms,steady_inactive_prepared_frames,cpu_machine_percent,ram_private_MiB,gpu_3d_percent,gpu_allocated_MiB,steady_seconds,max_upload_vertices,upload_batches
+100k-map,baseline,413.2,431.9,425.7,59.99,22.8,39,0,0,9.41,705.5,20.54,265.2,120.0,,
+satellites-altitude,baseline,1661.6,1672.5,2235.9,60.04,22.1,27.7,0,0,8.25,845.7,28.7,335.5,120.0,,
+100k-map,paged,25.3,29.3,1012,59.99,22.8,37.4,0,0,9.4,834.3,21.38,267.4,120.0,8192,38
+satellites-altitude,paged,48.1,50.9,2767.3,60.05,22.4,35.3,0,0,9.57,844.4,19.07,338.1,120.0,8192,75

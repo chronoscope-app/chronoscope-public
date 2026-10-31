@@ -30,6 +30,7 @@ pub enum TerrainVerticalDatum {
 pub struct Preferences {
     #[schemars(with = "crate::api::Theme")]
     pub theme: String,
+    pub ai_toolbar_si: bool,
     #[schemars(with = "crate::api::CoordinateDisplay")]
     pub coordinates: String,
     #[schemars(with = "crate::api::DateFormat")]
@@ -56,6 +57,7 @@ impl Default for Preferences {
     fn default() -> Self {
         Self {
             theme: "system".into(),
+            ai_toolbar_si: false,
             coordinates: "dd".into(),
             date_format: "system".into(),
             time_format: "system".into(),
@@ -1970,7 +1972,11 @@ impl Engine {
             "demo_open" => {
                 let mut project = crate::demos::load(&arg::<String>(&args, "id")?, &self.data_dir)?;
                 let mut store = crate::store::DataStore::new(&self.data_dir)?;
-                store.load_events(std::mem::take(&mut project.dataset.events))?;
+                if project.dataset.events.len() > crate::model::MAX_EVENTS {
+                    store.load_bundled_events(&std::mem::take(&mut project.dataset.events))?;
+                } else {
+                    store.load_events(std::mem::take(&mut project.dataset.events))?;
+                }
                 let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;
                 let old = std::mem::replace(&mut s.store, store);
                 s.previous_store = Some(old);

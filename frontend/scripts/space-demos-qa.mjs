@@ -6,17 +6,19 @@ import path from "node:path";
 await withLocalApp("space-demos", async ({ page, api, out, pass }) => {
   page.setDefaultTimeout(90000);
   const catalog = (await api("demo_catalog")).demos;
-  assert.equal(catalog.length, 16);
-  assert(!catalog.some((d) => d.id === "rocket-altitude"));
-  for (const [id, count] of [
-    ["starlink-orbits", 46208],
-    ["falcon9-launches", 700],
-  ]) {
+  assert.equal(catalog.length, 15);
+  assert(
+    !catalog.some((d) =>
+      ["rocket-altitude", "falcon9-launches", "covid"].includes(d.id),
+    ),
+  );
+  assert.equal(catalog.at(-1).id, "starlink-orbits");
+  for (const [id, count] of [["starlink-orbits", 46208]]) {
     for (let index = 0; index < 2; index++) {
       await page.locator("#help").click();
       await page.locator("#demo-datasets").click();
       await page.locator("[data-demo-id]").first().waitFor();
-      assert.equal(await page.locator("[data-demo-id]").count(), 16);
+      assert.equal(await page.locator("[data-demo-id]").count(), 15);
       assert.equal(
         await page.locator('[data-demo-id="rocket-altitude"]').count(),
         0,
@@ -41,6 +43,17 @@ await withLocalApp("space-demos", async ({ page, api, out, pass }) => {
           window.__chronoscope.snapshot.count === n &&
           !window.__chronoscope.busy,
         { n: count, previous: previousWorkspace },
+        { polling: 100 },
+      );
+      // The picker opens the default scene before restoring the clicked preview.
+      // Wait for that second transition, rather than observing its first frame.
+      await page.waitForFunction(
+        ({ time, points }) => {
+          const c = window.__chronoscope;
+          const d = c.view.diagnostics();
+          return !c.busy && d.globeTime === time && d.pointCount === points;
+        },
+        { time: index === 1, points: index === 0 ? 11648 : count },
         { polling: 100 },
       );
       await page.evaluate(() => window.__chronoscope.sceneIdle());

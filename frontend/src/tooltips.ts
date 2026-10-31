@@ -39,7 +39,7 @@ const tips: Record<string, string> = {
   "edit-wkt":
     "Original WGS84 WKT geometry. X=longitude, Y=latitude. Z/M are preserved but not used as altitude/time. Changing point coordinates replaces the WKT geometry.",
 
-  si: "Open SI chat. Use its gear for AI service and connected tool settings.",
+  si: "Open SI chat. Change the toolbar label from AI to SI in Preferences → General. Use the chat gear for AI service and connected tool settings.",
   "si-send":
     "Send this request and its requested tool data to your configured service. Billing is determined by that provider.",
   "si-key":

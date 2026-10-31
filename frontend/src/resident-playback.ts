@@ -16,7 +16,7 @@ import {
 } from "cesium";
 import type { Point } from "./types";
 import { ResidentLines } from "./resident-lines";
-import { timeParts } from "./resident-track-math";
+import { timeParts, orderedTrackIndices } from "./resident-track-math";
 
 interface ResidentOptions {
   points: boolean;
@@ -64,13 +64,17 @@ export class ResidentPlayback {
   readonly epoch: number;
   readonly span: number;
   readonly pointCount: number;
-  readonly segmentCount: number;
-  preparedBytes: number;
-  preparationMs: number;
+  segmentCount = 0;
+  preparedBytes = 0;
+  preparationMs = 0;
   private pending?: Generator<void>;
+  private uploads: (() => void)[] = [];
+  private uploadBatches = 0;
+  private largestUploadVertices = 0;
+  private uploadWarmupMs = 0;
   private groups = new Map<number, Point[]>();
-  private byId: Map<string, Point>;
-  private positionsById: Map<string, Cartesian3>;
+  private byId = new Map<string, Point>();
+  private positionsById = new Map<string, Cartesian3>();
   private lines?: ResidentLines;
   private selection?: ResidentPlayback;
   private selectionKey = "";
@@ -87,7 +91,7 @@ export class ResidentPlayback {
       trackOpacity: 0.25,
       gapSeconds: 0,
     },
-    incremental = false,
+    private incremental = false,
   ) {
     const started = performance.now();
     if (!points.length || points.length > 100000)
@@ -106,6 +110,20 @@ export class ResidentPlayback {
       1,
       points.reduce((n, p) => Math.max(n, p.time), -Infinity) - this.epoch,
     );
+    this.pointCount = points.length;
+    this.pending = this.construct(points, position, color, options);
+    if (!incremental) {
+      try {
+        for (const _ of this.pending) { /* small synchronous overlays */ }
+        this.pending = undefined;
+        this.preparedBytes += this.lines?.preparedBytes || 0;
+      } catch (error) { this.destroy(); throw error; }
+    }
+    this.preparationMs = performance.now() - started;
+  }
+
+  private *construct(points: Point[], position: (point: Point) => Cartesian3,
+    color: (entity: number) => Color, options: ResidentOptions): Generator<void> {
     // Resolve colors and positions once per entity/record, including curved runs.
     const colorSource = color, colorCache = new Map<number, Color>();
     color = entity => {
@@ -113,27 +131,20 @@ export class ResidentPlayback {
       if (!value) { value = colorSource(entity); colorCache.set(entity, value); }
       return value;
     };
-    const positions = points.map(position);
-    const cachedPositions = new Map(points.map((p, i) => [p, positions[i]]));
+    const positions: Cartesian3[] = [];
     const originalPosition = position;
-    position = p => cachedPositions.get(p) || originalPosition(p);
-    this.positionsById = new Map(points.map((p, i) => [p.id, positions[i]]));
-    this.byId = new Map(points.map((p) => [p.id, p]));
-    for (const point of points) {
+    for (let i=0;i<points.length;i++) {
+      const point=points[i],value=originalPosition(point);
+      positions.push(value);this.positionsById.set(point.id,value);this.byId.set(point.id,point);
       const group = this.groups.get(point.entity) || [];
       group.push(point);
       this.groups.set(point.entity, group);
+      if(i%512===511)yield;
     }
+    position = p => this.positionsById.get(p.id) || originalPosition(p);
     if (this.groups.size > 2048)
       throw Error("This dataset uses standard playback");
-    const order = points
-      .map((_, i) => i)
-      .sort(
-        (a, b) =>
-          points[a].entity - points[b].entity ||
-          points[a].time - points[b].time ||
-          points[a].id.localeCompare(points[b].id),
-      );
+    const order = yield* orderedTrackIndices(points);
     const edges: number[] = [];
     for (let i = 1; i < order.length; i++) {
       const a = order[i - 1],
@@ -146,12 +157,12 @@ export class ResidentPlayback {
           points[b].time - points[a].time <= options.gapSeconds)
       )
         edges.push(a, b);
+      if(i%512===511)yield;
     }
-    this.pointCount = points.length;
     this.segmentCount = edges.length / 2;
     this.preparedBytes =
       (options.points
-        ? this.add(
+        ? yield* this.add(
             points.map((_, i) => i),
             PrimitiveType.POINTS,
             points,
@@ -160,12 +171,11 @@ export class ResidentPlayback {
           )
         : 0) +
       (options.tracks && !options.curvedTracks
-        ? this.add(edges, PrimitiveType.LINES, points, positions, color)
+        ? yield* this.add(edges, PrimitiveType.LINES, points, positions, color)
         : 0);
     if (options.curvedTracks) {
-      this.lines = new ResidentLines(scene, this.epoch, this.span);
+      this.lines = new ResidentLines(this.scene, this.epoch, this.span, this.incremental);
       const lines = this.lines;
-      const prepare = function* () {
         if (options.tracks)
           yield* lines.prepareTracks(points, order, position, color, options.gapSeconds,
             options.trackOpacity, options.maximumStep ?? 200000);
@@ -175,24 +185,17 @@ export class ResidentPlayback {
         if (options.ground)
           yield* lines.prepareStems(points, options.ground, position, options.stemOpacity ?? 0.15);
         lines.seal();
-      };
-      this.pending = prepare();
-      if (!incremental) {
-        try {
-          for (const _ of this.pending) { /* small synchronous overlays */ }
-          this.pending = undefined;
-          this.preparedBytes += lines.preparedBytes;
-        } catch (error) { this.destroy(); throw error; }
-      }
     }
     if (options.ground && !options.curvedTracks) {
       const stemPoints: Point[] = [],
         stemPositions: Cartesian3[] = [];
-      points.forEach((p, i) => {
+      for(let i=0;i<points.length;i++) {
+        const p=points[i];
         stemPoints.push(p, p);
         stemPositions.push(options.ground!(p), positions[i]);
-      });
-      this.preparedBytes += this.add(
+        if(i%512===511)yield;
+      }
+      this.preparedBytes += yield* this.add(
         stemPoints.map((_, i) => i),
         PrimitiveType.LINES,
         stemPoints,
@@ -202,28 +205,30 @@ export class ResidentPlayback {
       );
     }
     if (options.groundTracks && !options.curvedTracks) {
-      this.preparedBytes += this.add(
+      const groundPositions: Cartesian3[]=[];
+      for(let i=0;i<points.length;i++){groundPositions.push(options.groundTracks(points[i]));if(i%512===511)yield;}
+      this.preparedBytes += yield* this.add(
         edges,
         PrimitiveType.LINES,
         points,
-        points.map(options.groundTracks),
+        groundPositions,
         color,
         options.trailOpacity ?? 0.25,
       );
     }
-    this.preparationMs = performance.now() - started;
   }
 
   /** Warm discarded geometry while the current renderer remains visible.
    * Yield curved preparation to input/rendering; cancel obsolete work promptly. */
-  async prepare(accept: () => boolean) {
+  async prepare(accept: () => boolean, requestRender = () => this.scene.requestRender()) {
     const started = performance.now();
     const alive = () => accept() && !this.scene.isDestroyed();
     this.setWindow(this.epoch + this.span, this.epoch - this.span);
     if (this.pending) {
       let deadline = performance.now() + 6;
-      for (const _ of this.pending) {
+      while(true) {
         if (!alive()) return false;
+        if(this.pending.next().done)break;
         if (performance.now() >= deadline) {
           await new Promise<void>(resolve => setTimeout(resolve, 0));
           deadline = performance.now() + 6;
@@ -235,50 +240,50 @@ export class ResidentPlayback {
       this.setWindow(this.epoch + this.span, this.epoch - this.span);
     }
     const limit = performance.now() + 30000;
-    // Primitive.ready is set after an update. Do not hide the previous drawing
-    // until every point/line batch has actually passed through Cesium's pipeline.
-    while (alive()) {
-      this.scene.requestRender();
-      await new Promise<void>(resolve => setTimeout(resolve, 16));
-      if (this.primitives.every(p => p.ready) && (!this.lines || this.lines.ready)) {
-        this.preparationMs += performance.now() - started;
-        return true;
-      }
-      if (performance.now() > limit) throw Error("Prepared graphics timed out");
+    const ready = () => this.primitives.every(p => p.ready) && (!this.lines || this.lines.ready);
+    const warmStarted = performance.now();
+    // One bounded upload at a time. Waking the view keeps the idle frame-rate
+    // reduction from delaying preparation; the old scene remains visible.
+    do {
+      if (!alive()) return false;
+      const upload = this.uploads.shift() || this.lines?.takeUpload();
+      upload?.();
+      do {
+        if (!alive()) return false;
+        requestRender();
+        await new Promise<void>(resolve => setTimeout(resolve, 16));
+        if (performance.now() > limit) throw Error("Prepared graphics timed out");
+      } while (!this.primitives.every(p => p.ready) || (this.lines && !this.lines.uploadedReady));
+    } while (this.uploads.length || this.lines?.pendingUploads);
+    this.uploadWarmupMs = performance.now() - warmStarted;
+    if (alive() && ready()) {
+      this.preparationMs += performance.now() - started;
+      return true;
     }
     return false;
   }
 
-  private add(
+  private *add(
     indices: number[],
     primitiveType: PrimitiveType,
     points: Point[],
     positions: Cartesian3[],
     color: (entity: number) => Color,
     opacity = this.options.trackOpacity,
-  ) {
+  ): Generator<void,number> {
     if (!indices.length) return 0;
     const xyz = new Float64Array(indices.length * 3),
-      times = new Float32Array(indices.length),
-      lowTimes = new Float32Array(indices.length),
+      times = new Float32Array(indices.length), lowTimes = new Float32Array(indices.length),
       colors = new Uint8Array(indices.length * 4);
-    indices.forEach((index, i) => {
-      const p = positions[index],
-        c = color(points[index].entity);
-      xyz.set([p.x, p.y, p.z], i * 3);
-      [times[i], lowTimes[i]] = timeParts(
-        (points[index].time - this.epoch) / this.span,
-      );
-      colors.set(
-        [
-          c.red * 255,
-          c.green * 255,
-          c.blue * 255,
-          primitiveType === PrimitiveType.POINTS ? 230 : opacity * 255,
-        ],
-        i * 4,
-      );
-    });
+    for (let i=0;i<indices.length;i++) {
+      const index=indices[i], p=positions[index], c=color(points[index].entity);
+      xyz[i*3]=p.x;xyz[i*3+1]=p.y;xyz[i*3+2]=p.z;
+      const t=(points[index].time-this.epoch)/this.span, high=Math.fround(t);
+      times[i]=high;lowTimes[i]=t-high;
+      colors[i*4]=c.red*255;colors[i*4+1]=c.green*255;colors[i*4+2]=c.blue*255;
+      colors[i*4+3]=primitiveType===PrimitiveType.POINTS?230:opacity*255;
+      if(i%512===511)yield;
+    }
     const isPoint = primitiveType === PrimitiveType.POINTS;
     const material = new Material({
       fabric: {
@@ -305,109 +310,57 @@ export class ResidentPlayback {
       },
     });
     this.materials.push(material);
-    const geometry = new Geometry({
-      attributes: Object.assign(new GeometryAttributes(), {
-        position: new GeometryAttribute({
-          componentDatatype: ComponentDatatype.DOUBLE,
-          componentsPerAttribute: 3,
-          values: xyz,
-        }),
-        sampleTime: new GeometryAttribute({
-          componentDatatype: ComponentDatatype.FLOAT,
-          componentsPerAttribute: 1,
-          values: times,
-        }),
-        sampleTimeLow: new GeometryAttribute({
-          componentDatatype: ComponentDatatype.FLOAT,
-          componentsPerAttribute: 1,
-          values: lowTimes,
-        }),
-        sampleColor: new GeometryAttribute({
-          componentDatatype: ComponentDatatype.UNSIGNED_BYTE,
-          componentsPerAttribute: 4,
-          normalize: true,
-          values: colors,
-        }),
-      }),
-      primitiveType,
-      boundingSphere: BoundingSphere.fromVertices(xyz),
-    });
-    // One geometry per entity keeps GPU picking bounded without allocating a
-    // separate primitive or a large batch-table entry for every event.
-    const grouped = new Map<number, number[]>();
-    if (isPoint)
-      indices.forEach((index, i) => {
-        const members = grouped.get(points[index].entity) || [];
-        members.push(i);
-        grouped.set(points[index].entity, members);
+    const instances: {instance: GeometryInstance; count: number}[] = [];
+    const geometryFor = (members: number[], entity?: number) => {
+      const groupXyz=new Float64Array(members.length*3),groupTimes=new Float32Array(members.length),
+        groupLowTimes=new Float32Array(members.length),groupColors=new Uint8Array(members.length*4);
+      for(let j=0;j<members.length;j++) {
+        const i=members[j];
+        for(let k=0;k<3;k++)groupXyz[j*3+k]=xyz[i*3+k];
+        groupTimes[j]=times[i];groupLowTimes[j]=lowTimes[i];
+        for(let k=0;k<4;k++)groupColors[j*4+k]=colors[i*4+k];
+      }
+      const geometry=new Geometry({
+        attributes:Object.assign(new GeometryAttributes(),{
+          position:new GeometryAttribute({componentDatatype:ComponentDatatype.DOUBLE,componentsPerAttribute:3,values:groupXyz}),
+          sampleTime:new GeometryAttribute({componentDatatype:ComponentDatatype.FLOAT,componentsPerAttribute:1,values:groupTimes}),
+          sampleTimeLow:new GeometryAttribute({componentDatatype:ComponentDatatype.FLOAT,componentsPerAttribute:1,values:groupLowTimes}),
+          sampleColor:new GeometryAttribute({componentDatatype:ComponentDatatype.UNSIGNED_BYTE,componentsPerAttribute:4,normalize:true,values:groupColors}),
+        }),primitiveType,boundingSphere:BoundingSphere.fromVertices(groupXyz),
       });
-    const instances = isPoint
-      ? [...grouped].map(([entity, members]) => {
-          const groupXyz = new Float64Array(members.length * 3),
-            groupTimes = new Float32Array(members.length),
-            groupLowTimes = new Float32Array(members.length),
-            groupColors = new Uint8Array(members.length * 4);
-          members.forEach((i, j) => {
-            groupXyz.set(xyz.subarray(i * 3, i * 3 + 3), j * 3);
-            groupTimes[j] = times[i];
-            groupLowTimes[j] = lowTimes[i];
-            groupColors.set(colors.subarray(i * 4, i * 4 + 4), j * 4);
-          });
-          return new GeometryInstance({
-            id: {
-              residentEntity: entity,
-              residentSelection: !!this.options.selection,
-            },
-            geometry: new Geometry({
-              attributes: Object.assign(new GeometryAttributes(), {
-                position: new GeometryAttribute({
-                  componentDatatype: ComponentDatatype.DOUBLE,
-                  componentsPerAttribute: 3,
-                  values: groupXyz,
-                }),
-                sampleTime: new GeometryAttribute({
-                  componentDatatype: ComponentDatatype.FLOAT,
-                  componentsPerAttribute: 1,
-                  values: groupTimes,
-                }),
-                sampleTimeLow: new GeometryAttribute({
-                  componentDatatype: ComponentDatatype.FLOAT,
-                  componentsPerAttribute: 1,
-                  values: groupLowTimes,
-                }),
-                sampleColor: new GeometryAttribute({
-                  componentDatatype: ComponentDatatype.UNSIGNED_BYTE,
-                  componentsPerAttribute: 4,
-                  normalize: true,
-                  values: groupColors,
-                }),
-              }),
-              primitiveType,
-              boundingSphere: BoundingSphere.fromVertices(groupXyz),
-            }),
-          });
-        })
-      : new GeometryInstance({ geometry });
-    this.primitives.push(
-      this.scene.primitives.add(
-        new Primitive({
-          geometryInstances: instances,
-          appearance: new MaterialAppearance({
-            material,
-            flat: true,
-            translucent: true,
-            materialSupport: MaterialAppearance.MaterialSupport.BASIC,
-            vertexShaderSource: vertexShader.replace(
-              "7.0 * czm_pixelRatio",
-              `${(7 * this.options.pointScale + (this.options.selection ? 3 : 0)).toFixed(5)} * czm_pixelRatio`,
-            ),
-          }),
-          asynchronous: false,
-          allowPicking: isPoint,
-          compressVertices: false,
-        }),
-      ),
-    );
+      // Cesium's raw LINES longitude splitter copies positions/applyOffset,
+      // not our per-vertex time/color attributes. A broad Time-frame sphere
+      // can trigger that splitter even when records never cross the seam.
+      // Reject before installing any staged buffers; canonical lines preserve
+      // all features and filtering without publishing invalid GPU geometry.
+      const sphere=geometry.boundingSphere!;
+      if(!isPoint && sphere.center.x-sphere.radius<=0 && Math.abs(sphere.center.y)<=sphere.radius)
+        throw Error("This track frame uses standard rendering to preserve time and color attributes");
+      instances.push({instance:new GeometryInstance({geometry,...(isPoint?{id:{residentEntity:entity!,residentSelection:!!this.options.selection}}:{})}),count:members.length});
+    };
+    // Point pages retain entity IDs for exact CPU-assisted GPU picking. Line
+    // pages end on segment pairs so no segment is lost or joined to another.
+    if(isPoint) {
+      const grouped=new Map<number,number[]>();
+      for(let i=0;i<indices.length;i++){const e=points[indices[i]].entity,group=grouped.get(e)||[];group.push(i);grouped.set(e,group);if(i%512===511)yield;}
+      for(const [entity,members] of grouped)for(let i=0;i<members.length;i+=8192){geometryFor(members.slice(i,i+8192),entity);yield;}
+    } else for(let i=0;i<indices.length;i+=8192){geometryFor(Array.from({length:Math.min(8192,indices.length-i)},(_,j)=>i+j));yield;}
+    let page: GeometryInstance[]=[],count=0;
+    const flush=()=>{
+      if(!page.length)return;
+      const geometryInstances=page,vertices=count;
+      const upload=()=>this.primitives.push(this.scene.primitives.add(new Primitive({
+        geometryInstances,appearance:new MaterialAppearance({material,flat:true,translucent:true,
+          materialSupport:MaterialAppearance.MaterialSupport.BASIC,
+          vertexShaderSource:vertexShader.replace("7.0 * czm_pixelRatio",`${(7*this.options.pointScale+(this.options.selection?3:0)).toFixed(5)} * czm_pixelRatio`),
+        }),asynchronous:false,allowPicking:isPoint,compressVertices:false,
+      })));
+      if(this.incremental)this.uploads.push(upload);else upload();
+      this.uploadBatches++;this.largestUploadVertices=Math.max(this.largestUploadVertices,vertices);
+      page=[];count=0;
+    };
+    for(const item of instances){if(count+item.count>8192)flush();page.push(item.instance);count+=item.count;}
+    flush();
     return (
       xyz.byteLength +
       times.byteLength +
@@ -500,6 +453,9 @@ export class ResidentPlayback {
   }
   diagnostics() {
     return {
+      uploadBatches: this.uploadBatches + (this.lines?.batches || 0),
+      largestUploadVertices: Math.max(this.largestUploadVertices,this.lines?.largestUploadVertices || 0),
+      uploadWarmupMs: this.uploadWarmupMs,
       pointCount: this.pointCount,
       segmentCount: this.segmentCount,
       preparedBytes: this.preparedBytes,
@@ -520,6 +476,7 @@ export class ResidentPlayback {
     };
   }
   destroy() {
+    this.pending = undefined;
     this.selection?.destroy();
     this.selection = undefined;
     this.lines?.destroy();
@@ -527,7 +484,10 @@ export class ResidentPlayback {
     if (!this.scene.isDestroyed())
       for (const primitive of this.primitives) this.scene.primitives.remove(primitive);
     this.primitives = [];
+    for(const material of this.materials) material.destroy();
     this.materials = [];
+    this.uploads = [];
+    this.byId.clear();this.positionsById.clear();this.groups.clear();
     if (!this.scene.isDestroyed()) this.scene.requestRender();
   }
 }

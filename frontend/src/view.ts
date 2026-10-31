@@ -5,6 +5,7 @@ import { captureCamera, restoreCamera } from "./cesium-camera-state";
 import { applySceneAppearance } from "./scene-appearance";
 import { TOOLTIP_DELAY_MS } from "./tooltips";
 import { cameraStabilizer } from "./camera-stability";
+import { globeOverviewAngle, keepGlobeInView } from "./globe-framing";
 import { idleSceneUpdates } from "./idle-scene-updates";
 import { ResourceGovernor, resolutionFor, activeCadenceCost } from "./resource-governor";
 import { fadeAmount, departureDuration, recentHistorySpan } from "./playback-window";
@@ -279,17 +280,20 @@ export class SpaceTimeView {
     },accept) : new Map<string,number>();
     if (!valid()) return false;
     this.stopFades();
-    const previousTimeBounds: [number,number] = [this.lo,this.hi];
     const ground=(p:Point) => this.position(p.lat,p.lon,undefined,true,samples.get(`${p.lat},${p.lon}`));
-    const position=(p:Point) => this.mode === "globe" && this.globeAltitude ? this.pos(p)
-      : this.position(p.lat,p.lon,p.time,false,samples.get(`${p.lat},${p.lon}`));
+    // CPU construction yields between pages. Freeze its target Time frame
+    // instead of publishing temporary axis bounds while the old drawing shows.
+    const frame=this.mode === "space-time" ? timeBounds : [this.lo,this.hi];
+    const timeHeight=this.timeHeightMeters;
+    const elevated=this.mode!=="map" && (this.mode!=="globe" || this.globeTime);
+    const physicalAltitude=this.mode==="globe" && this.globeAltitude;
+    const position=(p:Point) => physicalAltitude ? this.pos(p) : Cartesian3.fromDegrees(p.lon,p.lat,
+      (samples.get(`${p.lat},${p.lon}`) ?? this.groundHeight(p.lat,p.lon))+2+
+      (elevated ? timeElevationFraction(p.time,frame[0],frame[1])*timeHeight : 0));
     const west=drawable.reduce((n,p)=>Math.min(n,p.lon),Infinity), east=drawable.reduce((n,p)=>Math.max(n,p.lon),-Infinity);
     // Compute prepared positions in the target Time frame without publishing
     // that frame while the old drawing is still visible or preparation cancels.
-    let candidate: ResidentPlayback;
-    if (this.mode === "space-time") [this.lo,this.hi] = timeBounds;
-    try {
-    candidate = new ResidentPlayback(this.scene, drawable, position, entity => safeColor(names[entity] || String(entity), this.theme), {
+    const candidate = new ResidentPlayback(this.scene, drawable, position, entity => safeColor(names[entity] || String(entity), this.theme), {
       points: this.display.show_points, tracks: this.display.show_tracks,
       pointScale: this.display.point_scale, trackOpacity: this.display.show_tracks ? this.display.track_opacity : this.display.trail_opacity,
       gapSeconds: this.display.trail_gap_minutes * 60,
@@ -300,13 +304,12 @@ export class SpaceTimeView {
       curvedTracks: !!this.terrain || this.globeAltitude || east-west>120 || west < -170 || east>170,
       maximumStep: this.terrain ? 1000 : 200000,
     }, true);
-    } finally { [this.lo,this.hi] = previousTimeBounds; }
     // Any subsequent scene or data rebuild invalidates this staged candidate.
     const generation = this.residentPreparation;
     const candidateValid = () => generation === this.residentPreparation && !this.disposed && accept();
     this.pendingResident = candidate;
     try {
-      if (!await candidate.prepare(candidateValid) || !candidateValid()) {
+      if (!await candidate.prepare(candidateValid, () => this.requestRender()) || !candidateValid()) {
         candidate.destroy(); return false;
       }
     } catch (error) { candidate.destroy(); throw error; }
@@ -2623,18 +2626,28 @@ export class SpaceTimeView {
       this.host.clientWidth / 2,
       this.host.clientHeight / 2,
     );
-    return (
+    const picked = (
       // Without terrain, use the exact WGS84 surface rather than a coarse
       // rendered globe triangle. Its tiny normal error destabilizes headings
       // when looking straight down, especially near the poles.
       (this.mode === "globe" && !this.terrain
         ? this.camera.pickEllipsoid(pixel, Ellipsoid.WGS84)
-        : this.groundAt(pixel)) ||
-      Cartesian3.fromDegrees(
+        : this.groundAt(pixel))
+    );
+    if(picked)return picked;
+    // A zoom/legacy camera may put the center ray into space. Orbit around the
+    // Earth below the current camera, never an unrelated dataset's centroid.
+    if(this.mode === "globe") {
+      const ground=Ellipsoid.WGS84.scaleToGeodeticSurface(this.camera.positionWC);
+      if(ground)return ground;
+    }
+    return Cartesian3.fromDegrees(
         (this.bounds[0] + this.bounds[2]) / 2,
         (this.bounds[1] + this.bounds[3]) / 2,
-      )
-    );
+      );
+  }
+  private globeFramingRadius() {
+    return Ellipsoid.WGS84.maximumRadius+Math.max(0,(this.terrain?.maximum || 0)*this.exaggeration);
   }
   private moveWorld(delta: Cartesian3) {
     Cartesian3.add(
@@ -2661,6 +2674,7 @@ export class SpaceTimeView {
           Cartesian3.subtract(target, this.camera.positionWC, new Cartesian3()),
         );
       }
+      if(keepGlobeInView(this.camera,this.globeFramingRadius()))this.requestRender();
     } else {
       const height = this.camera.positionWC.x;
       const floor = Math.max(2, this.centerGroundHeight() + 2);
@@ -2773,6 +2787,19 @@ export class SpaceTimeView {
   setBearing(degrees: number) {
     this.orient(degrees, this.tilt());
   }
+  /** North also recovers a lost globe, without fitting data or changing zoom.
+   * Close regional views retain their existing ground focus and tilt. */
+  faceNorth() {
+    this.cancelNavigation();
+    if(this.mode === "globe" && (globeOverviewAngle(this.camera,this.globeFramingRadius())>=0 ||
+       !this.camera.pickEllipsoid(new Cartesian2(this.host.clientWidth/2,this.host.clientHeight/2),Ellipsoid.WGS84))) {
+      const p=Cartographic.fromCartesian(this.camera.positionWC);
+      const lon=CesiumMath.toDegrees(p.longitude),lat=CesiumMath.toDegrees(p.latitude),height=this.groundHeight(lat,lon);
+      const range=Cartesian3.distance(this.camera.positionWC,Cartesian3.fromDegrees(lon,lat,height));
+      this.lookAtGeographic([lon,lat,height],Math.max(2,range),0,0);
+      this.onSceneChange();
+    }else this.setBearing(0);
+  }
   setTilt(degrees: number) {
     this.orient(this.bearing(), degrees);
   }
@@ -2878,7 +2905,7 @@ export class SpaceTimeView {
       else this.zoom(Math.exp((key === "pageup" ? 0.25 : -0.25) * step));
     } else if (["+", "=", "-"].includes(key))
       this.zoom(Math.exp((key === "-" ? -0.25 : 0.25) * step));
-    else if (!event.altKey && key === "n") this.setBearing(0);
+    else if (!event.altKey && key === "n") this.faceNorth();
     else if (!event.altKey && key === "u") this.setTilt(0);
     else if (!event.altKey && (key === "r" || key === "f")) this.fit();
     else return false;
@@ -3689,7 +3716,7 @@ export class SpaceTimeView {
     canvas.tabIndex = 0;
     canvas.setAttribute(
       "aria-label",
-      "Map view. Arrow keys pan; plus and minus zoom; N faces north; U looks down; R fits events.",
+      "Map view. Arrow keys pan; plus and minus zoom; N faces north and recenters a Globe overview; U looks down; R fits events.",
     );
     // click.detail follows the platform's double-click recognition. Cesium
     // suppresses compatibility mousedown events, so sequence picks on click,
@@ -3728,6 +3755,9 @@ export class SpaceTimeView {
           return;
         event.preventDefault();
         event.stopImmediatePropagation();
+        // A wheel/pinch-style map gesture makes navigation keys, especially
+        // North recovery, available without requiring an extra canvas click.
+        canvas.focus({ preventScroll: true });
         const rect = canvas.getBoundingClientRect();
         const delta =
           event.deltaY *

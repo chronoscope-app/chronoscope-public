@@ -32,7 +32,8 @@
       "scene-ack-test.mjs",
       "scene-transitions-test.mjs",
       "view-snapshot-test.mjs",
-      "resource-governor-test.mjs"
+      "resource-governor-test.mjs",
+      "resident-track-test.mjs"
     ],
     "browser": [
       "integration-smoke-qa.mjs",
@@ -96,7 +97,17 @@
       "space-demos-qa.mjs",
       "playback-fade-qa.mjs",
       "resource-pressure-qa.mjs",
-      "flight-week-qa.mjs"
+      "flight-week-qa.mjs",
+      "idf-demo-qa.mjs",
+      "globe-framing-qa.mjs",
+      "si-toolbar-label-qa.mjs",
+      "playback-recovery-qa.mjs",
+      "resident-reference-qa.mjs",
+      "terrain-preparation-recovery-qa.mjs",
+      "track-wrap-fallback-qa.mjs",
+      "upload-paging-qa.mjs",
+      "vfx-coverage-qa.mjs",
+      "vfx-full-app-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -104,14 +115,19 @@
       "performance-qa.mjs"
     ],
     "experimental": [
-      "webmcp-qa.mjs"
+      "webmcp-qa.mjs",
+      "interaction-handoff-qa.mjs",
+      "prepared-handoff-qa.mjs",
+      "resident-interactions-qa.mjs",
+      "vfx-playground-qa.mjs",
+      "vfx-resident-qa.mjs"
     ]
   },
   "requirements": {
     "unit": "Node and installed frontend dependencies",
     "browser": "Built CLI/frontend and installed Chromium; local fixtures only",
     "performance": "Opt-in controlled performance run; requires --browser --performance",
-    "experimental": "Non-default experimental-browser-webmcp build; not part of standard releases"
+    "experimental": "Opt-in WebMCP builds, graphics laboratories, or external local stress fixtures; not part of standard releases"
   },
   "serial_browser": [
     "navigation-qa.mjs",
@@ -124,7 +140,12 @@
     "playback-reuse-qa.mjs",
     "playback-fade-qa.mjs",
     "resource-pressure-qa.mjs",
-    "flight-week-qa.mjs"
+    "flight-week-qa.mjs",
+    "idf-demo-qa.mjs",
+    "resident-reference-qa.mjs",
+    "upload-paging-qa.mjs",
+    "vfx-coverage-qa.mjs",
+    "vfx-full-app-qa.mjs"
   ],
   "smoke": [
     "integration-smoke-qa.mjs",
@@ -158,7 +179,8 @@
         "pan-direction-qa.mjs",
         "viewport-pan-qa.mjs",
         "space-time-window-qa.mjs",
-        "view-sync-qa.mjs"
+        "view-sync-qa.mjs",
+        "globe-framing-qa.mjs"
       ],
       "rust": [
         "canvas_selection",
@@ -193,7 +215,14 @@
         "renderer-reuse-qa.mjs",
         "track-style-qa.mjs",
         "playback-reuse-qa.mjs",
-        "resource-pressure-qa.mjs"
+        "resource-pressure-qa.mjs",
+        "playback-recovery-qa.mjs",
+        "resident-reference-qa.mjs",
+        "terrain-preparation-recovery-qa.mjs",
+        "track-wrap-fallback-qa.mjs",
+        "upload-paging-qa.mjs",
+        "vfx-coverage-qa.mjs",
+        "vfx-full-app-qa.mjs"
       ],
       "rust": [
         "display_lod",
@@ -269,7 +298,8 @@
         "si-certificate-qa.mjs",
         "focused-ai-qa.mjs",
         "guided-workflows-qa.mjs",
-        "webmcp-disabled-qa.mjs"
+        "webmcp-disabled-qa.mjs",
+        "si-toolbar-label-qa.mjs"
       ],
       "rust": [
         "focused_ai",
@@ -294,14 +324,16 @@
       "browser": [
         "altitude-qa.mjs",
         "space-demos-qa.mjs",
-        "flight-week-qa.mjs"
+        "flight-week-qa.mjs",
+        "idf-demo-qa.mjs"
       ],
       "rust": [
         "altitude",
         "playback_display",
         "views_layers",
         "altitude_controls",
-        "space_demos"
+        "space_demos",
+        "idf_demo"
       ]
     }
   },
