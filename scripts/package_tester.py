@@ -44,6 +44,13 @@ def verify_nsis_gui(build_data, installed_data):
 MAC_MAX_ENTRIES = 20000
 MAC_MAX_BYTES = 512 * 1024 * 1024
 
+def mac_file_identity(info):
+    # Reading can update atime on hosted APFS volumes. Keep identity, content
+    # timestamps and security metadata in the guard, but exclude access time.
+    return (info.st_dev, info.st_ino, info.st_mode, info.st_nlink,
+            info.st_uid, info.st_gid, info.st_size, info.st_mtime_ns,
+            info.st_ctime_ns, getattr(info, 'st_flags', 0))
+
 def mac_app_inventory(app):
     inventory = {}
     total = 0
@@ -71,7 +78,7 @@ def mac_app_inventory(app):
                     if size > info.st_size:
                         raise ValueError('Mac app changed during inventory')
                     digest.update(block)
-            if size != info.st_size or path.lstat() != info:
+            if size != info.st_size or mac_file_identity(path.lstat()) != mac_file_identity(info):
                 raise ValueError('Mac app changed during inventory')
             inventory[name] = ('file', mode, size, digest.hexdigest())
         else:

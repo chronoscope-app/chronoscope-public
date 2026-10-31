@@ -8,6 +8,7 @@ import struct
 import subprocess
 import tarfile
 import tempfile
+from types import SimpleNamespace
 import unittest
 import zipfile
 import package_tester as tester
@@ -478,6 +479,35 @@ class MacBundleStagingTests(unittest.TestCase):
             link = archive.getmember(prefix + 'Resources/license-link')
             self.assertTrue(link.issym())
             self.assertEqual(link.linkname, 'third-party/LICENSE')
+
+    def inventory_with_stat_change(self, field, delta):
+        original = Path.lstat
+        reads = 0
+        def lstat(path, *args, **kwargs):
+            nonlocal reads
+            info = original(path, *args, **kwargs)
+            if path != self.bundled:
+                return info
+            reads += 1
+            if reads == 1:
+                return info
+            changed = {name: getattr(info, name) for name in dir(info) if name.startswith('st_')}
+            changed[field] += delta
+            return SimpleNamespace(**changed)
+        with patch.object(Path, 'lstat', lstat):
+            return tester.mac_app_inventory(self.app)
+
+    def test_inventory_allows_read_access_time_update(self):
+        expected = tester.mac_app_inventory(self.app)
+        self.assertEqual(self.inventory_with_stat_change('st_atime', 60), expected)
+        self.assertEqual(self.inventory_with_stat_change('st_atime_ns', 60_000_000_000), expected)
+
+    def test_inventory_rejects_identity_or_content_timestamp_changes(self):
+        for field in ['st_ino', 'st_dev', 'st_mode', 'st_nlink', 'st_uid', 'st_gid',
+                      'st_size', 'st_mtime_ns', 'st_ctime_ns']:
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(ValueError, 'Mac app changed during inventory'):
+                    self.inventory_with_stat_change(field, 1)
 
     def test_inventory_limits_fail_closed(self):
         with patch.object(tester, 'MAC_MAX_ENTRIES', 1):
