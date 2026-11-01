@@ -4,6 +4,16 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+- Inset the Time axis, keep its labels inside the view, and add a draggable top sphere. Save the axis position and Views → Time view controls → Grab spheres choice with the workspace.
+- Offer physical Altitude in Time through the existing vertical display control, reusing Globe altitude conversion and filtering. Remember each view’s choice independently.
+- Open Maps as its own Preferences section. Closing or canceling custom server, layers or cache settings returns to Maps with Advanced settings expanded and pending preferences preserved.
+
+- Remove the two horizontal ground-plane lines extending from the Time view’s vertical time axis.
+- Restore inline effect descriptions in Views. Default to AI wording, with Preferences → General → Assistant wording offering SI / Super Intelligence across chat, settings, help and detached windows.
+- Polish analysis setup/results with selected-field counts, readable UTC profile values, exact raw-value details and consistent dialog styling.
+- Tighten attribute-table headers; clarify effect controls, disconnected AI setup, map actions, cache settings, preferences and terrain values. Use AI consistently across the interface.
+- Compact import mappings and keep destination/replacement choices beside the final action. Keep inspector Apply changes visible, align demo-card actions, and group platform-specific shortcut help.
+
 ## 0.16.12 — experimental preview, 2026-10-31
 
 - Decode street-map bytes with the browser's native base64 API, with a direct typed-array fallback for older WebViews, avoiding per-character callback allocation on the UI thread.

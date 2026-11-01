@@ -21,6 +21,20 @@ export class PaneRail {
   private closing?: ReturnType<typeof setTimeout>;
   private activation: Promise<void> = Promise.resolve();
   private expand: HTMLButtonElement;
+  setSectionLabel(id: string, label: string) {
+    const section = this.sections.find((section) => section.id === id);
+    if (!section) return;
+    section.label = label;
+    const button = this.buttons.get(id);
+    button?.setAttribute("aria-label", label);
+    button?.setAttribute("title", label);
+    button?.setAttribute("aria-description", label);
+    if (button) button.dataset.tooltip = label;
+    if (this.current === section) {
+      this.title.textContent = label;
+      this.body.setAttribute("aria-label", label);
+    }
+  }
   constructor(
     private pane: HTMLElement,
     private side: "left" | "right",

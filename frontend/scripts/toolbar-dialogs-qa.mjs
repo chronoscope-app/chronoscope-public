@@ -126,19 +126,59 @@ try {
     ]) {
       await page.locator(trigger).click();
       const dialog = await measure(name, ".modal");
+      if (name === "Preferences") {
+        assert.match(
+          await page.locator("#pref-coordinates option:checked").innerText(),
+          /Decimal degrees/,
+        );
+        await page.selectOption("#pref-date-format", "iso");
+        assert.match(
+          await page.locator("#pref-date-preview").innerText(),
+          /2026-11-01/,
+        );
+        await page.selectOption("#pref-time-format", "24h-seconds");
+        assert.match(
+          await page.locator("#pref-time-preview").innerText(),
+          /14:05:09/,
+        );
+        await page.screenshot({
+          path: path.join(dir, `preferences-${viewport.width}.png`),
+        });
+        await page.locator("#preferences-tab-agents").click();
+        assert.match(
+          await page.locator("#preferences-panel-agents").innerText(),
+          /Changes apply immediately/,
+        );
+      }
+      if (name === "Terrain") {
+        await page.locator("#exaggeration").fill("2.5");
+        assert.equal(
+          await page.locator("#exaggeration-value").innerText(),
+          "2.5×",
+        );
+        await page.screenshot({
+          path: path.join(dir, `terrain-${viewport.width}.png`),
+        });
+      }
       await dialog.locator("[data-close]").last().scrollIntoViewIfNeeded();
       await measure(name + " scrolled", ".modal");
       await close();
     }
     await page.locator("#maps").click();
-    await page.locator(".map-advanced summary").click();
+    if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
+      await page.locator(".map-advanced summary").click();
     await measure("Map expanded", ".modal");
     await page.locator("#custom-map-server").click();
     await page
       .locator(".modal h2")
-      .filter({ hasText: "Map servers" })
+      .filter({ hasText: /^Maps$/ })
       .waitFor();
-    await measure("Map servers", ".modal");
+    await measure("Maps", ".modal");
+    assert.equal(await page.locator("#apply-map").isDisabled(), true);
+    assert.equal(await page.locator("#add-map-layer").isDisabled(), true);
+    assert.equal(await page.locator(".modal > footer #map-credits").count(), 0);
+    await page.locator(".modal-backdrop [data-close]").first().click();
+    await page.locator("#preferences-tab-maps[aria-selected=true]").waitFor();
     await close();
     for (const [name, action] of [
       ["User guide", "#user-guide"],
@@ -157,7 +197,14 @@ try {
     });
     await page.getByRole("button", { name: "Close analysis results" }).click();
     await page.locator("#si").click();
-    await page.locator("#si-settings").click();
+    await page.locator("#si-connect-service").waitFor({ state: "visible" });
+    await page.waitForFunction(
+      () => document.activeElement?.id === "si-connect-service",
+    );
+    await page.screenshot({
+      path: path.join(dir, `ai-disconnected-${viewport.width}.png`),
+    });
+    await page.locator("#si-connect-service").click();
     await measure("SI settings", ".si-settings-dialog");
     await page.screenshot({
       path: path.join(dir, `si-settings-${viewport.width}.png`),
@@ -181,6 +228,47 @@ try {
       .getByRole("button", { name: "Close field roles", exact: true })
       .click();
     await page.locator('[data-tab="views"]').click();
+    for (const key of ["heat", "bloom"]) {
+      assert.equal(await page.locator(`#display-${key}`).isChecked(), false);
+      assert.equal(
+        await page.locator(`[data-amount="${key}"]`).isDisabled(),
+        true,
+      );
+    }
+    await page.screenshot({
+      path: path.join(dir, `views-${viewport.width}.png`),
+    });
+    assert.equal(
+      await page
+        .locator(".view-effect-description")
+        .first()
+        .evaluate((node) => getComputedStyle(node).display),
+      "inline",
+    );
+    const event = (await api("events", { limit: 1 })).events[0];
+    await api("select", { ids: [event.id] });
+    await page.evaluate(() => window.__chronoscope.refresh());
+    await page.locator('[data-tab="inspect"]').click();
+    await page.locator("#apply-edit").waitFor();
+    const footerInView = await page.locator("#apply-edit").evaluate((e) => {
+      const r = e.getBoundingClientRect();
+      const p = document
+        .querySelector("#inspector-content")
+        .getBoundingClientRect();
+      return r.top >= p.top && r.bottom <= p.bottom;
+    });
+    assert(footerInView, "Inspector apply action must remain visible");
+    const label = `Reviewed at ${viewport.width}`;
+    await page.locator("#edit-label").fill(label);
+    await page.locator("#apply-edit").click();
+    await page.evaluate(() => window.__chronoscope.editorIdle());
+    assert.equal(
+      (await api("events", { id: event.id, limit: 1 })).events[0].label,
+      label,
+    );
+    await page.screenshot({
+      path: path.join(dir, `inspector-${viewport.width}.png`),
+    });
     await page.locator("#aggregate-events").click();
     await page.screenshot({
       path: path.join(dir, `aggregate-${viewport.width}.png`),

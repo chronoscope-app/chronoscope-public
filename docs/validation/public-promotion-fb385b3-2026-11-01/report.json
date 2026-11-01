@@ -1,0 +1,78 @@
+{
+  "next_commit": "fb385b31e578f56dc544eb5c92c08d20f3f7b353",
+  "public_parent": "0ee023550aaac56ca7887f6b0c77034598262e45",
+  "next_files": 3461,
+  "all_next_files_byte_identical": true,
+  "preserved_public_only_files": [
+    "docs/validation/public-governor-bulk-import-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/README.md",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/report.json",
+    "docs/validation/public-promotion-0.16.12-2026-10-31/report.json",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/README.md",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/report.json",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/README.md",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/report.json",
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-23e567f-2026-10-26/README.md",
+    "docs/validation/public-promotion-23e567f-2026-10-26/report.json",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json",
+    "docs/validation/public-promotion-4153760-2026-10-31/README.md",
+    "docs/validation/public-promotion-4153760-2026-10-31/report.json",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/README.md",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/report.json",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/README.md",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/report.json",
+    "docs/validation/public-promotion-82107e5-2026-10-26/README.md",
+    "docs/validation/public-promotion-82107e5-2026-10-26/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json",
+    "docs/validation/public-resident-graphics-2026-10-30/report.json"
+  ],
+  "private_next_ancestry_imported": false,
+  "authorization": "User: Promote to public",
+  "scope": "Source-only promotion; no release, tag, asset or workflow mutation",
+  "verification": "Local checks and optimized macOS build recorded in docs/validation/time-axis-altitude-maps-2026-11-01.json",
+  "known_limitations": [
+    "Saved/reopened study bounds test also fails identically on unchanged Next main",
+    "Native interaction for latest UI changes not tested; isolated browser interaction passed"
+  ],
+  "workflows": "Manual-only; byte-identical to Next",
+  "secret_scan": {
+    "passed": true,
+    "scanner": "Gitleaks 8.30.1",
+    "canary_detected": true,
+    "configuration_changed": false,
+    "reviewed_findings": [
+      {
+        "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 35,
+        "classification": "Independently verified historical source checksum (19746ea)"
+      },
+      {
+        "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 50,
+        "classification": "Independently verified file checksum"
+      },
+      {
+        "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 51,
+        "classification": "Independently verified file checksum"
+      },
+      {
+        "path": "docs/validation/release-0.16.9-publication/SOURCE-MANIFEST-RELEASE.json",
+        "line": 3,
+        "classification": "Existing published application commit identifier"
+      }
+    ],
+    "unresolved_credentials": 0
+  },
+  "metadata_preflight": "All five manifests and both lockfiles agree on 0.16.12; source-only promotion retains Unreleased notes."
+}

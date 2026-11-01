@@ -1,0 +1,91 @@
+{
+  "project": "/Users/user/Documents/Codex/chronoscope mac/.qa/million-event-performance/million.chronoscope",
+  "input_bytes": 1565696000,
+  "payload_sha256": "b8dd8f670ed6a0e069c3008b806e8e091fce2c386178ba43ac5e0307d6ce6089",
+  "runs": [
+    {
+      "variant": "baseline",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/overview-stage2/Chronoscope-candidate.app/Contents/MacOS/chronoscope-desktop",
+      "binary_sha256": "ea9bd6334833447a352d931ea897c1d46c0838d4dfca6d796656e190a6bf0200",
+      "initial_open_ms": 15273.504541997681,
+      "save_ms": 7178.976499999408,
+      "saved_bytes": 1546977280,
+      "reopen_ms": 11733.106125000631,
+      "payload_sha256": "b8dd8f670ed6a0e069c3008b806e8e091fce2c386178ba43ac5e0307d6ce6089",
+      "passed": true
+    },
+    {
+      "variant": "candidate",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/target/release/chronoscope",
+      "binary_sha256": "b4bc67ed355ccdc999abaae9e96b096e2d5e6c91bc8381dea948eabed94dfd77",
+      "initial_open_ms": 19207.762042002287,
+      "save_ms": 4487.467999999353,
+      "saved_bytes": 1546977280,
+      "reopen_ms": 11696.769667003537,
+      "payload_sha256": "b8dd8f670ed6a0e069c3008b806e8e091fce2c386178ba43ac5e0307d6ce6089",
+      "passed": true
+    },
+    {
+      "variant": "candidate",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/target/release/chronoscope",
+      "binary_sha256": "b4bc67ed355ccdc999abaae9e96b096e2d5e6c91bc8381dea948eabed94dfd77",
+      "initial_open_ms": 12545.59920799511,
+      "save_ms": 4348.332708999806,
+      "saved_bytes": 1546977280,
+      "reopen_ms": 11698.346791999938,
+      "payload_sha256": "b8dd8f670ed6a0e069c3008b806e8e091fce2c386178ba43ac5e0307d6ce6089",
+      "passed": true
+    },
+    {
+      "variant": "baseline",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/overview-stage2/Chronoscope-candidate.app/Contents/MacOS/chronoscope-desktop",
+      "binary_sha256": "ea9bd6334833447a352d931ea897c1d46c0838d4dfca6d796656e190a6bf0200",
+      "initial_open_ms": 12208.758708999085,
+      "save_ms": 7036.699874995975,
+      "saved_bytes": 1546977280,
+      "reopen_ms": 11597.188291998464,
+      "payload_sha256": "b8dd8f670ed6a0e069c3008b806e8e091fce2c386178ba43ac5e0307d6ce6089",
+      "passed": true
+    }
+  ],
+  "method": {
+    "order": "ABBA",
+    "repetitions_per_variant": 2,
+    "expected_events": 1000000,
+    "full_reopen_validation": true,
+    "all_payload_hashes_match": true,
+    "timing_scope": "Public CLI Engine save/open calls; no native UI; hashing excluded",
+    "limitations": [
+      "OS page cache uncontrolled",
+      "Two runs do not establish tail latency",
+      "Input fixture differs from the earlier richer 2.4 GB storage fixture",
+      "Baseline frozen desktop CLI contains numeric-empty optimization; candidate optimized CLI also contains the diagnostic-line repair"
+    ]
+  },
+  "summary": {
+    "save_ms": {
+      "baseline_median": 7107.838187497691,
+      "candidate_median": 4417.900354499579,
+      "time_reduction_percent": 37.8446689702302
+    },
+    "reopen_ms": {
+      "baseline_median": 11665.147208499548,
+      "candidate_median": 11697.558229501738,
+      "time_reduction_percent": -0.2778449377696185
+    },
+    "initial_open_ms": {
+      "baseline_median": 13741.131625498383,
+      "candidate_median": 15876.680624998698,
+      "time_reduction_percent": -15.541289158001645
+    }
+  },
+  "verification": {
+    "targeted_tests": 101,
+    "cancel_before_backup": true,
+    "cancel_before_atomic_replace": true,
+    "removed_payload_scrubbing_and_live_undo": true,
+    "portable_resource_roundtrips": true,
+    "non_utf8_path_fallback": "Linux-only test; APFS disallows this filename, not run on Mac",
+    "raw_results": ".qa/storage-stage3/project-io.json"
+  }
+}

@@ -241,14 +241,14 @@ try {
   record("simple Map dialog shows Streets; custom servers are advanced");
   await capture("streets-settings");
   await page.locator("#streets-enabled").uncheck();
-  await page.locator("#apply-basemap").click();
+  await page.locator("#save-preferences").click();
   await page.waitForFunction(
     () => window.__chronoscope.view.resources.status.basemap === "none",
   );
   assert.equal((await api("preferences")).basemap, "none");
   await page.locator("#maps").click();
   await page.locator("#streets-enabled").check();
-  await page.locator("#apply-basemap").click();
+  await page.locator("#save-preferences").click();
   await settled();
   record("Streets toggle persists and releases/recreates the vector renderer");
   state = await navigate("space-time", 38);

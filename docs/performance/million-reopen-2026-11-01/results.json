@@ -1,0 +1,448 @@
+{
+  "project": "/Users/user/Documents/Codex/chronoscope mac/.qa/million-event-performance/million.chronoscope",
+  "input_bytes": 1565696000,
+  "payload_sha256": "b8dd8f670ed6a0e069c3008b806e8e091fce2c386178ba43ac5e0307d6ce6089",
+  "open_only": true,
+  "blocks": 3,
+  "runs": [
+    {
+      "variant": "baseline",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-baseline",
+      "binary_sha256": "b4bc67ed355ccdc999abaae9e96b096e2d5e6c91bc8381dea948eabed94dfd77",
+      "initial_open_ms": 15564.881749996857,
+      "reopen_ms": 12057.597665996582,
+      "passed": true
+    },
+    {
+      "variant": "candidate",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-candidate",
+      "binary_sha256": "5cad9df0dae620b2236dbe792bd3812d353cfa42f9b5f87d4a696ee7091e90ae",
+      "initial_open_ms": 11711.865833000047,
+      "reopen_ms": 11459.840083996824,
+      "passed": true
+    },
+    {
+      "variant": "candidate",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-candidate",
+      "binary_sha256": "5cad9df0dae620b2236dbe792bd3812d353cfa42f9b5f87d4a696ee7091e90ae",
+      "initial_open_ms": 11286.550625001837,
+      "reopen_ms": 11333.488333002606,
+      "passed": true
+    },
+    {
+      "variant": "baseline",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-baseline",
+      "binary_sha256": "b4bc67ed355ccdc999abaae9e96b096e2d5e6c91bc8381dea948eabed94dfd77",
+      "initial_open_ms": 11828.686041997571,
+      "reopen_ms": 12955.803750002815,
+      "passed": true
+    },
+    {
+      "variant": "baseline",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-baseline",
+      "binary_sha256": "b4bc67ed355ccdc999abaae9e96b096e2d5e6c91bc8381dea948eabed94dfd77",
+      "initial_open_ms": 12402.991542003292,
+      "reopen_ms": 12371.148083002481,
+      "passed": true
+    },
+    {
+      "variant": "candidate",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-candidate",
+      "binary_sha256": "5cad9df0dae620b2236dbe792bd3812d353cfa42f9b5f87d4a696ee7091e90ae",
+      "initial_open_ms": 11668.102124996949,
+      "reopen_ms": 11831.808375005494,
+      "passed": true
+    },
+    {
+      "variant": "candidate",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-candidate",
+      "binary_sha256": "5cad9df0dae620b2236dbe792bd3812d353cfa42f9b5f87d4a696ee7091e90ae",
+      "initial_open_ms": 11382.118082998204,
+      "reopen_ms": 11571.868333005114,
+      "passed": true
+    },
+    {
+      "variant": "baseline",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-baseline",
+      "binary_sha256": "b4bc67ed355ccdc999abaae9e96b096e2d5e6c91bc8381dea948eabed94dfd77",
+      "initial_open_ms": 11827.410999998392,
+      "reopen_ms": 12063.901209003234,
+      "passed": true
+    },
+    {
+      "variant": "baseline",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-baseline",
+      "binary_sha256": "b4bc67ed355ccdc999abaae9e96b096e2d5e6c91bc8381dea948eabed94dfd77",
+      "initial_open_ms": 11815.364415997465,
+      "reopen_ms": 12046.200750002754,
+      "passed": true
+    },
+    {
+      "variant": "candidate",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-candidate",
+      "binary_sha256": "5cad9df0dae620b2236dbe792bd3812d353cfa42f9b5f87d4a696ee7091e90ae",
+      "initial_open_ms": 11773.62500000163,
+      "reopen_ms": 11727.173208993918,
+      "passed": true
+    },
+    {
+      "variant": "candidate",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-candidate",
+      "binary_sha256": "5cad9df0dae620b2236dbe792bd3812d353cfa42f9b5f87d4a696ee7091e90ae",
+      "initial_open_ms": 11515.868374997808,
+      "reopen_ms": 11688.501165997877,
+      "passed": true
+    },
+    {
+      "variant": "baseline",
+      "binary": "/Users/user/Documents/Codex/chronoscope mac/.qa/reopen-stage4/chronoscope-baseline",
+      "binary_sha256": "b4bc67ed355ccdc999abaae9e96b096e2d5e6c91bc8381dea948eabed94dfd77",
+      "initial_open_ms": 11830.124957996304,
+      "reopen_ms": 11987.002791000123,
+      "passed": true
+    }
+  ],
+  "final_input_payload_sha256": "b8dd8f670ed6a0e069c3008b806e8e091fce2c386178ba43ac5e0307d6ce6089",
+  "summary": {
+    "baseline": {
+      "median_ms": 12060.749437499908,
+      "min_ms": 11987.002791000123,
+      "max_ms": 12955.803750002815,
+      "runs": 6
+    },
+    "candidate": {
+      "median_ms": 11630.184749501495,
+      "min_ms": 11333.488333002606,
+      "max_ms": 11831.808375005494,
+      "runs": 6
+    },
+    "time_reduction_percent": 3.5699662797046288,
+    "saved_ms": 430.5646879984124
+  },
+  "blocks_summary": [
+    {
+      "block": 1,
+      "baseline_median_ms": 12506.700707999698,
+      "candidate_median_ms": 11396.664208499715,
+      "time_reduction_percent": 8.875534206954898
+    },
+    {
+      "block": 2,
+      "baseline_median_ms": 12217.524646002857,
+      "candidate_median_ms": 11701.838354005304,
+      "time_reduction_percent": 4.220873760760271
+    },
+    {
+      "block": 3,
+      "baseline_median_ms": 12016.601770501438,
+      "candidate_median_ms": 11707.837187495898,
+      "time_reduction_percent": 2.569483360624477
+    }
+  ],
+  "verification": {
+    "targeted_integration_tests": 77,
+    "canonical_search_encoder_comparison": 1,
+    "tampering_cases_in_new_integration_test": 13,
+    "all_runs_passed": true,
+    "source_payload_hash_unchanged": true
+  },
+  "limitations": [
+    "Six runs per variant do not establish tail latency",
+    "OS cache and CPU activity uncontrolled",
+    "CLI Engine timing; native UI readiness not measured",
+    "Both integrity checks retained; no startup or memory reduction claim"
+  ],
+  "profiles": {
+    "baseline": {
+      "phases": [
+        {
+          "ms": 1.6418750000000002,
+          "open_phase": "source_schema"
+        },
+        {
+          "ms": 11505.255125,
+          "open_phase": "quick_check"
+        },
+        {
+          "ms": 1237.592541,
+          "open_phase": "prepare_and_backup"
+        },
+        {
+          "ms": 0.49904099999999996,
+          "open_phase": "configure_and_schema_migration"
+        },
+        {
+          "ms": 2918.5996250000003,
+          "open_phase": "event_and_derived_row_validation"
+        },
+        {
+          "ms": 3069.410292,
+          "open_phase": "fts_integrity_check"
+        },
+        {
+          "ms": 5988.0945,
+          "open_phase": "verify_events_including_fts"
+        },
+        {
+          "ms": 0.14595799999999998,
+          "open_phase": "metadata_and_resources"
+        },
+        {
+          "ms": 0.049416999999999996,
+          "open_phase": "centroid_migration_and_selection"
+        },
+        {
+          "ms": 0.5674589999999999,
+          "open_phase": "source_schema"
+        },
+        {
+          "ms": 4409.54575,
+          "open_phase": "quick_check"
+        },
+        {
+          "ms": 1221.453167,
+          "open_phase": "prepare_and_backup"
+        },
+        {
+          "ms": 0.505458,
+          "open_phase": "configure_and_schema_migration"
+        },
+        {
+          "ms": 2902.3224170000003,
+          "open_phase": "event_and_derived_row_validation"
+        },
+        {
+          "ms": 3079.2249580000002,
+          "open_phase": "fts_integrity_check"
+        },
+        {
+          "ms": 5981.636333,
+          "open_phase": "verify_events_including_fts"
+        },
+        {
+          "ms": 0.097792,
+          "open_phase": "metadata_and_resources"
+        },
+        {
+          "ms": 0.055291,
+          "open_phase": "centroid_migration_and_selection"
+        },
+        {
+          "ms": 0.49983299999999997,
+          "open_phase": "source_schema"
+        },
+        {
+          "ms": 4427.974542,
+          "open_phase": "quick_check"
+        },
+        {
+          "ms": 1236.108083,
+          "open_phase": "prepare_and_backup"
+        },
+        {
+          "ms": 0.513125,
+          "open_phase": "configure_and_schema_migration"
+        },
+        {
+          "ms": 2887.51125,
+          "open_phase": "event_and_derived_row_validation"
+        },
+        {
+          "ms": 3121.889667,
+          "open_phase": "fts_integrity_check"
+        },
+        {
+          "ms": 6009.491,
+          "open_phase": "verify_events_including_fts"
+        },
+        {
+          "ms": 0.093792,
+          "open_phase": "metadata_and_resources"
+        },
+        {
+          "ms": 0.050291999999999996,
+          "open_phase": "centroid_migration_and_selection"
+        }
+      ],
+      "totals": [
+        {
+          "round": 0,
+          "total_ms": 18735.540542
+        },
+        {
+          "round": 1,
+          "total_ms": 11616.223791999999
+        },
+        {
+          "round": 2,
+          "total_ms": 11677.036375
+        }
+      ],
+      "phase_medians_ms": {
+        "centroid_migration_and_selection": 0.050291999999999996,
+        "configure_and_schema_migration": 0.505458,
+        "event_and_derived_row_validation": 2902.3224170000003,
+        "fts_integrity_check": 3079.2249580000002,
+        "metadata_and_resources": 0.097792,
+        "prepare_and_backup": 1236.108083,
+        "quick_check": 4427.974542,
+        "source_schema": 0.5674589999999999,
+        "verify_events_including_fts": 5988.0945
+      }
+    },
+    "candidate": {
+      "phases": [
+        {
+          "ms": 2.18775,
+          "open_phase": "source_schema"
+        },
+        {
+          "ms": 11531.405084,
+          "open_phase": "quick_check"
+        },
+        {
+          "ms": 1291.059959,
+          "open_phase": "prepare_and_backup"
+        },
+        {
+          "ms": 0.510708,
+          "open_phase": "configure_and_schema_migration"
+        },
+        {
+          "ms": 2507.0277920000003,
+          "open_phase": "event_and_derived_row_validation"
+        },
+        {
+          "ms": 3341.435708,
+          "open_phase": "fts_integrity_check"
+        },
+        {
+          "ms": 5848.564042,
+          "open_phase": "verify_events_including_fts"
+        },
+        {
+          "ms": 0.168209,
+          "open_phase": "metadata_and_resources"
+        },
+        {
+          "ms": 0.058542000000000004,
+          "open_phase": "centroid_migration_and_selection"
+        },
+        {
+          "ms": 0.5499590000000001,
+          "open_phase": "source_schema"
+        },
+        {
+          "ms": 4853.293,
+          "open_phase": "quick_check"
+        },
+        {
+          "ms": 1313.782833,
+          "open_phase": "prepare_and_backup"
+        },
+        {
+          "ms": 0.5027919999999999,
+          "open_phase": "configure_and_schema_migration"
+        },
+        {
+          "ms": 2533.524875,
+          "open_phase": "event_and_derived_row_validation"
+        },
+        {
+          "ms": 3152.739167,
+          "open_phase": "fts_integrity_check"
+        },
+        {
+          "ms": 5686.362791,
+          "open_phase": "verify_events_including_fts"
+        },
+        {
+          "ms": 0.098875,
+          "open_phase": "metadata_and_resources"
+        },
+        {
+          "ms": 0.051208000000000004,
+          "open_phase": "centroid_migration_and_selection"
+        },
+        {
+          "ms": 0.6352909999999999,
+          "open_phase": "source_schema"
+        },
+        {
+          "ms": 4825.396542,
+          "open_phase": "quick_check"
+        },
+        {
+          "ms": 1353.251917,
+          "open_phase": "prepare_and_backup"
+        },
+        {
+          "ms": 0.528709,
+          "open_phase": "configure_and_schema_migration"
+        },
+        {
+          "ms": 2526.440167,
+          "open_phase": "event_and_derived_row_validation"
+        },
+        {
+          "ms": 3277.445625,
+          "open_phase": "fts_integrity_check"
+        },
+        {
+          "ms": 5803.981541,
+          "open_phase": "verify_events_including_fts"
+        },
+        {
+          "ms": 0.112167,
+          "open_phase": "metadata_and_resources"
+        },
+        {
+          "ms": 0.056542,
+          "open_phase": "centroid_migration_and_selection"
+        }
+      ],
+      "totals": [
+        {
+          "round": 0,
+          "total_ms": 18677.087959
+        },
+        {
+          "round": 1,
+          "total_ms": 11859.281833000001
+        },
+        {
+          "round": 2,
+          "total_ms": 11986.626666
+        }
+      ],
+      "phase_medians_ms": {
+        "centroid_migration_and_selection": 0.056542,
+        "configure_and_schema_migration": 0.510708,
+        "event_and_derived_row_validation": 2526.440167,
+        "fts_integrity_check": 3277.445625,
+        "metadata_and_resources": 0.112167,
+        "prepare_and_backup": 1313.782833,
+        "quick_check": 4853.293,
+        "source_schema": 0.6352909999999999,
+        "verify_events_including_fts": 5803.981541
+      }
+    }
+  },
+  "initial_eight_summary": {
+    "baseline": {
+      "median_ms": 12217.524646002857,
+      "min_ms": 12057.597665996582,
+      "max_ms": 12955.803750002815,
+      "runs": 4
+    },
+    "candidate": {
+      "median_ms": 11515.854208500969,
+      "min_ms": 11333.488333002606,
+      "max_ms": 11831.808375005494,
+      "runs": 4
+    },
+    "time_reduction_percent": 5.743147305468712,
+    "saved_ms": 701.670437501889
+  },
+  "confirmation_reason": "Later standalone profiles had slower integrity phases, so one extra ABBA block checked the end-to-end result under current conditions."
+}

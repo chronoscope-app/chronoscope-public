@@ -43,8 +43,10 @@ const amountLabels: Record<string, string> = {
 
 interface Model {
   options: DisplayOptions;
+  showGrabHandles?: boolean;
 }
 interface Actions {
+  grabHandles?: (shown: boolean) => void | Promise<void>;
   measurement: () => void;
   display: (options: DisplayOptions) => Promise<void>;
   preview: (options: DisplayOptions) => void;
@@ -111,6 +113,14 @@ export class ViewsPanel {
     });
     host.addEventListener("change", (event) => {
       const input = event.target as HTMLInputElement;
+      if (input.id === "display-grab-handles") {
+        this.model.showGrabHandles = input.checked;
+        const shown = input.checked;
+        this.queue(async () => {
+          await this.actions.grabHandles?.(shown);
+        });
+        return;
+      }
       if (input.dataset.amount) {
         if (this.previewDirty) {
           this.previewDirty = false;
@@ -244,9 +254,9 @@ export class ViewsPanel {
           : key === "auto" || key === "density"
             ? "cluster"
             : key;
-      return `<section class="view-effect" data-tooltip="${description}"><label class="check-row"><input id="display-${key === "heatmap" ? "heat" : key}" type="checkbox" data-effect="${key}" data-tooltip="${description}" aria-description="${description}" ${enabled ? "checked" : ""}><span class="view-effect-name">${label}</span> <span class="view-effect-description">${description}</span></label><label class="view-amount named-amount"><span>${amountLabels[key]}</span><output>${amountText(amountKey, amount)}</output><input type="range" min="0" max="100" step="1" data-tooltip="${description}" aria-description="${description}" data-amount="${amountKey}" value="${Math.round(amount)}" aria-label="${amountLabels[key]}" aria-valuetext="${amountText(amountKey, amount)}"></label></section>`;
+      return `<section class="view-effect" data-tooltip="${description}"><label class="check-row"><input id="display-${key === "heatmap" ? "heat" : key}" type="checkbox" data-effect="${key}" data-tooltip="${description}" aria-description="${description}" ${enabled ? "checked" : ""}><span class="view-effect-name">${label}</span> <span class="view-effect-description">${description}</span></label><label class="view-amount named-amount"><span>${amountLabels[key]}</span><output>${amountText(amountKey, amount)}</output><input type="range" min="0" max="100" step="1" data-tooltip="${description}" aria-description="${description}" data-amount="${amountKey}" value="${Math.round(amount)}" ${enabled ? "" : "disabled"} aria-label="${amountLabels[key]}" aria-valuetext="${amountText(amountKey, amount)}"></label></section>`;
     };
-    this.host.innerHTML = `<div class="views-controls"><div class="section-head"><h3>Views</h3><button data-views-action="saved">Saved views…</button></div><button class="secondary" data-views-action="measurement">Color by value…</button><h3 class="view-subheading">Display layers</h3><label class="check-row"><input id="display-centroids" type="checkbox" data-effect="centroids" ${o.show_centroids ? "checked" : ""}> Polygon centroid markers and tracks</label>${effect("points", "Events", o.show_points, (o.point_scale - 0.4) / 0.026, "Marker size; exact rows stay in the table.")}${effect("tracks", "Tracks", o.show_tracks, o.track_opacity * 100, "Lines connecting records of the same entity.")}${effect("trails", "Stems", o.show_trails, o.trail_opacity * 100, "Lines from events down to the map.")}${effect("auto", "Clustering", !o.bloom && (o.mode === "auto" || o.mode === "clusters"), (o.cluster_pixels - 8) / 1.2, "Combines nearby events of the same entity; retains colors and tracks.")}${effect("density", "Density cells", !o.bloom && o.mode === "density", (o.cluster_pixels - 8) / 1.2, "More uses larger count cells.")}${effect("heatmap", "Heat", o.mode === "heatmap", heatAmount(o.heat_radius), "More increases kernel smoothing and overlap.")}${effect("bloom", "Bloom", o.bloom, bloomAmount(o), "More widens the ground glow and increases brightness.")}<details id="display-advanced" ${this.openAdvanced ? "open" : ""}><summary>Advanced parameters</summary><form id="views-advanced-form" novalidate><label class="field">Representation<select id="display-mode">${["auto", "points", "clusters", "density", "heatmap"].map((mode) => `<option ${o.mode === mode ? "selected" : ""}>${mode}</option>`).join("")}</select></label>${[
+    this.host.innerHTML = `<div class="views-controls"><div class="section-head"><button data-views-action="saved">Saved views…</button></div><button class="secondary" data-views-action="measurement">Color by value…</button><h3 class="view-subheading">Time view controls</h3><label class="check-row"><input id="display-grab-handles" type="checkbox" ${model.showGrabHandles !== false ? "checked" : ""}> Grab spheres</label><p class="description">Drag the top sphere to move the vertical axis; edge spheres rotate the view.</p><h3 class="view-subheading">Display layers</h3><label class="check-row"><input id="display-centroids" type="checkbox" data-effect="centroids" ${o.show_centroids ? "checked" : ""}> Polygon centroid markers and tracks</label>${effect("points", "Events", o.show_points, (o.point_scale - 0.4) / 0.026, "Marker size; exact rows stay in the table.")}${effect("tracks", "Tracks", o.show_tracks, o.track_opacity * 100, "Lines connecting records of the same entity.")}${effect("trails", "Stems", o.show_trails, o.trail_opacity * 100, "Lines from events down to the map.")}${effect("auto", "Clustering", !o.bloom && (o.mode === "auto" || o.mode === "clusters"), (o.cluster_pixels - 8) / 1.2, "Combines nearby events of the same entity; retains colors and tracks.")}${effect("density", "Density cells", !o.bloom && o.mode === "density", (o.cluster_pixels - 8) / 1.2, "More uses larger count cells.")}${effect("heatmap", "Heat", o.mode === "heatmap", heatAmount(o.heat_radius), "More increases kernel smoothing and overlap.")}${effect("bloom", "Bloom", o.bloom, bloomAmount(o), "More widens the ground glow and increases brightness.")}<details id="display-advanced" ${this.openAdvanced ? "open" : ""}><summary>Advanced parameters</summary><form id="views-advanced-form" novalidate><label class="field">Representation<select id="display-mode">${["auto", "points", "clusters", "density", "heatmap"].map((mode) => `<option ${o.mode === mode ? "selected" : ""}>${mode}</option>`).join("")}</select></label>${[
       ["spacing", "Cluster spacing / px", o.cluster_pixels, 8, 128],
       [
         "time",

@@ -99,6 +99,20 @@ try {
   await page.click("#open");
   await page.waitForSelector("#review-import");
   assert.equal(await page.locator("#import-sheet option").count(), 1);
+  assert.equal(
+    await page.locator("#import-dialog > footer #import-target-layer").count(),
+    1,
+  );
+  assert.match(
+    await page.locator("#import-destination-summary").innerText(),
+    /Replace Event dataset/,
+  );
+  await page.check("#append-import");
+  assert.match(
+    await page.locator("#import-destination-summary").innerText(),
+    /Append/,
+  );
+  await page.uncheck("#append-import");
   await page.locator("#import-advanced summary").click();
   await page.locator("#default-entity").fill("Fallback");
   await page.click("#preview-mapping");
@@ -194,7 +208,31 @@ try {
   };
   const closeResults = () =>
     page.getByRole("button", { name: "Close analysis results" }).click();
-  await analyze("profile");
+  await analyze("profile", async () => {
+    assert.match(
+      await page.locator("#analysis-selected-count").innerText(),
+      /3 selected/,
+    );
+    await page.uncheck('[data-analysis-field][value="entity"]');
+    assert.match(
+      await page.locator("#analysis-selected-count").innerText(),
+      /2 selected/,
+    );
+    await page.check('[data-analysis-field][value="entity"]');
+  });
+  assert.equal(
+    await page.locator("#analytics-dialog th").first().innerText(),
+    "Field",
+  );
+  const timeRow = page
+    .locator("#analytics-dialog tbody tr")
+    .filter({ has: page.getByRole("cell", { name: "Time", exact: true }) });
+  assert.match(await timeRow.innerText(), /2026-10-.* UTC/);
+  assert.equal(await timeRow.locator('td[title^="Raw sum:"]').innerText(), "—");
+  assert.equal(
+    await timeRow.locator('td[title^="Raw variance_population:"]').innerText(),
+    "—",
+  );
   await page.screenshot({ path: path.join(out, "profile-result.png") });
   await closeResults();
   await analyze("duplicates");
@@ -286,6 +324,9 @@ try {
   report.checks.push(
     "Extracted map dialogs discover a local WMTS service, save a server, add its layer, and persist edited opacity",
   );
+
+  await page.locator("#preferences-tab-maps[aria-selected=true]").waitFor();
+  await page.keyboard.press("Escape");
 
   for (const viewport of [
     { width: 1440, height: 1000 },

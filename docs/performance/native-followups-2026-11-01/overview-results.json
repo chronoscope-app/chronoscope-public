@@ -1,0 +1,276 @@
+{
+  "baseline_commit": "35ce870",
+  "candidate": "numeric native-column empty predicates",
+  "native": {
+    "baseline": [
+      {
+        "binary_sha256": "cb499d1e608e268b79cc8e6a88718c3dab358c2b823380a1c68e837ba22b6e57",
+        "graphics": {
+          "framebuffer": [
+            1479,
+            1338
+          ],
+          "renderer": "Apple GPU",
+          "resolutionScale": 1.5,
+          "vendor": "Apple Inc.",
+          "version": "WebGL 2.0"
+        },
+        "filter_ms": [
+          1081.8924159975722,
+          1091.8657500005793,
+          1080.3903339983663,
+          1089.3852500012144,
+          1089.9766250004177,
+          1107.2791249971488
+        ],
+        "adjacent_ms": [
+          1087.1147090001614,
+          1090.654416999314,
+          657.2008750008536,
+          424.5345419985824,
+          337.3473340034252,
+          336.9704580036341
+        ],
+        "pan_ms": [
+          1077.6978339999914,
+          1450.7563750012196,
+          1500.6097500008764
+        ],
+        "zoom_ms": [
+          1453.6083749990212,
+          1616.3760000054026
+        ],
+        "render_errors": 0,
+        "context_recoveries": 0
+      },
+      {
+        "binary_sha256": "cb499d1e608e268b79cc8e6a88718c3dab358c2b823380a1c68e837ba22b6e57",
+        "graphics": {
+          "framebuffer": [
+            1479,
+            1338
+          ],
+          "renderer": "Apple GPU",
+          "resolutionScale": 1.5,
+          "vendor": "Apple Inc.",
+          "version": "WebGL 2.0"
+        },
+        "filter_ms": [
+          1086.9780420034658,
+          1097.9210839941516,
+          1084.435166005278,
+          1093.077457997424,
+          1108.9280829983181,
+          1109.237791999476
+        ],
+        "adjacent_ms": [
+          1089.8372500014375,
+          1106.2597919953987,
+          669.1472910024459,
+          421.4111250039423,
+          320.49587499932386,
+          320.2719159962726
+        ],
+        "pan_ms": [
+          1523.8114579988178,
+          1467.104625000502,
+          1635.8085419997224
+        ],
+        "zoom_ms": [
+          1638.7256669986527,
+          1469.8594590008724
+        ],
+        "render_errors": 0,
+        "context_recoveries": 0
+      }
+    ],
+    "candidate": [
+      {
+        "binary_sha256": "ea9bd6334833447a352d931ea897c1d46c0838d4dfca6d796656e190a6bf0200",
+        "graphics": {
+          "framebuffer": [
+            1479,
+            1338
+          ],
+          "renderer": "Apple GPU",
+          "resolutionScale": 1.5,
+          "vendor": "Apple Inc.",
+          "version": "WebGL 2.0"
+        },
+        "filter_ms": [
+          1036.1043750017416,
+          1037.9262080023182,
+          1035.2755409985548,
+          1038.1896670005517,
+          1028.8568750038394,
+          1050.0694169968483
+        ],
+        "adjacent_ms": [
+          1025.4437500043423,
+          1044.577250002476,
+          608.6617079999996,
+          389.80870800151024,
+          335.8367500040913,
+          324.42020799499005
+        ],
+        "pan_ms": [
+          1571.3630839964026,
+          1420.8129580001696,
+          1585.9204169973964
+        ],
+        "zoom_ms": [
+          1604.6869999991031,
+          1420.7800000003772
+        ],
+        "render_errors": 0,
+        "context_recoveries": 0
+      },
+      {
+        "binary_sha256": "ea9bd6334833447a352d931ea897c1d46c0838d4dfca6d796656e190a6bf0200",
+        "graphics": {
+          "framebuffer": [
+            1479,
+            1338
+          ],
+          "renderer": "Apple GPU",
+          "resolutionScale": 1.5,
+          "vendor": "Apple Inc.",
+          "version": "WebGL 2.0"
+        },
+        "filter_ms": [
+          1035.4587909969268,
+          1048.679291998269,
+          1042.3174590032431,
+          1040.8084590017097,
+          1058.7419169969507,
+          1068.0027909984346
+        ],
+        "adjacent_ms": [
+          1038.1289579963777,
+          1054.410041004303,
+          605.5258749984205,
+          391.38783299858915,
+          323.7315000005765,
+          339.05583299929276
+        ],
+        "pan_ms": [
+          1588.3312500009197,
+          888.9888749981765,
+          1591.1530000012135
+        ],
+        "zoom_ms": [
+          1437.2769170004176,
+          1570.9154159994796
+        ],
+        "render_errors": 0,
+        "context_recoveries": 0
+      }
+    ]
+  },
+  "profile": {
+    "baseline": {
+      "summary": [
+        130.48725,
+        139.163667,
+        140.79525,
+        148.46241700000002,
+        150.19062499999998,
+        157.656208
+      ],
+      "display": [
+        212.216125,
+        206.76025,
+        202.104,
+        197.840792,
+        192.17208399999998,
+        186.520667
+      ],
+      "located_order_and_sample": [
+        119.180917,
+        125.42,
+        130.845125,
+        137.765667,
+        144.05558299999998,
+        149.51475
+      ],
+      "inference": [
+        68.729792,
+        73.96175000000001,
+        82.659875,
+        87.76008300000001,
+        91.042166,
+        96.319
+      ]
+    },
+    "candidate": {
+      "summary": [
+        130.1775,
+        138.913125,
+        142.657916,
+        148.570917,
+        154.830375,
+        159.751125
+      ],
+      "display": [
+        214.506875,
+        210.639125,
+        205.000042,
+        200.550458,
+        195.524417,
+        189.764083
+      ],
+      "located_order_and_sample": [
+        98.4635,
+        104.664917,
+        110.263167,
+        115.56533300000001,
+        121.472375,
+        127.913125
+      ],
+      "inference": [
+        37.099292,
+        42.437208,
+        49.135791999999995,
+        54.556167,
+        59.729166,
+        64.740958
+      ]
+    }
+  },
+  "packets": {
+    "summaries_identical": true,
+    "summary_count": 23,
+    "packet_sections_identical": true,
+    "packet_section_count": 89,
+    "summary_sha256": "d630c251237ad93bb2d97403cf1605b59904711c84e251aa25fc4d42ed87c2e5",
+    "packet_sha256": "1f5b6cc32547d66f00fca5bd6b5680837b1c876652b2a3d7b06243c4ffcdf890"
+  },
+  "limitations": [
+    "Two sequential native passes per variant, uncontrolled OS cache; small changes do not establish general tail latency.",
+    "Native command-to-ready includes MCP transport and 100 ms stability.",
+    "SQL profiling is opt-in, has overhead and includes cursor processing; normal builds do not enable tracing."
+  ],
+  "native_filter_round_medians_ms": {
+    "baseline": [
+      1089.680937500816,
+      1095.4992709957878
+    ],
+    "candidate": [
+      1037.0152915020299,
+      1045.498375500756
+    ]
+  },
+  "native_filter_result": {
+    "baseline_ms": 1092.590104248302,
+    "candidate_ms": 1041.256833501393,
+    "reduction_percent": 4.698310056745947
+  },
+  "tests_passed": 192,
+  "source_sha256": {
+    "src/store.rs": "fb0ba19e1e4e5b4e322a252591fc7444fb03441aae37aa2f6cca432a2fcbaf52",
+    "src/diagnostics.rs": "12f683858c34ff9048cc37cd6c4feeccd9348265556c1f9970ab016bc4deea71",
+    "tests/numeric_empty.rs": "6f55f9de1b898f7a90c82fcdc79d4150ddd474e177154b36d0c881a31fadd23a",
+    "examples/profile_overview.rs": "1969620c330ee3043eedaee6a7264708cbb176b29e641311f7eb83583e83c540",
+    "Cargo.toml": "5b720fa1cc7032303e2d6aa61effb11cabbb955837373ce14ab7f2b5c88567a8"
+  }
+}

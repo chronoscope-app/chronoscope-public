@@ -1,13 +1,19 @@
 import "./preferences-layout.css";
-export type PreferencesSection = "general" | "workspace" | "display" | "agents";
+export type PreferencesSection =
+  "general" | "workspace" | "display" | "maps" | "agents";
 const sections: [PreferencesSection, string][] = [
   ["general", "General"],
   ["workspace", "Workspace"],
   ["display", "Display"],
+  ["maps", "Maps"],
   ["agents", "Agent access"],
 ];
-export function preferencesLayout(content: Record<PreferencesSection, string>) {
-  return `<div class="preferences-body"><nav class="preferences-nav" role="tablist" aria-label="Preference categories" aria-orientation="vertical">${sections.map(([id, label]) => `<button type="button" role="tab" id="preferences-tab-${id}" aria-controls="preferences-panel-${id}" aria-selected="false" tabindex="-1">${label}</button>`).join("")}</nav><div class="preferences-panels">${sections.map(([id, label]) => `<section id="preferences-panel-${id}" role="tabpanel" aria-labelledby="preferences-tab-${id}" tabindex="0" hidden><h3>${label}</h3>${content[id]}</section>`).join("")}</div></div>`;
+export function preferencesLayout(
+  content: Record<Exclude<PreferencesSection, "maps">, string> & {
+    maps?: string;
+  },
+) {
+  return `<div class="preferences-body"><nav class="preferences-nav" role="tablist" aria-label="Preference categories" aria-orientation="vertical">${sections.map(([id, label]) => `<button type="button" role="tab" id="preferences-tab-${id}" aria-controls="preferences-panel-${id}" aria-selected="false" tabindex="-1">${label}</button>`).join("")}</nav><div class="preferences-panels">${sections.map(([id, label]) => `<section id="preferences-panel-${id}" role="tabpanel" aria-labelledby="preferences-tab-${id}" tabindex="0" hidden><h3>${label}</h3>${content[id] ?? ""}</section>`).join("")}</div></div>`;
 }
 export function bindPreferencesLayout(
   root: HTMLElement,

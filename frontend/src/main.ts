@@ -1,3 +1,4 @@
+import { assistantName, assistantWording, bindAssistantWording, setAssistantWording } from "./assistant-wording";
 import type { SnapshotModel, SnapshotRequestIntent, SnapshotData, SnapshotApplication } from "./view-snapshot";
 import { SceneTransitions, type RestoreCommit } from "./scene-transitions";
 import { MeasurementLegend } from "./measurement-style";
@@ -56,7 +57,7 @@ import { SidebarFields } from "./sidebar-fields";
 import { PatternsPanel } from "./patterns-panel";
 import { ViewsPanel } from "./views-panel";
 import "./style.css";
-import { guide, shortcuts } from "./help";
+import { guide, shortcutGroups } from "./help";
 import { installTooltips } from "./tooltips";
 import { call, chooseFile, native } from "./bridge";
 import { SpaceTimeView } from "./view";
@@ -170,8 +171,8 @@ function playbackIdentity(state: Snapshot) {
   const { start: _start, end: _end, ...filter } = state.filter;
   // Camera navigation is allowed; changes to evidence, styling or selection
   // return to the canonical renderer before the next snapshot is published.
-  const { mode, display, measurement, globe_time, globe_altitude, globe_time_scale, time_height, entity_colors, bounds } = state.scene;
-  const scene = { mode, display, measurement, globe_time, globe_altitude, globe_time_scale, time_height, entity_colors, bounds };
+  const { mode, display, measurement, globe_time, globe_altitude, time_altitude, globe_time_scale, time_height, entity_colors, bounds } = state.scene;
+  const scene = { mode, display, measurement, globe_time, globe_altitude, time_altitude, globe_time_scale, time_height, entity_colors, bounds };
   return JSON.stringify([state.workspace_id, state.count, filter, scene,
     state.filter.selected_only || state.selection_limited ? [state.selected,state.selected_count] : null,
     state.layers.map(({ visible: _visible, ...layer }) => layer), state.preferences]);
@@ -182,7 +183,7 @@ function endSmoothPlayback(reason = "Ready") {
   view.endResidentPlayback();
   graphicsStatus = reason;
 }
-function hasTimeElevation() { return mode==="space-time" || (mode==="globe" && view.globeTime); }
+function hasTimeElevation() { return !view.physicalAltitude && (mode==="space-time" || (mode==="globe" && view.globeTime)); }
 function residentWindow() {
   if (!snapshot) return;
   const filter=filterIntent.desired(snapshot.filter),[lo,hi]=snapshot.time_bounds;
@@ -293,10 +294,10 @@ let timeScrubbing = false;
 let timeScrubGeneration = 0;
 let timeScrubCommit = -Infinity;
 $("#app").innerHTML = `
-<header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Map servers">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open SI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button><button type="button" class="icon renderer-status" id="backend" aria-label="Reset map" title="Reset map"></button></div><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
+<header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Maps">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open AI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button><button type="button" class="icon renderer-status" id="backend" aria-label="Reset map" title="Reset map"></button></div><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
 <main class="workspace"><aside class="sidebar"><section class="sidebar-pinned" id="search-section" aria-label="Search and selection"><input id="search" placeholder="Search events…" aria-label="Search events"><button id="reset-filters">Reset filters</button><div class="selection-tools" id="selection-tools"><div class="selection-summary"><strong id="pinned-selection-count" role="status">0 selected</strong><button id="clear" aria-label="Clear selection">Clear</button></div><div class="selection-actions"><button class="secondary" id="select-all">Select visible</button><label class="check-row"><input type="checkbox" id="selected-only" aria-label="Selected events only"> Show only</label></div></div></section><div class="sidebar-scroll"><details open class="sidebar-facet" id="entity-section"><summary><span>Entities</span><select id="entity-field" aria-label="Entity list field" title="Group the list by another column; source track identities stay unchanged"><option value="entity">Entity</option></select></summary><div class="facet-sort" role="group" aria-label="Sort entities"><button id="entity-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="entity-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div class="facet-controls"><input id="entity-search" placeholder="Find an entity…" aria-label="Find entity"><button id="all-entities">Enable all</button></div><div id="entities"></div><div class="facet-footer"><small id="entity-list-count"></small><button id="entity-show-all">Show all</button></div></details><details open class="sidebar-facet" id="category-section"><summary><span>Categories</span><select id="category-field" aria-label="Category list field" title="Group the list by another column"><option value="category">Category</option></select></summary><div class="facet-sort" role="group" aria-label="Sort categories"><button id="category-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="category-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div id="categories"></div><div class="facet-footer"><small id="category-list-count"></small><button id="category-show-all">Show all</button></div></details><div class="divider"></div><details id="time-section"><summary>Exact time range</summary><label class="field">Start / UTC<input id="exact-start" placeholder="Unbounded"></label><label class="field">End / UTC<input id="exact-end" placeholder="Unbounded"></label><button id="exact-apply" class="secondary">Apply range</button></details><details id="rules-section"><summary>Attribute rules</summary><label class="field">Field<input id="rule-field" placeholder="value, confidence, category…"></label><select id="rule-op"><option>Contains</option><option>Equals</option><option>NotEquals</option><option>Greater</option><option>Less</option><option>IsEmpty</option></select><label class="field">Value<input id="rule-value"></label><button id="add-rule" class="secondary">Add AND rule</button><div id="rules"></div></details><details id="bounds-section"><summary>Geographic bounds</summary><label class="field">West, South, East, North<input id="bounds" placeholder="-80,43,-79,44"></label><button id="apply-bounds" class="secondary">Apply region</button></details><section id="layers-section"><div class="section-head"><span class="caps">Layers</span></div><div id="layer-list"></div><div class="source-foot">WGS84 · UTC</div></section></div></aside>
 <section class="center"><div class="scene-container" id="scene"><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel">${attributeTableMarkup}</section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
-<aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="Super Intelligence chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
+<aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="AI chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
 const timeRail = new TimeRail($(".workspace"), {
   icon,
   apply: async (start, end) => {
@@ -331,7 +332,7 @@ const paneLayout = installWorkspaceLayout($(".workspace"), {
     ["charts", "Charts", "chart"],
     ["inspect", "Inspect", "inspect"],
     ["patterns", "Patterns", "patterns"],
-    ["si", "SI chat", "chat"],
+    ["si", "AI chat", "chat"],
   ].map(([id, label, glyph]) => ({
     id,
     label,
@@ -477,7 +478,17 @@ void view.ready.then(() => {
   navigation.update();
   view.controls.addEventListener("change", () => navigation.update());
 });
+async function persistTimeControls() {
+  const scene = captureScene(), workspace = snapshot.workspace_id;
+  const result = await syncScene(scene);
+  if (snapshot.workspace_id === workspace && result.revision >= snapshot.revision) {
+    snapshot.revision = result.revision;
+    snapshot.scene = scene;
+  }
+}
+view.onAxisMove = () => { void persistTimeControls().catch(error => toast(String(error), true)); };
 const viewsPanel = new ViewsPanel($("#inspector-content"), {
+  grabHandles: async (shown) => { view.setTimeControls(shown); await persistTimeControls(); },
   measurement: measurementSettings,
   display: applyDisplay,
   preview: (options) => {
@@ -702,7 +713,13 @@ function bounds(points: { lat: number; lon: number }[]): Bounds {
 let nativeIconThemeWork: Promise<void> = Promise.resolve();
 let lastNativeIconPreference: string | null | undefined;
 function theme() {
-  $("#si").textContent = preferences.ai_toolbar_si ? "SI" : "AI";
+  setAssistantWording(!!preferences.ai_toolbar_si);
+  $("#si").textContent = assistantName();
+  $("#si").setAttribute("aria-label", `${assistantName()} chat`);
+  $("#si").dataset.tooltip = `Open ${assistantName()} chat. Service and tool settings are in the chat gear. Choose AI or SI in Preferences → General.`;
+  $("#si").setAttribute("aria-description", $("#si").dataset.tooltip!);
+  siChat.setNaming(!!preferences.ai_toolbar_si);
+  paneLayout.inspector.setSectionLabel("si", `${assistantName()} chat`);
   const t =
     preferences.theme === "system"
       ? matchMedia("(prefers-color-scheme:dark)").matches
@@ -753,7 +770,7 @@ function snapshotApplication(model: SnapshotModel, data: SnapshotData | null, re
   const epoch = state.time_bounds[0] + (state.time_bounds[1] - state.time_bounds[0]) * focus;
   return Object.freeze({ data, measurement: state.scene.measurement ? Object.freeze({ ...state.scene.measurement }) : null,
     display: Object.freeze({ ...displayOptions }), displayPacket: model.display !== undefined ? model.display || null : data ? null : view.displayLayer.packet || null,
-    globeTime: !!state.scene.globe_time, globeAltitude: !!state.scene.globe_altitude, globeTimeScale: state.scene.globe_time_scale ?? view.globeTimeScale, timeHeight: view.timeHeight,
+    globeTime: !!state.scene.globe_time, globeAltitude: !!state.scene.globe_altitude, timeAltitude: !!state.scene.time_altitude, globeTimeScale: state.scene.globe_time_scale ?? view.globeTimeScale, timeHeight: view.timeHeight,
     theme: view.theme, selection: Object.freeze([...(view.residentPlaybackActive && !state.selection_limited ? state.selected : model.selected as string[])]), rebuild,
     focus: hi > lo ? (epoch - lo) / (hi - lo) : 0, awaitEffects: !view.playback });
 }
@@ -1604,6 +1621,7 @@ async function inspector(preloaded?: any, parentGeneration = serial) {
   }
   if (tab === "views") {
     viewsPanel.render({
+      showGrabHandles: view.showGrabHandles,
       options: displayOptions,
     });
     return;
@@ -1651,7 +1669,7 @@ async function inspector(preloaded?: any, parentGeneration = serial) {
       tags: e.tags.join(", "),
     },
   );
-  el.innerHTML = `<div class="caps">Event ${esc(e.id)}</div><h3 style="font-size:22px;font-weight:400;margin:8px 0">${esc(e.entity)}</h3><p class="mono muted" style="font-size:9px;margin-bottom:20px">${esc(e.source)} · row ${e.source_row}</p><div class="notice mono">${esc(locationLabel(e))}${e.location_kind === "polygon-centroid" ? "<br><small>Derived polygon surface centroid · not a measured point. Full boundary retained; a centroid can lie outside a concave polygon.</small>" : ""}${e.lat == null && !e.geometry_wkt ? "<br><small>△ A triangle may show an estimated position between located events on this trail. The actual location remains unknown. Unbracketed events are available in the table and timeline.</small>" : ""}${e.mgrs_precision == null ? "" : `<br><small>${10 ** (5 - e.mgrs_precision)} m MGRS grid · marker at square centre</small>`}</div>${[
+  el.innerHTML = `<div class="event-editor"><div class="event-editor-body"><div class="caps">Event ${esc(e.id)}</div><h3 style="font-size:22px;font-weight:400;margin:8px 0">${esc(e.entity)}</h3><p class="mono muted" style="font-size:9px;margin-bottom:20px">${esc(e.source)} · row ${e.source_row}</p><div class="notice mono">${esc(locationLabel(e))}${e.location_kind === "polygon-centroid" ? "<br><small>Derived polygon surface centroid · not a measured point. Full boundary retained; a centroid can lie outside a concave polygon.</small>" : ""}${e.lat == null && !e.geometry_wkt ? "<br><small>△ A triangle may show an estimated position between located events on this trail. The actual location remains unknown. Unbracketed events are available in the table and timeline.</small>" : ""}${e.mgrs_precision == null ? "" : `<br><small>${10 ** (5 - e.mgrs_precision)} m MGRS grid · marker at square centre</small>`}</div>${[
     ["entity", "Entity", fields.entity],
     ["time", "Timestamp / UTC", fields.time],
     ["label", "Label", fields.label],
@@ -1666,14 +1684,14 @@ async function inspector(preloaded?: any, parentGeneration = serial) {
     )
     .join(
       "",
-    )}<label class="field">WKT geometry / WGS84 X Y<textarea id="edit-wkt" rows="3">${esc(fields.wkt)}</textarea></label><label class="field">Analyst note<textarea id="edit-note" rows="3">${esc(fields.note)}</textarea></label><label class="field">Tags<input id="edit-tags" value="${esc(fields.tags)}"></label><button id="suggest-tags" class="secondary">Suggest tags…</button><button id="apply-edit" class="primary">Apply changes</button><details><summary>Original source attributes</summary>${Object.entries(
+    )}<details ${fields.wkt ? "open" : ""}><summary>WKT geometry (optional)</summary><label class="field">WGS84 X Y<textarea id="edit-wkt" rows="2">${esc(fields.wkt)}</textarea></label></details><label class="field">Analyst note<textarea id="edit-note" rows="${fields.note ? 3 : 1}">${esc(fields.note)}</textarea></label><label class="field">Tags<input id="edit-tags" value="${esc(fields.tags)}"></label><button id="suggest-tags" class="secondary">Suggest tags…</button><details><summary>Original source attributes</summary>${Object.entries(
     e.attrs,
   )
     .map(
       ([k, v]) =>
         `<div style="margin:9px 0"><small class="muted">${esc(k)}</small><p class="mono" style="margin-top:4px;overflow-wrap:anywhere">${esc(v)}</p></div>`,
     )
-    .join("")}</details><div class="divider"></div>${history()}`;
+    .join("")}</details><div class="divider"></div>${history()}</div><footer class="event-editor-footer"><button id="apply-edit" class="primary">Apply changes</button></footer></div>`;
   if (caret) {
     const field = document.getElementById(caret.id) as
       HTMLInputElement | HTMLTextAreaElement | null;
@@ -1963,7 +1981,7 @@ const mapSettings = createMapSettings({
   currentMapZoom,
 });
 const mapMenu = (...args: Parameters<typeof mapSettings.mapMenu>) =>
-  mapSettings.mapMenu(...args);
+  args.length ? mapSettings.mapMenu(...args) : settings("maps");
 const mapLayerMenu = () => mapSettings.mapLayerMenu();
 
 let mapLoadGeneration = 0;
@@ -2487,9 +2505,12 @@ async function loadTerrain(folder = false) {
 }
 function terrainMenu() {
   modal(
-    `${head("Terrain")}<p class="description">Balanced world terrain is bundled for offline use at approximately 1.9 km spacing. You can unload it, restore it, or replace it with your own DTED file or folder.</p><div class="row"><button id="restore-balanced" class="secondary">Restore bundled terrain</button><button id="dted-file" class="primary">${icon("terrain")} Load DTED file</button><button id="dted-folder" class="secondary">${icon("folder")} Load folder</button></div><div class="notice">Standard WGS84 DT0/DT1/DT2. Voids remain holes. Choose the source vertical datum explicitly. EGM96 uses the bundled NGA geoid grid to convert mean-sea-level heights to ellipsoid heights for display. Unknown MSL remains undisplayed; source elevations are never modified.</div><label class="field">Source vertical datum<select id="terrain-datum" ${preferences.terrain_builtin ? "disabled" : ""}><option value="unresolved-msl" ${preferences.terrain_vertical_datum === "unresolved-msl" ? "selected" : ""}>Unresolved mean sea level (do not display)</option><option value="egm96" ${preferences.terrain_vertical_datum === "egm96" ? "selected" : ""}>EGM96 mean sea level</option><option value="ellipsoid" ${preferences.terrain_vertical_datum === "ellipsoid" ? "selected" : ""}>WGS84 ellipsoid heights</option></select></label><label class="field">Vertical exaggeration / ×<input id="exaggeration" type="range" min=".1" max="20" step=".1" value="${preferences.terrain_exaggeration}"></label><footer><button data-close>Close</button><span class="spacer"></span><button id="remove-terrain">Unload terrain</button><button id="apply-terrain" class="primary">Apply exaggeration</button></footer>`,
+    `${head("Terrain")}<p class="notice" role="status">Currently loaded: ${terrainInfo ? preferences.terrain_builtin ? "Balanced world terrain · 1.9 km spacing" : `DTED · ${terrainInfo.tiles.length} tile${terrainInfo.tiles.length === 1 ? "" : "s"}` : "No terrain"}</p><p class="description">Balanced world terrain is bundled for offline use at approximately 1.9 km spacing. You can unload it, restore it, or replace it with your own DTED file or folder.</p><div class="row"><button id="restore-balanced" class="secondary">Restore bundled terrain</button><button id="dted-file" class="primary">${icon("terrain")} Load DTED file</button><button id="dted-folder" class="secondary">${icon("folder")} Load folder</button></div><div class="notice">Standard WGS84 DT0/DT1/DT2. Voids remain holes. Choose the source vertical datum explicitly. EGM96 uses the bundled NGA geoid grid to convert mean-sea-level heights to ellipsoid heights for display. Unknown MSL remains undisplayed; source elevations are never modified.</div><label class="field">Source vertical datum<select id="terrain-datum" ${preferences.terrain_builtin ? "disabled" : ""}><option value="unresolved-msl" ${preferences.terrain_vertical_datum === "unresolved-msl" ? "selected" : ""}>Unresolved mean sea level (do not display)</option><option value="egm96" ${preferences.terrain_vertical_datum === "egm96" ? "selected" : ""}>EGM96 mean sea level</option><option value="ellipsoid" ${preferences.terrain_vertical_datum === "ellipsoid" ? "selected" : ""}>WGS84 ellipsoid heights</option></select>${preferences.terrain_builtin ? '<small>Bundled terrain uses the known EGM96 datum.</small>' : ""}</label><label class="field">Vertical exaggeration <output id="exaggeration-value" for="exaggeration">${preferences.terrain_exaggeration.toFixed(1)}×</output><input id="exaggeration" type="range" min=".1" max="20" step=".1" value="${preferences.terrain_exaggeration}"></label><footer><button data-close>Close</button><span class="spacer"></span><button id="remove-terrain">Unload terrain</button><button id="apply-terrain" class="primary">Apply exaggeration</button></footer>`,
     true,
   );
+  $("#exaggeration").addEventListener("input", () => {
+    $("#exaggeration-value").textContent = `${Number(input("#exaggeration")).toFixed(1)}×`;
+  });
   on("#remove-terrain", async () => {
     await call("terrain_unload");
     preferences = await call("preferences");
@@ -2608,6 +2629,7 @@ const siHooks = {
   error: (error: unknown) => toast(String(error), true),
 };
 const siChat = new SIChat($("#si-chat"), {
+  useSI: () => !!preferences?.ai_toolbar_si,
   ...siHooks,
   close: async () => {
     siChat.hide();
@@ -2644,12 +2666,12 @@ void workspaceHost({
 async function siConnection() {
   const connection = await call("si_status");
   modal(
-    `${head("SI settings")}<div class="si-settings-content"><section aria-labelledby="si-service-heading"><h3 id="si-service-heading">SI service</h3><p class="description">Connect an OpenAI-compatible model with tool support to power SI chat. Requested workspace data and tool results are sent to this service. The Tools section below connects other apps and manages which tools SI may use.</p>
+    `${head(`${assistantName(true)} settings`)}<div class="si-settings-content"><section aria-labelledby="si-service-heading"><h3 id="si-service-heading">AI service</h3><p class="description">Connect an OpenAI-compatible model with tool support to power AI chat. Requested workspace data and tool results are sent to this service. The Tools section below connects other apps and manages which tools AI may use.</p>
     <label class="field">Service URL<input id="si-url" value="${esc(connection.url || "https://api.openai.com/v1")}" placeholder="https://api.openai.com/v1"></label>
     <label class="field">Model<input id="si-model" value="${esc(connection.model)}" placeholder="Model with tool support"></label>
     <label class="field">API key<input id="si-key" type="password" autocomplete="off" placeholder="Session only; optional if the service allows it"></label>
     <p class="description">The key and chat stay in memory until disconnect or app exit. URL/model settings stay on this computer. File access is optional and managed separately in chat permissions.</p>
-    <details id="si-certificate-settings"><summary>Client certificate · ${connection.client_certificate ? (connection.client_certificate.kind === "disabled" ? "disabled" : "specific identity") : connection.automatic_client_certificate ? "automatic" : "no override"}</summary><p class="description">${connection.automatic_client_certificate ? "If this HTTPS service requests a user certificate, the OS selects an eligible identity and your card provider handles PIN prompts." : "Linux protected services need compatible PKCS#11 middleware and an explicit certificate identity. Automatic card selection is unavailable."}</p><label class="field">Certificate authentication<select id="si-certificate-mode"><option value="automatic" ${!connection.client_certificate ? "selected" : ""}>${connection.automatic_client_certificate ? "Automatic (default)" : "No override (default)"}</option><option value="identity" ${connection.client_certificate && connection.client_certificate.kind !== "disabled" ? "selected" : ""}>Specific identity</option><option value="disabled" ${connection.client_certificate?.kind === "disabled" ? "selected" : ""}>No client certificate</option></select></label><label class="field" id="si-certificate-identity-field">${esc(connection.client_certificate_kind === "pkcs11" ? "PKCS#11 certificate URI (type=cert)" : connection.client_certificate_kind === "windows-store" ? "CurrentUser\\MY\\ + certificate thumbprint" : "Keychain certificate subject name")}<input id="si-certificate-identity" value="${esc(connection.client_certificate?.identity || "")}" autocomplete="off" spellcheck="false"></label><p class="description">Certificate choices apply only to this HTTPS server and stay on this computer. PINs and private keys stay with the OS/card provider. Reconnect to forget this SI session’s certificate choices.</p></details>
+    <details id="si-certificate-settings"><summary>Client certificate · ${connection.client_certificate ? (connection.client_certificate.kind === "disabled" ? "disabled" : "specific identity") : connection.automatic_client_certificate ? "automatic" : "no override"}</summary><p class="description">${connection.automatic_client_certificate ? "If this HTTPS service requests a user certificate, the OS selects an eligible identity and your card provider handles PIN prompts." : "Linux protected services need compatible PKCS#11 middleware and an explicit certificate identity. Automatic card selection is unavailable."}</p><label class="field">Certificate authentication<select id="si-certificate-mode"><option value="automatic" ${!connection.client_certificate ? "selected" : ""}>${connection.automatic_client_certificate ? "Automatic (default)" : "No override (default)"}</option><option value="identity" ${connection.client_certificate && connection.client_certificate.kind !== "disabled" ? "selected" : ""}>Specific identity</option><option value="disabled" ${connection.client_certificate?.kind === "disabled" ? "selected" : ""}>No client certificate</option></select></label><label class="field" id="si-certificate-identity-field">${esc(connection.client_certificate_kind === "pkcs11" ? "PKCS#11 certificate URI (type=cert)" : connection.client_certificate_kind === "windows-store" ? "CurrentUser\\MY\\ + certificate thumbprint" : "Keychain certificate subject name")}<input id="si-certificate-identity" value="${esc(connection.client_certificate?.identity || "")}" autocomplete="off" spellcheck="false"></label><p class="description">Certificate choices apply only to this HTTPS server and stay on this computer. PINs and private keys stay with the OS/card provider. Reconnect to forget this AI session’s certificate choices.</p></details>
     <div class="row si-service-actions"><button id="si-disconnect" ${connection.connected ? "" : "disabled"}>Disconnect</button><span class="spacer"></span><button id="si-connect" class="primary" ${connection.running ? "disabled" : ""}>Connect</button></div></section><section aria-labelledby="si-tools-heading"><h3 id="si-tools-heading">Tools</h3><div id="si-tools-settings"></div></section></div><footer><span class="spacer"></span><button data-close>Done</button></footer>`,
   );
   const updateCertificate = () => {
@@ -2678,7 +2700,8 @@ async function siConnection() {
   dialog.classList.add("si-settings-dialog");
   dialog.setAttribute("role", "dialog");
   dialog.setAttribute("aria-modal", "true");
-  dialog.setAttribute("aria-label", "SI settings");
+  dialog.setAttribute("aria-label", `${assistantName(true)} settings`);
+  bindAssistantWording(dialog)();
   void mcpConnections(
     dialog.querySelector<HTMLElement>("#si-tools-settings")!,
     (error) => toast(String(error), true),
@@ -2772,6 +2795,7 @@ async function aggregateEvents() {
 }
 on("#aggregate-events", aggregateEvents);
 const settings = createPreferencesController({
+  mountMaps: (panel, navigation) => mapSettings.mount(panel, navigation),
   preferences: () => preferences,
   budget: () => renderBudget,
   $,
@@ -2785,6 +2809,7 @@ const settings = createPreferencesController({
   updateChecks: () => releaseUpdates.automatic,
   setUpdateChecks: enabled => releaseUpdates.setAutomatic(enabled),
   save: async (nextPreferences, nextBudget) => {
+    const {resourcesChanged} = preferenceEffects(preferences, nextPreferences);
     preferences = nextPreferences;
     await call("preferences", { preferences });
     const budgetChanged = nextBudget !== renderBudget;
@@ -2792,7 +2817,7 @@ const settings = createPreferencesController({
     if (budgetChanged) await call("view_set", { render_budget: renderBudget });
     closeModal();
     theme();
-    await refresh(budgetChanged, false);
+    await refresh(budgetChanged, resourcesChanged);
   },
 });
 
@@ -3060,7 +3085,7 @@ function updateNavigationControls() {
       ? "Drag to pan the flat map; scroll to zoom. Time filtering remains in the timeline."
       : "Drag to move; middle-drag rotates horizontally and tilts vertically; right-drag rotates horizontally and zooms vertically about a fixed focus; wheel zooms. Shift-click adds selection.";
   const spaceTime = mode === "space-time";
-  const altitude = mode === "globe" && view.globeAltitude;
+  const altitude = view.physicalAltitude;
   const time = spaceTime ? view.timeHeight > 0 : view.globeTime;
   $("#time-height").hidden = !spaceTime;
   $("#time-height-label").hidden = !spaceTime;
@@ -3075,8 +3100,8 @@ function updateNavigationControls() {
   $("#height-mode-time").tabIndex = altitude ? -1 : 0;
   $("#height-mode-altitude").tabIndex = altitude ? 0 : -1;
   $("#height-mode-altitude").setAttribute("aria-checked", String(altitude));
-  ($("#height-mode-altitude") as HTMLButtonElement).disabled = mode !== "globe";
-  $("#height-mode-altitude").title = mode === "globe" ? "Use imported physical altitude" : "Altitude is available in Globe";
+  ($("#height-mode-altitude") as HTMLButtonElement).disabled = mode === "map";
+  $("#height-mode-altitude").title = "Use imported physical altitude in Time or Globe";
   $("#time-elevation-title").textContent = "Vertical display";
   $("#time-elevation").setAttribute("aria-label", "Time height and altitude");
   $("#time-elevation").classList.toggle("active", time || altitude);
@@ -3090,7 +3115,7 @@ function updateNavigationControls() {
     : !time ? "Ground" : spaceTime ? `${view.timeHeight.toFixed(1)}×` : formatHeight(height);
   $("#height-mode-note").textContent = altitude
     ? `Physical height in metres; no time scaling. ${summary.known.toLocaleString()} loaded points. ${summary.approximate ? "Reported heights are approximate because their vertical reference is unknown. " : ""}Points without a usable altitude are omitted. Ground display effects are paused.`
-    : "Time Height raises Events by timestamp. Altitude uses imported physical heights in Globe. Set Time Height to zero to place Events on the ground.";
+    : "Time Height raises Events by timestamp. Altitude uses imported physical heights in Time and Globe. Set Time Height to zero to place Events on the ground.";
   ($(mode === "globe" ? "#globe-time-height" : "#time-height") as HTMLInputElement).setAttribute("aria-valuetext", altitude ? `${formatHeight(height)} (Time Height only)` : $("#time-elevation-value").textContent || "Ground");
 }
 const sceneTransitions = new SceneTransitions();
@@ -3310,10 +3335,13 @@ function captureScene(): Scene {
     table_descending: tables.tableDescending,
     table_column_offset: tables.tableColumnOffset,
     time_height: view.timeHeight,
+    time_axis_anchor: view.timeAxisAnchor,
+    show_grab_handles: view.showGrabHandles,
     playback_fade: view.playbackFade,
     playback_fade_amount: view.playbackFadeAmount,
     globe_time: view.globeTime,
     globe_altitude: view.globeAltitude,
+    time_altitude: view.timeAltitude,
     globe_time_scale: view.globeTimeScale,
     focus,
     bounds: overrideBounds,
@@ -3366,11 +3394,13 @@ async function applyRestoredScene(scene: SceneState) {
     view.restoreViewStates(scene.view_states || {});
     renderBudget = scene.render_budget === 100000 ? 100000 : 20000;
     view.timeHeight = scene.time_height ?? 2.8;
+    view.setTimeControls(scene.show_grab_handles !== false, scene.time_axis_anchor ?? null);
     view.setPlaybackFade(scene.playback_fade_amount ?? (scene.playback_fade === false ? 0 : 50));
     updatePlaybackFadeControl();
     view.setGlobeTimeScale(scene.globe_time_scale ?? 1);
     view.setGlobeTime(!!scene.globe_time);
     view.setGlobeAltitude(!!scene.globe_altitude);
+    view.setTimeAltitude(!!scene.time_altitude);
     focus = scene.focus ?? 0.45;
     $("#time-height").setAttribute("value", String(view.timeHeight));
     ($("#time-height") as HTMLInputElement).value = String(view.timeHeight);
@@ -3682,10 +3712,11 @@ $("#globe-time-height").addEventListener("input", () => {
 });
 for (const kind of ["time", "altitude"] as const) {
   $("#height-mode-" + kind).addEventListener("click", () => {
-    if (!snapshot || restoringScene || mode === "map" || (kind === "altitude" && mode !== "globe")) return;
-    if (mode === "space-time" || view.globeAltitude === (kind === "altitude")) return;
+    if (!snapshot || restoringScene || mode === "map") return;
+    if ((mode === "space-time" ? view.timeAltitude : view.globeAltitude) === (kind === "altitude")) return;
     const workspace = snapshot.workspace_id;
-    if (kind === "altitude") view.setGlobeAltitude(true);
+    if (mode === "space-time") view.setTimeAltitude(kind === "altitude");
+    else if (kind === "altitude") view.setGlobeAltitude(true);
     else view.setGlobeTime(true);
     updateNavigationControls();
     const desired = Object.freeze({ ...captureScene() });
@@ -4075,7 +4106,7 @@ async function checkForUpdates() {
 async function demoDatasets() {
   const { demos } = await call("demo_catalog");
   const picker = modal(
-    `${head("Demo datasets")}<p class="description">Explore observations, predicted orbits and launch history with saved views. All ${demos.length} datasets are bundled for offline use.</p><div class="demo-grid">${demos
+    `${head("Demo datasets")}<p class="description">Explore flights, storms, earthquakes and predicted orbits with saved views. All ${demos.length} datasets are bundled for offline use.</p><div class="demo-grid">${demos
       .map(
         (demo) =>
           `<section class="demo-card"><div class="demo-previews">${demo.previews
@@ -4133,7 +4164,7 @@ async function demoDatasets() {
 }
 function showHelp(keysOnly = false) {
   modal(
-    `${head(keysOnly ? "Keyboard shortcuts" : "Chronoscope user guide")}<p class="description">Local, offline documentation · version ${appVersion}. Ctrl shortcuts use Cmd on macOS. Text fields keep standard editing shortcuts.</p>${keysOnly ? "" : '<input id="help-search" aria-label="Search help topics" placeholder="Search help…">'}<div class="help-guide">${keysOnly ? "" : guide.map(([title, body], i) => `<details class="help-topic" ${i === 0 ? "open" : ""}><summary>${title}</summary>${body}</details>`).join("")}<section><h3>Keyboard shortcuts</h3><table>${shortcuts.map(([key, text]) => `<tr><td class="mono">${key}</td><td>${text}</td></tr>`).join("")}</table></section></div>`,
+    `${head(keysOnly ? "Keyboard shortcuts" : "Chronoscope user guide")}<p class="description">Local, offline documentation · version ${appVersion}. Text fields keep standard editing shortcuts.</p>${keysOnly ? "" : '<input id="help-search" aria-label="Search help topics" placeholder="Search help…">'}<div class="help-guide">${keysOnly ? "" : guide.map(([title, body], i) => `<details class="help-topic" ${i === 0 ? "open" : ""}><summary>${assistantWording(title)}</summary>${["AI chat", "AI tools and outbound MCP connections", "Apple platform integration"].includes(title) ? assistantWording(body) : body}</details>`).join("")}${keysOnly ? "" : "<h3>Keyboard shortcuts</h3>"}${shortcutGroups().map(([title, rows]) => `<section><h3>${title}</h3><table>${rows.map(([key, text]) => `<tr><td class="mono">${key}</td><td>${text}</td></tr>`).join("")}</table></section>`).join("")}</div>`,
   );
   if (!keysOnly)
     $("#help-search").addEventListener("input", () => {

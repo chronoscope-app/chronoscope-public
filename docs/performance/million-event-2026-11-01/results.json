@@ -1,0 +1,887 @@
+{
+  "baseline_commit": "ef5efe5850747e16f5e29f99ad24411a5b1c9e1b",
+  "branch": "experiment/million-event-performance",
+  "rows": 1000000,
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+  "ui": {
+    "baseline": {
+      "passed": true,
+      "import_seconds": 22.506449333999996,
+      "refresh_round_medians_ms": [
+        309.8999999985099,
+        311.1000000014901
+      ],
+      "filter_round_medians_ms": [
+        950.5,
+        934.8999999985099
+      ],
+      "animated_samples": [
+        {
+          "kind": "focus",
+          "round": 0,
+          "fps": 60.04293573057834,
+          "frame_p95_ms": 18.599999999998545
+        },
+        {
+          "kind": "orbit",
+          "round": 0,
+          "fps": 60.00268168409767,
+          "frame_p95_ms": 18.30000000000291
+        },
+        {
+          "kind": "playback",
+          "round": 0,
+          "fps": 60.000670398551875,
+          "frame_p95_ms": 18.30000000000291
+        },
+        {
+          "kind": "focus",
+          "round": 1,
+          "fps": 60.004693104488645,
+          "frame_p95_ms": 18.599999999998545
+        },
+        {
+          "kind": "orbit",
+          "round": 1,
+          "fps": 59.96047298428962,
+          "frame_p95_ms": 18.400000000001455
+        },
+        {
+          "kind": "playback",
+          "round": 1,
+          "fps": 59.96047298428962,
+          "frame_p95_ms": 18.599999999998545
+        }
+      ],
+      "retained_js_heap_bytes": 44055560,
+      "public_requests": 0,
+      "errors": [],
+      "exact_query_ms": [
+        3.336750000002212,
+        3.280124999990221,
+        2.1837090000044554,
+        1.9199999999982538,
+        1.7895830000052229,
+        1.718124999999418,
+        1.684917000005953,
+        1.6953749999956926,
+        1.6145410000026459,
+        1.7552080000023125,
+        1.8514580000046408,
+        1.671333999998751,
+        1.5273750000051223,
+        1.495959000007133,
+        1.6351250000006985
+      ],
+      "scene_evidence": [
+        {
+          "budget": 20000,
+          "count": 1000000,
+          "visible": 1000000,
+          "points": 20000,
+          "packetCount": 1000000,
+          "cellSum": 1000000,
+          "bins": 1280
+        }
+      ]
+    },
+    "experiment": {
+      "passed": true,
+      "import_seconds": 22.43525575,
+      "refresh_round_medians_ms": [
+        70.19999999552965,
+        66.29999999701977
+      ],
+      "filter_round_medians_ms": [
+        898.7999999970198,
+        867.7000000029802
+      ],
+      "animated_samples": [
+        {
+          "kind": "focus",
+          "round": 0,
+          "fps": 60.000670398551875,
+          "frame_p95_ms": 18.599999999998545
+        },
+        {
+          "kind": "orbit",
+          "round": 0,
+          "fps": 59.95846452736648,
+          "frame_p95_ms": 18.599999999998545
+        },
+        {
+          "kind": "playback",
+          "round": 0,
+          "fps": 60.016764459346184,
+          "frame_p95_ms": 18.599999999998545
+        },
+        {
+          "kind": "focus",
+          "round": 1,
+          "fps": 59.998659247838155,
+          "frame_p95_ms": 18.60000000000582
+        },
+        {
+          "kind": "orbit",
+          "round": 1,
+          "fps": 59.998659247838155,
+          "frame_p95_ms": 18.5
+        },
+        {
+          "kind": "playback",
+          "round": 1,
+          "fps": 60.00670465973852,
+          "frame_p95_ms": 18.5
+        }
+      ],
+      "retained_js_heap_bytes": 44573964,
+      "public_requests": 0,
+      "errors": [],
+      "exact_query_ms": [
+        4.045583999992232,
+        1.0342079999973066,
+        0.6458329999877606,
+        0.4984589999949094,
+        0.44283400000131223,
+        0.4425840000039898,
+        0.37970900000073016,
+        0.43979099999705795,
+        0.4309590000048047,
+        0.3750829999917187,
+        0.3662919999915175,
+        0.40854200000467245,
+        0.370374999998603,
+        0.39150000001245644,
+        0.39233299999614246
+      ],
+      "scene_evidence": [
+        {
+          "budget": 20000,
+          "count": 1000000,
+          "visible": 1000000,
+          "points": 20000,
+          "packetCount": 1000000,
+          "cellSum": 1000000,
+          "bins": 1280
+        }
+      ]
+    }
+  },
+  "summary": {
+    "refresh_speedup": 4.549450549698872,
+    "refresh_reduction_percent": 78.01932367269735
+  },
+  "backend_probe": {
+    "baseline": [
+      {
+        "command": "open",
+        "ms": 11789.139291999163,
+        "args": {
+          "path": ".qa/million-event-performance/million.chronoscope"
+        }
+      },
+      {
+        "command": "snapshot",
+        "ms": 899.8395830058143,
+        "args": {
+          "include_statistics": false
+        }
+      },
+      {
+        "command": "render_data",
+        "ms": 1252.4599169992143,
+        "args": {
+          "max_points": 20000,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "render_geometries",
+        "ms": 811.7741669993848,
+        "args": {
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1136.3904579993687,
+        "args": {
+          "version": 1,
+          "generation": "0",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "snapshot",
+        "ms": 0.3052500032936223,
+        "args": {
+          "include_statistics": false
+        }
+      },
+      {
+        "command": "render_data",
+        "ms": 52.700457999890205,
+        "args": {
+          "max_points": 20000,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "render_geometries",
+        "ms": 232.62391699972795,
+        "args": {
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 285.10629200172843,
+        "args": {
+          "version": 1,
+          "generation": "1",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "snapshot",
+        "ms": 0.2884999994421378,
+        "args": {
+          "include_statistics": false
+        }
+      },
+      {
+        "command": "render_data",
+        "ms": 53.44366699864622,
+        "args": {
+          "max_points": 20000,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "render_geometries",
+        "ms": 233.4855000008247,
+        "args": {
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 285.3119169958518,
+        "args": {
+          "version": 1,
+          "generation": "2",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.3565419974620454,
+        "args": {
+          "filter": {
+            "start": 1735689600,
+            "end": 1735839600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1880.0612919949344,
+        "args": {
+          "version": 1,
+          "generation": "10",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.27970799419563264,
+        "args": {
+          "filter": {
+            "start": 1735789600,
+            "end": 1735939600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1926.8641250018845,
+        "args": {
+          "version": 1,
+          "generation": "11",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.2804589967126958,
+        "args": {
+          "filter": {
+            "start": 1735889600,
+            "end": 1736039600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1997.1607499974198,
+        "args": {
+          "version": 1,
+          "generation": "12",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.2695840012165718,
+        "args": {
+          "filter": {
+            "start": 1735989600,
+            "end": 1736139600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 2034.4318330026,
+        "args": {
+          "version": 1,
+          "generation": "13",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.27520800358615816,
+        "args": {
+          "filter": {
+            "start": 1736089600,
+            "end": 1736239600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 2085.6950000015786,
+        "args": {
+          "version": 1,
+          "generation": "14",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.28737499815179035,
+        "args": {
+          "filter": {
+            "start": 1736189600,
+            "end": 1736339600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1958.9896670004237,
+        "args": {
+          "version": 1,
+          "generation": "15",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      }
+    ],
+    "experiment": [
+      {
+        "command": "open",
+        "ms": 15446.194083000591,
+        "args": {
+          "path": ".qa/million-event-performance/million.chronoscope"
+        }
+      },
+      {
+        "command": "snapshot",
+        "ms": 910.5797500014887,
+        "args": {
+          "include_statistics": false
+        }
+      },
+      {
+        "command": "render_data",
+        "ms": 1257.5770830007968,
+        "args": {
+          "max_points": 20000,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "render_geometries",
+        "ms": 0.16716700338292867,
+        "args": {
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 915.4842080024537,
+        "args": {
+          "version": 1,
+          "generation": "0",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "snapshot",
+        "ms": 0.27300000510877,
+        "args": {
+          "include_statistics": false
+        }
+      },
+      {
+        "command": "render_data",
+        "ms": 52.54745799902594,
+        "args": {
+          "max_points": 20000,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "render_geometries",
+        "ms": 0.17808299890020862,
+        "args": {
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 52.718416998686735,
+        "args": {
+          "version": 1,
+          "generation": "1",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "snapshot",
+        "ms": 0.251124998612795,
+        "args": {
+          "include_statistics": false
+        }
+      },
+      {
+        "command": "render_data",
+        "ms": 52.287083002738655,
+        "args": {
+          "max_points": 20000,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "render_geometries",
+        "ms": 0.17004199617076665,
+        "args": {
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ]
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 52.63504200411262,
+        "args": {
+          "version": 1,
+          "generation": "2",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.34212500031571835,
+        "args": {
+          "filter": {
+            "start": 1735689600,
+            "end": 1735839600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1403.296958997089,
+        "args": {
+          "version": 1,
+          "generation": "10",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.24783299886621535,
+        "args": {
+          "filter": {
+            "start": 1735789600,
+            "end": 1735939600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1459.3532080034493,
+        "args": {
+          "version": 1,
+          "generation": "11",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.23504199634771794,
+        "args": {
+          "filter": {
+            "start": 1735889600,
+            "end": 1736039600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1507.7935000008438,
+        "args": {
+          "version": 1,
+          "generation": "12",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.2633340045576915,
+        "args": {
+          "filter": {
+            "start": 1735989600,
+            "end": 1736139600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1569.6595839981455,
+        "args": {
+          "version": 1,
+          "generation": "13",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.2576670012786053,
+        "args": {
+          "filter": {
+            "start": 1736089600,
+            "end": 1736239600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1626.0561250019236,
+        "args": {
+          "version": 1,
+          "generation": "14",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      },
+      {
+        "command": "filter",
+        "ms": 0.258250001934357,
+        "args": {
+          "filter": {
+            "start": 1736189600,
+            "end": 1736339600
+          }
+        }
+      },
+      {
+        "command": "view_snapshot_v1",
+        "ms": 1527.5108749992796,
+        "args": {
+          "version": 1,
+          "generation": "15",
+          "include_render": true,
+          "bounds": [
+            -180,
+            -90,
+            180,
+            90
+          ],
+          "max_points": 20000
+        }
+      }
+    ]
+  },
+  "storage_baseline": {
+    "source": "ef5efe5850747e16f5e29f99ad24411a5b1c9e1b",
+    "binary_sha256": "4f3b1a1f642cdfdbf198cef75316aa1e557dc811f56e177cf8c59b38535657a1",
+    "rows": 1000000,
+    "runs": [
+      {
+        "repeat": 1,
+        "seconds": 135.62510458299948,
+        "returncode": 0,
+        "maxrss_bytes": 777535488,
+        "metrics": {
+          "bounds_s": 4.4291e-05,
+          "copy_into_s": 40.134026167,
+          "db_bytes": 2404155392,
+          "ingest_s": 32.064784458,
+          "numeric_order_s": 0.137496583,
+          "numeric_plan": [
+            "SCAN e USING INDEX events_time",
+            "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+          ],
+          "numeric_vm_steps": 1814,
+          "open_database_s": 17.242362541,
+          "preview_s": 0.389492125,
+          "render_100k_s": 0.966835459,
+          "rows": 1000000,
+          "save_database_s": 20.076048167,
+          "selective_order_s": 0.511664708,
+          "snapshot_compact_first_s": 0.017686542,
+          "snapshot_full_after_compact_s": 2.669082875,
+          "sqlite_version": "3.50.2",
+          "summary_full_s": 3.284322167
+        },
+        "stderr": ""
+      },
+      {
+        "repeat": 2,
+        "seconds": 129.5231216250031,
+        "returncode": 0,
+        "maxrss_bytes": 777535488,
+        "metrics": {
+          "bounds_s": 2.9667e-05,
+          "copy_into_s": 36.808996,
+          "db_bytes": 2404155392,
+          "ingest_s": 31.944793625,
+          "numeric_order_s": 0.12658375,
+          "numeric_plan": [
+            "SCAN e USING INDEX events_time",
+            "USE TEMP B-TREE FOR LAST TERM OF ORDER BY"
+          ],
+          "numeric_vm_steps": 1814,
+          "open_database_s": 17.39565225,
+          "preview_s": 0.412772791,
+          "render_100k_s": 0.949142708,
+          "rows": 1000000,
+          "save_database_s": 18.744507417,
+          "selective_order_s": 0.2858215,
+          "snapshot_compact_first_s": 0.01668575,
+          "snapshot_full_after_compact_s": 2.646232584,
+          "sqlite_version": "3.50.2",
+          "summary_full_s": 2.620496667
+        },
+        "stderr": ""
+      }
+    ]
+  },
+  "binaries": {
+    "baseline": "472d9d949dd8e3449d6346b30d535a807fea32ced184c39d5e2fe33a6aa7a7e3",
+    "experiment": "768b35c9c0da4a74627fb9757a9713904aea9edc4c66a6a80fd02b10d9f8dc40"
+  },
+  "limits": [
+    "Local Chromium/Metal frontend measurement, not native WKWebView certification.",
+    "Two rounds per browser variant; uncontrolled OS page cache, no statistical tail-latency claim.",
+    "Exactly one million stored Events; 20,000 representative markers; synthetic trajectories with tracks, stems and bloom.",
+    "No changes to ingest/save/open performance are claimed.",
+    "Fast path applies only when the workspace contains no stored WKT geometry; mixed geometry retains the existing path."
+  ],
+  "verification": {
+    "rust_tests_passed": 119,
+    "suite_counts": [
+      75,
+      1,
+      19,
+      2,
+      2,
+      1,
+      9,
+      1,
+      9
+    ],
+    "rust_command": "cargo test --locked --lib --test million_refresh --test wkt_wmts --test display_snapshot --test native_snapshot_publication --test performance_display --test performance_sql --test performance_regressions --test hardening",
+    "node_syntax_check": true,
+    "reusable_driver_million_event_run": "passed"
+  }
+}

@@ -67,7 +67,7 @@ export class PatternsPanel {
   }
   render(snapshot: Snapshot, manual: string, manualFindings: string) {
     if (!this.visible) {
-      this.host.innerHTML = `<section class="pattern-scan"><h3>Patterns</h3><div class="pattern-scan-actions"><button type="button" class="primary" id="find-patterns">Find patterns</button><button type="button" id="cancel-pattern-scan" hidden>Cancel</button><select id="pattern-scan-scope" aria-label="Pattern scan scope"><option value="visible">Filtered records</option><option value="selected">Selected filtered records</option></select></div><p id="pattern-scan-status" role="status" aria-live="polite"></p><details id="pattern-scan-options"><summary>Scan options</summary><label class="field">Minimum numeric records<input id="pattern-minimum" type="number" min="4" max="100000" value="${this.config.minimum_records}"></label><label class="field">Minimum relationship strength |r|<input id="pattern-correlation" type="number" min="0" max="1" step="0.05" value="${this.config.correlation_threshold}"></label><label class="field">Outlier fence / × IQR<input id="pattern-iqr" type="number" min="0.5" max="10" step="0.5" value="${this.config.outlier_multiplier}"></label><p class="muted">Fields: leave unchecked for automatic choices, or choose up to eight measurements.</p><div id="pattern-scan-fields" class="pattern-scan-fields"></div></details><div id="pattern-scan-results"></div></section><details id="pattern-manual"><summary>Spatial and custom analysis</summary>${manual}<div id="pattern-manual-findings"></div></details>`;
+      this.host.innerHTML = `<section class="pattern-scan"><h3>Patterns</h3><div class="pattern-scan-actions"><button type="button" class="primary" id="find-patterns">Find patterns</button><button type="button" id="cancel-pattern-scan" hidden>Cancel</button><select id="pattern-scan-scope" aria-label="Pattern scan scope"><option value="visible">Filtered Events</option><option value="selected">Selected Events within filters</option></select></div><p id="pattern-scan-status" role="status" aria-live="polite"></p><details id="pattern-scan-options"><summary>Scan options</summary><label class="field">Minimum numeric Events<input id="pattern-minimum" type="number" min="4" max="100000" value="${this.config.minimum_records}"></label><label class="field">Minimum relationship strength |r|<input id="pattern-correlation" type="number" min="0" max="1" step="0.05" value="${this.config.correlation_threshold}"></label><label class="field">Outlier fence / × IQR<input id="pattern-iqr" type="number" min="0.5" max="10" step="0.5" value="${this.config.outlier_multiplier}"></label><p class="muted">Fields: leave unchecked for automatic choices, or choose up to eight measurements.</p><div id="pattern-scan-fields" class="pattern-scan-fields"></div></details><div id="pattern-scan-results"></div></section><details id="pattern-manual"><summary>Spatial and custom analysis</summary>${manual}<div id="pattern-manual-findings"></div></details>`;
       (
         this.host.querySelector("#pattern-scan-scope") as HTMLSelectElement
       ).value = this.config.scope || "visible";
@@ -300,7 +300,7 @@ export class PatternsPanel {
       : stale
         ? "Data, scope, scan options or cached results changed. Press Find patterns to update."
         : this.result
-          ? `${this.result.report?.input_count.toLocaleString()} scoped records · ${this.result.report?.findings.length} candidates · cached on this computer`
+          ? `${this.result.report?.input_count.toLocaleString()} scoped Events · ${this.result.report?.findings.length} candidates · cached on this computer`
           : this.message;
     this.host
       .querySelectorAll<HTMLButtonElement>(
@@ -328,7 +328,7 @@ export class PatternsPanel {
     const signature = this.result!.scan_id;
     if (host.getAttribute("data-result") !== signature) {
       host.setAttribute("data-result", signature);
-      host.innerHTML = `<p class="pattern-scan-summary">${result.sampled ? "Sampled" : "All scoped"} records analyzed. ${result.inspected_fields.length} columns inspected; ${result.numeric_fields.length} varying numeric fields after duplicate checks.</p><details><summary>Methods and coverage</summary><p>Columns: ${esc(result.inspected_fields.map(fieldLabel).join(", "))}.</p><ul>${result.checks.map((v) => `<li>${esc(v)}</li>`).join("")}</ul>${result.profiles?.length ? `<div class="pattern-example-table"><table><thead><tr><th>Field</th><th>Numeric</th><th>Excluded numeric</th><th>Missing/blank</th></tr></thead><tbody>${(result.profiles as Record<string, unknown>[]).map((p) => `<tr><td>${esc(fieldLabel(String(p.field)))}</td><td>${esc(String(p.numeric_count))}</td><td>${esc(String(p.numeric_excluded))}</td><td>${esc(String(p.missing_or_blank_count))}</td></tr>`).join("")}</tbody></table></div>` : ""}${result.warnings.map((v) => `<p>${esc(v)}</p>`).join("")}</details>${statistical.length ? statistical.map((f) => this.card(f)).join("") : '<p class="notice">No statistical candidates met the screening rules in this scope. This does not establish that the data has no patterns.</p>'}${quality.length ? `<details class="pattern-data-quality"><summary>Data quality · ${quality.length} findings</summary>${quality.map((f) => this.card(f)).join("")}</details>` : ""}`;
+      host.innerHTML = `<p class="pattern-scan-summary">${result.sampled ? "Sampled" : "All scoped"} Events analyzed. ${result.inspected_fields.length} column${result.inspected_fields.length === 1 ? "" : "s"} inspected; ${result.numeric_fields.length} varying numeric field${result.numeric_fields.length === 1 ? "" : "s"} after duplicate checks.</p><details><summary>Methods and coverage</summary><p>Columns: ${esc(result.inspected_fields.map(fieldLabel).join(", "))}.</p><ul>${result.checks.map((v) => `<li>${esc(v)}</li>`).join("")}</ul>${result.profiles?.length ? `<div class="pattern-example-table"><table><thead><tr><th>Field</th><th>Numeric</th><th>Excluded numeric</th><th>Missing/blank</th></tr></thead><tbody>${(result.profiles as Record<string, unknown>[]).map((p) => `<tr><td>${esc(fieldLabel(String(p.field)))}</td><td>${esc(String(p.numeric_count))}</td><td>${esc(String(p.numeric_excluded))}</td><td>${esc(String(p.missing_or_blank_count))}</td></tr>`).join("")}</tbody></table></div>` : ""}${result.warnings.map((v) => `<p>${esc(v)}</p>`).join("")}</details>${statistical.length ? statistical.map((f) => this.card(f)).join("") : '<p class="notice">No statistical candidates met the screening rules in this scope. This does not establish that the data has no patterns.</p>'}${quality.length ? `<details class="pattern-data-quality"><summary>Data quality · ${quality.length} finding${quality.length === 1 ? "" : "s"}</summary>${quality.map((f) => this.card(f)).join("")}</details>` : ""}`;
     }
     this.drawStatus();
   }
@@ -354,21 +354,22 @@ export class PatternsPanel {
             : seconds >= 60
               ? [60, "minutes"]
               : [1, "seconds"];
-      return `${format(seconds / Number(unit))} ${label}`;
+      const amount = Number((seconds / Number(unit)).toFixed(1));
+      return `${format(amount)} ${amount === 1 ? String(label).replace(/s$/, "") : label}`;
     };
     const summary =
       f.kind === "periodicity"
-        ? `A candidate cycle of about ${duration(Number(metrics.period_seconds))} contributes ${format(Number(metrics.positive_frequency_power_fraction) * 100)}% of positive-frequency power.`
+        ? `A candidate cycle of about ${duration(Number(metrics.period_seconds))} contributes ${(Number(metrics.positive_frequency_power_fraction) * 100).toFixed(1)}% of positive-frequency power.`
         : f.kind === "gaps"
           ? `${format(f.count)} of ${format(f.denominator)} positive recording intervals exceed ${duration(Number(metrics.threshold_seconds))}.`
           : f.summary;
 
-    return `<article class="pattern-card" data-pattern-kind="${esc(f.kind)}"><h4>${esc(f.title)}</h4><p>${esc(summary)}</p><button type="button" data-pattern-evidence="${esc(f.id)}" title="Select every supporting source record and open its attribute table. Shift-click adds to selection.">Select supporting records</button><button type="button" class="secondary pattern-ai-action" data-pattern-explain="${esc(f.id)}">Explain result</button><details><summary>Method and examples</summary><p>${esc(f.method)}</p><dl>${Object.entries(
+    return `<article class="pattern-card" data-pattern-kind="${esc(f.kind)}"><h4>${esc(f.title)}</h4><p>${esc(summary)}</p><button type="button" data-pattern-evidence="${esc(f.id)}" title="Select every supporting source record and open its attribute table. Shift-click adds to selection.">Select supporting Events</button><button type="button" class="secondary pattern-ai-action" data-pattern-explain="${esc(f.id)}">Explain result</button><details><summary>Method and examples</summary><p>${esc(f.method)}</p><dl>${Object.entries(
       f.metrics as Record<string, unknown>,
     )
       .map(
         ([k, v]) =>
-          `<dt>${esc(k.replaceAll("_", " "))}</dt><dd>${esc(format(v))}</dd>`,
+          `<dt>${esc(k.replaceAll("_", " "))}</dt><dd>${esc(typeof v === "number" ? String(v) : format(v))}</dd>`,
       )
       .join(
         "",

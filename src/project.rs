@@ -131,6 +131,12 @@ pub struct SceneState {
     pub position: Option<[f64; 3]>,
     pub target: Option<[f64; 3]>,
     pub time_height: Option<f64>,
+    /// Normalized screen position of the Time-axis top; absent uses an inset default.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub time_axis_anchor: Option<[f64; 2]>,
+    /// Missing in older workspaces preserves the visible navigation handles.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub show_grab_handles: Option<bool>,
     /// None preserves the default fading playback of older workspaces.
     pub playback_fade: Option<bool>,
     /// 0 retains history; 1–100 shortens history and departure lifetime.
@@ -139,8 +145,10 @@ pub struct SceneState {
     pub playback_fade_amount: Option<u8>,
     /// Encode UTC event time as display elevation in Globe, never source altitude.
     pub globe_time: bool,
-    /// Physical Event altitude in Globe, mutually exclusive with time height.
+    /// Physical Event altitude in Globe, mutually exclusive with Globe time height.
     pub globe_altitude: bool,
+    /// Time view retains its own elevation choice while reusing physical-altitude rendering.
+    pub time_altitude: bool,
     /// Multiplier for the terrain-relative Globe time display (default 1).
     pub globe_time_scale: Option<f64>,
     pub camera_zoom: Option<f64>,
@@ -261,6 +269,11 @@ impl SceneState {
             || self
                 .time_height
                 .is_some_and(|v| !v.is_finite() || !(0. ..=5.).contains(&v))
+            || self.time_axis_anchor.is_some_and(|anchor| {
+                anchor
+                    .iter()
+                    .any(|v| !v.is_finite() || !(0. ..=1.).contains(v))
+            })
             || self.playback_fade_amount.is_some_and(|v| v > 100)
             || self
                 .globe_time_scale

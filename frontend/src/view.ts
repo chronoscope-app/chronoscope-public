@@ -102,6 +102,7 @@ type PickId =
   | { kind: "event" | "geometry"; id: string }
   | { kind: "cluster"; bin: DisplayBin }
   | { kind: "orbit"; side: string }
+  | { kind: "time-axis" }
   | { kind: "gis"; layer: string; id: string };
 type Glyph = PointPrimitive | Billboard;
 const safeColor = (name: string, theme: string) =>
@@ -135,6 +136,12 @@ export class SpaceTimeView {
   playbackHistorySpan = 0;
   globeTime = false;
   globeAltitude = false;
+  timeAltitude = false;
+  showGrabHandles = true;
+  timeAxisAnchor: [number, number] | null = null;
+  private axisTextMeasure?: CanvasRenderingContext2D | null;
+  private axisAltitudeRange?: { minimum: number; maximum: number };
+  private axisFrame?: {lon: number;lat: number;base: number;span: number;top: number};
   globeTimeScale = 1;
   exaggeration = 1;
   bounds: Bounds = [-122.47, 37.75, -122.36, 37.82];
@@ -181,6 +188,7 @@ export class SpaceTimeView {
   onClusters: (cells: DisplayCell[], add: boolean, ids: string[]) => void =
     () => {};
   onSceneChange: () => void = () => {};
+  onAxisMove: () => void = () => this.onSceneChange();
   onViewportChange: () => void = () => {};
   private glyphs!: PointPrimitiveCollection;
   private triangles!: BillboardCollection;
@@ -245,14 +253,33 @@ export class SpaceTimeView {
   get residentPlaybackActive() { return !!this.resident; }
   get smoothPlaybackActive() { return !!this.resident || this.smoothHeatmap; }
   get smoothHeatmapActive() { return this.smoothHeatmap; }
-  get residentEffectsActive() { return !!this.resident && !this.globeAltitude && (this.display.mode === "heatmap" || this.display.bloom); }
+  get residentEffectsActive() {
+    return (
+      !!this.resident &&
+      !this.physicalAltitude &&
+      (this.display.mode === "heatmap" || this.display.bloom)
+    );
+  }
   private canResidentGroundEffects() {
-    return !this.display.spatial_culling && !this.globeAltitude && (this.display.mode === "heatmap" || this.display.bloom);
+    return (
+      !this.display.spatial_culling &&
+      !this.physicalAltitude &&
+      (this.display.mode === "heatmap" || this.display.bloom)
+    );
   }
   canSmoothHeatmap() {
-    return !this.measurement && this.display.mode === "heatmap" && !this.display.bloom && !this.display.spatial_culling &&
-      !this.display.show_points && !this.display.show_tracks && !this.display.show_trails &&
-      !this.globeAltitude && !this.selected.size && !this.geometryFeatures.length;
+    return (
+      !this.measurement &&
+      this.display.mode === "heatmap" &&
+      !this.display.bloom &&
+      !this.display.spatial_culling &&
+      !this.display.show_points &&
+      !this.display.show_tracks &&
+      !this.display.show_trails &&
+      !this.physicalAltitude &&
+      !this.selected.size &&
+      !this.geometryFeatures.length
+    );
   }
   beginSmoothHeatmap() {
     this.endResidentPlayback(); this.smoothHeatmap = true;
@@ -265,71 +292,150 @@ export class SpaceTimeView {
     if (this.geometryFeatures.length) return "Geometry scenes use standard playback";
     return "";
   }
-  async beginResidentPlayback(points: Point[], names: string[], timeBounds: [number, number],
-    accept = () => true, revision?: number) {
+  async beginResidentPlayback(
+    points: Point[],
+    names: string[],
+    timeBounds: [number, number],
+    accept = () => true,
+    revision?: number,
+  ) {
     const reason = this.residentPlaybackReason();
     if (reason) throw Error(reason);
     const preparation = ++this.residentPreparation;
-    const valid = () => preparation === this.residentPreparation && !this.disposed && accept();
+    const valid = () =>
+      preparation === this.residentPreparation && !this.disposed && accept();
     await this.resources.prepareAltitude(points);
-    const drawable = points.filter(p => this.altitudeVisible(p));
+    const drawable = points.filter((p) => this.altitudeVisible(p));
     if (!drawable.length) return false;
-    const samples = this.terrain && this.mode !== "map" ? await this.resources.prepareGround(drawable,async coordinates => {
-      const first=coordinates[0];
-      const result=await call("terrain_sample",{longitude:first[0],latitude:first[1],coordinates,expected_revision:revision});
-      return result.elevations_m as (number|null)[];
-    },accept) : new Map<string,number>();
+    const samples =
+      this.terrain && this.mode !== "map"
+        ? await this.resources.prepareGround(
+            drawable,
+            async (coordinates) => {
+              const first = coordinates[0];
+              const result = await call("terrain_sample", {
+                longitude: first[0],
+                latitude: first[1],
+                coordinates,
+                expected_revision: revision,
+              });
+              return result.elevations_m as (number | null)[];
+            },
+            accept,
+          )
+        : new Map<string, number>();
     if (!valid()) return false;
     this.stopFades();
-    const ground=(p:Point) => this.position(p.lat,p.lon,undefined,true,samples.get(`${p.lat},${p.lon}`));
+    const ground = (p: Point) =>
+      this.position(
+        p.lat,
+        p.lon,
+        undefined,
+        true,
+        samples.get(`${p.lat},${p.lon}`),
+      );
     // CPU construction yields between pages. Freeze its target Time frame
     // instead of publishing temporary axis bounds while the old drawing shows.
-    const frame=this.mode === "space-time" ? timeBounds : [this.lo,this.hi];
-    const timeHeight=this.timeHeightMeters;
-    const elevated=this.mode!=="map" && (this.mode!=="globe" || this.globeTime);
-    const physicalAltitude=this.mode==="globe" && this.globeAltitude;
-    const position=(p:Point) => physicalAltitude ? this.pos(p) : Cartesian3.fromDegrees(p.lon,p.lat,
-      (samples.get(`${p.lat},${p.lon}`) ?? this.groundHeight(p.lat,p.lon))+2+
-      (elevated ? timeElevationFraction(p.time,frame[0],frame[1])*timeHeight : 0));
-    const west=drawable.reduce((n,p)=>Math.min(n,p.lon),Infinity), east=drawable.reduce((n,p)=>Math.max(n,p.lon),-Infinity);
+    const frame = this.mode === "space-time" ? timeBounds : [this.lo, this.hi];
+    const timeHeight = this.timeHeightMeters;
+    const elevated =
+      this.mode !== "map" && (this.mode !== "globe" || this.globeTime);
+    const physicalAltitude = this.physicalAltitude;
+    const position = (p: Point) =>
+      physicalAltitude
+        ? this.pos(p)
+        : Cartesian3.fromDegrees(
+            p.lon,
+            p.lat,
+            (samples.get(`${p.lat},${p.lon}`) ??
+              this.groundHeight(p.lat, p.lon)) +
+              2 +
+              (elevated
+                ? timeElevationFraction(p.time, frame[0], frame[1]) * timeHeight
+                : 0),
+          );
+    const west = drawable.reduce((n, p) => Math.min(n, p.lon), Infinity),
+      east = drawable.reduce((n, p) => Math.max(n, p.lon), -Infinity);
     // Compute prepared positions in the target Time frame without publishing
     // that frame while the old drawing is still visible or preparation cancels.
-    const candidate = new ResidentPlayback(this.scene, drawable, position, entity => safeColor(names[entity] || String(entity), this.theme), {
-      points: this.display.show_points, tracks: this.display.show_tracks,
-      pointScale: this.display.point_scale, trackOpacity: this.display.show_tracks ? this.display.track_opacity : this.display.trail_opacity,
-      gapSeconds: this.display.trail_gap_minutes * 60,
-      ground: this.display.show_trails && (this.mode === "space-time" || this.globeTime || this.globeAltitude) ? ground : undefined,
-      stemOpacity: (this.theme === "light" ? 0.4 : 0.15) * this.display.trail_opacity,
-      groundTracks: this.display.show_trails ? ground : undefined,
-      trailOpacity: this.display.trail_opacity,
-      curvedTracks: !!this.terrain || this.globeAltitude || east-west>120 || west < -170 || east>170,
-      maximumStep: this.terrain ? 1000 : 200000,
-    }, true);
+    const candidate = new ResidentPlayback(
+      this.scene,
+      drawable,
+      position,
+      (entity) => safeColor(names[entity] || String(entity), this.theme),
+      {
+        points: this.display.show_points,
+        tracks: this.display.show_tracks,
+        pointScale: this.display.point_scale,
+        trackOpacity: this.display.show_tracks
+          ? this.display.track_opacity
+          : this.display.trail_opacity,
+        gapSeconds: this.display.trail_gap_minutes * 60,
+        ground:
+          this.display.show_trails &&
+          (this.mode === "space-time" || this.globeTime || this.globeAltitude)
+            ? ground
+            : undefined,
+        stemOpacity:
+          (this.theme === "light" ? 0.4 : 0.15) * this.display.trail_opacity,
+        groundTracks: this.display.show_trails ? ground : undefined,
+        trailOpacity: this.display.trail_opacity,
+        curvedTracks:
+          !!this.terrain ||
+          this.physicalAltitude ||
+          east - west > 120 ||
+          west < -170 ||
+          east > 170,
+        maximumStep: this.terrain ? 1000 : 200000,
+      },
+      true,
+    );
     // Any subsequent scene or data rebuild invalidates this staged candidate.
     const generation = this.residentPreparation;
-    const candidateValid = () => generation === this.residentPreparation && !this.disposed && accept();
+    const candidateValid = () =>
+      generation === this.residentPreparation && !this.disposed && accept();
     this.pendingResident = candidate;
     try {
-      if (!await candidate.prepare(candidateValid, () => this.requestRender()) || !candidateValid()) {
-        candidate.destroy(); return false;
+      if (
+        !(await candidate.prepare(candidateValid, () =>
+          this.requestRender(),
+        )) ||
+        !candidateValid()
+      ) {
+        candidate.destroy();
+        return false;
       }
-    } catch (error) { candidate.destroy(); throw error; }
-    finally { if (this.pendingResident === candidate) this.pendingResident = undefined; }
+    } catch (error) {
+      candidate.destroy();
+      throw error;
+    } finally {
+      if (this.pendingResident === candidate) this.pendingResident = undefined;
+    }
     if (this.mode === "space-time") {
-      [this.lo,this.hi] = timeBounds;
+      [this.lo, this.hi] = timeBounds;
       this.rebuild(true);
     }
     this.endResidentPlayback();
     this.resident = candidate;
     this.residentNames = names;
-    this.residentSourcePoints = drawable.length === points.length ? undefined : points;
+    this.residentSourcePoints =
+      drawable.length === points.length ? undefined : points;
     candidate.setWindow(this.lo, this.hi);
-    this.residentTerrainSamples=samples.size;
-    this.residentRepresentationDirty=true;
-    if (this.residentEffectsActive) this.displayLayer.setOptimizedPlayback(true);
+    this.residentTerrainSamples = samples.size;
+    this.residentRepresentationDirty = true;
+    if (this.residentEffectsActive)
+      this.displayLayer.setOptimizedPlayback(true);
     this.selections.removeAll();
-    this.resident.setSelection([...this.selected],Color.fromCssColorString(this.theme === "light" ? "#7c4b00" : "#ffd27a"));
-    this.glyphs.show = this.triangles.show = this.arrivingPoints.show = this.arrivingTriangles.show = this.trails.show = false;
+    this.resident.setSelection(
+      [...this.selected],
+      Color.fromCssColorString(this.theme === "light" ? "#7c4b00" : "#ffd27a"),
+    );
+    this.glyphs.show =
+      this.triangles.show =
+      this.arrivingPoints.show =
+      this.arrivingTriangles.show =
+      this.trails.show =
+        false;
     if (this.stemsPrimitive) this.stemsPrimitive.show = false;
     this.requestRender();
     return true;
@@ -396,6 +502,7 @@ export class SpaceTimeView {
   private focusLines!: PolylineCollection;
   private axisLabels!: LabelCollection;
   private handles!: PointPrimitiveCollection;
+  private axisHandle!: PointPrimitiveCollection;
   private glyphById = new Map<string, Glyph>();
   private glyphOrder = new WeakMap<Glyph, number>();
   private pointById = new Map<string, Point>();
@@ -421,12 +528,18 @@ export class SpaceTimeView {
     box: boolean;
     add: boolean;
     orbit: boolean;
+    axisGrab?: Cartesian2;
     pointer: number;
     button: number;
     navigation?: "orbit" | "zoom" | "tilt";
     moved?: boolean;
     anchor: Cartesian2;
-    rotation?: { target: Cartesian3; range: number; heading: number; tilt: number };
+    rotation?: {
+      target: Cartesian3;
+      range: number;
+      heading: number;
+      tilt: number;
+    };
   };
   private triangleImage = "";
   private renderErrors = 0;
@@ -504,6 +617,14 @@ export class SpaceTimeView {
       backend: { isWebGPUBackend: false, isWebGLBackend: true },
     };
   }
+  get physicalAltitude() {
+    return this.mode === "space-time" ? this.timeAltitude : this.mode === "globe" && this.globeAltitude;
+  }
+  get displayHeightMeters() {
+    if (!this.physicalAltitude) return this.timeHeightMeters;
+    const summary = this.altitudeSummary();
+    return Math.max(1, summary.maximum - Math.min(0, summary.minimum));
+  }
   get timeHeightMeters() {
     const b = this.bounds;
     const width =
@@ -565,7 +686,10 @@ export class SpaceTimeView {
   }
   async initialize() {
     clearTimeout(this.resourceTimer);
-    this.resourceActiveLast = this.resourceActiveTotal = this.resourceActiveIntervals = 0;
+    this.resourceActiveLast =
+      this.resourceActiveTotal =
+      this.resourceActiveIntervals =
+        0;
     if (this.disposed) return;
     // This app supplies its own imagery and terrain, without Cesium ion.
     // Remove only the engine's default logo; provider-required credits remain.
@@ -603,8 +727,16 @@ export class SpaceTimeView {
     });
     const gl = this.viewer.canvas.getContext("webgl2");
     const info = gl?.getExtension("WEBGL_debug_renderer_info");
-    if (gl) this.resourceGovernor.setGraphicsRenderer(String(gl.getParameter(info?.UNMASKED_RENDERER_WEBGL ?? gl.RENDERER)));
-    this.viewer.resolutionScale = resolutionFor(this.host.clientWidth, this.host.clientHeight, devicePixelRatio, this.resourceLimits);
+    if (gl)
+      this.resourceGovernor.setGraphicsRenderer(
+        String(gl.getParameter(info?.UNMASKED_RENDERER_WEBGL ?? gl.RENDERER)),
+      );
+    this.viewer.resolutionScale = resolutionFor(
+      this.host.clientWidth,
+      this.host.clientHeight,
+      devicePixelRatio,
+      this.resourceLimits,
+    );
     const scene = this.viewer.scene;
     scene.backgroundColor = Color.fromCssColorString(
       this.theme === "light" ? "#e5e9ef" : "#0e1420",
@@ -670,6 +802,7 @@ export class SpaceTimeView {
     this.focusLines = scene.primitives.add(new PolylineCollection());
     this.axisLabels = scene.primitives.add(new LabelCollection());
     this.handles = scene.primitives.add(new PointPrimitiveCollection());
+    this.axisHandle = scene.primitives.add(new PointPrimitiveCollection());
     this.displayLayer = new DisplayLayer(this);
     this.idleUpdates = idleSceneUpdates(
       (rate) => {
@@ -679,12 +812,23 @@ export class SpaceTimeView {
         this.applyUpdateRate();
       },
       () =>
-        this.playback || !!this.drag || this.renderQueued ||
-        this.scene.mode === SceneMode.MORPHING || !this.scene.globe.tilesLoaded ||
-        this.displayLayer.updating || this.resources.status.basemapPending > 0 ||
+        this.playback ||
+        !!this.drag ||
+        this.renderQueued ||
+        this.scene.mode === SceneMode.MORPHING ||
+        !this.scene.globe.tilesLoaded ||
+        this.displayLayer.updating ||
+        this.resources.status.basemapPending > 0 ||
         this.resources.status.terrainPendingTiles > 0,
     );
-    for (const type of ["pointerdown", "pointermove", "wheel", "keydown", "touchstart", "touchmove"]) {
+    for (const type of [
+      "pointerdown",
+      "pointermove",
+      "wheel",
+      "keydown",
+      "touchstart",
+      "touchmove",
+    ]) {
       this.host.addEventListener(type, () => this.idleUpdates?.wake(), {
         capture: true,
         passive: true,
@@ -799,7 +943,11 @@ export class SpaceTimeView {
     this.rebuild();
     this.fit();
     this.applyResourceGraphics();
-    try { await this.checkResourcePressure(); } catch { /* Retain graphics hints when OS sampling is unavailable. */ }
+    try {
+      await this.checkResourcePressure();
+    } catch {
+      /* Retain graphics hints when OS sampling is unavailable. */
+    }
     this.resourceEpochFrames = this.renderedFrames;
     this.scheduleResourceCheck();
   }
@@ -892,6 +1040,7 @@ export class SpaceTimeView {
     let height = (sampledGround ?? this.groundHeight(lat, lon)) + 2;
     if (
       !groundOnly &&
+      !this.physicalAltitude &&
       this.mode !== "map" &&
       (this.mode !== "globe" || this.globeTime) &&
       epoch !== undefined
@@ -916,11 +1065,17 @@ export class SpaceTimeView {
       minimum: known ? minimum : 0, maximum: known ? maximum : 0 };
   }
   private altitudeVisible(point: Point) {
-    return !(this.mode === "globe" && this.globeAltitude) || this.resources.altitudeHeight(point) !== null;
+    return (
+      !this.physicalAltitude || this.resources.altitudeHeight(point) !== null
+    );
   }
   pos(point: Point) {
-    if (this.mode === "globe" && this.globeAltitude)
-      return Cartesian3.fromDegrees(point.lon, point.lat, this.resources.altitudeHeight(point) ?? 0);
+    if (this.physicalAltitude)
+      return Cartesian3.fromDegrees(
+        point.lon,
+        point.lat,
+        this.resources.altitudeHeight(point) ?? 0,
+      );
     return this.position(point.lat, point.lon, point.time);
   }
   project(position: Cartesian3): Cartesian2 | undefined {
@@ -957,6 +1112,7 @@ export class SpaceTimeView {
     this.setDisplayOptions(application.display);
     this.setGlobeTime(application.globeTime, application.globeTimeScale);
     this.setGlobeAltitude(!!application.globeAltitude);
+    this.setTimeAltitude(!!application.timeAltitude);
     this.timeHeight = application.timeHeight;
     this.setTheme(application.theme);
     if (application.rebuild) this.rebuild(true);
@@ -1053,19 +1209,25 @@ export class SpaceTimeView {
   }
   setGlobeTime(enabled: boolean, scale = this.globeTimeScale) {
     if (this.globeTime === enabled && this.globeTimeScale === scale) return;
+    const wasAltitude = this.physicalAltitude;
     this.globeTime = enabled;
     if (enabled) this.globeAltitude = false;
     this.globeTimeScale = scale;
-    if (this.mode === "globe") this.rebuild(true);
+    if (this.mode === "globe" || wasAltitude !== this.physicalAltitude)
+      this.rebuild(true);
   }
-  setGlobeAltitude(enabled: boolean) {
-    if (this.globeAltitude === enabled) return;
-    this.globeAltitude = enabled;
-    if (enabled) {
-      this.globeTime = false;
-      if (this.mode === "globe") void this.displayLayer.set(null, this.display);
+  setGlobeAltitude(enabled: boolean) { this.setAltitude("globe", enabled); }
+  setTimeAltitude(enabled: boolean) { this.setAltitude("space-time", enabled); }
+  private setAltitude(mode: "globe" | "space-time", enabled: boolean) {
+    if ((mode === "globe" ? this.globeAltitude : this.timeAltitude) === enabled) return;
+    if (mode === "globe") {
+      this.globeAltitude = enabled;
+      if (enabled) this.globeTime = false;
+    } else this.timeAltitude = enabled;
+    if (this.mode === mode) {
+      if (enabled) void this.displayLayer.set(null, this.display);
+      this.rebuild(true);
     }
-    if (this.mode === "globe") this.rebuild(true);
   }
   setMode(mode: string, remember = true) {
     if (!this.viewer || this.disposed) {
@@ -1135,8 +1297,13 @@ export class SpaceTimeView {
     if (previous && this.playbackFade && this.resourceLimits.afterimages)
       for (const p of previous.values())
         if (!incomingIds.has(p.id)) {
-          if (departed.length < this.resourceLimits.fadeSegments) departed.push(p);
-          if (!this.display.show_points || !this.glyphById.get(p.id)?.show || newAfterimages >= this.resourceLimits.afterimages)
+          if (departed.length < this.resourceLimits.fadeSegments)
+            departed.push(p);
+          if (
+            !this.display.show_points ||
+            !this.glyphById.get(p.id)?.show ||
+            newAfterimages >= this.resourceLimits.afterimages
+          )
             continue;
           newAfterimages++;
           const color = this.measurement
@@ -1176,9 +1343,14 @@ export class SpaceTimeView {
       this.addFadeTracks(previous, new Set(departed.map((p) => p.id)), now);
     // Bound transient history separately from the current event packet.
     this.pruneFades(now);
-    const renderPoints = this.display.show_centroids && !(this.mode === "globe" && this.globeAltitude)
-      ? this.points
-      : this.points.filter((p) => (this.display.show_centroids || !p.centroid) && this.altitudeVisible(p));
+    const renderPoints =
+      this.display.show_centroids && !this.physicalAltitude
+        ? this.points
+        : this.points.filter(
+            (p) =>
+              (this.display.show_centroids || !p.centroid) &&
+              this.altitudeVisible(p),
+          );
     const nextPointById = new Map(this.points.map((p) => [p.id, p]));
     if (previous && this.playbackFade)
       for (const p of renderPoints)
@@ -1198,11 +1370,12 @@ export class SpaceTimeView {
       });
     // With fades off, unchanged membership already has a cheap resident path.
     // Avoid planning a delta or copying the old packet for those time-only edits.
-    const playbackPlan = previous && !reuseMarkers
-      ? nextPointById.size !== this.points.length
-        ? "order"
-        : this.playbackMarkerPlan(renderPoints, now)
-      : undefined;
+    const playbackPlan =
+      previous && !reuseMarkers
+        ? nextPointById.size !== this.points.length
+          ? "order"
+          : this.playbackMarkerPlan(renderPoints, now)
+        : undefined;
     const patchPlayback = playbackPlan === "patch";
     if (playbackPlan === "order") this.playbackMarkerOrderFallbacks++;
     if (playbackPlan === "capacity") this.playbackMarkerCompactions++;
@@ -1264,9 +1437,14 @@ export class SpaceTimeView {
         glyph = resident;
         const old = previousPoints.get(p.id);
         if (
-          !patchPlayback || !markerPositionsUnchanged || !old ||
-          old.lat !== p.lat || old.lon !== p.lon || old.time !== p.time ||
-          old.altitude?.meters !== p.altitude?.meters || old.altitude?.reference !== p.altitude?.reference
+          !patchPlayback ||
+          !markerPositionsUnchanged ||
+          !old ||
+          old.lat !== p.lat ||
+          old.lon !== p.lon ||
+          old.time !== p.time ||
+          old.altitude?.meters !== p.altitude?.meters ||
+          old.altitude?.reference !== p.altitude?.reference
         )
           glyph.position = this.pos(p);
         if (patchPlayback) this.playbackMarkerReuses++;
@@ -1331,7 +1509,10 @@ export class SpaceTimeView {
       (this.incoming.length || this.outgoing.length || this.fadeTrails.length)
     )
       this.advanceFades();
-    this.resourceGeometryMs = Math.max(this.resourceGeometryMs, performance.now() - rebuildStarted);
+    this.resourceGeometryMs = Math.max(
+      this.resourceGeometryMs,
+      performance.now() - rebuildStarted,
+    );
     this.requestRender();
   }
   private markerBucket(point: Point, now: number) {
@@ -1686,21 +1867,17 @@ export class SpaceTimeView {
     this.focusFraction = Math.max(0, Math.min(1, fraction));
     this.gis?.setTime(this.lo + (this.hi - this.lo) * this.focusFraction);
     if (!this.focusLines) return;
-    if (this.mode === "space-time") {
-      const b = this.sceneBounds(),
-        t = this.lo + (this.hi - this.lo) * this.focusFraction;
-      const positions = [
-        [b[0], b[3]],
-        [b[0] + (b[2] - b[0]) * 0.025, b[3]],
-      ];
-      const projected = positions.map(([lon, lat]) =>
-        this.position(lat, lon, t),
-      );
+    if (this.mode === "space-time" && !this.physicalAltitude && this.axisFrame?.span) {
+      const frame=this.axisFrame, b=this.sceneBounds();
+      const t=this.lo+(this.hi-this.lo)*this.focusFraction;
+      const height=frame.base+timeElevationFraction(t,this.lo,this.hi)*frame.span;
+      const projected=[frame.lon,frame.lon+(b[2]-b[0])*.025].map(lon=>Cartesian3.fromDegrees(lon,frame.lat,height));
       const color = (
         this.theme === "light"
           ? Color.fromCssColorString("#7c4b00")
           : Color.fromCssColorString("#ffd27a")
       ).withAlpha(0.8);
+      this.focusLines.show = height <= frame.top + 1e-6;
       // Playback moves one existing line; recreating its material every frame
       // causes unnecessary collection and shader bookkeeping.
       if (this.focusLines.length) {
@@ -2150,42 +2327,134 @@ export class SpaceTimeView {
     this.spaceTimeFloor = next;
     return true;
   }
-  private updateAxes() {
+  setTimeControls(
+    shown: boolean,
+    anchor: [number, number] | null = this.timeAxisAnchor,
+  ) {
+    this.showGrabHandles = shown;
+    this.timeAxisAnchor = anchor ? [...anchor] : null;
+    this.updateAxes();
+    this.requestRender();
+  }
+  private updateAxes(navigation = true) {
     if (!this.axes) return;
     this.axes.removeAll();
     this.axisLabels.removeAll();
+    this.axisHandle.removeAll();
+    this.axisHandle.show = this.showGrabHandles;
+    this.handles.show = this.showGrabHandles;
     if (this.mode !== "space-time") {
       this.handles.removeAll();
+      this.axisFrame = undefined;
       this.grabHandleView = undefined;
       this.setFocus(this.focusFraction);
       return;
     }
-    const b = this.sceneBounds(),
-      [w, s, e, n] = b;
+    const [w, , e, n] = this.sceneBounds();
+    const altitude = this.physicalAltitude;
+    if (altitude && (navigation || !this.axisAltitudeRange))
+      this.axisAltitudeRange = this.altitudeSummary();
+    const summary = altitude ? this.axisAltitudeRange! : null;
+    const base = altitude
+      ? Math.min(0, summary!.minimum)
+      : this.centerGroundHeight() + 2;
+    const sourceTop = altitude
+      ? Math.max(base + 1, summary!.maximum)
+      : base + this.timeHeightMeters;
+    // Crop the annotation to the visible elevation range when zoomed below
+    // the full Time column. Source time/altitude positions are never shifted.
+    const top =
+      this.scene.mode === SceneMode.COLUMBUS_VIEW
+        ? Math.max(
+            base,
+            Math.min(
+              sourceTop,
+              this.camera.positionWC.x -
+                Math.max(1, (this.camera.positionWC.x - base) * 0.15),
+            ),
+          )
+        : sourceTop;
+    const width = this.host.clientWidth,
+      height = this.host.clientHeight;
+    const clamp = (v: number, lo: number, hi: number) =>
+      Math.max(lo, Math.min(hi, v));
+    const target = new Cartesian2(
+      clamp(
+        this.timeAxisAnchor
+          ? this.timeAxisAnchor[0] * width
+          : Math.min(190, width * 0.45),
+        24,
+        Math.max(24, width - 24),
+      ),
+      clamp(
+        this.timeAxisAnchor
+          ? this.timeAxisAnchor[1] * height
+          : Math.max(90, height * 0.14),
+        32,
+        Math.max(32, height - 32),
+      ),
+    );
+    let lon = w,
+      lat = n;
+    if (this.scene.mode === SceneMode.COLUMBUS_VIEW) {
+      for (let step = 0; step <= 20; step++) {
+        const candidate = new Cartesian2(
+          target.x,
+          target.y + ((height - 32 - target.y) * step) / 20,
+        );
+        const ray = this.camera.getPickRay(candidate);
+        if (!ray || Math.abs(ray.direction.x) < 1e-12) continue;
+        const distance = (top - ray.origin.x) / ray.direction.x;
+        if (distance <= 0) continue;
+        const location = this.scene.mapProjection.unproject(
+          new Cartesian3(
+            ray.origin.y + ray.direction.y * distance,
+            ray.origin.z + ray.direction.z * distance,
+            top,
+          ),
+        );
+        if (
+          Math.abs(location.longitude) > Math.PI ||
+          Math.abs(location.latitude) > Math.PI / 2
+        )
+          continue;
+        lon = CesiumMath.toDegrees(location.longitude);
+        lat = CesiumMath.toDegrees(location.latitude);
+        break;
+      }
+    }
+    this.axisFrame = {lon,lat,base,span:sourceTop-base,top};
+    const position = (fraction: number) =>
+      Cartesian3.fromDegrees(lon, lat, top + (base - top) * fraction);
+    const atTime = (epoch: number) =>
+      Cartesian3.fromDegrees(
+        lon,
+        lat,
+        base +
+          timeElevationFraction(epoch, this.lo, this.hi) * (sourceTop - base),
+      );
+    const axisLo =
+      sourceTop > base
+        ? this.hi - ((top - base) / (sourceTop - base)) * (this.hi - this.lo)
+        : this.hi;
     const color =
       this.theme === "light"
         ? Color.fromCssColorString("#3a5264").withAlpha(0.38)
         : Color.fromCssColorString("#acc8db").withAlpha(0.28);
-    const line = (positions: Cartesian3[], width = 1) =>
+    const line = (positions: Cartesian3[]) =>
       this.axes.add({
         positions,
-        width,
+        width: 1,
         material: Material.fromType("Color", { color }),
       });
-    // One geographic origin and time axis, without enclosing walls or roof.
-    line([this.position(n, w, this.lo), this.position(n, w, this.hi)]);
-    line([
-      this.position(s, w, this.hi),
-      this.position(n, w, this.hi),
-      this.position(n, e, this.hi),
-    ]);
+    line([position(0), position(1)]);
     const projection = Matrix4.multiply(
       this.camera.frustum.projectionMatrix,
       this.camera.viewMatrix,
       new Matrix4(),
     );
     const clip = (epoch: number): [number, number, number, number] => {
-      const p = this.cameraWorldPosition(this.position(n, w, epoch));
+      const p = this.cameraWorldPosition(atTime(epoch));
       const q = Matrix4.multiplyByVector(
         projection,
         new Cartesian4(p.x, p.y, p.z, 1),
@@ -2194,12 +2463,12 @@ export class SpaceTimeView {
       return [q.x, q.y, q.z, q.w];
     };
     const ticks = timeAxisTicks(
-      this.lo,
+      axisLo,
       this.hi,
-      clip(this.lo),
+      clip(axisLo),
       clip(this.hi),
-      this.host.clientWidth,
-      this.host.clientHeight,
+      width,
+      height,
     );
     const visibleTicks =
       ticks.length > 4
@@ -2208,26 +2477,57 @@ export class SpaceTimeView {
             (_, i) => ticks[Math.round((i * (ticks.length - 1)) / 3)],
           )
         : ticks;
-    for (const tick of this.timeHeightMeters > 0 ? visibleTicks : []) {
-      this.label(tick.text, this.position(n, w, tick.time), "time-label");
-      line([
-        this.position(n, w, tick.time),
-        this.position(n, w + (e - w) * 0.015, tick.time),
-      ]);
-    }
-    const titlePosition = this.position(n, w, this.lo);
-    const titlePixel = this.project(titlePosition);
-    if (this.timeHeightMeters > 0)
+    if (altitude) {
+      const first = this.project(position(0)),
+        last = this.project(position(1));
+      const count =
+        first && last && Math.hypot(first.x - last.x, first.y - last.y) > 140
+          ? 4
+          : 1;
+      for (let i = 1; i <= count; i++) {
+        const fraction = i / count,
+          meters = top + (base - top) * fraction;
+        const p = position(fraction);
+        this.label(
+          `${Math.abs(meters) >= 1000 ? (meters / 1000).toFixed(1) + " km" : meters.toFixed(Math.abs(meters) < 10 ? 1 : 0) + " m"}`,
+          p,
+          "altitude-label",
+        );
+      }
+    } else
+      for (const tick of this.timeHeightMeters > 0 ? visibleTicks : []) {
+        this.label(tick.text, atTime(tick.time), "time-label");
+        line([
+          atTime(tick.time),
+          Cartesian3.fromDegrees(
+            lon + (e - w) * 0.015,
+            lat,
+            base +
+              timeElevationFraction(tick.time, this.lo, this.hi) *
+                (sourceTop - base),
+          ),
+        ]);
+      }
+    if (top > base) {
       this.label(
-        "TIME / UTC",
-        titlePosition,
+        altitude ? "ALTITUDE / m" : "TIME / UTC",
+        position(0),
         "axis-title",
-        new Cartesian2(
-          -10,
-          titlePixel ? Math.max(-28, 16 - titlePixel.y) : -28,
-        ),
+        new Cartesian2(-14, -22),
       );
-    this.updateGrabHandles(true);
+      this.axisHandle.add({
+        position: position(0),
+        id: { kind: "time-axis" },
+        pixelSize: 10,
+        color: Color.fromCssColorString(
+          this.theme === "light" ? "#6889a2" : "#b9d9ee",
+        ).withAlpha(0.8),
+        outlineColor: Color.WHITE,
+        outlineWidth: 1,
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      });
+    }
+    this.updateGrabHandles(navigation);
     this.setFocus(this.focusFraction);
   }
   /** Navigation handles belong to the expanded viewport, not the axis frame. */
@@ -2351,10 +2651,44 @@ export class SpaceTimeView {
     kind = "axis-label",
     offset = new Cartesian2(-10, 0),
   ) {
+    const font =
+      kind === "axis-title" ? "bold 12px system-ui" : "11px system-ui";
+    this.axisTextMeasure ??= document.createElement("canvas").getContext("2d");
+    if (this.axisTextMeasure) this.axisTextMeasure.font = font;
+    const lines = text.split("\n");
+    const measured =
+      Math.max(
+        ...lines.map(
+          (line) =>
+            this.axisTextMeasure?.measureText(line).width ?? line.length * 8,
+        ),
+      ) + 12;
+    const scale = Math.min(
+      1,
+      Math.max(1, this.host.clientWidth - 24) / measured,
+    );
+    const labelWidth = measured * scale,
+      labelHeight = (lines.length * 18 + 8) * scale;
+    const pixel = this.project(position);
+    if (pixel) {
+      const right = Math.max(
+        labelWidth + 8,
+        Math.min(this.host.clientWidth - 8, pixel.x + offset.x),
+      );
+      const y = Math.max(
+        labelHeight / 2 + 8,
+        Math.min(
+          this.host.clientHeight - labelHeight / 2 - 8,
+          pixel.y + offset.y,
+        ),
+      );
+      offset = new Cartesian2(right - pixel.x, y - pixel.y);
+    }
     return this.axisLabels.add({
       text,
       position,
-      font: kind === "axis-title" ? "bold 12px system-ui" : "11px system-ui",
+      font,
+      scale,
       fillColor:
         this.theme === "light"
           ? Color.fromCssColorString("#203545")
@@ -3136,7 +3470,8 @@ export class SpaceTimeView {
     ];
   }
   visibleDataBounds(): Bounds | null {
-    if (this.mode === "globe" && (this.globeTime || this.globeAltitude)) return null;
+    if (this.physicalAltitude || (this.mode === "globe" && this.globeTime))
+      return null;
     // A ground footprint can exclude elevated events above the horizon. Globe time
     // uses the study bounds and existing bounded representative/cell budgets.
     // Intersect the whole displayed time-height prism: an elevated event can be visible above a ground footprint.
@@ -3197,7 +3532,11 @@ export class SpaceTimeView {
       const vertical =
         (this.camera.frustum as { fovy?: number }).fovy || Math.PI / 3;
       const horizontal = 2 * Math.atan(Math.tan(vertical / 2) * aspect);
-      const timeHeight = this.globeAltitude ? Math.max(0, this.altitudeSummary().maximum) : this.globeTime ? this.timeHeightMeters : 0;
+      const timeHeight = this.globeAltitude
+        ? Math.max(0, this.altitudeSummary().maximum)
+        : this.globeTime
+          ? this.timeHeightMeters
+          : 0;
       const altitude =
         (Ellipsoid.WGS84.maximumRadius + timeHeight) /
           Math.sin(Math.min(vertical, horizontal) * 0.42) -
@@ -3249,7 +3588,7 @@ export class SpaceTimeView {
         const base = Cartesian3.fromDegrees(
           lon,
           lat,
-          this.groundHeight(lat, lon) + this.timeHeightMeters * 0.35,
+          this.groundHeight(lat, lon) + this.displayHeightMeters * 0.35,
         );
         const width = Math.max(
           1000,
@@ -3263,7 +3602,7 @@ export class SpaceTimeView {
             (this.host.clientWidth / Math.max(1, this.host.clientHeight) > 1.8
               ? 1.6
               : 2.2),
-          this.timeHeightMeters * 2.6,
+          this.displayHeightMeters * 2.6,
         );
         this.camera.lookAt(
           base,
@@ -3481,22 +3820,36 @@ export class SpaceTimeView {
     const intervals = [...this.frameIntervals].sort((a, b) => a - b),
       cpu = [...this.renderTimes].sort((a, b) => a - b);
     const active = performance.now() - this.lastRendered < 250;
-    const triangleCount = this.trianglePoints.filter(
-      (p) => this.glyphById.has(p.id),
+    const triangleCount = this.trianglePoints.filter((p) =>
+      this.glyphById.has(p.id),
     ).length;
     // Query only on explicit diagnostics requests, outside per-frame telemetry.
     const gl = this.viewer.canvas.getContext("webgl2");
     const debug = gl?.getExtension("WEBGL_debug_renderer_info");
     return {
       engine: "CesiumJS",
-      geometryReuse:{builds:this.geometryBuilds,selectionStyleUpdates:this.geometryStyleUpdates},
-      experimentalPlayback: { active: this.smoothPlaybackActive, kind:this.resident ? "resident" : this.smoothHeatmap ? "heatmap" : null,
-        resident: this.resident?.diagnostics() || null, terrainSamples:this.residentTerrainSamples },
+      geometryReuse: {
+        builds: this.geometryBuilds,
+        selectionStyleUpdates: this.geometryStyleUpdates,
+      },
+      experimentalPlayback: {
+        active: this.smoothPlaybackActive,
+        kind: this.resident
+          ? "resident"
+          : this.smoothHeatmap
+            ? "heatmap"
+            : null,
+        resident: this.resident?.diagnostics() || null,
+        terrainSamples: this.residentTerrainSamples,
+      },
       graphics: {
         renderer:
-          gl?.getParameter(debug ? debug.UNMASKED_RENDERER_WEBGL : gl.RENDERER) ?? null,
+          gl?.getParameter(
+            debug ? debug.UNMASKED_RENDERER_WEBGL : gl.RENDERER,
+          ) ?? null,
         vendor:
-          gl?.getParameter(debug ? debug.UNMASKED_VENDOR_WEBGL : gl.VENDOR) ?? null,
+          gl?.getParameter(debug ? debug.UNMASKED_VENDOR_WEBGL : gl.VENDOR) ??
+          null,
         version: gl?.getParameter(gl.VERSION) ?? null,
         framebuffer: [this.viewer.canvas.width, this.viewer.canvas.height],
         resolutionScale: this.viewer.resolutionScale,
@@ -3533,6 +3886,8 @@ export class SpaceTimeView {
       playbackFadeAmount: this.playbackFadeAmount,
       globeTime: this.globeTime,
       globeAltitude: this.globeAltitude,
+      timeAltitude: this.timeAltitude,
+      physicalAltitude: this.physicalAltitude,
       altitude: this.altitudeSummary(),
       globeTimeScale: this.globeTimeScale,
       timeHeightMeters: this.timeHeightMeters,
@@ -3545,8 +3900,10 @@ export class SpaceTimeView {
       pointCount: this.renderPoints.length - triangleCount,
       triangleCount,
       allocatedMarkerSlots:
-        this.glyphs.length + this.triangles.length +
-        this.arrivingPoints.length + this.arrivingTriangles.length,
+        this.glyphs.length +
+        this.triangles.length +
+        this.arrivingPoints.length +
+        this.arrivingTriangles.length,
       resourceGovernor: this.resourceGovernor.diagnostics(),
       lastResourceGeometryMs: this.lastResourceGeometryMs,
       fadingPointCount: this.fading.length,
@@ -3617,7 +3974,9 @@ export class SpaceTimeView {
         sourceEndpointBudget: 400000,
       },
       axisLabels: this.axisLabels.length,
-      orbitHandles: this.handles.length,
+      orbitHandles: this.handles.show ? this.handles.length : 0,
+      axisGrabHandle: this.axisHandle.show ? this.axisHandle.length : 0,
+      timeAxisAnchor: this.timeAxisAnchor,
       requestRenderMode: this.scene.requestRenderMode,
       performance: {
         updateRateLimitHz: this.viewer.targetFrameRate ?? null,
@@ -3685,15 +4044,18 @@ export class SpaceTimeView {
     if (this.mode !== "space-time" || !this.handles?.show) return;
     let closest = 11 ** 2;
     let picked: PickId | undefined;
-    for (let i = 0; i < this.handles.length; i++) {
-      const handle = this.handles.get(i);
-      if (!handle.show || handle.id?.kind !== "orbit") continue;
-      const p = this.project(handle.position);
-      if (!p) continue;
-      const distance = (p.x - x) ** 2 + (p.y - y) ** 2;
-      if (distance <= closest) {
-        closest = distance;
-        picked = handle.id as PickId;
+    for (const collection of [this.axisHandle, this.handles]) {
+      if (!collection?.show) continue;
+      for (let i = 0; i < collection.length; i++) {
+        const handle = collection.get(i);
+        if (!handle.show) continue;
+        const p = this.project(handle.position);
+        if (!p) continue;
+        const distance = (p.x - x) ** 2 + (p.y - y) ** 2;
+        if (distance <= closest) {
+          closest = distance;
+          picked = handle.id as PickId;
+        }
       }
     }
     return picked;
@@ -3883,16 +4245,22 @@ export class SpaceTimeView {
             ? "zoom"
             : this.mode !== "map" &&
                 (e.button === 1 || (!this.boxMode && (e.ctrlKey || e.shiftKey)))
-              ? (e.button === 1 ? "tilt" : "orbit")
+              ? e.button === 1
+                ? "tilt"
+                : "orbit"
               : undefined;
         this.drag = {
           x: e.clientX,
           y: e.clientY,
           lastX: e.clientX,
           lastY: e.clientY,
-          box: e.button === 0 && this.boxMode,
+          box: e.button === 0 && this.boxMode && id?.kind !== "time-axis",
           add: e.shiftKey || e.ctrlKey || e.metaKey,
           orbit: id?.kind === "orbit",
+          axisGrab:
+            id?.kind === "time-axis"
+              ? this.project(this.axisHandle.get(0).position)
+              : undefined,
           pointer: e.pointerId,
           button: e.button,
           navigation,
@@ -3902,7 +4270,12 @@ export class SpaceTimeView {
               ? this.rotationAnchor()
               : undefined,
         };
-        if (this.drag.box || this.drag.orbit || navigation) {
+        if (
+          this.drag.box ||
+          this.drag.orbit ||
+          this.drag.axisGrab ||
+          navigation
+        ) {
           this.scene.screenSpaceCameraController.enableInputs = false;
           canvas.setPointerCapture(e.pointerId);
           e.preventDefault();
@@ -3916,9 +4289,37 @@ export class SpaceTimeView {
         const r = canvas.getBoundingClientRect(),
           drag = this.drag;
         if (drag && drag.pointer !== e.pointerId) return;
-        if (drag && !drag.moved && Math.hypot(e.clientX - drag.x, e.clientY - drag.y) > 5) {
+        if (
+          drag &&
+          !drag.moved &&
+          Math.hypot(e.clientX - drag.x, e.clientY - drag.y) > 5
+        ) {
           drag.moved = true;
           this.cancelPendingPick();
+        }
+        if (drag?.axisGrab) {
+          if (!drag.moved) return;
+          const x = Math.max(
+            24,
+            Math.min(
+              this.host.clientWidth - 24,
+              drag.axisGrab.x + e.clientX - drag.x,
+            ),
+          );
+          const y = Math.max(
+            32,
+            Math.min(
+              this.host.clientHeight - 32,
+              drag.axisGrab.y + e.clientY - drag.y,
+            ),
+          );
+          this.timeAxisAnchor = [
+            x / this.host.clientWidth,
+            y / this.host.clientHeight,
+          ];
+          this.updateAxes(false);
+          this.requestRender();
+          return;
         }
         if (drag?.orbit || drag?.navigation) {
           const dx = e.clientX - drag.lastX,
@@ -3932,12 +4333,23 @@ export class SpaceTimeView {
             if (drag.navigation === "zoom")
               rotation.range = Math.max(
                 2,
-                Math.min(8e7, rotation.range / Math.exp(Math.max(-0.65, Math.min(0.65, dy * 0.008)))),
+                Math.min(
+                  8e7,
+                  rotation.range /
+                    Math.exp(Math.max(-0.65, Math.min(0.65, dy * 0.008))),
+                ),
               );
-            else rotation.tilt = Math.max(0, Math.min(85, rotation.tilt - dy * 0.2));
+            else
+              rotation.tilt = Math.max(
+                0,
+                Math.min(85, rotation.tilt - dy * 0.2),
+              );
             this.orient(rotation.heading, rotation.tilt, rotation);
           } else if (drag.navigation === "zoom" && dy) {
-            this.zoomAt(Math.exp(Math.max(-0.65, Math.min(0.65, dy * 0.008))), drag.anchor);
+            this.zoomAt(
+              Math.exp(Math.max(-0.65, Math.min(0.65, dy * 0.008))),
+              drag.anchor,
+            );
           }
           return;
         }
@@ -3954,7 +4366,8 @@ export class SpaceTimeView {
           return;
         }
         this.hideTooltip();
-        const x = e.clientX - r.left, y = e.clientY - r.top;
+        const x = e.clientX - r.left,
+          y = e.clientY - r.top;
         const orbit = this.orbitAt(x, y);
         canvas.style.cursor = orbit ? "grab" : this.boxMode ? "crosshair" : "";
         const hoverKey = `${x}/${y}`;
@@ -3962,18 +4375,31 @@ export class SpaceTimeView {
         // Hover hints already wait a second. Do the expensive GPU pick once,
         // at that point, so crossing the canvas to start a pan cannot block it.
         this.hoverHintTimer = setTimeout(() => {
-          if (this.disposed || this.recovering || this.drag || this.hoverHintKey !== hoverKey) return;
+          if (
+            this.disposed ||
+            this.recovering ||
+            this.drag ||
+            this.hoverHintKey !== hoverKey
+          )
+            return;
           const id = this.orbitAt(x, y) || this.pickId(x, y);
-          const point = id && (id.kind === "event" || id.kind === "geometry")
-            ? this.resident?.point(id.id) || this.pointById.get(id.id) : undefined;
+          const point =
+            id && (id.kind === "event" || id.kind === "geometry")
+              ? this.resident?.point(id.id) || this.pointById.get(id.id)
+              : undefined;
           if (id?.kind === "cluster")
             this.tooltip.textContent = `${id.bin.count.toLocaleString()} events · click to zoom; Shift-click selects evidence`;
           else if (point)
             this.tooltip.textContent = `${(this.resident ? this.residentNames : this.names)[point.entity] || "Event"} · ${time(point.time)} UTC${point.inferred ? " · Location unknown · inferred display position" : point.centroid ? " · Polygon centroid (derived surface location)" : ""}`;
+          else if (id?.kind === "time-axis")
+            this.tooltip.textContent = "Drag to move the vertical axis";
           else if (id?.kind === "orbit")
             this.tooltip.textContent = `Drag ${id.side} handle to rotate`;
           else return;
-          canvas.style.cursor = id?.kind === "orbit" ? "grab" : "pointer";
+          canvas.style.cursor =
+            id?.kind === "orbit" || id?.kind === "time-axis"
+              ? "grab"
+              : "pointer";
           this.tooltip.style.left = `${Math.min(this.host.clientWidth - 240, x + 14)}px`;
           this.tooltip.style.top = `${y + 12}px`;
           this.tooltip.style.display = "block";
@@ -3992,13 +4418,17 @@ export class SpaceTimeView {
       }
       if (drag.pointer !== e.pointerId || drag.button !== e.button) return;
       this.drag = undefined;
-      this.settleNavigation();
+      if (!drag.axisGrab) this.settleNavigation();
       this.scene.screenSpaceCameraController.enableInputs = true;
       this.box.style.display = "none";
       const r = canvas.getBoundingClientRect(),
         distance = Math.hypot(e.clientX - drag.x, e.clientY - drag.y);
       if (canvas.hasPointerCapture(e.pointerId))
         canvas.releasePointerCapture(e.pointerId);
+      if (drag.axisGrab) {
+        this.onAxisMove();
+        return;
+      }
       if (drag.orbit || drag.button === 1) return;
       if (drag.button === 2) {
         if (!drag.moved && distance <= 5) {
@@ -4011,7 +4441,11 @@ export class SpaceTimeView {
             const ground = this.groundAt(drag.anchor);
             if (ground) {
               const c = Cartographic.fromCartesian(ground);
-              this.onRadiusQuery(CesiumMath.toDegrees(c.latitude), CesiumMath.toDegrees(c.longitude), { x: e.clientX, y: e.clientY });
+              this.onRadiusQuery(
+                CesiumMath.toDegrees(c.latitude),
+                CesiumMath.toDegrees(c.longitude),
+                { x: e.clientX, y: e.clientY },
+              );
             }
           }
         }
@@ -4028,8 +4462,12 @@ export class SpaceTimeView {
             !!s && s.x >= left && s.x <= right && s.y >= top && s.y <= bottom
           );
         };
-        const ids = (this.resident ? this.resident.visiblePoints() : this.renderPoints)
-          .filter((p) => inside(this.resident?.pointPosition(p.id) || this.pos(p)))
+        const ids = (
+          this.resident ? this.resident.visiblePoints() : this.renderPoints
+        )
+          .filter((p) =>
+            inside(this.resident?.pointPosition(p.id) || this.pos(p)),
+          )
           .map((p) => p.id);
         const cells = this.displayLayer.active
           ? this.displayLayer.inBox(
@@ -4090,7 +4528,8 @@ export class SpaceTimeView {
     canvas.addEventListener("pointerup", up, { signal });
     window.addEventListener("pointerup", up, { signal });
     const resetPointer = () => {
-      if (this.drag) this.settleNavigation();
+      if (this.drag?.axisGrab) this.onAxisMove();
+      else if (this.drag) this.settleNavigation();
       this.drag = undefined;
       this.inputSuspended = false;
       this.box.style.display = "none";

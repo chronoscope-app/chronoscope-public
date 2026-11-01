@@ -30,8 +30,36 @@ const server = spawn(
   ],
   { stdio: ["ignore", "ignore", "pipe"] },
 );
+const eventCount = Number(process.env.CHRONOSCOPE_PERF_ROWS || 100000);
+assert(
+  Number.isInteger(eventCount) &&
+    eventCount >= 100000 &&
+    eventCount <= 1000000 &&
+    eventCount % 100 === 0,
+);
+const rounds = Number(process.env.CHRONOSCOPE_PERF_ROUNDS || 3);
+const kinds = (
+  process.env.CHRONOSCOPE_PERF_KINDS ||
+  "idle,refresh,filter,focus,orbit,playback"
+).split(",");
+assert(Number.isInteger(rounds) && rounds >= 1 && rounds <= 10);
+assert(
+  kinds.length &&
+    kinds.every((kind) =>
+      ["idle", "refresh", "filter", "focus", "orbit", "playback"].includes(
+        kind,
+      ),
+    ),
+);
+const budgets = (process.env.CHRONOSCOPE_PERF_BUDGETS || "20000,100000")
+  .split(",")
+  .map(Number);
+assert(budgets.every((n) => [20000, 100000].includes(n)));
 const report = {
-  rows: 100000,
+  rounds,
+  kinds,
+  budgets,
+  rows: eventCount,
   synthetic: true,
   platform: process.platform,
   rustBuildProfile: process.env.CHRONOSCOPE_QA_RUST_PROFILE || "unspecified",
@@ -44,13 +72,13 @@ let browser;
 try {
   const url = await localServerUrl(server);
   const api = createApi(url, token);
-  const csv = path.join(out, "tracks-100k.csv");
+  const csv = path.join(out, `tracks-${eventCount}.csv`);
   assert(
     fs.statfsSync(out).bavail * fs.statfsSync(out).bsize > 2 * 1024 ** 3,
     "Need 2 GiB disk headroom",
   );
   const rows = ["entity,timestamp,latitude,longitude,category,value"];
-  for (let t = 0; t < 1000; t++)
+  for (let t = 0; t < eventCount / 100; t++)
     for (let e = 0; e < 100; e++) {
       const phase = t / 80 + e * 0.13;
       rows.push(
@@ -65,13 +93,13 @@ try {
     seconds: (performance.now() - importStarted) / 1000,
     imported,
   };
-  assert.equal((await api("snapshot", { compact: true })).count, 100000);
+  assert.equal((await api("snapshot", { compact: true })).count, eventCount);
   const entity = await api("query", {
     filter: { predicates: [{ field: "entity", op: "Equals", value: "T000" }] },
     limit: 5,
     fields: ["id", "entity"],
   });
-  assert.equal(entity.count, 1000);
+  assert.equal(entity.count, eventCount / 100);
   if (process.env.CHRONOSCOPE_PERF_PROJECT) {
     await api("save", { path: process.env.CHRONOSCOPE_PERF_PROJECT });
     report.portable_project_saved = true;
@@ -106,6 +134,16 @@ try {
   });
   page.setDefaultTimeout(120000);
   page.on("pageerror", (e) => report.errors.push(e.message));
+  report.rpcs = [];
+  page.on("requestfinished", (request) => {
+    if (!request.url().endsWith("/api/invoke")) return;
+    const timing = request.timing();
+    report.rpcs.push({
+      command: request.postDataJSON()?.command,
+      elapsedMs: timing.responseEnd,
+      serverWaitMs: timing.responseStart - timing.requestStart,
+    });
+  });
   await page.route("**/*", async (route) => {
     const u = route.request().url();
     if (/^https?:/.test(u) && !u.startsWith(url + "/")) {
@@ -115,9 +153,10 @@ try {
   });
   await page.goto(url + "/#token=" + token);
   await page.waitForFunction(
-    () =>
-      window.__chronoscope?.snapshot?.count === 100000 &&
+    (expectedCount) =>
+      window.__chronoscope?.snapshot?.count === expectedCount &&
       !window.__chronoscope.busy,
+    eventCount,
   );
   await page.waitForFunction(
     () => String(window.__chronoscope.view.onViewportChange).length > 30,
@@ -154,6 +193,10 @@ try {
   let budget = 20000;
   const measure = async (kind, round) => {
     const before = (await session.send("Performance.getMetrics")).metrics;
+    if (process.env.CHRONOSCOPE_PERF_CPU_PROFILE === "1") {
+      await session.send("Profiler.enable");
+      await session.send("Profiler.start");
+    }
     const result = await page.evaluate(
       async ({ kind }) => {
         const c = window.__chronoscope,
@@ -302,6 +345,13 @@ try {
       },
       { kind },
     );
+    if (process.env.CHRONOSCOPE_PERF_CPU_PROFILE === "1") {
+      const { profile } = await session.send("Profiler.stop");
+      fs.writeFileSync(
+        path.join(out, `${budget}-${kind}-${round}.cpuprofile`),
+        JSON.stringify(profile),
+      );
+    }
     const after = (await session.send("Performance.getMetrics")).metrics;
     const value = (a, n) => a.find((x) => x.name === n)?.value || 0;
     result.browser = {
@@ -330,7 +380,7 @@ try {
       JSON.stringify(report, null, 2),
     );
   };
-  for (budget of [20000, 100000]) {
+  for (budget of budgets) {
     await page.evaluate(async (budget) => {
       const c = window.__chronoscope;
       await c.call("view_set", { render_budget: budget });
@@ -352,29 +402,22 @@ try {
         effects: { ...c.view.displayLayer.diagnostics },
       };
     });
-    assert.equal(evidence.count, 100000);
-    assert.equal(evidence.visible, 100000);
+    assert.equal(evidence.count, eventCount);
+    assert.equal(evidence.visible, eventCount);
     assert.equal(evidence.points, budget);
-    assert.equal(evidence.packetCount, 100000);
-    assert.equal(evidence.cellSum, 100000);
+    assert.equal(evidence.packetCount, eventCount);
+    assert.equal(evidence.cellSum, eventCount);
     assert.equal(evidence.effects.atlasLayers, 1);
     assert(!evidence.effects.error);
     (report.scenes ||= []).push({ budget, ...evidence });
-    for (let round = 0; round < 3; round++)
-      for (const kind of [
-        "idle",
-        "refresh",
-        "filter",
-        "focus",
-        "orbit",
-        "playback",
-      ]) {
+    for (let round = 0; round < rounds; round++)
+      for (const kind of kinds) {
         if (kind === "focus" || kind === "orbit") {
           await page.evaluate(() => window.__chronoscope.view.fit());
           await page.waitForTimeout(250);
         }
         await measure(kind, round);
-        if (kind === "playback") {
+        if (kind === "playback" && eventCount <= 100000) {
           const p = report.samples.at(-1).playback;
           assert.equal(p.minimumDrawn, budget);
           assert.equal(p.maximumDrawn, budget);
@@ -407,7 +450,7 @@ try {
   for (let i = 0; i < 15; i++) {
     const t = performance.now();
     const r = await api("query", { limit: 10, fields: ["id", "entity"] });
-    assert.equal(r.count, 100000);
+    assert.equal(r.count, eventCount);
     query.push(performance.now() - t);
   }
   report.exactQueryMs = query;

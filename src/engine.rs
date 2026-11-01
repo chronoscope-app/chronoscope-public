@@ -1516,6 +1516,18 @@ impl Engine {
                 let s = self.state.lock().map_err(|_| "Workspace unavailable")?;
                 let f = query_filter(&s.project, &args, true)?;
                 let viewport = viewport_bounds(&args)?;
+                // Point-only workspaces have no shape packet to build. Check the
+                // existing partial geometry index before ordering/scanning every
+                // visible point. Read the index each time so edits and Undo cannot
+                // leave a cached empty result behind.
+                if !s.store.has_geometries()? {
+                    return serde_json::to_value(crate::api::GeometryPacket {
+                        limited: false, features: vec![], count: 0,
+                        offset: args["offset"].as_u64().unwrap_or(0) as usize,
+                        vertex_count: 0, bounds: None, revision: s.revision,
+                        semantics: "WGS84 X/Y geometry; Z/M preserved in source WKT, not used as altitude/time. Polygon rings include holes.".into(),
+                    }).map_err(|error| error.to_string());
+                }
                 let table = s.store.ordered_with_bounds(
                     &f,
                     args["source"].as_str(),
@@ -1622,8 +1634,10 @@ impl Engine {
                     f.selected_only = true
                 }
                 let viewport = viewport_bounds(&args)?;
-                let altitude_mode =
-                    s.project.scene.mode == "globe" && s.project.scene.globe_altitude;
+                let altitude_mode = (s.project.scene.mode == "globe"
+                    && s.project.scene.globe_altitude)
+                    || (matches!(s.project.scene.mode.as_str(), "" | "space-time")
+                        && s.project.scene.time_altitude);
                 if altitude_mode {
                     f.predicates.push(crate::model::Predicate {
                         field: "altitude_m".into(),
@@ -2298,6 +2312,11 @@ impl Engine {
                                 scene.camera_up = None;
                             }
                             "time_height" => scene.time_height = v.as_f64(),
+                            "time_altitude" => scene.time_altitude = v.as_bool().unwrap(),
+                            "time_axis_anchor" => {
+                                scene.time_axis_anchor = Some(arg(&args, "time_axis_anchor")?)
+                            }
+                            "show_grab_handles" => scene.show_grab_handles = v.as_bool(),
                             "playback_fade" => scene.playback_fade = v.as_bool(),
                             "playback_fade_amount" => {
                                 scene.playback_fade_amount = v.as_u64().map(|v| v as u8)

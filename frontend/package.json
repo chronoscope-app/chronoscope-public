@@ -57,6 +57,8 @@
     "test:playback-transitions": "node scripts/playback-transitions-qa.mjs",
     "test:subsecond": "node scripts/subsecond-qa.mjs",
     "test:space-time-window": "node scripts/space-time-window-qa.mjs",
+    "test:maps-preferences": "node scripts/maps-preferences-qa.mjs",
+    "test:time-axis-controls": "node scripts/time-axis-controls-qa.mjs",
     "test:workspace-boundaries": "node scripts/workspace-boundaries-qa.mjs",
     "test:time-rail": "node scripts/time-rail-qa.mjs",
     "test:toolbar-dialogs": "node scripts/toolbar-dialogs-qa.mjs",

@@ -132,6 +132,9 @@ try {
           const r = v.scene.globe.cartographicLimitRectangle;
           return [r.west, r.south, r.east, r.north];
         })(),
+        axisTop: v.axisHandle.length
+          ? v.project(v.axisHandle.get(0).position)
+          : null,
         axisGround: v.axes.length
           ? v.project(v.axes.get(0).positions[1])
           : null,
@@ -193,8 +196,14 @@ try {
       expanded[3] > reference[3],
     "Map requests cover ground beyond the original time-axis rectangle",
   );
-  near(original.axisGround.x, original.corners[3].x, 0.01);
-  near(original.axisGround.y, original.corners[3].y, 0.01);
+  assert(
+    original.axisTop &&
+      original.axisTop.x >= 120 &&
+      original.axisTop.x < original.size[0] - 24,
+  );
+  assert(
+    original.axisTop.y >= 32 && original.axisTop.y < original.size[1] - 24,
+  );
   const expected = [
     [original.size[0] / 2, 18],
     [original.size[0] / 2, original.size[1] - 18],
@@ -224,7 +233,7 @@ try {
     assert(target.unobstructed, JSON.stringify(target));
   }
   check(
-    "Expanded geography retains the original inset time-axis origin and four pickable edge grab spheres",
+    "Expanded geography retains its reference frame, an independently inset time axis and four pickable edge grab spheres",
     { axisGround: original.axisGround, reference, expanded, handles: targets },
   );
   await page.screenshot({
@@ -485,6 +494,7 @@ try {
       !window.__chronoscope.busy
     );
   }, saved.floor.bounds);
+  await page.evaluate(async()=>{await window.__chronoscope.ready;await window.__chronoscope.sceneIdle();});
   const restored = await state();
   restored.corners.forEach((c, i) => {
     near(c.x, saved.corners[i].x, 0.1);

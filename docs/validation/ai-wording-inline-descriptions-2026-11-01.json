@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-01",
+  "changes": [
+    "Restore inline Views effect descriptions; retain disabled dependent controls",
+    "AI remains default; Preferences > General > Assistant wording selects SI / Super Intelligence",
+    "Update toolbar, chat role labels, tooltips, accessibility labels, settings, focused AI, assistant help and detached-window titles",
+    "Preserve user/service message text, drafts, model names and external tool data"
+  ],
+  "verification": {
+    "labels": {
+      "passed": true,
+      "checks": [
+        "AI/SI label saves, survives reload, supports cancellation and returns to AI; tooltip names the setting"
+      ],
+      "errors": [],
+      "publicRequests": 0
+    },
+    "chat": {
+      "passed": true,
+      "checks": [
+        "Pop out and dock preserve the draft and share one Rust conversation",
+        "A stale idle poll cannot overwrite a newly submitted request's working state",
+        "A running request survives pop out, page reload, close and reopen without duplicate SI requests; replies retain one typed inline chart",
+        "Markdown headings, emphasis, tables, source links and equations render; raw HTML, scripts, JavaScript links and remote images are blocked",
+        "Detached Capture map uses the original main renderer, stores a bounded PNG in Rust and displays it inline without sending pixels to the service",
+        "An inline evidence row selects the exact source Event through the shared workspace",
+        "AI/SI preference updates detached window title and existing assistant labels without rewriting message content",
+        "Docking restores rich cards and snapshots from Rust without repeating calculations or service calls; both themes render",
+        "Stop cancels the Rust-owned request and preserves earlier results",
+        "New chat clears session text, rich references, drafts and images without altering source Events"
+      ],
+      "errors": [],
+      "publicRequests": 0
+    },
+    "dialogs": {
+      "passed": true,
+      "checks": [
+        "Calendar is absent; Alt+1/2/3 select the three remaining views",
+        "1600\u00d7975: all dialogs share their top anchor, stay centered and fit the viewport",
+        "1000\u00d7650: all dialogs share their top anchor, stay centered and fit the viewport",
+        "820\u00d7480: all dialogs share their top anchor, stay centered and fit the viewport"
+      ],
+      "errors": [],
+      "publicRequests": 0
+    }
+  },
+  "screenshots_reviewed": [
+    ".qa/ai-wording-revert/labels-compact/si-chat.png",
+    ".qa/ai-wording-revert/dialogs/views-1600.png"
+  ],
+  "native_interaction_tested": false,
+  "native_build": "script/build_and_run.sh --build-only; final result retained in .qa/ai-wording-revert/macos-build.log",
+  "workflows": "Local checks only; no hosted workflows started",
+  "native_build_passed": true,
+  "installed_binary_sha256": "61faf262ef98d2da641acc2bf9b9d9f0a08dfb201007e25dd7bacdca07549dfa"
+}

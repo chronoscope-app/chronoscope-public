@@ -1,5 +1,7 @@
 import { explainResult } from "./focused-ai";
 import { call } from "./bridge";
+import { time } from "./types";
+import { fieldLabel } from "./chart-guidance";
 
 /** Persistent derived evidence, rendered as ordinary app controls. */
 export async function openAnalytics(
@@ -11,7 +13,7 @@ export async function openAnalytics(
   document.querySelector("#analytics-dialog")?.remove();
   const dialog = document.createElement("dialog");
   dialog.id = "analytics-dialog";
-  dialog.className = "analytics-dialog";
+  dialog.className = "workflow-dialog analytics-dialog";
   const header = document.createElement("header"),
     title = document.createElement("h2"),
     close = document.createElement("button");
@@ -197,17 +199,37 @@ export async function openAnalytics(
     ];
     keys.sort(
       (a, b) =>
-        (a.startsWith("group_")
+        (a === "field" || a.startsWith("group_")
           ? 0
           : a === "event_id" || a === "example_event_id"
             ? 2
             : 1) -
-        (b.startsWith("group_")
+        (b === "field" || b.startsWith("group_")
           ? 0
           : b === "event_id" || b === "example_event_id"
             ? 2
             : 1),
     );
+    if (details.capability === "profile") {
+      const order = [
+        "field",
+        "min",
+        "max",
+        "mean",
+        "present_count",
+        "missing_count",
+        "distinct_count",
+        "numeric_count",
+        "numeric_excluded",
+        "sum",
+        "variance_population",
+      ];
+      keys.sort(
+        (a, b) =>
+          (order.indexOf(a) < 0 ? 99 : order.indexOf(a)) -
+          (order.indexOf(b) < 0 ? 99 : order.indexOf(b)),
+      );
+    }
     const hr = document.createElement("tr");
     for (const key of keys)
       hr.append(
@@ -225,8 +247,40 @@ export async function openAnalytics(
         const isYear =
           key.startsWith("group_") &&
           details.summary.group_fields?.[Number(key.slice(6))] === "year_utc";
-        const td = text("td", isYear ? String(row[key]) : format(row[key]));
-        td.title = String(row[key] ?? "");
+        const temporal = ["time", "end"].includes(String(row.field));
+        const dateStatistic = [
+          "min",
+          "max",
+          "mean",
+          "median",
+          "q1",
+          "q3",
+        ].includes(key);
+        const durationStatistic = [
+          "stddev",
+          "std_dev",
+          "iqr",
+          "range",
+        ].includes(key);
+        const value = row[key];
+        const td = text(
+          "td",
+          key === "field"
+            ? fieldLabel(String(value))
+            : temporal && typeof value === "number" && dateStatistic
+              ? `${time(value)} UTC`
+              : temporal && typeof value === "number" && durationStatistic
+                ? `${format(value)} s`
+                : temporal &&
+                    ["sum", "variance", "variance_population"].includes(key)
+                  ? "—"
+                  : isYear
+                    ? String(value)
+                    : format(value),
+        );
+        if (temporal && typeof value === "number")
+          td.title = `Raw ${key}: ${value}${dateStatistic ? " Unix seconds" : key.startsWith("variance") ? " seconds²" : ""}`;
+        if (!td.title) td.title = String(row[key] ?? "");
         tr.append(td);
       }
       const linkedId =
@@ -266,6 +320,20 @@ export async function openAnalytics(
     table.append(head, body);
     scroll.append(table);
     content.append(scroll);
+    if (details.capability === "profile") {
+      content.append(
+        text(
+          "small",
+          "Time values use UTC; durations use seconds. Timestamp sum and variance are omitted from the table. Hover for exact raw values.",
+        ),
+      );
+      const raw = document.createElement("details");
+      raw.append(
+        text("summary", "Exact raw values · this page"),
+        text("pre", JSON.stringify(page.rows, null, 2)),
+      );
+      content.append(raw);
+    }
     const nav = document.createElement("div");
     nav.className = "row";
     const prev = text("button", "Previous") as HTMLButtonElement,

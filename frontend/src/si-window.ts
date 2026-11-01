@@ -1,3 +1,4 @@
+import { assistantName, setAssistantWording } from "./assistant-wording";
 import "./style.css";
 import { call, native } from "./bridge";
 import { SIChat } from "./si-chat";
@@ -31,8 +32,23 @@ const chat = new SIChat(document.querySelector("#si-chat")!, {
   detached: true,
   error,
 });
+let lastName: string | undefined;
 async function theme() {
   const p = await call("preferences");
+  setAssistantWording(!!p.ai_toolbar_si);
+  chat.setNaming(!!p.ai_toolbar_si);
+  const name = assistantName(true);
+  if (name !== lastName) {
+    document.title = `${name} — Chronoscope`;
+    if (native) {
+      const { getCurrentWindow } = await import("@tauri-apps/api/window");
+      const { getVersion } = await import("@tauri-apps/api/app");
+      await getCurrentWindow().setTitle(
+        `${name} — Chronoscope ${await getVersion()}`,
+      );
+    }
+    lastName = name;
+  }
   document.documentElement.dataset.theme =
     p.theme === "system"
       ? matchMedia("(prefers-color-scheme: light)").matches

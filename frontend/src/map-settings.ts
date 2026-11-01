@@ -25,11 +25,11 @@ interface Host {
   cancelMap: () => Promise<void>;
   currentMapZoom: () => number;
 }
-/** Map configuration owns its dialogs; the renderer retains loading/camera state. */
+/** Map configuration owns its reusable Preferences section and detail dialogs. */
 export function createMapSettings(host: Host) {
   const {
     view,
-    modal,
+    modal: openModal,
     head,
     closeModal,
     toast,
@@ -40,6 +40,60 @@ export function createMapSettings(host: Host) {
     cancelMap,
     currentMapZoom,
   } = host;
+  let mapsPanel: HTMLElement | undefined;
+  let navigation: { beforeOpen(): void; back(): Promise<void> } | undefined;
+  let advancedOpen = false;
+  const backToMaps = async () => {
+    if (navigation) await navigation.back();
+    else closeModal();
+  };
+  function modal(html: string, small?: boolean, back = navigation?.back) {
+    if (mapsPanel?.isConnected) navigation?.beforeOpen();
+    const root = openModal(html, small);
+    if (back) {
+      let returning = false;
+      const resume = () => {
+        if (returning) return;
+        returning = true;
+        void Promise.resolve()
+          .then(back)
+          .catch((error) => {
+            returning = false;
+            toast(String(error), true);
+          });
+      };
+      root.addEventListener(
+        "click",
+        (event) => {
+          if (
+            !(event.target instanceof Element) ||
+            !event.target.closest("[data-close]")
+          )
+            return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          resume();
+        },
+        { capture: true },
+      );
+      root.addEventListener(
+        "keydown",
+        (event) => {
+          if (event.key !== "Escape") return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          resume();
+        },
+        { capture: true },
+      );
+    }
+    return root;
+  }
+  function mount(panel: HTMLElement, next: NonNullable<typeof navigation>) {
+    mapsPanel = panel;
+    navigation = next;
+    renderMapSection(panel);
+  }
   const $ = (selector: string) =>
     document.querySelector<HTMLElement>(selector)!;
   const input = (selector: string) => ($(selector) as HTMLInputElement).value;
@@ -111,7 +165,7 @@ export function createMapSettings(host: Host) {
       });
       on("#save-map-stack", async () => {
         await save();
-        closeModal();
+        await backToMaps();
       });
       on("#stack-add", async () => {
         await save();
@@ -126,31 +180,48 @@ export function createMapSettings(host: Host) {
     editing?: MapLayer,
   ) {
     if (draft || editing) return wmtsMenu(draft, editing);
+    if (navigation) return navigation.back();
+    return renderMapSection();
+  }
+  function renderMapSection(panel?: HTMLElement) {
     const custom = mapLayers(host.preferences).filter(
       (l) => l.config.enabled,
     ).length;
-    modal(
-      `${head("Map")}<label class="check-row"><input id="streets-enabled" type="checkbox" ${host.preferences.basemap === "streets" ? "checked" : ""}> Streets</label><p class="description">Detailed worldwide streets · OpenFreeMap Positron. Detail follows your zoom automatically. No account or API key needed.</p>${custom ? `<p class="notice">${custom} custom map layer(s) are enabled and may cover Streets.</p><button id="streets-only">Use Streets only</button>` : ""}${view.resources.status.basemapError ? `<p class="error">${esc(view.resources.status.basemapError)}</p><button id="retry-streets">Retry Streets</button>` : ""}<details class="map-advanced"><summary>Advanced map settings</summary><div class="row" style="margin-top:12px"><button id="custom-map-server">Add custom map server…</button><button id="custom-map-layers">Custom layers…</button><button id="basemap-cache">Cache and loading…</button><button id="basemap-credits">Map credits</button></div><p class="description">Custom WMTS layers, authentication, opacity and zoom rules remain available here.</p></details><footer><button data-close>Cancel</button><span class="spacer"></span><button id="apply-basemap" class="primary">Apply</button></footer>`,
-    );
+    const html = `${head("Map")}<label class="check-row"><input id="streets-enabled" type="checkbox" ${host.preferences.basemap === "streets" ? "checked" : ""}> Streets</label><p class="description">Detailed worldwide streets · OpenFreeMap Positron. Detail follows your zoom automatically. No account or API key needed.</p>${custom ? `<p class="notice">${custom} custom map layer(s) are enabled and may cover Streets.</p><button id="streets-only">Use Streets only</button>` : ""}${view.resources?.status.basemapError ? `<p class="error">${esc(view.resources?.status.basemapError)}</p><button id="retry-streets">Retry Streets</button>` : ""}<details class="map-advanced"><summary>Advanced map settings</summary><div class="row" style="margin-top:12px"><button id="custom-map-server">Add custom map server…</button><button id="custom-map-layers">Custom layers…</button><button id="basemap-cache">Cache and loading…</button><button id="basemap-credits">Map credits</button></div><p class="description">Custom WMTS layers, authentication, opacity and zoom rules remain available here.</p></details><footer><button data-close>Cancel</button><span class="spacer"></span><button id="apply-basemap" class="primary">Apply</button></footer>`;
+    if (panel) {
+      panel.innerHTML = html;
+      panel.querySelector(".modal-head, header")?.remove();
+      panel.querySelector("footer")?.remove();
+      panel.insertAdjacentHTML(
+        "afterbegin",
+        '<h3>Maps</h3><p class="description">Save preferences applies the Streets choice. Advanced dialogs save their own changes.</p>',
+      );
+    } else modal(html);
+    const advanced = $(".map-advanced") as HTMLDetailsElement;
+    advanced.open = advancedOpen;
+    advanced.addEventListener("toggle", () => {
+      advancedOpen = advanced.open;
+    });
     on("#custom-map-server", () => wmtsMenu());
     on("#custom-map-layers", mapLayerMenu);
     on("#basemap-cache", mapCacheMenu);
     on("#basemap-credits", () => view.showCredits());
-    if (view.resources.status.basemapError)
+    if (view.resources?.status.basemapError)
       on("#retry-streets", async () => {
         await view.setBasemap("none");
         await view.setBasemap("streets");
+        if (!panel) closeModal();
+      });
+    if (!panel)
+      on("#apply-basemap", async () => {
+        host.preferences = await call("preferences", {
+          preferences: {
+            basemap: check("#streets-enabled") ? "streets" : "none",
+          },
+        });
         closeModal();
+        await refresh(false);
       });
-    on("#apply-basemap", async () => {
-      host.preferences = await call("preferences", {
-        preferences: {
-          basemap: check("#streets-enabled") ? "streets" : "none",
-        },
-      });
-      closeModal();
-      await refresh(false);
-    });
     if (custom)
       on("#streets-only", async () => {
         const stack = mapLayers(host.preferences).map((layer) => ({
@@ -164,7 +235,8 @@ export function createMapSettings(host: Host) {
             map_layers: stack,
           },
         });
-        closeModal();
+        if (panel) renderMapSection(panel);
+        else closeModal();
         await refresh(false);
         await loadRasters();
       });
@@ -215,7 +287,7 @@ export function createMapSettings(host: Host) {
     let caps: any = host.capabilitiesURL === c.url ? host.capabilities : null;
     let requestGeneration = 0;
     modal(
-      `${head("Map servers")}<p class="description">Save multiple WMTS connections and add imagery layers from any server. The server library stays on this computer; the layer stack and visibility rules are saved with your workspace.</p><div class="row"><label class="field grow">Map source<select id="wmts-server"></select></label><button id="add-wmts-server">Add server</button><button id="remove-wmts-server">Remove</button></div><div id="wmts-source-info" class="notice" hidden></div><label class="field">Server name<input id="wmts-server-name"></label><label class="field">Capabilities or service URL<input id="wmts-url" placeholder="https://…/WMTSCapabilities.xml"></label><div class="row"><button id="inspect-wmts" class="primary">Read capabilities</button><button id="wmts-auth">Authentication…</button><button id="wmts-cache">Cache and loading…</button><span class="spacer"></span><label class="check-row"><input id="map-enabled" type="checkbox"> Show map</label></div><div id="wmts-layer-status" role="status" class="description"></div><div id="wmts-fields" style="margin-top:12px"></div><div class="notice">EPSG:3857 and EPSG:4326/CRS84. Imagery loads directly with a local disk cache. Each server remembers its layer, matrix, style, date and resolution. Multiple sources can be enabled together. Use Map layers to set opacity, order and zoom visibility.</div><footer><button data-close>Close</button><button id="save-wmts-server">Save server</button><button id="map-stack-settings">Map layers…</button><button id="map-credits">Map credits</button><button id="add-map-layer">Add selected layer to map</button><span class="spacer"></span><button id="apply-map" class="primary">Apply to view</button></footer>`,
+      `${head("Maps")}<p class="description">Save multiple WMTS connections and add imagery layers from any server. The server library stays on this computer; the layer stack and visibility rules are saved with your workspace.</p><div class="row"><label class="field grow">Map source<select id="wmts-server"></select></label><button id="add-wmts-server">Add server</button><button id="remove-wmts-server">Remove</button></div><div class="row map-navigation"><button id="map-stack-settings">Map layers…</button><button id="map-credits">Map credits</button></div><div id="wmts-source-info" class="notice" hidden></div><label class="field">Server name<input id="wmts-server-name"></label><label class="field">Capabilities or service URL<input id="wmts-url" placeholder="https://…/WMTSCapabilities.xml"></label><div class="row"><button id="inspect-wmts">Read capabilities</button><button id="wmts-auth">Authentication…</button><button id="wmts-cache">Cache and loading…</button><span class="spacer"></span><label class="check-row"><input id="map-enabled" type="checkbox"> Show map</label></div><div id="wmts-layer-status" role="status" class="description"></div><div id="wmts-fields" style="margin-top:12px"></div><div class="notice">EPSG:3857 and EPSG:4326/CRS84. Imagery loads directly with a local disk cache. Each server remembers its layer, matrix, style, date and resolution. Multiple sources can be enabled together. Use Map layers to set opacity, order and zoom visibility.</div><footer><button data-close>Close</button><button id="save-wmts-server">Save server</button><button id="add-map-layer">Add selected layer to map</button><span class="spacer"></span><button id="apply-map" class="primary">Apply to view</button></footer>`,
       false,
     );
     const menuOwner = $("#wmts-server");
@@ -251,6 +323,15 @@ export function createMapSettings(host: Host) {
     };
     const fields = () => {
       if (!alive()) return;
+      const ready = !!input("#wmts-url").trim() && !!c.layer && !!c.matrix_set;
+      $("#inspect-wmts").classList.toggle("primary", !ready);
+      ($("#inspect-wmts") as HTMLButtonElement).disabled =
+        !input("#wmts-url").trim();
+      $("#apply-map").classList.toggle("primary", ready);
+      ($("#apply-map") as HTMLButtonElement).disabled = !ready;
+      ($("#add-map-layer") as HTMLButtonElement).disabled = !ready;
+      ($("#save-wmts-server") as HTMLButtonElement).disabled =
+        !input("#wmts-url").trim();
       const preset = host.mapPresets.find(
         (p) => p.config.url === c.url && p.config.layer === c.layer,
       );
@@ -280,6 +361,12 @@ export function createMapSettings(host: Host) {
       if (!layer.formats.includes(c.format))
         c.format = layer.formats.find(supportedRasterFormat) || "";
       if (!c.style) c.style = layer.style;
+      $("#inspect-wmts").classList.toggle("primary", !c.layer || !c.matrix_set);
+      $("#apply-map").classList.toggle("primary", !!c.layer && !!c.matrix_set);
+      ($("#apply-map") as HTMLButtonElement).disabled =
+        !c.layer || !c.matrix_set;
+      ($("#add-map-layer") as HTMLButtonElement).disabled =
+        !c.layer || !c.matrix_set;
       const time = layer.dimensions.find(
         (d: any) => d.name.toLowerCase() === "time",
       );
@@ -383,6 +470,8 @@ export function createMapSettings(host: Host) {
     $("#wmts-url").addEventListener("input", () => {
       requestGeneration++;
       caps = null;
+      c.layer = "";
+      c.matrix_set = "";
       fields();
     });
     on("#inspect-wmts", read);
@@ -498,6 +587,7 @@ export function createMapSettings(host: Host) {
       await refresh(false);
       host.mapUnavailable = false;
       await loadRasters();
+      if (navigation) await backToMaps();
     });
     show();
   }
@@ -566,7 +656,7 @@ export function createMapSettings(host: Host) {
     const info = await call("wmts_access"),
       s = info.settings;
     modal(
-      `${head("Map cache and loading")}<p class="description">Tiles and capabilities are cached directly in a private folder on this computer. No proxy, service or listening port is involved. Cache files are independent of saved workspaces. Previously viewed imagery can be reused without contacting the provider; offline mode requires all requested tiles and capabilities to be cached.</p><div class="notice mono">${esc(info.directory)}<br>${(info.bytes / 1048576).toFixed(1)} MiB cached</div><div class="modal-grid"><label class="field">Concurrent downloads<input id="cache-concurrency" type="number" min="1" max="32" value="${s.concurrency}"></label><label class="field">Minimum request interval / ms (0 = no imposed delay)<input id="cache-interval" type="number" min="0" max="60000" value="${s.request_interval_ms}"></label><label class="field">Disk cache limit / MiB (0 = unlimited)<input id="cache-limit" type="number" min="0" value="${s.cache_limit_mb}"></label><label class="field">Tile freshness / days<input id="cache-days" type="number" min="1" max="3650" value="${s.tile_ttl_days}"></label></div><label class="check-row"><input id="cache-offline" type="checkbox" ${s.offline ? "checked" : ""}> Use cached maps only / no network access</label><p class="description">Provider terms and HTTP rate limits still apply. The optional request interval is useful for restrained testing; normal loading defaults to no delay. Cache is oldest-file evicted when over its size limit. Offline mode also permits older cached imagery.</p><button id="cache-clear">Clear cached imagery and capabilities</button><footer><button data-close>Cancel</button><span class="spacer"></span><button id="cache-save" class="primary">Save settings</button></footer>`,
+      `${head("Map cache and loading")}<p class="description">Previously viewed maps are saved on this computer for faster loading and offline reuse. Offline mode requires the requested imagery to be cached.</p><p class="notice">${(info.bytes / 1048576).toFixed(1)} MiB cached</p><details><summary>Cache location and details</summary><p class="mono cache-path">${esc(info.directory)}</p><p class="description">Tiles and capabilities are cached directly; no proxy, service or listening port is involved. Cache files are independent of saved workspaces.</p></details><div class="modal-grid"><label class="field">Concurrent downloads<input id="cache-concurrency" type="number" min="1" max="32" value="${s.concurrency}"></label><label class="field">Request interval<input id="cache-interval" type="number" min="0" max="60000" value="${s.request_interval_ms}"><small>Milliseconds · 0 adds no delay</small></label><label class="field">Disk cache limit<input id="cache-limit" type="number" min="0" value="${s.cache_limit_mb}"><small>MiB · 0 is unlimited</small></label><label class="field">Tile freshness<input id="cache-days" type="number" min="1" max="3650" value="${s.tile_ttl_days}"><small>Days</small></label></div><label class="check-row"><input id="cache-offline" type="checkbox" ${s.offline ? "checked" : ""}> Use cached maps only / no network access</label><p class="description">Provider terms and HTTP rate limits still apply. The optional request interval is useful for restrained testing; normal loading defaults to no delay. Cache is oldest-file evicted when over its size limit. Offline mode also permits older cached imagery.</p><button id="cache-clear">Clear cached imagery and capabilities</button><footer><button data-close>Cancel</button><span class="spacer"></span><button id="cache-save" class="primary">Save settings</button></footer>`,
       true,
     );
     on("#cache-save", async () => {
@@ -580,8 +670,8 @@ export function createMapSettings(host: Host) {
         },
       });
       host.mapUnavailable = false;
-      closeModal();
       toast("Local map loading/cache settings saved");
+      await backToMaps();
     });
     on("#cache-clear", async () => {
       await cancelMap();
@@ -590,8 +680,8 @@ export function createMapSettings(host: Host) {
       toast(
         "Map disk cache cleared; displayed imagery stays until the next load",
       );
-      closeModal();
+      await backToMaps();
     });
   }
-  return { mapMenu, mapLayerMenu };
+  return { mapMenu, mapLayerMenu, mount };
 }

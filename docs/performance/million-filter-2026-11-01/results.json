@@ -1,0 +1,407 @@
+{
+  "baseline_commit": "7a453fc",
+  "branch": "experiment/million-filter-performance",
+  "rows": 1000000,
+  "representative_points": 20000,
+  "rounds_per_ui_variant": 2,
+  "synthetic": true,
+  "limitations": [
+    "Sequential A/B order; uncontrolled OS page cache; two UI rounds per variant.",
+    "Chromium/ANGLE Metal measurements plus shared optimized Rust backend, not native WKWebView frame certification.",
+    "One hundred synthetic tracks; one million stored points; bounded 20000-point rendering.",
+    "No claim of memory improvement; candidate browser process-tree RSS was higher."
+  ],
+  "ui": {
+    "baseline": {
+      "passed": true,
+      "started": "2026-11-01T14:10:52.706Z",
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "import_seconds": 22.796213124999998,
+      "retained_js_heap_bytes": 44562788,
+      "samples": [
+        {
+          "kind": "idle",
+          "round": 0,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "refresh",
+          "round": 0,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 68.20000000298023,
+          "refresh_p95_ms": 74.60000000149012,
+          "render_error_count": 0
+        },
+        {
+          "kind": "filter",
+          "round": 0,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 876.6000000014901,
+          "refresh_p95_ms": 899.6000000014901,
+          "render_error_count": 0
+        },
+        {
+          "kind": "focus",
+          "round": 0,
+          "fps": 60.0026816840976,
+          "frame_p95_ms": 18.299999999999272,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "orbit",
+          "round": 0,
+          "fps": 60.01475222959829,
+          "frame_p95_ms": 18.19999999999709,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "playback",
+          "round": 0,
+          "fps": 60.01072817486919,
+          "frame_p95_ms": 18.5,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "idle",
+          "round": 1,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "refresh",
+          "round": 1,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 66.40000000596046,
+          "refresh_p95_ms": 67.79999999701977,
+          "render_error_count": 0
+        },
+        {
+          "kind": "filter",
+          "round": 1,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 866.5,
+          "refresh_p95_ms": 900,
+          "render_error_count": 0
+        },
+        {
+          "kind": "focus",
+          "round": 1,
+          "fps": 59.984584966991754,
+          "frame_p95_ms": 18.099999999998545,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "orbit",
+          "round": 1,
+          "fps": 60.000670398551875,
+          "frame_p95_ms": 18.400000000001455,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "playback",
+          "round": 1,
+          "fps": 60.016764459346184,
+          "frame_p95_ms": 18.19999999999709,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        }
+      ],
+      "peak_owned_tree_rss_mib": 3085,
+      "binary_sha256": "768b35c9c0da4a74627fb9757a9713904aea9edc4c66a6a80fd02b10d9f8dc40"
+    },
+    "candidate": {
+      "passed": true,
+      "started": "2026-11-01T14:12:23.554Z",
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5, Unspecified Version)",
+      "import_seconds": 22.600043292,
+      "retained_js_heap_bytes": 44676128,
+      "samples": [
+        {
+          "kind": "idle",
+          "round": 0,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "refresh",
+          "round": 0,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 67.80000000447035,
+          "refresh_p95_ms": 73.20000000298023,
+          "render_error_count": 0
+        },
+        {
+          "kind": "filter",
+          "round": 0,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 743.7000000029802,
+          "refresh_p95_ms": 766.7000000029802,
+          "render_error_count": 0
+        },
+        {
+          "kind": "focus",
+          "round": 0,
+          "fps": 60.02682763246144,
+          "frame_p95_ms": 18.200000000000728,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "orbit",
+          "round": 0,
+          "fps": 60.000670398551875,
+          "frame_p95_ms": 18.200000000000728,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "playback",
+          "round": 0,
+          "fps": 60.00268168409767,
+          "frame_p95_ms": 17.900000000001455,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "idle",
+          "round": 1,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "refresh",
+          "round": 1,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 66.80000000447035,
+          "refresh_p95_ms": 71.69999999552965,
+          "render_error_count": 0
+        },
+        {
+          "kind": "filter",
+          "round": 1,
+          "fps": null,
+          "frame_p95_ms": 0,
+          "refresh_p50_ms": 732.7999999970198,
+          "refresh_p95_ms": 748.8999999985099,
+          "render_error_count": 0
+        },
+        {
+          "kind": "focus",
+          "round": 1,
+          "fps": 60.032867156320286,
+          "frame_p95_ms": 18.30000000000291,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "orbit",
+          "round": 1,
+          "fps": 60.000670398551875,
+          "frame_p95_ms": 18.10000000000582,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        },
+        {
+          "kind": "playback",
+          "round": 1,
+          "fps": 60.000670398551875,
+          "frame_p95_ms": 18,
+          "refresh_p50_ms": 0,
+          "refresh_p95_ms": 0,
+          "render_error_count": 0
+        }
+      ],
+      "peak_owned_tree_rss_mib": 4078,
+      "binary_sha256": "a6ba50757fc86044926d72f9e015d461bc270bb35c16dcfa6dff12d957fc1ee5"
+    }
+  },
+  "phases": {
+    "baseline": {
+      "display_data": [
+        480.91395899973577,
+        477.65225000330247,
+        479.6468749991618,
+        483.4172499977285,
+        485.12491699511884,
+        488.71387500548735
+      ],
+      "filter": [
+        0.41766699723666534,
+        0.23383300140267238,
+        0.22474999423138797,
+        0.23291699471883476,
+        0.2384999970672652,
+        0.23754200083203614,
+        0.22149999858811498
+      ],
+      "open": [
+        18830.11170800455
+      ],
+      "render_data": [
+        635.5833749985322,
+        641.4418330023182,
+        651.5313329946366,
+        666.2675839979784,
+        677.447583002504,
+        685.9344580007019
+      ],
+      "render_geometries": [
+        0.1747920032357797,
+        0.16420800238847733,
+        0.15583300410071388,
+        0.1752500029397197,
+        0.17012500029522926,
+        0.16075000166893005
+      ],
+      "snapshot": [
+        6.710124995152,
+        274.3309580037021,
+        278.7366250049672,
+        284.68024999892805,
+        288.3522499978426,
+        295.18491699855076,
+        299.9131250035134
+      ],
+      "view_set": [
+        0.2773750020423904
+      ],
+      "view_snapshot_v1": [
+        3001.242459002242,
+        48.22829099430237,
+        48.131874995306134,
+        48.462458995345514,
+        47.7080830023624,
+        47.73791699699359,
+        47.69879200466676
+      ],
+      "cold_summary_ms": [
+        274.3309580037021,
+        278.7366250049672,
+        284.68024999892805,
+        288.3522499978426,
+        295.18491699855076,
+        299.9131250035134
+      ]
+    },
+    "candidate": {
+      "display_data": [
+        480.14370799501194,
+        481.1748339998303,
+        481.13937499874737,
+        485.24791700037895,
+        485.91145800310187,
+        487.1702090022154
+      ],
+      "filter": [
+        0.3222920058760792,
+        0.246666997554712,
+        0.23620899446541443,
+        0.23970800248207524,
+        0.24699999630684033,
+        0.21150000247871503,
+        0.2562500012572855
+      ],
+      "open": [
+        11764.226458995836
+      ],
+      "render_data": [
+        634.9852499988629,
+        643.0815839994466,
+        657.1179999955348,
+        665.3033750044415,
+        678.1445000015083,
+        687.4983340021572
+      ],
+      "render_geometries": [
+        0.17866700363811105,
+        0.16275000234600157,
+        0.17062500410247594,
+        0.17662499885773286,
+        0.1662499998928979,
+        0.1748750000842847
+      ],
+      "snapshot": [
+        7.036541996058077,
+        138.20962500176392,
+        144.92674999928568,
+        148.67529100592947,
+        155.57454200461507,
+        160.97554100269917,
+        167.15070799546083
+      ],
+      "view_set": [
+        0.26670899387681857
+      ],
+      "view_snapshot_v1": [
+        3134.4787909984007,
+        48.48829100228613,
+        47.94812499312684,
+        49.32258299959358,
+        48.217791998467874,
+        48.421375002362765,
+        48.00079199776519
+      ],
+      "cold_summary_ms": [
+        138.20962500176392,
+        144.92674999928568,
+        148.67529100592947,
+        155.57454200461507,
+        160.97554100269917,
+        167.15070799546083
+      ]
+    }
+  },
+  "phase_summary_values_identical": true,
+  "phase_summary_comparisons": 13,
+  "phase_summary_sha256": "8cea2b86f3af9e2e9526f66d092ab9910bb8e1ac2dd012fb44aa20a7dff2916d",
+  "filter_median_of_round_medians_ms": {
+    "baseline": 871.5500000007451,
+    "candidate": 738.25,
+    "reduction_percent": 15.294590098173499,
+    "speedup": 1.1805621401974196
+  },
+  "tests_passed": 132,
+  "frontend_index_sha256": "a32569cfe8aae2137b06404d35735617acd981db204806247a84d413ca5864e6",
+  "source_sha256": {
+    "src/store.rs": "80da1fef4a7c76afa8b245de407bdb088a575f43f188b8cf44c21808bcb38961",
+    "src/store/summary.rs": "896fd0106d6a767331621361a9f2f7119715a7cf4be94e308f01240c61087ef1",
+    "scripts/benchmark_refresh.py": "502cc5cf6c43a5dc75096b8e1c5bfc528d835e2b9285aa9182c99fc92c4ced12",
+    "tests/filter_summary.rs": "964b63d53424994ac72d66d55f36cdd52ad8ecd0648978ae57a34d541e1484cd"
+  }
+}

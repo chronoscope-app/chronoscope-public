@@ -396,7 +396,7 @@ test("all main scene commits use the shared helper; agent receives that helper",
   };
   visit(ast);
   assert.equal(direct, 1, "only shared wrapper issues the scene RPC");
-  assert.equal(shared, 11);
+  assert.equal(shared, 12);
   const agent = fs.readFileSync(
     new URL("../src/agent-view.ts", import.meta.url),
     "utf8",

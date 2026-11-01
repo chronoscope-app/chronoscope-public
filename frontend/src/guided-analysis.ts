@@ -1,3 +1,4 @@
+import { assistantWording } from "./assistant-wording";
 import { call } from "./bridge";
 import { runJob } from "./operation-job";
 import {
@@ -20,7 +21,7 @@ export async function openGuidedAnalysis(
   dialog.id = "guided-analysis";
   dialog.className = "workflow-dialog analysis-dialog";
   dialog.setAttribute("aria-labelledby", "guided-analysis-title");
-  dialog.innerHTML = `<header><div><h2 id="guided-analysis-title">New analysis</h2><p>Calculated locally · no AI connection required</p></div><button data-close aria-label="Close new analysis">×</button></header><div class="workflow-body"><p role="status">Loading fields…</p></div>`;
+  dialog.innerHTML = `<header><div><h2 id="guided-analysis-title">New analysis</h2><p>${assistantWording("Calculated locally · no AI connection required")}</p></div><button data-close aria-label="Close new analysis">×</button></header><div class="workflow-body"><p role="status">Loading fields…</p></div>`;
   document.body.append(dialog);
   dialog.showModal();
   let abort: AbortController | undefined;
@@ -90,7 +91,7 @@ export async function openGuidedAnalysis(
       host.innerHTML =
         draft.task === "trajectories"
           ? ""
-          : `<fieldset class="analysis-fields"><legend>${draft.task === "outliers" ? "Measurement" : "Fields to examine"}</legend>${draft.task === "outliers" ? `<label class="field">Numeric field<select id="analysis-measurement">${choices.map((f) => `<option value="${esc(f)}" ${f === draft.fields[0] ? "selected" : ""}>${esc(fieldLabel(f))}</option>`).join("")}</select></label><div class="modal-grid"><label class="field">Method<select id="analysis-method"><option value="iqr">Interquartile range (IQR)</option><option value="zscore">Population z-score</option></select></label><label class="field">Threshold<input id="analysis-threshold" type="number" min="0.01" max="20" step="any" value="${draft.threshold}" required></label></div>` : `<div class="analysis-field-list">${choices.map((f) => `<label class="check-row"><input type="checkbox" data-analysis-field value="${esc(f)}" ${draft.fields.includes(f) ? "checked" : ""}>${esc(fieldLabel(f))}</label>`).join("")}</div><small>Choose up to ${draft.task === "profile" ? 16 : 8} fields. Imported source columns are retained.</small>`}</fieldset>`;
+          : `<fieldset class="analysis-fields"><legend>${draft.task === "outliers" ? "Measurement" : "Fields to examine"}</legend>${draft.task === "outliers" ? `<label class="field">Numeric field<select id="analysis-measurement">${choices.map((f) => `<option value="${esc(f)}" ${f === draft.fields[0] ? "selected" : ""}>${esc(fieldLabel(f))}</option>`).join("")}</select></label><div class="modal-grid"><label class="field">Method<select id="analysis-method"><option value="iqr">Interquartile range (IQR)</option><option value="zscore">Population z-score</option></select></label><label class="field">Threshold<input id="analysis-threshold" type="number" min="0.01" max="20" step="any" value="${draft.threshold}" required></label></div>` : `<p class="analysis-field-summary"><span id="analysis-selected-count" role="status">${draft.fields.length} selected</span> · Scroll for more fields</p><div class="analysis-field-list" tabindex="0" aria-label="Available analysis fields">${choices.map((f) => `<label class="check-row"><input type="checkbox" data-analysis-field value="${esc(f)}" ${draft.fields.includes(f) ? "checked" : ""}>${esc(fieldLabel(f))}</label>`).join("")}</div><small>Choose up to ${draft.task === "profile" ? 16 : 8} fields. Imported source columns are retained.</small>`}</fieldset>`;
       dialog.querySelector("#analysis-assumptions")!.textContent =
         draft.task === "trajectories"
           ? "Distances join recorded samples by entity using WGS84 geodesics. Missing locations are excluded and same-time conflicts are disclosed. These are not reconstructed continuous routes."
@@ -108,6 +109,16 @@ export async function openGuidedAnalysis(
     draw();
     form.addEventListener("change", (e) => {
       const input = e.target as HTMLInputElement;
+      if (input.hasAttribute("data-analysis-field")) {
+        draft.fields = [
+          ...form.querySelectorAll<HTMLInputElement>(
+            "[data-analysis-field]:checked",
+          ),
+        ].map((f) => f.value);
+        form.querySelector("#analysis-selected-count")!.textContent =
+          `${draft.fields.length} selected`;
+        return;
+      }
       if (input.name !== "task") return;
       draft.task = input.value as AnalysisTask;
       draft.fields =

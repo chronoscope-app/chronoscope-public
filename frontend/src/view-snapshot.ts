@@ -31,6 +31,7 @@ export interface SnapshotApplication {
   readonly displayPacket: DisplayPacket | null;
   readonly globeTime: boolean;
   readonly globeAltitude?: boolean;
+  readonly timeAltitude?: boolean;
   readonly globeTimeScale: number;
   readonly timeHeight: number;
   readonly theme: string;

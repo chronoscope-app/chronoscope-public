@@ -46,7 +46,13 @@ function fixture(call, after = async () => {}, before = async () => {}) {
   };
   const context = {
     exports: {},
-    require: () => ({ call }),
+    require: (name) =>
+      name === "./assistant-wording"
+        ? {
+            bindAssistantWording: () => () => {},
+            assistantName: () => "AI",
+          }
+        : { call },
     setInterval: () => 0,
     clearInterval() {},
     setTimeout,

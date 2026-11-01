@@ -1,0 +1,213 @@
+{
+  "date": "2026-11-01",
+  "repository": "chronoscope-app/chronoscope-next",
+  "base": "c140ab3",
+  "scope": [
+    "Inset draggable Time axis and persistent grab sphere visibility",
+    "Independent Time physical altitude using existing Globe altitude pipeline",
+    "Maps Preferences section and return navigation from Advanced dialogs"
+  ],
+  "verification": {
+    "rust": {
+      "passed": 24,
+      "failed": 0,
+      "log": ".qa/time-axis-controls/rust-final.log"
+    },
+    "frontend_unit": {
+      "passed": 188,
+      "failed": 0,
+      "skipped": 1,
+      "skip_reason": "Node runtime lacks optional Uint8Array.fromBase64; fallback covered",
+      "log": ".qa/time-axis-controls/units-final.log"
+    },
+    "engine_contracts": "Generated contracts match exact local debug CLI",
+    "frontend_build": "TypeScript and Vite passed",
+    "browser": {
+      "axis-final": {
+        "passed": true,
+        "checks": [
+          "Top sphere moves only the axis; labels stay inside the canvas and camera/selection are unchanged",
+          "Axis labels stay in bounds through rotation, zoom and resize; hiding grab spheres removes picking and persists with the axis position"
+        ],
+        "report": ".qa/time-axis-controls/axis-final/report.json"
+      },
+      "altitude-final": {
+        "passed": true,
+        "checks": [
+          "zero, EGM96 conversion and 250 km reported altitude match independent WGS84 coordinates; missing/unknown omitted",
+          "single sliding selector is mutually exclusive; slider stays visible and disabled in Altitude, retains scale, and zero Time Height gives ground; altitude survives save/reopen",
+          "Time reuses Globe's physical-altitude toggle, reference conversion and missing-height omission; Time restores all records",
+          "automation reset requires explicit confirmation and returns live altitude state after successful recovery",
+          "reset icon follows Preferences; Enter/Escape cancel; confirmed reset retains altitude, camera and dataset"
+        ],
+        "report": ".qa/time-axis-controls/altitude-final/report.json"
+      },
+      "maps-final": {
+        "passed": true,
+        "checks": [
+          "Maps opens as a Preferences section; X, Cancel/Close and Escape return all three Advanced dialogs to that section with Advanced open and focus restored",
+          "General and Maps drafts survive subdialog cancellation; closing Preferences discards both without applying Streets",
+          "Maps is also accessible from Preferences; saving Advanced cache settings returns there and saved preferences retain the configured map state"
+        ],
+        "report": ".qa/time-axis-controls/maps-final/report.json"
+      },
+      "basemap-final": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "one default Streets basemap; no built-in WMTS catalog",
+            "evidence": {}
+          },
+          {
+            "name": "2D native street tiles; WGS84/mercator pixel alignment",
+            "evidence": {
+              "basemap": "streets",
+              "basemapPending": 0,
+              "basemapError": "",
+              "basemapRenderedTiles": 92,
+              "basemapAlignmentErrorPixels": 1.655678261158755e-09,
+              "basemapMaximumLevel": 15,
+              "imageryLayers": 2,
+              "tileCount": 0,
+              "imageryRequestedTiles": 0,
+              "terrainActive": true,
+              "terrainProviderChanges": 1,
+              "terrainPendingTiles": 0,
+              "terrainCovered": 66049,
+              "verticalDatum": "egm96",
+              "geoidModel": "NGA EGM96 15-minute; H+N",
+              "mode": "map"
+            }
+          },
+          {
+            "name": "simple Map dialog shows Streets; custom servers are advanced",
+            "evidence": {}
+          },
+          {
+            "name": "Streets toggle persists and releases/recreates the vector renderer",
+            "evidence": {}
+          },
+          {
+            "name": "space-time imagery stays on the ground",
+            "evidence": {
+              "basemap": "streets",
+              "basemapPending": 0,
+              "basemapError": "",
+              "basemapRenderedTiles": 182,
+              "basemapAlignmentErrorPixels": 1.655678261158755e-09,
+              "basemapMaximumLevel": 15,
+              "imageryLayers": 2,
+              "tileCount": 0,
+              "imageryRequestedTiles": 0,
+              "terrainActive": true,
+              "terrainProviderChanges": 1,
+              "terrainPendingTiles": 0,
+              "terrainCovered": 66049,
+              "verticalDatum": "egm96",
+              "geoidModel": "NGA EGM96 15-minute; H+N",
+              "mode": "space-time"
+            }
+          },
+          {
+            "name": "globe uses the same native tiled street basemap",
+            "evidence": {
+              "basemap": "streets",
+              "basemapPending": 32,
+              "basemapError": "",
+              "basemapRenderedTiles": 201,
+              "basemapAlignmentErrorPixels": 1.655678261158755e-09,
+              "basemapMaximumLevel": 15,
+              "imageryLayers": 2,
+              "tileCount": 0,
+              "imageryRequestedTiles": 0,
+              "terrainActive": true,
+              "terrainProviderChanges": 1,
+              "terrainPendingTiles": 0,
+              "terrainCovered": 66049,
+              "verticalDatum": "egm96",
+              "geoidModel": "NGA EGM96 15-minute; H+N",
+              "mode": "globe"
+            }
+          },
+          {
+            "name": "fresh vector renderer reloads style, tiles and fonts from private disk cache offline",
+            "evidence": {
+              "bytes": 0
+            }
+          },
+          {
+            "name": "custom WMTS connection editor remains available without provider catalog",
+            "evidence": {}
+          },
+          {
+            "name": "strict desktop CSP and both renderers produce no uncaught errors",
+            "evidence": {}
+          }
+        ],
+        "report": ".qa/time-axis-controls/basemap-final/report.json"
+      },
+      "toolbar": {
+        "passed": true,
+        "viewports": [
+          [
+            1600,
+            975
+          ],
+          [
+            1000,
+            650
+          ],
+          [
+            820,
+            480
+          ]
+        ],
+        "log": ".qa/time-axis-controls/toolbar-final.log"
+      },
+      "guided-workflows": {
+        "passed": true,
+        "log": ".qa/time-axis-controls/guided-final.log"
+      },
+      "wkt-wmts": {
+        "passed": true,
+        "checks": [
+          "Geometry import and polygon picking",
+          "64 fixture tiles, cache and offline reuse",
+          "Named servers and layer switching",
+          "Multi-source opacity and zoom handoff"
+        ],
+        "log": ".qa/time-axis-controls/wmts-final.log",
+        "startup": "Wait for full app readiness before import; no external map requests"
+      }
+    },
+    "macos_build": {
+      "passed": true,
+      "command": "script/build_and_run.sh --build-only",
+      "profile": "release",
+      "version": "0.16.12",
+      "installed": "~/Applications/Chronoscope.app",
+      "executable_sha256": "77009f046b42e3cb7845c9810ee01a98326dea56868c335efc3e01ef878f9dd7",
+      "matches_built_bundle": true,
+      "only_installed_copy": true,
+      "log": ".qa/time-axis-controls/final-macos-build.log"
+    }
+  },
+  "limitations": [
+    {
+      "test": "space-time-window-qa",
+      "result": "Pre-existing saved/reopened padded study bounding box mismatch",
+      "baseline": "Untouched 1126b07 source and frontend produce identical actual and expected values",
+      "evidence": [
+        ".qa/time-axis-controls/frame-browser-ready.log",
+        ".qa/time-axis-controls/frame-baseline.log"
+      ],
+      "new_axis_navigation_checks": "First twelve checks passed; saved study assertion retained"
+    },
+    "Native desktop interaction has not been tested for this change; focused interaction checks use real Cesium in local Chrome with isolated workspaces."
+  ],
+  "performance_branches": {
+    "useful_work": "Already integrated into Next main",
+    "excluded": "experiment/million-display-aggregation at 49c6563: no observable UI gain"
+  },
+  "hosting": "Local verification only; no hosted workflows dispatched; Public unchanged"
+}

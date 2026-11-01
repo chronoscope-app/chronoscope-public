@@ -9,7 +9,7 @@ Open **Help → Demo datasets → A week of flights · 6 Philippine airports** o
 
 ## Height controls and interpretation
 
-The navigation height menu has one sliding segmented selector for **Time Height** and **Altitude**. Clicking either segment moves the selection. The elevation slider stays visible and is grayed out in Altitude, preserving the Time Height scale. Time Height at zero places Events on the terrain. Altitude is available in Globe; Time Height remains available in Time and Globe. Time Height's scale changes display elevation by timestamp. Altitude uses physical metres without time scaling or terrain exaggeration.
+The navigation height menu has one sliding segmented selector for **Time Height** and **Altitude**. Clicking either segment moves the selection. The elevation slider stays visible and is grayed out in Altitude, preserving the Time Height scale. Time Height at zero places Events on the terrain. Altitude and Time Height are available in both Time and Globe through the same control. Time and Globe remember their choices independently. Time Height's scale changes display elevation by timestamp. Altitude uses physical metres without time scaling or terrain exaggeration.
 
 The importer recognizes altitude, height, elevation, geometric-altitude and unit-qualified column names. Select metres, feet or kilometres and verify the vertical reference:
 

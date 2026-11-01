@@ -16,6 +16,8 @@ resolver = "2"
 default = []
 # Retained research bridge; excluded from ordinary CLI/desktop builds.
 experimental-browser-webmcp = []
+performance-sql-trace = ["rusqlite/trace"]
+performance-open-profile = []
 legacy = ["dep:eframe", "dep:egui_extras", "dep:rfd"]
 
 [[bin]]
@@ -26,6 +28,14 @@ path = "src/main.rs"
 name = "chronoscope-legacy"
 path = "src/legacy.rs"
 required-features = ["legacy"]
+
+[[example]]
+name = "profile_overview"
+required-features = ["performance-sql-trace"]
+
+[[example]]
+name = "profile_open"
+required-features = ["performance-open-profile"]
 
 [dependencies]
 shapefile = { version = "=0.9.0", default-features = false, features = ["geo-types", "encoding_rs"] }

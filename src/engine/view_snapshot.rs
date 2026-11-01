@@ -25,8 +25,12 @@ impl Engine {
                 )
             };
             if (options.mode != "points" || options.bloom)
-                && !(result["snapshot"]["scene"]["mode"] == "globe"
+                && !((result["snapshot"]["scene"]["mode"] == "globe"
                     && result["snapshot"]["scene"]["globe_altitude"] == true)
+                    || (matches!(
+                        result["snapshot"]["scene"]["mode"].as_str(),
+                        Some("" | "space-time")
+                    ) && result["snapshot"]["scene"]["time_altitude"] == true))
             {
                 let mode = result["snapshot"]["scene"]["mode"]
                     .as_str()

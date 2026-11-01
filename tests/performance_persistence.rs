@@ -4,6 +4,83 @@ use chronoscope::{
     store::DataStore,
 };
 #[test]
+fn cancelled_portable_save_preserves_destination_and_cleans_staging_files() {
+    use std::sync::{atomic::AtomicBool, Arc};
+    let dir = tempfile::tempdir().unwrap();
+    let mut store = DataStore::new(&dir.path().join("work")).unwrap();
+    store
+        .load_events(chronoscope::demo::dataset().events)
+        .unwrap();
+    let path = dir.path().join("existing.chronoscope");
+    std::fs::write(&path, b"existing destination").unwrap();
+    let result = chronoscope::operation::with_context(
+        chronoscope::operation::Context {
+            cancelled: Arc::new(AtomicBool::new(true)),
+            progress: None,
+            scope: None,
+        },
+        || store.save_as(&path, &Project::new(Dataset::default())),
+    );
+    assert!(result.is_err());
+    assert_eq!(std::fs::read(&path).unwrap(), b"existing destination");
+    assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 2);
+}
+
+#[test]
+fn cancellation_after_compaction_does_not_publish_or_leave_temporary_files() {
+    use std::sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    };
+    let dir = tempfile::tempdir().unwrap();
+    let mut store = DataStore::new(&dir.path().join("work")).unwrap();
+    store
+        .load_events(chronoscope::demo::dataset().events)
+        .unwrap();
+    let path = dir.path().join("existing.chronoscope");
+    std::fs::write(&path, b"existing destination").unwrap();
+    let cancelled = Arc::new(AtomicBool::new(false));
+    let flag = cancelled.clone();
+    let result = chronoscope::operation::with_context(
+        chronoscope::operation::Context {
+            cancelled: cancelled.clone(),
+            scope: None,
+            progress: Some(Arc::new(move |_, _, message| {
+                if message == "Committing external file" {
+                    flag.store(true, Ordering::Relaxed);
+                }
+            })),
+        },
+        || store.save_as(&path, &Project::new(Dataset::default())),
+    );
+    assert!(cancelled.load(Ordering::Relaxed));
+    assert!(result.is_err());
+    assert_eq!(std::fs::read(&path).unwrap(), b"existing destination");
+    assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 2);
+}
+
+// APFS rejects invalid UTF-8 names; exercise the OS-path fallback on Linux.
+#[cfg(target_os = "linux")]
+#[test]
+fn portable_save_keeps_non_utf8_parent_path_support() {
+    use std::os::unix::ffi::OsStringExt;
+    let dir = tempfile::tempdir().unwrap();
+    let parent = dir
+        .path()
+        .join(std::ffi::OsString::from_vec(b"non-utf8-\xff".to_vec()));
+    std::fs::create_dir(&parent).unwrap();
+    let mut store = DataStore::new(&dir.path().join("work")).unwrap();
+    store
+        .load_events(chronoscope::demo::dataset().events)
+        .unwrap();
+    let path = parent.join("study.chronoscope");
+    store
+        .save_as(&path, &Project::new(Dataset::default()))
+        .unwrap();
+    let (opened, _) = DataStore::open_copy(&path, &dir.path().join("opened")).unwrap();
+    assert_eq!(opened.count().unwrap(), 192);
+}
+#[test]
 fn c16_failed_row_decode_never_replaces_an_existing_csv() {
     let dir = tempfile::tempdir().unwrap();
     let path = dir.path().join("out.csv");

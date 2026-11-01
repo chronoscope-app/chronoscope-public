@@ -1,5 +1,63 @@
 //! Validate authoritative rows and all derived structures with bounded streaming cursors.
 use super::*;
+use std::fmt::Write as _;
+
+// Borrow only for the current row, preserving strict TEXT/UTF-8 checks.
+fn text<'a>(row: &'a rusqlite::Row<'_>, column: usize) -> Result<&'a str, String> {
+    row.get_ref(column).map_err(err)?.as_str().map_err(err)
+}
+
+fn search_matches(event: &Event, indexed: &str, buffer: &mut String) -> bool {
+    // Keep the canonical search_text field order; the differential test below
+    // checks this allocation-saving comparison against that encoder.
+    buffer.clear();
+    for (index, part) in [
+        event.entity.as_str(),
+        &event.category,
+        &event.label,
+        &event.related_to,
+        &event.note,
+    ]
+    .into_iter()
+    .chain(event.attrs.values().map(String::as_str))
+    .chain(event.tags.iter().map(String::as_str))
+    .enumerate()
+    {
+        if index != 0 {
+            buffer.push('\n');
+        }
+        buffer.push_str(part);
+    }
+    if buffer.is_ascii() {
+        buffer.make_ascii_lowercase();
+        buffer == indexed
+    } else {
+        // Keep String's contextual Unicode lowercasing (including final sigma).
+        buffer.to_lowercase() == indexed
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn reused_search_buffer_matches_canonical_encoder_across_text_boundaries() {
+        let mut buffer = String::new();
+        for value in ["ASCII", "", "ΣΟΣ", "İ", "🚀", "a\0B", "line\nbreak", ","] {
+            let mut event = crate::demo::dataset().events.remove(0);
+            event.entity = format!("Entity {value}");
+            event.category = value.into();
+            event.label = value.into();
+            event.note = value.into();
+            event.related_to = value.into();
+            event.attrs.insert("proof".into(), value.into());
+            event.tags.insert(value.into());
+            let canonical = search_text(&event);
+            assert!(search_matches(&event, &canonical, &mut buffer));
+            assert!(!search_matches(&event, &(canonical + "x"), &mut buffer));
+        }
+    }
+}
 
 pub(super) fn index_definitions(
     connection: &Connection,
@@ -20,6 +78,7 @@ pub(super) fn index_definitions(
 }
 impl DataStore {
     pub(super) fn verify_events(&self) -> Result<(), String> {
+        let mut profile = OpenProfile::new();
         if self.count()? > 50_000_000 {
             return Err("Workspace exceeds the 50 million event budget".into());
         }
@@ -43,9 +102,12 @@ impl DataStore {
             .prepare("SELECT r,lat_min,lat_max,lon_min,lon_max FROM spatial ORDER BY r")
             .map_err(err)?;
         let mut spatial = sq.query([]).map_err(err)?;
+        let mut search_buffer = String::new();
+        let mut id_buffer = String::with_capacity(20);
+        let mut key_buffer = String::with_capacity(20);
+        let mut tags_buffer = String::new();
         while let Some(row) = rows.next().map_err(err)? {
-            let payload: String = row.get(0).map_err(err)?;
-            let event = decode_event(&payload)?;
+            let event = decode_event(text(row, 0)?)?;
             crate::operation::check()?;
             let r: i64 = row.get(19).map_err(err)?;
             for (key, text) in &event.attrs {
@@ -55,8 +117,8 @@ impl DataStore {
                     .ok_or("Missing event attribute index")?;
                 let number = text.trim().parse::<f64>().ok().filter(|v| v.is_finite());
                 if attribute.get::<_, i64>(0).map_err(err)? != r
-                    || attribute.get::<_, String>(1).map_err(err)? != *key
-                    || attribute.get::<_, String>(2).map_err(err)? != *text
+                    || self::text(attribute, 1)? != key
+                    || self::text(attribute, 2)? != text
                     || attribute.get::<_, Option<f64>>(3).map_err(err)? != number
                 {
                     return Err("Event attributes do not match their derived index".into());
@@ -67,7 +129,7 @@ impl DataStore {
                 .map_err(err)?
                 .ok_or("Missing event search index")?;
             if indexed.get::<_, i64>(0).map_err(err)? != r
-                || indexed.get::<_, String>(1).map_err(err)? != search_text(&event)
+                || !search_matches(&event, text(indexed, 1)?, &mut search_buffer)
             {
                 return Err("Event text does not match its search index".into());
             }
@@ -103,25 +165,40 @@ impl DataStore {
                 }
             }
 
-            if event.id.to_string() != row.get::<_, String>(1).map_err(err)?
-                || event.entity != row.get::<_, String>(2).map_err(err)?
+            id_buffer.clear();
+            key_buffer.clear();
+            tags_buffer.clear();
+            write!(&mut id_buffer, "{}", event.id).map_err(err)?;
+            write!(&mut key_buffer, "{:020}", event.id).map_err(err)?;
+            for (index, tag) in event.tags.iter().enumerate() {
+                if index != 0 {
+                    tags_buffer.push(',');
+                }
+                tags_buffer.push_str(tag);
+            }
+            if id_buffer != text(row, 1)?
+                || event.entity != text(row, 2)?
                 || event.time != row.get::<_, f64>(3).map_err(err)?
                 || event.end.unwrap_or(event.time) != row.get::<_, f64>(4).map_err(err)?
                 || event.lat != row.get::<_, Option<f64>>(5).map_err(err)?
                 || event.lon != row.get::<_, Option<f64>>(6).map_err(err)?
                 || event.end != row.get::<_, Option<f64>>(7).map_err(err)?
-                || event.category != row.get::<_, String>(8).map_err(err)?
-                || event.label != row.get::<_, String>(9).map_err(err)?
+                || event.category != text(row, 8)?
+                || event.label != text(row, 9)?
                 || event.value != row.get::<_, Option<f64>>(10).map_err(err)?
-                || event.related_to != row.get::<_, String>(11).map_err(err)?
-                || event.source != row.get::<_, String>(12).map_err(err)?
+                || event.related_to != text(row, 11)?
+                || event.source != text(row, 12)?
                 || event.source_row as i64 != row.get::<_, i64>(13).map_err(err)?
                 || event.mgrs_precision != row.get::<_, Option<u8>>(14).map_err(err)?
-                || event.tags.iter().cloned().collect::<Vec<_>>().join(",")
-                    != row.get::<_, String>(15).map_err(err)?
-                || event.note != row.get::<_, String>(16).map_err(err)?
-                || event.geometry_wkt != row.get::<_, Option<String>>(18).map_err(err)?
-                || format!("{:020}", event.id) != row.get::<_, String>(17).map_err(err)?
+                || tags_buffer != text(row, 15)?
+                || event.note != text(row, 16)?
+                || event.geometry_wkt.as_deref()
+                    != row
+                        .get_ref(18)
+                        .map_err(err)?
+                        .as_str_or_null()
+                        .map_err(err)?
+                || key_buffer != text(row, 17)?
             {
                 return Err("Event payload does not match its canonical indexes".into());
             }
@@ -132,9 +209,11 @@ impl DataStore {
         {
             return Err("Unlisted rows in event derived indexes".into());
         }
+        profile.lap("event_and_derived_row_validation");
         self.connection
             .execute("INSERT INTO search(search) VALUES('integrity-check')", [])
             .map_err(err)?;
+        profile.lap("fts_integrity_check");
         Ok(())
     }
 }

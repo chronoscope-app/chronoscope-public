@@ -37,25 +37,29 @@ const values = [
     Array.from({ length: 1024 * 1024 }, (_, i) => (i * 37 + 11) % 256),
   ),
 ];
-test("native base64 decoding preserves empty, binary, Unicode and large payloads", () => {
-  assert.equal(typeof native, "function");
-  let calls = 0;
-  withDecoder(
-    function (data) {
-      calls++;
-      return native.call(Uint8Array, data);
-    },
-    () => {
-      for (const expected of values) {
-        const got = base64Bytes(expected.toString("base64"));
-        assert.deepEqual(Buffer.from(got), expected);
-        assert.equal(got.byteOffset, 0);
-        assert.equal(got.buffer.byteLength, expected.length);
-      }
-    },
-  );
-  assert.equal(calls, values.length);
-});
+test(
+  "native base64 decoding preserves empty, binary, Unicode and large payloads",
+  { skip: typeof native !== "function" },
+  () => {
+    assert.equal(typeof native, "function");
+    let calls = 0;
+    withDecoder(
+      function (data) {
+        calls++;
+        return native.call(Uint8Array, data);
+      },
+      () => {
+        for (const expected of values) {
+          const got = base64Bytes(expected.toString("base64"));
+          assert.deepEqual(Buffer.from(got), expected);
+          assert.equal(got.byteOffset, 0);
+          assert.equal(got.buffer.byteLength, expected.length);
+        }
+      },
+    );
+    assert.equal(calls, values.length);
+  },
+);
 test("older WebViews copy bytes directly and preserve JSON and text payloads", () => {
   withDecoder(undefined, () => {
     for (const expected of values)

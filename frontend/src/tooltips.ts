@@ -39,7 +39,7 @@ const tips: Record<string, string> = {
   "edit-wkt":
     "Original WGS84 WKT geometry. X=longitude, Y=latitude. Z/M are preserved but not used as altitude/time. Changing point coordinates replaces the WKT geometry.",
 
-  si: "Open SI chat. Change the toolbar label from AI to SI in Preferences → General. Use the chat gear for AI service and connected tool settings.",
+  si: "Open AI chat. Use the chat gear for AI service and connected tool settings.",
   "si-send":
     "Send this request and its requested tool data to your configured service. Billing is determined by that provider.",
   "si-key":
@@ -187,6 +187,7 @@ export function installTooltips() {
           text = "Restore saved filters, selection and camera.";
         if (!text && e.dataset.groupIndex)
           text = "Restore this saved selection group.";
+        if (!text && ["INPUT", "TEXTAREA", "SELECT"].includes(e.tagName)) return;
         if (!text && label)
           text =
             e.tagName === "SUMMARY"

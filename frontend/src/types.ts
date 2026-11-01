@@ -312,12 +312,12 @@ export function setDateTimeDisplay(
   displayFormats = next;
   return true;
 }
-export function displayDate(t: number) {
+export function displayDate(t: number, format = displayFormats.date_format) {
   const canonical = time(t);
   if (canonical === "Invalid time") return canonical;
   const [year, month, day] = canonical.split(" ")[0].split("-");
   const d = new Date(Math.floor(t) * 1000),
-    f = displayFormats.date_format;
+    f = format;
   if (f === "iso") return `${year}-${month}-${day}`;
   if (f === "mdy" || f === "mdy-short")
     return `${month}/${day}/${f.endsWith("short") ? year.slice(-2) : year}`;
@@ -332,10 +332,10 @@ export function displayDate(t: number) {
   }
   return systemDateFormatter.format(d);
 }
-export function displayClock(t: number, precise = false) {
+export function displayClock(t: number, precise = false, format = displayFormats.time_format) {
   const canonical = time(t);
   if (canonical === "Invalid time") return canonical;
-  const f = displayFormats.time_format;
+  const f = format;
   const seconds = precise || f === "system" || f.endsWith("seconds");
   const fraction = seconds ? canonical.split(".")[1] : undefined;
   const options: Intl.DateTimeFormatOptions = {

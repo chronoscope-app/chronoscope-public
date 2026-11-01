@@ -4,6 +4,8 @@ Chronoscope displays Streets by default and can also display imagery from severa
 
 ## Add sources and layers
 
+The toolbar **Maps** button opens **Preferences → Maps**. Closing or canceling a custom server, layers or cache dialog returns to that section with Advanced settings expanded. The Streets checkbox uses **Save preferences**; Advanced dialogs save their own changes.
+
 1. Open **Maps → Advanced map settings → Add custom map server**, name your connection and enter its capabilities URL.
 2. **Read capabilities** and choose the advertised layer, matrix set, style, image format and optional date. EPSG:3857 and EPSG:4326 matrix sets are supported; general raster reprojection is not.
 3. **Add selected layer to map** appends that selection to the workspace. Repeat for another layer from this server or a different server.

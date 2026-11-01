@@ -432,3 +432,17 @@
     min-height: 44px;
   }
 }
+
+/* Compact field review keeps the chosen fields and validation cues together. */
+.analysis-field-summary { margin: 0 0 6px; color: var(--muted); font-size: 11px; }
+.analysis-field-list { gap: 2px 12px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 5px; overflow-y: scroll; scrollbar-gutter: stable; }
+.analysis-field-list .check-row { min-height: 25px; margin: 0; padding: 2px 0; }
+.import-dialog .import-field { padding: 8px 10px; gap: 5px; }
+.import-dialog .modal-grid { gap: 8px 12px; }
+.import-dialog .import-optional { margin: 10px 0; }
+.import-dialog .import-destination { flex: 1 0 100%; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.import-destination > .field { flex: 1 1 300px; }
+.import-destination > .description { display: none; }
+.import-dialog #import-destination-summary { color: var(--text); font-weight: 500; margin-bottom: 3px; }
+.workflow-dialog.analytics-dialog { width: min(1100px, 94vw); }
+.analytics-table th:first-child, .analytics-table td:first-child { position: sticky; left: 0; background: var(--panel); z-index: 1; }

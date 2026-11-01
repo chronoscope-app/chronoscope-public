@@ -21,15 +21,60 @@ impl DataStore {
             cache.borrow_mut().clear();
             count.set(0);
         }
-        if self.summary_cache_bytes.get() + self.selection_cache_bytes.get() + bytes > LIMIT {
+        if self.summary_cache_bytes.get()
+            + self.selection_cache_bytes.get()
+            + self.dataset_summary_cache_bytes.get()
+            + bytes
+            > LIMIT
+        {
             self.summary_cache.borrow_mut().clear();
             self.selection_summary_cache.borrow_mut().clear();
             self.summary_cache_bytes.set(0);
             self.selection_cache_bytes.set(0);
         }
+        if self.dataset_summary_cache_bytes.get() + bytes > LIMIT {
+            return Ok(());
+        }
         cache.borrow_mut().insert(key, value.clone());
         count.set(count.get() + bytes);
         Ok(())
+    }
+    // These totals describe the dataset, not the current filter or selection.
+    // Keep them through filter changes; clear_cache invalidates on every data edit.
+    fn dataset_summary(&self) -> Result<Value, String> {
+        if let Some(value) = self.dataset_summary_cache.borrow().as_ref() {
+            return Ok(value.clone());
+        }
+        let groups = |column: &str| -> Result<Value, String> {
+            let mut q = self.connection.prepare(&format!("SELECT {column},count(*) FROM events GROUP BY {column} ORDER BY {column} LIMIT 5000")).map_err(err)?;
+            let rows = q
+                .query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, u64>(1)?)))
+                .map_err(err)?;
+            let mut value = serde_json::Map::new();
+            for row in rows {
+                crate::operation::check()?;
+                let (k, n) = row.map_err(err)?;
+                value.insert(k, json!(n));
+            }
+            Ok(Value::Object(value))
+        };
+        let value = json!({"entities":groups("entity")?,"categories":groups("category")?,"sources":groups("source")?});
+        let bytes = serde_json::to_vec(&value).map_err(err)?.len();
+        // Share the existing 8 MiB encoded-summary budget. Oversized dictionaries
+        // remain correct, but are recomputed rather than retained.
+        if bytes <= 8 * 1024 * 1024 {
+            if self.summary_cache_bytes.get() + self.selection_cache_bytes.get() + bytes
+                > 8 * 1024 * 1024
+            {
+                self.summary_cache.borrow_mut().clear();
+                self.selection_summary_cache.borrow_mut().clear();
+                self.summary_cache_bytes.set(0);
+                self.selection_cache_bytes.set(0);
+            }
+            self.dataset_summary_cache.replace(Some(value.clone()));
+            self.dataset_summary_cache_bytes.set(bytes);
+        }
+        Ok(value)
     }
     pub fn summary(&self, filter: &Filter) -> Result<Value, String> {
         self.summary_with_statistics(filter, true)
@@ -135,18 +180,7 @@ impl DataStore {
         let table = self.ordered(filter, None, "time", false)?;
         let visible = self.table_count(&table)?;
         let (lo, hi) = self.time_bounds()?;
-        let groups = |column: &str| -> Result<Value, String> {
-            let mut q=self.connection.prepare(&format!("SELECT {column},count(*) FROM events GROUP BY {column} ORDER BY {column} LIMIT 5000")).map_err(err)?;
-            let rows = q
-                .query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, u64>(1)?)))
-                .map_err(err)?;
-            let mut value = serde_json::Map::new();
-            for row in rows {
-                let (k, n) = row.map_err(err)?;
-                value.insert(k, json!(n));
-            }
-            Ok(Value::Object(value))
-        };
+        let dataset = self.dataset_summary()?;
         let mut q=self.connection.prepare(&format!("SELECT min(99,cast((e.time-?1)*100.0/(?2-?1) AS INTEGER)),count(*) FROM {table} o JOIN events e ON e.r=o.r GROUP BY 1")).map_err(err)?;
         let rows = q
             .query_map(params![lo, hi], |r| {
@@ -199,10 +233,14 @@ impl DataStore {
         } else {
             Value::Null
         };
-        let mut q=self.connection.prepare(&format!("SELECT e.source,count(*),sum(e.r IN (SELECT r FROM {table})) FROM events e GROUP BY e.source ORDER BY e.source LIMIT 5000")).map_err(err)?;
-        let rows=q.query_map([],|r|Ok(json!({"source":r.get::<_,String>(0)?,"count":r.get::<_,u64>(1)?,"visible":r.get::<_,u64>(2)?,"enabled":!filter.hidden_sources.contains(&r.get::<_,String>(0)?)}))).map_err(err)?;
-        let layers = rows.collect::<Result<Vec<_>, _>>().map_err(err)?;
-        let result = json!({"count":self.count()?,"visible":visible,"time_bounds":[lo,hi],"entities":groups("entity")?,"categories":groups("category")?,"histogram":histogram,"layers":layers,"stats":stats,"category_limit":5000});
+        let mut q=self.connection.prepare(&format!("SELECT e.source,count(*) FROM {table} o JOIN events e ON e.r=o.r GROUP BY e.source ORDER BY e.source LIMIT 5000")).map_err(err)?;
+        let visible_sources = q
+            .query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, u64>(1)?)))
+            .map_err(err)?
+            .collect::<Result<BTreeMap<_, _>, _>>()
+            .map_err(err)?;
+        let layers = dataset["sources"].as_object().unwrap().iter().map(|(source,count)| json!({"source":source,"count":count,"visible":visible_sources.get(source).copied().unwrap_or(0),"enabled":!filter.hidden_sources.contains(source)})).collect::<Vec<_>>();
+        let result = json!({"count":self.count()?,"visible":visible,"time_bounds":[lo,hi],"entities":dataset["entities"],"categories":dataset["categories"],"histogram":histogram,"layers":layers,"stats":stats,"category_limit":5000});
         self.cache_summary(key, &result, false)?;
         Ok(result)
     }

@@ -600,6 +600,7 @@ test("classic wrapper preserves data/effects/selection order and uses original E
     setDisplayOptions: () => calls.push("display"),
     setGlobeTime: () => calls.push("globe"),
     setGlobeAltitude: () => calls.push("altitude"),
+    setTimeAltitude: () => calls.push("time-altitude"),
     setTheme: () => calls.push("theme"),
     rebuild: () => calls.push("rebuild"),
     setData: async () => {
@@ -633,6 +634,7 @@ test("classic wrapper preserves data/effects/selection order and uses original E
     "display",
     "globe",
     "altitude",
+    "time-altitude",
     "theme",
     "data",
     "focus",

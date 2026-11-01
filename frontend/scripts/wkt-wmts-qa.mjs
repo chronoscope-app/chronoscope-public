@@ -96,6 +96,10 @@ try {
   await page.waitForFunction(
     () => window.__chronoscope?.snapshot && !window.__chronoscope.busy,
   );
+  await page.evaluate(async () => {
+    await window.__chronoscope.ready;
+    await window.__chronoscope.sceneIdle();
+  });
   page.once("dialog", (d) =>
     d.accept(path.join(root, "tests/fixtures/import/wkt-geometries.csv")),
   );
@@ -342,13 +346,18 @@ try {
     "Reload must never publish a blank replacement: " + JSON.stringify(seeded),
   );
   assert.equal(requests, before, "Second view load must reuse disk cache");
+  if (await page.locator("#preferences-tab-maps").isVisible())
+    await page.keyboard.press("Escape");
   await page.click("#maps");
-  await page.locator(".map-advanced summary").click();
+  if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
+    await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
   await page.click("#wmts-cache");
   assert.equal(await page.inputValue("#cache-interval"), "0");
   await page.check("#cache-offline");
   await page.click("#cache-save");
+  await page.locator("#preferences-tab-maps[aria-selected=true]").waitFor();
+  await page.keyboard.press("Escape");
   await page.evaluate(() => window.__chronoscope.loadRasters());
   assert.equal(requests, before);
   await page.click('[data-view="globe"]');
@@ -391,12 +400,17 @@ try {
     await page.waitForFunction(
       () => document.querySelector("#cancel-map").hidden,
     );
+    await page.locator("#preferences-tab-maps[aria-selected=true]").waitFor();
+    await page.keyboard.press("Escape");
   };
   console.log("Diskcacheandofflinepassed");
   // Exercise named servers and layer selection through the actual menu.
   await api("wmts_access", { settings: { offline: false } });
+  if (await page.locator("#preferences-tab-maps").isVisible())
+    await page.keyboard.press("Escape");
   await page.click("#maps");
-  await page.locator(".map-advanced summary").click();
+  if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
+    await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
   await page.waitForSelector('#wmts-layer option[value="alternate"]', {
     state: "attached",
@@ -414,8 +428,11 @@ try {
       window.__chronoscope.preferences.map.layer === "alternate" &&
       document.querySelector("#cancel-map").hidden,
   );
+  if (await page.locator("#preferences-tab-maps").isVisible())
+    await page.keyboard.press("Escape");
   await page.click("#maps");
-  await page.locator(".map-advanced summary").click();
+  if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
+    await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
   await page.click("#add-wmts-server");
   await page.fill("#wmts-server-name", "Local second");
@@ -449,8 +466,11 @@ try {
   await page.waitForFunction(
     () => window.__chronoscope?.snapshot && !window.__chronoscope.busy,
   );
+  if (await page.locator("#preferences-tab-maps").isVisible())
+    await page.keyboard.press("Escape");
   await page.click("#maps");
-  await page.locator(".map-advanced summary").click();
+  if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
+    await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
   await page.waitForSelector('#wmts-layer option[value="fixture"]', {
     state: "attached",
@@ -577,8 +597,11 @@ try {
     c.view.onViewportChange = c.__qaViewportChange;
     delete c.__qaViewportChange;
   });
+  if (await page.locator("#preferences-tab-maps").isVisible())
+    await page.keyboard.press("Escape");
   await page.click("#maps");
-  await page.locator(".map-advanced summary").click();
+  if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
+    await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
   await page.click("#map-stack-settings");
   const lower = page.locator('[data-map-stack="street-reference"]'),
@@ -591,6 +614,8 @@ try {
   });
   await page.click("#save-map-stack");
   await page.waitForSelector("#save-map-stack", { state: "detached" });
+  await page.locator("#preferences-tab-maps[aria-selected=true]").waitFor();
+  await page.keyboard.press("Escape");
   await page.waitForFunction(
     () => document.querySelector("#cancel-map").hidden,
   );
@@ -797,6 +822,8 @@ try {
     await toggle.uncheck();
   await page.click("#save-map-stack");
   await page.waitForSelector("#save-map-stack", { state: "detached" });
+  await page.locator("#preferences-tab-maps[aria-selected=true]").waitFor();
+  await page.keyboard.press("Escape");
   await page.waitForFunction(
     () => window.__chronoscope.view.resources.status.tileCount === 0,
   );

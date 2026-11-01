@@ -1,3 +1,4 @@
+import { assistantName, bindAssistantWording } from "./assistant-wording";
 import { call, chooseFile } from "./bridge";
 interface Hooks {
   configure: () => Promise<void>;
@@ -8,6 +9,7 @@ interface Hooks {
   detach?: () => Promise<void>;
   close?: () => Promise<void>;
   detached?: boolean;
+  useSI?: () => boolean;
 }
 interface LocalDraft {
   session: string | null;
@@ -16,6 +18,8 @@ interface LocalDraft {
 }
 /** Rust owns messages and jobs. Every WebView is a replaceable session client. */
 export class SIChat {
+  private useSI = false;
+  private wording!: (si: boolean) => void;
   private busy = false;
   private submitting = false;
   private stopping = false;
@@ -50,11 +54,13 @@ export class SIChat {
     private host: HTMLElement,
     private hooks: Hooks,
   ) {
-    host.innerHTML = `<header class="si-chat-header"><strong>SI</strong><span class="spacer"></span><button id="si-new" title="Clear this session’s conversation">New chat</button><button id="si-popout" title="${hooks.detached ? "Return chat to the main workspace" : "Move chat to a separate window"}" aria-label="${hooks.detached ? "Dock SI chat" : "Detach SI chat"}">${hooks.detached ? "Dock" : "Detach"}</button><button id="si-settings" class="icon" title="SI settings: service and tools" aria-label="SI settings">⚙</button><button id="si-close" title="Close chat; an active request continues" aria-label="Close SI chat">×</button></header>
-      <p class="si-chat-note">Super Intelligence · Session-only conversation. Requested data is sent to your service.</p>
-      <div id="si-messages" class="si-messages" role="log" aria-label="SI conversation" aria-live="polite"></div>
-      <details class="si-permissions"><summary>Permissions</summary><label class="check-row"><input id="si-edits" type="checkbox"> Allow record changes for the next message</label><p>Filtering, selection and views are available by default. Record changes include editing, deleting, aggregation and import/export. Save a copy first; completed actions remain if stopped.</p><label class="check-row"><input id="si-external-actions" type="checkbox"> Allow granted external actions for the next message</label><p>External effects cannot be undone here. Review tools in SI settings → Tools; reading tools need an explicit grant too.</p><div class="si-file-permissions"><p id="si-folder">No file access. A folder is optional, for importing and saving files.</p><div class="row"><button id="si-grant">Allow folder…</button><button id="si-revoke">Remove access</button></div></div></details>
-      <form id="si-form"><label class="sr-only" for="si-prompt">Message Super Intelligence</label><textarea id="si-prompt" rows="3" maxlength="16384" placeholder="Ask about this workspace or request an action…"></textarea><div class="row"><button id="si-capture" type="button" title="Add a current map snapshot to chat. Its pixels are not sent to the SI service.">Capture map</button><small id="si-progress" role="status"></small><span class="spacer"></span><button id="si-stop" type="button" hidden>Stop</button><button id="si-send" type="submit" class="primary">Send</button></div></form>`;
+    host.innerHTML = `<header class="si-chat-header"><strong id="si-chat-heading">AI</strong><span class="spacer"></span><button id="si-new" title="Clear this session’s conversation">New chat</button><button id="si-popout" title="${hooks.detached ? "Return chat to the main workspace" : "Move chat to a separate window"}" aria-label="${hooks.detached ? "Dock AI chat" : "Detach AI chat"}">${hooks.detached ? "Dock" : "Detach"}</button><button id="si-settings" class="icon" title="AI settings: service and tools" aria-label="AI settings">⚙</button><button id="si-close" title="Close chat; an active request continues" aria-label="Close AI chat">×</button></header>
+      <p class="si-chat-note">Session-only conversation. Requested data is sent to your service.</p>
+      <section id="si-connection-empty" class="si-connect" hidden><strong>Connect your AI service</strong><p>Choose a service and model before sending a message.</p><button id="si-connect-service" class="primary">Connect service…</button></section><div id="si-messages" class="si-messages" role="log" aria-label="AI conversation" aria-live="polite"></div>
+      <details class="si-permissions"><summary>Permissions</summary><label class="check-row"><input id="si-edits" type="checkbox"> Allow record changes for the next message</label><p>Filtering, selection and views are available by default. Record changes include editing, deleting, aggregation and import/export. Save a copy first; completed actions remain if stopped.</p><label class="check-row"><input id="si-external-actions" type="checkbox"> Allow granted external actions for the next message</label><p>External effects cannot be undone here. Review tools in AI settings → Tools; reading tools need an explicit grant too.</p><div class="si-file-permissions"><p id="si-folder">No file access. A folder is optional, for importing and saving files.</p><div class="row"><button id="si-grant">Allow folder…</button><button id="si-revoke">Remove access</button></div></div></details>
+      <form id="si-form"><label class="sr-only" for="si-prompt">Message AI</label><textarea id="si-prompt" rows="3" maxlength="16384" placeholder="Ask about this workspace or request an action…"></textarea><div class="row"><button id="si-capture" type="button" title="Add a current map snapshot to chat. Its pixels are not sent to the AI service.">Capture map</button><small id="si-progress" role="status"></small><span class="spacer"></span><button id="si-stop" type="button" hidden>Stop</button><button id="si-send" type="submit" class="primary">Send</button></div></form>`;
+    this.wording = bindAssistantWording(host);
+    this.setNaming(hooks.useSI?.() ?? false);
     this.messages = host.querySelector("#si-messages")!;
     this.prompt = host.querySelector("#si-prompt")!;
     this.progress = host.querySelector("#si-progress")!;
@@ -85,6 +91,7 @@ export class SIChat {
       }
     });
     on("#si-settings", hooks.configure);
+    on("#si-connect-service", hooks.configure);
     on("#si-new", async () => {
       await this.flushDraft();
       await call("si_clear");
@@ -173,6 +180,20 @@ export class SIChat {
     this.host.hidden = true;
     document.querySelector("#si")?.setAttribute("aria-expanded", "false");
   }
+  setNaming(si: boolean) {
+    if (si === this.useSI) return;
+    this.useSI = si;
+    this.wording(si);
+    this.host.setAttribute("aria-label", `${assistantName(false, si)} chat`);
+    this.host.querySelector("#si-chat-heading")!.textContent = assistantName(
+      false,
+      si,
+    );
+    for (const { node } of this.entries.values()) {
+      if (node.classList.contains("si-message-assistant"))
+        node.firstElementChild!.textContent = assistantName(false, si);
+    }
+  }
   async open(focus = true) {
     this.host.hidden = false;
     document.querySelector("#si")?.setAttribute("aria-expanded", "true");
@@ -190,7 +211,13 @@ export class SIChat {
     if (!this.isCurrentView(epoch)) return;
     this.prompt.disabled = this.submitting || !this.sessionReady;
     this.showHeldDraft();
-    if (focus) this.prompt.focus();
+    if (focus) {
+      if (this.connected) this.prompt.focus();
+      else
+        this.host
+          .querySelector<HTMLButtonElement>("#si-connect-service")!
+          .focus();
+    }
   }
   async flushDraft() {
     clearTimeout(this.draftTimer);
@@ -273,6 +300,8 @@ export class SIChat {
       return false;
     }
     this.connected = status.connected;
+    this.host.querySelector<HTMLElement>("#si-connection-empty")!.hidden =
+      this.connected;
     this.root = status.root;
     this.host.querySelector("#si-folder")!.textContent = this.root
       ? `File access: ${this.root}. Used only when record changes are allowed. Ends on disconnect.`
@@ -304,6 +333,7 @@ export class SIChat {
       this.revision == null ? {} : { since_revision: this.revision },
     );
     if (!this.isCurrentView(epoch)) return;
+    if (this.hooks.useSI) this.setNaming(this.hooks.useSI());
     const wasBusy = this.busy;
     this.busy = this.submitting || !!state.active;
     this.stopping = state.active?.cancel_requested === true;
@@ -362,9 +392,7 @@ export class SIChat {
       return;
     }
     if (!state.active && !this.submitting)
-      this.progress.textContent = this.connected
-        ? "Ready"
-        : "Use SI settings ⚙ to connect a service";
+      this.progress.textContent = this.connected ? "Ready" : "";
   }
   private async append(message: any) {
     const node = document.createElement("article");
@@ -375,7 +403,7 @@ export class SIChat {
       message.role === "user"
         ? "You"
         : message.role === "assistant"
-          ? "SI"
+          ? assistantName(false, this.useSI)
           : "Notice";
     node.append(label);
     const entry = { node, dispose: [] as (() => void)[] };

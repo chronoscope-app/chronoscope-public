@@ -1,3 +1,4 @@
+import { assistantWording } from "./assistant-wording";
 import { call } from "./bridge";
 import type { EngineContracts } from "./contracts";
 import type { Snapshot } from "./types";
@@ -19,7 +20,7 @@ class FeatureDialog {
   controls = document.createElement("div");
   result = document.createElement("div");
   provider = document.createElement("select");
-  disclosure = text("p", "Checking AI availability…");
+  disclosure = text("p", assistantWording("Checking AI availability…"));
   status = document.createElement("p");
   spinner = document.createElement("span");
   message = document.createElement("span");
@@ -45,7 +46,7 @@ class FeatureDialog {
     this.body.className = "focused-ai-body";
     this.controls.className = "focused-ai-controls";
     this.result.className = "focused-ai-result";
-    const label = text("label", "AI provider");
+    const label = text("label", assistantWording("AI provider"));
     label.className = "field";
     this.provider.id = "focused-ai-provider";
     label.append(this.provider);
@@ -100,7 +101,7 @@ class FeatureDialog {
   }
   async stop() {
     this.cancelRequested = true;
-    this.message.textContent = "Cancelling AI…";
+    this.message.textContent = assistantWording("Cancelling AI…");
     this.cancel.disabled = true;
     if (this.job)
       await call("job_cancel", { job_id: this.job }).catch((error) =>
@@ -115,11 +116,15 @@ class FeatureDialog {
     this.disclosure.textContent =
       this.provider.value === "apple-local"
         ? "Apple Intelligence processes this on your Mac. No text is sent to a model service."
-        : "The supplied source text or result evidence will be sent to your connected SI model service. Chat history and action tools are excluded.";
+        : assistantWording(
+            "The supplied source text or result evidence will be sent to your connected AI model service. Chat history and action tools are excluded.",
+          );
     if (!selected?.available)
       this.disclosure.textContent =
         selected?.reason ||
-        "No AI provider is available. Enable Apple Intelligence on a supported Mac or connect a model in SI settings.";
+        assistantWording(
+          "No AI provider is available. Enable Apple Intelligence on a supported Mac or connect a model in AI settings.",
+        );
     this.run.disabled = !selected?.available;
   }
   async ready() {
@@ -167,7 +172,7 @@ class FeatureDialog {
       HTMLInputElement | HTMLSelectElement
     >("input,select"))
       input.disabled = true;
-    this.cancel.textContent = "Cancel AI";
+    this.cancel.textContent = assistantWording("Cancel AI");
     this.result.replaceChildren();
     this.message.textContent = label;
     try {
@@ -195,7 +200,7 @@ class FeatureDialog {
             status.status === "cancelled"
               ? "Cancelled. Nothing was changed."
               : status.error?.message ||
-                  "AI request failed. Nothing was changed.",
+                  assistantWording("AI request failed. Nothing was changed."),
           );
         await new Promise((resolve) => setTimeout(resolve, 180));
       }
@@ -228,7 +233,9 @@ export async function explainResult(source: ExplainSource) {
   d.controls.append(
     text(
       "p",
-      "AI will explain this completed finding using its recorded method and evidence. The original calculation remains the source of truth.",
+      assistantWording(
+        "AI will explain this completed finding using its recorded method and evidence. The original calculation remains the source of truth.",
+      ),
     ),
   );
   d.run.textContent = "Explain result";
@@ -241,7 +248,7 @@ export async function explainResult(source: ExplainSource) {
             ? { kind: "analysis", result_id: source.result_id }
             : { kind: "pattern", ...source },
       },
-      "AI is explaining…",
+      assistantWording("AI is explaining…"),
     )) as EngineContracts["assist_explain"]["result"] | null;
     if (!result) return;
     const answer = text("p", result.text);
@@ -252,7 +259,12 @@ export async function explainResult(source: ExplainSource) {
       text("pre", JSON.stringify(result.evidence, null, 2)),
     );
     d.result.append(
-      text("small", "AI-generated explanation · Review against the evidence"),
+      text(
+        "small",
+        assistantWording(
+          "AI-generated explanation · Review against the evidence",
+        ),
+      ),
       answer,
     );
     if (result.source_changed)
@@ -324,7 +336,7 @@ export async function suggestTags(
         expected_revision: snapshot.revision,
         expected_workspace: snapshot.workspace_id,
       },
-      "AI is suggesting tags…",
+      assistantWording("AI is suggesting tags…"),
     )) as Tags | null;
     if (!result) return;
     preview = result;
@@ -378,7 +390,9 @@ export async function suggestTags(
     d.result.append(
       text(
         "p",
-        "AI-generated suggestions. Review each source record and edit or uncheck tags before applying.",
+        assistantWording(
+          "AI-generated suggestions. Review each source record and edit or uncheck tags before applying.",
+        ),
       ),
       table,
     );
@@ -464,11 +478,12 @@ export async function focusedUI(
   if (args.action === "generate") {
     const d = activeDialog;
     if (!d || d.closed || d.busy)
-      throw Error("Open an idle AI feature dialog first");
+      throw Error(assistantWording("Open an idle AI feature dialog first"));
     const option = [...d.provider.options].find(
       (option) => option.value === args.provider && !option.disabled,
     );
-    if (!option) throw Error("The requested AI provider is unavailable");
+    if (!option)
+      throw Error(assistantWording("The requested AI provider is unavailable"));
     d.provider.value = args.provider!;
     d.provider.dispatchEvent(new Event("change"));
     if (args.field) {

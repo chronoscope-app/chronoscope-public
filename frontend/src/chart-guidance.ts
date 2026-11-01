@@ -77,6 +77,9 @@ export function activeChartTask(c: ChartConfig): ChartTask {
   return "compare";
 }
 const names: Record<string, string> = {
+  id: "Event ID",
+  label: "Label",
+  source: "Source",
   entity: "Entity",
   category: "Category",
   time: "Time",

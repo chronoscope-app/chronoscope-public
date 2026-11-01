@@ -121,6 +121,7 @@ try {
     page.evaluate(() => {
       const v = window.__chronoscope.view;
       return {
+        mode: v.mode,
         diagnostics: v.diagnostics(),
         count: v.points.length,
         points: v.renderPoints.map((p) => ({
@@ -131,6 +132,9 @@ try {
       };
     });
   let s = await state();
+  const globeAltitudePositions = new Map(
+    s.points.map((p) => [p.id, p.position]),
+  );
   assert.equal(s.points.length, 3);
   assert.equal(s.diagnostics.globeAltitude, true);
   // Independent WGS84 ECEF, with published PROJ EGM96 control at 0°,0°.
@@ -227,7 +231,54 @@ try {
   await api("view_set", { mode: "space-time" });
   await restore();
   await page.locator("#time-elevation").hover();
-  assert.equal(await page.locator("#height-mode-altitude").isDisabled(), true);
+  assert.equal(await page.locator("#height-mode-altitude").isDisabled(), false);
+  await page.locator("#height-mode-altitude").click();
+  await page.waitForFunction(
+    () =>
+      window.__chronoscope.view.timeAltitude &&
+      window.__chronoscope.snapshot.scene.time_altitude,
+  );
+  await page.waitForFunction(
+    () => window.__chronoscope.view.renderPoints.length === 3,
+  );
+  const timeAltitude = await state();
+  assert.equal(timeAltitude.mode, "space-time");
+  for (const point of timeAltitude.points) {
+    const reference = globeAltitudePositions.get(point.id);
+    for (const coordinate of ["x", "y", "z"])
+      assert(
+        Math.abs(point.position[coordinate] - reference[coordinate]) < 0.001,
+      );
+  }
+  assert(
+    await page.evaluate(() =>
+      Array.from(
+        { length: window.__chronoscope.view.axisLabels.length },
+        (_, i) => window.__chronoscope.view.axisLabels.get(i).text,
+      ).includes("ALTITUDE / m"),
+    ),
+  );
+  assert.equal(timeAltitude.diagnostics.altitude.known, 3);
+  assert.equal((await api("snapshot", { compact: true })).count, 5);
+  assert.equal(await page.locator("#time-height").isDisabled(), true);
+  await page.screenshot({ path: path.join(dir, "time-physical-altitude.png") });
+  await page.locator("#time-elevation").hover();
+  await page.locator("#height-mode-time").click();
+  await page.waitForFunction(
+    () =>
+      !window.__chronoscope.view.timeAltitude &&
+      !window.__chronoscope.snapshot.scene.time_altitude,
+  );
+  await page.waitForFunction(
+    () => window.__chronoscope.view.renderPoints.length === 5,
+  );
+  report.checks.push(
+    "Time reuses Globe's physical-altitude toggle, reference conversion and missing-height omission; Time restores all records",
+  );
+  assert.equal(
+    (await api("snapshot", { compact: true })).scene.globe_altitude,
+    true,
+  );
   await api("view_set", { mode: "globe" });
   await restore();
   // Default Enter and Escape cancel, neither may recreate the renderer.

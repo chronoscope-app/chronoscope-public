@@ -1118,12 +1118,14 @@ test("actual restore callback graph keeps chart/display/camera notifications out
   Object.assign(ui.context.view, {
     setTerrain: async () => {},
     setDisplayOptions: emit,
+    setTimeControls: emit,
     restoreViewStates: emit,
     playbackFadeAmount: 50,
     setPlaybackFade: emit,
     setGlobeTimeScale: emit,
     setGlobeTime: emit,
     setGlobeAltitude: emit,
+    setTimeAltitude: emit,
     clearRasters() {},
     restoreCamera: () => {
       emit();

@@ -83,7 +83,7 @@ const service = createServer(async (req, res) => {
     }
     case 3:
       reply = answer(
-        "## Atlantic hurricane activity\n\nRust evaluated **1,604 Events** across five UTC years. Each measurement is one track position.\n\n| Scope | Method |\n| --- | --- |\n| All Events | Annual comparison |\n\nThe chart shows the **mean recorded wind speed** by year. This does not establish a climate trend.\n\n[NOAA source](https://www.nhc.noaa.gov/data/)\n\n$$\n\\bar{x}=\\frac{1}{n}\\sum_{i=1}^{n}x_i\n$$\n\n",
+        "## Atlantic hurricane activity\n\nRust evaluated **1,604 Events** across five UTC years. Each measurement is one track position.\n\n| Scope | Method |\n| --- | --- |\n| All Events | Annual comparison |\n\nThe chart shows the **mean recorded wind speed** by year. This does not establish a climate trend. Literal AI wording remains in message text.\n\n[NOAA source](https://www.nhc.noaa.gov/data/)\n\n$$\n\\bar{x}=\\frac{1}{n}\\sum_{i=1}^{n}x_i\n$$\n\n",
       );
       break;
     case 4:
@@ -386,6 +386,45 @@ try {
   await popup.screenshot({
     path: path.join(out, "detached-rich-results-light.png"),
   });
+  const bodyBeforeNaming = await popup
+    .locator(".si-message-assistant > div")
+    .first()
+    .textContent();
+  assert.match(bodyBeforeNaming, /Literal AI wording/);
+  await popup.fill("#si-prompt", "AI draft stays verbatim");
+  for (const [value, short, full] of [
+    ["si", "SI", "Super Intelligence"],
+    ["ai", "AI", "AI"],
+  ]) {
+    await main.click("#settings");
+    await main.locator("#pref-ai-wording").selectOption(value);
+    await main.click("#save-preferences");
+    await popup.waitForFunction(
+      (name) =>
+        document.querySelector("#si-chat-heading")?.textContent === name,
+      short,
+    );
+    assert.equal(
+      await popup.inputValue("#si-prompt"),
+      "AI draft stays verbatim",
+    );
+    assert.equal(await popup.title(), `${full} — Chronoscope`);
+    assert.equal(
+      await popup
+        .locator(".si-message-assistant > strong")
+        .first()
+        .textContent(),
+      short,
+    );
+    assert.equal(
+      await popup.locator(".si-message-assistant > div").first().textContent(),
+      bodyBeforeNaming,
+    );
+  }
+  report.checks.push(
+    "AI/SI preference updates detached window title and existing assistant labels without rewriting message content",
+  );
+  await popup.fill("#si-prompt", "");
   await popup.click("#si-popout");
   await main.waitForSelector("#si-chat:not([hidden])");
   await main.waitForSelector(".si-map-picture");

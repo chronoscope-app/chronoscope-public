@@ -82,16 +82,24 @@ fn altitude_packets_filter_only_rendering_and_keep_time_modes_mutually_exclusive
     assert_eq!(f64::from_le_bytes(bytes[32..40].try_into().unwrap()), 0.);
     assert_eq!(bytes[40], 1);
     assert_eq!(bytes[4 * 48 + 40], 0);
-    e.invoke("view_set", json!({"mode":"globe","globe_altitude":true}))
-        .unwrap();
-    let p = e
-        .invoke(
-            "view_snapshot_v1",
-            json!({"version":1,"generation":"altitude-test","include_render":true}),
+    for mode in ["globe", "space-time"] {
+        e.invoke(
+            "view_set",
+            json!({"mode":mode,"globe_altitude":mode=="globe","time_altitude":mode=="space-time"}),
         )
         .unwrap();
-    assert_eq!(p["snapshot"]["count"], 5);
-    assert_eq!(p["render"]["rendered_count"], 3, "{p}");
+        let p = e
+            .invoke(
+                "view_snapshot_v1",
+                json!({"version":1,"generation":"altitude-test","include_render":true}),
+            )
+            .unwrap();
+        assert_eq!(p["snapshot"]["count"], 5);
+        assert_eq!(p["render"]["rendered_count"], 3, "{p}");
+        assert!(p.get("display").is_none() || p["display"].is_null());
+    }
+    e.invoke("view_set", json!({"time_altitude":false}))
+        .unwrap();
     assert!(e
         .invoke("view_set", json!({"globe_time":true,"globe_altitude":true}))
         .is_err());

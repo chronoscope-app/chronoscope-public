@@ -195,11 +195,7 @@ impl DataStore {
             }
             clause.push_str(" AND e.lat IS NOT NULL AND e.lon IS NOT NULL");
             if let Some(bounds) = viewport {
-                let extra = Filter {
-                    bounds: Some(bounds.clone()),
-                    ..Filter::default()
-                };
-                let (sql, values) = Self::where_sql(&extra, None);
+                let (sql, values) = self.viewport_sql(bounds)?;
                 clause.push_str(&format!(" AND ({sql})"));
                 args.extend(values);
             }

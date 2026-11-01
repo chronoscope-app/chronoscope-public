@@ -11,9 +11,37 @@ use std::{
 
 mod bulk_import;
 mod display;
+mod spatial;
 pub mod statistics;
 mod summary;
 mod validation;
+
+// Opt-in coarse profiling, compiled to no work in normal optimized builds.
+struct OpenProfile {
+    #[cfg(feature = "performance-open-profile")]
+    last: std::time::Instant,
+}
+impl OpenProfile {
+    fn new() -> Self {
+        Self {
+            #[cfg(feature = "performance-open-profile")]
+            last: std::time::Instant::now(),
+        }
+    }
+    fn lap(&mut self, phase: &str) {
+        #[cfg(feature = "performance-open-profile")]
+        {
+            let elapsed = self.last.elapsed();
+            self.last = std::time::Instant::now();
+            eprintln!(
+                "{}",
+                json!({"open_phase":phase,"ms":elapsed.as_secs_f64()*1000.})
+            );
+        }
+        #[cfg(not(feature = "performance-open-profile"))]
+        let _ = phase;
+    }
+}
 
 const APPLICATION_ID: i64 = 0x4348524f;
 // SQLite INTEGER affinity accepts fractional REAL values too. Retain the existing
@@ -179,6 +207,8 @@ pub struct DataStore {
     selection_revision: u64,
     previous_selection: RefCell<std::collections::BTreeSet<u64>>,
     summary_cache: RefCell<BTreeMap<String, Value>>,
+    dataset_summary_cache: RefCell<Option<Value>>,
+    dataset_summary_cache_bytes: std::cell::Cell<usize>,
     selection_summary_cache: RefCell<BTreeMap<String, Value>>,
     selected_entities_cache: RefCell<Option<(u64, u64, Value)>>,
     facet_cache: RefCell<BTreeMap<String, (u64, u64, Value)>>,
@@ -187,6 +217,7 @@ pub struct DataStore {
     summary_builds: std::cell::Cell<u64>,
     statistics_builds: std::cell::Cell<u64>,
     column_cache: RefCell<BTreeMap<Option<String>, Vec<String>>>,
+    viewport_plan_cache: RefCell<BTreeMap<String, bool>>,
     _lease: std::sync::Arc<std::fs::File>,
     _directory: std::sync::Arc<WorkingDirectory>,
 }
@@ -249,6 +280,8 @@ impl DataStore {
             selection_revision: 1,
             previous_selection: RefCell::default(),
             summary_cache: RefCell::default(),
+            dataset_summary_cache: RefCell::default(),
+            dataset_summary_cache_bytes: std::cell::Cell::new(0),
             selection_summary_cache: RefCell::default(),
             selected_entities_cache: RefCell::default(),
             facet_cache: RefCell::default(),
@@ -257,6 +290,7 @@ impl DataStore {
             summary_builds: std::cell::Cell::new(0),
             statistics_builds: std::cell::Cell::new(0),
             column_cache: RefCell::default(),
+            viewport_plan_cache: RefCell::default(),
             _lease: std::sync::Arc::new(lease),
             _directory: std::sync::Arc::new(WorkingDirectory {
                 directory: Some(dir),
@@ -406,6 +440,7 @@ impl DataStore {
         data_dir: &Path,
         recovery: bool,
     ) -> Result<(Self, Project), String> {
+        let mut profile = OpenProfile::new();
         if std::fs::metadata(path).map_err(err)?.len() > 32 * 1024 * 1024 * 1024 {
             return Err("Database exceeds 32 GiB workspace budget".into());
         }
@@ -467,12 +502,14 @@ impl DataStore {
                 }
             }
         }
+        profile.lap("source_schema");
         let check: String = source
             .query_row("PRAGMA quick_check", [], |r| r.get(0))
             .map_err(err)?;
         if check != "ok" {
             return Err("Workspace database integrity check failed".into());
         }
+        profile.lap("quick_check");
         let store = Self::new(data_dir)?;
         let expected_indexes = validation::index_definitions(&store.connection)?;
         // A fresh DELETE-journal destination avoids a full-sized WAL plus a second
@@ -482,6 +519,7 @@ impl DataStore {
         source
             .backup(rusqlite::MAIN_DB, &store.path, None)
             .map_err(err)?;
+        profile.lap("prepare_and_backup");
         let connection = Connection::open(&store.path).map_err(err)?;
         if version == 1 {
             connection
@@ -518,7 +556,9 @@ impl DataStore {
             connection,
             ..store
         };
+        profile.lap("configure_and_schema_migration");
         store.verify_events()?;
+        profile.lap("verify_events_including_fts");
         let metadata_key = if recovery {
             "recovery_project"
         } else {
@@ -554,6 +594,7 @@ impl DataStore {
             store.reconcile_recovery_context(&mut project)?;
         }
         store.validate_metadata(&project)?;
+        profile.lap("metadata_and_resources");
         {
             let mut q = store
                 .connection
@@ -596,6 +637,7 @@ impl DataStore {
         project.version = 7;
         project.time_resolution = "fractional_second".into();
         store.set_selection(&project.selected)?;
+        profile.lap("centroid_migration_and_selection");
         Ok((store, project))
     }
     pub fn projected_page(
@@ -1065,6 +1107,15 @@ impl DataStore {
             .map(|v| v as usize)
             .map_err(err)
     }
+    pub fn has_geometries(&self) -> Result<bool, String> {
+        self.connection
+            .query_row(
+                "SELECT EXISTS(SELECT 1 FROM events INDEXED BY events_geometry WHERE geometry_wkt IS NOT NULL)",
+                [],
+                |row| row.get(0),
+            )
+            .map_err(err)
+    }
     pub fn has_centroids(&self) -> Result<bool, String> {
         self.connection.query_row("SELECT EXISTS(SELECT 1 FROM events INDEXED BY events_geometry WHERE geometry_wkt IS NOT NULL AND json_extract(payload,'$.location_kind')='polygon-centroid')",[],|r|r.get(0)).map_err(err)
     }
@@ -1139,11 +1190,14 @@ impl DataStore {
         Ok(())
     }
     fn clear_cache(&self) -> Result<(), String> {
+        self.dataset_summary_cache.borrow_mut().take();
+        self.dataset_summary_cache_bytes.set(0);
         self.summary_cache.borrow_mut().clear();
         self.selection_summary_cache.borrow_mut().clear();
         self.summary_cache_bytes.set(0);
         self.selection_cache_bytes.set(0);
         self.column_cache.borrow_mut().clear();
+        self.viewport_plan_cache.borrow_mut().clear();
         for c in self.cache.borrow().values() {
             self.connection
                 .execute_batch(&format!("DROP TABLE IF EXISTS {}", c.table))
@@ -1177,6 +1231,13 @@ impl DataStore {
         }
     }
     pub fn where_sql(filter: &Filter, source: Option<&str>) -> (String, Vec<SqlValue>) {
+        Self::where_sql_with_spatial_index(filter, source, true)
+    }
+    fn where_sql_with_spatial_index(
+        filter: &Filter,
+        source: Option<&str>,
+        spatial_index: bool,
+    ) -> (String, Vec<SqlValue>) {
         let mut parts = vec!["1=1".to_string()];
         let mut args = vec![];
         let mut condition = |sql: &str, v: SqlValue| {
@@ -1252,10 +1313,12 @@ impl DataStore {
             } else {
                 "(lon_max>=? OR lon_min<=?)"
             };
-            parts.push(format!(
-                "e.r IN (SELECT r FROM spatial WHERE lat_max>=? AND lat_min<=? AND {spatial_lon})"
-            ));
-            args.extend([b.south, b.north, b.west, b.east].map(SqlValue::Real));
+            if spatial_index {
+                parts.push(format!(
+                    "e.r IN (SELECT r FROM spatial WHERE lat_max>=? AND lat_min<=? AND {spatial_lon})"
+                ));
+                args.extend([b.south, b.north, b.west, b.east].map(SqlValue::Real));
+            }
             let point_lon = if b.west <= b.east {
                 "e.lon>=? AND e.lon<=?"
             } else {
@@ -1287,6 +1350,23 @@ impl DataStore {
             args.push(SqlValue::Text(format!("%{q}%")));
         }
         for p in &filter.predicates {
+            // Finite native numbers never format as empty or whitespace. Empty
+            // tests can use NULL directly without per-row numeric formatting.
+            if matches!(p.field.as_str(), "lat" | "lon" | "value")
+                && (p.op == Operator::IsEmpty
+                    || p.value.is_empty() && matches!(p.op, Operator::Equals | Operator::NotEquals))
+            {
+                parts.push(format!(
+                    "e.{} IS {}NULL",
+                    p.field,
+                    if p.op == Operator::NotEquals {
+                        "NOT "
+                    } else {
+                        ""
+                    }
+                ));
+                continue;
+            }
             // A constant-false numeric predicate has no expression/key binds.
             // Decide it before constructing an attribute subquery.
             if matches!(p.op, Operator::Greater | Operator::Less)
@@ -1507,20 +1587,15 @@ impl DataStore {
             },
         )
     }
-    fn ordered_scoped(
+    fn order_cache_key(
         &self,
         filter: &Filter,
         source: Option<&str>,
         sort: &str,
         desc: bool,
-        scope: TableScope<'_>,
+        scope: &TableScope<'_>,
     ) -> Result<String, String> {
-        let TableScope {
-            viewport,
-            cell,
-            search,
-        } = scope;
-        let key = serde_json::to_string(&(
+        serde_json::to_string(&(
             self.data_revision,
             if filter.selected_only {
                 self.selection_revision
@@ -1531,11 +1606,26 @@ impl DataStore {
             source,
             sort,
             desc,
+            scope.viewport,
+            scope.cell,
+            scope.search,
+        ))
+        .map_err(err)
+    }
+    fn ordered_scoped(
+        &self,
+        filter: &Filter,
+        source: Option<&str>,
+        sort: &str,
+        desc: bool,
+        scope: TableScope<'_>,
+    ) -> Result<String, String> {
+        let key = self.order_cache_key(filter, source, sort, desc, &scope)?;
+        let TableScope {
             viewport,
             cell,
             search,
-        ))
-        .map_err(err)?;
+        } = scope;
         *self.clock.borrow_mut() += 1;
         let clock = *self.clock.borrow();
         if let Some(c) = self.cache.borrow_mut().get_mut(&key) {
@@ -1575,11 +1665,7 @@ impl DataStore {
             where_clause.push_str(" AND EXISTS(SELECT 1 FROM selection s WHERE s.id=e.id)");
         }
         if let Some(bounds) = viewport {
-            let extra = Filter {
-                bounds: Some(bounds.clone()),
-                ..Filter::default()
-            };
-            let (clause, parameters) = Self::where_sql(&extra, None);
+            let (clause, parameters) = self.viewport_sql(bounds)?;
             where_clause = format!("({where_clause}) AND ({clause})");
             values.extend(parameters);
         }
@@ -1734,7 +1820,7 @@ impl DataStore {
         )
     }
     pub fn cache_info(&self) -> Value {
-        json!({"data_revision":self.data_revision,"cached_orders":self.cache.borrow().len(),"storage":"sqlite","page_lookup":"indexed_position","memory_cache_mib":32,"summary_builds":self.summary_builds.get(),"statistics_builds":self.statistics_builds.get(),"summary_cache_encoded_bytes":self.summary_cache_bytes.get()+self.selection_cache_bytes.get(),"summary_cache_encoded_limit_bytes":8388608})
+        json!({"data_revision":self.data_revision,"cached_orders":self.cache.borrow().len(),"storage":"sqlite","page_lookup":"indexed_position","memory_cache_mib":32,"summary_builds":self.summary_builds.get(),"statistics_builds":self.statistics_builds.get(),"summary_cache_encoded_bytes":self.summary_cache_bytes.get()+self.selection_cache_bytes.get()+self.dataset_summary_cache_bytes.get(),"summary_cache_encoded_limit_bytes":8388608})
     }
     pub fn materialize(&self, mut project: Project) -> Result<Project, String> {
         let t = self.ordered(&Filter::default(), None, "id", false)?;
@@ -1830,9 +1916,21 @@ impl DataStore {
         // Portable files exclude undo history and deleted payload remnants.
         // Compaction happens on the backup, preserving the live workspace's undo.
         let portable = destination;
-        portable.execute_batch("PRAGMA secure_delete=ON; DELETE FROM meta WHERE key='recovery_project'; DELETE FROM history_rows; DELETE FROM history; INSERT INTO search(search) VALUES('optimize'); VACUUM;").map_err(err)?;
-        drop(portable);
-        crate::persistence::persist(tmp, path)?;
+        portable.execute_batch("PRAGMA secure_delete=ON; DELETE FROM meta WHERE key='recovery_project'; DELETE FROM history_rows; DELETE FROM history; INSERT INTO search(search) VALUES('optimize');").map_err(err)?;
+        let compact = tempfile::NamedTempFile::new_in(parent).map_err(err)?;
+        if let Some(filename) = compact.path().to_str() {
+            // Write the compacted final staging file directly, avoiding VACUUM's
+            // copy back over the first staging database. Publication still syncs
+            // the completed file and atomically replaces the destination.
+            portable.execute("VACUUM INTO ?", [filename]).map_err(err)?;
+            drop(portable);
+            crate::persistence::persist(compact, path)?;
+        } else {
+            // Keep existing path support when an OS path cannot be bound as UTF-8.
+            portable.execute_batch("VACUUM").map_err(err)?;
+            drop(portable);
+            crate::persistence::persist(tmp, path)?;
+        }
         Ok(())
     }
     /// Clone only into a fresh empty staging store before append ingestion.
@@ -2017,6 +2115,27 @@ impl DataStore {
             op: Operator::NotEquals,
             value: String::new(),
         });
+        if total == 0 {
+            // Do not build an unused anchor table. A cached anchor order may
+            // also serve canonical rendering: retain its previous LRU priority
+            // so panning does not make the next overview refresh rebuild it.
+            let key = self.order_cache_key(
+                &located,
+                None,
+                "time",
+                false,
+                &TableScope {
+                    viewport: None,
+                    cell: None,
+                    search: "",
+                },
+            )?;
+            if let Some(cached) = self.cache.borrow_mut().get_mut(&key) {
+                *self.clock.borrow_mut() += 1;
+                cached.used = *self.clock.borrow();
+            }
+            return Ok((sample, 0, vec![]));
+        }
         let anchors = self.ordered(&located, None, "time", false)?;
         let mut result = vec![];
         let mut metadata = vec![];
