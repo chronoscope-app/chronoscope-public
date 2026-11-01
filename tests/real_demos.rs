@@ -64,7 +64,9 @@ fn invalid_demo_id_preserves_current_workspace_and_scoped_mcp_can_open_known_dem
     assert_eq!(engine.invoke("snapshot", json!({})).unwrap()["count"], 8473);
     let before = engine.invoke("snapshot", json!({})).unwrap();
     assert!(engine.invoke("demo_open", json!({"id":"missing"})).is_err());
-    assert!(engine.invoke("demo_open", json!({"id":"madagascar-uav"})).is_err());
+    assert!(engine
+        .invoke("demo_open", json!({"id":"madagascar-uav"}))
+        .is_err());
     assert_eq!(engine.invoke("snapshot", json!({})).unwrap(), before);
 }
 

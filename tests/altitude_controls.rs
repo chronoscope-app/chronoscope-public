@@ -40,10 +40,7 @@ fn mcp_discovers_altitude_mapping_height_flags_demos_and_confirmed_reset() {
     assert!(mapping.to_string().contains("altitude_reference_column"));
     assert!(mapping.to_string().contains("kilometers"));
     let catalog = e.invoke("demo_catalog", json!({})).unwrap();
-    for (name, previews) in [
-        ("flight-altitude", 2),
-        ("starlink-orbits", 2),
-    ] {
+    for (name, previews) in [("flight-altitude", 2), ("starlink-orbits", 2)] {
         let demo = catalog["demos"]
             .as_array()
             .unwrap()
