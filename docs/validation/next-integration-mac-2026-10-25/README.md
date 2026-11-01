@@ -52,9 +52,9 @@ browser workspace; 357,032 bytes for the native wildlife workspace). Custom DTED
 replaces built-in terrain, requires an explicit datum, and survives portable
 save/open. Native tests verify the same replacement and datum behavior.
 
-![Native wildlife Time view with full-viewport ground and Sync views](native-wildlife-time.png)
+[Native wildlife Time view with full-viewport ground and Sync views — archived native-wildlife-time.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip)
 
-![Actual browser Himalaya Globe with bundled terrain](browser-himalayas-globe.png)
+[Actual browser Himalaya Globe with bundled terrain — archived browser-himalayas-globe.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip)
 
 ## Fixture corrections and limits
 

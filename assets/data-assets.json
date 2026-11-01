@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "demo-source-inputs": {
+    "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/demo-source-inputs-v1.zip",
+    "bytes": 13334461,
+    "sha256": "a3a5b8ab040d82f0805a0ec5389bbece2f330ec05938f94afabcf8691ff7cdb7"
+  },
+  "validation-media": {
+    "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip",
+    "bytes": 20010527,
+    "sha256": "43168d9ca5f5986922ad419ae95004c4466b558bf7a6b97d3d139081480eb5ab"
+  },
+  "terrain": {
+    "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/balanced.cterrain",
+    "path": "assets/terrain/balanced.cterrain",
+    "bytes": 88778304,
+    "sha256": "f93cdd806f477ebf73edb20212cd54089ea8b024cb2e4ba78e488554aa9377f8"
+  }
+}

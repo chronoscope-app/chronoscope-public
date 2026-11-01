@@ -39,7 +39,10 @@ https://www.naturalearthdata.com/about/terms-of-use/
 `balanced.json` records the measured pack size, SHA-256 and input provenance.
 `scripts/verify-balanced-terrain.mjs` checks the receipt before frontend builds;
 `scripts/verify_balanced_terrain.py` additionally checks every block's CRC.
-A missing pack is a packaging failure, not a downloadable first-run dependency.
+The pack is fetched during build preparation from a versioned release asset,
+verified against `assets/data-assets.json` and this receipt, and bundled into the
+app. Run `python3 scripts/fetch_data_assets.py` before direct Cargo tests.
+A missing or corrupt pack fails the build; the installed app never downloads it.
 The real pack is **88,778,304 bytes (84.7 MiB)**, with 2,721 stored blocks across
 the finest grid and seven overviews. SHA-256:
 `f93cdd806f477ebf73edb20212cd54089ea8b024cb2e4ba78e488554aa9377f8`.

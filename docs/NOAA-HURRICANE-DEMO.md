@@ -1,6 +1,6 @@
 # Atlantic hurricanes, 2016–2025
 
-Open [the portable sample](../samples/atlantic-hurricanes-2016-2025.chronoscope) in Chronoscope. It starts in 2D heat-map mode and includes four saved views under **Views**: tracks, heat-map, bloom and space-time-heat. Each retains the same 3,568 source events from 83 hurricanes. The [CSV](../samples/public/atlantic-hurricanes-2016-2025.csv) is also available for importing independently.
+Open [the portable sample](../samples/atlantic-hurricanes-2016-2025.chronoscope) in Chronoscope. It starts in 2D heat-map mode and includes four saved views under **Views**: tracks, heat-map, bloom and space-time-heat. Each retains the same 3,568 source events from 83 hurricanes. The [CSV — archived atlantic-hurricanes-2016-2025.csv](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/demo-source-inputs-v1.zip) is also available for importing independently.
 
 The sample uses the ten completed seasons 2016–2025. It contains original best-track coordinates and UTC times from [NOAA NHC HURDAT2](https://www.nhc.noaa.gov/data/hurdat/hurdat2-1851-2025-02272026.txt), including non-hurricane lifecycle phases of storms that reached hurricane strength in the Atlantic. [NOAA IBTrACS](https://www.ncei.noaa.gov/products/international-best-track-archive) BASIN tags exclude Pacific portions of crossover storms. Bonnie 2022 is excluded because its hurricane phase occurred in the Pacific. No positions or intermediate times were invented. Records are unique by storm ID and time.
 

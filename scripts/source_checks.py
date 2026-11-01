@@ -26,6 +26,8 @@ def check_plan(inventory, rust_targets=(), full=False):
         'unit': [check(s.removesuffix('.py'), [sys.executable, '-B', 'scripts/'+s])
                  for s in inventory['python_suites']['unit']],
         'prebuild': [
+            check('repository-asset-budget', [sys.executable, '-B', 'scripts/check_repository_assets.py']),
+            check('pinned-build-data', [sys.executable, '-B', 'scripts/fetch_data_assets.py']),
             check('rust-format', ['cargo', 'fmt', '--all', '--check']),
             *[check(s.removesuffix('.py'), [sys.executable, '-B', 'scripts/'+s])
               for s in inventory['python_suites']['integrity']],

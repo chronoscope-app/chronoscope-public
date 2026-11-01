@@ -16,7 +16,7 @@ Open **Help → Demo datasets** for all 14 bundled offline projects, including t
 - `world-bank-electricity-1990-2023.chronoscope`: 169 mapped countries over 34 annual observations, with fixed percentage coloring and missing values preserved.
 - `flights-philippines-week-2026.chronoscope`: 11,018 samples from 175 distinct flights across six Philippine airports, March 1–7, 2026 UTC; reported altitude, Time Height and ground views.
 - `starlink-128-predicted-orbits-2024.chronoscope`: 46,208 original predicted states from 128 satellites over six hours, with altitude and Time Height views.
-- `public/*.csv`: matching importable observation tables.
+- Matching importable observation tables and full generator inputs are optional downloads: run `python3 scripts/fetch_data_assets.py --sources`. They remain ignored local fixtures. The Philippine flight CSV stays in Git because it is a deterministic altitude test input.
 
 See [wildlife sources and interpretation](../docs/WILDLIFE-DEMOS.md), [real-world demos, sources, units and reproduction](../docs/REAL-WORLD-DEMOS.md), [hurricane provenance](public/SOURCES.md), and [hurricane guide](../docs/NOAA-HURRICANE-DEMO.md). The source data is embedded in each project; map imagery is referenced rather than embedded. Normal startup remains empty.
 

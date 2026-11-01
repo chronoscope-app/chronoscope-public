@@ -48,7 +48,7 @@ was not changed, and no hosted workflows were dispatched.
 [Machine-readable results](result.json) · [Tables](tables.json) ·
 [Events](events.json) · [GIS](gis.json)
 
-![One table title and local search](table-search.png)
+[One table title and local search — archived table-search.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip)
 
 Detailed logs, initial failed runs and disposable profiles remain in ignored
 `.qa/`. Linux validation of the new UX and any later Public promotion are separate.

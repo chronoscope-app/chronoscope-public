@@ -12,3 +12,5 @@
 - Finish user-facing Mac builds with `script/build_and_run.sh --build-only`, which creates an optimized release copy. `--debug-build-only` and interactive diagnostic modes create slower debug copies; rebuild the optimized copy after those checks.
 
 - Keep the bundled Starlink workspace, its previews and associated credit metadata together at or below 5,000,000 bytes. Full Starlink source/stress data must remain ignored local fixtures, outside app resources.
+
+- Keep terrain packs, optional demo source tables, and routine validation captures out of Git. Use `assets/data-assets.json` and `scripts/fetch_data_assets.py`; preserve compact offline demos and credit metadata. Keep local evidence ignored and publish deliberately selected evidence as release assets. Run `python3 scripts/check_repository_assets.py` before committing.

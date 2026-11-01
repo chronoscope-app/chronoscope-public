@@ -309,7 +309,7 @@ class NoticePackagingTests(unittest.TestCase):
 
     def test_prepare_cesium_runs_with_tiny_fake_vendor_tree(self):
         # Run the actual entry point in isolation with fixture-local imports.
-        for name in ['scripts/package-notices.mjs', 'scripts/verify-balanced-terrain.mjs', 'frontend/scripts/prepare-cesium.mjs']:
+        for name in ['scripts/package-notices.mjs', 'scripts/verify-balanced-terrain.mjs', 'scripts/fetch_data_assets.py', 'frontend/scripts/prepare-cesium.mjs']:
             target = self.repo / name
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / name, target)
@@ -328,6 +328,11 @@ class NoticePackagingTests(unittest.TestCase):
         receipt = {'bytes': pack.stat().st_size, 'sha256': hashlib.sha256(pack.read_bytes()).hexdigest(),
                    'source_md5': '5b6c47502ae8d03b8718349655d5cd95'}
         put(self.repo, 'assets/terrain/balanced.json', json.dumps(receipt))
+        put(self.repo, 'assets/data-assets.json', json.dumps({'version': 1, 'terrain': {
+            'path': 'assets/terrain/balanced.cterrain',
+            'url': 'https://127.0.0.1:1/not-used-with-verified-cache',
+            'bytes': receipt['bytes'], 'sha256': receipt['sha256'],
+        }}))
         result = subprocess.run([NODE, str(self.repo / 'frontend/scripts/prepare-cesium.mjs')],
                                 capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)

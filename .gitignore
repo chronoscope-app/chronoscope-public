@@ -19,3 +19,39 @@ __pycache__/
 /frontend/public/third-party/
 
 /src-tauri/resources/Metadata.appintents/
+
+# Versioned data lives in the pinned repository-data release, not Git history.
+/.local-build/
+/assets/terrain/*.cterrain
+/samples/public/*.csv
+!/samples/public/flights-philippines-week-2026.csv
+/samples/public/source-snapshots/*
+!/samples/public/source-snapshots/README.md
+!/samples/public/source-snapshots/SHA256.json
+/samples/*.demo.zip
+/docs/validation/**/*.png
+/docs/validation/**/*.jpg
+/docs/validation/**/*.jpeg
+/docs/validation/**/*.webp
+/docs/validation/**/*.gif
+/docs/validation/**/*.mp4
+/docs/validation/**/*.mov
+/docs/performance/**/*.png
+/docs/performance/**/*.jpg
+/docs/performance/**/*.jpeg
+/docs/performance/**/*.webp
+/docs/performance/**/*.gif
+/docs/performance/**/*.mp4
+/docs/performance/**/*.mov
+/docs/screenshots/**/*.png
+/docs/screenshots/**/*.jpg
+/docs/screenshots/**/*.jpeg
+/docs/screenshots/**/*.webp
+/docs/screenshots/**/*.gif
+/docs/screenshots/**/*.mp4
+/docs/screenshots/**/*.mov
+!/docs/screenshots/current/
+!/docs/screenshots/current/**
+
+# Also ignore local dependency-directory symlinks.
+node_modules

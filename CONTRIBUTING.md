@@ -11,3 +11,5 @@ GitHub workflows must remain **manual-only** per [repository instructions](AGENT
 Use the pull-request template to record the problem, resulting behavior and exact local checks. There is no automatic hosted CI gate; missing platform evidence must be called out, not inferred from another OS. The maintainer remains responsible for reviewing and merging changes.
 
 Release changes require exact-source provenance, checksum verification, package notices/source-access review and native platform evidence. Follow the [release checklist](docs/RELEASE-CHECKLIST.md). Use the portable build wrapper and inspect final strings; do not replace published assets or rewrite history without separate owner approval.
+
+Large terrain and optional demo inputs are checksum-pinned build downloads. See [repository data](docs/REPOSITORY-DATA.md) for offline preparation, optional source restoration, and validation evidence policy.

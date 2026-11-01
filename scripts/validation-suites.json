@@ -363,7 +363,8 @@
   "python_suites": {
     "unit": [
       "test_validation_runner.py",
-      "test_guarded_run.py"
+      "test_guarded_run.py",
+      "test_data_assets.py"
     ],
     "integrity": [
       "test_glib_backport.py",

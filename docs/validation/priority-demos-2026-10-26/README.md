@@ -14,13 +14,13 @@ power totals. Original points and values remain available in another saved view.
 
 Real 1920 × 1200 application captures:
 
-- [Global earthquakes — 2025](earthquakes-hero.png): 8,500 USGS-authored magnitude
+- [Global earthquakes — 2025 — archived earthquakes-hero.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip): 8,500 USGS-authored magnitude
   ≥4.5 events; Pacific-centered globe, source time and depth preserved.
-- [FIRMS — South America](fire-detections-hero.png): 50,713 nominal/high-confidence
+- [FIRMS — South America — archived fire-detections-hero.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip): 50,713 nominal/high-confidence
   VIIRS detections; weighted heat, no tracks or stems.
-- [Electricity access — Africa, 2023](electricity-access-hero.png): country polygons
+- [Electricity access — Africa, 2023 — archived electricity-access-hero.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip): country polygons
   colored by annual population percentage, with a fixed 0–100% legend.
-- [The same electricity view — 1990](electricity-access-1990.png): identical scale;
+- [The same electricity view — 1990 — archived electricity-access-1990.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip): identical scale;
   missing observations remain gray.
 
 [Capture scenes and diagnostics](capture-report.json) and

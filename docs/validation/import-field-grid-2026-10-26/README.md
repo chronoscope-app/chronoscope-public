@@ -16,8 +16,8 @@ Local validation:
 
 The new suite is available as `npm --prefix frontend run test:import-grid` after building the CLI/frontend. On this Mac the final browser run used `CHRONOSCOPE_QA_ANGLE=swiftshader`. The harness sets ISO display formatting explicitly so its UTC assertions do not depend on system locale. See [results.json](results.json) for the exact final browser checks.
 
-![Field grid in light appearance](grid-attention-light.png)
+[Field grid in light appearance — archived grid-attention-light.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip)
 
-![Field grid in dark appearance](grid-attention-dark.png)
+[Field grid in dark appearance — archived grid-attention-dark.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip)
 
-![Compact field grid](grid-compact-light.png)
+[Compact field grid — archived grid-compact-light.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip)

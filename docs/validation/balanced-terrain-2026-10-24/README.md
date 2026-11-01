@@ -117,7 +117,7 @@ not a debug source-tree fallback.
 
 The final AppImage launches under an isolated Xvfb/software-GL profile. Its
 [attached GUI report](native/gui-report.json) confirms active EGM96 terrain and
-zero renderer errors; [native app capture](native/appimage-globe.png) shows the
+zero renderer errors; [native app capture — archived appimage-globe.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip) shows the
 actual bundled GUI. The first-post Antarctic CLI sample is 2,801 m. The Linux
 SDK was assembled locally from downloaded development packages and installed
 runtime files, without sudo or system package changes. `package_linux.py` stages

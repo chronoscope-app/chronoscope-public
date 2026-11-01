@@ -1,3 +1,5 @@
+Full generator inputs are optional checksum-pinned downloads. Run `python3 scripts/fetch_data_assets.py --sources` from the checkout root before regenerating demos. Restored inputs stay ignored. See [repository data](../../../docs/REPOSITORY-DATA.md).
+
 # Pinned priority-demo source inputs
 
 Retrieved 26 October 2026. See [SHA256.json](SHA256.json) for exact input hashes and

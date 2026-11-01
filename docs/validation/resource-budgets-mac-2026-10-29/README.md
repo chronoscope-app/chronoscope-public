@@ -41,7 +41,7 @@ returned all 12,000 records, both selected records remained selected, and filter
 preferences and saved display/Fade/budget choices stayed unchanged. Playback
 remained available, with zero decorative afterimages at critical pressure and
 zero render errors. [Measurements](injected-pressure-measurements.json) ·
-[critical display](injected-critical.png).
+[critical display — archived injected-critical.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip).
 
 Unit cases cover 4/8 GiB capacity, memory/swap pressure, recognized Intel hints,
 masked renderer names plus expensive geometry, genuinely slow active cadence,
@@ -61,7 +61,7 @@ and [OS sampler checks](installed-sampler.json).
 
 Native app MCP confirmed real OS sampling and automatic-governor diagnostics,
 and captured near/far light-mode frames while the screen was locked.
-[Capture receipt](native-capture.json) · [native frame](native-light-near.png).
+[Capture receipt](native-capture.json) · [native frame — archived native-light-near.png](https://github.com/chronoscope-app/chronoscope-public/releases/download/repository-data-v1/validation-media-v1.zip).
 The engine connects before the frontend listener is ready: a first read-only
 status request expired, and the second succeeded. The harness now bounds this
 readiness retry rather than retrying navigation/playback mutations.
