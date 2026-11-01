@@ -37,28 +37,6 @@ fn search_matches(event: &Event, indexed: &str, buffer: &mut String) -> bool {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn reused_search_buffer_matches_canonical_encoder_across_text_boundaries() {
-        let mut buffer = String::new();
-        for value in ["ASCII", "", "ΣΟΣ", "İ", "🚀", "a\0B", "line\nbreak", ","] {
-            let mut event = crate::demo::dataset().events.remove(0);
-            event.entity = format!("Entity {value}");
-            event.category = value.into();
-            event.label = value.into();
-            event.note = value.into();
-            event.related_to = value.into();
-            event.attrs.insert("proof".into(), value.into());
-            event.tags.insert(value.into());
-            let canonical = search_text(&event);
-            assert!(search_matches(&event, &canonical, &mut buffer));
-            assert!(!search_matches(&event, &(canonical + "x"), &mut buffer));
-        }
-    }
-}
-
 pub(super) fn index_definitions(
     connection: &Connection,
 ) -> Result<BTreeMap<String, String>, String> {
@@ -215,5 +193,27 @@ impl DataStore {
             .map_err(err)?;
         profile.lap("fts_integrity_check");
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn reused_search_buffer_matches_canonical_encoder_across_text_boundaries() {
+        let mut buffer = String::new();
+        for value in ["ASCII", "", "ΣΟΣ", "İ", "🚀", "a\0B", "line\nbreak", ","] {
+            let mut event = crate::demo::dataset().events.remove(0);
+            event.entity = format!("Entity {value}");
+            event.category = value.into();
+            event.label = value.into();
+            event.note = value.into();
+            event.related_to = value.into();
+            event.attrs.insert("proof".into(), value.into());
+            event.tags.insert(value.into());
+            let canonical = search_text(&event);
+            assert!(search_matches(&event, &canonical, &mut buffer));
+            assert!(!search_matches(&event, &(canonical + "x"), &mut buffer));
+        }
     }
 }
