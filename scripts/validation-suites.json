@@ -60,8 +60,9 @@
       "gis-files-qa.mjs",
       "vector-gis-qa.mjs",
       "map-notifications-qa.mjs",
+      "maps-preferences-qa.mjs",
       "flight-pan-qa.mjs",
-    "navigation-qa.mjs",
+      "navigation-qa.mjs",
       "navigation-table-cleanup-qa.mjs",
       "navigation-preferences-qa.mjs",
       "navigation-sphere-qa.mjs",
@@ -86,6 +87,7 @@
       "toolbar-dialogs-qa.mjs",
       "si-certificate-qa.mjs",
       "time-rail-qa.mjs",
+      "time-axis-controls-qa.mjs",
       "focused-ai-qa.mjs",
       "guided-workflows-qa.mjs",
       "welcome-qa.mjs",
@@ -103,7 +105,6 @@
       "playback-fade-qa.mjs",
       "resource-pressure-qa.mjs",
       "flight-week-qa.mjs",
-      "flight-pan-qa.mjs",
       "idf-demo-qa.mjs",
       "globe-framing-qa.mjs",
       "si-toolbar-label-qa.mjs",
@@ -151,7 +152,7 @@
     "playback-fade-qa.mjs",
     "resource-pressure-qa.mjs",
     "flight-week-qa.mjs",
-      "flight-pan-qa.mjs",
+    "flight-pan-qa.mjs",
     "idf-demo-qa.mjs",
     "resident-reference-qa.mjs",
     "upload-paging-qa.mjs",
@@ -209,6 +210,7 @@
         "playback-transitions-qa.mjs",
         "sidebar-time-qa.mjs",
         "time-rail-qa.mjs",
+        "time-axis-controls-qa.mjs",
         "subsecond-qa.mjs",
         "playback-fade-qa.mjs"
       ],
@@ -251,7 +253,8 @@
         "balanced-terrain-qa.mjs",
         "cesium-terrain-qa.mjs",
         "wkt-wmts-qa.mjs",
-        "map-notifications-qa.mjs"
+        "map-notifications-qa.mjs",
+        "maps-preferences-qa.mjs"
       ],
       "rust": [
         "balanced_terrain",
@@ -345,7 +348,6 @@
         "altitude-qa.mjs",
         "space-demos-qa.mjs",
         "flight-week-qa.mjs",
-      "flight-pan-qa.mjs",
         "idf-demo-qa.mjs"
       ],
       "rust": [
