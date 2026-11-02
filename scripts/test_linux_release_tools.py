@@ -6,16 +6,52 @@ import json
 import os
 from pathlib import Path
 import struct
+import shutil
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest import mock
 
+import build_linux_apprun as apprun
 import package_linux_sources as sources
 import check_linux_replacement as replacement
 import prepare_linux_build as prepare
 
 
 class LinuxReleaseToolsTest(unittest.TestCase):
+    def test_launcher_refuses_unpinned_source_without_replacing_existing(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); appdir = root / 'appdir'; appdir.mkdir()
+            (appdir / 'AppRun').write_text('#!/bin/sh\nexec AppRun.wrapped\n')
+            (appdir / 'AppRun.wrapped').write_bytes(b'old launcher')
+            for name in apprun.PINNED:
+                with self.subTest(name=name):
+                    source = root / name.replace('.', '_'); shutil.copytree(apprun.SOURCE, source)
+                    (source / name).write_text('tampered')
+                    with self.assertRaisesRegex(ValueError, 'Pinned AppRun input differs'):
+                        apprun.stage_launcher(appdir, source)
+                    self.assertEqual((appdir / 'AppRun.wrapped').read_bytes(), b'old launcher')
+
+    @unittest.skipUnless(sys.platform.startswith('linux'), 'Linux launcher build')
+    def test_source_built_launcher_handles_long_installation_path(self):
+        with tempfile.TemporaryDirectory() as d:
+            appdir = Path(d) / ('a' * 80) / ('b' * 80) / ('c' * 80) / 'appdir'
+            bindir = appdir / 'usr/bin'; bindir.mkdir(parents=True)
+            (appdir / 'example.desktop').write_text('[Desktop Entry]\nType=Application\nName=Test\nExec=chronoscope-probe\n')
+            wrapper = appdir / 'AppRun'
+            wrapper.write_text('#!/bin/sh\nexec "$(dirname "$0")/AppRun.wrapped" "$@"\n'); wrapper.chmod(0o755)
+            (appdir / 'AppRun.wrapped').write_bytes(b'old launcher')
+            executable = bindir / 'chronoscope-probe'
+            executable.write_text('#!/bin/sh\nprintf "launcher-ok %s\\n" "$1"\n'); executable.chmod(0o755)
+            self.assertGreater(len(str(appdir / 'example.desktop')), 255)
+            apprun.stage_launcher(appdir)
+            result = subprocess.run([str(wrapper), '--probe'], capture_output=True, text=True, check=True)
+            self.assertEqual(result.stdout.strip(), 'launcher-ok --probe')
+            docs = appdir / 'usr/share/doc/chronoscope-apprun'
+            for name in (*apprun.PINNED, 'README.md'):
+                self.assertEqual((docs / name).read_bytes(), (apprun.SOURCE / name).read_bytes())
+
     def test_jobs_reserve_host_memory_and_are_capped(self):
         self.assertEqual(prepare.safe_jobs(int(6.5 * prepare.GIB), 12), 1)
         self.assertEqual(prepare.safe_jobs(int(8.5 * prepare.GIB), 12), 3)

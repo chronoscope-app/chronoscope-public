@@ -1,0 +1,16 @@
+--- a/src/AppRun.c
++++ b/src/AppRun.c
+@@ -73,8 +73,11 @@
+     }
+ 
+     /* Extract executable from .desktop file */
+-    char *desktop_file = calloc(LINE_SIZE, sizeof(char));
+-    snprintf(desktop_file, LINE_SIZE, "%s/%s", appdir, namelist[0]->d_name);
++    size_t desktop_file_size = strlen(appdir) + strlen(namelist[0]->d_name) + 2;
++    char *desktop_file = calloc(desktop_file_size, sizeof(char));
++    if (!desktop_file)
++        die("Could not allocate desktop file path\n");
++    snprintf(desktop_file, desktop_file_size, "%s/%s", appdir, namelist[0]->d_name);
+     FILE *f     = fopen(desktop_file, "r");
+     char *line  = malloc(LINE_SIZE);
+     size_t n    = LINE_SIZE;

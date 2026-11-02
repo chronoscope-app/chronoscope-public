@@ -12,6 +12,7 @@ import subprocess
 import tempfile
 
 from package_notices import stage_appdir_notices, verify_appdir, verify_notices
+from build_linux_apprun import stage_launcher
 
 root = Path(__file__).resolve().parent.parent
 p = argparse.ArgumentParser(description=__doc__)
@@ -73,6 +74,9 @@ if sysroot != Path('/'):
             continue
         if prefix in content:
             file.write_text(content.replace(prefix, ''))
+# Replace the opaque launcher with the pinned, locally built source and stage
+# its license and rebuild instructions before the native notice inventory.
+stage_launcher(appdir)
 # Keep an accessible filesystem copy as well as Vite's embedded frontend copy.
 # Inventory existing distro docs; hashes are not full native license clearance.
 stage_appdir_notices(root, appdir)
