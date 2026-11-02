@@ -165,6 +165,14 @@ class PublicationCleanup(unittest.TestCase):
         self.assertIn("contents: read", text)
 
 
+    def test_packaging_config_precedes_forwarded_cargo_arguments(self):
+        text=(ROOT/'.github/workflows/build.yml').read_text()
+        step=text.split('      - name: Build actual GUI distribution\n')[1].split('      - name: Finish Linux')[0]
+        self.assertIn('tauri -- build\n          --config',step)
+        self.assertIn('verify-frontend',step)
+        self.assertIn('\n          -- --locked\n',step)
+        self.assertLess(step.index('--config'),step.index('-- --locked'))
+
     def test_source_diagnostics_upload_runs_after_failure_and_is_narrowly_scoped(self):
         text = (ROOT/".github/workflows/build.yml").read_text()
         marker = '      - name: Retain source validation diagnostics\n'

@@ -169,8 +169,9 @@ jobs:
       - name: Build actual GUI distribution
         if: ${{ !inputs.verify_only }}
         run: >-
-          python scripts/build_portable.py -- npm --prefix frontend run tauri -- build -- --locked
+          python scripts/build_portable.py -- npm --prefix frontend run tauri -- build
           --config '{"build":{"beforeBuildCommand":"python scripts/ci_verification.py verify-frontend"}}'
+          -- --locked
       - name: Finish Linux portable WebKit runtime
         if: runner.os == 'Linux' && !inputs.verify_only
         run: python scripts/package_linux.py
