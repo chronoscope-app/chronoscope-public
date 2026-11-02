@@ -1,0 +1,93 @@
+{
+  "source_next_commit": "e17c072be32e36082b9b14bb348255d6cebc90b6",
+  "public_parent": "8285d4b2ce69db4fad35f1e9aa297126dceca2fb",
+  "version": "0.16.15",
+  "scope": "Windows-only hosted build and experimental release. Mac/Linux builds and releases are not requested.",
+  "source_files": 3536,
+  "public_only_records_preserved": [
+    "docs/validation/public-governor-bulk-import-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/README.md",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/report.json",
+    "docs/validation/public-promotion-0.16.12-2026-10-31/report.json",
+    "docs/validation/public-promotion-0.16.13-2026-11-02/report.json",
+    "docs/validation/public-promotion-0.16.13-runner-fixtures-2026-11-02/report.json",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/README.md",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/report.json",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/README.md",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/report.json",
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-23e567f-2026-10-26/README.md",
+    "docs/validation/public-promotion-23e567f-2026-10-26/report.json",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json",
+    "docs/validation/public-promotion-4153760-2026-10-31/README.md",
+    "docs/validation/public-promotion-4153760-2026-10-31/report.json",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/README.md",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/report.json",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/README.md",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/report.json",
+    "docs/validation/public-promotion-82107e5-2026-10-26/README.md",
+    "docs/validation/public-promotion-82107e5-2026-10-26/report.json",
+    "docs/validation/public-promotion-83977fa2-2026-11-01/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json",
+    "docs/validation/public-promotion-demo-visibility-2026-11-02/report.json",
+    "docs/validation/public-promotion-fb385b3-2026-11-01/report.json",
+    "docs/validation/public-promotion-local-release-2026-11-02/final-16707677.json",
+    "docs/validation/public-promotion-local-release-2026-11-02/final-87b90edf.json",
+    "docs/validation/public-promotion-local-release-2026-11-02/final-a38b0b8b.json",
+    "docs/validation/public-promotion-local-release-2026-11-02/final-b67f1d64.json",
+    "docs/validation/public-promotion-local-release-2026-11-02/final-e45acaae.json",
+    "docs/validation/public-promotion-local-release-2026-11-02/final.json",
+    "docs/validation/public-promotion-local-release-2026-11-02/initial.json",
+    "docs/validation/public-resident-graphics-2026-10-30/report.json"
+  ],
+  "local_validation": {
+    "quick_unit_type_asset_checks": "passed",
+    "packaging_regressions": "passed: notice/source archives, tester package, exact download validator, Windows all-file coverage, CI reuse/cache and Windows preparation",
+    "source_integrity": "GLib backport, build workarounds and release metadata checks passed",
+    "embedded_frontend": "2,069 files inventoried, including every non-executable web resource",
+    "native_windows_prerequisites": "Actual Windows check is first in the authorized hosted build before compilation; local review does not claim Windows capability",
+    "installer_inputs": "Exact NSIS and Tauri plugin binary/source downloads and original license texts hash-verified locally; inert toolchain staging passed",
+    "workflow_syntax": "actionlint passed; workflow_dispatch only",
+    "release_optimization": "Thin LTO and one code-generation unit retained",
+    "secrets": {
+      "new_next_commits": "No findings",
+      "tree_findings_reviewed": [
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "line": 35,
+          "classification": "Unchanged already-public source checksum or commit identifier; not a credential."
+        },
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "line": 50,
+          "classification": "Unchanged already-public source checksum or commit identifier; not a credential."
+        },
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "line": 51,
+          "classification": "Unchanged already-public source checksum or commit identifier; not a credential."
+        },
+        {
+          "path": "docs/validation/release-0.16.9-publication/SOURCE-MANIFEST-RELEASE.json",
+          "line": 3,
+          "classification": "Unchanged already-public source checksum or commit identifier; not a credential."
+        }
+      ],
+      "unreviewed_findings": 0
+    },
+    "registry_sources": "All 1,006 archived registry sources match current package versions, URLs, integrity/checksums and every source-archive byte hash. Immutable source archive reuse only; no compiled/verification work reused."
+  },
+  "source_parity": "Every Next tracked blob and file mode is copied exactly; Public retains independent ancestry and all Public-only records.",
+  "authorization": "User explicitly requested next Windows-only release with GitHub-hosted runners after local input/source/license audit.",
+  "hosted_build_dispatched": false,
+  "frozen_source": "This promotion commit is the intended freeze; exact SHA checked again before dispatch."
+}

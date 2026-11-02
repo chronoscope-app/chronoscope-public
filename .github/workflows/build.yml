@@ -62,6 +62,12 @@ jobs:
       - name: Set temporary build directories
         run: |
           printf '%s\n' "CHRONOSCOPE_VERIFICATION_DIR=$RUNNER_TEMP/source-verification" "npm_config_cache=$RUNNER_TEMP/npm-cache" >> "$GITHUB_ENV"
+      - name: Windows native and installer prerequisites before compilation
+        id: windows-prerequisites
+        if: runner.os == 'Windows'
+        run: |
+          python scripts/windows_release.py preflight --native --cache "$RUNNER_TEMP/windows-input-cache" --output "$RUNNER_TEMP/windows-preflight.json"
+          python -c 'import hashlib,json,os,pathlib; r=json.loads(pathlib.Path(os.environ["RUNNER_TEMP"],"windows-preflight.json").read_text()); p=pathlib.Path(os.environ["GITHUB_OUTPUT"]); p.open("a").write("native-identity="+hashlib.sha256(json.dumps(r["native_identity"],sort_keys=True).encode()).hexdigest()[:16]+"\n")'
       # Each optional dependency payload is bounded to 2 GiB. No app packages,
       # credentials or incremental compiler state are cached. Platform/SDK/flags
       # are part of the immutable cache namespace.
@@ -71,9 +77,9 @@ jobs:
         uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: ${{ runner.temp }}/dependency-cache
-          key: deps-v1-${{ inputs.platform }}-rust198-sdk266-portable-${{ hashFiles('Cargo.lock', 'frontend/package-lock.json') }}-${{ github.run_id }}
+          key: deps-v1-${{ inputs.platform }}-rust198-sdk${{ steps.windows-prerequisites.outputs.native-identity || '266' }}-portable-${{ hashFiles('Cargo.lock', 'frontend/package-lock.json') }}-${{ github.run_id }}
           restore-keys: |
-            deps-v1-${{ inputs.platform }}-rust198-sdk266-portable-${{ hashFiles('Cargo.lock', 'frontend/package-lock.json') }}
+            deps-v1-${{ inputs.platform }}-rust198-sdk${{ steps.windows-prerequisites.outputs.native-identity || '266' }}-portable-${{ hashFiles('Cargo.lock', 'frontend/package-lock.json') }}
       - name: Restore dependency files
         continue-on-error: true
         run: python scripts/ci_cache.py restore --directory "$RUNNER_TEMP/dependency-cache"
@@ -144,6 +150,9 @@ jobs:
       - name: Build frontend once
         if: inputs.verification_run_id == ''
         run: npm run build
+      - name: Inventory executable and non-executable Windows web assets
+        if: runner.os == 'Windows'
+        run: python scripts/windows_release.py frontend --output "$RUNNER_TEMP/windows-frontend-inventory.json"
       - name: Native desktop lint
         if: inputs.verification_run_id == ''
         run: cargo clippy --locked -p chronoscope-desktop -- -D warnings
@@ -208,7 +217,7 @@ jobs:
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: ${{ runner.temp }}/dependency-cache
-          key: deps-v1-${{ inputs.platform }}-rust198-sdk266-portable-${{ hashFiles('Cargo.lock', 'frontend/package-lock.json') }}-${{ github.run_id }}
+          key: deps-v1-${{ inputs.platform }}-rust198-sdk${{ steps.windows-prerequisites.outputs.native-identity || '266' }}-portable-${{ hashFiles('Cargo.lock', 'frontend/package-lock.json') }}-${{ github.run_id }}
       - name: Retain source validation diagnostics
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -222,5 +231,7 @@ jobs:
             ${{ runner.temp }}/contracts-validation/report.json
             ${{ runner.temp }}/contracts-validation/runs/*/run.json
             ${{ runner.temp }}/contracts-validation/runs/*/logs/*.log
+            ${{ runner.temp }}/windows-preflight.json
+            ${{ runner.temp }}/windows-frontend-inventory.json
           if-no-files-found: warn
           retention-days: 1

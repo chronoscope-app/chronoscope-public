@@ -24,6 +24,7 @@ import zipfile
 
 from package_notices import verify_notices
 from package_tester import architecture
+from windows_release import installer_inventory, download_inventory
 
 REPO = 'chronoscope-app/chronoscope-public'
 ROOT = Path(__file__).resolve().parent.parent
@@ -32,7 +33,7 @@ MAX_ARCHIVE = 256 * 1024 * 1024
 MAX_EXPANDED = 1024 * 1024 * 1024
 # Reviewed current inputs, including native AI credential-store dependency notices.
 # Exact source paths and hashes are also enforced by verify_notices below.
-NOTICE_COUNT = 1581
+NOTICE_COUNT = 1596
 
 
 def require(condition, message):
@@ -478,8 +479,13 @@ def validate(args, receipt):
                                     'release_access_verified': False,
                                     'limit': 'Build artifact has no source companions; coordinator must verify exact companion archives and anonymous recipient access before publication.'}
         if args.platform == 'windows-x86_64':
+            require('chronoscope-windows-installer-sources.tar.xz' in source_text,
+                    'Missing Windows installer source-access instructions')
             installers = [p for p in root.glob('*.exe') if p.name not in ('chronoscope-desktop.exe', 'chronoscope.exe')]
             require(len(installers) == 1, 'Expected one NSIS installer')
+            wrapper = download_inventory(root, installers[0].name, args.source_root)
+            require(wrapper == evidence.get('download_payload_coverage'), 'Complete download payload coverage mismatch')
+            receipt['download_payload_coverage'] = wrapper
             tool = shutil.which('7z') or 'C:/Program Files/7-Zip/7z.exe'
             # Preflight installed 7-Zip listing before extraction of known-hash NSIS.
             listing = command([tool, 'l', '-slt', installers[0]])
@@ -513,6 +519,15 @@ def validate(args, receipt):
             manifests = list(installed.rglob('NOTICE-MANIFEST.json'))
             require(bool(manifests), 'Installer physical notices missing')
             receipt['notices'] += [notices(m.parent, args.source_root) for m in manifests]
+            coverage = installer_inventory(installed, args.source_root)
+            require(coverage == evidence.get('installer_payload_coverage'), 'Complete installer payload/source coverage mismatch')
+            receipt['installer_payload_coverage'] = coverage
+            embedded = evidence.get('embedded_frontend_coverage', {})
+            require(embedded.get('files') and embedded.get('format') == 1,
+                    'Missing embedded web/data source inventory')
+            receipt['embedded_frontend_coverage'] = {'files': len(embedded['files']),
+                'inventory_sha256': hashlib.sha256(json.dumps(embedded, sort_keys=True).encode()).hexdigest(),
+                'scope': 'Build-time inventory of all embedded web files; tied to tested GUI bytes, not runtime extraction'}
             receipt['native_payloads'] = {'download': native_inventory(root, True), 'NSIS_extracted': native_inventory(installed, True)}
         else:
             apps = list(root.glob('*.app'))

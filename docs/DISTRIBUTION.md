@@ -122,6 +122,12 @@ Video-only Sharp/libvips tool entries do not prove desktop inclusion. Preserve
 Apache NOTICE/AND-license obligations and independent data/media exceptions;
 choosing one permissive option does not erase mandatory combined notices.
 
+For Windows releases from 0.16.15, the complete physical installer and embedded
+web-file inventories include non-executable bitmap, font, imagery, JSON, metadata
+and terrain resources. Exact NSIS/LZMA, Tauri plugin and installer-template sources
+are delivered in `chronoscope-windows-installer-sources.tar.xz`; original notices
+are bundled. See [Windows input and source coverage](WINDOWS-RELEASE-INPUTS.md).
+
 ## Safe source ZIP
 
 ~~~sh

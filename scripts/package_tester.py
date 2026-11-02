@@ -11,6 +11,7 @@ import subprocess
 import tarfile
 import tempfile
 from package_notices import verify_notices
+from windows_release import installer_inventory, frontend_inventory, download_inventory
 ROOT = Path(__file__).resolve().parent.parent
 
 def architecture(path):
@@ -168,6 +169,8 @@ def stage(target, output, max_bytes):
             for manifest in manifests:
                 verify_notices(manifest.parent, ROOT)
             evidence['installer_notice_manifests'] = len(manifests)
+            evidence['installer_payload_coverage'] = installer_inventory(extracted, ROOT)
+            evidence['embedded_frontend_coverage'] = frontend_inventory(ROOT)
             installed = list(extracted.rglob('chronoscope-desktop.exe'))
             if len(installed) != 1 or architecture(installed[0]) != expected:
                 raise ValueError('Actual installer GUI executable missing or wrong architecture')
@@ -228,6 +231,10 @@ def stage(target, output, max_bytes):
             (root / 'INSTALL.txt').write_text('Experimental builds for testing; you may encounter bugs.\n\nLinux x64: chmod +x Chronoscope_*.AppImage then run it. FUSE-free option: --appimage-extract-and-run. See native source/replacement record for covered shared libraries.\n')
         shutil.copytree(ROOT / 'frontend/dist/third-party', root / 'third-party')
         (root / 'SOURCE-ACCESS.txt').write_text('Exact application source and dependency sources with retained licenses/NOTICE and SHA256 manifests accompany these downloads on the same prerelease: chronoscope-source.zip and chronoscope-dependency-sources.tar.xz. MPL covered source is included. Application source includes patched GLib and frontend Knockout modification. Root MIT does not replace upstream/data/media licenses. See third-party/docs/DISTRIBUTION.md. Linux additionally requires its native source archive and replacement instructions.\n')
+        if target == 'windows-x86_64':
+            with (root / 'SOURCE-ACCESS.txt').open('a') as instructions:
+                instructions.write('Windows installer source, including NSIS/LZMA, plugins, graphics and the Tauri template, is supplied in chronoscope-windows-installer-sources.tar.xz with original licenses and pinned provenance.\n')
+            evidence['download_payload_coverage'] = download_inventory(root, packages[0].name, ROOT)
         if target == 'macos-arm64':
             # Write privately; compare actual archived bytes/types/modes/links
             # with the sealed pre-smoke inventory before exposing any output.

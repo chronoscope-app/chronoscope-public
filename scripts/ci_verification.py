@@ -18,6 +18,9 @@ def command(args):
 
 def identity():
     sdk = command(['xcrun','--sdk','macosx','--show-sdk-version']) if os.sys.platform=='darwin' else ''
+    if os.sys.platform == 'win32':
+        from windows_release import native_identity
+        sdk = json.dumps(native_identity(), sort_keys=True)
     return {'source':command(['git','rev-parse','HEAD']), 'platform':os.environ.get('PLATFORM',''),
             'rust':command(['rustc','-Vv']), 'node':command(['node','--version']),
             'python':os.sys.version.split()[0], 'sdk':sdk,

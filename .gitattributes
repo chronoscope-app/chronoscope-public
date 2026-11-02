@@ -1,3 +1,4 @@
 # Preserve byte-for-byte upstream source and unified-diff context lines.
 third_party/appimage-apprun/AppRun.c whitespace=-trailing-space
 third_party/appimage-apprun/long-path.patch whitespace=-trailing-space
+assets/licenses/windows-installer/*.txt -text whitespace=-trailing-space

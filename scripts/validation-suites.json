@@ -392,6 +392,7 @@
       "test_publication_cleanup.py",
       "test_package_distribution.py",
       "test_tester_packaging.py",
+      "test_windows_release.py",
       "test_validate_tester_download.py"
     ],
     "oracles": [

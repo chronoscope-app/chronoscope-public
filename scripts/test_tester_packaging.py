@@ -64,6 +64,9 @@ class WindowsInstallerStagingTests(unittest.TestCase):
         self.runs = self.start_patch(patch.object(tester.subprocess, 'run', side_effect=self.run_subprocess))
         self.queries = self.start_patch(patch.object(tester.subprocess, 'check_output', return_value='fixture evidence'))
         self.start_patch(patch.object(tester.hashlib, 'sha256', side_effect=self.digest))
+        self.start_patch(patch.object(tester, 'installer_inventory', return_value={'fixture': 'coverage tested separately'}))
+        self.start_patch(patch.object(tester, 'frontend_inventory', return_value={'fixture': 'coverage tested separately'}))
+        self.start_patch(patch.object(tester, 'download_inventory', return_value=[]))
 
     def start_patch(self, item):
         result = item.start()

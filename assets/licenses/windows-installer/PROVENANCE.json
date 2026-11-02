@@ -1,0 +1,114 @@
+{
+  "format": 1,
+  "tauri_cli_version": "2.12.4",
+  "reviewed_upstream": "tauri-cli-v2.12.4/crates/tauri-bundler/src/bundle/windows/nsis/mod.rs",
+  "nsis_binary": {
+    "url": "https://github.com/tauri-apps/binary-releases/releases/download/nsis-3.13/nsis-3.13.zip",
+    "bytes": 2363925,
+    "sha256": "ba63dffc4410ee89193e1cb5a41989991bd77c61068da17e3156d136b7b0b3d8",
+    "upstream_sha1": "DB14F8AF2EA346B786C6AE19343F61AAF5E09B8E"
+  },
+  "tauri_plugin_binary": {
+    "url": "https://github.com/tauri-apps/nsis-tauri-utils/releases/download/nsis_tauri_utils-v0.5.3/nsis_tauri_utils.dll",
+    "bytes": 34304,
+    "sha256": "5ba143b5db4a87d32d6e7802e033330aae56cbceabe0d1e3ba41948385ad4709",
+    "upstream_sha1": "75197FEE3C6A814FE035788D1C34EAD39349B860"
+  },
+  "sources": {
+    "nsis": {
+      "url": "https://codeload.github.com/nsis-dev/nsis/tar.gz/a4ba28e60bd9e7c271cd2bfc1558889ce3355653",
+      "sha256": "bf9ebdefc2b26850bc5da8f2f505cb34aa364dd8cf49dd49f93d532c94accb4a",
+      "bytes": 1850667,
+      "commit": "a4ba28e60bd9e7c271cd2bfc1558889ce3355653",
+      "license": "Zlib AND CPL-1.0 (LZMA compression)"
+    },
+    "nsis-tauri-utils": {
+      "url": "https://codeload.github.com/tauri-apps/nsis-tauri-utils/tar.gz/13d9edd27b69310e108d6fbd49f90992f8a05390",
+      "sha256": "9b277f7cdec4277b48d319c32e10b5dc4303e9efce8c3b44f1db77f86a8131c7",
+      "bytes": 20030,
+      "commit": "13d9edd27b69310e108d6fbd49f90992f8a05390",
+      "license": "MIT OR Apache-2.0"
+    },
+    "tauri": {
+      "url": "https://codeload.github.com/tauri-apps/tauri/tar.gz/993038c49185307dfc895ab7657d77ca0d5ed7c7",
+      "commit": "993038c49185307dfc895ab7657d77ca0d5ed7c7",
+      "sha256": "998b00e7d3fa510f40338e3eecb32d9af08e8974746a5f9488368c16c1d09f15",
+      "bytes": 15792659,
+      "license": "MIT OR Apache-2.0"
+    }
+  },
+  "retained_notices": {
+    "TAURI-LICENSE-MIT.txt": "1c1020fa10a6bf318717e82c911bcc54ebdfb9bb280460ae332bcb2f82f57fbe",
+    "NSIS-COPYING.txt": "388357c1215ff403c5ebde3a5ecd273e68f8b79a579996775245d1ee65442aba",
+    "TAURI-LICENSE-APACHE-2.0.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+  },
+  "payloads": {
+    "$PLUGINSDIR/System.dll": {
+      "sha256": [
+        "afe032f942e2ed0bf7494ec08ba813f5739fb522c640bde81d30ecaf9f894432"
+      ],
+      "source_group": "nsis-source"
+    },
+    "$PLUGINSDIR/nsDialogs.dll": {
+      "sha256": [
+        "9c76f4d53ceee2a471c936e0899688405e1009ce962d140e9acb49ed68d114cb"
+      ],
+      "source_group": "nsis-source"
+    },
+    "$PLUGINSDIR/StartMenu.dll": {
+      "sha256": [
+        "39870682e7d1c026cd2b33ca25591db28250dde17de7eb1feec404222d534ffc"
+      ],
+      "source_group": "nsis-source"
+    },
+    "$PLUGINSDIR/modern-wizard.bmp": {
+      "sha256": [
+        "f1dfb50efbd9dc69818175eadd0ca8c8f975ae6916f83523505e488d48f21e6a",
+        "c9af52dc2c1444a2ae53f3cca9282bb433af4ef4ed850c1133447b7ba731174c",
+        "c1cd4e5a3d2ebfdc477ca00b5b8c127df149df80cf089e851369db75c61cef4b",
+        "411961864a8edb7cc2ba384e702bbb787040ea47488d2cefc2ef2c6f0a55a832",
+        "2e138faec4410e66f0b4e3199badf019bc83c1fa13f4409e8719b6762ed908be",
+        "2079f7a3eba60e0d9ee827a7208aa052a71b384873b641de5e299aeb8e733109",
+        "34b4a33ada04c9919fed2028562042ca5ffa8918f45905f6c41c68850f58ff5a",
+        "b7a5b209189b77423be7e213444e30f2d6f79ba688fcf9c063b5618ebb625a51",
+        "076221b4527ff13c3e1557abbbd48b0cb8e5f7d724c6b9171c6aadadb80561dd",
+        "b0278ae60eddd3e03cdb37a873221df0656eeb4541b0190898de1ce8f0427a5e",
+        "498d402163d5d4578d8e76a22c97ab927cf31bf16f7125938cf03cc200c7a290",
+        "a7b2f12e01cbea88d4f645f797f2ca6107d76ae13cd1be6dc532b759bfe0d925",
+        "3ad2dc318056d0a2024af1804ea741146cfc18cc404649a44610cbf8b2056cf2"
+      ],
+      "source_group": "nsis-source",
+      "note": "Unmodified NSIS wizard artwork; zlib/libpng license in COPYING covers graphics too."
+    },
+    "$PLUGINSDIR/nsis_tauri_utils.dll": {
+      "sha256": [
+        "5ba143b5db4a87d32d6e7802e033330aae56cbceabe0d1e3ba41948385ad4709"
+      ],
+      "source_group": "tauri-plugin-source"
+    }
+  },
+  "source_groups": {
+    "nsis-source": {
+      "license": "Zlib; compression module CPL-1.0",
+      "source": "chronoscope-windows-installer-sources.tar.xz/nsis-source.tar.gz",
+      "notice": "assets/licenses/windows-installer/NSIS-COPYING.txt"
+    },
+    "tauri-plugin-source": {
+      "license": "MIT (selected from MIT OR Apache-2.0)",
+      "source": "chronoscope-windows-installer-sources.tar.xz/nsis-tauri-utils-source.tar.gz",
+      "notice": "assets/licenses/windows-installer/TAURI-LICENSE-MIT.txt"
+    },
+    "application-and-installer-source": {
+      "license": "Application MIT; dependency and installer licenses retained independently",
+      "source": "chronoscope-source.zip, chronoscope-dependency-sources.tar.xz, chronoscope-windows-installer-sources.tar.xz"
+    },
+    "retained-notices": {
+      "license": "Original upstream notices, not relicensed",
+      "source": "Matching application and registry source archives"
+    },
+    "terrain-source-and-data": {
+      "license": "Public-domain GMTED2010 and Natural Earth data",
+      "source": "assets/terrain/README.md, balanced.json, scripts/build_balanced_terrain.py and pinned assets/data-assets.json"
+    }
+  }
+}

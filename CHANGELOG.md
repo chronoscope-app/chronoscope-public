@@ -4,6 +4,10 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+## 0.16.15 — experimental Windows preview, 2026-11-02
+
+- Audit every Windows installer and embedded web file, including graphics, terrain, fonts and metadata; supply exact NSIS/LZMA, plugin and installer-template source with original notices.
+- Check native Windows prerequisites before compilation and include the actual MSVC/Windows SDK identity in verified-work reuse. Preserve optimized release settings and bounded dependency caches.
 - Add quiet toolbar clocks for local time, UTC and a remembered selectable time zone, displaying hours and minutes.
 - Fill spare vertical Time rail space with finer calendar labels, including hours between days, while preserving date endpoints and label clearance.
 - Make the flight, satellite, vessel, wildlife and hurricane demos easier to see with larger entities and stronger tracks in their opening scenes and saved views.

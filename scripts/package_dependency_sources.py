@@ -87,7 +87,7 @@ def collect(output):
             records.append(dict(ecosystem='npm', name=location.split('node_modules/')[-1],
                                 version=package['version'], license=package.get('license'),
                                 path=relative, url=url, sha256=digest, integrity=integrity,
-                                modifications='Knockout global lookup rewritten from eval to globalThis by application frontend/vite.config.ts; other sources unchanged'))
+                                modifications='Original registry archive; application frontend/vite.config.ts rewrites Cesium Knockout global lookup from eval to globalThis, and frontend/scripts/patches/terrain-picker.mjs applies the pinned @cesium/engine TerrainPicker lifecycle patch. Other registry sources unchanged.'))
         commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
         manifest = dict(format=1, application_commit=commit, components=records,
                         scope='All locked Cargo registry and frontend npm packages, including build/optional/platform extras; not a claim all are shipped. Native distro source is separate.')
@@ -96,7 +96,7 @@ def collect(output):
 
 Each .crate/.tgz is the original registry source archive, including its license/copyright/NOTICE files. SOURCE-ACCESS.json records exact versions, original public URLs and independently verified hashes. This archive deliberately includes optional/build/platform extras; only actual redistributed components create executable obligations.
 
-Application source, complete patched GLib source and the frontend Knockout transformation are in the matching chronoscope-source.zip. Extract .crate/.tgz using tar; retain upstream license and notice files. For locked builds use the exact Rust/Node versions and commands in application .github/workflows/build.yml, cargo build --locked and npm --prefix frontend ci. Selected AND obligations remain; use Apache-2.0 where DOMPurify and other packages offer Apache-2.0 OR MPL-2.0, MIT where MIT OR Apache-2.0. MPL-only and combined-license files remain under their upstream terms, with exact covered source provided here. No waiver of mandatory notices or source rights.
+Application source, complete patched GLib source, the frontend Knockout transformation and the pinned Cesium TerrainPicker patch are in the matching chronoscope-source.zip. Extract .crate/.tgz using tar; retain upstream license and notice files. For locked builds use the exact Rust/Node versions and commands in application .github/workflows/build.yml, cargo build --locked and npm --prefix frontend ci. Selected AND obligations remain; use Apache-2.0 where DOMPurify and other packages offer Apache-2.0 OR MPL-2.0, MIT where MIT OR Apache-2.0. MPL-only and combined-license files remain under their upstream terms, with exact covered source provided here. No waiver of mandatory notices or source rights.
 
 This supplies registry sources, not Linux distro sources; see separate native source record if Linux binaries are distributed. macOS system frameworks and Windows WebView2 runtime are OS/user-installed prerequisites, not included in these archives.
 ''')

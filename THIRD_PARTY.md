@@ -1,5 +1,11 @@
 # Third-party license and attribution index
 
+Windows installer components, including the non-executable wizard bitmap, retain
+the original NSIS and Tauri plugin licenses in
+[assets/licenses/windows-installer](assets/licenses/windows-installer/PROVENANCE.json).
+Exact NSIS/LZMA/plugin/template source accompanies Windows releases; see
+[Windows release input coverage](docs/WINDOWS-RELEASE-INPUTS.md).
+
 The root [MIT license](LICENSE) covers independent Chronoscope application code, not every asset, dataset, dependency or capture. Mixed licensing does not automatically relicense unrelated code or forbid public-source hosting. Preserve adjacent notices, attribution links and modification records. This index is technical provenance, not legal clearance.
 
 | Paths | Source / terms / handling |
