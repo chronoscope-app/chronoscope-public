@@ -115,6 +115,13 @@ def prepare(sdk, state, python_path, node_path, npm_path, allow_skew=False):
     wrapper = bindir / 'pkgconf'
     if bindir.is_symlink() or wrapper.is_symlink():
         raise ValueError('Refusing unsafe wrapper path')
+    # pkg-config's Rust crate checks native target and host overrides before
+    # PKG_CONFIG. Refuse conflicting inherited values rather than silently
+    # bypassing the reviewed wrapper.
+    for name in ('PKG_CONFIG_x86_64-unknown-linux-gnu',
+                 'PKG_CONFIG_x86_64_unknown_linux_gnu', 'HOST_PKG_CONFIG'):
+        if os.environ.get(name) not in (None, str(wrapper)):
+            raise ValueError('Conflicting pkg-config override: ' + name)
     # Avoid sed interpolation: shell substitution handles even unusual SDK paths.
     prefix = shlex.quote(str(sdk / 'usr'))
     wrapper.write_text('#!/usr/bin/env bash\nset -o pipefail\n'
@@ -133,6 +140,7 @@ def prepare(sdk, state, python_path, node_path, npm_path, allow_skew=False):
             link_path.unlink()
         link_path.symlink_to(target_path)
     exports = {'PATH': str(bindir) + ':' + os.environ.get('PATH', ''),
+               'PKG_CONFIG': str(wrapper),
                'PKG_CONFIG_PATH': env['PKG_CONFIG_PATH'],
                'LIBRARY_PATH': str(sdk / 'usr/lib/x86_64-linux-gnu'),
                'CARGO_TARGET_DIR': str(target), 'CARGO_BUILD_JOBS': str(jobs),

@@ -80,6 +80,75 @@ class LinuxReleaseToolsTest(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'requires Python 3.13'):
                     prepare.prepare(Path(d), Path(d) / 'state', executable, executable, executable)
 
+    @unittest.skipUnless(sys.platform.startswith('linux'), 'Linux pkg-config preparation')
+    def test_prepared_pkg_config_is_used_by_cargo_and_preserves_sdk_flags(self):
+        cargo = shutil.which('cargo')
+        cargo_home = Path(os.environ.get('CARGO_HOME', str(Path.home() / '.cargo')))
+        crates = list((cargo_home / 'registry/src').glob('*/pkg-config-0.3.34/Cargo.toml'))
+        if not cargo or not Path('/usr/bin/pkgconf').is_file() or not crates:
+            self.skipTest('Cargo, pkgconf and the locked pkg-config crate are required')
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d); checkout = root / 'checkout'; checkout.mkdir()
+            sdk = root / 'sdk'; pcdir = sdk / 'usr/lib/x86_64-linux-gnu/pkgconfig'
+            pcdir.mkdir(parents=True); (sdk / 'usr/share/pkgconfig').mkdir(parents=True)
+            (pcdir / 'chronoscope-probe.pc').write_text(
+                f'prefix={sdk}/usr\nlibdir=${{prefix}}/lib/x86_64-linux-gnu\n'
+                'includedir=${prefix}/include\nName: probe\nDescription: local fixture\n'
+                'Version: 1.0\nLibs: -L${libdir} -lchronoscope_probe\nCflags: -I${includedir}\n')
+            tool = root / 'tool'; tool.write_text('fixture')
+            def checked(args, env=None):
+                if args[0] == str(tool.resolve()):
+                    return '3.13' if '-c' in args else 'v22.23.4'
+                if args[0] == 'rustc': return 'rustc 1.98.0 (fixture)'
+                if args[0] == 'cargo': return 'cargo 1.98.0 (fixture)'
+                if args[0] == 'pkg-config': return '1.0'
+                if args[0] == 'dpkg-query': return '1.0-1'
+                raise AssertionError(args)
+            real_is_file = Path.is_file
+            def is_file(path):
+                text = str(path)
+                if text.startswith('/usr/lib/x86_64-linux-gnu/webkit2gtk-4.1/') or text.startswith('/usr/share/doc/'):
+                    return True
+                return real_is_file(path)
+            clean = {k: v for k, v in os.environ.items() if not k.startswith(('PKG_CONFIG', 'HOST_PKG_CONFIG', 'TARGET_PKG_CONFIG'))}
+            with mock.patch.dict(os.environ, clean, clear=True), \
+                 mock.patch.object(prepare, 'ROOT', checkout), \
+                 mock.patch.object(prepare, 'run_checked', side_effect=checked), \
+                 mock.patch.object(prepare, 'memory_available', return_value=10 * prepare.GIB), \
+                 mock.patch.object(Path, 'is_file', is_file):
+                exports, _ = prepare.prepare(sdk, root / 'state', tool, tool, tool)
+                wrapper = root / 'state/bin/pkgconf'
+                self.assertEqual(exports['PKG_CONFIG'], str(wrapper))
+                self.assertIn('export PKG_CONFIG=', (root / 'state/environment.sh').read_text())
+                env = {**os.environ, **exports, 'CARGO_TARGET_DIR': str(root / 'cargo-target'), 'EXPECTED_SDK': str(sdk),
+                       'PKG_CONFIG_ALLOW_SYSTEM_LIBS': '1', 'PKG_CONFIG_ALLOW_SYSTEM_CFLAGS': '1'}
+                value = subprocess.check_output([str(wrapper), '--variable=libdir', 'chronoscope-probe'], env=env, text=True).strip()
+                self.assertEqual(value, '/usr/lib/x86_64-linux-gnu')
+                flags = subprocess.check_output([str(wrapper), '--cflags', '--libs', 'chronoscope-probe'], env=env, text=True)
+                self.assertIn(f'-I{sdk}/usr/include', flags)
+                self.assertIn(f'-L{sdk}/usr/lib/x86_64-linux-gnu', flags)
+                project = root / 'probe'; (project / 'src').mkdir(parents=True)
+                (project / 'Cargo.toml').write_text('[package]\nname="probe"\nversion="0.1.0"\nedition="2021"\n'
+                    + '[build-dependencies]\npkg-config={path=' + json.dumps(str(crates[0].parent)) + '}\n')
+                (project / 'src/main.rs').write_text('fn main() {}\n')
+                (project / 'build.rs').write_text(r"""
+use std::path::PathBuf;
+fn main() {
+    assert_eq!(pkg_config::get_variable("chronoscope-probe", "libdir").unwrap(), "/usr/lib/x86_64-linux-gnu");
+    let sdk = PathBuf::from(std::env::var("EXPECTED_SDK").unwrap());
+    let lib = pkg_config::Config::new().cargo_metadata(false).probe("chronoscope-probe").unwrap();
+    assert!(lib.include_paths.contains(&sdk.join("usr/include")));
+    assert!(lib.link_paths.contains(&sdk.join("usr/lib/x86_64-linux-gnu")));
+}
+""")
+                subprocess.run([cargo, 'build', '--offline', '--manifest-path', str(project / 'Cargo.toml')],
+                               env=env, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                for name in ('PKG_CONFIG_x86_64-unknown-linux-gnu',
+                             'PKG_CONFIG_x86_64_unknown_linux_gnu', 'HOST_PKG_CONFIG'):
+                    with self.subTest(override=name), mock.patch.dict(os.environ, {name: '/usr/bin/pkg-config'}):
+                        with self.assertRaisesRegex(ValueError, 'Conflicting pkg-config override'):
+                            prepare.prepare(sdk, root / 'state', tool, tool, tool)
+
     def test_image_header_offset_and_magic(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / 'example'
