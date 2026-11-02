@@ -1,0 +1,16 @@
+{
+  "source_next_commit": "10c60fa44e7e338cf84f5d8848a944f1bd22c7eb",
+  "public_parent": "4a4f66baeb240ec30e0cedd32c1cc9dcc6765aae",
+  "version": "0.16.15",
+  "scope": "Correct the diagnostic-upload contract test to admit the two explicitly selected Windows evidence JSON files. No application, dependency, resource, build-profile or workflow change.",
+  "prior_run": "41530245975",
+  "prior_run_scope": "Native prerequisites, core Clippy, Rust tests and frontend unit checks passed; overall source verification failed at the old packaging-test allowlist and is not reused as successful verification. No package was published.",
+  "local_validation": {
+    "all_packaging_suites": "passed",
+    "test_count": 118,
+    "suite_count": 5,
+    "actionlint": "passed",
+    "repository_asset_budget": "passed"
+  },
+  "reuse": "Registry source archives still match every current package input. New source SHA requires fresh hosted verification; existing bounded dependency caches are retained."
+}

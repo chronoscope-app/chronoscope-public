@@ -184,6 +184,8 @@ class PublicationCleanup(unittest.TestCase):
         expected = ['            target/cargo-timings/*.html'] + ['            ${{ runner.temp }}/'+group+'-validation/'+suffix
                     for group in ['source', 'contracts']
                     for suffix in ['report.json', 'runs/*/run.json', 'runs/*/logs/*.log']]
+        expected += ['            ${{ runner.temp }}/windows-preflight.json',
+                     '            ${{ runner.temp }}/windows-frontend-inventory.json']
         self.assertEqual(paths.splitlines(), expected)
         self.assertIn('          retention-days: 1\n', step)
 
