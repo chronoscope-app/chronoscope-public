@@ -3,12 +3,44 @@
 import json
 from pathlib import Path
 import tempfile
+import sys
 import unittest
 from unittest.mock import patch
 import local_release as release
 
 
 class LocalReleaseTests(unittest.TestCase):
+    def test_fresh_checkout_builds_notice_resources_before_desktop_lint(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base=Path(temporary);root=base/'checkout';root.mkdir()
+            (root/'frontend').mkdir();(root/'frontend/package-lock.json').write_text('{}')
+            (root/'src-tauri').mkdir();(root/'src-tauri/tauri.conf.json').write_text('{"version":"0.16.14"}')
+            source='a'*40;seen=[]
+            def execute(command,cwd,env,log,timeout):
+                seen.append(command);log.write_text('passed')
+                if command[:3]==['npm','--prefix','frontend'] and command[3]=='ci':
+                    (root/'frontend/node_modules').mkdir()
+                elif command[:3]==['npm','--prefix','frontend']:
+                    (root/'frontend/dist/third-party').mkdir(parents=True)
+                    (root/'frontend/dist/index.html').write_text('built')
+                    (root/'frontend/dist/third-party/LICENSE').write_text('notice')
+                if command[:2]==['cargo','clippy']:
+                    self.assertTrue((root/'frontend/dist/third-party/LICENSE').is_file(),
+                                    'Tauri requires notice resources before desktop lint')
+                if '--report' in command:
+                    Path(command[command.index('--report')+1]).write_text('{"passed":true}')
+                return {'exit_code':0,'elapsed_s':0,'timed_out':False}
+            argv=['local_release.py','--target','macos-arm64','--expected-sha',source,
+                  '--output',str(base/'output'),'--verify-only']
+            with patch.object(release,'ROOT',root),patch.object(sys,'argv',argv), \
+                    patch.object(release,'preflight',return_value={}), \
+                    patch.object(release,'capture',side_effect=lambda cmd,env:source if cmd[-1]=='HEAD' else ''), \
+                    patch.object(release.build_portable,'configured_flags_required',return_value=False), \
+                    patch.object(release,'run_command',side_effect=execute):
+                self.assertEqual(release.main(),0)
+            self.assertTrue(any(command[:2]==['cargo','clippy'] for command in seen))
+            self.assertTrue(json.loads((root/'.qa/local-release/macos-arm64/state.json').read_text())['passed'])
+
     def test_reuse_requires_exact_source_tools_and_untampered_outputs(self):
         with tempfile.TemporaryDirectory() as temporary:
             p=Path(temporary)/'source.json';p.write_text('verified')

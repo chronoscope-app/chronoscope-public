@@ -209,15 +209,17 @@ def main():
     source_report = evidence/'source-report.json'; contracts = evidence/'contracts-report.json'
     phase('source-checks', [sys.executable, '-B', 'scripts/source_checks.py', '--packaging', '--report', str(source_report)],
           timeout=7200, outputs=[source_report], can_reuse=True)
-    phase('desktop-clippy', ['cargo', 'clippy', '--locked', '-p', 'chronoscope-desktop', '--', '-D', 'warnings'], can_reuse=True)
-    phase('cli-release', ['cargo', 'build', '--locked', '--release', '--timings', '-p', 'chronoscope', '--bin', 'chronoscope'])
-    cli = ROOT/'target/release'/('chronoscope.exe' if args.target.startswith('windows') else 'chronoscope')
-    phase('contracts', [sys.executable, '-B', 'scripts/source_checks.py', '--contracts-only', '--cli', str(cli), '--report', str(contracts)], outputs=[contracts])
+    # Tauri's build script validates physical notice resources even during
+    # desktop lint. Fresh checkouts need the frontend before native compilation.
     dist = ROOT/'frontend/dist'
     try: frontend_ok = old.get('frontend') == ci_verification.hashes(dist)
     except (OSError, ValueError): frontend_ok = False
     if not frontend_ok: phase('frontend-build', ['npm', '--prefix', 'frontend', 'run', 'build', '--', '--configLoader', 'runner'])
     state['frontend'] = ci_verification.hashes(dist); save()
+    phase('desktop-clippy', ['cargo', 'clippy', '--locked', '-p', 'chronoscope-desktop', '--', '-D', 'warnings'], can_reuse=True)
+    phase('cli-release', ['cargo', 'build', '--locked', '--release', '--timings', '-p', 'chronoscope', '--bin', 'chronoscope'])
+    cli = ROOT/'target/release'/('chronoscope.exe' if args.target.startswith('windows') else 'chronoscope')
+    phase('contracts', [sys.executable, '-B', 'scripts/source_checks.py', '--contracts-only', '--cli', str(cli), '--report', str(contracts)], outputs=[contracts])
     verified = evidence/'verified'; environment['CHRONOSCOPE_VERIFICATION_DIR'] = str(verified)
     phase('seal', [sys.executable, 'scripts/ci_verification.py', 'seal', '--source-report', str(source_report), '--contracts-report', str(contracts)])
     if args.verify_only:
