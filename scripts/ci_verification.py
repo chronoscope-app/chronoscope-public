@@ -62,9 +62,10 @@ def extract(archive,destination):
         if len(entries)>30000 or sum(i.file_size for i in entries)>MAX_BYTES: raise ValueError('Verification archive too large')
         names=set()
         for i in entries:
-            p=PurePosixPath(i.filename)
+            raw=i.orig_filename
+            p=PurePosixPath(raw)
             key=p.as_posix().rstrip('/').casefold()
-            if not key or any(ord(c)<32 for c in i.filename) or key in names or p.as_posix()!=i.filename.rstrip('/') or p.is_absolute() or '..' in p.parts or '\\' in i.filename or ':' in i.filename or i.filename in names or (i.external_attr>>16)&0o170000==0o120000:
+            if not key or any(ord(c)<32 for c in raw) or key in names or p.as_posix()!=raw.rstrip('/') or p.is_absolute() or '..' in p.parts or '\\' in raw or ':' in raw or (i.external_attr>>16)&0o170000==0o120000:
                 raise ValueError('Unsafe verification archive')
             names.add(key)
         z.extractall(destination)

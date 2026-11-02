@@ -46,7 +46,10 @@ class BuildAccelerationTests(unittest.TestCase):
             with self.subTest(names=names), tempfile.TemporaryDirectory() as temp:
                 archive=Path(temp)/'input.zip'
                 with zipfile.ZipFile(archive,'w') as z:
-                    for name in names:z.writestr(name,'x')
+                    for name in names:
+                        entry=zipfile.ZipInfo(name)
+                        entry.filename=name  # Keep malicious wire bytes; Windows constructors normalize slashes.
+                        z.writestr(entry,'x')
                 with self.assertRaises(ValueError): verification.extract(archive,Path(temp)/'out')
         with tempfile.TemporaryDirectory() as temp:
             archive=Path(temp)/'input.zip'
@@ -55,6 +58,20 @@ class BuildAccelerationTests(unittest.TestCase):
             with self.assertRaises(ValueError): verification.extract(archive,Path(temp)/'out')
             with zipfile.ZipFile(archive,'w') as z:z.writestr('index.html','x'*10)
             with patch.object(verification,'MAX_BYTES',9),self.assertRaises(ValueError):verification.extract(archive,Path(temp)/'out')
+
+    def test_windows_normalized_zip_names_still_check_original_header(self):
+        entry=zipfile.ZipInfo('unsafe\\name')
+        entry.filename='unsafe/name'  # Windows reader normalization; original header stays unsafe.
+        with patch.object(verification.zipfile,'ZipFile') as reader:
+            opened=reader.return_value.__enter__.return_value
+            opened.infolist.return_value=[entry]
+            with self.assertRaises(ValueError):verification.extract(Path('unused.zip'),Path('unused'))
+            opened.extractall.assert_not_called()
+        with tempfile.TemporaryDirectory() as temp:
+            archive=Path(temp)/'safe.zip';out=Path(temp)/'out'
+            with zipfile.ZipFile(archive,'w') as z:z.writestr('frontend/index.html','built')
+            verification.extract(archive,out)
+            self.assertEqual((out/'frontend/index.html').read_text(),'built')
 
     def test_seal_requires_every_source_and_contract_check(self):
         from source_checks import check_plan
