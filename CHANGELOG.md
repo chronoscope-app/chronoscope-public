@@ -4,6 +4,8 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+- Let Intel UHD, HD and Iris GPUs use the full rendering and smooth-playback paths when resources permit. Keep adaptive memory/performance limits and conservative software-renderer budgets.
+
 ## 0.16.13 — experimental preview, 2026-11-02
 
 - Save AI service keys in the operating system credential store across app sessions, reconnect configured services on startup, and offer Forget to remove a saved key.

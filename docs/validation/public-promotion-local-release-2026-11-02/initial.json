@@ -1,0 +1,37 @@
+{
+  "source_next_commit": "b5f3fa5a7590b50f7bdde99b33beecdc1ad5694f",
+  "public_parent": "7c174f337fbccb868e12fbac39bd385758374421",
+  "source_files": 3502,
+  "preserved_public_records": 35,
+  "source_parity": "Exact Next blob bytes and file modes; independent Public history retained",
+  "authorization": "Human requested promotion, three-computer pipeline improvements and release publication; no hosted runners authorized",
+  "source_only": true,
+  "secret_scan": {
+    "canary_detected": true,
+    "reviewed_metadata_findings": [
+      {
+        "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 35,
+        "classification": "unchanged already-public checksum/commit identifier"
+      },
+      {
+        "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 50,
+        "classification": "unchanged already-public checksum/commit identifier"
+      },
+      {
+        "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 51,
+        "classification": "unchanged already-public checksum/commit identifier"
+      },
+      {
+        "path": "docs/validation/release-0.16.9-publication/SOURCE-MANIFEST-RELEASE.json",
+        "line": 3,
+        "classification": "unchanged already-public checksum/commit identifier"
+      }
+    ],
+    "unreviewed_findings": 0,
+    "allowlist_changed": false
+  },
+  "validation": "Latest app source previously passed local Mac/Linux full gates and packaged checks at cc82fb40; b5f3fa5a adds documentation only. Four Windows fixture permission failures are being repaired before new release acceptance."
+}

@@ -55,18 +55,52 @@ test("pixels and geometry budgets decrease together without changing caller data
   }
   assert(Number.isFinite(resolutionFor(0, 0, NaN, RESOURCE_LIMITS[0])));
 });
-test("Intel UHD starts balanced with ample RAM; expensive geometry work also works with masked GPU names", () => {
-  const g = new ResourceGovernor(); g.setGraphicsRenderer("Mesa Intel(R) UHD Graphics 620");
-  g.update(ram(16, 10), null, 0); assert.equal(g.level, 1);
-  assert.equal(g.reason, "integrated-or-software-graphics");
-  g.update(ram(16, 10), null, 1000, 300); assert.equal(g.level, 1);
-  g.update(ram(16, 10), null, 6000, 300); assert.equal(g.level, 1);
-  g.update(ram(16, 10), null, 11000, 300); assert.equal(g.level, 2);
-  assert.equal(g.reason, "expensive-geometry-work");
-  const masked = new ResourceGovernor(); masked.setGraphicsRenderer("Apple GPU");
-  masked.update(ram(16, 10), null, 0, 1000); assert.equal(masked.level, 0);
-  const arc = new ResourceGovernor(); arc.setGraphicsRenderer("Intel Arc A770");
-  arc.update(ram(16, 10), null, 0); assert.equal(arc.level, 0);
+test("hardware GPU names share full budgets and recover after measured pressure", () => {
+  const renderers = [
+    "Mesa Intel(R) UHD Graphics 620", "Intel(R) HD Graphics 630",
+    "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics, OpenGL)", "Intel Iris Pro",
+    "Intel Arc A770", "Apple GPU", "AMD Radeon RX 6600", "NVIDIA GeForce RTX 3060",
+  ];
+  for (const renderer of renderers) {
+    const g = new ResourceGovernor(), healthy = ram(16, 10);
+    g.setGraphicsRenderer(renderer);
+    assert.equal(g.limits.name, "full", renderer);
+    g.update(healthy, 5, 0);
+    assert.equal(g.reason, "healthy", renderer);
+    assert.equal(g.limits.maxFps, undefined, renderer);
+    assert.equal(g.limits.maxPoints, 100000, renderer);
+    for (const now of [5000, 10000, 15000]) g.update(healthy, 60, now);
+    assert.equal(g.limits.name, "balanced", renderer);
+    assert.equal(g.reason, "sustained-render-cost", renderer);
+    g.update(healthy, 5, 20000);
+    g.update(healthy, 5, 65000);
+    assert.equal(g.limits.name, "full", renderer);
+    g.update(ram(16, .2), 5, 70000);
+    assert.equal(g.limits.name, "critical", renderer);
+  }
+});
+test("software rasterizers retain their balanced floor after healthy recovery", () => {
+  for (const renderer of ["llvmpipe (LLVM 18.1.8)", "ANGLE (Google, Vulkan SwiftShader Device)", "Software Rasterizer"]) {
+    const g = new ResourceGovernor();
+    g.setGraphicsRenderer(renderer);
+    g.update(ram(16, 10), 5, 0);
+    assert.equal(g.limits.name, "balanced", renderer);
+    assert.equal(g.reason, "software-graphics", renderer);
+    g.update(ram(16, 1.2), 5, 5000);
+    assert.equal(g.limits.name, "reduced", renderer);
+    for (const now of [10000, 55000, 100000]) g.update(ram(16, 10), 5, now);
+    assert.equal(g.limits.name, "balanced", renderer);
+    assert.equal(g.reason, "software-graphics", renderer);
+  }
+});
+test("expensive geometry work is measured for Intel and masked GPU names", () => {
+  for (const renderer of ["Mesa Intel(R) UHD Graphics 620", "Apple GPU"]) {
+    const g = new ResourceGovernor(); g.setGraphicsRenderer(renderer);
+    g.update(ram(16, 10), null, 0, 300); assert.equal(g.level, 0);
+    g.update(ram(16, 10), null, 5000, 300); assert.equal(g.level, 0);
+    g.update(ram(16, 10), null, 10000, 300); assert.equal(g.level, 1);
+    assert.equal(g.reason, "expensive-geometry-work");
+  }
 });
 
 test("transient geometry spikes do not ratchet quality down and healthy gaps reset pressure", () => {

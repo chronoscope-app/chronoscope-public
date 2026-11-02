@@ -55,10 +55,12 @@ export class ResourceGovernor {
   get limits() { return RESOURCE_LIMITS[this.level]; }
   setGraphicsRenderer(renderer: string) {
     this.graphicsRenderer = renderer;
-    this.graphicsFloor = /intel.*(?:uhd|\bhd\b|iris)|(?:uhd|iris).*intel|llvmpipe|swiftshader|software.*rasterizer/i.test(renderer) ? 1 : 0;
+    // Hardware GPUs share the adaptive pressure checks regardless of vendor.
+    // Only software rasterizers need a conservative graphics floor.
+    this.graphicsFloor = /llvmpipe|swiftshader|software.*rasterizer/i.test(renderer) ? 1 : 0;
     if (this.level < this.graphicsFloor) {
       this.level = this.graphicsFloor;
-      this.reason = "integrated-or-software-graphics";
+      this.reason = "software-graphics";
       this.changes++;
     }
   }
@@ -69,7 +71,7 @@ export class ResourceGovernor {
     const memoryFloor = valid ? memory.total_bytes <= 4.5 * GiB ? 2 : memory.total_bytes <= 8.5 * GiB ? 1 : 0
       : this.sample ? this.sample.total_bytes <= 4.5 * GiB ? 2 : this.sample.total_bytes <= 8.5 * GiB ? 1 : 0 : 0;
     const floor = Math.max(memoryFloor, this.graphicsFloor);
-    let demand = floor, reason = memoryFloor ? "system-memory-capacity" : this.graphicsFloor ? "integrated-or-software-graphics" : "healthy";
+    let demand = floor, reason = memoryFloor ? "system-memory-capacity" : this.graphicsFloor ? "software-graphics" : "healthy";
     if (valid) {
       const available = memory.available_bytes, ratio = available / memory.total_bytes;
       if (available < 384 * MiB || ratio < .06) { demand = 3; reason = "critical-memory-availability"; }
