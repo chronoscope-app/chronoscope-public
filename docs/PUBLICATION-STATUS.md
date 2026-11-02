@@ -4,11 +4,17 @@
 
 ## Included source and limitations
 
-- Chronoscope 0.16.14 main-branch source, current sample datasets, license/NOTICE texts, full maintained GLib vendor source, and the selected 16 README screenshots and their credits. Published desktop packages are the [0.16.14 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.14). Application names, protocols and commands remain Chronoscope.
+- Chronoscope 0.16.15 main-branch source, current sample datasets, license/NOTICE texts, full maintained GLib vendor source, and the selected 16 README screenshots and their credits. Windows uses the [0.16.15 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.15); Mac and Linux retain the [0.16.14 previews](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.14). Application names, protocols and commands remain Chronoscope.
 - Privacy/connections guidance, guided issue forms, local verification instructions and release/distribution gates. Canonical project links target this repository.
 - Current media replacements and provenance are described in [THIRD_PARTY.md](../THIRD_PARTY.md) and the [media ledger](MEDIA-RIGHTS.json). Historical ledger rows describe retired objects, not files or Git objects imported into this repository. Public vessel and wildlife identifiers are credited published data, not a claim of anonymized human tracks.
 - The maintained [GLib security backport](../vendor/glib/BACKPORT.md) retains complete source, original licenses and its exact patch record. Version-based alerts may still flag the unchanged upstream crate version; do not dismiss alerts or infer runtime clearance from static checks.
 - Older validation documents and changelog entries retain dated measurements and source identifiers as historical context. They are not a claim that old commits, artifacts or private audit evidence can be retrieved here, or that the new snapshot has been natively rebuilt or tested on every platform.
+
+## 0.16.15 hosted Windows experimental preview — 2026-11-02
+
+The owner authorized Windows-only GitHub-hosted build and exact-package validation for [0.16.15](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.15). Completed Next work and packaging fixes were promoted before freezing Public `1895b72a1e3a2b71bdf2b62b5f49551dc0e126f9`. Local packaging-input, source/license, workflow, asset and security checks preceded the real build. Native prerequisites were checked on Windows before compilation. The first correctly frozen run exposed a diagnostic-upload contract test; its repaired replacement reran verification rather than reusing a failed or different-source result. An earlier mistaken dispatch was stopped by the source guard before checkout or compilation. [Evidence and limitations](validation/release-0.16.15-publication/README.md).
+
+Every physical installer/wrapper file and embedded web file is inventoried, including non-executable graphics, fonts, metadata and terrain. Matching application, locked registry and original installer sources/notices accompany the package. All release assets passed complete anonymous download/hash verification. Existing caches and optimized release settings were retained; reuse is scoped to matching inputs. No Mac/Linux runner or new Mac/Linux package was created, and historical releases, tags and assets are preserved. Windows remains unsigned and requires WebView2; hosted engine/MCP checks do not establish manual installer, visual interaction or physical-device acceptance.
 
 ## 0.16.14 local experimental preview — 2026-11-02
 
