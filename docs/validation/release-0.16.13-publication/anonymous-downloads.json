@@ -1,0 +1,158 @@
+{
+  "passed": true,
+  "source_commit": "ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf",
+  "release": "https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.13",
+  "release_id": 431555906,
+  "release_access_anonymous": true,
+  "authorization_header_sent": false,
+  "tag_matches_built_source": true,
+  "assets": [
+    {
+      "name": "HOSTED-VALIDATION-macos-arm64.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/HOSTED-VALIDATION-macos-arm64.json",
+      "sha256": "3f825799946a5929c1048af34170a35f8a3daf33f6fe9a1ddc58ed4d49a7015d",
+      "bytes": 9312,
+      "matches": true
+    },
+    {
+      "name": "HOSTED-VALIDATION-windows-x86_64.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/HOSTED-VALIDATION-windows-x86_64.json",
+      "sha256": "43d0367c9d58cd6da7da50baf6b83d0a8ef09eb77702286a0fa619f362598b44",
+      "bytes": 204684,
+      "matches": true
+    },
+    {
+      "name": "LOCAL-VERIFICATION.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/LOCAL-VERIFICATION.json",
+      "sha256": "cccb09d12952647f0ae16c33bdd77c46c93c0f9a40d51dc33041f6b8dfd53499",
+      "bytes": 1629,
+      "matches": true
+    },
+    {
+      "name": "RELEASE-MANIFEST.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/RELEASE-MANIFEST.json",
+      "sha256": "025eeacb92aca4d058c6daae02edba723614d3a305dc09322ee0e3f233e750b4",
+      "bytes": 4731,
+      "matches": true
+    },
+    {
+      "name": "SECURITY-REVIEW.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/SECURITY-REVIEW.json",
+      "sha256": "d077c160a91e96e39f0d4625751342d17add89f423718d4d104044db23bffeb0",
+      "bytes": 1215,
+      "matches": true
+    },
+    {
+      "name": "SHA256SUMS-macos-arm64.txt",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/SHA256SUMS-macos-arm64.txt",
+      "sha256": "8154cae01f2ac8e10bc1566a37e5d0c27144b68ea95f16a6f78f2b4ae2b6cb3f",
+      "bytes": 191,
+      "matches": true
+    },
+    {
+      "name": "SHA256SUMS-windows-x86_64.txt",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/SHA256SUMS-windows-x86_64.txt",
+      "sha256": "5dab9eb0066817f9ea8e63131bcddbfa047272a9510a6d32466b6dc7152394d7",
+      "bytes": 196,
+      "matches": true
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/SHA256SUMS.txt",
+      "sha256": "61268fcf4a9b35ff18b298c57c75509e69e7fb52b5143232294e80a8284b3086",
+      "bytes": 1889,
+      "matches": true
+    },
+    {
+      "name": "SOURCE-CHECKS-macos-arm64.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/SOURCE-CHECKS-macos-arm64.json",
+      "sha256": "7d9e27ade8170d9c3c33a6d7acdb5593e415f442acc6cd12dce90f7f2a352c43",
+      "bytes": 1884,
+      "matches": true
+    },
+    {
+      "name": "SOURCE-CHECKS-windows-x86_64.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/SOURCE-CHECKS-windows-x86_64.json",
+      "sha256": "cf1f30ac78bf02d25555734b873e8cbcbed4aa5ee085127417997a729f68cfd2",
+      "bytes": 1886,
+      "matches": true
+    },
+    {
+      "name": "SOURCE-MANIFEST-RELEASE.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/SOURCE-MANIFEST-RELEASE.json",
+      "sha256": "54f6939cbc265e0456ed2c6639c1953c8fa8f6ffba3590afec105bf108302232",
+      "bytes": 960,
+      "matches": true
+    },
+    {
+      "name": "SOURCE-PARITY.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/SOURCE-PARITY.json",
+      "sha256": "b1a182cc97e8c0c49cf03223a67193427a50d055aee97f7358bba33dba8c1538",
+      "bytes": 262,
+      "matches": true
+    },
+    {
+      "name": "SOURCE-SHA256SUMS.txt",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/SOURCE-SHA256SUMS.txt",
+      "sha256": "0837dad17b97a28840a14f01fba052910a7599eabbc66d96be97bd5feef6a32a",
+      "bytes": 379,
+      "matches": true
+    },
+    {
+      "name": "VALIDATION-macos-arm64.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/VALIDATION-macos-arm64.json",
+      "sha256": "9c66d836bb5a13927d75cbb61d3a484874517f8e682dff83c324759c90161eca",
+      "bytes": 6061,
+      "matches": true
+    },
+    {
+      "name": "VALIDATION-windows-x86_64.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/VALIDATION-windows-x86_64.json",
+      "sha256": "81bb60911dd7eec61a75104810c8e4b356d47b51ed454187f4c5fedb75e80ac1",
+      "bytes": 24301,
+      "matches": true
+    },
+    {
+      "name": "VERIFICATION-REUSE-CHECK.json",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/VERIFICATION-REUSE-CHECK.json",
+      "sha256": "1d71368b71af48d764683d6a48bddc2d2187b48cf534715697c5a39f0b18f4b9",
+      "bytes": 522,
+      "matches": true
+    },
+    {
+      "name": "chronoscope-dependency-sources.tar.xz",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/chronoscope-dependency-sources.tar.xz",
+      "sha256": "4b572e1effa6256cf257522c25423a578418dd12fc6cba7ea4cd204e2455fc28",
+      "bytes": 448147228,
+      "matches": true
+    },
+    {
+      "name": "chronoscope-licenses.zip",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/chronoscope-licenses.zip",
+      "sha256": "5c7c4def552faac0d359100f469eb85f7224f879b61e54d6f96c064f48b11c99",
+      "bytes": 3523931,
+      "matches": true
+    },
+    {
+      "name": "chronoscope-macos-arm64.tar.xz",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/chronoscope-macos-arm64.tar.xz",
+      "sha256": "b1bc59b2abdc5970f2b58b3cfb5c41d159bd26cda4687e8354c79ff2e61b6abe",
+      "bytes": 123943660,
+      "matches": true
+    },
+    {
+      "name": "chronoscope-source.zip",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/chronoscope-source.zip",
+      "sha256": "feb922a30cc1c2817a936d0f7c714eb6b649a305e9ee80881211d8b1f24ea502",
+      "bytes": 79501143,
+      "matches": true
+    },
+    {
+      "name": "chronoscope-windows-x86_64.zip",
+      "url": "https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.13/chronoscope-windows-x86_64.zip",
+      "sha256": "73199ca248db74fcff2c424dbd390a4be4ed3b35aaba0afab8fcfd43305bb3e2",
+      "bytes": 129985165,
+      "matches": true
+    }
+  ]
+}

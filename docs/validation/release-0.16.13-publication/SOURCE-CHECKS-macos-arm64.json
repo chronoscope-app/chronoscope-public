@@ -1,0 +1,96 @@
+{
+  "source_commit": "ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf",
+  "platform": "macos-arm64",
+  "run_id": 41453441984,
+  "all_source_checks_passed": true,
+  "clean_source": true,
+  "rust_passed": 522,
+  "rust_ignored": 2,
+  "checks": [
+    {
+      "name": "test_validation_runner",
+      "exit_code": 0,
+      "elapsed_s": 3.756
+    },
+    {
+      "name": "test_guarded_run",
+      "exit_code": 0,
+      "elapsed_s": 2.969
+    },
+    {
+      "name": "test_ci_build",
+      "exit_code": 0,
+      "elapsed_s": 0.234
+    },
+    {
+      "name": "test_data_assets",
+      "exit_code": 0,
+      "elapsed_s": 0.178
+    },
+    {
+      "name": "repository-asset-budget",
+      "exit_code": 0,
+      "elapsed_s": 0.151
+    },
+    {
+      "name": "pinned-build-data",
+      "exit_code": 0,
+      "elapsed_s": 1.342
+    },
+    {
+      "name": "rust-format",
+      "exit_code": 0,
+      "elapsed_s": 1.333
+    },
+    {
+      "name": "test_glib_backport",
+      "exit_code": 0,
+      "elapsed_s": 2.28
+    },
+    {
+      "name": "test_workarounds",
+      "exit_code": 0,
+      "elapsed_s": 0.129
+    },
+    {
+      "name": "test_release_preflight",
+      "exit_code": 0,
+      "elapsed_s": 0.135
+    },
+    {
+      "name": "core-clippy",
+      "exit_code": 0,
+      "elapsed_s": 122.096
+    },
+    {
+      "name": "rust-tests",
+      "exit_code": 0,
+      "elapsed_s": 594.985
+    },
+    {
+      "name": "frontend-unit-tests",
+      "exit_code": 0,
+      "elapsed_s": 27.388
+    },
+    {
+      "name": "test_publication_cleanup",
+      "exit_code": 0,
+      "elapsed_s": 0.725
+    },
+    {
+      "name": "test_package_distribution",
+      "exit_code": 0,
+      "elapsed_s": 3.171
+    },
+    {
+      "name": "test_tester_packaging",
+      "exit_code": 0,
+      "elapsed_s": 0.743
+    },
+    {
+      "name": "test_validate_tester_download",
+      "exit_code": 0,
+      "elapsed_s": 0.356
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+9c66d836bb5a13927d75cbb61d3a484874517f8e682dff83c324759c90161eca  VALIDATION-macos-arm64.json
+b1bc59b2abdc5970f2b58b3cfb5c41d159bd26cda4687e8354c79ff2e61b6abe  chronoscope-macos-arm64.tar.xz

@@ -1,0 +1,52 @@
+{
+  "optimized_macos_build": {
+    "version": "0.16.13",
+    "passed": true,
+    "installed_latest": true,
+    "source_next_commit": "84c2c5bcb46c9d9929c3b7032c68ba64701b3b11",
+    "later_changes_only_ci_docs_and_cfg_test_modules": [
+      ".github/workflows/build.yml",
+      "docs/maintenance/RELEASE-PROCESS.md",
+      "scripts/ci_verification.py",
+      "scripts/test_ci_build.py",
+      "scripts/test_guarded_run.py",
+      "scripts/test_publication_cleanup.py",
+      "src/engine/read_snapshot_tests.rs",
+      "src/engine/view_identity_tests.rs"
+    ]
+  },
+  "full_local_source_gate": {
+    "passed": true,
+    "rust_passed": 522,
+    "rust_optional_ignored": 2,
+    "frontend_passed": 208,
+    "frontend_skipped": 1,
+    "four_packaging_suites_passed": true
+  },
+  "subsequent_focused_checks": {
+    "parallel_core_tests_passed": 81,
+    "parallel_core_optional_ignored": 1,
+    "threads": 4,
+    "core_all_target_clippy": "passed",
+    "guard_tests_each_local_and_hosted_context": 16,
+    "ci_build_regressions": 7,
+    "publication_regressions": 13,
+    "actionlint": "1.7.12 both workflows passed",
+    "exact_workflow_tauri_invocation": "Verified frontend hook executed; fake Cargo runner received --locked and no Tauri config; compilation deliberately prevented",
+    "full_bundled_demo_edit_save_matrix": {
+      "passed": true,
+      "tests": 1,
+      "elapsed_seconds": 38.7
+    }
+  },
+  "release_optimization": {
+    "lto": "thin",
+    "codegen_units": 1,
+    "unchanged": true
+  },
+  "toolchain": {
+    "rust": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "node": "v24.22.1",
+    "python": "Python 3.12.14"
+  }
+}

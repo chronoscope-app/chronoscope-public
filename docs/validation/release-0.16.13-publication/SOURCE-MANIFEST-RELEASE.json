@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "application_commit": "ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf",
+  "version": "0.16.13",
+  "source_files": 3515,
+  "locked_cargo_archives": 859,
+  "locked_npm_archives": 147,
+  "every_locked_registry_source_verified": true,
+  "notice_files": 1581,
+  "notice_manifest_sha256": "0659f1644721935e3847d2ccdefa487423424087167715ded34e0fa123b34aba",
+  "notice_archive_matches_selected_source_and_both_native_packages": true,
+  "archives": [
+    {
+      "name": "chronoscope-source.zip",
+      "sha256": "feb922a30cc1c2817a936d0f7c714eb6b649a305e9ee80881211d8b1f24ea502",
+      "bytes": 79501143
+    },
+    {
+      "name": "chronoscope-dependency-sources.tar.xz",
+      "sha256": "4b572e1effa6256cf257522c25423a578418dd12fc6cba7ea4cd204e2455fc28",
+      "bytes": 448147228
+    },
+    {
+      "name": "chronoscope-licenses.zip",
+      "sha256": "5c7c4def552faac0d359100f469eb85f7224f879b61e54d6f96c064f48b11c99",
+      "bytes": 3523931
+    }
+  ]
+}

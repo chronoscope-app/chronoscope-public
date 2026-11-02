@@ -1,0 +1,154 @@
+{
+  "artifact": {
+    "actions_digest_verified": true,
+    "actions_zip_sha256": "8650170f52509b8fa5572f46e23bb98dc41609cfbd201c0927cd10b3f48d5964",
+    "id": 13148541943,
+    "name": "macos-arm64-ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf",
+    "run_attempt": 1
+  },
+  "build_run_id": "41453441984",
+  "build_sha": "ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf",
+  "desktop_cli_smoke": {
+    "passed": true,
+    "windows_stdout_caveat": false
+  },
+  "executable": {
+    "architecture": "arm64",
+    "path": "package/Chronoscope/Chronoscope.app/Contents/MacOS/chronoscope-desktop",
+    "sha256": "eae746f723b7dc13d19d7b7c70d39a224782b5375f3fde39786fcb06ea1b24b7"
+  },
+  "format": 1,
+  "gui": {
+    "attached_mcp_query": true,
+    "attempted": true,
+    "exit_code_before_cleanup": null,
+    "extent": "engine-ready-and-attached-MCP",
+    "interaction_tested": false,
+    "isolated_profile": true,
+    "limitations": "Hosted desktop/privacy/WebView availability; no visual or interaction assertion.",
+    "process_alive_at_end": true,
+    "real_device": false,
+    "startup_engine_ready": true,
+    "window_rendering_verified": false
+  },
+  "host": {
+    "architecture": "arm64",
+    "image": "macos26",
+    "image_version": "20261026.0455.2",
+    "runner_os": "macOS",
+    "system": "Darwin"
+  },
+  "macos": {
+    "appintents_metadata_present": true,
+    "codesign_verified": true,
+    "weak_dylibs": [
+      "/System/Library/Frameworks/ScreenCaptureKit.framework/Versions/A/ScreenCaptureKit",
+      "/System/Library/Frameworks/AppIntents.framework/Versions/A/AppIntents",
+      "/System/Library/Frameworks/_AppIntents_AppKit.framework/Versions/A/_AppIntents_AppKit",
+      "/usr/lib/swift/libswiftAVFoundation.dylib",
+      "/usr/lib/swift/libswiftCoreAudio.dylib",
+      "/usr/lib/swift/libswiftCoreFoundation.dylib",
+      "/usr/lib/swift/libswiftCoreImage.dylib",
+      "/usr/lib/swift/libswiftCoreLocation.dylib",
+      "/usr/lib/swift/libswiftCoreMIDI.dylib",
+      "/usr/lib/swift/libswiftDarwin.dylib",
+      "/usr/lib/swift/libswiftIOKit.dylib",
+      "/usr/lib/swift/libswiftMetal.dylib",
+      "/usr/lib/swift/libswiftOSLog.dylib",
+      "/usr/lib/swift/libswiftObjectiveC.dylib",
+      "/usr/lib/swift/libswiftQuartzCore.dylib",
+      "/usr/lib/swift/libswiftSpatial.dylib",
+      "/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
+      "/usr/lib/swift/libswiftXPC.dylib",
+      "/usr/lib/swift/libswiftos.dylib",
+      "/usr/lib/swift/libswiftsimd.dylib",
+      "@rpath/libswift_Concurrency.dylib"
+    ]
+  },
+  "native_payloads": [
+    {
+      "architecture": "arm64",
+      "bytes": 55975888,
+      "imports": [
+        "\t/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 5026.5.4)",
+        "\t/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 2685.60.104)",
+        "\t/System/Library/Frameworks/ScreenCaptureKit.framework/Versions/A/ScreenCaptureKit (compatibility version 1.0.0, current version 1.0.0, weak)",
+        "\t/System/Library/Frameworks/AVFoundation.framework/Versions/A/AVFoundation (compatibility version 1.0.0, current version 2.0.0)",
+        "\t/System/Library/Frameworks/CoreMedia.framework/Versions/A/CoreMedia (compatibility version 1.0.0, current version 3320.8.5)",
+        "\t/System/Library/Frameworks/CoreVideo.framework/Versions/A/CoreVideo (compatibility version 1.2.0, current version 734.4.0)",
+        "\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 61901.120.67)",
+        "\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)",
+        "\t/System/Library/Frameworks/WebKit.framework/Versions/A/WebKit (compatibility version 1.0.0, current version 624.2.5)",
+        "\t/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices (compatibility version 1.0.0, current version 66.0.0)",
+        "\t/System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics (compatibility version 64.0.0, current version 1965.5.1)",
+        "\t/System/Library/Frameworks/Carbon.framework/Versions/A/Carbon (compatibility version 2.0.0, current version 170.0.0)",
+        "\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5026.5.4)",
+        "\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)",
+        "\t/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)",
+        "\t/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore (compatibility version 1.2.0, current version 1195.14.4)",
+        "\t/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)",
+        "\t/System/Library/Frameworks/AppIntents.framework/Versions/A/AppIntents (compatibility version 0.0.0, current version 300.5.12, weak)",
+        "\t/System/Library/Frameworks/_AppIntents_AppKit.framework/Versions/A/_AppIntents_AppKit (compatibility version 0.0.0, current version 300.5.12, weak)",
+        "\t/System/Library/Frameworks/ColorSync.framework/Versions/A/ColorSync (compatibility version 1.0.0, current version 3813.5.1)",
+        "\t/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (compatibility version 1.0.0, current version 1226.0.0)",
+        "\t/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 2100.43.0)",
+        "\t/usr/lib/swift/libswiftAVFoundation.dylib (compatibility version 1.0.0, current version 2420.7.1, weak)",
+        "\t/usr/lib/swift/libswiftCore.dylib (compatibility version 0.0.0, current version 0.0.0)",
+        "\t/usr/lib/swift/libswiftCoreAudio.dylib (compatibility version 1.0.0, current version 411.255.0, weak)",
+        "\t/usr/lib/swift/libswiftCoreFoundation.dylib (compatibility version 1.0.0, current version 120.100.0, weak)",
+        "\t/usr/lib/swift/libswiftCoreImage.dylib (compatibility version 1.0.0, current version 2.2.0, weak)",
+        "\t/usr/lib/swift/libswiftCoreLocation.dylib (compatibility version 1.0.0, current version 53.0.0, weak)",
+        "\t/usr/lib/swift/libswiftCoreMIDI.dylib (compatibility version 1.0.0, current version 6.0.0, weak)",
+        "\t/usr/lib/swift/libswiftCoreMedia.dylib (compatibility version 1.0.0, current version 3320.8.5)",
+        "\t/usr/lib/swift/libswiftDarwin.dylib (compatibility version 1.0.0, current version 377.120.8, weak)",
+        "\t/usr/lib/swift/libswiftDispatch.dylib (compatibility version 1.0.0, current version 1542.100.32)",
+        "\t/usr/lib/swift/libswiftIOKit.dylib (compatibility version 1.0.0, current version 1.0.0, weak)",
+        "\t/usr/lib/swift/libswiftMetal.dylib (compatibility version 1.0.0, current version 373.2.0, weak)",
+        "\t/usr/lib/swift/libswiftOSLog.dylib (compatibility version 1.0.0, current version 10.0.0, weak)",
+        "\t/usr/lib/swift/libswiftObjectiveC.dylib (compatibility version 1.0.0, current version 951.7.0, weak)",
+        "\t/usr/lib/swift/libswiftQuartzCore.dylib (compatibility version 1.0.0, current version 5.0.0, weak)",
+        "\t/usr/lib/swift/libswiftSpatial.dylib (compatibility version 1.0.0, current version 1.0.0, weak)",
+        "\t/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib (compatibility version 1.0.0, current version 877.5.1, weak)",
+        "\t/usr/lib/swift/libswiftXPC.dylib (compatibility version 1.0.0, current version 128.120.2, weak)",
+        "\t/usr/lib/swift/libswiftos.dylib (compatibility version 1.0.0, current version 1082.0.0, weak)",
+        "\t/usr/lib/swift/libswiftsimd.dylib (compatibility version 1.0.0, current version 23.0.0, weak)",
+        "\t@rpath/libswift_Concurrency.dylib (compatibility version 0.0.0, current version 0.0.0, weak)",
+        "\t/usr/lib/swift/libswiftFoundation.dylib (compatibility version 1.0.0, current version 1.0.0)"
+      ],
+      "path": "Chronoscope.app/Contents/MacOS/chronoscope-desktop",
+      "sha256": "eae746f723b7dc13d19d7b7c70d39a224782b5375f3fde39786fcb06ea1b24b7"
+    }
+  ],
+  "notices": [
+    {
+      "files": 1581,
+      "manifest_sha256": "0659f1644721935e3847d2ccdefa487423424087167715ded34e0fa123b34aba",
+      "path": "third-party",
+      "trusted_build_checkout_match": true,
+      "webview2_sdk_original_texts": true
+    },
+    {
+      "files": 1581,
+      "manifest_sha256": "0659f1644721935e3847d2ccdefa487423424087167715ded34e0fa123b34aba",
+      "path": "third-party",
+      "trusted_build_checkout_match": true,
+      "webview2_sdk_original_texts": true
+    }
+  ],
+  "package": {
+    "bytes": 123943660,
+    "name": "chronoscope-macos-arm64.tar.xz",
+    "sha256": "b1bc59b2abdc5970f2b58b3cfb5c41d159bd26cda4687e8354c79ff2e61b6abe"
+  },
+  "publication_cleared": false,
+  "real_device_tests": false,
+  "reviewed_validation_sha": "ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf",
+  "source_access": {
+    "companion_archives_tested": false,
+    "instructions_present": true,
+    "limit": "Build artifact has no source companions; coordinator must verify exact companion archives and anonymous recipient access before publication.",
+    "release_access_verified": false
+  },
+  "status": "passed-narrow",
+  "target": "macos-arm64"
+}

@@ -1,0 +1,9 @@
+{
+  "version": "0.16.13",
+  "source_commit": "ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf",
+  "installed_latest_optimized_bundle": true,
+  "bundle_seal_verified": true,
+  "executable_matches_native_validated_release": true,
+  "executable_sha256": "eae746f723b7dc13d19d7b7c70d39a224782b5375f3fde39786fcb06ea1b24b7",
+  "normal_quarantined_download_acceptance_tested": false
+}

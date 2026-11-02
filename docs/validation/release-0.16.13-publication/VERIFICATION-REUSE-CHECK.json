@@ -1,0 +1,9 @@
+{
+  "kind": "Isolated local coordinator integration using the producer identity as a test fixture; not native Windows acceptance.",
+  "producer_run": 41448105960,
+  "source": "ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf",
+  "real_github_run_job_and_artifact_provenance_checked": true,
+  "real_archive_download_and_safe_extract_passed": true,
+  "frontend_files_verified": 2054,
+  "source_and_platform_identity_rejection": "Covered separately by local/native unit tests; real Windows packaging hook passed on producer host."
+}

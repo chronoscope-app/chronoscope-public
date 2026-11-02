@@ -4,11 +4,15 @@
 
 ## Included source and limitations
 
-- Chronoscope 0.16.9 main-branch source, current sample datasets, license/NOTICE texts, full maintained GLib vendor source, and the selected 16 README screenshots and their credits. Published desktop packages are the [0.16.9 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.9). Application names, protocols and commands remain Chronoscope.
+- Chronoscope 0.16.13 main-branch source, current sample datasets, license/NOTICE texts, full maintained GLib vendor source, and the selected 16 README screenshots and their credits. Published desktop packages are the [0.16.13 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.13). Application names, protocols and commands remain Chronoscope.
 - Privacy/connections guidance, guided issue forms, local verification instructions and release/distribution gates. Canonical project links target this repository.
 - Current media replacements and provenance are described in [THIRD_PARTY.md](../THIRD_PARTY.md) and the [media ledger](MEDIA-RIGHTS.json). Historical ledger rows describe retired objects, not files or Git objects imported into this repository. Public vessel and wildlife identifiers are credited published data, not a claim of anonymized human tracks.
 - The maintained [GLib security backport](../vendor/glib/BACKPORT.md) retains complete source, original licenses and its exact patch record. Version-based alerts may still flag the unchanged upstream crate version; do not dismiss alerts or infer runtime clearance from static checks.
 - Older validation documents and changelog entries retain dated measurements and source identifiers as historical context. They are not a claim that old commits, artifacts or private audit evidence can be retrieved here, or that the new snapshot has been natively rebuilt or tested on every platform.
+
+## 0.16.13 experimental preview packages — 2026-11-02
+
+The owner authorized [0.16.13 downloads](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.13) after local checks and exact-package native hosted validation. Both platforms use `ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf`. Matching application/dependency sources, licenses, checksums and native receipts accompany the release; anonymous downloads matched every published asset hash. Windows is unsigned; Mac is ad hoc signed, not notarized. [Acceptance scope and evidence](validation/release-0.16.13-publication/README.md). Historical releases and tags are preserved, and workflows remain manual-only.
 
 ## 0.16.9 experimental preview packages — 2026-10-29
 

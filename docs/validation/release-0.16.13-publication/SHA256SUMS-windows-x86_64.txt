@@ -1,0 +1,2 @@
+73199ca248db74fcff2c424dbd390a4be4ed3b35aaba0afab8fcfd43305bb3e2  chronoscope-windows-x86_64.zip
+81bb60911dd7eec61a75104810c8e4b356d47b51ed454187f4c5fedb75e80ac1  VALIDATION-windows-x86_64.json

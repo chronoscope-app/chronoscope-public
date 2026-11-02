@@ -1,0 +1,96 @@
+{
+  "source_commit": "ded19dbae0ce3a8c0edc4905aa51cec9b51ecdcf",
+  "platform": "windows-x86_64",
+  "run_id": 41448105960,
+  "all_source_checks_passed": true,
+  "clean_source": true,
+  "rust_passed": 514,
+  "rust_ignored": 2,
+  "checks": [
+    {
+      "name": "test_validation_runner",
+      "exit_code": 0,
+      "elapsed_s": 5.654
+    },
+    {
+      "name": "test_guarded_run",
+      "exit_code": 0,
+      "elapsed_s": 0.434
+    },
+    {
+      "name": "test_ci_build",
+      "exit_code": 0,
+      "elapsed_s": 0.428
+    },
+    {
+      "name": "test_data_assets",
+      "exit_code": 0,
+      "elapsed_s": 0.454
+    },
+    {
+      "name": "repository-asset-budget",
+      "exit_code": 0,
+      "elapsed_s": 0.173
+    },
+    {
+      "name": "pinned-build-data",
+      "exit_code": 0,
+      "elapsed_s": 3.465
+    },
+    {
+      "name": "rust-format",
+      "exit_code": 0,
+      "elapsed_s": 9.01
+    },
+    {
+      "name": "test_glib_backport",
+      "exit_code": 0,
+      "elapsed_s": 1.326
+    },
+    {
+      "name": "test_workarounds",
+      "exit_code": 0,
+      "elapsed_s": 0.128
+    },
+    {
+      "name": "test_release_preflight",
+      "exit_code": 0,
+      "elapsed_s": 0.255
+    },
+    {
+      "name": "core-clippy",
+      "exit_code": 0,
+      "elapsed_s": 107.751
+    },
+    {
+      "name": "rust-tests",
+      "exit_code": 0,
+      "elapsed_s": 470.936
+    },
+    {
+      "name": "frontend-unit-tests",
+      "exit_code": 0,
+      "elapsed_s": 24.15
+    },
+    {
+      "name": "test_publication_cleanup",
+      "exit_code": 0,
+      "elapsed_s": 1.076
+    },
+    {
+      "name": "test_package_distribution",
+      "exit_code": 0,
+      "elapsed_s": 9.324
+    },
+    {
+      "name": "test_tester_packaging",
+      "exit_code": 0,
+      "elapsed_s": 1.146
+    },
+    {
+      "name": "test_validate_tester_download",
+      "exit_code": 0,
+      "elapsed_s": 0.498
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "historical_releases_and_notes_unchanged": true,
+  "historical_assets_ids_names_sizes_and_digests_unchanged": true,
+  "historical_tag_objects_unchanged": true,
+  "existing_releases_preserved": 6,
+  "existing_tags_preserved": 5,
+  "existing_drafts_preserved": 1,
+  "new_release": "v0.16.13"
+}
