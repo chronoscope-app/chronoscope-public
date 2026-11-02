@@ -6,7 +6,7 @@ delete caches, alter source, change user/machine PATH, or reduce release gates.
 
 ```powershell
 & ./scripts/prepare_windows_build.ps1
-. "$env:LOCALAPPDATA/ChronoscopeBuild/environment.ps1"
+. "$env:USERPROFILE/.chronoscope-build/environment.ps1"
 ```
 
 The script requires installed Rust 1.98.0 with rustfmt, Clippy and LLVM tools;
@@ -15,7 +15,10 @@ and 7zip. Explicit `-NodePath`, `-PythonPath`, and `-SevenZipPath` override
 discovery. Missing tools fail preparation with a JSON receipt rather than being
 silently downloaded. Install missing prerequisites through their supported
 installers, then rerun. Receipts are uniquely timestamped under
-`%LOCALAPPDATA%/ChronoscopeBuild/receipts`; `-Report` selects another local path.
+`%USERPROFILE%/.chronoscope-build/receipts`; `-Report` selects another local path.
+The default avoids MSIX LocalAppData redirection, so ordinary and administrator
+sessions use the same physical cache. The symlink probe resolves physical paths
+before constructing absolute links.
 
 Cargo registry, npm cache and target paths persist independently of the source
 checkout. `-TargetDirectory` adopts an existing warm target without moving or

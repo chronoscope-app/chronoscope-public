@@ -129,7 +129,7 @@ class LinuxReleaseToolsTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'Changed'):
                 replacement.verify_tree(root, manifest)
             (root / 'file').unlink(); (root / 'escape').symlink_to('/etc/passwd')
-            with self.assertRaisesRegex(ValueError, 'Unsafe'):
+            with self.assertRaisesRegex(ValueError, 'Unsafe|Symlink escapes'):
                 replacement.verify_tree(root, {'files': [{'path': 'escape', 'type': 'symlink', 'target': '/etc/passwd'}]})
 
     def test_modified_elf_fingerprint_is_not_exact_match(self):

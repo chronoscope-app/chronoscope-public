@@ -11,7 +11,9 @@ import tomllib
 def probe_symlinks(parent):
     try:
         with tempfile.TemporaryDirectory(prefix='symlink-capability-', dir=parent) as temporary:
-            root = Path(temporary)
+            # MSIX can redirect logical LocalAppData paths. A native absolute
+            # symlink must point at the physical target, not the virtual alias.
+            root = Path(temporary).resolve()
             target = root / 'target'
             target.mkdir()
             (target / 'marker').write_bytes(b'fixture')

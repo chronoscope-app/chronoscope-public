@@ -25,6 +25,24 @@ class PreparationTests(unittest.TestCase):
                 (root / 'Cargo.toml').write_text(f'[profile.release]\nlto="{lto}"\ncodegen-units={units}\n')
                 self.assertEqual(release_profile(root)['passed'], expected)
 
+    def test_virtualized_scratch_uses_resolved_physical_link_targets(self):
+        with tempfile.TemporaryDirectory() as folder:
+            physical = Path(folder).resolve()
+            virtual = physical / 'virtual-alias-does-not-exist'
+            resolve = Path.resolve
+
+            def resolve_alias(path, *args, **kwargs):
+                return physical if path == virtual else resolve(path, *args, **kwargs)
+
+            manager = mock.MagicMock()
+            manager.__enter__.return_value = str(virtual)
+            with (mock.patch('windows_build_probe.tempfile.TemporaryDirectory', return_value=manager),
+                  mock.patch.object(Path, 'resolve', resolve_alias)):
+                result = probe_symlinks(physical)
+            self.assertTrue(result['passed'], result)
+            self.assertEqual((physical / 'target/marker').read_bytes(), b'fixture')
+            self.assertFalse((physical / 'directory-link').is_symlink())
+
     def test_preparation_has_no_implicit_elevation_or_policy_bypass(self):
         script = (Path(__file__).parent / 'prepare_windows_build.ps1').read_text()
         self.assertNotIn('ExecutionPolicy Bypass', script)

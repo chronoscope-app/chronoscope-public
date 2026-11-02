@@ -9,7 +9,7 @@ https://learn.microsoft.com/windows/apps/get-started/developer-mode-features-and
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-    [string]$BuildHome = (Join-Path $env:LOCALAPPDATA 'ChronoscopeBuild'),
+    [string]$BuildHome = (Join-Path $env:USERPROFILE '.chronoscope-build'),
     [string]$TargetDirectory,
     [string]$NodePath,
     [string]$PythonPath,
