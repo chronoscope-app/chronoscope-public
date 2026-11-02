@@ -67,7 +67,7 @@ def write_demo(stem, name, rows, bounds, source_url, checksum, selection, *, cha
                                         ['#65c4e8', '#ffb3a7', '#ffd166', '#ad9feb', '#8bd6bc',
                                          '#f2a8d3', '#85b1ff', '#d9be89', '#b2d583', '#d59dee'])),
                  display=dict(mode='points', show_points=True, show_tracks=True,
-                              show_trails=True, track_opacity=.25, trail_opacity=.25,
+                              show_trails=True, track_opacity=.8, point_scale=1.2, trail_opacity=.25,
                               trail_gap_minutes=180, bloom=False))
     if chart_preset:
         scene['chart'] = chart_preset['config']

@@ -6,7 +6,7 @@ import path from "node:path";
 await withLocalApp("space-demos", async ({ page, api, out, pass }) => {
   page.setDefaultTimeout(90000);
   const catalog = (await api("demo_catalog")).demos;
-  assert.equal(catalog.length, 15);
+  assert.equal(catalog.length, 14);
   assert(
     !catalog.some((d) =>
       ["rocket-altitude", "falcon9-launches", "covid"].includes(d.id),
@@ -18,7 +18,7 @@ await withLocalApp("space-demos", async ({ page, api, out, pass }) => {
       await page.locator("#help").click();
       await page.locator("#demo-datasets").click();
       await page.locator("[data-demo-id]").first().waitFor();
-      assert.equal(await page.locator("[data-demo-id]").count(), 15);
+      assert.equal(await page.locator("[data-demo-id]").count(), 14);
       assert.equal(
         await page.locator('[data-demo-id="rocket-altitude"]').count(),
         0,
@@ -66,6 +66,8 @@ await withLocalApp("space-demos", async ({ page, api, out, pass }) => {
         include_statistics: false,
       });
       assert.equal(snapshot.count, count);
+      assert.equal(snapshot.scene.display.point_scale, 1.2);
+      assert.equal(snapshot.scene.display.track_opacity, 0.8);
       if (index === 0) {
         const exported = await api("export", {
           path: path.join(out, `${id}.csv`),

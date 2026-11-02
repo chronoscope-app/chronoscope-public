@@ -72,8 +72,8 @@ def write(stem, title, events, provenance):
                  globe_altitude=True, render_budget=20000, inspector_tab='views',
                  cesium_camera=overview_camera(),
                  display=dict(mode='points', show_points=True, show_tracks=True,
-                              show_trails=True, track_opacity=.55, trail_opacity=.12,
-                              trail_gap_minutes=2, point_scale=.4, bloom=False),
+                              show_trails=True, track_opacity=.8, trail_opacity=.12,
+                              trail_gap_minutes=2, point_scale=1.2, bloom=False),
                  entity_colors={e['entity']: next(color for airport, _, color in ROUTES.values()
                      if airport == e['attrs']['arrival_airport']) for e in events})
     views=[]

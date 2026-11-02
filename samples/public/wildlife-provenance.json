@@ -18,7 +18,7 @@
       "rule": "All visible, unflagged, located observations in this week; no thinning."
     },
     "csv_sha256": "40090a5622ef404d4cd2c95a8495a3d79162cbc232d5387b635b108d016fcab1",
-    "project_sha256": "dbf889c80495e5f8f5963c694af3e1c3da794e883e7fa210db23fd7305227dfc",
+    "project_sha256": "928f58bed59e93c39b02bdfe6576bd44f4ee6b635e32f15d04094c13f4ae26de",
     "first_timestamp": "2023-03-01T00:00:06Z",
     "last_timestamp": "2023-03-07T23:58:06Z"
   },
@@ -39,7 +39,7 @@
       "rule": "First original observation per individual per fixed UTC 30-minute bucket, from the moveVis example subset; no interpolation."
     },
     "csv_sha256": "378ceb675150cb64e5a3e707dc401cad26e1a8ec719456e0e54ab2fb938d3072",
-    "project_sha256": "a17078389c6b182c85d94f23d73fa81fdb881d90709800986524648a33766798",
+    "project_sha256": "2d9b75b4664226363d8bc3d69bd9ca3eab67a8648807286707c27cca14797f5d",
     "first_timestamp": "2018-07-30T02:00:23Z",
     "last_timestamp": "2018-09-29T20:00:31Z"
   },
@@ -62,7 +62,7 @@
       "rule": "All finite, located primary-instrument dive summaries for three deployments; alternate 8-second and secondary instruments excluded to avoid duplicates."
     },
     "csv_sha256": "d8f36d988cc4d3a5e7cda770e0fa35662b8edfc6f869f1859da699ccf7d5732b",
-    "project_sha256": "31e94e09b75cbccb5c3732e599cfd0de9bac58dfa657274e05e039af19904176",
+    "project_sha256": "92213d67b7cd8cba2c8d24bfdf054bb6a0812c5107b22b0e212b1cbcc7c3cee1",
     "first_timestamp": "2004-02-22T04:48:59Z",
     "last_timestamp": "2004-06-03T03:22:35Z"
   }

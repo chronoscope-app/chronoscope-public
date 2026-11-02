@@ -29,6 +29,8 @@ await withLocalApp("flight-week", async ({ page, api, out, root, pass }) => {
   );
   await page.evaluate(() => window.__chronoscope.sceneIdle());
   let snapshot = await api("snapshot", { compact: false });
+  assert.equal(snapshot.scene.display.point_scale, 1.2);
+  assert.equal(snapshot.scene.display.track_opacity, 0.8);
   assert.equal(Object.keys(snapshot.entities).length, 175);
   assert.deepEqual(snapshot.time_bounds, [1772323644, 1772927900]);
   assert.equal(snapshot.filter.start, null);

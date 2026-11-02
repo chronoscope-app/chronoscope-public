@@ -5,7 +5,7 @@ export interface RailTick {
   group: string;
   label: string;
   detail: string;
-  level: "year" | "month" | "date";
+  level: "year" | "month" | "date" | "hour";
 }
 const DAY = 86400;
 const MONTHS = [
@@ -176,6 +176,39 @@ export function railTicks(lo: number, hi: number, height: number) {
     )
       chosen.push(candidate.time);
   }
+  // Keep the main landmarks, then fill unused screen space with progressively
+  // finer calendar-aligned labels. Every added label obeys the same clearance.
+  const refinements = new Set<number>();
+  const fit = (time: number) => {
+    if (chosen.length >= 132 || time < lo || time > hi) return;
+    if (chosen.every(t => Math.abs(time - t) / span * height >= 40)) {
+      chosen.push(time);
+      refinements.add(time);
+    }
+  };
+  const minimum = span / height * 40;
+  if (span > 0) {
+    if (yearGutter || kind !== "duration") {
+      for (const months of [6, 3, 1]) {
+        if (months * 28 * DAY < minimum / 2) continue;
+        let m = Math.ceil(first.getUTCMonth() / months) * months;
+        for (let i = 0; i < 264; i++, m += months) {
+          const t = calendar(year, m);
+          if (t > hi) break;
+          fit(t);
+        }
+      }
+    }
+    if (!yearGutter && (kind !== "duration" || step >= 60)) {
+      for (const finer of durations.slice().reverse()) {
+        if (finer < 60 || finer < minimum / 2) continue;
+        if (kind === "duration" && finer >= step) continue;
+        const start = Math.ceil(lo / finer) * finer;
+        for (let i = 0; i < 264 && start + i * finer <= hi; i++)
+          fit(start + i * finer);
+      }
+    }
+  }
   const seconds = !yearGutter && kind === "duration" && step < 60 && span > 0;
   const hours = !yearGutter && kind === "duration" && step >= 60 && step < DAY;
   const precision =
@@ -200,6 +233,18 @@ export function railTicks(lo: number, hi: number, height: number) {
           label: isYear ? String(y) : month(d),
           detail: "",
           level: isYear ? "year" : "month",
+        };
+      }
+      // A day/month ruler can now include hours without turning its midnight
+      // landmarks into repeated 00:00 labels or repeating month gutters.
+      if (!seconds && !hours && refinements.has(time) && time % DAY !== 0) {
+        return {
+          time,
+          fraction: span ? (time - lo) / span : 0.5,
+          group: previous ? "" : day(d),
+          label: `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`,
+          detail: "",
+          level: "hour",
         };
       }
       const groupKey = seconds

@@ -1,0 +1,53 @@
+.toolbar-clocks {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 15px;
+  padding: 0 10px;
+}
+.toolbar-clocks .toolbar-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  min-width: 48px;
+  padding: 3px 0;
+  line-height: 15px;
+}
+.toolbar-clock-label {
+  color: var(--muted);
+  font-size: 10px;
+  max-width: 112px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.toolbar-clock-selectable::after {
+  content: "⌄";
+  margin-left: 4px;
+}
+.toolbar-clock-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  color: var(--text);
+}
+#toolbar-clock-picker {
+  position: fixed;
+  z-index: 85;
+  width: min(310px, calc(100vw - 16px));
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+#toolbar-clock-picker[hidden] { display: none; }
+#toolbar-clock-picker label { display: block; margin-bottom: 8px; font-size: 12px; }
+#toolbar-clock-picker select { width: 100%; min-width: 0; }
+#toolbar-clock-picker p { font-size: 11px; color: var(--muted); line-height: 1.5; margin: 10px 0 0; }
+@media (max-width: 700px) {
+  .toolbar-clocks { gap: 8px; padding: 0 5px; }
+  .toolbar-clock-label { max-width: 78px; }
+}

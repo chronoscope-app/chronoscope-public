@@ -23,6 +23,7 @@ import { openGuidedAnalysis } from "./guided-analysis";
 import { ImportDialog } from "./import-dialog";
 import { captureAppWindow, recordAppWindow } from "./app-capture";
 import { NotificationCenter, type AppNotification } from "./notifications";
+import { installToolbarClocks } from "./toolbar-clocks";
 import { ReleaseUpdates, releasesPage } from "./release-updates";
 import { createAgentView } from "./agent-view";
 import { createAgentLab } from "./agent-lab";
@@ -354,6 +355,7 @@ const notifications = new NotificationCenter(
   $("#notifications") as HTMLButtonElement,
   icon("close"),
 );
+installToolbarClocks($("#notifications") as HTMLButtonElement);
 async function openReleasePage(url: string) {
   if (native) {
     const { invoke } = await import("@tauri-apps/api/core");

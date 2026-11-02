@@ -85,6 +85,7 @@
       "workspace-boundaries-qa.mjs",
       "cesium-parity-qa.mjs",
       "toolbar-dialogs-qa.mjs",
+      "toolbar-clocks-qa.mjs",
       "si-certificate-qa.mjs",
       "time-rail-qa.mjs",
       "time-axis-controls-qa.mjs",
@@ -212,6 +213,7 @@
     },
     "time": {
       "browser": [
+        "toolbar-clocks-qa.mjs",
         "playback-speed-qa.mjs",
         "playback-transitions-qa.mjs",
         "sidebar-time-qa.mjs",

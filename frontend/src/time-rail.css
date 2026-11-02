@@ -123,6 +123,10 @@
 .time-rail-tick.is-month .time-tick-day {
   color: var(--muted);
 }
+.time-rail-tick.is-hour .time-tick-day {
+  color: var(--muted);
+  font-size: 9px;
+}
 .workspace-resizable .time-rail .time-range-track {
   height: 100%;
   min-height: 0;

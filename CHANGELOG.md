@@ -4,6 +4,10 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+- Add quiet toolbar clocks for local time, UTC and a remembered selectable time zone, displaying hours and minutes.
+- Fill spare vertical Time rail space with finer calendar labels, including hours between days, while preserving date endpoints and label clearance.
+- Make the flight, satellite, vessel, wildlife and hurricane demos easier to see with larger entities and stronger tracks in their opening scenes and saved views.
+
 ## 0.16.14 — experimental preview, 2026-11-02
 
 - Add a resumable native release pipeline on Mac, Windows and Linux, with prepared pinned toolchains, early capability checks, persistent caches and exact-source verification reuse. Preserve Thin LTO and one release code-generation unit.

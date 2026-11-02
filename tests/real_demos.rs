@@ -1,6 +1,36 @@
 use chronoscope::{engine::Engine, project::Project};
 use serde_json::json;
 
+#[test]
+fn trajectory_demos_and_saved_views_start_with_readable_entities_and_tracks() {
+    let data = tempfile::tempdir().unwrap();
+    for id in [
+        "flight-altitude",
+        "starlink-orbits",
+        "noaa-ais",
+        "animal-gps",
+        "local-wildlife",
+        "stork-migration",
+        "elephant-seals",
+        "hurricanes",
+        "hurricanes-short",
+    ] {
+        let project = chronoscope::demos::load(id, data.path()).unwrap();
+        project.validate().unwrap();
+        for scene in
+            std::iter::once(&project.scene).chain(project.views.iter().map(|view| &view.scene))
+        {
+            let display = scene.display.as_ref().unwrap();
+            assert!(display.point_scale >= 1.2, "{id}: small entities");
+            assert!(display.track_opacity >= 0.8, "{id}: faint tracks");
+        }
+        // Keep dense orbital paths as lines, rather than enabling 46,208 points.
+        if id == "starlink-orbits" {
+            assert!(!project.scene.display.as_ref().unwrap().show_points);
+        }
+    }
+}
+
 fn check_demos(cases: &[(&str, usize, usize, &str)]) {
     let data = tempfile::tempdir().unwrap();
     let engine = Engine::new(Project::empty(), data.path().into()).unwrap();

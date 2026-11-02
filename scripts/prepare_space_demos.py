@@ -204,7 +204,7 @@ def starlink(source, stress_output):
     for e in events:counts[e['entity']]+=1
     assert len(counts)==128 and set(counts.values())=={361}, (len(counts),set(counts.values()))
     scene = dict(renderer='cesium',mode='globe',bounds=[-180,-82,180,82],globe_altitude=True,globe_time=False,render_budget=100000,inspector_tab='views',
-                 display=dict(mode='points',show_points=False,show_tracks=True,show_trails=False,track_opacity=.55,trail_opacity=0.,trail_gap_minutes=2,point_scale=.4,spatial_culling=False,bloom=False))
+                 display=dict(mode='points',show_points=False,show_tracks=True,show_trails=False,track_opacity=.8,trail_opacity=0.,trail_gap_minutes=2,point_scale=1.2,spatial_culling=False,bloom=False))
     window_filter = {**FILTER,'end':epochs[90]/1e9}
     views = [saved('128 satellites · first 90 minutes · predicted altitude',scene,window_filter),saved('Six hours · Time Height', {**scene,'globe_altitude':False,'globe_time':True,'globe_time_scale':20.}),saved('Ground tracks', {**scene,'mode':'map','globe_altitude':False})]
     report = save_demo('starlink-128-predicted-orbits-2024', '128 Starlinks · six hours of predicted orbits',events,scene,views,STARLINK_CREDIT,window_filter)

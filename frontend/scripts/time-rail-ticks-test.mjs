@@ -26,7 +26,7 @@ test("month gutter names months once and aligns half-month marks to calendar dat
   const s = scale("2018-08-01", "2018-10-01", 400);
   assert.equal(s.heading, "2018");
   assert.deepEqual(
-    s.ticks.map((t) => [t.group, t.label]),
+    s.ticks.filter(t => [1, 16].includes(new Date(t.time * 1000).getUTCDate())).map((t) => [t.group, t.label]),
     [
       ["AUG", "01"],
       ["", "16"],
@@ -35,8 +35,32 @@ test("month gutter names months once and aligns half-month marks to calendar dat
       ["OCT", "01"],
     ],
   );
-  assert.equal(s.ticks[2].time, epoch("2018-09-01"));
-  assert.notEqual(s.ticks[2].fraction, 0.5); // August has 31 days.
+  const september = s.ticks.find(t => t.group === "SEP");
+  assert.equal(september.time, epoch("2018-09-01"));
+  assert.notEqual(september.fraction, 0.5); // August has 31 days.
+});
+test("spare space between days gets UTC hours while preserving midnight dates", () => {
+  const s = scale("2024-08-01", "2024-08-05", 400);
+  assert(s.ticks.some(t => t.level === "hour" && t.label === "12:00"));
+  for (const day of [1, 2, 3, 4, 5]) {
+    assert(s.ticks.some(t => t.time === epoch(`2024-08-0${day}`) && t.label === `0${day}`));
+  }
+  assert.equal(s.ticks.filter(t => t.group === "AUG").length, 1);
+  s.ticks.forEach((t, i) => {
+    if (i) assert((t.fraction - s.ticks[i - 1].fraction) * 400 >= 39.999);
+  });
+  const compact = scale("2024-08-01", "2024-08-05", 180);
+  assert(!compact.ticks.some(t => t.level === "hour"));
+});
+test("calendar gaps gain days without displacing month boundaries", () => {
+  const s = scale("2018-08-01", "2018-10-01", 400);
+  assert(s.ticks.length > 5);
+  assert(s.ticks.some(t => t.group === "SEP" && t.label === "01"));
+});
+test("partial-day endpoints keep their date on a mixed day/hour ruler", () => {
+  const s = scale("2024-08-01T05:30:00", "2024-08-05T17:45:00", 400);
+  assert.equal(s.ticks[0].label, "01");
+  assert.equal(s.ticks.at(-1).label, "05");
 });
 test("partial months, leap day and year transitions retain unambiguous UTC context", () => {
   const s = scale("2024-02-20", "2024-03-10");
