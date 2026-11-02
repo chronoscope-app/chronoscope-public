@@ -430,6 +430,7 @@ impl DataStore {
             && &header == b"SQLite format 3\0"
     }
     pub fn open_copy(path: &Path, data_dir: &Path) -> Result<(Self, Project), String> {
+        crate::input_limits::ensure_workspace(path)?;
         Self::open_copy_kind(path, data_dir, false)
     }
     pub(crate) fn open_recovery(path: &Path, data_dir: &Path) -> Result<(Self, Project), String> {

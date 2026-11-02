@@ -1,4 +1,6 @@
 import { call, chooseFile } from "./bridge";
+import { inspectInput, confirmLargeInputs } from "./file-preflight";
+import { runInputJob } from "./input-job";
 import type { EngineContracts } from "./contracts";
 
 type OpenResult = Exclude<EngineContracts["open"]["result"], { dry_run: true }>;
@@ -48,10 +50,16 @@ export class WorkspaceFiles {
     return this.openPath(path);
   }
   async openPath(path: string) {
+    const admission = await inspectInput(path);
+    if (admission.allowed === false) {
+      this.host.notice(admission.reason || "File exceeds its size limit.");
+      return;
+    }
+    if (!(await confirmLargeInputs([admission]))) return;
     const extension = path.split(".").pop()?.toLowerCase() || "";
     const probe = gis.includes(extension)
       ? await this.host.task("Identifying file…", () =>
-          call("file_probe", { path }),
+          runInputJob("file_probe", { path }, "Identifying file…"),
         )
       : null;
     const workspace =
@@ -67,7 +75,7 @@ export class WorkspaceFiles {
     if (probe?.kind === "gis") return this.host.importGis(path, probe.format!);
     if (!workspace) return this.host.importData(path);
     await this.host.task("Opening workspace…", async () => {
-      const result = await call("open", { path });
+      const result = await runInputJob("open", { path }, "Opening workspace…");
       await this.host.opened(path, result);
       if (result.missing_resources?.length)
         this.host.notice(result.missing_resources.join("; "));

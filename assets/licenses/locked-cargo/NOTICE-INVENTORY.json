@@ -60,6 +60,22 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "aes",
+    "version": "0.9.3",
+    "archive_sha256": "35f0f96ce78e38c3dc6d8948aa8163d06385be74000f3c7a95bf1eef35d3ea32",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "25f77efa393854f7c15eaf6a2589a2071db2d7337642742763adb12bdecf0445"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "ahash",
     "version": "0.8.12",
     "archive_sha256": "5a15f179cd60c4584b8a8c596927aadc462e27f2ca70c04e0071964a73ba7a75",
@@ -278,6 +294,22 @@
       {
         "path": "LICENSE-MIT",
         "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "apple-native-keyring-store",
+    "version": "1.0.2",
+    "archive_sha256": "2b350bfd03649e07aa05c0a81b3e15934374e585c98204a57e20b9d49f49bb9a",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "78ebc2ea2a1cec9cbec2e1a6fc15e73474fe22bdad7575518e7f4628651d49c4"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "157cc607717b1b372a69f6b4526f6ad18c1279af9f3267835cca2943f37bc07d"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -892,6 +924,38 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "block-buffer",
+    "version": "0.12.1",
+    "archive_sha256": "d2f6c7dbe95a6ed67ad9f18e57daf93a2f034c524b99fd2b76d18fdfeb6660aa",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "98181e7249d0c01737645ec982499ce99a0f07eb8f7d625b8840d799d10dbc01"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "block-padding",
+    "version": "0.4.2",
+    "archive_sha256": "710f1dd022ef4e93f8a438b4ba958de7f64308434fa6a87104481645cc30068b",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "98181e7249d0c01737645ec982499ce99a0f07eb8f7d625b8840d799d10dbc01"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "block2",
     "version": "0.5.1",
     "archive_sha256": "2c132eebf10f5cad5289222520a4a058514204aed6d791f1cf4fe8088b82d15f",
@@ -1234,6 +1298,22 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "cbc",
+    "version": "0.2.1",
+    "archive_sha256": "ce2dc9ee5f88d11e0beb842c88b33c8a5cf0d1329c4b19494af42b07dbfe8896",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "63af4bea227c94d021e99427f6ca3a4b8efddadcca93ab6130f708cf6138cf68"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "cc",
     "version": "1.8.0",
     "archive_sha256": "6651c9ed80effdc7db0ff72512157f901af5e3549e341e24b1dd4887d836d838",
@@ -1370,6 +1450,22 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "cipher",
+    "version": "0.5.2",
+    "archive_sha256": "e8cf2a2c93cd704877c0858356ed03480ff301ee950b43f1cbe4573b088bfa6c",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "950d712c518a02fcb7cff96950aee304a1cc5283361712c980ea21e8d6d669a5"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "clap",
     "version": "4.6.7",
     "archive_sha256": "aa8876b300ab35ba921adea3dfd70157a46249b33f95c9084ae5709785478946",
@@ -1457,6 +1553,22 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "cmov",
+    "version": "0.5.4",
+    "archive_sha256": "0c9ea0ac24bc397ab3c98583a3c9ba74fa56b09a4449bbe172b9b1ddb016027a",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "70c9d40f1f9545c3f133b8a67206e89da850f6468eed072281bb3701514114a9"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "codepage",
     "version": "0.1.3",
     "archive_sha256": "bdff162541cd8b79de82e2edcc7eff3a8c2a6dc3d75152636028f96d93de3b26",
@@ -1523,6 +1635,22 @@
       {
         "path": "LICENSE-MIT",
         "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "const-oid",
+    "version": "0.10.2",
+    "archive_sha256": "a6ef517f0926dd24a1582492c791b6a4818a4d94e789a334894aa15b0d12f55c",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "73b9dc2e79c7308998dd30296e073aefaefb944a68fb89aa412c23c0edcabcaa"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -1680,6 +1808,22 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "cpubits",
+    "version": "0.1.1",
+    "archive_sha256": "15b85f9c39137c3a891689859392b1bd49812121d0d61c9caf00d46ed5ce06ae",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "003736bc98408b53511b9cc8ff5d1af3bf0a8f17d53841cc39d8ab1b96a195b0"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "cpufeatures",
     "version": "0.2.17",
     "archive_sha256": "59ed5838eebb26a2bb2e58f6d5b5316989ae9d08bab10e0e6d103e656d1b0280",
@@ -1824,6 +1968,22 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "crypto-common",
+    "version": "0.2.2",
+    "archive_sha256": "ce6e4c961d6cd6c9a86db418387425e8bdeaf05b3c8bc1411e6dca4c252f1453",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "d2e7ec5355c96eeade56b09187ceb48a6a30299da3ce7531a66d3d11405ab963"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "cssparser",
     "version": "0.37.0",
     "archive_sha256": "8c9cdaae01d5ed7882b04d795e7f752f46ff52d2fa3b50a20d28c464510bba98",
@@ -1891,6 +2051,22 @@
       {
         "path": "LICENSE-MIT",
         "sha256": "bccaa8b6c09f94e81f06696e179dbe058464bbdfbc823b6d49cada1d71e84ac3"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "ctutils",
+    "version": "0.4.7",
+    "archive_sha256": "a2376ffd6f96d8a9db59875b4b6b0237d6900b5baf64279714e05493ce64828a",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "91585c36e4fb9ab4ca0d3dfac5d66d3c0c62cc51f640a0e1196542daf2267eae"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -2086,6 +2262,22 @@
       {
         "path": "LICENSE-MIT",
         "sha256": "9e0dfd2dd4173a530e238cb6adb37aa78c34c6bc7444e0e10c1ab5d8881f63ba"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "digest",
+    "version": "0.11.3",
+    "archive_sha256": "f1dd6dbb5841937940781866fa1281a1ff7bd3bf827091440879f9994983d5c2",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "af59cea35d7f5e2777a713b8d155d65efa2c339eb43f3c14e868c6ac8506edad"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -3875,6 +4067,38 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "hkdf",
+    "version": "0.13.0",
+    "archive_sha256": "4aaa26c720c68b866f2c96ef5c1264b3e6f473fe5d4ce61cd44bbe913e553018",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "59013a5c8d3a19c26a457579105915a5d51bb0c09d579f8cdedf12e4203c3018"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "d288f9c9b4590446ec18c22ead8f8b5a12a3d4025b68f62dc9015063eb9cca69"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "hmac",
+    "version": "0.13.0",
+    "archive_sha256": "6303bc9732ae41b04cb554b844a762b4115a61bfaa81e3e83050991eeb56863f",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "9e0dfd2dd4173a530e238cb6adb37aa78c34c6bc7444e0e10c1ab5d8881f63ba"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "html5ever",
     "version": "0.39.0",
     "archive_sha256": "46a1761807faccc9a19e86944bbf40610014066306f96edcdedc2fb714bcb7b8",
@@ -3958,6 +4182,22 @@
       {
         "path": "LICENSE-MIT",
         "sha256": "934887691e05d69d7c86ad3f2c360980fa30c15b035e351f3c9865e99da4debc"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "hybrid-array",
+    "version": "0.4.15",
+    "archive_sha256": "27f864f10dfb56725ce5ce5472bc52252c8f93a4ab86327122cebf62c5f59a17",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "70c9d40f1f9545c3f133b8a67206e89da850f6468eed072281bb3701514114a9"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -4305,6 +4545,22 @@
       {
         "path": "LICENSE",
         "sha256": "270b0d81891aa44c7e8726cf9432dade9556a01c848bacd2f3ef839c9c1a1859"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "inout",
+    "version": "0.2.5",
+    "archive_sha256": "3b5cf4372d022092674a83b8febf5865f7a573cc0c5baec5e49c879b6a20978f",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "a07fcacc3c60de4dc0fab10ac9d6aaba7379974e28451c99da7f7df09c25b28c"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -4674,6 +4930,38 @@
       {
         "path": "LICENSE-MIT",
         "sha256": "31dbbab009f1b2e59a1622d5955dfafc38ebe834000215b49d954c6f85fe927c"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "keyring",
+    "version": "4.2.0",
+    "archive_sha256": "2270074a3d26bcac93c1dc5d2845eb4c089e8d761ccf6e0ea266a16004640627",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "78ebc2ea2a1cec9cbec2e1a6fc15e73474fe22bdad7575518e7f4628651d49c4"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "157cc607717b1b372a69f6b4526f6ad18c1279af9f3267835cca2943f37bc07d"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "keyring-core",
+    "version": "1.0.1",
+    "archive_sha256": "29fbf4b551298c67925f38cf341a1ada797a75f1837bdf8ae1fc8e2ebc6efb59",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "78ebc2ea2a1cec9cbec2e1a6fc15e73474fe22bdad7575518e7f4628651d49c4"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "157cc607717b1b372a69f6b4526f6ad18c1279af9f3267835cca2943f37bc07d"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -7866,6 +8154,22 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "secret-service",
+    "version": "5.2.0",
+    "archive_sha256": "5107b24b91445dd2aa449a258a1807b63240942157292354dc5bfdbeb8bc6db8",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "074585dbaf488db540c26f7b20f36053a157d7580bb1c390dc9f6afdb017c83a"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "security-framework",
     "version": "3.7.0",
     "archive_sha256": "b7f4bc775c73d9a02cde8bf7b2ec4c9d12743edf609006c7facc23998404cd1d",
@@ -8204,6 +8508,22 @@
       {
         "path": "LICENSE-MIT",
         "sha256": "b4eb00df6e2a4d22518fcaa6a2b4646f249b3a3c9814509b22bd2091f1392ff1"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "sha2",
+    "version": "0.11.1",
+    "archive_sha256": "47d7069beb7d6ac7b9acd1039986e73443f24234f41074da099d6f994ac9ad19",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "a9040321c3712d8fd0b09cf52b17445de04a23a10165049ae187cd39e5c86be5"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "831e0f43ad0bf014c1c4fec5767aae470434c1d66d6e671be2d823e729063e25"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"
@@ -10744,6 +11064,22 @@
     "scope": "conservative entire lock inventory; may not be linked on this target"
   },
   {
+    "name": "windows-native-keyring-store",
+    "version": "1.1.0",
+    "archive_sha256": "063426e76fdec7438d56bb777f67e318a84a25c707b07e575cb8b78e10c028f8",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "c50e49cbc9917204c7e1d9c046342069e839c4947ef8c6027d23a3184ae73706"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "1b9916aeb17b63b74372d5493b6c6ce828eef2853e1dc48ac2bba701f148920c"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
     "name": "windows-numerics",
     "version": "0.3.1",
     "archive_sha256": "6e2e40844ac143cdb44aead537bbf727de9b044e107a0f1220392177d15b0f26",
@@ -11611,6 +11947,22 @@
       {
         "path": "LICENSE",
         "sha256": "260e4ff3fc493695880c90774283eb1e3d018f898fabe655bbd52dd2cbd2fcad"
+      }
+    ],
+    "scope": "conservative entire lock inventory; may not be linked on this target"
+  },
+  {
+    "name": "zbus-secret-service-keyring-store",
+    "version": "1.0.1",
+    "archive_sha256": "74801d001b9e7729adb4f1825b67b398185fed424749aa3d8bacf70417137d9a",
+    "notices": [
+      {
+        "path": "LICENSE-APACHE",
+        "sha256": "78ebc2ea2a1cec9cbec2e1a6fc15e73474fe22bdad7575518e7f4628651d49c4"
+      },
+      {
+        "path": "LICENSE-MIT",
+        "sha256": "157cc607717b1b372a69f6b4526f6ad18c1279af9f3267835cca2943f37bc07d"
       }
     ],
     "scope": "conservative entire lock inventory; may not be linked on this target"

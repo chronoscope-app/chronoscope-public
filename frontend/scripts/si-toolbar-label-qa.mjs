@@ -44,7 +44,7 @@ await withLocalApp(
     );
     await page.locator("#si-settings").click();
     assert.equal(
-      await page.locator(".si-settings-dialog").getAttribute("aria-label"),
+      await page.locator("#preferences-panel-ai").getAttribute("aria-label"),
       "Super Intelligence settings",
     );
     assert.match(

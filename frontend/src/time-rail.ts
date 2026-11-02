@@ -1,5 +1,6 @@
 import "./time-rail.css";
 import { time } from "./types";
+import { railTicks } from "./time-rail-ticks";
 
 /** One live time window, with device-local collapse and reusable popup controls. */
 export class TimeRail {
@@ -10,6 +11,11 @@ export class TimeRail {
   private inputs: HTMLInputElement[];
   private play: HTMLButtonElement;
   private popupPlay: HTMLButtonElement;
+  private track: HTMLElement;
+  private ruler: HTMLElement;
+  private dateHeading: HTMLElement;
+  private bounds?: [number, number];
+  private rulerKey = "";
   private current?: "range" | "playback";
   private opening?: ReturnType<typeof setTimeout>;
   private closing?: ReturnType<typeof setTimeout>;
@@ -30,6 +36,7 @@ export class TimeRail {
   ) {
     const timeline = workspace.querySelector<HTMLElement>(".timeline")!;
     const track = timeline.querySelector<HTMLElement>("#time-range-track")!;
+    this.track = track;
     const range = timeline.querySelector<HTMLElement>("#range-label")!;
     const full = timeline.querySelector<HTMLButtonElement>("#full-range")!;
     this.play = timeline.querySelector<HTMLButtonElement>("#play")!;
@@ -61,6 +68,13 @@ export class TimeRail {
       range: button("time-rail-range", "Time range", "clock"),
       playback: button("time-rail-playback", "Playback controls", "settings"),
     };
+    this.dateHeading = document.createElement("div");
+    this.dateHeading.className = "time-rail-date-heading";
+    this.dateHeading.hidden = true;
+    this.ruler = document.createElement("div");
+    this.ruler.id = "time-rail-labels";
+    this.ruler.setAttribute("aria-hidden", "true");
+    track.prepend(this.ruler);
     const body = document.createElement("div");
     body.className = "time-rail-body";
     body.append(track);
@@ -159,6 +173,7 @@ export class TimeRail {
     this.popups.playback.append(this.popupPlay, settings);
     timeline.append(
       heading,
+      this.dateHeading,
       this.triggers.range,
       body,
       summary,
@@ -179,6 +194,7 @@ export class TimeRail {
       /* Storage may be disabled. */
     }
     this.setCollapsed(this.collapsed);
+    new ResizeObserver(() => this.drawRuler()).observe(track);
     const syncPlay = () => {
       const label = this.play.textContent?.trim() || "Play";
       this.play.setAttribute("aria-label", label);
@@ -265,8 +281,16 @@ export class TimeRail {
     });
   }
 
-  update(lo: number, hi: number, start: number | null, end: number | null) {
+  update(
+    lo: number,
+    hi: number,
+    start: number | null,
+    end: number | null,
+    hasData = true,
+  ) {
     this.values = [start ?? lo, end ?? hi];
+    this.bounds = hasData ? [lo, hi] : undefined;
+    this.drawRuler();
     const span = Math.max(1e-9, hi - lo);
     const mini = this.element.querySelector<HTMLElement>(
       ".time-rail-mini span",
@@ -275,6 +299,52 @@ export class TimeRail {
     const b = Math.max(a, Math.min(1, (this.values[1] - lo) / span));
     mini.style.top = `${a * 100}%`;
     mini.style.height = `${(b - a) * 100}%`;
+  }
+
+  private drawRuler() {
+    const height = this.track.clientHeight;
+    if (this.collapsed || !height) return;
+    const key = `${this.bounds}/${height}`;
+    if (key === this.rulerKey) return;
+    this.rulerKey = key;
+    const scale = this.bounds
+      ? railTicks(...this.bounds, height)
+      : { heading: "", date: "", ticks: [] };
+    this.dateHeading.replaceChildren();
+    this.dateHeading.hidden = !scale.heading;
+    if (scale.heading) {
+      for (const [name, text] of [
+        ["year", scale.heading],
+        ["date", scale.date],
+        ["zone", "UTC"],
+      ]) {
+        if (!text) continue;
+        const line = document.createElement("span");
+        line.className = `time-rail-${name}`;
+        line.textContent = text;
+        this.dateHeading.append(line);
+      }
+    }
+    this.ruler.replaceChildren(
+      ...scale.ticks.map((tick) => {
+        const label = document.createElement("span");
+        label.className = `time-rail-tick is-${tick.level}${tick.group ? " is-group" : ""}`;
+        label.style.top = `${tick.fraction * 100}%`;
+        label.dataset.time = String(tick.time);
+        for (const [name, text] of [
+          ["group", tick.group],
+          ["day", tick.label],
+          ["detail", tick.detail],
+        ]) {
+          if (!text) continue;
+          const line = document.createElement("span");
+          line.className = `time-tick-${name}`;
+          line.textContent = text;
+          label.append(line);
+        }
+        return label;
+      }),
+    );
   }
 
   private setCollapsed(value: boolean) {

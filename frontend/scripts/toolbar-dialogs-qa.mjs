@@ -205,7 +205,7 @@ try {
       path: path.join(dir, `ai-disconnected-${viewport.width}.png`),
     });
     await page.locator("#si-connect-service").click();
-    await measure("SI settings", ".si-settings-dialog");
+    await measure("AI settings", ".preferences-dialog");
     await page.screenshot({
       path: path.join(dir, `si-settings-${viewport.width}.png`),
     });
@@ -219,14 +219,8 @@ try {
       await page
         .getByRole("button", { name: "Expand right pane", exact: true })
         .click();
-    await page.locator('[data-tab="charts"]').click();
-    await page
-      .getByRole("button", { name: "Field roles…", exact: true })
-      .click();
-    await measure("Field roles", ".field-roles-dialog");
-    await page
-      .getByRole("button", { name: "Close field roles", exact: true })
-      .click();
+    assert(await page.locator('[data-tab="charts"]').isDisabled());
+    assert(await page.locator('[data-tab="patterns"]').isDisabled());
     await page.locator('[data-tab="views"]').click();
     for (const key of ["heat", "bloom"]) {
       assert.equal(await page.locator(`#display-${key}`).isChecked(), false);

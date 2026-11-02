@@ -276,12 +276,11 @@ pub fn command_schema(command: &str) -> Option<Value> {
             vec!["items", "expected_revision", "expected_workspace"],
         ),
         "si_apple_status" => (json!({}), vec![]),
-        "si_status" | "si_disconnect" | "si_cancel" | "si_history" | "si_clear" => {
-            (json!({}), vec![])
-        }
+        "si_status" | "si_cancel" | "si_history" | "si_clear" => (json!({}), vec![]),
+        "si_disconnect" => (json!({"forget_key":{"type":"boolean"}}), vec![]),
         "si_permissions" => (json!({"root":nullable(string())}), vec!["root"]),
         "si_configure" => (
-            json!({"provider":choice(&["openai-compatible"]),"url":{"type":"string","maxLength":2048},"model":{"type":"string","minLength":1,"maxLength":256},"api_key":{"type":"string","maxLength":8192},"root":nullable(string()),"client_certificate":nullable(object(json!({"origin":string(),"kind":choice(&["disabled","macos-keychain","windows-store","pkcs11"]),"identity":string()}), &["origin","kind","identity"]))}),
+            json!({"provider":choice(&["openai-compatible"]),"url":{"type":"string","maxLength":2048},"model":{"type":"string","minLength":1,"maxLength":256},"api_key":{"type":"string","maxLength":8192},"remember_key":{"type":"boolean"},"root":nullable(string()),"client_certificate":nullable(object(json!({"origin":string(),"kind":choice(&["disabled","macos-keychain","windows-store","pkcs11"]),"identity":string()}), &["origin","kind","identity"]))}),
             vec!["url", "model"],
         ),
         "si_chat_draft" => (
@@ -400,7 +399,10 @@ pub fn command_schema(command: &str) -> Option<Value> {
             json!({"attribute_search":string(),"attribute_offset":integer(0,1000000),"attribute_limit":integer(1,512),"include_attribute_types":boolean()}),
             vec![],
         ),
-        "file_probe" => (json!({"path":string()}), vec!["path"]),
+        "file_probe" => (
+            json!({"path":string(),"metadata_only":boolean()}),
+            vec!["path"],
+        ),
         "gis_layers" => (json!({}), vec![]),
         "gis_load" => (
             json!({"path":string(),"name":string(),"position":vector(3),"scale":{"type":"number","minimum":0.000001,"maximum":1e6}}),

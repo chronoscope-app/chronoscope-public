@@ -16,13 +16,13 @@ import package_notices
 
 class ValidatorTests(unittest.TestCase):
     def test_current_notice_count_is_exact_and_not_optional(self):
-        manifest = {'files': [{} for _ in range(1537)]}
+        manifest = {'files': [{} for _ in range(validator.NOTICE_COUNT)]}
         sdk = {'retained_original_files': []}
         with (patch.object(validator, 'verify_notices', return_value=manifest),
               patch.object(validator, 'digest', return_value='fixture'),
               patch.object(Path, 'read_text', return_value=validator.json.dumps(sdk))):
-            self.assertEqual(validator.notices(Path('notices'), Path('source'))['files'], 1537)
-            for count in (1536, 1538, 1539):
+            self.assertEqual(validator.notices(Path('notices'), Path('source'))['files'], validator.NOTICE_COUNT)
+            for count in (validator.NOTICE_COUNT - 1, validator.NOTICE_COUNT + 1, validator.NOTICE_COUNT + 2):
                 manifest['files'] = [{} for _ in range(count)]
                 with self.subTest(count=count), self.assertRaisesRegex(ValueError, 'notice count'):
                     validator.notices(Path('notices'), Path('source'))

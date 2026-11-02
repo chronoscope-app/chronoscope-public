@@ -12,16 +12,7 @@ const ALLOWED: &[&str] = &[
     "subtree", "terrain", "vctr", "geom", "shp", "shx", "dbf", "prj", "cpg", "gpkg",
 ];
 fn bounded(path: &Path, limit: u64) -> Result<Vec<u8>, String> {
-    let mut bytes = vec![];
-    File::open(path)
-        .map_err(|e| e.to_string())?
-        .take(limit + 1)
-        .read_to_end(&mut bytes)
-        .map_err(|e| e.to_string())?;
-    if bytes.len() as u64 > limit {
-        return Err("GIS file exceeds size budget".into());
-    }
-    Ok(bytes)
+    crate::input_limits::read_bounded(path, limit, "Reading GIS bytes")
 }
 fn hash(path: &Path) -> Result<String, String> {
     let mut sha = Sha256::new();
@@ -245,6 +236,7 @@ pub fn load(
     position: Option<[f64; 3]>,
     scale: f64,
 ) -> Result<Layer, String> {
+    crate::input_limits::ensure(path)?;
     let path = path.canonicalize().map_err(|e| e.to_string())?;
     let meta = path.metadata().map_err(|e| e.to_string())?;
     if !meta.is_file() || meta.len() > MAX_ASSET {
@@ -255,7 +247,11 @@ pub fn load(
         .and_then(|e| e.to_str())
         .unwrap_or("")
         .to_ascii_lowercase();
-    let probe = if ext == "glb" {
+    // KMZ is identified by extension and read through the bounded ZIP reader.
+    // Do not materialize its compressed bytes just to identify the format.
+    let probe = if ext == "kmz" {
+        Vec::new()
+    } else if ext == "glb" {
         bounded(&path, MAX_ASSET)?
     } else {
         bounded(&path, MAX_SOURCE)?
@@ -286,8 +282,10 @@ pub fn load(
             .compression_method(zip::CompressionMethod::Stored)
             .unix_permissions(0o600);
         if format == Format::Kmz {
-            let mut archive = zip::ZipArchive::new(std::io::Cursor::new(&probe))
-                .map_err(|e| format!("Invalid KMZ: {e}"))?;
+            let mut archive = zip::ZipArchive::new(crate::input_limits::CheckedReader(
+                File::open(&path).map_err(|e| e.to_string())?,
+            ))
+            .map_err(|e| format!("Invalid KMZ: {e}"))?;
             if archive.len() > MAX_FILES {
                 return Err("KMZ exceeds 8192 entries".into());
             }
@@ -307,9 +305,17 @@ pub fn load(
                 if item.size() > MAX_ASSET || total > MAX_PACKAGE {
                     return Err("Expanded KMZ exceeds size budget".into());
                 }
+                let entry_limit = if name.to_ascii_lowercase().ends_with(".kml") {
+                    MAX_SOURCE
+                } else {
+                    MAX_ASSET
+                };
+                if item.size() > entry_limit {
+                    return Err("Expanded KMZ resource exceeds its format budget".into());
+                }
                 let mut data = vec![];
-                item.by_ref()
-                    .take(MAX_ASSET + 1)
+                crate::input_limits::CheckedReader(item.by_ref())
+                    .take(entry_limit + 1)
                     .read_to_end(&mut data)
                     .map_err(|e| e.to_string())?;
                 if data.len() as u64 != item.size() {
@@ -385,9 +391,10 @@ pub fn load(
                 crate::operation::check()?;
                 zip.start_file(&name, opts).map_err(|e| e.to_string())?;
                 let copied = std::io::copy(
-                    &mut File::open(file)
-                        .map_err(|e| e.to_string())?
-                        .take(MAX_ASSET + 1),
+                    &mut crate::input_limits::CheckedReader(
+                        File::open(file).map_err(|e| e.to_string())?,
+                    )
+                    .take(MAX_ASSET + 1),
                     &mut zip,
                 )
                 .map_err(|e| e.to_string())?;

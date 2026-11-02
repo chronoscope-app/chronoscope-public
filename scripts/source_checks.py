@@ -41,6 +41,15 @@ def check_plan(inventory, rust_targets=(), full=False):
     }
 
 
+
+def quick_plan(inventory):
+    """Routine source checks: no Rust compile, app build or network fetch."""
+    plan = check_plan(inventory)
+    return [*plan['unit'], next(c for c in plan['prebuild'] if c['name'] == 'repository-asset-budget'),
+            {'name': 'frontend-types', 'command': ['node', 'frontend/node_modules/typescript/bin/tsc',
+                                                  '--project', 'frontend/tsconfig.json', '--noEmit'], 'timeout': 420},
+            *plan['frontend']]
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--packaging', action='store_true')

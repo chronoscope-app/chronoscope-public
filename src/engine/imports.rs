@@ -25,7 +25,7 @@ impl Engine {
                     let detection = Mapping::detect(t);
                     let sample = RawTable { sheet: t.sheet.clone(), headers: t.headers.clone(), rows: t.rows.iter().take(6).cloned().collect(), row_numbers: t.row_numbers.iter().take(6).copied().collect() };
                     let normalized = import::convert(&sample, &detection.mapping, &pending.sample.source, 1).ok().map(|r| json!({"events":r.events.into_iter().map(preview_event).collect::<Vec<_>>(),"rejected":r.rejected,"sample_only":true,"text_limit_bytes":256}));
-                    json!({"sheet":t.sheet,"headers":t.headers,"count":pending.counts[i],"preview":sample.rows.iter().map(|row|row.iter().map(|v|preview_text(v)).collect::<Vec<_>>()).collect::<Vec<_>>(),"preview_text_limit_bytes":256,"mapping":detection.mapping,"notes":detection.notes,"warnings":detection.warnings,"normalized":normalized,"fields":import::field_feedback(&sample, &detection.mapping)})
+                    json!({"sheet":t.sheet,"headers":t.headers,"count":pending.counts[i],"count_exact":pending.counts_exact,"preview":sample.rows.iter().map(|row|row.iter().map(|v|preview_text(v)).collect::<Vec<_>>()).collect::<Vec<_>>(),"preview_text_limit_bytes":256,"mapping":detection.mapping,"notes":detection.notes,"warnings":detection.warnings,"normalized":normalized,"fields":import::field_feedback(&sample, &detection.mapping)})
                 }).collect();
                 let result = json!({"import_id":pending.id,"source":pending.sample.source,"delimiter":pending.sample.delimiter.map(|b|char::from(b).to_string()),"sheets":sheets,"storage":"disk","streaming":pending.streaming});
                 let mut s = self.state.lock().map_err(|_| "Workspace unavailable")?;

@@ -1,4 +1,4 @@
-import { columnWindow, TABLE_COLUMN_WINDOW } from "./table-columns";
+import { columnWindow, fitColumnWidths, columnResizeHandle, TABLE_COLUMN_WINDOW } from "./table-columns";
 import { call } from "./bridge";
 import { tableMarkup, tableRows } from "./table-dom";
 import type { GisLayer, GisFeature } from "./gis";
@@ -143,6 +143,7 @@ export class GisTable {
     const scroll = this.body.closest<HTMLElement>(".table-scroll")!;
     const top = scroll.scrollTop,
       left = scroll.scrollLeft;
+    fitColumnWidths(this.head.closest<HTMLElement>(".table-panel")!, columnOffset, columns, r.rows.map(row => columns.map(c => ["id", "entity", "time", "end"].includes(c) ? (row as any)[c] : row.properties[c])));
     const window = columnWindow(
       this.head.closest<HTMLElement>(".table-panel")!,
       columnOffset,
@@ -151,7 +152,7 @@ export class GisTable {
     );
     tableMarkup(
       this.head,
-      `<tr>${window.before("th")}${columns.map((c, i) => `<th aria-colindex="${columnOffset + i + 1}"><button data-gis-sort="${esc(c)}" title="${esc(c)}">${esc(c)}${this.sort === c ? (this.descending ? " ↓" : " ↑") : ""}</button></th>`).join("")}${window.after("th")}</tr>`,
+      `<tr>${window.before("th")}${columns.map((c, i) => `<th aria-colindex="${columnOffset + i + 1}"><button data-gis-sort="${esc(c)}" title="${esc(c)}">${esc(c)}${this.sort === c ? (this.descending ? " ↓" : " ↑") : ""}</button>${columnResizeHandle(columnOffset + i)}</th>`).join("")}${window.after("th")}</tr>`,
     );
     const spacer = (n: number) =>
       n

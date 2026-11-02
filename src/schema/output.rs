@@ -111,7 +111,7 @@ pub fn domain_output_schema(command: &str) -> Value {
         }
         "file_probe" => {
             required = vec!["kind", "format"];
-            json!({"kind":{"enum":["workspace","gis","data"]},"format":{"type":["string","null"]}})
+            json!({"kind":{"enum":["workspace","gis","data"]},"format":{"type":["string","null"]},"bytes":integer(0,i64::MAX),"limit_bytes":integer(0,i64::MAX),"allowed":boolean(),"requires_confirmation":boolean(),"reason":nullable(string())})
         }
         "gis_layers" => {
             required = vec!["layers"];
@@ -506,7 +506,7 @@ pub fn domain_output_schema(command: &str) -> Value {
                 "protocol",
                 "key_storage",
             ];
-            json!({"provider":{"const":"openai-compatible"},"url":{"type":"string"},"model":{"type":"string"},"connected":{"type":"boolean"},"running":{"type":"boolean"},"key_present":{"type":"boolean"},"root":{"type":["string","null"]},"protocol":{"type":"string"},"key_storage":{"type":"string"},"client_certificate":{"type":["object","null"]},"client_certificate_kind":{"enum":["macos-keychain","windows-store","pkcs11"]},"automatic_client_certificate":{"type":"boolean"}})
+            json!({"provider":{"const":"openai-compatible"},"url":{"type":"string"},"model":{"type":"string"},"connected":{"type":"boolean"},"running":{"type":"boolean"},"key_present":{"type":"boolean"},"key_saved":{"type":"boolean"},"auto_connect":{"type":"boolean"},"connection_error":{"type":["string","null"]},"root":{"type":["string","null"]},"protocol":{"type":"string"},"key_storage":{"type":"string"},"client_certificate":{"type":["object","null"]},"client_certificate_kind":{"enum":["macos-keychain","windows-store","pkcs11"]},"automatic_client_certificate":{"type":"boolean"}})
         }
         "space_time_aggregate" => {
             required = vec![

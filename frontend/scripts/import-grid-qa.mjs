@@ -38,7 +38,21 @@ await withLocalApp("import-grid", async ({ page, api, out, root, pass }) => {
           ?.textContent.includes("Checking"),
       [key, value],
     );
-  const mapping = (key) => page.locator(`[data-map="${key}"]`);
+  const mapping = (key) => {
+    const control = page.locator(`[data-map="${key}"]`);
+    return {
+      inputValue: () => control.inputValue(),
+      selectOption: async (value) => {
+        const details = control.locator("xpath=ancestor::details[1]");
+        if (
+          (await details.count()) &&
+          !(await details.evaluate((el) => el.open))
+        )
+          await details.locator(":scope > summary").click();
+        return control.selectOption(value);
+      },
+    };
+  };
   await open(source);
   assert.equal(
     await page.locator(".workflow-steps, #import-next, #import-back").count(),
@@ -50,7 +64,7 @@ await withLocalApp("import-grid", async ({ page, api, out, root, pass }) => {
       .first()
       .locator("[data-field]")
       .count(),
-    9,
+    5,
   );
   await state("time", "invalid");
   await state("lat", "valid");
@@ -64,7 +78,7 @@ await withLocalApp("import-grid", async ({ page, api, out, root, pass }) => {
   assert.equal((await api("snapshot")).count, 0);
   await page.screenshot({ path: path.join(out, "grid-attention-dark.png") });
   pass(
-    "One scrollable field grid opens immediately with independent green, red and optional feedback; no workspace changes",
+    "The compact field grid opens immediately with independent green, red and optional feedback; no workspace changes",
   );
 
   await page.locator("#date-order").selectOption("dmy");

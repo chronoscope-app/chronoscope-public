@@ -416,7 +416,7 @@ test("actual WorkspaceFiles host keeps open command and opened callback ahead of
     "utf8",
   );
   const start = main.indexOf("let fileSceneCommit:");
-  const end = main.indexOf("const welcome =", start);
+  const end = main.indexOf("const droppedFiles =", start);
   assert(start > 0 && end > start);
   Object.assign(ui.context, {
     WorkspaceFiles: class {

@@ -1,3 +1,4 @@
+import { nearestGroundLocation } from "./radius-center";
 import { call, native } from "./bridge";
 import type { SnapshotArgs, SnapshotModel, SnapshotRequestIntent, SnapshotApplication, SnapshotPublication } from "./view-snapshot";
 import { measurementColor, type MeasurementStyle } from "./measurement-style";
@@ -137,7 +138,7 @@ export class SpaceTimeView {
   globeTime = false;
   globeAltitude = false;
   timeAltitude = false;
-  showGrabHandles = true;
+  showGrabHandles = false;
   timeAxisAnchor: [number, number] | null = null;
   private axisTextMeasure?: CanvasRenderingContext2D | null;
   private axisAltitudeRange?: { minimum: number; maximum: number };
@@ -2331,7 +2332,8 @@ export class SpaceTimeView {
     shown: boolean,
     anchor: [number, number] | null = this.timeAxisAnchor,
   ) {
-    this.showGrabHandles = shown;
+    // Legacy workspace flags cannot restore the retired navigation spheres.
+    this.showGrabHandles = false;
     this.timeAxisAnchor = anchor ? [...anchor] : null;
     this.updateAxes();
     this.requestRender();
@@ -2341,9 +2343,11 @@ export class SpaceTimeView {
     this.axes.removeAll();
     this.axisLabels.removeAll();
     this.axisHandle.removeAll();
-    this.axisHandle.show = this.showGrabHandles;
-    this.handles.show = this.showGrabHandles;
-    if (this.mode !== "space-time") {
+    this.axisHandle.show = false;
+    this.handles.show = false;
+    // Time is labelled once in the fixed-width UTC rail. Physical altitude
+    // retains its distinct metre axis; it must never be labelled as a date.
+    if (this.mode !== "space-time" || !this.physicalAltitude) {
       this.handles.removeAll();
       this.axisFrame = undefined;
       this.grabHandleView = undefined;
@@ -2515,17 +2519,7 @@ export class SpaceTimeView {
         "axis-title",
         new Cartesian2(-14, -22),
       );
-      this.axisHandle.add({
-        position: position(0),
-        id: { kind: "time-axis" },
-        pixelSize: 10,
-        color: Color.fromCssColorString(
-          this.theme === "light" ? "#6889a2" : "#b9d9ee",
-        ).withAlpha(0.8),
-        outlineColor: Color.WHITE,
-        outlineWidth: 1,
-        disableDepthTestDistance: Number.POSITIVE_INFINITY,
-      });
+
     }
     this.updateGrabHandles(navigation);
     this.setFocus(this.focusFraction);
@@ -2534,6 +2528,7 @@ export class SpaceTimeView {
   private updateGrabHandles(force = false) {
     if (
       !this.handles ||
+      !this.showGrabHandles ||
       this.mode !== "space-time" ||
       this.scene.mode !== SceneMode.COLUMBUS_VIEW
     )
@@ -2949,6 +2944,13 @@ export class SpaceTimeView {
     this.setSelection([...this.selected]);
     this.requestRender();
   }
+  private radiusGroundAt(pixel: Cartesian2) {
+    const point = nearestGroundLocation(
+      this.resident ? this.resident.visiblePoints() : this.renderPoints,
+      p => this.project(this.groundPosition(p.lat, p.lon)), pixel.x, pixel.y,
+    );
+    return point ? this.groundPosition(point.lat, point.lon) : this.groundAt(pixel);
+  }
   private groundAt(pixel: Cartesian2) {
     const ray = this.camera.getPickRay(pixel);
     return (
@@ -3246,8 +3248,8 @@ export class SpaceTimeView {
         }
       } else
         this.panPixels(
-          (key === "arrowleft" ? -60 : key === "arrowright" ? 60 : 0) * step,
-          (key === "arrowup" ? -60 : key === "arrowdown" ? 60 : 0) * step,
+          (key === "arrowleft" ? 60 : key === "arrowright" ? -60 : 0) * step,
+          (key === "arrowup" ? 60 : key === "arrowdown" ? -60 : 0) * step,
         );
     } else if (key === "pageup" || key === "pagedown") {
       if (event.shiftKey)
@@ -4438,7 +4440,7 @@ export class SpaceTimeView {
             this.onContextPick(id.id);
           else if (id?.kind === "gis") this.onGisPick(id.layer, id.id);
           else {
-            const ground = this.groundAt(drag.anchor);
+            const ground = this.radiusGroundAt(drag.anchor);
             if (ground) {
               const c = Cartographic.fromCartesian(ground);
               this.onRadiusQuery(

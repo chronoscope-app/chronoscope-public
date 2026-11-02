@@ -231,7 +231,7 @@ try {
   record("2D native street tiles; WGS84/mercator pixel alignment", state);
   await capture("streets-2d");
   await page.locator("#maps").click();
-  await page.waitForSelector("#streets-enabled");
+  await page.waitForSelector("#map-quick-pick");
   assert(await page.locator("#streets-enabled").isChecked());
   assert.equal(await page.locator("#wmts-server").count(), 0);
   assert.equal(
@@ -240,14 +240,14 @@ try {
   );
   record("simple Map dialog shows Streets; custom servers are advanced");
   await capture("streets-settings");
-  await page.locator("#streets-enabled").uncheck();
+  await page.locator("#map-quick-pick").selectOption("none");
   await page.locator("#save-preferences").click();
   await page.waitForFunction(
     () => window.__chronoscope.view.resources.status.basemap === "none",
   );
   assert.equal((await api("preferences")).basemap, "none");
   await page.locator("#maps").click();
-  await page.locator("#streets-enabled").check();
+  await page.locator("#map-quick-pick").selectOption("streets");
   await page.locator("#save-preferences").click();
   await settled();
   record("Streets toggle persists and releases/recreates the vector renderer");

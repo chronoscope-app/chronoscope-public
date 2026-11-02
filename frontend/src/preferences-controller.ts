@@ -25,6 +25,8 @@ interface Hooks {
   closeModal(): void;
   head(title: string): string;
   toast(message: string, error?: boolean): void;
+  mapPreferences?(): Partial<Preferences>;
+  mountAI?(panel: HTMLElement): Promise<void>;
   mountMaps?(
     panel: HTMLElement,
     navigation: { beforeOpen(): void; back(): Promise<void> },
@@ -40,6 +42,7 @@ type PreferencesDraft = {
   autoSave: boolean;
   aiToolbarSI: boolean;
   basemap: Preferences["basemap"];
+  mapChoice?: string;
   updateChecks: boolean;
   budget: number;
 };
@@ -115,24 +118,39 @@ export function createPreferencesController(hooks: Hooks) {
           ? "streets"
           : "none"
         : hooks.preferences().basemap,
+      mapChoice: (document.querySelector("#map-quick-pick") as HTMLSelectElement | null)?.value,
       updateChecks: check("#pref-updates"),
       budget: Number(input("#pref-render-budget")),
     });
     let mapsDraft: PreferencesDraft | undefined;
     let mapsFocus = "";
+    let mapBefore = "";
+    const mapFingerprint = () => { const p = hooks.preferences(); return JSON.stringify([p.basemap, p.map, p.map_layers]); };
     hooks.mountMaps?.(
       dialog.querySelector<HTMLElement>("#preferences-panel-maps")!,
       {
         beforeOpen: () => {
           mapsDraft = preferenceDraft();
+          mapBefore = mapFingerprint();
           mapsFocus = (document.activeElement as HTMLElement)?.id || "";
         },
         back: async () => {
+          if (mapsDraft && mapFingerprint() !== mapBefore) mapsDraft = {...mapsDraft, mapChoice: undefined, basemap: hooks.preferences().basemap};
           await settings("maps", mapsDraft);
           if (mapsFocus) document.getElementById(mapsFocus)?.focus();
         },
       },
     );
+    if (hooks.mountAI) {
+      let mounting: Promise<void> | undefined;
+      const loadAI = () => mounting ??= hooks.mountAI!(dialog.querySelector<HTMLElement>("#preferences-panel-ai")!);
+      dialog.querySelector("#preferences-tab-ai")!.addEventListener("click", () => { void loadAI().catch(error => toast(String(error), true)); });
+      if (section === "ai") await loadAI();
+    }
+    if (draft?.mapChoice) {
+      const choice = dialog.querySelector<HTMLSelectElement>("#map-quick-pick");
+      if (choice) { choice.value = draft.mapChoice; choice.dispatchEvent(new Event("change")); }
+    }
     if (hooks.mountMaps && draft)
       ($("#streets-enabled") as HTMLInputElement).checked =
         draft.basemap === "streets";
@@ -210,6 +228,7 @@ export function createPreferencesController(hooks: Hooks) {
                 : ("none" as const),
             }
           : {}),
+        ...hooks.mapPreferences?.(),
         auto_save_unsaved: check("#pref-autosave"),
       };
       const nextBudget =

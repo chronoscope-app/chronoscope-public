@@ -87,7 +87,7 @@ const tips: Record<string, string> = {
   "reset-filters":
     "Remove all time, entity, category, attribute, search and region restrictions.",
   navigate:
-    "Drag to move. In Globe and Time, middle-drag rotates and tilts; right-drag rotates and zooms about a fixed focus. Wheel zooms toward the pointer. Click markers to select.",
+    "Drag the map to pan. In Move mode, Shift-drag or drag the compass to orbit Time and Globe; middle-drag tilts, right-drag zooms. Arrows move the viewpoint; Shift+arrows rotate and tilt. N faces north, U looks down, F fits events.",
   "box-select":
     "Drag a rectangle to select visible markers on screen. Hold Shift to add.",
   fit: "Fit event coverage and restore the camera. F.",

@@ -45,7 +45,7 @@ await withLocalApp(
     await page.locator("#preferences-tab-general").click();
     await page.locator("#pref-ai-wording").selectOption("si");
     await page.locator("#preferences-tab-maps").click();
-    await page.locator("#streets-enabled").check();
+    await page.locator("#map-quick-pick").selectOption("streets");
     await page.locator("#basemap-cache").click();
     await page.locator(".modal footer [data-close]").click();
     await page.locator('#preferences-tab-maps[aria-selected="true"]').waitFor();

@@ -324,7 +324,7 @@ try {
   });
   await page
     .locator(`#histogram [data-bin="${bin}"]`)
-    .click({ position: { x: 30, y: 2 } });
+    .click({ position: { x: 10, y: 2 } });
   await page.waitForFunction(
     () => window.__chronoscope.snapshot.selected_count > 0,
   );

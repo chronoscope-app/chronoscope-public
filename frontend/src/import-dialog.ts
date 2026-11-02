@@ -1,8 +1,13 @@
 import { call, chooseFile } from "./bridge";
-import { runJob } from "./operation-job";
+import { runJob, isCancellation } from "./operation-job";
 import type { EngineContracts } from "./contracts";
 import { escape as esc, displayTime as time } from "./types";
 import "./workflow-dialogs.css";
+import { inputSize } from "./file-preflight";
+import {
+  mountImportNavigation,
+  type ImportNavigation,
+} from "./import-navigation";
 
 type Mapping = NonNullable<EngineContracts["import_commit"]["args"]["mapping"]>;
 type Delimiter = NonNullable<
@@ -34,6 +39,7 @@ interface Sheet {
   sheet: string;
   headers: string[];
   count: number;
+  count_exact?: boolean;
   preview: string[][];
   mapping: Mapping;
   notes: string[];
@@ -83,15 +89,60 @@ export class ImportDialog {
   private generation = 0;
   constructor(private hooks: Hooks) {}
 
+  dismiss() {
+    this.generation++;
+    this.abort?.abort();
+    this.dialog?.close();
+    this.dialog?.remove();
+    this.dialog = undefined;
+  }
+
+  /** Queue status, errors and GIS choice pages share the import modal. */
+  showFile(
+    navigation: ImportNavigation,
+    body: string,
+    actions?: (dialog: HTMLDialogElement) => void,
+  ) {
+    const generation = ++this.generation;
+    this.abort?.abort();
+    this.dialog?.close();
+    this.dialog?.remove();
+    const dialog = document.createElement("dialog");
+    this.dialog = dialog;
+    dialog.id = "import-dialog";
+    dialog.className = "workflow-dialog import-dialog import-file-page";
+    dialog.setAttribute("aria-labelledby", "import-title");
+    dialog.innerHTML = `<header><h2 id="import-title">Import files</h2><button data-close aria-label="Close import">×</button></header><div class="workflow-body">${body}</div><footer><button data-close-footer>Close</button></footer>`;
+    document.body.append(dialog);
+    dialog.showModal();
+    mountImportNavigation(dialog, navigation);
+    dialog.querySelector<HTMLButtonElement>("[data-close]")!.onclick = () =>
+      dialog.close();
+    dialog.querySelector<HTMLButtonElement>("[data-close-footer]")!.onclick =
+      () => dialog.close();
+    dialog.addEventListener("keydown", (event) => event.stopPropagation());
+    dialog.addEventListener("close", () => {
+      if (generation === this.generation) {
+        this.dialog = undefined;
+        navigation.closed();
+      }
+      dialog.remove();
+    });
+    actions?.(dialog);
+    return dialog;
+  }
+
   async open(
     path: string,
     delimiter: Delimiter = "auto",
     gisLayer?: string,
     appendInitial = false,
+    navigation?: ImportNavigation,
   ) {
     const generation = ++this.generation;
     this.abort?.abort();
     this.dialog?.close();
+    this.dialog?.remove();
     const workspace = this.hooks.workspace();
     const dialog = document.createElement("dialog");
     this.dialog = dialog;
@@ -102,6 +153,13 @@ export class ImportDialog {
       '<header><h2 id="import-title">Import data</h2><button data-close aria-label="Close import">×</button></header><p role="status">Reading source…</p>';
     document.body.append(dialog);
     dialog.showModal();
+    mountImportNavigation(dialog, navigation);
+    dialog
+      .querySelectorAll<HTMLButtonElement | HTMLSelectElement>(
+        ".import-file-navigation button,.import-file-navigation select",
+      )
+      .forEach((el) => (el.disabled = true));
+    let completed = false;
     let running = false;
     let sampleVersion = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -121,36 +179,72 @@ export class ImportDialog {
         this.abort?.abort();
         this.dialog = undefined;
       }
+      if (!completed && generation === this.generation) navigation?.closed();
       dialog.remove();
     });
     const alive = () =>
       dialog.open && dialog.isConnected && generation === this.generation;
     try {
-      const raw = gisLayer
-        ? await call("gis_import_preview", {
-            id: gisLayer,
-            expected_workspace: workspace,
-          })
-        : await call("import_preview", {
-            path,
-            delimiter,
-            expected_workspace: workspace,
-          });
+      const controller = new AbortController();
+      this.abort = controller;
+      running = true;
+      let raw;
+      try {
+        const options = {
+          signal: controller.signal,
+          progress: (state: {
+            message?: string;
+            progress?: number;
+            progress_event?: { unit?: string };
+          }) => {
+            const node = dialog.querySelector('[role="status"]');
+            if (node)
+              node.textContent = state.message || "Reading source sample…";
+          },
+        };
+        raw = gisLayer
+          ? await runJob(
+              "gis_import_preview",
+              { id: gisLayer, expected_workspace: workspace },
+              options,
+            )
+          : await runJob(
+              "import_preview",
+              { path, delimiter, expected_workspace: workspace },
+              options,
+            );
+      } finally {
+        running = false;
+        if (this.abort === controller) this.abort = undefined;
+      }
+      if (controller.signal.aborted) {
+        dialog.close();
+        return;
+      }
       if (!alive()) return;
       const preview = raw as unknown as Preview;
       if (!preview.sheets.length)
         throw Error("This source has no worksheets to import.");
-      let sheet = 0;
-      const drafts = preview.sheets.map((s) => structuredClone(s.mapping));
-      let targetSource = "";
+      const saved = navigation?.draft;
+      const compatible =
+        saved &&
+        JSON.stringify(saved.headers) ===
+          JSON.stringify(preview.sheets.map((s) => s.headers));
+      let sheet = compatible
+        ? Math.min(saved.sheet, preview.sheets.length - 1)
+        : 0;
+      const drafts = compatible
+        ? structuredClone(saved.mappings)
+        : preview.sheets.map((s) => structuredClone(s.mapping));
+      let targetSource = compatible ? saved.targetSource : "";
       const existingLayers = this.hooks.layers();
-      let append = appendInitial,
-        aggregate = false,
-        windowMinutes = 15,
-        radius = 100;
+      let append = compatible ? saved.append : appendInitial,
+        aggregate = compatible ? saved.aggregate : false,
+        windowMinutes = compatible ? saved.windowMinutes : 15,
+        radius = compatible ? saved.radius : 100;
       let review: Review | undefined;
       let acceptedRejections = false;
-      let fields = preview.sheets[0].fields || {};
+      let fields = compatible ? {} : preview.sheets[0].fields || {};
       let checking = false;
       const $ = <T extends HTMLElement = HTMLElement>(selector: string) =>
         dialog.querySelector<T>(selector)!;
@@ -170,13 +264,23 @@ export class ImportDialog {
       };
       const controls = () => {
         if (!alive()) return;
-        $("#import-destination-summary").textContent = targetSource ? `Append to ${targetSource} · existing Events retained` : append ? "Append · existing Events retained" : "Replace Event dataset · undo available in this session";
+        const source = dialog.querySelector("header p");
+        const currentSheet = preview.sheets[sheet];
+        if (source)
+          source.textContent = `${preview.source} · ${review ? `${(review.accepted + review.rejected).toLocaleString()} source rows` : `${currentSheet.count.toLocaleString()} ${currentSheet.count_exact === false ? "sampled rows · total after Check all rows" : "source rows"}`} · ${currentSheet.headers.length} columns`;
+        $("#import-destination-summary").textContent = targetSource
+          ? `Append to ${targetSource} · existing Events retained`
+          : append
+            ? "Append · existing Events retained"
+            : "Replace Event dataset · undo available in this session";
         $<HTMLButtonElement>("#commit-import").disabled =
           running ||
           !review?.accepted ||
           (!!review.rejected && !acceptedRejections);
         $<HTMLButtonElement>("#commit-import").textContent =
-          `${append ? "Append" : "Replace with"} ${review ? review.accepted.toLocaleString() + " valid" : preview.sheets[sheet].count.toLocaleString()} Events`;
+          !review && preview.sheets[sheet].count_exact === false
+            ? "Import Events"
+            : `${append ? "Append" : "Replace with"} ${review ? review.accepted.toLocaleString() + " valid" : preview.sheets[sheet].count.toLocaleString()} Events`;
         $<HTMLButtonElement>("#review-import").disabled =
           running || mapping().time == null;
         $<HTMLButtonElement>("#preview-mapping").disabled = running;
@@ -214,6 +318,7 @@ export class ImportDialog {
               .forEach((el) => (el.disabled = false));
             $<HTMLButtonElement>("[data-close]").textContent = "×";
             controls();
+            mountImportNavigation(dialog, navigation, rememberDraft);
           }
         }
       };
@@ -225,7 +330,7 @@ export class ImportDialog {
           if (!running)
             void Promise.resolve()
               .then(action)
-              .catch((e) => status(String(e), true));
+              .catch((e) => isCancellation(e) ? status("Operation cancelled", false) : status(String(e), true));
         });
       };
       const saveMapping = () => {
@@ -258,6 +363,20 @@ export class ImportDialog {
         aggregate = check("#import-aggregate");
         windowMinutes = Number(input("#import-aggregate-window"));
         radius = Number(input("#import-aggregate-radius"));
+      };
+      const rememberDraft = () => {
+        if (!navigation || !alive()) return;
+        saveMapping();
+        navigation.draft = {
+          headers: preview.sheets.map((s) => s.headers),
+          mappings: structuredClone(drafts),
+          sheet,
+          targetSource,
+          append,
+          aggregate,
+          windowMinutes,
+          radius,
+        };
       };
       const normalized = (sample: Converted | null) => {
         $("#normalized-preview").innerHTML =
@@ -411,13 +530,18 @@ export class ImportDialog {
                   key,
                 )
               ? spatial
-              : ["altitude-unit", "altitude-reference", "altitude_reference_column", "altitude"].includes(key)
+              : [
+                    "altitude-unit",
+                    "altitude-reference",
+                    "altitude_reference_column",
+                    "altitude",
+                  ].includes(key)
                 ? ["altitude", "altitude_reference_column"]
-              : key === "decimal-comma"
-                ? [...spatial, "value", "altitude"]
-                : key === "default-entity"
-                  ? ["entity"]
-                  : [key];
+                : key === "decimal-comma"
+                  ? [...spatial, "value", "altitude"]
+                  : key === "default-entity"
+                    ? ["entity"]
+                    : [key];
         // Keep independent, already checked cards green while the edited field
         // and its dependencies await new feedback.
         fields = Object.fromEntries(
@@ -448,8 +572,8 @@ export class ImportDialog {
                   .join("")}</select></label>`
               : ""
           }</div>`;
-        dialog.innerHTML = `<header><div><h2 id="import-title">Import data</h2><p>${esc(preview.source)} · ${s.count.toLocaleString()} source rows · ${s.headers.length} columns</p></div><button data-close aria-label="Close import">×</button></header><div class="import-legend" aria-label="Field validation legend"><span data-state="valid">Valid / recommended in sample</span><span data-state="invalid">Needs attention</span><span>Optional</span></div><div class="workflow-body" id="import-body"><div class="modal-grid import-source"><label class="field">Worksheet<select id="import-sheet">${preview.sheets.map((v, i) => `<option value="${i}" ${i === sheet ? "selected" : ""}>${esc(v.sheet)}</option>`).join("")}</select></label>${
-          gisLayer
+        dialog.innerHTML = `<header><div><h2 id="import-title">Import data</h2><p>${esc(preview.source)} · ${s.count.toLocaleString()} ${s.count_exact === false ? "sampled rows · total after Check all rows" : "source rows"} · ${s.headers.length} columns</p></div><button data-close aria-label="Close import">×</button></header><div class="import-legend" aria-label="Field validation legend"><span data-state="valid">Valid / recommended in sample</span><span data-state="invalid">Needs attention</span><span>Optional</span></div><div class="workflow-body" id="import-body"><div class="modal-grid import-source"><label class="field">Worksheet<select id="import-sheet">${preview.sheets.map((v, i) => `<option value="${i}" ${i === sheet ? "selected" : ""}>${esc(v.sheet)}</option>`).join("")}</select></label>${
+          gisLayer || navigation?.display
             ? ""
             : `<label class="field">CSV delimiter<select id="import-delimiter">${[
                 ["auto", "Auto detect"],
@@ -463,7 +587,41 @@ export class ImportDialog {
                     `<option value="${v}" ${v === delimiter ? "selected" : ""}>${title}</option>`,
                 )
                 .join("")}</select></label>`
-        }</div><div class="import-section-heading"><h3>Match source columns</h3><span>Required fields are marked *</span></div><div class="modal-grid import-field-grid">${coreFields.filter(([key]) => key === "time" || m[key] != null).map(field).join("")}</div><details class="import-optional"><summary>Unmapped optional fields</summary><div class="modal-grid import-field-grid">${coreFields.filter(([key]) => key !== "time" && m[key] == null).map(field).join("")}</div></details><div class="modal-grid import-options"><label class="field">Altitude unit<select id="altitude-unit">${[["meters", "Metres"], ["feet", "Feet"], ["kilometers", "Kilometres"]].map(([v, label]) => `<option value="${v}" ${m.altitude_unit === v ? "selected" : ""}>${label}</option>`).join("")}</select></label><label class="field">Altitude reference<select id="altitude-reference">${[["unspecified", "Unknown · retain, do not plot"], ["ellipsoid", "WGS84 ellipsoid"], ["egm96", "Mean sea level · EGM96"], ["reported", "Reported height · approximate"]].map(([v, label]) => `<option value="${v}" ${m.altitude_reference === v ? "selected" : ""}>${label}</option>`).join("")}</select></label></div><p class="description">Altitude is optional. Verify the source unit and vertical reference. Pressure altitude and unknown sea-level datums can be shown approximately using Reported height; they are not converted to precise physical height.</p><details id="import-advanced"><summary>Coordinate, date and additional fields</summary><label class="field">Input coordinates<select id="import-crs">${["dd", "dms", "utm", "mgrs"].map((v) => `<option ${m.coordinate_system === v ? "selected" : ""}>${v}</option>`).join("")}</select></label><p class="description">Locations are optional. Map both latitude/longitude columns (DD or DMS), or leave both unmapped to keep records without a location. Input must already use WGS84.</p><div class="modal-grid import-field-grid">${extraFields.map(field).join("")}</div><div class="modal-grid import-options"><label class="field">Default entity<input id="default-entity" value="${esc(m.default_entity || "")}"></label><label class="field">Default UTM zone<input id="default-zone" type="number" min="1" max="60" value="${m.default_zone || ""}"></label><label class="field">Default hemisphere<select id="default-hemisphere">${["", "N", "S"].map((v) => `<option value="${v}" ${m.default_hemisphere === v ? "selected" : ""}>${v || "Choose…"}</option>`).join("")}</select></label><label class="field">Numeric time encoding<select id="time-encoding">${["auto", "unix_seconds", "unix_milliseconds", "unix_microseconds", "unix_nanoseconds", "excel_serial", "excel1904", "time_of_day"].map((v) => `<option value="${v}" ${m.time_encoding === v ? "selected" : ""}>${v.replaceAll("_", " ")}</option>`).join("")}</select></label><label class="field">Default date<input id="default-date" value="${esc(m.default_date || "")}" placeholder="YYYY-MM-DD"></label><label class="field">Custom timestamp format<input id="date-format" value="${esc(m.custom_format || "")}" placeholder="%d/%m/%Y %H:%M:%S"></label><label class="field">Naive UTC offset / minutes<input id="time-offset" type="number" value="${m.offset_minutes || 0}"></label><label class="check-row"><input id="decimal-comma" type="checkbox" ${m.decimal_comma ? "checked" : ""}>Decimal comma numbers</label></div><p class="description">Explicit timestamp offsets take priority over the default offset.</p></details><section aria-label="Source data preview"><h3>Source preview</h3><div class="preview-scroll"><table><thead><tr>${s.headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${s.preview.map((row) => `<tr>${row.map((v) => `<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></section><div class="notice import-detection-notes"><p>Original timestamps and fractional seconds are retained.</p><details><summary>Detection and precision details</summary>${(s.notes || []).map((v) => `<p>${esc(v)}</p>`).join("")}</details></div><button id="preview-mapping">Refresh sample validation</button><div id="normalized-preview" class="notice" aria-live="polite"></div><details><summary>Aggregate during import (optional)</summary><label class="check-row"><input id="import-aggregate" type="checkbox" ${aggregate ? "checked" : ""}>Keep time/proximity summaries instead of individual rows</label><div class="modal-grid"><label class="field">Time window / minutes<input id="import-aggregate-window" type="number" value="${windowMinutes}"></label><label class="field">Radius / metres<input id="import-aggregate-radius" type="number" value="${radius}"></label></div><p class="description">Lossy. Keep the original source for individual records. The full-file check reviews source rows before aggregation.</p></details><section id="import-review" aria-live="polite"></section></div><footer><div class="import-destination"><label class="field">Destination layer<select id="import-target-layer"><option value="">Create a layer for this file / worksheet</option>${existingLayers.map((layer) => `<option value="${esc(layer.source)}" ${targetSource === layer.source ? "selected" : ""}>Add to ${esc(layer.source || "Unattributed data")} · ${layer.count.toLocaleString()} records</option>`).join("")}</select></label><p class="description">Add matching files to an existing layer to keep one entry in Layers. Original file, worksheet, source rows and imported attributes are retained.</p><label class="check-row"><input id="append-import" type="checkbox" ${append ? "checked" : ""}>Append to the current workspace</label><p class="description" id="import-replace-note">${append ? "Existing Events will be retained." : "Import will replace the Event dataset. The change can be undone during this session."} Original source columns and row numbers are retained.</p></div><div><p id="import-destination-summary" role="status"></p><p id="import-validation-summary" role="status" aria-live="polite"></p><p id="import-status" role="status" aria-live="polite"></p></div><div class="import-actions"><button data-close-footer>Cancel</button><button id="review-import">Check all rows</button><button id="commit-import" class="primary" disabled>Import Events</button></div></footer>`;
+        }</div><div class="import-section-heading"><h3>Match source columns</h3><span>Required fields are marked *</span></div><div class="modal-grid import-field-grid">${coreFields
+          .filter(([key]) => key === "time" || m[key] != null)
+          .map(field)
+          .join(
+            "",
+          )}</div><details class="import-optional"><summary>Unmapped optional fields</summary><div class="modal-grid import-field-grid">${coreFields
+          .filter(([key]) => key !== "time" && m[key] == null)
+          .map(field)
+          .join(
+            "",
+          )}</div></details><div class="modal-grid import-options"><label class="field">Altitude unit<select id="altitude-unit">${[
+          ["meters", "Metres"],
+          ["feet", "Feet"],
+          ["kilometers", "Kilometres"],
+        ]
+          .map(
+            ([v, label]) =>
+              `<option value="${v}" ${m.altitude_unit === v ? "selected" : ""}>${label}</option>`,
+          )
+          .join(
+            "",
+          )}</select></label><label class="field">Altitude reference<select id="altitude-reference">${[
+          ["unspecified", "Unknown · retain, do not plot"],
+          ["ellipsoid", "WGS84 ellipsoid"],
+          ["egm96", "Mean sea level · EGM96"],
+          ["reported", "Reported height · approximate"],
+        ]
+          .map(
+            ([v, label]) =>
+              `<option value="${v}" ${m.altitude_reference === v ? "selected" : ""}>${label}</option>`,
+          )
+          .join(
+            "",
+          )}</select></label></div><p class="description">Altitude is optional. Verify the source unit and vertical reference. Pressure altitude and unknown sea-level datums can be shown approximately using Reported height; they are not converted to precise physical height.</p><details id="import-advanced"><summary>Coordinate, date and additional fields</summary><label class="field">Input coordinates<select id="import-crs">${["dd", "dms", "utm", "mgrs"].map((v) => `<option ${m.coordinate_system === v ? "selected" : ""}>${v}</option>`).join("")}</select></label><p class="description">Locations are optional. Map both latitude/longitude columns (DD or DMS), or leave both unmapped to keep records without a location. Input must already use WGS84.</p><div class="modal-grid import-field-grid">${extraFields.map(field).join("")}</div><div class="modal-grid import-options"><label class="field">Default entity<input id="default-entity" value="${esc(m.default_entity || "")}"></label><label class="field">Default UTM zone<input id="default-zone" type="number" min="1" max="60" value="${m.default_zone || ""}"></label><label class="field">Default hemisphere<select id="default-hemisphere">${["", "N", "S"].map((v) => `<option value="${v}" ${m.default_hemisphere === v ? "selected" : ""}>${v || "Choose…"}</option>`).join("")}</select></label><label class="field">Numeric time encoding<select id="time-encoding">${["auto", "unix_seconds", "unix_milliseconds", "unix_microseconds", "unix_nanoseconds", "excel_serial", "excel1904", "time_of_day"].map((v) => `<option value="${v}" ${m.time_encoding === v ? "selected" : ""}>${v.replaceAll("_", " ")}</option>`).join("")}</select></label><label class="field">Default date<input id="default-date" value="${esc(m.default_date || "")}" placeholder="YYYY-MM-DD"></label><label class="field">Custom timestamp format<input id="date-format" value="${esc(m.custom_format || "")}" placeholder="%d/%m/%Y %H:%M:%S"></label><label class="field">Naive UTC offset / minutes<input id="time-offset" type="number" value="${m.offset_minutes || 0}"></label><label class="check-row"><input id="decimal-comma" type="checkbox" ${m.decimal_comma ? "checked" : ""}>Decimal comma numbers</label></div><p class="description">Explicit timestamp offsets take priority over the default offset.</p></details><section aria-label="Source data preview"><h3>Source preview</h3><div class="preview-scroll"><table><thead><tr>${s.headers.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${s.preview.map((row) => `<tr>${row.map((v) => `<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></section><div class="notice import-detection-notes"><p>Original timestamps and fractional seconds are retained.</p><details><summary>Detection and precision details</summary>${(s.notes || []).map((v) => `<p>${esc(v)}</p>`).join("")}</details></div><button id="preview-mapping">Refresh sample validation</button><div id="normalized-preview" class="notice" aria-live="polite"></div><details><summary>Aggregate during import (optional)</summary><label class="check-row"><input id="import-aggregate" type="checkbox" ${aggregate ? "checked" : ""}>Keep time/proximity summaries instead of individual rows</label><div class="modal-grid"><label class="field">Time window / minutes<input id="import-aggregate-window" type="number" value="${windowMinutes}"></label><label class="field">Radius / metres<input id="import-aggregate-radius" type="number" value="${radius}"></label></div><p class="description">Lossy. Keep the original source for individual records. The full-file check reviews source rows before aggregation.</p></details><section id="import-review" aria-live="polite"></section></div><footer><div class="import-destination"><label class="field">Destination layer<select id="import-target-layer"><option value="">Create a layer for this file / worksheet</option>${existingLayers.map((layer) => `<option value="${esc(layer.source)}" ${targetSource === layer.source ? "selected" : ""}>Add to ${esc(layer.source || "Unattributed data")} · ${layer.count.toLocaleString()} records</option>`).join("")}</select></label><p class="description">Add matching files to an existing layer to keep one entry in Layers. Original file, worksheet, source rows and imported attributes are retained.</p><label class="check-row"><input id="append-import" type="checkbox" ${append ? "checked" : ""}>Append to the current workspace</label><p class="description" id="import-replace-note">${append ? "Existing Events will be retained." : "Import will replace the Event dataset. The change can be undone during this session."} Original source columns and row numbers are retained.</p></div><div><p id="import-destination-summary" role="status"></p><p id="import-validation-summary" role="status" aria-live="polite"></p><p id="import-status" role="status" aria-live="polite"></p></div><div class="import-actions"><button data-close-footer>Cancel</button><button id="review-import">Check all rows</button><button id="commit-import" class="primary" disabled>Import Events</button></div></footer>`;
+        mountImportNavigation(dialog, navigation, rememberDraft);
         $<HTMLButtonElement>("[data-close]").onclick = close;
         $<HTMLDetailsElement>("#import-advanced").open =
           m.coordinate_system !== "dd" ||
@@ -487,11 +645,16 @@ export class ImportDialog {
         const delimiterSelect = $<HTMLSelectElement>("#import-delimiter");
         if (delimiterSelect)
           delimiterSelect.onchange = () => {
+            if (navigation) {
+              navigation.draft = undefined;
+              navigation.delimiter = delimiterSelect.value as Delimiter;
+            }
             void this.open(
               path,
               delimiterSelect.value as Delimiter,
               gisLayer,
               append,
+              navigation,
             ).catch((e) => status(String(e), true));
           };
         dialog
@@ -564,15 +727,31 @@ export class ImportDialog {
             return;
           }
           if (!alive() || this.hooks.workspace() !== workspace) return;
+          completed = true;
           dialog.close();
-          await this.hooks.committed(append, result);
+          try {
+            await this.hooks.committed(append, result);
+          } finally {
+            await navigation?.imported(
+              typeof result.workspace_id === "string"
+                ? result.workspace_id
+                : undefined,
+            );
+          }
         });
         bind("[data-close-footer]", close);
       };
       draw();
+      if (compatible) void validate();
       $<HTMLSelectElement>("[data-map=time]").focus({ preventScroll: true });
     } catch (error) {
+      if (alive() && (isCancellation(error) || String(error).includes("CANCELLED"))) {
+        dialog.close();
+        return;
+      }
       if (alive()) {
+        navigation?.failed(String(error));
+        mountImportNavigation(dialog, navigation);
         dialog.querySelector("[role=status]")?.remove();
         const message = document.createElement("p");
         message.setAttribute("role", "alert");

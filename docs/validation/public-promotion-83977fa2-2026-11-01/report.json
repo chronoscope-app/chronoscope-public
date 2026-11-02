@@ -1,0 +1,97 @@
+{
+  "source_next_commit": "83977fa2850b6eeafc07707ecb6498b4fdaa7a9a",
+  "public_parent": "2ac98225a2c372239396d2cb02659eea2d935fc3",
+  "scope": "Tracked Next source snapshot on independent Public ancestry; preserve all historical Public-only validation records. Source promotion only.",
+  "source_files": 3477,
+  "public_only_records_preserved": 32,
+  "public_only_paths": [
+    "docs/validation/public-governor-bulk-import-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/README.md",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/report.json",
+    "docs/validation/public-promotion-0.16.12-2026-10-31/report.json",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/README.md",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/report.json",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/README.md",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/report.json",
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-23e567f-2026-10-26/README.md",
+    "docs/validation/public-promotion-23e567f-2026-10-26/report.json",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json",
+    "docs/validation/public-promotion-4153760-2026-10-31/README.md",
+    "docs/validation/public-promotion-4153760-2026-10-31/report.json",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/README.md",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/report.json",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/README.md",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/report.json",
+    "docs/validation/public-promotion-82107e5-2026-10-26/README.md",
+    "docs/validation/public-promotion-82107e5-2026-10-26/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json",
+    "docs/validation/public-promotion-fb385b3-2026-11-01/report.json",
+    "docs/validation/public-resident-graphics-2026-10-30/report.json"
+  ],
+  "source_parity": "Every tracked Next blob and file mode matches the staged Public candidate.",
+  "local_validation": {
+    "quick_checks": "passed",
+    "adaptive_calendar_units": "6 passed",
+    "calendar_and_hurricane_browser": "7 passed",
+    "time_rail_interactions": "14 passed",
+    "optimized_macos_build": "passed and installed",
+    "api_key_storage": "focused unit, native Keychain, independent restart and settings checks passed",
+    "dependency_audit": {
+      "rust_vulnerabilities": 0,
+      "rust_existing_maintenance_or_yanked_warnings": 7,
+      "npm_vulnerabilities": 0
+    },
+    "secret_scan": {
+      "canary": "detected",
+      "tree_scan_findings": 4,
+      "reviewed_metadata_findings": [
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "line": 35,
+          "rule": "generic-api-key",
+          "field": "src/api.rs",
+          "classification": "Historical checksum or Git commit identifier in unchanged already-public validation metadata; not a credential."
+        },
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "line": 50,
+          "rule": "generic-api-key",
+          "field": "electricity-access-hero.png",
+          "classification": "Historical checksum or Git commit identifier in unchanged already-public validation metadata; not a credential."
+        },
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "line": 51,
+          "rule": "generic-api-key",
+          "field": "electricity-access-1990.png",
+          "classification": "Historical checksum or Git commit identifier in unchanged already-public validation metadata; not a credential."
+        },
+        {
+          "path": "docs/validation/release-0.16.9-publication/SOURCE-MANIFEST-RELEASE.json",
+          "line": 3,
+          "rule": "generic-api-key",
+          "field": "source_access_reference_commit",
+          "classification": "Historical checksum or Git commit identifier in unchanged already-public validation metadata; not a credential."
+        }
+      ],
+      "unreviewed_findings": 0,
+      "allowlist_changes": false,
+      "new_commit_scan": "passed: zero findings in the exact promotion commit; verified again after recording this result"
+    },
+    "repository_asset_budget": "passed: 105,265,319 source bytes before this receipt; below 160 MB total and 8 MB per file",
+    "release_metadata": "0.16.12 manifests and locks consistent; source promotion, not a new executable release"
+  },
+  "hosted_workflows_dispatched": false,
+  "release_assets_modified": false,
+  "manual_only_workflows": "Unchanged byte for byte from Public main; both workflow triggers are workflow_dispatch only."
+}

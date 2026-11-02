@@ -12,6 +12,7 @@ pub mod demo;
 pub mod demos;
 pub mod field_roles;
 pub mod import;
+pub mod input_limits;
 pub mod model;
 pub mod pattern_scan;
 pub mod project;

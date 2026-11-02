@@ -27,7 +27,14 @@ pub struct Catalog {
 }
 /// Bundled metadata is available offline, independently of the user's library.
 pub fn presets() -> &'static [Preset] {
-    &[]
+    static QUICK: std::sync::LazyLock<Vec<Preset>> = std::sync::LazyLock::new(|| {
+        known_presets()
+            .iter()
+            .filter(|p| matches!(p.id.as_str(), "nasa-gibs" | "usgs-topo" | "usgs-imagery"))
+            .cloned()
+            .collect()
+    });
+    &QUICK
 }
 fn known_presets() -> &'static [Preset] {
     static PRESETS: std::sync::LazyLock<Vec<Preset>> = std::sync::LazyLock::new(|| {

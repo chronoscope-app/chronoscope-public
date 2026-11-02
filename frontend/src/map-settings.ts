@@ -183,20 +183,40 @@ export function createMapSettings(host: Host) {
     if (navigation) return navigation.back();
     return renderMapSection();
   }
+  function quickPreferences(): Partial<Preferences> {
+    const choice = (document.querySelector("#map-quick-pick") as HTMLSelectElement | null)?.value || "custom";
+    if (choice === "custom") return {};
+    const stack = mapLayers(host.preferences).filter(layer => layer.id !== "quick-map").map(layer => ({...layer, config: {...layer.config, enabled: false}}));
+    const preset = host.mapPresets.find(p => `preset:${p.id}` === choice);
+    if (preset) stack.push({id: "quick-map", name: preset.name, server_name: preset.name, config: {...preset.config, enabled: true}, opacity: 1, min_zoom: 0, max_zoom: 30});
+    return {basemap: choice === "streets" ? "streets" : "none", map: {...host.preferences.map, enabled: false}, map_layers: stack};
+  }
+
   function renderMapSection(panel?: HTMLElement) {
     const custom = mapLayers(host.preferences).filter(
       (l) => l.config.enabled,
     ).length;
-    const html = `${head("Map")}<label class="check-row"><input id="streets-enabled" type="checkbox" ${host.preferences.basemap === "streets" ? "checked" : ""}> Streets</label><p class="description">Detailed worldwide streets · OpenFreeMap Positron. Detail follows your zoom automatically. No account or API key needed.</p>${custom ? `<p class="notice">${custom} custom map layer(s) are enabled and may cover Streets.</p><button id="streets-only">Use Streets only</button>` : ""}${view.resources?.status.basemapError ? `<p class="error">${esc(view.resources?.status.basemapError)}</p><button id="retry-streets">Retry Streets</button>` : ""}<details class="map-advanced"><summary>Advanced map settings</summary><div class="row" style="margin-top:12px"><button id="custom-map-server">Add custom map server…</button><button id="custom-map-layers">Custom layers…</button><button id="basemap-cache">Cache and loading…</button><button id="basemap-credits">Map credits</button></div><p class="description">Custom WMTS layers, authentication, opacity and zoom rules remain available here.</p></details><footer><button data-close>Cancel</button><span class="spacer"></span><button id="apply-basemap" class="primary">Apply</button></footer>`;
+    const active = mapLayers(host.preferences).filter(layer => layer.config.enabled);
+    const preset = active.length === 1 && host.mapPresets.find(p => Object.keys({...p.config, ...active[0].config}).every(key => key === "enabled" || JSON.stringify((p.config as any)[key]) === JSON.stringify((active[0].config as any)[key])));
+    const choice = custom ? (preset && host.preferences.basemap !== "streets" ? `preset:${preset.id}` : "custom") : host.preferences.basemap === "streets" ? "streets" : "none";
+    const html = `${head("Map")}<label class="field">Choose a map<select id="map-quick-pick"><option value="none" ${choice === "none" ? "selected" : ""}>Offline geography · no online map</option><option value="streets" ${choice === "streets" ? "selected" : ""}>Streets · OpenFreeMap</option>${host.mapPresets.map(p => `<option value="preset:${esc(p.id)}" ${choice === `preset:${p.id}` ? "selected" : ""}>${esc(p.name)}</option>`).join("")}<option value="custom" ${choice === "custom" ? "selected" : ""}>My configured layers</option></select></label><input id="streets-enabled" type="checkbox" hidden ${host.preferences.basemap === "streets" ? "checked" : ""}><p id="map-choice-description" class="description"></p><div class="row"><button id="custom-map-layers">Manage layers…</button><button id="custom-map-server">Add or edit a map server…</button></div>${view.resources?.status.basemapError ? `<p class="error">${esc(view.resources.status.basemapError)}</p><button id="retry-streets">Retry map</button>` : ""}<details class="map-advanced"><summary>Loading, cache and credits</summary><div class="row"><button id="basemap-cache">Loading and cache…</button><button id="basemap-credits">Map credits</button></div><p class="description">Layer order, opacity, zoom limits and server authentication are grouped in Manage layers and the server editor.</p></details><footer><button data-close>Cancel</button><span class="spacer"></span><button id="apply-basemap" class="primary">Apply</button></footer>`;
     if (panel) {
       panel.innerHTML = html;
       panel.querySelector(".modal-head, header")?.remove();
       panel.querySelector("footer")?.remove();
       panel.insertAdjacentHTML(
         "afterbegin",
-        '<h3>Maps</h3><p class="description">Save preferences applies the Streets choice. Advanced dialogs save their own changes.</p>',
+        '<p class="description">Pick a built-in map to get started. Save preferences applies your choice. Online services require a network connection; your data stays in the workspace.</p>',
       );
     } else modal(html);
+    const quick = $("#map-quick-pick") as HTMLSelectElement;
+    const describe = () => {
+      ($("#streets-enabled") as HTMLInputElement).checked = quick.value === "streets";
+      const selected = host.mapPresets.find(p => `preset:${p.id}` === quick.value);
+      $("#map-choice-description").textContent = selected ? `${selected.description} ${selected.coverage} ${selected.license}` : quick.value === "streets" ? "Worldwide streets · OpenFreeMap Positron. Automatic detail as you zoom; no account or API key." : quick.value === "none" ? "Use the bundled offline geography without online map imagery." : "Keep your configured map layers, order, opacity and zoom rules.";
+    };
+    quick.addEventListener("change", describe);
+    describe();
     const advanced = $(".map-advanced") as HTMLDetailsElement;
     advanced.open = advancedOpen;
     advanced.addEventListener("toggle", () => {
@@ -215,31 +235,12 @@ export function createMapSettings(host: Host) {
     if (!panel)
       on("#apply-basemap", async () => {
         host.preferences = await call("preferences", {
-          preferences: {
-            basemap: check("#streets-enabled") ? "streets" : "none",
-          },
+          preferences: quickPreferences(),
         });
         closeModal();
         await refresh(false);
       });
-    if (custom)
-      on("#streets-only", async () => {
-        const stack = mapLayers(host.preferences).map((layer) => ({
-          ...layer,
-          config: { ...layer.config, enabled: false },
-        }));
-        host.preferences = await call("preferences", {
-          preferences: {
-            basemap: "streets",
-            map: { ...host.preferences.map, enabled: false },
-            map_layers: stack,
-          },
-        });
-        if (panel) renderMapSection(panel);
-        else closeModal();
-        await refresh(false);
-        await loadRasters();
-      });
+
   }
 
   async function wmtsMenu(
@@ -287,7 +288,7 @@ export function createMapSettings(host: Host) {
     let caps: any = host.capabilitiesURL === c.url ? host.capabilities : null;
     let requestGeneration = 0;
     modal(
-      `${head("Maps")}<p class="description">Save multiple WMTS connections and add imagery layers from any server. The server library stays on this computer; the layer stack and visibility rules are saved with your workspace.</p><div class="row"><label class="field grow">Map source<select id="wmts-server"></select></label><button id="add-wmts-server">Add server</button><button id="remove-wmts-server">Remove</button></div><div class="row map-navigation"><button id="map-stack-settings">Map layers…</button><button id="map-credits">Map credits</button></div><div id="wmts-source-info" class="notice" hidden></div><label class="field">Server name<input id="wmts-server-name"></label><label class="field">Capabilities or service URL<input id="wmts-url" placeholder="https://…/WMTSCapabilities.xml"></label><div class="row"><button id="inspect-wmts">Read capabilities</button><button id="wmts-auth">Authentication…</button><button id="wmts-cache">Cache and loading…</button><span class="spacer"></span><label class="check-row"><input id="map-enabled" type="checkbox"> Show map</label></div><div id="wmts-layer-status" role="status" class="description"></div><div id="wmts-fields" style="margin-top:12px"></div><div class="notice">EPSG:3857 and EPSG:4326/CRS84. Imagery loads directly with a local disk cache. Each server remembers its layer, matrix, style, date and resolution. Multiple sources can be enabled together. Use Map layers to set opacity, order and zoom visibility.</div><footer><button data-close>Close</button><button id="save-wmts-server">Save server</button><button id="add-map-layer">Add selected layer to map</button><span class="spacer"></span><button id="apply-map" class="primary">Apply to view</button></footer>`,
+      `${head("Map server")}<p class="description">Choose a saved service or enter its URL, read the available layers, then choose the map to display.</p><div class="row"><label class="field grow">Map source<select id="wmts-server"></select></label><button id="add-wmts-server">Add server</button><button id="remove-wmts-server">Remove</button></div><div class="row map-navigation"><button id="map-stack-settings">Map layers…</button><button id="map-credits">Map credits</button></div><div id="wmts-source-info" class="notice" hidden></div><label class="field">Server name<input id="wmts-server-name"></label><label class="field">Capabilities or service URL<input id="wmts-url" placeholder="https://…/WMTSCapabilities.xml"></label><div class="row"><button id="inspect-wmts">Find available layers</button><span class="spacer"></span><label class="check-row"><input id="map-enabled" type="checkbox"> Show map</label></div><div id="wmts-layer-status" role="status" class="description"></div><div id="wmts-fields" style="margin-top:12px"></div><details class="map-connection-options"><summary>Connection options</summary><div class="row"><button id="wmts-auth">Authentication…</button><button id="wmts-cache">Loading and cache…</button><button id="save-wmts-server">Save connection only</button></div><p class="description">Connections stay on this computer. Layer order, opacity and zoom limits are in Manage layers.</p></details><footer><button data-close>Back to Maps</button><span class="spacer"></span><button id="add-map-layer">Add as another layer</button><button id="apply-map" class="primary">Use this map</button></footer>`,
       false,
     );
     const menuOwner = $("#wmts-server");
@@ -683,5 +684,5 @@ export function createMapSettings(host: Host) {
       await backToMaps();
     });
   }
-  return { mapMenu, mapLayerMenu, mount };
+  return { quickPreferences, mapMenu, mapLayerMenu, mount };
 }

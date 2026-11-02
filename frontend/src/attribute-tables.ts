@@ -2,6 +2,7 @@ import { call } from "./bridge";
 import { TableSelection } from "./table-selection";
 import { tableMarkup, tableRows } from "./table-dom";
 import {
+  fitColumnWidths, captureColumnWidths, restoreColumnWidths, columnPixelOffset, columnResizeHandle,
   columnWindow,
   columnWindowOffset,
   TABLE_COLUMN_WIDTH,
@@ -30,6 +31,7 @@ export type AttributeTab = {
   selectedOnly?: boolean;
   column: number;
   columnCount: number;
+  widths?: number[];
   search: string;
   page: number;
   top: number;
@@ -173,6 +175,7 @@ export function createAttributeTables(
       ? `gis:${gisTable.layerId}`
       : `events:${JSON.stringify([tableSource, tableDisplayCell])}`;
   }
+  host.addEventListener("table-column-resize", () => { saveTab(); hooks.changed?.(); });
   function captureTab(): AttributeTab {
     return {
       key: activeTab || currentKey(),
@@ -184,6 +187,7 @@ export function createAttributeTables(
       selectedOnly: tableSelectedOnly,
       column: tableColumnOffset,
       columnCount: tableColumnCount,
+      widths: captureColumnWidths(host),
       search: tableSearch,
       page,
       top: storedTop,
@@ -210,6 +214,7 @@ export function createAttributeTables(
     clearTimeout(searchTimer);
     tableColumnOffset = value.column;
     tableColumnCount = value.columnCount || 0;
+    restoreColumnWidths(host, value.widths);
     tableSearch = value.search ?? value.gisState.search ?? "";
     page = value.page;
     tableReveal = value.reveal;
@@ -345,6 +350,7 @@ export function createAttributeTables(
     saveTab();
     const key = `events:${JSON.stringify([source, cell])}`;
     if (tabs.has(key)) return activate(key);
+    restoreColumnWidths(host);
     gisTable.close();
     tableSelection.anchor = tableSelection.activeId = null;
     tableSource = source;
@@ -371,6 +377,7 @@ export function createAttributeTables(
     saveTab();
     const key = `gis:${id}`;
     if (tabs.has(key)) return activate(key);
+    restoreColumnWidths(host);
     clearTimeout(searchTimer);
     gisTable.open(id);
     tableColumnOffset = 0;
@@ -455,6 +462,7 @@ export function createAttributeTables(
   async function table(preloaded?: any, selectedIds?: string[], notify = true) {
     const workspace = hooks.snapshot().workspace_id;
     if (workspace !== workspaceId) {
+      restoreColumnWidths(host);
       tabs.clear();
       activeTab = null;
       workspaceId = workspace;
@@ -564,12 +572,7 @@ export function createAttributeTables(
       // A playback response must not restore a position from before a wheel event.
       storedTop = scroll.scrollTop;
       storedLeft = scroll.scrollLeft;
-      const window = columnWindow(
-        host,
-        tableColumnOffset,
-        r.columns.length,
-        tableColumnCount,
-      );
+
       $("#table-filter-option").hidden = false;
       $("#table-selected-option").hidden = false;
       ($("#table-selected-only") as HTMLInputElement).checked =
@@ -593,10 +596,6 @@ export function createAttributeTables(
           ? `Original · ${c.slice(10)}`
           : titles[c] || c.replaceAll("_", " "),
       ]);
-      tableMarkup(
-        $("#table-head"),
-        `<tr>${window.before("th")}${headers.map(([c, title], i) => `<th aria-colindex="${tableColumnOffset + i + 1}" aria-sort="${tableSort === c ? (tableDescending ? "descending" : "ascending") : "none"}"><button data-table-sort="${esc(c)}" aria-label="Sort by ${esc(c)}" title="${esc(title)}">${esc(title)}${tableSort === c ? (tableDescending ? " ↓" : " ↑") : ""}</button></th>`).join("")}${window.after("th")}</tr>`,
-      );
       const value = (e: any, c: string) => {
         if (c.startsWith("attribute:"))
           return e[c] ?? e.attrs?.[c.slice(10)] ?? "";
@@ -605,6 +604,17 @@ export function createAttributeTables(
         if (Array.isArray(e[c])) return e[c].join("; ");
         return e[c] ?? "";
       };
+      fitColumnWidths(host, tableColumnOffset, headers.map(([, title]) => title), r.events.map((e: any) => columns.map(c => value(e, c))));
+      const window = columnWindow(
+        host,
+        tableColumnOffset,
+        r.columns.length,
+        tableColumnCount,
+      );
+      tableMarkup(
+        $("#table-head"),
+        `<tr>${window.before("th")}${headers.map(([c, title], i) => `<th aria-colindex="${tableColumnOffset + i + 1}" aria-sort="${tableSort === c ? (tableDescending ? "descending" : "ascending") : "none"}"><button data-table-sort="${esc(c)}" aria-label="Sort by ${esc(c)}" title="${esc(title)}">${esc(title)}${tableSort === c ? (tableDescending ? " ↓" : " ↑") : ""}</button>${columnResizeHandle(tableColumnOffset + i)}</th>`).join("")}${window.after("th")}</tr>`,
+      );
       const hadTableFocus = !!document.activeElement?.closest(
         "#table-body [data-event]",
       );
@@ -702,6 +712,7 @@ export function createAttributeTables(
         $(".table-scroll").clientWidth,
         tableColumnCount,
         tableColumnOffset,
+        host,
       );
       if (
         (nextPage === page || tableReveal) &&
@@ -789,7 +800,7 @@ export function createAttributeTables(
     },
     set tableColumnOffset(value: typeof tableColumnOffset) {
       tableColumnOffset = value;
-      storedLeft = value * TABLE_COLUMN_WIDTH;
+      storedLeft = columnPixelOffset(host, value);
     },
     get tableSource() {
       return tableSource;

@@ -18,6 +18,7 @@ pub const COMMANDS: &[&str] = &[
     "client_call",
     "open",
     "import_preview",
+    "file_probe",
     "gis_load",
     "gis_import_preview",
     "import_validate",
@@ -77,7 +78,9 @@ fn metadata(id: &str, job: &Job) -> Value {
         phase,
         completed: job.progress,
         total: job.total,
-        unit: if job.message.contains("events") {
+        unit: if job.message.contains("bytes") {
+            "bytes"
+        } else if job.message.contains("events") {
             "rows"
         } else if job.message.contains("SI") {
             "steps"

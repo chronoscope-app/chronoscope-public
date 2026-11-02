@@ -1,0 +1,54 @@
+.file-drop-hint {
+  position: fixed;
+  inset: 72px 24px auto;
+  z-index: 10000;
+  padding: 24px;
+  border: 2px dashed var(--accent);
+  border-radius: 12px;
+  background: var(--panel);
+  color: var(--text);
+  text-align: center;
+  font-size: 18px;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+}
+.import-file-navigation {
+  border-block: 1px solid var(--line);
+  flex: 0 0 auto;
+  padding: 12px 24px;
+  margin: 0;
+}
+.import-file-pages,
+.import-file-alternatives {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.import-file-pages > label {
+  flex: 1;
+  min-width: 160px;
+  margin: 0;
+}
+.import-file-pages select {
+  width: 100%;
+  max-width: 100%;
+}
+.import-file-alternatives {
+  margin-top: 10px;
+}
+.import-file-alternatives > span {
+  flex: 1;
+  min-width: 180px;
+}
+
+.import-dialog.import-file-page[open] {
+  height: fit-content;
+}
+.import-file-page .workflow-body p {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+.import-file-page .workflow-body h3 {
+  overflow-wrap: anywhere;
+}

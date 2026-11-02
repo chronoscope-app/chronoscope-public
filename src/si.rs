@@ -1,9 +1,10 @@
-//! Optional OpenAI-compatible tool loop. Credentials live only in process memory.
+//! Optional OpenAI-compatible tool loop. Saved keys use the OS credential store.
 //! Calls the same validated, scoped operations as MCP/CLI; never executes a shell.
 use crate::engine::Engine;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 mod chat;
+mod credentials;
 pub(crate) mod features;
 mod transport;
 use std::{
@@ -23,6 +24,8 @@ struct Settings {
     model: String,
     root: Option<PathBuf>,
     client_certificate: Option<crate::wmts_auth::Profile>,
+    remember_key: bool,
+    auto_connect: bool,
 }
 struct Connection {
     settings: Settings,
@@ -34,6 +37,8 @@ struct Connection {
 #[derive(Default)]
 pub struct Assistant {
     chat: Mutex<chat::Chat>,
+    vault: credentials::Vault,
+    restore_error: Mutex<Option<String>>,
     feature_worker: Mutex<()>,
     feature_http: Arc<AtomicBool>,
     connection: Mutex<Option<Connection>>,
@@ -116,7 +121,89 @@ fn tools(allow_edits: bool, files: bool) -> Vec<Value> {
         json!({"type":"function","function":{"name":tool["name"],"description":tool["description"],"parameters":tool["inputSchema"]}})
     }).collect()
 }
+impl Settings {
+    fn read(profile: &std::path::Path) -> Self {
+        std::fs::read(profile.join("si-connection.json"))
+            .or_else(|_| std::fs::read(profile.join("ai-connection.json")))
+            .ok()
+            .filter(|b| b.len() < 16384)
+            .and_then(|b| serde_json::from_slice::<Self>(&b).ok())
+            .filter(|s| s.provider.is_empty() || s.provider == "openai-compatible")
+            .unwrap_or_default()
+    }
+    fn save(&self, profile: &std::path::Path) -> Result<(), String> {
+        let mut file =
+            tempfile::NamedTempFile::new_in(profile).map_err(|_| "Cannot save AI connection")?;
+        serde_json::to_writer(
+            &mut file,
+            &Self {
+                root: None,
+                ..self.clone()
+            },
+        )
+        .map_err(|_| "Cannot save AI connection")?;
+        file.persist(profile.join("si-connection.json"))
+            .map_err(|_| "Cannot save AI connection")?;
+        Ok(())
+    }
+}
 impl Assistant {
+    pub(crate) fn for_profile(profile: &std::path::Path) -> Self {
+        Self::restore(profile, credentials::Vault::default())
+    }
+    fn restore(profile: &std::path::Path, vault: credentials::Vault) -> Self {
+        let assistant = Self {
+            vault,
+            ..Self::default()
+        };
+        let mut settings = Settings::read(profile);
+        if !settings.auto_connect {
+            return assistant;
+        }
+        let mut restore = || -> Result<Connection, String> {
+            settings.url = endpoint(&settings.url)?;
+            if settings.model.trim().is_empty() {
+                return Err("Saved AI model is missing".into());
+            }
+            settings.root = None;
+            if let Some(certificate) = settings.client_certificate.as_mut() {
+                certificate.validate()?;
+                if certificate.origin != crate::wmts_auth::origin(&settings.url)?
+                    || (certificate.kind != crate::wmts_auth::IdentityKind::Disabled
+                        && certificate.kind != crate::wmts_auth::platform_kind())
+                {
+                    return Err(
+                        "Saved AI certificate does not match this service or operating system"
+                            .into(),
+                    );
+                }
+            }
+            let key = if settings.remember_key {
+                assistant
+                    .vault
+                    .0
+                    .get(&credentials::account(profile, &settings.url)?)?
+                    .ok_or("Saved AI key is unavailable; enter it again in Settings → AI chat")?
+            } else {
+                String::new()
+            };
+            if key.len() > 8192 || key.chars().any(char::is_control) {
+                return Err("Saved AI key is invalid; enter it again in Settings → AI chat".into());
+            }
+            Ok(Connection {
+                settings: settings.clone(),
+                key,
+                history: vec![],
+                session: assistant.session.fetch_add(1, Ordering::Relaxed),
+                transport: Arc::new(transport::Client::default()),
+            })
+        };
+        match restore() {
+            Ok(connection) => *assistant.connection.lock().unwrap() = Some(connection),
+            Err(error) => *assistant.restore_error.lock().unwrap() = Some(error),
+        }
+        assistant
+    }
     pub fn invoke(&self, engine: &Engine, command: &str, args: Value) -> Result<Value, String> {
         if command.starts_with("si_chat_") || command == "present_result" {
             return self.chat_invoke(engine, command, args);
@@ -132,19 +219,9 @@ impl Assistant {
                 let settings = connection
                     .as_ref()
                     .map(|c| c.settings.clone())
-                    .or_else(|| {
-                        std::fs::read(engine.data_dir.join("si-connection.json"))
-                            .or_else(|_| std::fs::read(engine.data_dir.join("ai-connection.json")))
-                            .ok()
-                            .filter(|b| b.len() < 16384)
-                            .and_then(|b| serde_json::from_slice(&b).ok())
-                    })
-                    .filter(|s: &Settings| {
-                        s.provider.is_empty() || s.provider == "openai-compatible"
-                    })
-                    .unwrap_or_default();
+                    .unwrap_or_else(|| Settings::read(&engine.data_dir));
                 Ok(
-                    json!({"provider":"openai-compatible","url":settings.url,"model":settings.model,"root":settings.root,"connected":connection.is_some(),"key_present":connection.as_ref().is_some_and(|c|!c.key.is_empty()),"running":running.is_some(),"protocol":"OpenAI-compatible Chat Completions with tool calling","key_storage":"memory only; reconnect after restart","client_certificate":settings.client_certificate,"client_certificate_kind":crate::wmts_auth::platform_kind(),"automatic_client_certificate":cfg!(any(target_os="macos",target_os="windows"))}),
+                    json!({"provider":"openai-compatible","url":settings.url,"model":settings.model,"root":settings.root,"connected":connection.is_some(),"key_present":connection.as_ref().is_some_and(|c|!c.key.is_empty()),"running":running.is_some(),"protocol":"OpenAI-compatible Chat Completions with tool calling","key_storage":if settings.remember_key {"operating system credential store"} else {"session memory (not saved)"},"key_saved":settings.remember_key,"auto_connect":settings.auto_connect,"connection_error":self.restore_error.lock().map_err(|_| "SI unavailable")?.clone(),"client_certificate":settings.client_certificate,"client_certificate_kind":crate::wmts_auth::platform_kind(),"automatic_client_certificate":cfg!(any(target_os="macos",target_os="windows"))}),
                 )
             }
             "si_configure" => {
@@ -197,7 +274,18 @@ impl Assistant {
                         );
                     }
                 }
-                let key = args["api_key"].as_str().unwrap_or("").to_string();
+                let remember = args["remember_key"].as_bool().unwrap_or(false);
+                let previous = Settings::read(&engine.data_dir);
+                let mut key = args["api_key"].as_str().unwrap_or("").to_string();
+                if remember && key.is_empty() && previous.remember_key && previous.url == url {
+                    key = self
+                        .vault
+                        .0
+                        .get(&credentials::account(&engine.data_dir, &url)?)?
+                        .ok_or(
+                            "Saved AI key is unavailable; enter a key or choose Forget saved key",
+                        )?;
+                }
                 if key.chars().any(char::is_control) {
                     return Err("Invalid API key".into());
                 }
@@ -219,20 +307,17 @@ impl Assistant {
                     model,
                     root,
                     client_certificate,
+                    remember_key: remember && !key.is_empty(),
+                    auto_connect: remember,
                 };
-                let mut file = tempfile::NamedTempFile::new_in(&engine.data_dir)
-                    .map_err(|_| "Cannot save SI connection")?;
-                // tempfile creates private files on Unix. Keys never reach this file.
-                serde_json::to_writer(
-                    &mut file,
-                    &Settings {
-                        root: None,
-                        ..settings.clone()
-                    },
-                )
-                .map_err(|_| "Cannot save SI connection")?;
-                file.persist(engine.data_dir.join("si-connection.json"))
-                    .map_err(|_| "Cannot save SI connection")?;
+                if settings.remember_key {
+                    self.vault.0.set(
+                        &credentials::account(&engine.data_dir, &settings.url)?,
+                        &key,
+                    )?;
+                }
+                settings.save(&engine.data_dir)?;
+                *self.restore_error.lock().map_err(|_| "SI unavailable")? = None;
                 *self
                     .connection
                     .lock()
@@ -243,7 +328,9 @@ impl Assistant {
                     session: self.session.fetch_add(1, Ordering::Relaxed),
                     transport: Arc::new(transport::Client::default()),
                 });
-                Ok(json!({"connected":true,"key_storage":"memory only"}))
+                Ok(
+                    json!({"connected":true,"key_storage":if remember {"operating system credential store"} else {"session memory (not saved)"}}),
+                )
             }
             "si_history" | "si_clear" => {
                 let running = self.running.lock().map_err(|_| "SI unavailable")?;
@@ -292,6 +379,16 @@ impl Assistant {
             }
             "si_disconnect" => {
                 self.cancel();
+                let mut settings = Settings::read(&engine.data_dir);
+                if args["forget_key"].as_bool().unwrap_or(false) && settings.remember_key {
+                    self.vault
+                        .0
+                        .delete(&credentials::account(&engine.data_dir, &settings.url)?)?;
+                    settings.remember_key = false;
+                }
+                settings.auto_connect = false;
+                settings.save(&engine.data_dir)?;
+                *self.restore_error.lock().map_err(|_| "SI unavailable")? = None;
                 *self.analysis_report.lock().map_err(|_| "SI unavailable")? = None;
                 *self
                     .connection

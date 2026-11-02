@@ -49,3 +49,7 @@ Native LGPL/MPL source-access and other dependency obligations must still be che
 ## Additional event and country-statistics examples
 
 [Priority-demo sources and interpretation](docs/PRIORITY-DEMOS.md) records USGS authorship selection, NASA LANCE/FIRMS source and bounded NRT subset, World Bank / ESMAP electricity-access data (CC BY 4.0), Natural Earth country boundaries (public domain), and JHU CSSE COVID-19 data (CC BY 4.0). Each project embeds the attribution and each CSV includes a credit companion. Inputs are pinned with SHA-256 checksums.
+
+## AI credential storage
+
+`keyring` 4.2.0 (MIT OR Apache-2.0) selects the native credential store: Apple Keychain, Windows Credential Manager, or Linux Secret Service. New platform and cryptographic dependency notices and exact archive checksums are retained in `assets/licenses/locked-cargo/NOTICE-INVENTORY.json`. There is no plaintext-file fallback.

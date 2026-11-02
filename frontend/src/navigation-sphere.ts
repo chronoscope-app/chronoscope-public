@@ -137,13 +137,13 @@ export class NavigationSphere {
       if (event.key === "Home") view.faceNorth();
       else if (view.mode === "map") {
         view.panPixels(
-          event.key === "ArrowLeft" ? -30 : event.key === "ArrowRight" ? 30 : 0,
-          event.key === "ArrowUp" ? -30 : event.key === "ArrowDown" ? 30 : 0,
+          event.key === "ArrowLeft" ? 30 : event.key === "ArrowRight" ? -30 : 0,
+          event.key === "ArrowUp" ? 30 : event.key === "ArrowDown" ? -30 : 0,
         );
       } else
         view.orbitPixels(
-          event.key === "ArrowLeft" ? -20 : event.key === "ArrowRight" ? 20 : 0,
-          event.key === "ArrowUp" ? -20 : event.key === "ArrowDown" ? 20 : 0,
+          event.key === "ArrowLeft" ? 20 : event.key === "ArrowRight" ? -20 : 0,
+          event.key === "ArrowUp" ? 20 : event.key === "ArrowDown" ? -20 : 0,
         );
       this.update();
     });
@@ -264,8 +264,8 @@ export class NavigationSphere {
         : `Drag compass to orbit; heading ${Math.round(bearing) % 360} degrees, tilt ${Math.round(tilt)} degrees; arrow keys rotate and tilt`,
     );
     this.sphere.dataset.tooltip = flat
-      ? "Grab to pan the map"
-      : "Grab to orbit · arrow keys rotate and tilt · Home restores north and recenters Globe";
+      ? "Drag to pan · arrows move viewpoint · Home restores north"
+      : "Drag to orbit · arrows rotate and tilt · Home faces north · Map: drag to pan, Shift-drag to orbit";
     this.sphere.removeAttribute("title");
     this.zoom.value = String(zoomValue(this.view.navigationDistance()));
     this.zoom.setAttribute(

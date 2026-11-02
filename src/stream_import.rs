@@ -15,6 +15,7 @@ pub struct PendingImport {
     pub bytes: u64,
     pub modified: Option<SystemTime>,
     pub counts: Vec<usize>,
+    pub counts_exact: bool,
     pub streaming: bool,
 }
 pub type IngestReport = (usize, usize, Vec<(usize, String)>);
@@ -32,20 +33,19 @@ impl PendingImport {
             bytes: meta.len(),
             modified: meta.modified().ok(),
             counts,
+            counts_exact: true,
             streaming: false,
         })
     }
     pub fn preview(path: &Path, delimiter: u8) -> Result<Self, String> {
         let path = path.canonicalize().map_err(|e| e.to_string())?;
         let meta = path.metadata().map_err(|e| e.to_string())?;
-        if !meta.is_file() || meta.len() > 2 * 1024 * 1024 * 1024 {
-            return Err("Import requires a regular file of at most 2 GiB".into());
-        }
+        crate::input_limits::ensure(&path)?;
         let streaming = path
             .extension()
             .and_then(|e| e.to_str())
             .is_some_and(|e| e.eq_ignore_ascii_case("csv") || e.eq_ignore_ascii_case("tsv"));
-        let (sample, counts) = if streaming {
+        let (sample, counts, counts_exact) = if streaming {
             let delimiter = if delimiter == 0 {
                 import::detect_delimiter(&path)?
             } else {
@@ -58,21 +58,21 @@ impl PendingImport {
                 row_numbers: vec![],
             };
             let mut count = 0;
-            let mut sample_bytes = 0usize;
-            visit_csv(&path, delimiter, |headers, row, index| {
-                if index == 0 {
-                    sample.headers = headers.to_vec()
-                } else {
-                    count += 1;
-                    let bytes = row.iter().map(String::len).sum::<usize>();
-                    if count <= 1000 && sample_bytes.saturating_add(bytes) <= 4 * 1024 * 1024 {
-                        sample_bytes += bytes;
+            let exact = scan_csv(
+                &path,
+                delimiter,
+                Some((1000, 4 * 1024 * 1024)),
+                |headers, row, index| {
+                    if index == 0 {
+                        sample.headers = headers.to_vec();
+                    } else {
+                        count += 1;
                         sample.rows.push(row.to_vec());
-                        sample.row_numbers.push(index + 1)
+                        sample.row_numbers.push(index + 1);
                     }
-                }
-                Ok(())
-            })?;
+                    Ok(())
+                },
+            )?;
             (
                 RawImport {
                     source: path
@@ -84,11 +84,12 @@ impl PendingImport {
                     delimiter: Some(delimiter),
                 },
                 vec![count],
+                exact,
             )
         } else {
             let raw = import::read_file(&path, delimiter)?;
             let counts = raw.tables.iter().map(|t| t.rows.len()).collect();
-            (raw, counts)
+            (raw, counts, true)
         };
         let mut random = [0u8; 16];
         getrandom::fill(&mut random).map_err(|e| e.to_string())?;
@@ -99,6 +100,7 @@ impl PendingImport {
             bytes: meta.len(),
             modified: meta.modified().ok(),
             counts,
+            counts_exact,
             streaming,
         })
     }
@@ -174,6 +176,8 @@ impl PendingImport {
         let mut raw_seen = 0u64;
         let bulk = accumulator.is_none() && store.count()? == 0;
         let mut flush = |batch: &RawTable| -> Result<(), String> {
+            crate::operation::check()?;
+            crate::operation::progress(raw_seen, None, "Converting events");
             let mut report = import::convert_reporting(
                 batch,
                 mapping,
@@ -303,8 +307,16 @@ impl PendingImport {
 fn visit_csv(
     path: &Path,
     delimiter: u8,
-    mut visit: impl FnMut(&[String], &[String], usize) -> Result<(), String>,
+    visit: impl FnMut(&[String], &[String], usize) -> Result<(), String>,
 ) -> Result<(), String> {
+    scan_csv(path, delimiter, None, visit).map(|_| ())
+}
+fn scan_csv(
+    path: &Path,
+    delimiter: u8,
+    sample_limit: Option<(usize, usize)>,
+    mut visit: impl FnMut(&[String], &[String], usize) -> Result<(), String>,
+) -> Result<bool, String> {
     let file = std::fs::File::open(path).map_err(|e| e.to_string())?;
     let guard = RecordGuard {
         reader: std::io::BufReader::new(file),
@@ -314,6 +326,7 @@ fn visit_csv(
         delimiter,
         bom: 0,
         length: 0,
+        total: 0,
     };
     let mut reader = csv::ReaderBuilder::new()
         .delimiter(delimiter)
@@ -329,7 +342,16 @@ fn visit_csv(
         return Err("CSV requires 1–512 header columns".into());
     }
     visit(&headers, &[], 0)?;
-    for (index, row) in reader.records().enumerate() {
+    let mut records = reader.records();
+    let mut index = 0;
+    let mut sample_bytes = 0usize;
+    loop {
+        if sample_limit.is_some_and(|(rows, bytes)| index >= rows || sample_bytes >= bytes) {
+            return Ok(false);
+        }
+        let Some(row) = records.next() else {
+            return Ok(true);
+        };
         crate::operation::check()?;
         if index % 10000 == 0 {
             crate::operation::progress(index as u64, None, "Reading events");
@@ -339,9 +361,14 @@ fn visit_csv(
         }
         let row = row.map_err(|e| format!("Malformed CSV: {e}"))?;
         let row: Vec<_> = row.iter().map(str::to_owned).collect();
-        visit(&headers, &row, index + 1)?
+        let bytes = row.iter().map(String::len).sum::<usize>();
+        if sample_limit.is_some_and(|(_, max)| sample_bytes.saturating_add(bytes) > max) {
+            return Ok(false);
+        }
+        visit(&headers, &row, index + 1)?;
+        sample_bytes = sample_bytes.saturating_add(bytes);
+        index += 1;
     }
-    Ok(())
 }
 // Bound each physical/logical record before csv can grow its record allocation.
 struct RecordGuard<R> {
@@ -352,10 +379,18 @@ struct RecordGuard<R> {
     delimiter: u8,
     bom: u8,
     length: usize,
+    total: u64,
 }
 impl<R: std::io::Read> std::io::Read for RecordGuard<R> {
     fn read(&mut self, out: &mut [u8]) -> std::io::Result<usize> {
+        crate::operation::check().map_err(std::io::Error::other)?;
         let count = self.reader.read(out)?;
+        self.total = self.total.saturating_add(count as u64);
+        if self.total > crate::input_limits::MAX_INPUT {
+            return Err(std::io::Error::other(
+                "RESOURCE_LIMIT: CSV grew beyond the 2 GiB read budget",
+            ));
+        }
         for &byte in &out[..count] {
             self.length += 1;
             let skip_bom = match (self.bom, byte) {

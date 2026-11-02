@@ -4,7 +4,23 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
-- Inset the Time axis, keep its labels inside the view, and add a draggable top sphere. Save the axis position and Views → Time view controls → Grab spheres choice with the workspace.
+- Make local validation default to six quick unit/type/asset checks. Preserve full core/build checks under `--tier fast` and release checks under `--tier full`; focused browser requests avoid unrelated all-target Rust linting.
+
+- Report interrupted import-review jobs as cancellation rather than exposing the raw SQLite diagnostic; retain genuine failures and completed results when cancellation arrives late.
+
+- Temporarily disable Charts and Patterns entry points with muted icons and development tooltips; retain saved configurations for later re-enablement.
+- Integrate chat service and tool settings into the shared Preferences categories.
+- Fit attribute columns to displayed content with bounded widths, draggable/keyboard dividers and double-click-to-fit; retain sizes per table tab and detached table window.
+- Start Maps with one quick picker for offline geography, Streets, NASA reference imagery and USGS topographic/aerial services. Group custom layers, server connections and loading/cache controls; preserve pending preference drafts when returning from source dialogs.
+
+- Anchor radius selection near displayed stem bases to real source coordinates in Map, Time and Globe; exclude inferred locations and keep empty queries open with clear feedback.
+- Make arrow keys move the viewpoint in their indicated directions, including compass keyboard controls; retain mouse drag behavior.
+
+- Reject oversized/nonregular inputs from metadata before content reads, with per-format limits and a confirmation for supported files over 100 MiB. Use bounded CSV/TSV sample previews and exact full-file review counts. Make file detection, previews, Open and GIS loading cancellable background jobs with progress; retain archive expansion limits and protect against partial imports.
+
+- Support native file drops with a shared import queue, previous/next navigation, retained mapping drafts, full-row checks and append defaults. Offer GIS reference display within the import modal; add display-only 3D assets immediately and group Shapefile companions.
+
+- Inset the Time axis and retain saved axis positions. Remove the on-map grab spheres and their Views toggle; explain map, keyboard and compass navigation in Views and tooltips.
 - Offer physical Altitude in Time through the existing vertical display control, reusing Globe altitude conversion and filtering. Remember each view’s choice independently.
 - Open Maps as its own Preferences section. Closing or canceling custom server, layers or cache settings returns to Maps with Advanced settings expanded and pending preferences preserved.
 

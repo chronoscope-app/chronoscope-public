@@ -29,17 +29,21 @@ export async function runJob<K extends JobCommand>(
       options.progress?.(state);
       terminal = !["queued", "running"].includes(state.status);
       if (terminal) {
-        if (state.status !== "completed")
+        if (state.status !== "completed") {
+          // SQLite's progress handler can return "Workspace database:
+          // interrupted". The terminal lifecycle/code, not that diagnostic,
+          // determines what a cancelled operation shows to the user.
+          const cancelled =
+            state.status === "cancelled" || state.error?.code === "CANCELLED";
           throw new CommandError(
-            state.error || {
-              code:
-                state.status === "cancelled" ? "CANCELLED" : "OPERATION_FAILED",
-              message:
-                state.status === "cancelled"
-                  ? "Operation cancelled"
-                  : "Operation failed",
-            },
+            cancelled
+              ? { code: "CANCELLED", message: "Operation cancelled" }
+              : state.error || {
+                  code: "OPERATION_FAILED",
+                  message: "Operation failed",
+                },
           );
+        }
         const result = await call("job_result", { job_id: id });
         return result.result as EngineContracts[K]["result"];
       }
@@ -49,4 +53,11 @@ export async function runJob<K extends JobCommand>(
     if (terminal) await call("job_release", { job_id: id }).catch(() => {});
     else await call("job_cancel", { job_id: id }).catch(() => {});
   }
+}
+
+export function isCancellation(error: unknown): boolean {
+  return (
+    (error instanceof CommandError && error.code === "CANCELLED") ||
+    (error instanceof DOMException && error.name === "AbortError")
+  );
 }

@@ -12,7 +12,7 @@ import uuid
 from threading import Lock
 from validation_suites import load_suites, select_browser
 from validation_runtime import run_command, sha256, build_receipt, matches_build_receipt
-from source_checks import check_plan
+from source_checks import check_plan, quick_plan
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -47,7 +47,7 @@ def source_digest():
 def main():
     inventory = load_suites()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--tier', choices=['fast', 'full'], default='fast')
+    parser.add_argument('--tier', choices=['quick', 'fast', 'full'], default='quick')
     parser.add_argument('--browser', action='store_true', help='Fast tier: short smoke journey; full tier: all browser suites.')
     parser.add_argument('--suite', action='append', default=[], help='Run a browser suite by name; repeat to combine.')
     parser.add_argument('--feature', action='append', choices=sorted(inventory['features']), default=[], help='Run the owning browser suites and Rust test targets.')
@@ -66,6 +66,12 @@ def main():
     parser.add_argument('--list', action='store_true', help='Print inventory and feature owners without running anything.')
     parser.add_argument('--report', type=Path, default=ROOT/'.qa/local-validation/report.json')
     args = parser.parse_args()
+    # Explicit integration/platform requests retain the existing build gates.
+    if args.tier == 'quick' and (args.browser or args.suite or args.feature or args.rust_test
+            or args.skip_build or args.release_cli or args.performance or args.packaging
+            or args.oracles or args.native or args.native_gui or args.native_video):
+        args.tier = 'fast'
+
     if args.timeout <= 0:
         parser.error('--timeout must be positive')
     args.native_gui = args.native_gui or args.native_video
@@ -84,8 +90,12 @@ def main():
         rust_targets.update(inventory['features'][feature]['rust'])
     if any(not (ROOT/'tests'/f'{name}.rs').is_file() or Path(name).name != name for name in rust_targets):
         parser.error('Unknown Rust integration test target')
+    if args.list and args.tier == 'quick':
+        print(json.dumps({'tier': 'quick', 'checks': quick_plan(inventory),
+                          'not_run': ['Rust tests/lint', 'builds', 'browser checks', 'contracts', 'packaging', 'platform checks']}, indent=2))
+        return 0
     if args.list:
-        print(json.dumps({'inventory': inventory, 'selected_browser': browsers, 'selected_rust': sorted(rust_targets)}, indent=2))
+        print(json.dumps({'tier': args.tier, 'inventory': inventory, 'selected_browser': browsers, 'selected_rust': sorted(rust_targets)}, indent=2))
         return 0
     if args.oracles or args.tier == 'full':
         import importlib.util
@@ -114,7 +124,7 @@ def main():
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     env.update(CHRONOSCOPE_QA_RUN_ID=run_id, CHRONOSCOPE_QA_SOURCE_REVISION=revision)
     report = {'run_id': run_id, 'source_revision': revision, 'dirty': bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT)),
-              'cli_build_profile': cli_profile, 'native_build_profile': 'debug' if args.native or args.native_gui else None,
+              'cli_build_profile': cli_profile if args.tier != 'quick' else None, 'native_build_profile': 'debug' if args.native or args.native_gui else None,
               'platform': sys.platform, 'tier': args.tier, 'started_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
               'test_infrastructure_sha256': {str(p.relative_to(ROOT)): sha256(p) for p in [
                   ROOT/'scripts/validate_local.py', ROOT/'scripts/validation_runtime.py',
@@ -122,6 +132,8 @@ def main():
                   ROOT/'frontend/scripts/qa-runtime.mjs', ROOT/'frontend/scripts/qa-config.mjs',
                   ROOT/'frontend/scripts/local-browser.mjs', ROOT/'frontend/scripts/workspace-qa-helpers.mjs']},
               'passed': False, 'github_runners_used': False, 'checks': [], 'unrun_browser_suites': sorted(set(inventory['groups']['browser']) - set(browsers)),
+              'verification_scope': 'unit and type checks only' if args.tier == 'quick' else 'integration',
+              'unrun_check_groups': ['rust', 'lint', 'build', 'contracts', 'packaging', 'oracles', 'native'] if args.tier == 'quick' else (['rust', 'core-clippy'] if args.suite and not rust_targets and not args.feature and args.tier != 'full' else []),
               'manual_checks_not_run': inventory['manual_checks'], 'evidence_directory': str(work),
               'limitations': ['Native results apply to this operating system only.', 'Browser launch metadata records Metal or SwiftShader; it does not certify GPU performance.',
                               'Paid model quality, smartcard hardware and downloaded-package acceptance are separate checks.']}
@@ -167,11 +179,21 @@ def main():
 
     ok = True
     try:
+        if args.tier == 'quick':
+            for check in quick_plan(inventory):
+                ok = source_check(check) and ok
+            report['passed'] = ok
+            print(('Quick checks passed. ' if ok else 'Quick checks failed. ') + f'Report: {destination}')
+            return 0 if ok else 1
         for check in plan['unit']:
             if not source_check(check):
                 return 1
         if not args.skip_build:
             for check in plan['prebuild']:
+                # Browser-only regressions do not need an all-target Rust lint.
+                if (args.suite and not rust_targets and not args.feature
+                        and args.tier != 'full' and check['name'] == 'core-clippy'):
+                    continue
                 ok = source_check(check) and ok
         focused = bool(args.suite or args.feature or args.rust_test)
         if not focused or rust_targets:

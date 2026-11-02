@@ -15,12 +15,47 @@ import source_checks
 import validation_runtime
 from validation_runtime import run_command, build_receipt, matches_build_receipt
 from validation_suites import load_suites, select_browser
-from source_checks import check_plan
+from source_checks import check_plan, quick_plan
 
 
 class ValidationRunnerTests(unittest.TestCase):
     def setUp(self):
         self.manifest = load_suites()
+
+    def test_quick_default_lists_only_lightweight_checks(self):
+        output = io.StringIO()
+        with mock.patch.object(sys, 'argv', ['validate_local.py', '--list']), contextlib.redirect_stdout(output):
+            self.assertEqual(validate_local.main(), 0)
+        plan = json.loads(output.getvalue())
+        self.assertEqual(plan['tier'], 'quick')
+        commands = [check['command'] for check in plan['checks']]
+        self.assertFalse(any('cargo' in command or 'build' in command for command in commands))
+        self.assertIn('frontend-types', [check['name'] for check in plan['checks']])
+        self.assertIn('frontend-unit-tests', [check['name'] for check in plan['checks']])
+        self.assertEqual(len(commands), len(self.manifest['python_suites']['unit']) + 3)
+
+    def test_explicit_browser_request_retains_integration_build_scope(self):
+        output = io.StringIO()
+        with mock.patch.object(sys, 'argv', ['validate_local.py', '--list', '--suite', 'navigation']), contextlib.redirect_stdout(output):
+            self.assertEqual(validate_local.main(), 0)
+        plan = json.loads(output.getvalue())
+        self.assertEqual(plan['tier'], 'fast')
+        self.assertEqual(plan['selected_browser'], ['navigation-qa.mjs'])
+
+    def test_rust_feature_and_full_requests_are_never_reduced_to_quick(self):
+        for flags, expected in [(['--rust-test', 'radius_selection'], 'fast'),
+                                (['--feature', 'maps'], 'fast'),
+                                (['--tier', 'full'], 'full')]:
+            with self.subTest(flags=flags):
+                output = io.StringIO()
+                with mock.patch.object(sys, 'argv', ['validate_local.py', '--list', *flags]), contextlib.redirect_stdout(output):
+                    self.assertEqual(validate_local.main(), 0)
+                plan = json.loads(output.getvalue())
+                self.assertEqual(plan['tier'], expected)
+                if expected == 'full':
+                    self.assertEqual(plan['selected_browser'], self.manifest['groups']['browser'])
+                else:
+                    self.assertTrue(plan['selected_rust'])
 
     def test_fast_has_no_accidental_full_browser_run(self):
         self.assertEqual(select_browser(self.manifest, 'fast', False), [])

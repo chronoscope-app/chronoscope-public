@@ -21,6 +21,7 @@
       "playback-window-test.mjs",
       "space-time-frame-test.mjs",
       "time-axis-test.mjs",
+      "time-rail-ticks-test.mjs",
       "timeline-labels-test.mjs",
       "chart-guidance-test.mjs",
       "publication-attribution-test.mjs",
@@ -35,7 +36,11 @@
       "scene-transitions-test.mjs",
       "view-snapshot-test.mjs",
       "resource-governor-test.mjs",
-      "resident-track-test.mjs"
+      "resident-track-test.mjs",
+      "file-drop-test.mjs",
+      "radius-center-test.mjs",
+      "table-column-widths-test.mjs",
+      "operation-job-test.mjs"
     ],
     "browser": [
       "integration-smoke-qa.mjs",
@@ -47,10 +52,6 @@
       "cesium-effects-pixels-qa.mjs",
       "cesium-globe-time-qa.mjs",
       "cesium-terrain-qa.mjs",
-      "chart-shortcuts-qa.mjs",
-      "chart-workflow-qa.mjs",
-      "charts-qa.mjs",
-      "charts-timezone-qa.mjs",
       "cluster-identity-qa.mjs",
       "display-recovery-qa.mjs",
       "empty-workspace-qa.mjs",
@@ -70,7 +71,6 @@
       "release-updates-qa.mjs",
       "pan-direction-qa.mjs",
       "viewport-pan-qa.mjs",
-      "patterns-qa.mjs",
       "playback-speed-qa.mjs",
       "playback-transitions-qa.mjs",
       "real-demos-qa.mjs",
@@ -117,7 +117,11 @@
       "vfx-full-app-qa.mjs",
       "context-radius-qa.mjs",
       "dms-qa.mjs",
-      "import-layers-qa.mjs"
+      "import-layers-qa.mjs",
+      "file-drop-qa.mjs",
+      "import-safety-qa.mjs",
+      "radius-navigation-qa.mjs",
+      "settings-rework-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -130,7 +134,12 @@
       "prepared-handoff-qa.mjs",
       "resident-interactions-qa.mjs",
       "vfx-playground-qa.mjs",
-      "vfx-resident-qa.mjs"
+      "vfx-resident-qa.mjs",
+      "charts-qa.mjs",
+      "chart-shortcuts-qa.mjs",
+      "chart-workflow-qa.mjs",
+      "charts-timezone-qa.mjs",
+      "patterns-qa.mjs"
     ]
   },
   "requirements": {
@@ -167,10 +176,6 @@
     "charts": {
       "browser": [
         "analytics-qa.mjs",
-        "charts-qa.mjs",
-        "chart-shortcuts-qa.mjs",
-        "chart-workflow-qa.mjs",
-        "charts-timezone-qa.mjs",
         "field-roles-qa.mjs"
       ],
       "rust": [
@@ -195,7 +200,8 @@
         "space-time-window-qa.mjs",
         "view-sync-qa.mjs",
         "globe-framing-qa.mjs",
-        "context-radius-qa.mjs"
+        "context-radius-qa.mjs",
+        "radius-navigation-qa.mjs"
       ],
       "rust": [
         "canvas_selection",
@@ -283,7 +289,9 @@
         "priority-demos-qa.mjs",
         "table-playback-qa.mjs",
         "dms-qa.mjs",
-        "import-layers-qa.mjs"
+        "import-layers-qa.mjs",
+        "import-safety-qa.mjs",
+        "settings-rework-qa.mjs"
       ],
       "rust": [
         "autosave",
@@ -297,13 +305,16 @@
         "workspace_boundaries",
         "priority_demos",
         "dms_coordinates",
-        "import_layers"
+        "import_layers",
+        "import_queue_identity",
+        "import_safety"
       ]
     },
     "gis": {
       "browser": [
         "gis-files-qa.mjs",
-        "vector-gis-qa.mjs"
+        "vector-gis-qa.mjs",
+        "file-drop-qa.mjs"
       ],
       "rust": [
         "vector_gis",
@@ -315,7 +326,6 @@
     "assistant": {
       "browser": [
         "assistant-qa.mjs",
-        "patterns-qa.mjs",
         "si-rich-chat-qa.mjs",
         "si-settings-qa.mjs",
         "si-certificate-qa.mjs",

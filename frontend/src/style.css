@@ -3126,3 +3126,12 @@ svg {
 .demo-card details { border-top: 1px solid var(--line); padding-top: 6px; margin-top: 0; }
 .si-chat:has(.si-connect:not([hidden])) .si-messages:empty { display: none; }
 .si-chat { overflow-y: auto; }
+
+.pane-icon[aria-disabled="true"] { opacity: .35; cursor: not-allowed; }
+.pane-icon[aria-disabled="true"]:hover { background: transparent; }
+
+.table-panel th:not(.table-column-spacer) { padding-right: 8px; }
+.column-resize { position: absolute; right: 0; top: 0; bottom: 0; width: 7px; cursor: col-resize; touch-action: none; }
+.column-resize:hover, .column-resize:focus-visible { background: var(--accent); opacity: .6; }
+
+.preferences-dialog .si-settings-content { overflow: visible; padding: 0; }

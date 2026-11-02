@@ -1,5 +1,5 @@
 import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
-// Real SI settings against Rust schemas, offline; no identity/PIN/key is used.
+// Real AI settings and isolated dummy credential storage; no provider request or real user credential.
 
 import { randomBytes } from "node:crypto";
 import fs from "node:fs";
@@ -34,10 +34,10 @@ const pass = (name) => {
   report.checks.push(name);
   console.log("PASS", name);
 };
-let browser;
+let browser, api;
 try {
   const url = await localServerUrl(server);
-  const api = createApi(url, token);
+  api = createApi(url, token);
   const prefs = await api("preferences");
   await api("preferences", {
     preferences: {
@@ -75,7 +75,7 @@ try {
     await page.waitForSelector("#si-certificate-settings");
   };
   const close = () =>
-    page.locator(".si-settings-dialog > footer [data-close]").click();
+    page.locator(".preferences-dialog > footer [data-close]").click();
   await open();
   assert.equal(
     await page.locator("#si-certificate-mode").inputValue(),
@@ -96,7 +96,8 @@ try {
   await page.fill("#si-model", "fixture");
   await page.fill("#si-certificate-identity", identity);
   await page.click("#si-connect");
-  await page.waitForSelector(".si-settings-dialog", { state: "detached" });
+  await page.waitForFunction(() => !document.querySelector("#si-disconnect").disabled);
+  await close();
   let status = await api("si_status");
   assert.deepEqual(status.client_certificate, {
     origin: "https://si.example.test",
@@ -134,7 +135,8 @@ try {
   assert(await page.locator("#si-certificate-identity-field").isHidden());
   await page.selectOption("#si-certificate-mode", "automatic");
   await page.click("#si-connect");
-  await page.waitForSelector(".si-settings-dialog", { state: "detached" });
+  await page.waitForFunction(() => document.querySelector("#si-certificate-settings summary").textContent.includes("automatic"));
+  await close();
   assert.equal((await api("si_status")).client_certificate, null);
   pass(
     "Explicit no-certificate override restores, and returning to default removes it",
@@ -150,10 +152,34 @@ try {
   pass(
     "Certificate controls and Connect remain reachable in a small settings window",
   );
+  await page.fill("#si-key", "isolated-ui-fixture-key");
+  await page.click("#si-connect");
+  await page.waitForFunction(() => !document.querySelector("#si-forget-key").hidden);
+  status = await api("si_status");
+  assert.equal(status.key_saved, true);
+  assert.equal(status.auto_connect, true);
+  assert.equal(status.key_present, true);
+  assert.equal(await page.inputValue("#si-key"), "");
+  assert.match(await page.locator("#si-key").getAttribute("placeholder"), /Saved securely/);
+  assert(!JSON.stringify(status).includes("isolated-ui-fixture-key"));
+  assert(!fs.readFileSync(path.join(profile, "si-connection.json"), "utf8").includes("isolated-ui-fixture-key"));
+  await page.click("#si-disconnect");
+  await page.waitForFunction(() => document.querySelector("#si-disconnect").disabled);
+  assert.equal((await api("si_status")).auto_connect, false);
+  await page.click("#si-connect");
+  await page.waitForFunction(() => !document.querySelector("#si-disconnect").disabled);
+  assert.equal((await api("si_status")).key_present, true);
+  await page.click("#si-forget-key");
+  await page.waitForFunction(() => document.querySelector("#si-forget-key").hidden);
+  status = await api("si_status");
+  assert.equal(status.key_saved, false);
+  assert.equal(status.connected, false);
+  pass("Connect securely saves an isolated key, blank reconnect reuses it, and Forget deletes it without exposing it to JSON");
   assert.deepEqual(report.errors, []);
   assert.equal(report.publicRequests, 0);
   report.passed = true;
 } finally {
+  if (api) await api("si_disconnect", {forget_key:true}).catch(() => {});
   fs.writeFileSync(
     path.join(dir, "report.json"),
     JSON.stringify(report, null, 2),

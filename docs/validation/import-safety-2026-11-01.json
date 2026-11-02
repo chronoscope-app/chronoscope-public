@@ -1,0 +1,354 @@
+{
+  "date": "2026-11-01",
+  "scope": "Metadata admission limits, bounded CSV previews and cancellable/progress-reporting file operations",
+  "limits": {
+    "csv_tsv_workspace_bytes": 2147483648,
+    "excel_bytes": 104857600,
+    "gis_text_vector_bytes": 67108864,
+    "glb_kmz_bytes": 268435456,
+    "gis_package_bytes": 536870912,
+    "expanded_excel_bytes": 268435456,
+    "confirmation_above_bytes": 104857600,
+    "csv_sample_rows": 1000,
+    "csv_sample_value_bytes": 4194304
+  },
+  "implementation": [
+    "Shared backend size/regular-file checks before content processing, including independent Open/import/GIS paths",
+    "Metadata-only file_probe for desktop preflight; one confirmation for supported large data files per drop batch",
+    "CSV/TSV preview counts explicitly marked as sampled; exact counts come from full review",
+    "Existing jobs reused for cancellable preview, classification, Open and GIS loading",
+    "Cooperative read checkpoints for workbook/JSON/GIS bytes and archive members, with visible progress",
+    "Full review cancellation keeps original Events unchanged",
+    "CSV byte budget remains enforced if the source grows while being read"
+  ],
+  "verification": {
+    "rust_unique_targets": {
+      "passed": 52,
+      "failed": 0,
+      "targets": [
+        "gis_files",
+        "import_layers",
+        "import_queue_identity",
+        "import_review",
+        "import_safety",
+        "import_workspace",
+        "workspace_boundaries"
+      ],
+      "log": ".qa/import-safety-rust-final.log"
+    },
+    "latest_reader_checks": {
+      "passed": 31,
+      "log": ".qa/import-safety-final-readers.log"
+    },
+    "final_csv_byte_budget_checks": {
+      "passed": 11,
+      "log": ".qa/import-safety-read-budget.log"
+    },
+    "frontend_units": {
+      "passed": 196,
+      "failed": 0,
+      "skipped": 1,
+      "reason": "Node lacks optional Uint8Array.fromBase64; fallback remains covered",
+      "log": ".qa/import-safety-units-final.log"
+    },
+    "validation_runner": {
+      "passed": 20,
+      "log": ".qa/import-safety-inventory-final.log"
+    },
+    "typescript": "passed",
+    "formatting": "cargo fmt --check passed",
+    "browser": {
+      "input_safety": {
+        "passed": true,
+        "checks": [
+          "A sparse 100 GB file is rejected from metadata; smaller files remain reviewable with no content job for the rejected file",
+          "One batch warning appears before content reads; skipping large files continues with smaller files",
+          "An intentionally accepted 101 MiB CSV opens using a 1,000-row sample without scanning its sparse tail",
+          "Full-file review remains responsive to Cancel and cannot publish partial Events",
+          "A fresh import still completes after the cancelled review"
+        ],
+        "report": ".qa/import-safety/browser-final/report.json"
+      },
+      "drop_regression": {
+        "passed": true,
+        "checks": [
+          "Multiple drops deduplicate paths; paging preserves mapping drafts; closing before import changes no Events",
+          "Each reviewed CSV imports exactly once; the second appends without replacing the first; completed pages cannot duplicate Events",
+          "Mixed drop: model displays immediately, GeoJSON adds a reference layer, KML imports as Events through the same modal",
+          "A malformed file does not block later pages; reference display is also available after opening Event mapping",
+          "Shapefile companions are collected with their layer rather than imported as separate files",
+          "Mixed workspace drops cannot replace the dataset; import modal remains usable at the minimum window size"
+        ],
+        "report": ".qa/import-safety/drop-final/report.json"
+      },
+      "mapping_grid": {
+        "passed": true,
+        "checks": [
+          "The compact field grid opens immediately with independent green, red and optional feedback; no workspace changes",
+          "Live date-order, longitude and numeric corrections update field shading and converted UTC sample",
+          "Delayed validation responses cannot overwrite newer field selections or feedback",
+          "Full-file check and import stay in the same window; mapping edits immediately invalidate the previous check",
+          "Missing required timestamps disable the full check; leaving both location columns unmapped stays optional; Escape preserves data",
+          "Workbook sheet changes preserve separate mapping drafts",
+          "Light/dark shading, compact layout and single body scrolling keep footer actions visible without horizontal overflow",
+          "Delimiter changes reopen the same single-window interface while preserving append mode; append retains existing Events"
+        ],
+        "report": ".qa/import-safety/import-grid-v2/report.json"
+      },
+      "gis_regression": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "Open renders native geojson",
+            "evidence": {
+              "loaded": true,
+              "entities": 3,
+              "primitive": false,
+              "features": 3,
+              "resources": 2
+            }
+          },
+          {
+            "name": "Open renders native topojson",
+            "evidence": {
+              "loaded": true,
+              "entities": 2,
+              "primitive": false,
+              "features": 2,
+              "resources": 2
+            }
+          },
+          {
+            "name": "Open renders native kml",
+            "evidence": {
+              "loaded": true,
+              "entities": 1,
+              "primitive": false,
+              "features": 1,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native kmz",
+            "evidence": {
+              "loaded": true,
+              "entities": 1,
+              "primitive": false,
+              "features": 1,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native czml",
+            "evidence": {
+              "loaded": true,
+              "entities": 1,
+              "primitive": false,
+              "features": 3,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native gpx",
+            "evidence": {
+              "loaded": true,
+              "entities": 2,
+              "primitive": false,
+              "features": 4,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native gltf",
+            "evidence": {
+              "loaded": true,
+              "primitive": true,
+              "features": 0,
+              "resources": 2
+            }
+          },
+          {
+            "name": "Open renders native glb",
+            "evidence": {
+              "loaded": true,
+              "primitive": true,
+              "features": 0,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Native 3D Tiles content is fetched, decoded and ready in the live scene",
+            "evidence": {}
+          },
+          {
+            "name": "Open renders native tiles3d",
+            "evidence": {
+              "loaded": true,
+              "primitive": true,
+              "features": 0,
+              "resources": 2
+            }
+          },
+          {
+            "name": "JSON GIS is distinguished from workspace JSON in Open",
+            "evidence": {}
+          },
+          {
+            "name": "Native rendering preserves source feature IDs beyond JavaScript safe integers",
+            "evidence": {}
+          },
+          {
+            "name": "Multipart native objects retain exact source IDs and highlight every part without suffix collisions",
+            "evidence": {
+              "parts": 2,
+              "selection": 2,
+              "pick": {
+                "kind": "gis",
+                "layer": "77c15806c9f851f62fee98dc4cdfc0db",
+                "id": "foo"
+              },
+              "separate": 1
+            }
+          },
+          {
+            "name": "Source XML descriptions retain attributes without executing markup or contacting external URLs",
+            "evidence": {}
+          },
+          {
+            "name": "Reference table and native polygon highlights share exact feature IDs",
+            "evidence": {
+              "selected": [
+                "zone-1",
+                "zone-2"
+              ]
+            }
+          },
+          {
+            "name": "Reference layers persist through Globe, 2D and Columbus transitions",
+            "evidence": {}
+          },
+          {
+            "name": "Native CZML animation follows Chronoscope time focus",
+            "evidence": {
+              "a": [
+                1012518.353413592,
+                -5742276.92974376,
+                2578690.158718329
+              ],
+              "b": [
+                1157523.9055572974,
+                -5638340.9871234195,
+                2739832.36711419
+              ]
+            }
+          },
+          {
+            "name": "Portable GIS workspace reopens all formats and packaged model/tile assets",
+            "evidence": {}
+          },
+          {
+            "name": "Timed polygons retain full geometry plus centroid circles and entity tracks",
+            "evidence": {
+              "points": 3,
+              "centroids": 2,
+              "polygons": 2,
+              "tracks": 2
+            }
+          },
+          {
+            "name": "Centroid markers/tracks can be hidden while polygons remain",
+            "evidence": {}
+          },
+          {
+            "name": "Entity/category rows remain compact without extra vertical margins",
+            "evidence": {
+              "entities": [
+                26,
+                26
+              ],
+              "categories": [
+                {
+                  "height": 24,
+                  "margin": "0px"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Agent geographic camera target is centred in map",
+            "evidence": {
+              "mode": "map",
+              "backend": "WebGL2",
+              "hardware": "unknown",
+              "error": 9.094947017729282e-13
+            }
+          },
+          {
+            "name": "Agent geographic camera target is centred in globe",
+            "evidence": {
+              "mode": "globe",
+              "backend": "WebGL2",
+              "hardware": "unknown",
+              "error": 0.0019591165000747424
+            }
+          },
+          {
+            "name": "Agent geographic camera target is centred in space-time",
+            "evidence": {
+              "mode": "space-time",
+              "backend": "WebGL2",
+              "hardware": "unknown",
+              "error": 0.001959116495299895
+            }
+          }
+        ],
+        "report": ".qa/import-safety/gis/report.json"
+      }
+    },
+    "macos_release": {
+      "passed": true,
+      "command": "script/build_and_run.sh --build-only",
+      "installed": "~/Applications/Chronoscope.app",
+      "version": "0.16.12",
+      "executable_sha256": "3e3f5172cdecbd3f2d5523cb72aae3f6d668f696db18b1c33fdb7cc7724803f7",
+      "matches_built_bundle": true,
+      "only_installed_copy": true,
+      "log": ".qa/import-safety-macos.log"
+    },
+    "generated_contracts": {
+      "passed": true,
+      "engine": "Exact installed optimized Mac executable",
+      "log": ".qa/import-safety-installed-contracts.log"
+    },
+    "kmz_above_text_limit": {
+      "passed": true,
+      "fixture_bytes": "70 MiB stored ZIP with a valid KML and companion",
+      "total_tests_passed": 11,
+      "log": ".qa/import-safety-kmz.log"
+    },
+    "strict_clippy": {
+      "passed": true,
+      "command": "cargo clippy --all-targets -- -D warnings",
+      "log": ".qa/import-safety-clippy.log"
+    },
+    "sparse_fixture_cleanup": {
+      "removed": [
+        ".qa/import-safety/browser-final/100-gb.csv",
+        ".qa/import-safety/browser/100-gb.csv",
+        ".qa/import-safety/browser-final/large.csv",
+        ".qa/import-safety/browser/large.csv"
+      ],
+      "reports_and_screenshots_retained": true
+    }
+  },
+  "limits_and_platforms": [
+    "Excel and GIS retain bounded format parsing; the sample-only early-stop reader applies to CSV/TSV",
+    "Actual native Finder/Explorer gesture and Windows execution are not newly tested; browser tests use the real Rust bridge and drop/import UI",
+    "100 GiB fixtures are sparse; Windows tests mark them sparse using fsutil before extending and fail before allocation if unsupported"
+  ],
+  "test_maintenance": [
+    "Updated a pre-existing portable-workspace expected scene to include the existing time_altitude:false field",
+    "Updated a pre-existing mapping-grid test to follow the existing compact optional-field grouping"
+  ],
+  "publishing": "Next main only; no Public promotion or hosted workflows"
+}

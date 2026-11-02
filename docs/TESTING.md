@@ -1,13 +1,14 @@
 # Local test workflow
 
 Tests and their feature ownership live in `scripts/validation-suites.json`.
-`scripts/validate_local.py` is the entry point for fast, focused and full runs.
+`scripts/validate_local.py` is the entry point for quick, focused and full runs.
 It never starts GitHub Actions. All commands below run from the repository root,
 with Rust, Node/npm, Python and frontend dependencies available.
 
 | Need | Command |
 | --- | --- |
-| Core/unit checks | `python3 scripts/validate_local.py` |
+| Quick unit/type checks; no compilation or browser launch | `python3 scripts/validate_local.py` |
+| Complete core tests, Rust lint and CLI/frontend builds | `python3 scripts/validate_local.py --tier fast` |
 | Core/unit checks plus a short browser smoke journey | `python3 scripts/validate_local.py --browser` |
 | Map/terrain changes and their Rust targets | `python3 scripts/validate_local.py --feature maps` |
 | One browser regression using verified existing builds | `python3 scripts/validate_local.py --suite navigation --skip-build` |
@@ -18,11 +19,29 @@ with Rust, Node/npm, Python and frontend dependencies available.
 | Explicit resource-intensive benchmarks | `python3 scripts/validate_local.py --performance` |
 | Inventory or planned selection, without running tests | `python3 scripts/validate_local.py --list --feature charts` |
 
+The default quick pass runs six checks: the three small Python unit suites,
+tracked-asset limits, TypeScript type checking, and frontend unit tests. It does
+not compile Rust, build the frontend/app, fetch data, start a browser, or validate
+release packaging. Its report records that narrower scope explicitly.
+
+For Rust or data-integrity changes, choose the owning `--feature` or `--rust-test`.
+These flags, `--browser`, packaging, platform and performance requests
+implicitly select the integration tier, preserving their existing build and
+verification gates. A browser-only `--suite` avoids unrelated all-target Rust
+linting; add a Rust target or use `--tier fast` for that coverage. Quick checks
+are not release/security acceptance.
+
+Run the quick pass and one relevant regression while developing. Run broader
+checks for dependencies, cross-cutting changes or releases. After code settles,
+create one optimized Mac app build if the app itself changed. Test/docs/tooling
+changes do not need an app rebuild. Repeat checks only for changed behavior or
+an unresolved failure.
+
 `--suite`, `--feature` and `--rust-test` can be repeated. Explicit selections run
 the requested suites rather than silently expanding to every browser test.
 Without an explicit selection, `--tier full` runs every registered browser suite.
-`--browser` on the fast tier runs just the small integration journey and Welcome.
-The default Rust run retains correctness, resource-bound, data-integrity and
+`--browser` runs just the small integration journey and Welcome.
+The explicit `--tier fast` Rust run retains correctness, resource-bound, data-integrity and
 security regressions, including the tests named `performance_*`.
 
 The full demo round-trip matrix is an explicitly ignored Rust test in routine

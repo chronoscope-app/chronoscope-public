@@ -164,18 +164,18 @@ try {
   pass(
     "SI settings offers connected model services without an Apple Intelligence provider",
   );
-  const bounds = await page.locator(".si-settings-dialog").boundingBox(),
+  const bounds = await page.locator(".preferences-dialog").boundingBox(),
     close = await page
-      .locator(".si-settings-dialog > .modal-head [data-close]")
+      .locator(".preferences-dialog > .modal-head [data-close]")
       .boundingBox();
   async function stable() {
     assert.deepEqual(
-      await page.locator(".si-settings-dialog").boundingBox(),
+      await page.locator(".preferences-dialog").boundingBox(),
       bounds,
     );
     assert.deepEqual(
       await page
-        .locator(".si-settings-dialog > .modal-head [data-close]")
+        .locator(".preferences-dialog > .modal-head [data-close]")
         .boundingBox(),
       close,
     );
@@ -188,7 +188,7 @@ try {
   await page.selectOption("#client-kind", "http");
   await stable();
   const scroll = await page
-    .locator(".si-settings-content")
+    .locator(".preferences-panels")
     .evaluate((e) => ({ scroll: e.scrollHeight, height: e.clientHeight }));
   assert(scroll.scroll > scroll.height);
   pass(
@@ -262,14 +262,14 @@ try {
     "Review, disconnect and failed discovery remain inline and retain service drafts",
   );
   await page.setViewportSize({ width: 800, height: 600 });
-  const small = await page.locator(".si-settings-dialog").boundingBox();
+  const small = await page.locator(".preferences-dialog").boundingBox();
   assert(
     small.x >= 0 && small.y >= 0 && small.width <= 800 && small.height <= 600,
   );
-  await page.locator(".si-settings-dialog > footer [data-close]").click();
+  await page.locator(".preferences-dialog > footer [data-close]").click();
   assert.equal(await page.locator(".modal").count(), 0);
   pass(
-    "Small windows scroll settings while keeping Done visible and clickable",
+    "Small windows scroll the shared Settings category while keeping Close visible and clickable",
   );
   await page.setViewportSize({ width: 1400, height: 950 });
   const pending = context.waitForEvent("page");
@@ -277,8 +277,8 @@ try {
   const popup = await pending;
   await popup.waitForSelector("#si-settings");
   await popup.click("#si-settings");
-  await page.waitForSelector(".si-settings-dialog #client-kind");
-  assert.equal(await page.locator(".si-settings-dialog").count(), 1);
+  await page.waitForSelector(".preferences-dialog #client-kind");
+  assert.equal(await page.locator(".preferences-dialog").count(), 1);
   assert.equal(await popup.locator(".modal").count(), 0);
   await page.locator(".modal-head [data-close]").click();
   await popup.click("#si-popout");

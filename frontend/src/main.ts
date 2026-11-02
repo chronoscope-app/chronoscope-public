@@ -4,6 +4,9 @@ import { SceneTransitions, type RestoreCommit } from "./scene-transitions";
 import { MeasurementLegend } from "./measurement-style";
 import { preferenceEffects } from "./preference-effects";
 import { WorkspaceFiles } from "./workspace-files";
+import { DroppedFiles } from "./dropped-files";
+import { installFileDrops } from "./file-drop";
+import { runInputJob } from "./input-job";
 import { Welcome } from "./welcome";
 import {
   attributeTableMarkup,
@@ -297,7 +300,7 @@ $("#app").innerHTML = `
 <header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Maps">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open AI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button><button type="button" class="icon renderer-status" id="backend" aria-label="Reset map" title="Reset map"></button></div><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
 <main class="workspace"><aside class="sidebar"><section class="sidebar-pinned" id="search-section" aria-label="Search and selection"><input id="search" placeholder="Search events…" aria-label="Search events"><button id="reset-filters">Reset filters</button><div class="selection-tools" id="selection-tools"><div class="selection-summary"><strong id="pinned-selection-count" role="status">0 selected</strong><button id="clear" aria-label="Clear selection">Clear</button></div><div class="selection-actions"><button class="secondary" id="select-all">Select visible</button><label class="check-row"><input type="checkbox" id="selected-only" aria-label="Selected events only"> Show only</label></div></div></section><div class="sidebar-scroll"><details open class="sidebar-facet" id="entity-section"><summary><span>Entities</span><select id="entity-field" aria-label="Entity list field" title="Group the list by another column; source track identities stay unchanged"><option value="entity">Entity</option></select></summary><div class="facet-sort" role="group" aria-label="Sort entities"><button id="entity-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="entity-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div class="facet-controls"><input id="entity-search" placeholder="Find an entity…" aria-label="Find entity"><button id="all-entities">Enable all</button></div><div id="entities"></div><div class="facet-footer"><small id="entity-list-count"></small><button id="entity-show-all">Show all</button></div></details><details open class="sidebar-facet" id="category-section"><summary><span>Categories</span><select id="category-field" aria-label="Category list field" title="Group the list by another column"><option value="category">Category</option></select></summary><div class="facet-sort" role="group" aria-label="Sort categories"><button id="category-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="category-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div id="categories"></div><div class="facet-footer"><small id="category-list-count"></small><button id="category-show-all">Show all</button></div></details><div class="divider"></div><details id="time-section"><summary>Exact time range</summary><label class="field">Start / UTC<input id="exact-start" placeholder="Unbounded"></label><label class="field">End / UTC<input id="exact-end" placeholder="Unbounded"></label><button id="exact-apply" class="secondary">Apply range</button></details><details id="rules-section"><summary>Attribute rules</summary><label class="field">Field<input id="rule-field" placeholder="value, confidence, category…"></label><select id="rule-op"><option>Contains</option><option>Equals</option><option>NotEquals</option><option>Greater</option><option>Less</option><option>IsEmpty</option></select><label class="field">Value<input id="rule-value"></label><button id="add-rule" class="secondary">Add AND rule</button><div id="rules"></div></details><details id="bounds-section"><summary>Geographic bounds</summary><label class="field">West, South, East, North<input id="bounds" placeholder="-80,43,-79,44"></label><button id="apply-bounds" class="secondary">Apply region</button></details><section id="layers-section"><div class="section-head"><span class="caps">Layers</span></div><div id="layer-list"></div><div class="source-foot">WGS84 · UTC</div></section></div></aside>
 <section class="center"><div class="scene-container" id="scene"><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel">${attributeTableMarkup}</section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
-<aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="AI chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
+<aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts" disabled title="Charts — In development">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns" disabled title="Patterns — In development">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="AI chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
 const timeRail = new TimeRail($(".workspace"), {
   icon,
   apply: async (start, end) => {
@@ -338,6 +341,7 @@ const paneLayout = installWorkspaceLayout($(".workspace"), {
     label,
     icon: glyph,
     target: id === "si" ? $("#si-chat") : $(".inspector-top"),
+    disabled: id === "charts" || id === "patterns",
     activate: () =>
       id === "si"
         ? siChat.open(false)
@@ -556,7 +560,7 @@ const timeRange = new TimeRange(
     const [lo, hi] = snapshot.time_bounds;
     $("#range-label").textContent =
       `${displayTime(lo + (hi - lo) * start)} — ${displayTime(lo + (hi - lo) * end)} UTC`;
-    timeRail.update(lo, hi, lo + (hi - lo) * start, lo + (hi - lo) * end);
+    timeRail.update(lo, hi, lo + (hi - lo) * start, lo + (hi - lo) * end, snapshot.count > 0);
     focus = (start + end) / 2;
     updateTimeFocus();
     const cursor = $("#histogram").querySelector<HTMLElement>(".cursor");
@@ -1130,7 +1134,7 @@ function histogram() {
       .join("") + `<div class="cursor" style="top:${focus * 100}%"></div>`;
   $("#range-label").textContent =
     `${displayTime(desiredTime.start ?? lo)} — ${displayTime(desiredTime.end ?? hi)} UTC`;
-  timeRail.update(lo, hi, desiredTime.start, desiredTime.end);
+  timeRail.update(lo, hi, desiredTime.start, desiredTime.end, snapshot.count > 0);
 }
 function mapsEnabled() {
   return mapLayers(preferences).some((l) => l.config.enabled);
@@ -1571,9 +1575,14 @@ view.onRadiusQuery = (latitude, longitude, anchor) => {
       expected_workspace: workspace,
       mode: "replace",
     })
-      .then(async () => {
-        if (dialogs.node === dialog) closeModal();
+      .then(async (result) => {
         await refresh(false);
+        if (dialogs.node !== dialog) return;
+        if (result.selected === 0) {
+          error.textContent = "No located events within this radius. Increase the radius or check the coordinates.";
+          submit.disabled = false;
+          radius.focus();
+        } else closeModal();
       })
       .catch((failure) => {
         error.textContent = String(failure);
@@ -1804,6 +1813,15 @@ async function fitGisLayer(id: string) {
   }
   view.onSceneChange();
 }
+async function addGisReference(args: { path: string; position?: [number, number, number]; scale?: number }, loaded = () => {}) {
+  const { layer } = await task("Reading GIS source and local assets…", () =>
+    runInputJob("gis_load", { ...args, expected_workspace: snapshot.workspace_id }, "Adding reference layer…"),
+  );
+  loaded();
+  await refresh(true, false);
+  await fitGisLayer(layer.id);
+  if (layer.warnings.length) toast(layer.warnings.join(" "));
+}
 async function openGisFile(path: string, format: string) {
   const model = ["gltf", "glb"].includes(format),
     asset = model || format === "tiles3d",
@@ -1837,13 +1855,7 @@ async function openGisFile(path: string, format: string) {
       if (args.position.length !== 3 || !args.position.every(Number.isFinite))
         throw Error("Enter longitude, latitude and ellipsoidal height");
     }
-    const { layer } = await task("Reading GIS source and local assets…", () =>
-      call("gis_load", args),
-    );
-    closeModal();
-    await refresh(true, false);
-    await fitGisLayer(layer.id);
-    if (layer.warnings.length) toast(layer.warnings.join(" "));
+    await addGisReference(args, closeModal);
   });
 }
 async function gisLayerMenu(id: string) {
@@ -2663,16 +2675,24 @@ void workspaceHost({
   },
 }).catch(siHooks.error);
 
-async function siConnection() {
+async function siConnection(panel?: HTMLElement) {
+  if (!panel) return settings("ai");
   const connection = await call("si_status");
-  modal(
+  if (!panel.isConnected) return;
+  const render = (html: string) => {
+    panel.innerHTML = html;
+    panel.querySelector(".modal-head")?.remove();
+    panel.querySelector("footer")?.remove();
+    panel.insertAdjacentHTML("afterbegin", '<p class="notice">Use Connect to apply service details. Connection and tool changes apply immediately; Save preferences applies the other Settings categories.</p>');
+  };
+  render(
     `${head(`${assistantName(true)} settings`)}<div class="si-settings-content"><section aria-labelledby="si-service-heading"><h3 id="si-service-heading">AI service</h3><p class="description">Connect an OpenAI-compatible model with tool support to power AI chat. Requested workspace data and tool results are sent to this service. The Tools section below connects other apps and manages which tools AI may use.</p>
     <label class="field">Service URL<input id="si-url" value="${esc(connection.url || "https://api.openai.com/v1")}" placeholder="https://api.openai.com/v1"></label>
     <label class="field">Model<input id="si-model" value="${esc(connection.model)}" placeholder="Model with tool support"></label>
-    <label class="field">API key<input id="si-key" type="password" autocomplete="off" placeholder="Session only; optional if the service allows it"></label>
-    <p class="description">The key and chat stay in memory until disconnect or app exit. URL/model settings stay on this computer. File access is optional and managed separately in chat permissions.</p>
+    <label class="field">API key<input id="si-key" type="password" autocomplete="off" placeholder="${connection.key_saved ? "Saved securely; leave blank to keep it" : "Saved securely when you connect; optional for keyless services"}"></label>
+    <p class="description">The API key is saved in this computer’s secure credential store and the connection is restored on startup. Chat history and file-access permissions are session-only. Disconnect stops automatic connection; Forget saved key removes the stored key.</p>
     <details id="si-certificate-settings"><summary>Client certificate · ${connection.client_certificate ? (connection.client_certificate.kind === "disabled" ? "disabled" : "specific identity") : connection.automatic_client_certificate ? "automatic" : "no override"}</summary><p class="description">${connection.automatic_client_certificate ? "If this HTTPS service requests a user certificate, the OS selects an eligible identity and your card provider handles PIN prompts." : "Linux protected services need compatible PKCS#11 middleware and an explicit certificate identity. Automatic card selection is unavailable."}</p><label class="field">Certificate authentication<select id="si-certificate-mode"><option value="automatic" ${!connection.client_certificate ? "selected" : ""}>${connection.automatic_client_certificate ? "Automatic (default)" : "No override (default)"}</option><option value="identity" ${connection.client_certificate && connection.client_certificate.kind !== "disabled" ? "selected" : ""}>Specific identity</option><option value="disabled" ${connection.client_certificate?.kind === "disabled" ? "selected" : ""}>No client certificate</option></select></label><label class="field" id="si-certificate-identity-field">${esc(connection.client_certificate_kind === "pkcs11" ? "PKCS#11 certificate URI (type=cert)" : connection.client_certificate_kind === "windows-store" ? "CurrentUser\\MY\\ + certificate thumbprint" : "Keychain certificate subject name")}<input id="si-certificate-identity" value="${esc(connection.client_certificate?.identity || "")}" autocomplete="off" spellcheck="false"></label><p class="description">Certificate choices apply only to this HTTPS server and stay on this computer. PINs and private keys stay with the OS/card provider. Reconnect to forget this AI session’s certificate choices.</p></details>
-    <div class="row si-service-actions"><button id="si-disconnect" ${connection.connected ? "" : "disabled"}>Disconnect</button><span class="spacer"></span><button id="si-connect" class="primary" ${connection.running ? "disabled" : ""}>Connect</button></div></section><section aria-labelledby="si-tools-heading"><h3 id="si-tools-heading">Tools</h3><div id="si-tools-settings"></div></section></div><footer><span class="spacer"></span><button data-close>Done</button></footer>`,
+    ${connection.connection_error ? `<p role="alert">${esc(connection.connection_error)}</p>` : ""}<div class="row si-service-actions"><button id="si-forget-key" ${connection.key_saved ? "" : "hidden"}>Forget saved key</button><button id="si-disconnect" ${connection.connected ? "" : "disabled"}>Disconnect</button><span class="spacer"></span><button id="si-connect" class="primary" ${connection.running ? "disabled" : ""}>Connect</button></div></section><section aria-labelledby="si-tools-heading"><h3 id="si-tools-heading">Tools</h3><div id="si-tools-settings"></div></section></div><footer><span class="spacer"></span><button data-close>Done</button></footer>`,
   );
   const updateCertificate = () => {
     $("#si-certificate-identity-field").hidden =
@@ -2696,10 +2716,10 @@ async function siConnection() {
   });
   updateCertificate();
   const owner = dialogs.node;
-  const dialog = owner!.querySelector<HTMLElement>(".modal")!;
-  dialog.classList.add("si-settings-dialog");
-  dialog.setAttribute("role", "dialog");
-  dialog.setAttribute("aria-modal", "true");
+  const dialog = panel;
+
+
+
   dialog.setAttribute("aria-label", `${assistantName(true)} settings`);
   bindAssistantWording(dialog)();
   void mcpConnections(
@@ -2713,6 +2733,7 @@ async function siConnection() {
       url: input("#si-url"),
       model: input("#si-model"),
       api_key: key.value,
+      remember_key: true,
       client_certificate:
         input("#si-certificate-mode") === "automatic" ||
         (input("#si-certificate-mode") === "disabled" &&
@@ -2732,13 +2753,15 @@ async function siConnection() {
     };
     key.value = "";
     await call("si_configure", args);
-    if (dialogs.node === owner) closeModal();
-    if (!(await siWindows.focus())) await openSIChat();
+    if (dialogs.node === owner) await siConnection(panel);
+  });
+  on("#si-forget-key", async () => {
+    await call("si_disconnect", {forget_key: true});
+    if (dialogs.node === owner) await siConnection(panel);
   });
   on("#si-disconnect", async () => {
     await call("si_disconnect");
-    if (dialogs.node === owner) closeModal();
-    if (!(await siWindows.focus())) await openSIChat();
+    if (dialogs.node === owner) await siConnection(panel);
   });
 }
 on("#si", async () => {
@@ -2795,6 +2818,8 @@ async function aggregateEvents() {
 }
 on("#aggregate-events", aggregateEvents);
 const settings = createPreferencesController({
+  mountAI: panel => siConnection(panel),
+  mapPreferences: () => mapSettings.quickPreferences(),
   mountMaps: (panel, navigation) => mapSettings.mount(panel, navigation),
   preferences: () => preferences,
   budget: () => renderBudget,
@@ -3415,7 +3440,7 @@ async function applyRestoredScene(scene: SceneState) {
     tables.tableSort = scene.table_sort || "time";
     tables.tableDescending = !!scene.table_descending;
     tables.tableColumnOffset = scene.table_column_offset || 0;
-    tab = scene.inspector_tab || "inspect";
+    tab = scene.inspector_tab === "charts" || scene.inspector_tab === "patterns" ? "inspect" : scene.inspector_tab || "inspect";
     $("#table-panel").classList.toggle("open", tables.tableOpen);
     $("#toggle-table").classList.toggle("active", tables.tableOpen);
     document
@@ -3622,6 +3647,21 @@ const workspaceFiles = new WorkspaceFiles({
     });
   },
   notice: (message) => toast(message),
+});
+const droppedFiles = new DroppedFiles({
+  importer: importDialog,
+  workspace: () => snapshot.workspace_id,
+  available: () => !busy && !document.querySelector("dialog[open],.modal-backdrop,.context-popover"),
+  settle: () => sceneIdle(),
+  pause: () => { if (playTimer !== undefined) $("#play").click(); },
+  openWorkspace: path => workspaceFiles.openPath(path),
+  display: async (path, format) => {
+    const model = ["gltf", "glb"].includes(format);
+    const position: [number, number, number] = [(view.bounds[0] + view.bounds[2]) / 2, (view.bounds[1] + view.bounds[3]) / 2, 0];
+    await addGisReference({ path, ...(model ? { position, scale: 1 } : {}) });
+    if (model) toast("3D model placed at the map center. Adjust its location and scale in layer settings.");
+  },
+  notice: message => toast(message, true),
 });
 const welcome = new Welcome($(".workspace"), {
   icon,
@@ -3968,7 +4008,7 @@ async function togglePlayback() {
     const cursor = $("#histogram").querySelector<HTMLElement>(".cursor");
     if (cursor) cursor.style.top = `${focus * 100}%`;
     timeRange.set(start, end, [lo, hi]);
-    timeRail.update(lo, hi, lo + span * start, lo + span * end);
+    timeRail.update(lo, hi, lo + span * start, lo + span * end, snapshot.count > 0);
     // A full-range cursor sweep does not change the evidence. Avoid decoding
     // and republishing the same large packet just because another tick elapsed.
     const current = filterIntent.desired(snapshot.filter);
@@ -4341,6 +4381,7 @@ async function initialize() {
     else if (mapsEnabled())
       void loadRasters().catch((e) => toast(String(e), true));
   }
+  await installFileDrops(paths => droppedFiles.open(paths), message => toast(message, true)).catch(error => toast(`File dropping is unavailable: ${error}`, true));
   if (native) {
     const { listen } = await import("@tauri-apps/api/event");
     await listen<string>("app-menu", (e) => {
@@ -4713,6 +4754,7 @@ ready.catch((e) => {
   displaySettings,
   saveWorkspace,
   openFile,
+  dropFiles: (paths: string[]) => droppedFiles.open(paths),
   openWorkspace: openFile, // Retain the existing automation bridge alias.
   showHelp,
   call,

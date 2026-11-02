@@ -1,5 +1,5 @@
 use crate::model::*;
-use calamine::{open_workbook_auto, Data, Reader};
+use calamine::{open_workbook_auto_from_rs, Data, Reader};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, BTreeSet},
@@ -259,6 +259,7 @@ pub(crate) fn unique_headers(raw: Vec<String>) -> Vec<String> {
         .collect()
 }
 pub fn read_file(path: &Path, delimiter: u8) -> Result<RawImport, String> {
+    let admission = crate::input_limits::ensure(path)?;
     if path.extension().and_then(|e| e.to_str()).is_some_and(|e| {
         [
             "geojson", "topojson", "json", "kml", "kmz", "czml", "gpx", "shp", "gpkg",
@@ -269,8 +270,13 @@ pub fn read_file(path: &Path, delimiter: u8) -> Result<RawImport, String> {
         return crate::gis::raw_import(path);
     }
 
-    let size = path.metadata().map_err(|e| e.to_string())?.len();
-    if size > MAX_FILE_BYTES {
+    // The shared check admits 100 MiB workbooks; other legacy readers retain 64 MiB.
+    let workbook = path.extension().is_some_and(|e| {
+        ["xls", "xlsx", "xlsb"]
+            .iter()
+            .any(|x| e.eq_ignore_ascii_case(x))
+    });
+    if !workbook && admission.bytes > MAX_FILE_BYTES {
         return Err("Import exceeds the 64 MiB file limit".into());
     }
     let source = path
@@ -329,17 +335,28 @@ pub fn read_file(path: &Path, delimiter: u8) -> Result<RawImport, String> {
         });
     } else if ["xlsx", "xls", "xlsb"].contains(&ext.as_str()) {
         if ext == "xlsx" || ext == "xlsb" {
-            let mut zip = zip::ZipArchive::new(File::open(path).map_err(|e| e.to_string())?)
-                .map_err(|e| e.to_string())?;
+            let mut zip = zip::ZipArchive::new(crate::input_limits::CheckedReader(
+                File::open(path).map_err(|e| e.to_string())?,
+            ))
+            .map_err(|e| e.to_string())?;
             let mut expanded = 0u64;
             for i in 0..zip.len() {
+                crate::operation::check()?;
+                crate::operation::progress(
+                    i as u64,
+                    Some(zip.len() as u64),
+                    "Reading workbook archive",
+                );
                 let mut member = zip.by_index(i).map_err(|e| e.to_string())?;
                 if member.size() > MAX_EXPANDED.saturating_sub(expanded) {
                     return Err("Workbook expanded size exceeds 256 MiB".into());
                 }
                 // Count actual output too, rather than trusting ZIP size declarations.
                 let bytes = std::io::copy(
-                    &mut std::io::Read::take(&mut member, MAX_EXPANDED - expanded + 1),
+                    &mut std::io::Read::take(
+                        crate::input_limits::CheckedReader(&mut member),
+                        MAX_EXPANDED - expanded + 1,
+                    ),
                     &mut std::io::sink(),
                 )
                 .map_err(|e| e.to_string())?;
@@ -349,12 +366,23 @@ pub fn read_file(path: &Path, delimiter: u8) -> Result<RawImport, String> {
                 }
             }
         }
-        let mut workbook =
-            open_workbook_auto(path).map_err(|e| format!("Cannot read workbook: {e}"))?;
+        let bytes = crate::input_limits::read_bounded(
+            path,
+            100 * crate::input_limits::MIB,
+            "Reading workbook bytes",
+        )?;
+        let shared: std::sync::Arc<[u8]> = bytes.into();
+        let workbook_result = open_workbook_auto_from_rs(crate::input_limits::CheckedReader(
+            std::io::Cursor::new(shared),
+        ));
+        crate::operation::check()?;
+        let mut workbook = workbook_result.map_err(|e| format!("Cannot read workbook: {e}"))?;
         let names = workbook.sheet_names().to_vec();
         let mut total = 0;
         let mut cells = 0usize;
-        for sheet in names {
+        for (sheet_index, sheet) in names.into_iter().enumerate() {
+            crate::operation::check()?;
+            crate::operation::progress(sheet_index as u64, None, "Reading workbook sheets");
             let range = workbook
                 .worksheet_range(&sheet)
                 .map_err(|e| e.to_string())?;
@@ -374,6 +402,7 @@ pub fn read_file(path: &Path, delimiter: u8) -> Result<RawImport, String> {
             let mut rows = Vec::new();
             let mut row_numbers = Vec::new();
             for (index, row) in iter.enumerate() {
+                crate::operation::check()?;
                 if row.iter().all(|c| matches!(c, Data::Empty)) {
                     continue;
                 }

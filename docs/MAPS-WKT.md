@@ -1,5 +1,8 @@
 # Map caching, WMTS loading and WKT geometry
 
+Maps opens the Maps category in Settings. **Choose a map** offers offline geography, Streets, NASA reference imagery, USGS topography and USGS aerial imagery; **Save preferences** applies the quick choice. Coverage notes appear beneath the picker. Existing custom connections remain available through **Manage layers** and **Add or edit a map server**. In the server editor, find available layers and use **Use this map**, or **Add as another layer** for a composite map. Authentication, cache controls and saving a connection without applying it are under **Connection options**.
+
+
 ## Direct map cache: no proxy required
 
 Chronoscope fetches WMTS resources directly and keeps a private disk cache on the same computer. This is ordinary client caching, not a proxy server, and adds no listener, service, account or administrator requirement. The optional MCP/development bridges are unrelated to map caching.

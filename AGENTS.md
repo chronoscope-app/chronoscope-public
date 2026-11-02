@@ -14,3 +14,9 @@
 - Keep the bundled Starlink workspace, its previews and associated credit metadata together at or below 5,000,000 bytes. Full Starlink source/stress data must remain ignored local fixtures, outside app resources.
 
 - Keep terrain packs, optional demo source tables, and routine validation captures out of Git. Use `assets/data-assets.json` and `scripts/fetch_data_assets.py`; preserve compact offline demos and credit metadata. Keep local evidence ignored and publish deliberately selected evidence as release assets. Run `python3 scripts/check_repository_assets.py` before committing.
+
+## Verification scope
+
+- Use `python3 scripts/validate_local.py` for routine unit/type checks, plus a relevant focused regression when behavior changes. This quick pass does not validate Rust or packaging.
+- For Rust/data changes, select the owning `--feature` or `--rust-test`. Use full, packaging, security, performance and platform checks when the change or release requires them. Release acceptance retains its existing gates.
+- Run checks once against final code; repeat affected checks after changes or failures. Finish app changes with one optimized Mac build after validation. Test, documentation and tooling-only edits do not require an app rebuild.

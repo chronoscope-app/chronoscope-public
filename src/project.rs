@@ -668,6 +668,7 @@ pub fn load(path: &Path) -> Result<Project, String> {
     load_with_resources(path, &crate::engine::default_data_dir())
 }
 pub fn load_with_resources(path: &Path, data_dir: &Path) -> Result<Project, String> {
+    crate::input_limits::ensure_workspace(path)?;
     if crate::store::DataStore::is_database(path) {
         let (store, metadata) = crate::store::DataStore::open_copy(path, data_dir)?;
         return store.materialize(metadata);

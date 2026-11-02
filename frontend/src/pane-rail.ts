@@ -3,6 +3,7 @@ export interface PaneSection {
   label: string;
   icon: string;
   target: HTMLElement;
+  disabled?: boolean;
   activate?: () => void | Promise<void>;
 }
 
@@ -90,6 +91,13 @@ export class PaneRail {
       b.setAttribute("aria-expanded", "false");
       this.buttons.set(section.id, b);
       this.rail.append(b);
+      if (section.disabled) {
+        b.setAttribute("aria-disabled", "true");
+        b.dataset.tooltip = `${section.label} — In development`;
+        b.title = b.dataset.tooltip;
+        b.setAttribute("aria-description", b.dataset.tooltip);
+        continue;
+      }
       b.addEventListener("pointerenter", (event) => {
         if (event.pointerType === "touch") return;
         clearTimeout(this.opening);
@@ -178,6 +186,7 @@ export class PaneRail {
   }
 
   reveal(id: string, keyboard?: boolean) {
+    if (this.sections.find(section => section.id === id)?.disabled) return;
     if (!this.collapsed) return;
     clearTimeout(this.opening);
     this.cancelClose();

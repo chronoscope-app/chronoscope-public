@@ -7,7 +7,12 @@ fn builtins_do_not_overwrite_or_repopulate_an_existing_library() {
     let engine = Engine::new(Project::new(Dataset::default()), dir.path().into()).unwrap();
     let initial = engine.invoke("wmts_servers", json!({})).unwrap();
     assert!(initial["servers"].as_array().unwrap().is_empty());
-    assert!(initial["presets"].as_array().unwrap().is_empty());
+    assert_eq!(initial["presets"].as_array().unwrap().len(), 3);
+    assert!(initial["presets"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .all(|p| p["id"].as_str().unwrap().starts_with("usgs-") || p["id"] == "nasa-gibs"));
     assert!(!dir.path().join("map-servers.json").exists());
     engine
         .invoke("wmts_servers", json!({"settings":{"servers":[]}}))

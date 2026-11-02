@@ -398,7 +398,7 @@ impl Engine {
             revision_counter: Arc::new(std::sync::atomic::AtomicU64::new(1)),
             document_epoch: Arc::new(std::sync::atomic::AtomicU64::new(1)),
             lifecycle: Arc::new(recovery::Lifecycle::new()?),
-            assistant: Arc::new(crate::si::Assistant::default()),
+            assistant: Arc::new(crate::si::Assistant::for_profile(&data_dir)),
             mcp_client: Arc::new(crate::mcp_client::Client::default()),
             #[cfg(feature = "experimental-browser-webmcp")]
             browser: Arc::new(crate::webmcp::Browser::default()),
@@ -897,6 +897,15 @@ impl Engine {
                 if command != "preferences" {
                     if let Some(v) = value.as_object_mut() {
                         v.insert("revision".into(), json!(s.revision));
+                        // Import replaces the backing store even when appending.
+                        // Let a reviewed file queue follow exactly its own commit,
+                        // while rejecting a subsequent switch to another workspace.
+                        if command == "import_commit" {
+                            v.insert(
+                                "workspace_id".into(),
+                                json!(self.workspace_identity_locked(&s)),
+                            );
+                        }
                     }
                 }
                 Ok(value)

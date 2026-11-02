@@ -139,6 +139,7 @@ impl Engine {
     }
 
     pub(super) fn load_workspace(&self, path: &Path) -> Result<Value, String> {
+        crate::input_limits::ensure_workspace(path)?;
         let (store, mut project) = if crate::store::DataStore::is_database(path) {
             let root = crate::operation::intersect_scopes(
                 crate::operation::scope(),

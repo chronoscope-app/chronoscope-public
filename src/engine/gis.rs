@@ -50,6 +50,14 @@ impl Engine {
             "file_probe" => {
                 let path: String = arg(&args, "path")?;
                 let path = Path::new(&path);
+                let admission = crate::input_limits::inspect(path)?;
+                if args["metadata_only"] == true {
+                    let mut value = serde_json::to_value(admission).map_err(|e| e.to_string())?;
+                    value["kind"] = json!("data");
+                    value["format"] = Value::Null;
+                    return Ok(value);
+                }
+                crate::input_limits::ensure(path)?;
                 let ext = path
                     .extension()
                     .and_then(|x| x.to_str())
@@ -63,15 +71,11 @@ impl Engine {
                 }
                 let mut probe = vec![];
                 if ext == "json" {
-                    use std::io::Read;
-                    std::fs::File::open(path)
-                        .map_err(|e| e.to_string())?
-                        .take(crate::gis::MAX_SOURCE + 1)
-                        .read_to_end(&mut probe)
-                        .map_err(|e| e.to_string())?;
-                    if probe.len() as u64 > crate::gis::MAX_SOURCE {
-                        return Err("JSON source exceeds 64 MiB".into());
-                    }
+                    probe = crate::input_limits::read_bounded(
+                        path,
+                        crate::gis::MAX_SOURCE,
+                        "Reading JSON bytes",
+                    )?;
                     let v: Value =
                         serde_json::from_slice(&probe).map_err(|e| format!("Invalid JSON: {e}"))?;
                     if v.get("dataset").is_some()

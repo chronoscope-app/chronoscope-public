@@ -1,0 +1,294 @@
+{
+  "date": "2026-11-01",
+  "base_commit": "b144dfc64ead1905ecdbd69cd2a935695ba9b026",
+  "scope": "Native desktop file drops with reviewed import paging and GIS display choices",
+  "behavior": [
+    "Drop one or multiple local files, up to 256 at once",
+    "Page or select files; retain mapping drafts while the queue is open",
+    "Append by default and use the existing all-row review and commit flow",
+    "Offer Import as Events or Add reference layer for dual-purpose GIS files, including from mapping",
+    "Immediately load display-only 3D Tiles/glTF/GLB assets; position standalone models at the current view center",
+    "Group Shapefile companions; report per-file failures without blocking later files",
+    "Completed pages cannot import Events or add reference layers twice",
+    "Single workspace drops use ordinary Open; mixed workspace drops cannot replace the dataset",
+    "Import commit returns its new workspace identity, allowing continuation only in the workspace produced by that commit"
+  ],
+  "verification": {
+    "rust": {
+      "passed": 27,
+      "failed": 0,
+      "targets": [
+        "import_queue_identity",
+        "workspace_boundaries",
+        "import_review",
+        "import_layers",
+        "gis_files"
+      ],
+      "log": ".qa/file-drop-rust.log"
+    },
+    "frontend_units": {
+      "passed": 196,
+      "failed": 0,
+      "skipped": 1,
+      "skip_reason": "Node runtime lacks optional Uint8Array.fromBase64; fallback remains covered",
+      "log": ".qa/file-drop-final-units.log"
+    },
+    "validation_inventory": {
+      "passed": 20,
+      "log": ".qa/file-drop-inventory.log"
+    },
+    "generated_contracts": "Exact local debug CLI matches generated contracts",
+    "formatting": "cargo fmt --check passed",
+    "frontend_build": "TypeScript and optimized Vite build passed",
+    "browser": {
+      "file_drop": {
+        "passed": true,
+        "checks": [
+          "Multiple drops deduplicate paths; paging preserves mapping drafts; closing before import changes no Events",
+          "Each reviewed CSV imports exactly once; the second appends without replacing the first; completed pages cannot duplicate Events",
+          "Mixed drop: model displays immediately, GeoJSON adds a reference layer, KML imports as Events through the same modal",
+          "A malformed file does not block later pages; reference display is also available after opening Event mapping",
+          "Shapefile companions are collected with their layer rather than imported as separate files",
+          "Mixed workspace drops cannot replace the dataset; import modal remains usable at the minimum window size"
+        ],
+        "report": ".qa/file-drop/browser-final-v4/report.json"
+      },
+      "ordinary_gis_open": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "Open renders native geojson",
+            "evidence": {
+              "loaded": true,
+              "entities": 3,
+              "primitive": false,
+              "features": 3,
+              "resources": 2
+            }
+          },
+          {
+            "name": "Open renders native topojson",
+            "evidence": {
+              "loaded": true,
+              "entities": 2,
+              "primitive": false,
+              "features": 2,
+              "resources": 2
+            }
+          },
+          {
+            "name": "Open renders native kml",
+            "evidence": {
+              "loaded": true,
+              "entities": 1,
+              "primitive": false,
+              "features": 1,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native kmz",
+            "evidence": {
+              "loaded": true,
+              "entities": 1,
+              "primitive": false,
+              "features": 1,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native czml",
+            "evidence": {
+              "loaded": true,
+              "entities": 1,
+              "primitive": false,
+              "features": 3,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native gpx",
+            "evidence": {
+              "loaded": true,
+              "entities": 2,
+              "primitive": false,
+              "features": 4,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Open renders native gltf",
+            "evidence": {
+              "loaded": true,
+              "primitive": true,
+              "features": 0,
+              "resources": 2
+            }
+          },
+          {
+            "name": "Open renders native glb",
+            "evidence": {
+              "loaded": true,
+              "primitive": true,
+              "features": 0,
+              "resources": 1
+            }
+          },
+          {
+            "name": "Native 3D Tiles content is fetched, decoded and ready in the live scene",
+            "evidence": {}
+          },
+          {
+            "name": "Open renders native tiles3d",
+            "evidence": {
+              "loaded": true,
+              "primitive": true,
+              "features": 0,
+              "resources": 2
+            }
+          },
+          {
+            "name": "JSON GIS is distinguished from workspace JSON in Open",
+            "evidence": {}
+          },
+          {
+            "name": "Native rendering preserves source feature IDs beyond JavaScript safe integers",
+            "evidence": {}
+          },
+          {
+            "name": "Multipart native objects retain exact source IDs and highlight every part without suffix collisions",
+            "evidence": {
+              "parts": 2,
+              "selection": 2,
+              "pick": {
+                "kind": "gis",
+                "layer": "c5b7bef11c411b783bb0215fee1ba500",
+                "id": "foo"
+              },
+              "separate": 1
+            }
+          },
+          {
+            "name": "Source XML descriptions retain attributes without executing markup or contacting external URLs",
+            "evidence": {}
+          },
+          {
+            "name": "Reference table and native polygon highlights share exact feature IDs",
+            "evidence": {
+              "selected": [
+                "zone-1",
+                "zone-2"
+              ]
+            }
+          },
+          {
+            "name": "Reference layers persist through Globe, 2D and Columbus transitions",
+            "evidence": {}
+          },
+          {
+            "name": "Native CZML animation follows Chronoscope time focus",
+            "evidence": {
+              "a": [
+                1012518.353413592,
+                -5742276.92974376,
+                2578690.158718329
+              ],
+              "b": [
+                1157523.9055572974,
+                -5638340.9871234195,
+                2739832.36711419
+              ]
+            }
+          },
+          {
+            "name": "Portable GIS workspace reopens all formats and packaged model/tile assets",
+            "evidence": {}
+          },
+          {
+            "name": "Timed polygons retain full geometry plus centroid circles and entity tracks",
+            "evidence": {
+              "points": 3,
+              "centroids": 2,
+              "polygons": 2,
+              "tracks": 2
+            }
+          },
+          {
+            "name": "Centroid markers/tracks can be hidden while polygons remain",
+            "evidence": {}
+          },
+          {
+            "name": "Entity/category rows remain compact without extra vertical margins",
+            "evidence": {
+              "entities": [
+                26,
+                26
+              ],
+              "categories": [
+                {
+                  "height": 24,
+                  "margin": "0px"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Agent geographic camera target is centred in map",
+            "evidence": {
+              "mode": "map",
+              "backend": "WebGL2",
+              "hardware": "unknown",
+              "error": 9.094947017729282e-13
+            }
+          },
+          {
+            "name": "Agent geographic camera target is centred in globe",
+            "evidence": {
+              "mode": "globe",
+              "backend": "WebGL2",
+              "hardware": "unknown",
+              "error": 0.0019591165000747424
+            }
+          },
+          {
+            "name": "Agent geographic camera target is centred in space-time",
+            "evidence": {
+              "mode": "space-time",
+              "backend": "WebGL2",
+              "hardware": "unknown",
+              "error": 0.001959116495299895
+            }
+          }
+        ],
+        "report": ".qa/file-drop/gis-regression/report.json"
+      },
+      "ordinary_import_layers": {
+        "passed": true,
+        "checks": [
+          "Destination layer merges a second file into one layer and retains source provenance",
+          "Right-click and ellipsis Show only this layer both hide other data layers and enable the chosen layer",
+          "Show only this layer also isolates GIS layers and hides other Event/GIS layers",
+          "Multi-file Philippine flight demo displays one layer"
+        ],
+        "report": ".qa/file-drop/import-layers/report.json"
+      }
+    },
+    "macos_release": {
+      "passed": true,
+      "command": "script/build_and_run.sh --build-only",
+      "installed": "~/Applications/Chronoscope.app",
+      "version": "0.16.12",
+      "executable_sha256": "accf25ab0348ab60a91b6647389ad01e389c05d2e2939cb8ff0b911295ba03e5",
+      "matches_built_bundle": true,
+      "only_installed_copy": true,
+      "log": ".qa/file-drop-macos-build.log"
+    }
+  },
+  "limits": [
+    "Actual Finder/Explorer drag gesture has not been exercised; native Tauri event registration, payload forwarding and disposal are covered by the adapter test",
+    "Browser interactions exercise the real drop queue against an isolated Rust bridge and real Cesium renderer",
+    "Folder bulk-import is not included; drop individual files",
+    "A second drop while a dialog is open asks the user to finish or close that dialog"
+  ],
+  "distribution": "Next only. No Public promotion, release asset changes, or hosted workflows."
+}

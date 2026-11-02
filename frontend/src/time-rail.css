@@ -48,7 +48,80 @@
   width: 100%;
   flex: 1;
   min-height: 48px;
-  padding: 16px 9px 16px 17px;
+  padding: 24px 6px 24px 38px;
+}
+.time-rail-date-heading {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 0 2px 4px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  line-height: 13px;
+}
+.time-rail-date-heading span {
+  display: block;
+}
+.time-rail-year {
+  font-size: 10px;
+  color: var(--text);
+}
+.time-rail-zone,
+.time-rail-date {
+  font-size: 9px;
+  color: var(--muted);
+}
+.time-rail-date-heading[hidden],
+.is-collapsed .time-rail-date-heading {
+  display: none;
+}
+#time-rail-labels {
+  position: absolute;
+  inset: 0 auto 0 -35px;
+  width: 31px;
+  pointer-events: none;
+  user-select: none;
+}
+.time-rail-tick {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  font-variant-numeric: tabular-nums;
+  line-height: 12px;
+  color: var(--muted);
+  text-align: left;
+}
+.time-rail-tick::after {
+  content: "";
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  width: 4px;
+  border-top: 1px solid var(--line);
+}
+.time-rail-tick span {
+  display: block;
+  white-space: nowrap;
+}
+.time-tick-group {
+  font-size: 9px;
+  font-weight: 600;
+}
+.time-tick-day {
+  font-size: 10px;
+  color: var(--text);
+}
+.time-tick-detail {
+  font-size: 8px;
+}
+.time-rail-tick.is-year .time-tick-day {
+  font-weight: 600;
+}
+.time-rail-tick.is-year::after {
+  width: 7px;
+}
+.time-rail-tick.is-month .time-tick-day {
+  color: var(--muted);
 }
 .workspace-resizable .time-rail .time-range-track {
   height: 100%;
@@ -103,10 +176,10 @@
 }
 .time-rail .time-range-grip {
   /* Separate move/resize hit lanes keep even a subpixel window draggable. */
-  left: -4px;
+  left: 1px;
   padding: 1px 0;
   font-size: 13px;
-  width: 24px;
+  width: 12px;
   min-height: 28px;
   display: grid;
   place-items: center;
@@ -115,11 +188,11 @@
   pointer-events: auto;
 }
 .time-rail .time-range-handle {
-  width: 32px;
-  min-width: 32px;
+  width: 24px;
+  min-width: 24px;
   height: 24px;
   /* Leave the grab bar's left lane clear when the two brackets overlap. */
-  left: calc(50% + 6px);
+  left: calc(50% + 4px);
   bottom: auto;
   transform: translate(-50%, -50%);
   border: 0;
