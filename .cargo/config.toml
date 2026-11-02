@@ -1,3 +1,3 @@
-# Safe local default for the 16 GB development Mac. Override with cargo -j N.
-[build]
-jobs = 1
+# Local Mac worker limits live in scripts/guarded_run.py, not shared Cargo
+# configuration: raw Cargo and hosted builds use Cargo's normal job selection.
+# Wrap personal Mac Cargo commands with scripts/guarded_run.py for protection.

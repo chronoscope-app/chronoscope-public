@@ -123,7 +123,7 @@ fn invalid_measurement_ranges_are_rejected_without_replacing_the_scene() {
 #[test]
 fn every_catalog_preview_points_to_a_real_saved_view() {
     let dir = tempfile::tempdir().unwrap();
-    assert_eq!(demos::DEMOS.len(), 15);
+    assert_eq!(demos::DEMOS.len(), 14);
     assert_eq!(demos::DEMOS.last().unwrap().id, "starlink-orbits");
     assert!(!demos::DEMOS.iter().any(|demo| demo.id == "covid"));
     for demo in demos::DEMOS {

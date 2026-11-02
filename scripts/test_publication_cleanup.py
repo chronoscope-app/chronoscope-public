@@ -78,6 +78,10 @@ class PublicationCleanup(unittest.TestCase):
             config.parent.mkdir()
             environment = {'CARGO_HOME': str(root/'private-cargo')}
             with mock.patch.object(portable, 'root', root), mock.patch.object(portable.Path, 'home', return_value=root/'home'):
+                config.write_text('# No shared worker cap; local Mac policy is in the guard.\n')
+                self.assertFalse(portable.configured_flags_required(environment, ['cargo', 'build', '--locked']))
+                config.write_text('# comment\n[build]\nrustflags = ["-C", "target-cpu=native"]\n')
+                self.assertTrue(portable.configured_flags_required(environment, ['cargo', 'build']))
                 config.write_text('# Safe local worker limit\n[build]\njobs = 1\n')
                 self.assertFalse(portable.configured_flags_required(environment, ['cargo', 'build', '--locked']))
                 config.write_text('[build]\njobs = 1\nrustflags = ["-C", "target-cpu=native"]\n')
@@ -150,11 +154,11 @@ class PublicationCleanup(unittest.TestCase):
         self.assertIn("workflow_dispatch:", text)
         self.assertNotRegex(text, r"(?m)^\s+(push|pull_request|pull_request_target):")
         actions = re.findall(r"uses: ([^\s]+)", text)
-        self.assertEqual(len(actions), 6)
+        self.assertEqual(len(actions), 9)
         for action in actions: self.assertRegex(action, r"@[0-9a-f]{40}$")
         self.assertIn("timeout-minutes: 90", text)
         self.assertIn("retention-days: 1", text)
-        self.assertNotIn("rust-cache", text)
+        self.assertIn('python scripts/ci_cache.py prepare', text)
         self.assertIn("expected_sha:", text)
         self.assertIn("contents: read", text)
 
@@ -167,7 +171,7 @@ class PublicationCleanup(unittest.TestCase):
         self.assertIn('        if: always()\n', step)
         self.assertIn('uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02', step)
         paths = step.split('          path: |\n')[1].split('          if-no-files-found:')[0]
-        expected = ['            ${{ runner.temp }}/'+group+'-validation/'+suffix
+        expected = ['            target/cargo-timings/*.html'] + ['            ${{ runner.temp }}/'+group+'-validation/'+suffix
                     for group in ['source', 'contracts']
                     for suffix in ['report.json', 'runs/*/run.json', 'runs/*/logs/*.log']]
         self.assertEqual(paths.splitlines(), expected)

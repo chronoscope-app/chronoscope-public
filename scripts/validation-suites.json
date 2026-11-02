@@ -374,6 +374,7 @@
     "unit": [
       "test_validation_runner.py",
       "test_guarded_run.py",
+      "test_ci_build.py",
       "test_data_assets.py"
     ],
     "integrity": [

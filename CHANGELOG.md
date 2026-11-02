@@ -4,7 +4,14 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
-- Make local validation default to six quick unit/type/asset checks. Preserve full core/build checks under `--tier fast` and release checks under `--tier full`; focused browser requests avoid unrelated all-target Rust linting.
+## 0.16.13 — experimental preview, 2026-11-02
+
+- Save AI service keys in the operating system credential store across app sessions, reconnect configured services on startup, and offer Forget to remove a saved key.
+- Integrate compact calendar labels into the vertical Time rail, grouping long studies by year and filling available space with months and dates.
+- Speed up hosted builds with bounded dependency caching, consistent compiler flags and one frontend build. Allow packaging retries to reuse successful verification only for the exact source, platform and toolchain. Preserve optimized release settings.
+- Keep personal Mac resource safeguards local; allow standard hosted runners to use their available CPU capacity. Correct stale demo-count and CSV-preview checks while retaining preview validation and exact full-review counts.
+
+- Make local validation default to quick unit/type/asset checks. Preserve full core/build checks under `--tier fast` and release checks under `--tier full`; focused browser requests avoid unrelated all-target Rust linting.
 
 - Report interrupted import-review jobs as cancellation rather than exposing the raw SQLite diagnostic; retain genuine failures and completed results when cancellation arrives late.
 

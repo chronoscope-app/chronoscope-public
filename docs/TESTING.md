@@ -66,8 +66,19 @@ sessioned children, below 25% memory availability, above 5 GiB RSS, or above
 250% tree CPU for 15 seconds. It prevents idle system sleep during the guarded
 command, including while the display is locked; it does not unlock the screen
 or prevent display sleep. UI/capture checks may still require an unlocked session.
-Other platforms share the lock and serial Cargo settings; Mac pressure thresholds
-are not claimed as Windows/Linux monitoring. This is not a GPU-memory meter.
+Only non-hosted macOS gets these personal-machine worker/priority/pressure
+settings. Reviewed manual main `build.yml` runs in the Next/Public repositories
+on GitHub-owned runners use native Cargo/libtest worker defaults, without
+nice/caffeinate or the personal Mac CPU/RSS/memory/disk thresholds. The policy
+requires the exact GitHub repository, workflow ref, event, main ref and hosted
+runner context; `CI=true` alone and self-hosted Mac runners are not exemptions.
+Windows/Linux also use native worker defaults. Explicit caller worker env values
+remain effective outside the local Mac policy. All platforms retain the workspace
+lock, nested-owner verification and owned-process cleanup. Hosted OS memory/OOM
+limits still apply; this change does not prove a memory budget or faster build.
+Frontend unit file serialization and timing-sensitive browser isolation remain
+separate validation policy, not the personal Mac Cargo limit. No GPU-memory
+monitoring is claimed.
 
 Preview old disposable test profiles with `python3 scripts/clean_local_artifacts.py`;
 add `--apply` to remove them. It retains at least the newest three completed runs
@@ -159,9 +170,12 @@ installed app/profile.
 `--native` alone performs native compilation/lint and headless CLI/MCP checks.
 
 Cargo's checked-in development/test profiles omit debug symbols and incremental
-artifacts, and compilation defaults to one worker. The Run script and validation
-use those same settings, avoiding alternating caches. Override `cargo -j N` or
-`CARGO_BUILD_JOBS` when appropriate; use `CARGO_PROFILE_DEV_DEBUG=2` consistently
+artifacts. The Run script and validation use those same profile settings, avoiding
+alternating caches. One-worker compilation/serial Rust tests are imposed only by
+the personal Mac guard. Raw Cargo no longer has a repository-wide worker cap;
+wrap personal Mac Cargo commands with `python3 scripts/guarded_run.py -- cargo ...`
+to retain responsiveness protection. Cargo's explicit `-j N` still has its normal
+precedence over environment defaults; use `CARGO_PROFILE_DEV_DEBUG=2` consistently
 when source-level debugging is needed. Release profiles remain unchanged.
 
 ## Evidence and timeouts
@@ -255,6 +269,6 @@ Release metadata consistency and the workaround version/ownership index are
 inventoried integrity checks in both local and manual hosted source verification.
 See [release preparation](maintenance/RELEASE-PROCESS.md) and the
 [workaround index](maintenance/WORKAROUNDS.md). The portable build wrapper accepts
-the reviewed jobs-only workspace Cargo config; other configured rustflags still
+the empty/comment-only (or legacy jobs-only) workspace Cargo config; other configured rustflags still
 require explicit effective `CARGO_ENCODED_RUSTFLAGS` so remapping cannot silently
 replace them.

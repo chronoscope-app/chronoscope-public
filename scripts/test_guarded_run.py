@@ -23,6 +23,157 @@ class GuardTests(unittest.TestCase):
             self.assertEqual(guarded_run.launch_command(command), prepared)
         prepare.assert_called_once_with(command, Path.cwd(), os.environ)
 
+    @staticmethod
+    def hosted_environment(repository='chronoscope-app/chronoscope-public'):
+        return {'GITHUB_ACTIONS': 'true', 'RUNNER_ENVIRONMENT': 'github-hosted',
+                'GITHUB_REPOSITORY': repository, 'GITHUB_EVENT_NAME': 'workflow_dispatch',
+                'GITHUB_REF': 'refs/heads/main',
+                'GITHUB_WORKFLOW_REF': f'{repository}/.github/workflows/build.yml@refs/heads/main'}
+
+    def test_hosted_policy_requires_every_trusted_context_field(self):
+        for repository in ['chronoscope-app/chronoscope-public', 'chronoscope-app/chronoscope-next']:
+            environment = self.hosted_environment(repository)
+            self.assertTrue(guarded_run.trusted_hosted(environment))
+            for key in environment:
+                for value in [None, 'wrong']:
+                    altered = dict(environment)
+                    if value is None:
+                        altered.pop(key)
+                    else:
+                        altered[key] = value
+                    with self.subTest(repository=repository, key=key, value=value):
+                        self.assertFalse(guarded_run.trusted_hosted(altered))
+        for variables in [{'CI': 'true'}, {'GITHUB_ACTIONS': 'true'},
+                          {**self.hosted_environment(), 'RUNNER_ENVIRONMENT': 'self-hosted'},
+                          self.hosted_environment('other-owner/chronoscope-public')]:
+            self.assertFalse(guarded_run.trusted_hosted(variables))
+
+    def test_platform_launch_policy_and_explicit_environment_precedence(self):
+        # Exercise a live monitor iteration too: hosted Mac must never query
+        # local CPU/RSS/pressure, not merely skip the initial admission check.
+        contexts = [({}, True), ({'CI': 'true'}, True),
+                    ({**self.hosted_environment(), 'RUNNER_ENVIRONMENT': 'self-hosted'}, True),
+                    (self.hosted_environment(), False)]
+        for platform in ['darwin', 'win32', 'linux']:
+            for variables, needs_mac in contexts:
+                for explicit in [{}, {'CARGO_BUILD_JOBS': '6', 'RUST_TEST_THREADS': '3'}]:
+                    local_mac = platform == 'darwin' and needs_mac
+                    child = mock.Mock(pid=123, returncode=7)
+                    child.poll.side_effect = [None, None, 7, 7]
+                    with (self.subTest(platform=platform, variables=variables, explicit=explicit),
+                          tempfile.TemporaryDirectory() as temporary,
+                          mock.patch.dict(os.environ, {**variables, **explicit}, clear=True),
+                          mock.patch.object(guarded_run.sys, 'platform', platform),
+                          mock.patch.object(guarded_run, 'launch_command', side_effect=lambda c: c),
+                          mock.patch.object(guarded_run, 'memory_available', return_value=80) as memory,
+                          mock.patch.object(guarded_run.shutil, 'disk_usage', return_value=mock.Mock(free=10*1024**3)) as disk,
+                          mock.patch.object(guarded_run, 'usage', return_value=(100, 100)) as usage,
+                          mock.patch.object(guarded_run.time, 'sleep'),
+                          mock.patch.object(guarded_run.subprocess, 'Popen', return_value=child) as launch):
+                        root = Path(temporary)
+                        self.assertEqual(guarded_run.run_guarded(['cargo', 'test', '-j', '4'], root), 7)
+                        command = launch.call_args.args[0]
+                        env = launch.call_args.kwargs['env']
+                        self.assertTrue(env[guarded_run.MARKER])
+                        self.assertEqual(command[-4:], ['cargo', 'test', '-j', '4'])
+                        if local_mac:
+                            self.assertEqual(command[:5], ['/usr/bin/caffeinate', '-i', '/usr/bin/nice', '-n', '10'])
+                            self.assertEqual(env['CARGO_BUILD_JOBS'], '1')
+                            self.assertEqual(env['RUST_TEST_THREADS'], '1')
+                            self.assertEqual(memory.call_count, 2)
+                            disk.assert_called_once()
+                            usage.assert_called_once_with(child.pid)
+                        else:
+                            self.assertEqual(command, ['cargo', 'test', '-j', '4'])
+                            for key in ['CARGO_BUILD_JOBS', 'RUST_TEST_THREADS']:
+                                self.assertEqual(env.get(key), explicit.get(key))
+                            memory.assert_not_called()
+                            disk.assert_not_called()
+                            usage.assert_not_called()
+                        self.assertFalse((root/'.qa/heavy-work-owner.json').exists())
+                        with guarded_run.workspace_lock(root):
+                            pass
+
+    def test_local_mac_pressure_still_stops_owned_tree(self):
+        for rss, cpu, available in [(5121, 100, 80), (100, 100, 24), (100, 251, 80)]:
+            child = mock.Mock(pid=123, returncode=None)
+            child.poll.return_value = None
+            with (self.subTest(rss=rss, cpu=cpu, available=available),
+                  tempfile.TemporaryDirectory() as temporary,
+                  mock.patch.dict(os.environ, {}, clear=True),
+                  mock.patch.object(guarded_run.sys, 'platform', 'darwin'),
+                  mock.patch.object(guarded_run, 'memory_available', side_effect=[80, available]),
+                  mock.patch.object(guarded_run.shutil, 'disk_usage', return_value=mock.Mock(free=10*1024**3)),
+                  mock.patch.object(guarded_run, 'usage', return_value=(rss, cpu)),
+                  mock.patch.object(guarded_run.time, 'sleep'),
+                  mock.patch.object(guarded_run.time, 'monotonic', side_effect=[1, 20]),
+                  mock.patch.object(guarded_run.subprocess, 'Popen', return_value=child),
+                  mock.patch('validation_runtime.stop_tree') as stop):
+                root = Path(temporary)
+                with self.assertRaisesRegex(RuntimeError, 'Stopping owned work'):
+                    guarded_run.run_guarded(['cargo', 'test'], root)
+                stop.assert_called_once_with(child)
+                child.wait.assert_called_once_with(timeout=10)
+                with guarded_run.workspace_lock(root):
+                    pass
+
+    def test_hosted_policy_does_not_bypass_workspace_contention(self):
+        with (tempfile.TemporaryDirectory() as temporary,
+              mock.patch.dict(os.environ, self.hosted_environment(), clear=True),
+              mock.patch.object(guarded_run.subprocess, 'Popen') as launch):
+            root = Path(temporary)
+            with guarded_run.workspace_lock(root):
+                with self.assertRaisesRegex(RuntimeError, 'Another guarded'):
+                    guarded_run.run_guarded([sys.executable, '-c', 'pass'], root)
+            launch.assert_not_called()
+
+    def test_nested_hosted_hooks_reuse_only_a_live_owner(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            with guarded_run.workspace_lock(root) as token:
+                with (mock.patch.dict(os.environ, {**self.hosted_environment(), guarded_run.MARKER: token}, clear=True),
+                      mock.patch.object(guarded_run.subprocess, 'call', return_value=9) as call,
+                      mock.patch.object(guarded_run.subprocess, 'Popen') as launch):
+                    self.assertEqual(guarded_run.run_guarded(['cargo', 'test'], root), 9)
+                    call.assert_called_once_with(['cargo', 'test'])
+                    launch.assert_not_called()
+
+    def test_personal_mac_still_refuses_low_disk_before_launch(self):
+        with (tempfile.TemporaryDirectory() as temporary,
+              mock.patch.dict(os.environ, {}, clear=True),
+              mock.patch.object(guarded_run.sys, 'platform', 'darwin'),
+              mock.patch.object(guarded_run, 'memory_available', return_value=80),
+              mock.patch.object(guarded_run.shutil, 'disk_usage', return_value=mock.Mock(free=4*1024**3)),
+              mock.patch.object(guarded_run.subprocess, 'Popen') as launch):
+            root = Path(temporary)
+            with self.assertRaisesRegex(RuntimeError, 'Less than 5 GiB'):
+                guarded_run.run_guarded(['cargo', 'test'], root)
+            launch.assert_not_called()
+            with guarded_run.workspace_lock(root):
+                pass
+
+    def test_interrupted_hosted_work_still_cleans_up_its_owned_tree(self):
+        child = mock.Mock(pid=123)
+        child.poll.return_value = None
+        with (tempfile.TemporaryDirectory() as temporary,
+              mock.patch.dict(os.environ, self.hosted_environment(), clear=True),
+              mock.patch.object(guarded_run.sys, 'platform', 'darwin'),
+              mock.patch.object(guarded_run.subprocess, 'Popen', return_value=child),
+              mock.patch.object(guarded_run.time, 'sleep', side_effect=KeyboardInterrupt),
+              mock.patch('validation_runtime.stop_tree') as stop):
+            root = Path(temporary)
+            with self.assertRaises(KeyboardInterrupt):
+                guarded_run.run_guarded(['cargo', 'test'], root)
+            stop.assert_called_once_with(child)
+            child.wait.assert_called_once_with(timeout=10)
+            with guarded_run.workspace_lock(root):
+                pass
+
+    def test_shared_cargo_config_cannot_reintroduce_a_worker_override(self):
+        import tomllib
+        config = tomllib.loads((guarded_run.ROOT/'.cargo/config.toml').read_text())
+        self.assertEqual(config, {})
+
     def test_contention_refuses_a_second_worker_and_releases_after_exception(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve()

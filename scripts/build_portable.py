@@ -22,7 +22,9 @@ def build_environment(environ, config_flags=()):
     for source, destination in [(str(Path.home()), "/build-home"),
                                 (str(Path(env.get("CARGO_HOME", str(Path.home()/".cargo"))).resolve()), "/cargo"),
                                 (str(root), "/chronoscope")]:
-        flags.append(f"--remap-path-prefix={source}={destination}")
+        mapping = f"--remap-path-prefix={source}={destination}"
+        if mapping not in flags:
+            flags.append(mapping)
     env["CARGO_ENCODED_RUSTFLAGS"] = "\x1f".join(flags)
     env.pop("RUSTFLAGS", None)
     return env
@@ -33,7 +35,7 @@ def run_command(command, environment):
 
 
 def configured_flags_required(environ, command):
-    """Accept only the reviewed jobs-only workspace config without guessing flags."""
+    """Accept empty or legacy jobs-only workspace config without guessing flags."""
     if 'RUSTFLAGS' in environ or 'CARGO_ENCODED_RUSTFLAGS' in environ:
         return False
     configs = [Path(environ.get('CARGO_HOME', str(Path.home()/'.cargo')))/'config.toml']
@@ -46,7 +48,7 @@ def configured_flags_required(environ, command):
             import re
             lines = [line.split('#', 1)[0].strip() for line in path.read_text().splitlines()]
             lines = [line for line in lines if line]
-            if len(lines) == 2 and lines[0] == '[build]' and re.fullmatch(r'jobs\s*=\s*1', lines[1]):
+            if not lines or (len(lines) == 2 and lines[0] == '[build]' and re.fullmatch(r'jobs\s*=\s*1', lines[1])):
                 continue  # No rustflags can be overridden by the remapping env.
         return True
     return (any(key.startswith('CARGO_TARGET_') and key.endswith('_RUSTFLAGS') for key in environ)
@@ -55,6 +57,18 @@ def configured_flags_required(environ, command):
 
 if __name__ == "__main__":
     args = sys.argv[1:]
+    if args == ["--github-env"]:
+        destination = os.environ.get("GITHUB_ENV")
+        if not destination:
+            raise SystemExit("GITHUB_ENV is required")
+        if configured_flags_required(os.environ, ["cargo", "build"]):
+            raise SystemExit("Unknown configured Cargo flags; provide the reviewed effective flags")
+        value = build_environment(os.environ)["CARGO_ENCODED_RUSTFLAGS"]
+        if "\n" in value or "\r" in value:
+            raise SystemExit("Multiline Cargo flags are not supported")
+        with open(destination, "a", encoding="utf-8") as output:
+            output.write("CARGO_ENCODED_RUSTFLAGS=" + value + "\n")
+        raise SystemExit(0)
     command = args[1:] if args[:1] == ["--"] else ["cargo", *args]
     if not args or not command:
         raise SystemExit(__doc__)

@@ -17,6 +17,23 @@ ROOT = Path(__file__).resolve().parent.parent
 MARKER = 'CHRONOSCOPE_RESOURCE_GUARD'
 
 
+def trusted_hosted(environ):
+    """Policy for reviewed manual main workflows on GitHub-owned runners.
+
+    CI=true alone (or a self-hosted Mac runner) must not disable Mac protection.
+    These are GitHub runner-provided context values, not a general bypass flag
+    or an authentication boundary against a caller who controls its own env.
+    """
+    repository = environ.get('GITHUB_REPOSITORY')
+    return (repository in {'chronoscope-app/chronoscope-public', 'chronoscope-app/chronoscope-next'}
+            and environ.get('GITHUB_ACTIONS') == 'true'
+            and environ.get('RUNNER_ENVIRONMENT') == 'github-hosted'
+            and environ.get('GITHUB_EVENT_NAME') == 'workflow_dispatch'
+            and environ.get('GITHUB_REF') == 'refs/heads/main'
+            and environ.get('GITHUB_WORKFLOW_REF') ==
+            f'{repository}/.github/workflows/build.yml@refs/heads/main')
+
+
 def memory_available():
     probe = subprocess.run(['/usr/bin/memory_pressure', '-Q'], capture_output=True, text=True, timeout=3)
     import re
@@ -100,25 +117,32 @@ def run_guarded(command, root=ROOT):
     if is_guarded(root):
         return subprocess.call(command)
     with workspace_lock(root) as token:
-        if sys.platform == 'darwin':
+        local_mac = sys.platform == 'darwin' and not trusted_hosted(os.environ)
+        if local_mac:
             available = memory_available()
             if available < 35:
                 raise RuntimeError(f'Memory availability {available}% is below the 35% start threshold')
             if shutil.disk_usage(root).free < 5 * 1024**3:
                 raise RuntimeError('Less than 5 GiB disk space available; clean old build/test artifacts first.')
             print(f'Resource guard: {available}% memory available; one low-priority process tree', flush=True)
-        env = dict(os.environ, **{MARKER: token}, CARGO_BUILD_JOBS='1', RUST_TEST_THREADS='1')
-        if sys.platform == 'darwin':
+        env = dict(os.environ, **{MARKER: token})
+        if local_mac:
+            env.update(CARGO_BUILD_JOBS='1', RUST_TEST_THREADS='1')
             # Prevent idle system sleep, including while locked; never unlock or
             # prevent display sleep. The assertion ends with the guarded work.
             command = ['/usr/bin/caffeinate', '-i', '/usr/bin/nice', '-n', '10', *command]
+        else:
+            # No substitute worker cap: retain explicit caller settings, else
+            # let Cargo/libtest choose their native defaults. The workspace
+            # lock and owned-process cleanup still apply on every platform.
+            print('Resource guard: workspace lock; native worker defaults (no local Mac pressure policy)', flush=True)
         child = subprocess.Popen(command, env=env, start_new_session=os.name != 'nt')
         high_cpu_since = None
         peak_rss = peak_cpu = 0
         try:
             while child.poll() is None:
                 time.sleep(.5)
-                if child.poll() is not None or sys.platform != 'darwin':
+                if child.poll() is not None or not local_mac:
                     continue
                 rss, cpu = usage(child.pid)
                 peak_rss, peak_cpu = max(peak_rss, rss), max(peak_cpu, cpu)
@@ -126,7 +150,8 @@ def run_guarded(command, root=ROOT):
                 high_cpu_since = (high_cpu_since or time.monotonic()) if cpu > 250 else None
                 if rss > 5120 or available < 25 or (high_cpu_since and time.monotonic()-high_cpu_since > 15):
                     raise RuntimeError(f'Stopping owned work: RSS={rss:.0f} MiB, CPU={cpu:.0f}%, memory available={available}%')
-            print(f'Resource guard: peak owned RSS {peak_rss:.0f} MiB, CPU {peak_cpu:.0f}%', flush=True)
+            if local_mac:
+                print(f'Resource guard: peak owned RSS {peak_rss:.0f} MiB, CPU {peak_cpu:.0f}%', flush=True)
             return child.returncode
         finally:
             # A build/validation step may create its own process groups. Walk

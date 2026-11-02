@@ -1,0 +1,85 @@
+{
+  "source_next_commit": "84c2c5bcb46c9d9929c3b7032c68ba64701b3b11",
+  "public_parent": "e32e3f81cb2623c9c4006a23caf68c5eb5a8a185",
+  "source_files": 3480,
+  "public_only_records_preserved": 33,
+  "public_only_paths": [
+    "docs/validation/public-governor-bulk-import-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/README.md",
+    "docs/validation/public-promotion-0.16.10-2026-10-31/report.json",
+    "docs/validation/public-promotion-0.16.12-2026-10-31/report.json",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/README.md",
+    "docs/validation/public-promotion-0.16.4-2026-10-28/report.json",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.7-2026-10-29/report.json",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/README.md",
+    "docs/validation/public-promotion-0.16.9-2026-10-29/report.json",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/README.md",
+    "docs/validation/public-promotion-04bdb28-2026-10-26/report.json",
+    "docs/validation/public-promotion-2026-10-24/README.md",
+    "docs/validation/public-promotion-2026-10-24/report.json",
+    "docs/validation/public-promotion-2026-10-25/README.md",
+    "docs/validation/public-promotion-2026-10-25/report.json",
+    "docs/validation/public-promotion-23e567f-2026-10-26/README.md",
+    "docs/validation/public-promotion-23e567f-2026-10-26/report.json",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/README.md",
+    "docs/validation/public-promotion-3e9060b-2026-10-25/report.json",
+    "docs/validation/public-promotion-4153760-2026-10-31/README.md",
+    "docs/validation/public-promotion-4153760-2026-10-31/report.json",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/README.md",
+    "docs/validation/public-promotion-57c5bb2-2026-10-26/report.json",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/README.md",
+    "docs/validation/public-promotion-6d1937c-2026-10-26/report.json",
+    "docs/validation/public-promotion-82107e5-2026-10-26/README.md",
+    "docs/validation/public-promotion-82107e5-2026-10-26/report.json",
+    "docs/validation/public-promotion-83977fa2-2026-11-01/report.json",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/README.md",
+    "docs/validation/public-promotion-90f3c1d-2026-10-25/report.json",
+    "docs/validation/public-promotion-fb385b3-2026-11-01/report.json",
+    "docs/validation/public-resident-graphics-2026-10-30/report.json"
+  ],
+  "source_parity": "Every tracked Next blob and file mode matches this Public snapshot.",
+  "scope": "Independent Public ancestry; optimized release settings preserved. Build acceleration and latest Time rail/settings/import changes.",
+  "authorization": "Owner explicitly requested Next push, Public promotion, hosted runners and new releases.",
+  "local_validation": {
+    "full_source_gate": "passed",
+    "rust_tests_passed": 522,
+    "rust_optional_ignored": 1,
+    "packaging_suites": "all four passed",
+    "workflow_syntax": "Both manual workflows passed checksum-verified Actionlint 1.7.12.",
+    "build_acceleration_regressions": "6 passed",
+    "release_metadata": "Five manifests and both lockfiles consistent at 0.16.13.",
+    "dependency_audits": {
+      "rust_vulnerabilities": 0,
+      "npm_vulnerabilities": 0,
+      "existing_maintenance_yanked_warnings": 7
+    },
+    "secret_scan": {
+      "unreviewed_findings": 0,
+      "reviewed_historical_metadata": [
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "line": 35,
+          "classification": "Historical source/image checksum or public Git commit identifier; unchanged already-public bytes, not a credential."
+        },
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "line": 50,
+          "classification": "Historical source/image checksum or public Git commit identifier; unchanged already-public bytes, not a credential."
+        },
+        {
+          "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+          "line": 51,
+          "classification": "Historical source/image checksum or public Git commit identifier; unchanged already-public bytes, not a credential."
+        },
+        {
+          "path": "docs/validation/release-0.16.9-publication/SOURCE-MANIFEST-RELEASE.json",
+          "line": 3,
+          "classification": "Historical source/image checksum or public Git commit identifier; unchanged already-public bytes, not a credential."
+        }
+      ],
+      "allowlist_changed": false
+    },
+    "source_gate_equivalence": "Local source gate ran with these exact application source bytes; connected-app Next commit tree is byte-identical to local tested commit 3e53cfb6."
+  }
+}

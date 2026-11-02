@@ -83,3 +83,27 @@ sharing beyond the build's normal access boundary.
 Logical Windows-path and mocked Popen tests are not native Windows acceptance.
 After promotion and explicit hosted-run authorization, freeze the resulting
 Public SHA and test Windows before claiming this platform fixed.
+
+## Optional build acceleration
+
+The manual build workflow uses a platform, pinned Rust/SDK and lockfile-specific
+cache capped at 2 GiB per platform. It prioritizes release dependency artifacts,
+then adds registry/npm download data within the remaining capacity. It excludes
+credentials, incremental state, application executables and app fingerprints.
+Cache restore/save failures are optional; Cargo validates dependency fingerprints.
+Release optimization remains thin LTO with one codegen unit.
+
+All source checks and both release builds receive the same portable compiler
+flags. The frontend is built once, then its complete file hashes and source/tool
+identity are checked by the packaging hook. Cargo timing reports accompany the
+narrow diagnostic upload.
+
+Set `verify_only` to retain successful source verification without creating a GUI
+package. To retry packaging, optionally supply its producing `verification_run_id`.
+Reuse requires a completed manual Public-main build for the exact source SHA,
+platform, compiler, Node, Python, SDK and flags; successful seal/upload steps; and
+an unexpired one-day artifact whose frontend hashes match. A run that failed
+only after verification can be reused. Missing, changed or stale evidence fails
+closed; omit this input to perform all checks again. The release CLI and generated
+contracts are checked again, and actual-package/native download validation remains
+required for each resulting package. Keep both run IDs in release evidence.

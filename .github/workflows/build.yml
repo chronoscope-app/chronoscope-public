@@ -7,6 +7,14 @@ on:
         required: true
         type: choice
         options: [windows-x86_64, macos-arm64]
+      verify_only:
+        description: Run all source checks and retain verified frontend without building a GUI package
+        type: boolean
+        default: false
+      verification_run_id:
+        description: Optional completed verification run for this exact SHA and platform
+        type: string
+        default: ""
       expected_sha:
         description: Exact reviewed main commit (40 hex characters)
         required: true
@@ -16,6 +24,7 @@ concurrency:
   cancel-in-progress: false
 permissions:
   contents: read
+  actions: read
 jobs:
   build:
     if: github.repository == 'chronoscope-app/chronoscope-public' && github.ref == 'refs/heads/main'
@@ -24,6 +33,7 @@ jobs:
     env:
       CARGO_INCREMENTAL: '0'
       APPIMAGE_EXTRACT_AND_RUN: '1'
+      PLATFORM: ${{ inputs.platform }}
     defaults:
       run:
         shell: bash
@@ -49,7 +59,22 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.13'
-      # No caches: shared organization storage is bounded before each dispatch.
+      - name: Set temporary build directories
+        run: |
+          printf '%s\n' "CHRONOSCOPE_VERIFICATION_DIR=$RUNNER_TEMP/source-verification" "npm_config_cache=$RUNNER_TEMP/npm-cache" >> "$GITHUB_ENV"
+      # Each optional dependency payload is bounded to 2 GiB. No app packages,
+      # credentials or incremental compiler state are cached. Platform/SDK/flags
+      # are part of the immutable cache namespace.
+      - name: Restore bounded dependencies
+        id: dependency-cache
+        continue-on-error: true
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ runner.temp }}/dependency-cache
+          key: deps-v1-${{ inputs.platform }}-rust198-sdk266-portable-${{ hashFiles('Cargo.lock', 'frontend/package-lock.json') }}
+      - name: Restore dependency files
+        continue-on-error: true
+        run: python scripts/ci_cache.py restore --directory "$RUNNER_TEMP/dependency-cache"
       - name: Linux runner build dependencies
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev patchelf xvfb libfuse2
@@ -97,29 +122,58 @@ jobs:
           test -s "$OUT_DIR/Intents.swiftconstvalues"
           test -d "$OUT_DIR/metadata/Metadata.appintents"
           find "$OUT_DIR/metadata/Metadata.appintents" -type f -size +0c -print | grep .
+      - name: Set consistent portable compiler flags
+        run: python scripts/build_portable.py --github-env
       - run: npm --prefix frontend ci
       # The offline GLib guard inspects Linux GTK even on Windows/macOS.
       # No --target: fetch the locked workspace for every platform, without
       # compiling or requiring a foreign Rust standard library/toolchain.
       - name: Prefetch locked Cargo dependencies
         run: cargo fetch --locked --manifest-path Cargo.toml
+      - name: Reuse verified source and frontend
+        if: inputs.verification_run_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERIFICATION_RUN_ID: ${{ inputs.verification_run_id }}
+        run: python scripts/ci_verification.py reuse --run-id "$VERIFICATION_RUN_ID"
       - name: Shared source verification
+        if: inputs.verification_run_id == ''
         run: python -B scripts/source_checks.py --packaging --report "$RUNNER_TEMP/source-validation/report.json"
-      - run: npm run build
-      - run: cargo clippy --locked -p chronoscope-desktop -- -D warnings
-      - run: python scripts/build_portable.py build --locked --release -p chronoscope --bin chronoscope
+      - name: Build frontend once
+        if: inputs.verification_run_id == ''
+        run: npm run build
+      - name: Native desktop lint
+        if: inputs.verification_run_id == ''
+        run: cargo clippy --locked -p chronoscope-desktop -- -D warnings
+      - run: python scripts/build_portable.py build --locked --release --timings -p chronoscope --bin chronoscope
       - name: Verify generated contracts from the release CLI
         run: |
           CLI=target/release/chronoscope
           if [ "$RUNNER_OS" = Windows ]; then CLI="$CLI.exe"; fi
           python -B scripts/source_checks.py --contracts-only --cli "$CLI" --report "$RUNNER_TEMP/contracts-validation/report.json"
+      - name: Seal source verification
+        if: inputs.verification_run_id == ''
+        run: python scripts/ci_verification.py seal --source-report "$RUNNER_TEMP/source-validation/report.json" --contracts-report "$RUNNER_TEMP/contracts-validation/report.json"
+      - name: Upload source verification
+        if: inputs.verification_run_id == ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: source-verification-${{ inputs.platform }}-${{ github.sha }}
+          path: ${{ runner.temp }}/source-verification/*
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 6
+          include-hidden-files: true
       - name: Build actual GUI distribution
-        run: python scripts/build_portable.py -- npm --prefix frontend run tauri -- build -- --locked
+        if: ${{ !inputs.verify_only }}
+        run: >-
+          python scripts/build_portable.py -- npm --prefix frontend run tauri -- build -- --locked
+          --config '{"build":{"beforeBuildCommand":"python scripts/ci_verification.py verify-frontend"}}'
       - name: Finish Linux portable WebKit runtime
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && !inputs.verify_only
         run: python scripts/package_linux.py
       - name: Browser workflow smoke on hosted Linux
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && !inputs.verify_only
         timeout-minutes: 10
         run: |
           cd frontend
@@ -128,22 +182,37 @@ jobs:
           npm run test:assistant
           npm run test:wkt-wmts
       - name: Validate and stage actual GUI package
+        if: ${{ !inputs.verify_only }}
         env:
           PLATFORM: ${{ inputs.platform }}
         run: python scripts/package_tester.py --target "$PLATFORM" --output "$RUNNER_TEMP/tester-output" --max-bytes 268435456
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: ${{ !inputs.verify_only }}
         with:
           name: ${{ inputs.platform }}-${{ github.sha }}
           path: ${{ runner.temp }}/tester-output/*
           if-no-files-found: error
           retention-days: 1
           compression-level: 0
+      - name: Prepare bounded dependency cache
+        id: prepared-cache
+        if: always() && !cancelled() && steps.dependency-cache.outputs.cache-hit != 'true'
+        continue-on-error: true
+        run: python scripts/ci_cache.py prepare --directory "$RUNNER_TEMP/dependency-cache"
+      - name: Save bounded dependencies
+        if: always() && !cancelled() && steps.prepared-cache.outcome == 'success' && steps.dependency-cache.outputs.cache-hit != 'true'
+        continue-on-error: true
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ runner.temp }}/dependency-cache
+          key: deps-v1-${{ inputs.platform }}-rust198-sdk266-portable-${{ hashFiles('Cargo.lock', 'frontend/package-lock.json') }}
       - name: Retain source validation diagnostics
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: source-validation-${{ inputs.platform }}-${{ github.sha }}
           path: |
+            target/cargo-timings/*.html
             ${{ runner.temp }}/source-validation/report.json
             ${{ runner.temp }}/source-validation/runs/*/run.json
             ${{ runner.temp }}/source-validation/runs/*/logs/*.log

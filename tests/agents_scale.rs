@@ -731,7 +731,16 @@ fn streaming_csv_handles_literal_quotes_and_bounds_multiline_records() {
     }
     std::fs::write(&path, data).unwrap();
     let preview = e.invoke("import_preview", json!({"path":path})).unwrap();
-    assert_eq!(preview["sheets"][0]["count"], 50001);
+    assert_eq!(preview["sheets"][0]["count"], 1000);
+    assert_eq!(preview["sheets"][0]["count_exact"], false);
+    assert_eq!(preview["sheets"][0]["preview"][0][2], "5\" height");
+    let review = e
+        .invoke(
+            "import_review",
+            json!({"import_id":preview["import_id"],"mapping":preview["sheets"][0]["mapping"]}),
+        )
+        .unwrap();
+    assert_eq!(review["accepted"], 50001);
     let malicious = dir.path().join("multiline.csv");
     let mut file = std::fs::File::create(&malicious).unwrap();
     use std::io::Write;
