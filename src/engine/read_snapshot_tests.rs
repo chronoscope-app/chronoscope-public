@@ -3,6 +3,10 @@ use crate::operation;
 use std::sync::mpsc;
 use std::time::Duration;
 
+// Test coordination is not an application deadline: loaded native runners may
+// spend several seconds opening a workspace before releasing a waiting reader.
+const COORDINATION_WAIT: Duration = Duration::from_secs(30);
+
 fn setup() -> (tempfile::TempDir, Engine) {
     let dir = tempfile::tempdir().unwrap();
     let mut data = crate::demo::dataset();
@@ -67,11 +71,13 @@ fn queued_analysis_rejects_replacement_workspace() {
             operation::with_workspace(workspace, || {
                 reader.check_workspace().unwrap();
                 entered_tx.send(()).unwrap();
-                resume_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+                // The sender lives in the parent: resume only after replacement,
+                // or disconnect promptly if that parent unwinds on an error.
+                resume_rx.recv().unwrap();
                 read(&reader, kind, &args)
             })
         });
-        entered_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+        entered_rx.recv_timeout(COORDINATION_WAIT).unwrap();
         engine.invoke("open", json!({"path":replacement})).unwrap();
         resume_tx.send(()).unwrap();
         drop(worker);
@@ -107,6 +113,6 @@ fn detached_analysis_waits_for_atomic_operation_boundary() {
             matches!(early, Err(mpsc::RecvTimeoutError::Timeout)),
             "{kind} read through an active operation: {early:?}"
         );
-        assert!(rx.recv_timeout(Duration::from_secs(2)).unwrap().is_ok());
+        assert!(rx.recv_timeout(COORDINATION_WAIT).unwrap().is_ok());
     }
 }

@@ -7,6 +7,10 @@ use std::sync::{
 };
 use std::time::{Duration, Instant};
 
+// Test coordination is not an application deadline: loaded native runners may
+// spend several seconds opening a workspace before releasing a waiting reader.
+const COORDINATION_WAIT: Duration = Duration::from_secs(30);
+
 fn setup() -> (tempfile::TempDir, Engine) {
     let dir = tempfile::tempdir().unwrap();
     let mut data = crate::demo::dataset();
@@ -341,7 +345,7 @@ fn publication_holds_operation_and_state_through_commit_before_real_writer() {
     let (done_tx, done_rx) = mpsc::channel();
     let writer = engine.clone();
     let thread = std::thread::spawn(move || {
-        start_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+        start_rx.recv_timeout(COORDINATION_WAIT).unwrap();
         assert!(matches!(
             writer.operation.try_lock(),
             Err(TryLockError::WouldBlock)
@@ -360,16 +364,13 @@ fn publication_holds_operation_and_state_through_commit_before_real_writer() {
     let committed = engine
         .with_current_view_identity(&expected, || {
             start_tx.send(()).unwrap();
-            attempt_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+            attempt_rx.recv_timeout(COORDINATION_WAIT).unwrap();
             assert!(matches!(done_rx.try_recv(), Err(mpsc::TryRecvError::Empty)));
             Ok("committed before writer")
         })
         .unwrap();
     assert_eq!(committed, "committed before writer");
-    done_rx
-        .recv_timeout(Duration::from_secs(2))
-        .unwrap()
-        .unwrap();
+    done_rx.recv_timeout(COORDINATION_WAIT).unwrap().unwrap();
     thread.join().unwrap();
     assert_ne!(
         engine.current_view_identity().unwrap().data_revision(),
@@ -386,7 +387,7 @@ fn detached_state_contender_cannot_enter_during_publication() {
     let (done_tx, done_rx) = mpsc::channel();
     let detached = engine.clone();
     let thread = std::thread::spawn(move || {
-        start_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+        start_rx.recv_timeout(COORDINATION_WAIT).unwrap();
         assert!(matches!(
             detached.state.try_lock(),
             Err(TryLockError::WouldBlock)
@@ -399,12 +400,12 @@ fn detached_state_contender_cannot_enter_during_publication() {
     engine
         .with_current_view_identity(&expected, || {
             start_tx.send(()).unwrap();
-            blocked_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+            blocked_rx.recv_timeout(COORDINATION_WAIT).unwrap();
             assert!(matches!(done_rx.try_recv(), Err(mpsc::TryRecvError::Empty)));
             Ok(())
         })
         .unwrap();
-    done_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+    done_rx.recv_timeout(COORDINATION_WAIT).unwrap();
     thread.join().unwrap();
 }
 
@@ -450,7 +451,7 @@ fn cancellation_interrupts_both_mutex_waits_without_calling_publication() {
                 })
             })
         });
-        started_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+        started_rx.recv_timeout(COORDINATION_WAIT).unwrap();
         canceled.store(true, Ordering::SeqCst);
         assert_eq!(
             thread.join().unwrap().unwrap_err().code,
