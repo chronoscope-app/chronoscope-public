@@ -11,6 +11,23 @@ import ci_verification as verification
 import build_portable
 
 class BuildAccelerationTests(unittest.TestCase):
+    def test_compiled_cache_keeps_complete_small_crates_when_total_exceeds_cap(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);locations=[]
+            for name in ['release-deps','release-build','release-fingerprints']:
+                folder=root/name;folder.mkdir();locations.append((name,folder))
+            deps,build,finger=[p for _,p in locations]
+            (deps/'libsmall-12345678.rlib').write_bytes(b'x'*4)
+            (build/'small-87654321').mkdir();(build/'small-87654321/output').write_bytes(b'x'*3)
+            (finger/'small-12345678').mkdir();(finger/'small-12345678/lib-small').write_bytes(b'x'*2)
+            (deps/'libhuge-12345678.rlib').write_bytes(b'x'*100)
+            with patch.object(cache,'locations',return_value=locations):
+                self.assertEqual(cache.prepare(root/'cache',limit=9),9)
+            self.assertTrue((root/'cache/release-deps/libsmall-12345678.rlib').exists())
+            self.assertTrue((root/'cache/release-build/small-87654321/output').exists())
+            self.assertTrue((root/'cache/release-fingerprints/small-12345678/lib-small').exists())
+            self.assertFalse((root/'cache/release-deps/libhuge-12345678.rlib').exists())
+
     def test_portable_flags_are_idempotent_and_preserve_optimization(self):
         first=build_portable.build_environment({'RUSTFLAGS':'-C target-cpu=generic'})
         self.assertEqual(first,build_portable.build_environment(first))

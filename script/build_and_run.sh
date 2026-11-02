@@ -24,11 +24,15 @@ if [[ "$BUILD_ONLY" != true ]]; then
   for task_pid in $(pgrep -f "^$APP_BUNDLE/Contents/MacOS/chronoscope-desktop$" || true); do kill "$task_pid"; done
 fi
 if [[ ! -d frontend/node_modules ]]; then npm --prefix frontend ci; fi
-BUILD_ARGS=(--bundles app --config src-tauri/tauri.macos.conf.json --config '{"build":{"beforeBuildCommand":"npm --prefix frontend run build -- --configLoader runner"}}')
+BEFORE_BUILD='{"build":{"beforeBuildCommand":"npm --prefix frontend run build -- --configLoader runner"}}'
+if [[ -n "${CHRONOSCOPE_VERIFICATION_DIR:-}" ]]; then
+  BEFORE_BUILD='{"build":{"beforeBuildCommand":"python scripts/ci_verification.py verify-frontend"}}'
+fi
+BUILD_ARGS=(--bundles app --config src-tauri/tauri.macos.conf.json --config "$BEFORE_BUILD")
 # Daily-use copies need the optimized backend. Interactive diagnostics retain
 # debug builds; --debug-build-only packages one without opening the desktop.
 if [[ "$PROFILE" == debug ]]; then BUILD_ARGS=(--debug "${BUILD_ARGS[@]}"); fi
-npm run bundle -- "${BUILD_ARGS[@]}"
+npm run bundle -- "${BUILD_ARGS[@]}" -- --locked --timings
 # Seal the local bundle's resources as well as its executable. This
 # ad hoc signature is for local use; it is not Developer ID/notarization.
 /usr/bin/codesign --force --sign - "$APP_BUNDLE"

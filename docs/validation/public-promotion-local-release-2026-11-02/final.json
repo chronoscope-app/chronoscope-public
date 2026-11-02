@@ -1,0 +1,47 @@
+{
+  "source_next_commit": "ff5ceaefe5a01428ff12f17f4a363a9128e64ee3",
+  "public_parent": "50066677daed428ac81238f51f5fcb3dca21ec8f",
+  "source_files": 3518,
+  "preserved_public_records": 36,
+  "source_parity": "Exact Next blob bytes and file modes; independent Public history retained",
+  "authorization": "Human requested promotion, three-computer pipeline improvements and release publication; no hosted runners authorized",
+  "source_only": false,
+  "secret_scan": {
+    "canary_detected": true,
+    "reviewed_metadata_findings": [
+      {
+        "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 35,
+        "classification": "unchanged already-public checksum/commit identifier"
+      },
+      {
+        "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 50,
+        "classification": "unchanged already-public checksum/commit identifier"
+      },
+      {
+        "path": "docs/validation/priority-demos-2026-10-26/validation.json",
+        "line": 51,
+        "classification": "unchanged already-public checksum/commit identifier"
+      },
+      {
+        "path": "docs/validation/release-0.16.9-publication/SOURCE-MANIFEST-RELEASE.json",
+        "line": 3,
+        "classification": "unchanged already-public checksum/commit identifier"
+      }
+    ],
+    "unreviewed_findings": 0,
+    "allowlist_changed": false
+  },
+  "local_validation": {
+    "quick_unit_type_checks": "passed",
+    "cache_and_resume_regressions": "passed",
+    "platform_tooling_focused_tests": "passed",
+    "dependency_vulnerabilities": {
+      "rust": 0,
+      "npm": 0
+    }
+  },
+  "version": "0.16.14",
+  "release_scope": "Frozen source for concurrent local Mac/Windows/Linux builds; no hosted runners; final binary/native/source gates and publication follow"
+}

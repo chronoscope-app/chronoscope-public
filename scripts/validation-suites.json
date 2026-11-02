@@ -375,6 +375,10 @@
       "test_validation_runner.py",
       "test_guarded_run.py",
       "test_ci_build.py",
+      "test_local_release.py",
+      "test_windows_build_preparation.py",
+      "test_linux_release_tools.py",
+      "test_linux_binary_provenance.py",
       "test_data_assets.py"
     ],
     "integrity": [

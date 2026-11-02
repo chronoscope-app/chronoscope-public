@@ -4,6 +4,12 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+## 0.16.14 — experimental preview, 2026-11-02
+
+- Add a resumable native release pipeline on Mac, Windows and Linux, with prepared pinned toolchains, early capability checks, persistent caches and exact-source verification reuse. Preserve Thin LTO and one release code-generation unit.
+- Retain complete compiled crate groups within the bounded hosted cache instead of dropping all compiled dependencies when the total exceeds the cap. Preserve stale installers safely outside package selection.
+- Add Linux native-library source inventory and replacement verification tooling, and measured Windows test-thread profiling.
+
 - Let Intel UHD, HD and Iris GPUs use the full rendering and smooth-playback paths when resources permit. Keep adaptive memory/performance limits and conservative software-renderer budgets.
 
 ## 0.16.13 — experimental preview, 2026-11-02
