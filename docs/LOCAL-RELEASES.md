@@ -43,6 +43,28 @@ free disk and symlink capabilities before compilation. `--verify-only` prepares
 the verified source/frontend without creating a distribution. `--evidence`
 selects the ignored receipt directory; keep it between retries.
 
+On Windows, use a stable short directory outside the checkout for output and
+explicit extended-length syntax for evidence, so copying nested notices cannot
+fail late at the verification seal. In PowerShell, after sourcing the prepared
+environment:
+
+~~~powershell
+$releaseEvidence = '\\?\' + $env:USERPROFILE + '\.chronoscope-build\release-evidence'
+python scripts/local_release.py --target windows-x86_64 --expected-sha FULL_PUBLIC_COMMIT --evidence $releaseEvidence --output "$env:USERPROFILE\.chronoscope-build\release-output\windows"
+~~~
+
+Keep that evidence path unchanged for retries. Extraction-based native checks
+also need short or extended-length output paths. No Windows global long-path
+policy change is required by this procedure.
+
+The prepared Linux environment explicitly selects its reviewed pkg-config
+wrapper. It preserves SDK include/link flags while returning public runtime
+paths for library-directory queries. Conflicting inherited host/target tool
+overrides are rejected before building. Source the generated environment before
+every release. Do not share a target tree between simultaneous checkouts with
+different compiler path remaps; doing so can replace the fingerprints needed by
+the stable checkout.
+
 The command runs all source and packaging checks, desktop lint, locked optimized
 CLI/GUI builds, generated-contract checks and actual-package validation. The
 frontend builds once, is sealed to the source/toolchain identity, and is checked
@@ -71,6 +93,10 @@ compiled work when the entire target directory exceeds that cap.
 Start native builds concurrently on Mac, Claw and Win after all three preflights
 pass and the same source commit is frozen. These local commands never push,
 publish, upload or dispatch GitHub workflows. Workflows remain manual-only.
+
+For native GUI checks, use a disposable profile and wait for the frontend to
+acknowledge view requests; an attached engine alone does not prove frontend
+readiness. Bring the test window forward before visual/capture acceptance.
 
 Before an authorized publication, retain the matching application/dependency
 sources, actual-package and native receipts, notices, hashes and reviewed release

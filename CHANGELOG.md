@@ -9,6 +9,7 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 - Add a resumable native release pipeline on Mac, Windows and Linux, with prepared pinned toolchains, early capability checks, persistent caches and exact-source verification reuse. Preserve Thin LTO and one release code-generation unit.
 - Retain complete compiled crate groups within the bounded hosted cache instead of dropping all compiled dependencies when the total exceeds the cap. Preserve stale installers safely outside package selection.
 - Add Linux native-library source inventory and replacement verification tooling, and measured Windows test-thread profiling.
+- Build the Linux launcher from pinned source, fix long installation paths, and explicitly select the reviewed SDK tool so runtime library lookups use public paths.
 
 - Let Intel UHD, HD and Iris GPUs use the full rendering and smooth-playback paths when resources permit. Keep adaptive memory/performance limits and conservative software-renderer budgets.
 

@@ -31,18 +31,26 @@ checksums, notes and downloads.
    `python3 scripts/release_preflight.py --for-release --expected-sha FULL_PUBLIC_SHA`.
    The preflight reads local refs only; stale/unfetched tags are not clearance.
    Public and Next commit IDs differ even when application files match.
-5. **Build and validate that source.** When authorized, dispatch one configured
-   standard hosted platform at a time with `expected_sha` equal to the frozen
-   Public SHA, after the existing budget/storage check. Do not rebuild under an
-   old tag or substitute a later main commit silently. The shared source gate
-   retains the same local checks; generated contracts are checked using the actual
-   built release CLI. Keep each platform's run ID, source SHA and package hash.
-6. **Validate the actual downloads.** Use the exact-package validation workflow
-   with its reviewed validator SHA and independently checked package checksum.
-   Prepare matching application/dependency source companions, notices, checksums
-   and manifests as required by [distribution](../DISTRIBUTION.md). Preserve
-   signing, platform and native acceptance limits in the notes; an automated
-   package check alone does not establish full user-device acceptance.
+5. **Build and validate that source.** Use the native local procedure in
+   [LOCAL-RELEASES](../LOCAL-RELEASES.md) on the development computers, with clean
+   frozen source, matching SDKs and stable caches. Start independent platform
+   builds concurrently; retain exact source, tool/environment, phase and package
+   hash records. Preserve release optimization and all required source/package
+   gates. Hosted builds remain optional and require explicit authorization,
+   one configured standard platform at a time after the budget/storage check.
+   Do not rebuild under an old tag or silently relabel another commit's binary.
+6. **Validate the actual downloads.** Exercise the actual extracted packaged app
+   on its native platform with a disposable profile: CLI/agent/MCP, responsive
+   desktop, relevant offline views/query and save/reopen, plus platform package,
+   signing and source/replacement checks. Prepare matching source companions,
+   notices, checksums and manifests as required by
+   [distribution](../DISTRIBUTION.md). Record exact per-platform commits if a
+   reviewed platform-only packaging followup leaves other app inputs identical.
+   The hosted-only download validator must not be spoofed on an owner computer;
+   use its workflow only when hosted validation is explicitly requested. Local
+   native checks do not establish normal quarantined-download, manual installer,
+   physical GPU/card or broad production acceptance. After publication, download
+   every asset anonymously and verify its full byte count and SHA-256.
 7. **Publish a new experimental release after approval.** Attach the matched
    packages and companions to a new version tag, with concise user-facing changes,
    known limitations and source/build identification. Update installation/download
