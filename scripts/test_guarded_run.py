@@ -132,6 +132,7 @@ class GuardTests(unittest.TestCase):
             root = Path(temporary)
             with guarded_run.workspace_lock(root) as token:
                 with (mock.patch.dict(os.environ, {**self.hosted_environment(), guarded_run.MARKER: token}, clear=True),
+                      mock.patch.object(guarded_run, 'launch_command', side_effect=lambda command: command),
                       mock.patch.object(guarded_run.subprocess, 'call', return_value=9) as call,
                       mock.patch.object(guarded_run.subprocess, 'Popen') as launch):
                     self.assertEqual(guarded_run.run_guarded(['cargo', 'test'], root), 9)
@@ -201,7 +202,7 @@ class GuardTests(unittest.TestCase):
 
     def test_low_memory_refuses_before_launch_and_releases_lock(self):
         with tempfile.TemporaryDirectory() as temporary:
-            with mock.patch.object(guarded_run.sys, 'platform', 'darwin'), mock.patch.object(guarded_run, 'memory_available', return_value=20), mock.patch.object(guarded_run.subprocess, 'Popen') as launch:
+            with mock.patch.dict(os.environ, {}, clear=True), mock.patch.object(guarded_run.sys, 'platform', 'darwin'), mock.patch.object(guarded_run, 'memory_available', return_value=20), mock.patch.object(guarded_run.subprocess, 'Popen') as launch:
                 with self.assertRaisesRegex(RuntimeError, 'start threshold'):
                     guarded_run.run_guarded([sys.executable, '-c', 'pass'], Path(temporary))
                 launch.assert_not_called()

@@ -87,10 +87,14 @@ Public SHA and test Windows before claiming this platform fixed.
 ## Optional build acceleration
 
 The manual build workflow uses a platform, pinned Rust/SDK and lockfile-specific
-cache capped at 2 GiB per platform. It prioritizes release dependency artifacts,
+cache payload capped at 2 GiB. It prioritizes release dependency artifacts,
 then adds registry/npm download data within the remaining capacity. It excludes
 credentials, incremental state, application executables and app fingerprints.
 Cache restore/save failures are optional; Cargo validates dependency fingerprints.
+Keys add the producing run ID and restore only the exact platform/tool/lockfile
+prefix, so an early failure cannot permanently pin a downloads-only cache. New
+runs can retain newer compiled dependencies; old cache generations use GitHub’s
+normal free-cache eviction rather than increasing the spending limit.
 Release optimization remains thin LTO with one codegen unit.
 
 All source checks and both release builds receive the same portable compiler

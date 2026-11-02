@@ -160,6 +160,8 @@ class PublicationCleanup(unittest.TestCase):
         self.assertIn("retention-days: 1", text)
         self.assertIn('python scripts/ci_cache.py prepare', text)
         self.assertIn("expected_sha:", text)
+        self.assertIn("restore-keys: |", text)
+        self.assertEqual(text.count("-${{ github.run_id }}"), 2)
         self.assertIn("contents: read", text)
 
 

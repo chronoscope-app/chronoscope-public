@@ -1,0 +1,15 @@
+{
+  "source_next_commit": "7ed7151143b0a4b63cfe786f53b8e5b50bcfe2a0",
+  "public_parent": "6e5f1c508039437247d540e22ddcb232f44480cc",
+  "scope": "Only test fixtures, optional cache generation keys, regression assertions and workflow documentation changed; application code/assets/locks unchanged.",
+  "observed_windows_run": 41442639250,
+  "observed_failure": "Guard unit fixtures inherited hosted context or removed PATH while trying native command discovery.",
+  "local_verification": {
+    "guard_unit_normal_context": 16,
+    "guard_unit_hosted_context": 16,
+    "ci_build_regressions": 6,
+    "publication_regressions": 12,
+    "actionlint": "both manual workflows passed"
+  },
+  "runtime_optimization": "unchanged thin LTO, one codegen unit; optimized 0.16.13 Mac app built and installed before this test-only repair."
+}
