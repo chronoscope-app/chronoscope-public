@@ -54,7 +54,7 @@ export class SIChat {
     private host: HTMLElement,
     private hooks: Hooks,
   ) {
-    host.innerHTML = `<header class="si-chat-header"><strong id="si-chat-heading">AI</strong><span class="spacer"></span><button id="si-new" title="Clear this session’s conversation">New chat</button><button id="si-popout" title="${hooks.detached ? "Return chat to the main workspace" : "Move chat to a separate window"}" aria-label="${hooks.detached ? "Dock AI chat" : "Detach AI chat"}">${hooks.detached ? "Dock" : "Detach"}</button><button id="si-settings" class="icon" title="AI settings: service and tools" aria-label="AI settings">⚙</button><button id="si-close" title="Close chat; an active request continues" aria-label="Close AI chat">×</button></header>
+    host.innerHTML = `<header class="si-chat-header"><strong id="si-chat-heading">AI</strong><span class="spacer"></span><button id="si-new" title="Clear this session’s conversation">New chat</button><button id="si-popout" title="${hooks.detached ? "Return chat to the main workspace" : "Move chat to a separate window"}" aria-label="${hooks.detached ? "Dock AI chat" : "Detach AI chat"}">${hooks.detached ? "Dock" : "Detach"}</button><button id="si-settings" class="icon" title="AI settings: service and tools" aria-label="AI settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l1 3 3-1 3 5-2 2 2 2-3 5-3-1-1 3H9l-1-3-3 1-3-5 2-2-2-2 3-5 3 1z"/><circle cx="12" cy="12" r="3"/></svg></button><button id="si-close" title="Close chat; an active request continues" aria-label="Close AI chat">×</button></header>
       <p class="si-chat-note">Session-only conversation. Requested data is sent to your service.</p>
       <section id="si-connection-empty" class="si-connect" hidden><strong>Connect your AI service</strong><p>Choose a service and model before sending a message.</p><button id="si-connect-service" class="primary">Connect service…</button></section><div id="si-messages" class="si-messages" role="log" aria-label="AI conversation" aria-live="polite"></div>
       <details class="si-permissions"><summary>Permissions</summary><label class="check-row"><input id="si-edits" type="checkbox"> Allow record changes for the next message</label><p>Filtering, selection and views are available by default. Record changes include editing, deleting, aggregation and import/export. Save a copy first; completed actions remain if stopped.</p><label class="check-row"><input id="si-external-actions" type="checkbox"> Allow granted external actions for the next message</label><p>External effects cannot be undone here. Review tools in AI settings → Tools; reading tools need an explicit grant too.</p><div class="si-file-permissions"><p id="si-folder">No file access. A folder is optional, for importing and saving files.</p><div class="row"><button id="si-grant">Allow folder…</button><button id="si-revoke">Remove access</button></div></div></details>
@@ -178,7 +178,7 @@ export class SIChat {
     this.messages.replaceChildren();
     this.revision = undefined;
     this.host.hidden = true;
-    document.querySelector("#si")?.setAttribute("aria-expanded", "false");
+    document.querySelector("#inspector-chat")?.setAttribute("aria-expanded", "false");
   }
   setNaming(si: boolean) {
     if (si === this.useSI) return;
@@ -196,7 +196,7 @@ export class SIChat {
   }
   async open(focus = true) {
     this.host.hidden = false;
-    document.querySelector("#si")?.setAttribute("aria-expanded", "true");
+    document.querySelector("#inspector-chat")?.setAttribute("aria-expanded", "true");
     const epoch = ++this.viewEpoch;
     this.revision = undefined;
     this.sessionReady = false;

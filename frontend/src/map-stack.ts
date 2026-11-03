@@ -71,6 +71,17 @@ export class MapStack {
       attribution: "",
     };
   }
+  /** Test actual composited alpha, including holes in regional/PNG imagery. */
+  fullyOpaque(layer?: MapLayer) {
+    if (layer && layer.opacity < 1) return false;
+    const canvas = layer ? this.streams.get(layer.id)!.canvas : this.canvas;
+    const pixels = canvas
+      .getContext("2d")!
+      .getImageData(0, 0, canvas.width, canvas.height).data;
+    for (let i = 3; i < pixels.length; i += 4)
+      if (pixels[i] !== 255) return false;
+    return true;
+  }
   compose() {
     const c = this.context;
     c.clearRect(0, 0, this.canvas.width, this.canvas.height);

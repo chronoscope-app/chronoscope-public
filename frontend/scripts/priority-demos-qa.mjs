@@ -1,3 +1,4 @@
+import { revealDemo } from "./demo-picker.mjs";
 import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
@@ -25,7 +26,8 @@ for (const [id, count] of [
       await page.locator("#help").click();
       await page.locator("#demo-datasets").click();
       await page.locator("[data-demo-id]").first().waitFor();
-      assert.equal(await page.locator("[data-demo-id]").count(), 15);
+      assert.equal(await page.locator("[data-demo-id]").count(), (await api("demo_catalog")).demos.length);
+      await revealDemo(page,id);
       await page.locator(`[data-demo-preview="${id}"]`).first().click();
       await page.waitForFunction(
         (n) =>

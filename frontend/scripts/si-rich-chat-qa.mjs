@@ -194,7 +194,7 @@ try {
       window.__chronoscope?.snapshot?.count === 1604 &&
       !window.__chronoscope.busy,
   );
-  await main.click("#si");
+  await main.click(':is(#inspector-chat, [data-pane-section="si"]):visible');
   await main.fill("#si-prompt", "Preserve this draft across windows.");
   let pending = context.waitForEvent("page");
   await main.click("#si-popout");

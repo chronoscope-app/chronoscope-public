@@ -1,3 +1,4 @@
+import { revealDemo } from "./demo-picker.mjs";
 import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real toolbar interactions against the Rust bridge; all resources stay local.
 
@@ -124,18 +125,18 @@ try {
     await page.locator("#help").click();
     await page.locator("#demo-datasets").click();
     await page.locator(".demo-picker").waitFor();
-    assert.equal(await page.locator("[data-demo-id]").count(), 13);
+    assert.equal(await page.locator("[data-demo-id]").count(), (await api("demo_catalog")).demos.length);
     await page.waitForFunction(
       () =>
-        [...document.querySelectorAll(".demo-preview img")].length === 26 &&
+        [...document.querySelectorAll(".demo-preview img")].length === 28 &&
         [...document.querySelectorAll(".demo-preview img")].every(
           (i) => i.complete && i.naturalWidth === 480,
         ),
     );
-    assert.equal(await page.locator("[data-demo-view]").count(), 26);
-    for (const selector of [".demo-title", ".demo-description", ".demo-action"])
+    assert.equal(await page.locator("[data-demo-view]").count(), 28);
+    for (const selector of [".demo-title-button", ".demo-preview-label", ".demo-card summary"])
       assert(
-        (await contrast(selector, ".demo-card")) >= 4.5,
+        (await contrast(selector, ".demo-picker")) >= 4.5,
         `${theme}: ${selector} contrast`,
       );
     await page.locator(".demo-card summary").first().click();
@@ -195,6 +196,7 @@ try {
   ]) {
     await page.locator("#help").click();
     await page.locator("#demo-datasets").click();
+    await revealDemo(page,id);
     await page
       .locator(`[data-demo-preview="${id}"][data-demo-view="${mode === "map" ? 1 : 0}"]`)
       .click();

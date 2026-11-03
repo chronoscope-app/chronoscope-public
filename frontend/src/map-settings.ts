@@ -287,8 +287,9 @@ export function createMapSettings(host: Host) {
     if (!c.url) c.enabled = true;
     let caps: any = host.capabilitiesURL === c.url ? host.capabilities : null;
     let requestGeneration = 0;
+    const selectedLayers = new Map<string, { name: string; server_name: string; config: Preferences["map"] }>();
     modal(
-      `${head("Map server")}<p class="description">Choose a saved service or enter its URL, read the available layers, then choose the map to display.</p><div class="row"><label class="field grow">Map source<select id="wmts-server"></select></label><button id="add-wmts-server">Add server</button><button id="remove-wmts-server">Remove</button></div><div class="row map-navigation"><button id="map-stack-settings">Map layers…</button><button id="map-credits">Map credits</button></div><div id="wmts-source-info" class="notice" hidden></div><label class="field">Server name<input id="wmts-server-name"></label><label class="field">Capabilities or service URL<input id="wmts-url" placeholder="https://…/WMTSCapabilities.xml"></label><div class="row"><button id="inspect-wmts">Find available layers</button><span class="spacer"></span><label class="check-row"><input id="map-enabled" type="checkbox"> Show map</label></div><div id="wmts-layer-status" role="status" class="description"></div><div id="wmts-fields" style="margin-top:12px"></div><details class="map-connection-options"><summary>Connection options</summary><div class="row"><button id="wmts-auth">Authentication…</button><button id="wmts-cache">Loading and cache…</button><button id="save-wmts-server">Save connection only</button></div><p class="description">Connections stay on this computer. Layer order, opacity and zoom limits are in Manage layers.</p></details><footer><button data-close>Back to Maps</button><span class="spacer"></span><button id="add-map-layer">Add as another layer</button><button id="apply-map" class="primary">Use this map</button></footer>`,
+      `${head("Map server")}<p class="description">Choose a saved service or enter its URL, read the available layers, then select one or more layers. Switch servers to select layers from several services before adding them.</p><div class="row"><label class="field grow">Map source<select id="wmts-server"></select></label><button id="add-wmts-server">Add server</button><button id="remove-wmts-server">Remove</button></div><div class="row map-navigation"><button id="map-stack-settings">Map layers…</button><button id="map-credits">Map credits</button></div><div id="wmts-source-info" class="notice" hidden></div><label class="field">Server name<input id="wmts-server-name"></label><label class="field">Capabilities or service URL<input id="wmts-url" placeholder="https://…/WMTSCapabilities.xml"></label><div class="row"><button id="inspect-wmts">Find available layers</button><span class="spacer"></span><label class="check-row"><input id="map-enabled" type="checkbox"> Show map</label></div><div id="wmts-layer-status" role="status" class="description"></div><div id="wmts-fields" style="margin-top:12px"></div><fieldset id="wmts-multi-layers" hidden><legend>Add layers from this server</legend><div id="wmts-layer-choices"></div></fieldset><p id="wmts-selected-count" role="status" class="description"></p><details class="map-connection-options"><summary>Connection options</summary><div class="row"><button id="wmts-auth">Authentication…</button><button id="wmts-cache">Loading and cache…</button><button id="save-wmts-server">Save connection only</button></div><p class="description">Connections stay on this computer. Layer order, opacity and zoom limits are in Manage layers.</p></details><footer><button data-close>Back to Maps</button><span class="spacer"></span><button id="add-map-layer">Add selected layers</button><button id="apply-map" class="primary">Use this map</button></footer>`,
       false,
     );
     const menuOwner = $("#wmts-server");
@@ -307,6 +308,11 @@ export function createMapSettings(host: Host) {
           input("#wmts-level") === "" ? null : Number(input("#wmts-level"));
       server().name = input("#wmts-server-name").trim();
       server().config = { ...c };
+      const queued = selectedLayers.get(JSON.stringify([c.url, c.layer]));
+      if (queued) {
+        queued.config = {...c, enabled: true};
+        queued.server_name = server().name;
+      }
     };
     const options = () => {
       if (!alive()) return;
@@ -321,6 +327,10 @@ export function createMapSettings(host: Host) {
         "</optgroup>";
       ($("#remove-wmts-server") as HTMLButtonElement).disabled =
         servers.length === 0;
+    };
+    const selectionStatus = () => {
+      $("#wmts-selected-count").textContent = selectedLayers.size ? `${selectedLayers.size} layers selected across servers` : "Select layers below, or add the current layer.";
+      ($("#add-map-layer") as HTMLButtonElement).disabled = !selectedLayers.size && (!c.layer || !c.matrix_set);
     };
     const fields = () => {
       if (!alive()) return;
@@ -345,6 +355,21 @@ export function createMapSettings(host: Host) {
         caps?.layers.filter((l: any) =>
           l.formats.some(supportedRasterFormat),
         ) || [];
+      const choices = $("#wmts-layer-choices");
+      $("#wmts-multi-layers").hidden = !layers.length;
+      choices.innerHTML = layers.map((l: any) => `<label class="check-row"><input type="checkbox" data-wmts-select="${esc(l.id)}" ${selectedLayers.has(JSON.stringify([c.url, l.id])) ? "checked" : ""}> ${esc(l.title || l.id)}</label>`).join("");
+      choices.querySelectorAll<HTMLInputElement>("[data-wmts-select]").forEach(box => box.addEventListener("change", () => {
+        capture();
+        const layer = layers.find((l: any) => l.id === box.dataset.wmtsSelect);
+        const key = JSON.stringify([c.url, layer.id]);
+        if (!box.checked) selectedLayers.delete(key);
+        else selectedLayers.set(key, {
+          name: `${server().name} · ${layer.title || layer.id}`, server_name: server().name,
+          config: layer.id === c.layer ? {...c, enabled: true} : {...c, enabled: true, layer: layer.id, matrix_set: layer.matrix_sets[0] || "", format: layer.formats.find(supportedRasterFormat) || "", style: layer.style, time: "", level: null},
+        });
+        selectionStatus();
+      }));
+      selectionStatus();
       const layer = layers.find((l: any) => l.id === c.layer) || layers[0];
       if (!layer) {
         $("#wmts-fields").innerHTML =
@@ -371,6 +396,7 @@ export function createMapSettings(host: Host) {
       const time = layer.dimensions.find(
         (d: any) => d.name.toLowerCase() === "time",
       );
+      selectionStatus();
       $("#wmts-layer-status").textContent =
         `${layers.length.toLocaleString()} imagery layers available`;
       $("#wmts-fields").innerHTML =
@@ -432,7 +458,7 @@ export function createMapSettings(host: Host) {
     };
     const persist = async () => {
       capture();
-      await call("wmts_servers", { settings: { servers } });
+      await call("wmts_servers", { settings: { servers: servers.filter(s => s.config.url.trim()) } });
       options();
       toast("Map server saved on this computer");
     };
@@ -498,7 +524,7 @@ export function createMapSettings(host: Host) {
       requestGeneration++;
       const i = servers.findIndex((s) => s.id === selected);
       servers.splice(i, 1);
-      await call("wmts_servers", { settings: { servers } });
+      await call("wmts_servers", { settings: { servers: servers.filter(s => s.config.url.trim()) } });
       if (!servers.length) {
         closeModal();
         await mapMenu();
@@ -523,20 +549,13 @@ export function createMapSettings(host: Host) {
     });
     on("#add-map-layer", async () => {
       capture();
-      if (!c.layer || !c.matrix_set)
-        throw new Error(
-          "Read capabilities and choose a layer and matrix set first",
-        );
+      const additions = selectedLayers.size ? [...selectedLayers.values()] : [{name: `${server().name} · ${c.layer}`, server_name: server().name, config: {...c, enabled: true}}];
+      if (additions.some(layer => !layer.config.layer || !layer.config.matrix_set))
+        throw new Error("Read capabilities and choose a layer and matrix set first");
       await persist();
       const stack = structuredClone(mapLayers(host.preferences));
-      stack.push({
-        id: `layer-${crypto.randomUUID()}`,
-        name: `${server().name} · ${c.layer}`,
-        server_name: server().name,
-        config: { ...c, enabled: true },
-        opacity: 1,
-        min_zoom: 0,
-        max_zoom: 30,
+      for (const layer of additions) stack.push({
+        ...layer, id: `layer-${crypto.randomUUID()}`, opacity: 1, min_zoom: 0, max_zoom: 30,
       });
       await cancelMap();
       host.preferences = await call("preferences", {

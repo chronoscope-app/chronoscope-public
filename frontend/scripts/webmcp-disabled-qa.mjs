@@ -81,7 +81,7 @@ try {
   });
   await page.goto(url + "/?renderer=webgl#token=" + token);
   await page.waitForFunction(() => !!window.__chronoscope?.snapshot);
-  await page.click("#si");
+  await page.click(':is(#inspector-chat, [data-pane-section="si"]):visible');
   await page.click("#si-settings");
   await page.locator("#client-connect").waitFor();
   assert.equal(await page.locator("#browser-webmcp").count(), 0);

@@ -525,22 +525,22 @@ try {
     res.end(JSON.stringify({ choices: [{ message }] }));
   });
   await new Promise((r) => mock.listen(0, "127.0.0.1", r));
-  assert.equal((await page.locator("#si").textContent()).trim(), "AI");
+  assert.equal(await page.locator("#si").count(), 0);
   assert.equal((await api("si_status")).connected, false);
-  await page.click("#si");
+  await page.click(':is(#inspector-chat, [data-pane-section="si"]):visible');
   await page.waitForSelector("#si-chat:not([hidden])");
   assert.equal(
     await page.locator(".modal").count(),
     0,
     "Disconnected SI opens the chat pane, not connection setup",
   );
-  assert.equal(await page.locator("#si").getAttribute("aria-expanded"), "true");
+  assert.equal(await page.locator("#inspector-chat").getAttribute("aria-expanded"), "true");
   await page.waitForFunction(() =>
     document.querySelector("#si-progress").textContent.includes("settings"),
   );
   assert.match(await page.textContent("#si-progress"), /settings.*connect/);
   const settingsButton = await page.locator("#si-settings").boundingBox();
-  assert(settingsButton.width <= 32 && settingsButton.height <= 32);
+  assert(settingsButton.width >= 36 && settingsButton.height >= 36);
   assert.equal(await page.locator("#si-connections").count(), 0);
   await page.click("#si-settings");
   await page.waitForSelector("#client-list");
@@ -627,7 +627,7 @@ try {
     animations: "disabled",
   });
   await page.click("#si-close");
-  await page.click("#si");
+  await page.click(':is(#inspector-chat, [data-pane-section="si"]):visible');
   await page.waitForFunction(() =>
     document
       .querySelector("#si-messages")
@@ -641,7 +641,7 @@ try {
   assert.deepEqual((await api("si_history")).messages, []);
   await page.click("#si-close");
   // Configure an outbound connection and explicit tool grants through actual host UI.
-  await page.click("#si");
+  await page.click(':is(#inspector-chat, [data-pane-section="si"]):visible');
   await page.click("#si-settings");
   await page.fill("#client-name", "External fixture");
   await page.fill(

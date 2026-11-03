@@ -348,7 +348,8 @@ try {
   assert.equal(requests, before, "Second view load must reuse disk cache");
   if (await page.locator("#preferences-tab-maps").isVisible())
     await page.keyboard.press("Escape");
-  await page.click("#maps");
+  await page.click("#settings");
+  await page.click("#preferences-tab-maps");
   if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
     await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
@@ -408,7 +409,8 @@ try {
   await api("wmts_access", { settings: { offline: false } });
   if (await page.locator("#preferences-tab-maps").isVisible())
     await page.keyboard.press("Escape");
-  await page.click("#maps");
+  await page.click("#settings");
+  await page.click("#preferences-tab-maps");
   if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
     await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
@@ -430,7 +432,8 @@ try {
   );
   if (await page.locator("#preferences-tab-maps").isVisible())
     await page.keyboard.press("Escape");
-  await page.click("#maps");
+  await page.click("#settings");
+  await page.click("#preferences-tab-maps");
   if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
     await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
@@ -468,7 +471,8 @@ try {
   );
   if (await page.locator("#preferences-tab-maps").isVisible())
     await page.keyboard.press("Escape");
-  await page.click("#maps");
+  await page.click("#settings");
+  await page.click("#preferences-tab-maps");
   if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
     await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
@@ -599,7 +603,8 @@ try {
   });
   if (await page.locator("#preferences-tab-maps").isVisible())
     await page.keyboard.press("Escape");
-  await page.click("#maps");
+  await page.click("#settings");
+  await page.click("#preferences-tab-maps");
   if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
     await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");

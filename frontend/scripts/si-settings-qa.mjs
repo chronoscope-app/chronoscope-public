@@ -140,7 +140,7 @@ try {
       window.__chronoscope?.snapshot?.count === 192 &&
       !window.__chronoscope.busy,
   );
-  await page.click("#si");
+  await page.click(':is(#inspector-chat, [data-pane-section="si"]):visible');
   await page.click("#si-settings");
   await page.waitForSelector("#client-list");
   assert.equal(await page.locator(".modal").count(), 1);

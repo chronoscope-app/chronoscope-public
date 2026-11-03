@@ -8,6 +8,7 @@ import { DroppedFiles } from "./dropped-files";
 import { installFileDrops } from "./file-drop";
 import { runInputJob } from "./input-job";
 import { Welcome } from "./welcome";
+import { cropDemoPreview } from "./demo-preview-crop";
 import {
   attributeTableMarkup,
   createAttributeTables,
@@ -93,6 +94,7 @@ const icons: Record<string, string> = {
   import: "M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5",
   folder: "M3 7h7l2-3h9v16H3z",
   save: "M4 3h13l4 4v14H3V3zM7 3v7h10V3M7 21v-7h10v7",
+  globe: "M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0M2 12h20M12 2a18 18 0 0 1 0 20 18 18 0 0 1 0-20",
   map: "m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3zM9 3v15M15 6v15",
   settings: "M3 6h18M3 12h18M3 18h18M8 3v6M16 9v6M10 15v6",
   sun: "M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2",
@@ -116,6 +118,7 @@ const icons: Record<string, string> = {
   entities:
     "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.9M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0m4-3.9a4 4 0 0 1 0 7.8",
   tag: "m20 13-7 7L3 10V3h7zm-12-6h.01",
+  "view-clock": "M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0M12 6v6h4",
   clock: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0m-9-5v5l3 2",
   filter: "M3 4h18l-7 8v7l-4 2v-9z",
   chart: "M4 3v18h17M8 16v-4m5 4V7m5 9v-6",
@@ -298,7 +301,7 @@ let timeScrubbing = false;
 let timeScrubGeneration = 0;
 let timeScrubCommit = -Infinity;
 $("#app").innerHTML = `
-<header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">Time</button><button data-view="map">Map</button><button data-view="globe">Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="maps" aria-label="Maps">${icon("map")} <span class="toolbar-label">Maps</span></button><button id="terrain" aria-label="Terrain">${icon("terrain")} <span class="toolbar-label">Terrain</span></button><button id="si" title="Open AI chat" aria-controls="si-chat" aria-expanded="false">AI</button><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button><button type="button" class="icon renderer-status" id="backend" aria-label="Reset map" title="Reset map"></button></div><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
+<header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">${icon("view-clock")} Time</button><button data-view="map">${icon("map")} Map</button><button data-view="globe">${icon("globe")} Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button><button type="button" class="icon renderer-status" id="backend" aria-label="Reset map" title="Reset map"></button></div><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
 <main class="workspace"><aside class="sidebar"><section class="sidebar-pinned" id="search-section" aria-label="Search and selection"><input id="search" placeholder="Search events…" aria-label="Search events"><button id="reset-filters">Reset filters</button><div class="selection-tools" id="selection-tools"><div class="selection-summary"><strong id="pinned-selection-count" role="status">0 selected</strong><button id="clear" aria-label="Clear selection">Clear</button></div><div class="selection-actions"><button class="secondary" id="select-all">Select visible</button><label class="check-row"><input type="checkbox" id="selected-only" aria-label="Selected events only"> Show only</label></div></div></section><div class="sidebar-scroll"><details open class="sidebar-facet" id="entity-section"><summary><span>Entities</span><select id="entity-field" aria-label="Entity list field" title="Group the list by another column; source track identities stay unchanged"><option value="entity">Entity</option></select></summary><div class="facet-sort" role="group" aria-label="Sort entities"><button id="entity-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="entity-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div class="facet-controls"><input id="entity-search" placeholder="Find an entity…" aria-label="Find entity"><button id="all-entities">Enable all</button></div><div id="entities"></div><div class="facet-footer"><small id="entity-list-count"></small><button id="entity-show-all">Show all</button></div></details><details open class="sidebar-facet" id="category-section"><summary><span>Categories</span><select id="category-field" aria-label="Category list field" title="Group the list by another column"><option value="category">Category</option></select></summary><div class="facet-sort" role="group" aria-label="Sort categories"><button id="category-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="category-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div id="categories"></div><div class="facet-footer"><small id="category-list-count"></small><button id="category-show-all">Show all</button></div></details><div class="divider"></div><details id="time-section"><summary>Exact time range</summary><label class="field">Start / UTC<input id="exact-start" placeholder="Unbounded"></label><label class="field">End / UTC<input id="exact-end" placeholder="Unbounded"></label><button id="exact-apply" class="secondary">Apply range</button></details><details id="rules-section"><summary>Attribute rules</summary><label class="field">Field<input id="rule-field" placeholder="value, confidence, category…"></label><select id="rule-op"><option>Contains</option><option>Equals</option><option>NotEquals</option><option>Greater</option><option>Less</option><option>IsEmpty</option></select><label class="field">Value<input id="rule-value"></label><button id="add-rule" class="secondary">Add AND rule</button><div id="rules"></div></details><details id="bounds-section"><summary>Geographic bounds</summary><label class="field">West, South, East, North<input id="bounds" placeholder="-80,43,-79,44"></label><button id="apply-bounds" class="secondary">Apply region</button></details><section id="layers-section"><div class="section-head"><span class="caps">Layers</span></div><div id="layer-list"></div><div class="source-foot">WGS84 · UTC</div></section></div></aside>
 <section class="center"><div class="scene-container" id="scene"><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel">${attributeTableMarkup}</section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
 <aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts" disabled title="Charts — In development">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns" disabled title="Patterns — In development">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="AI chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
@@ -345,12 +348,19 @@ const paneLayout = installWorkspaceLayout($(".workspace"), {
     disabled: id === "charts" || id === "patterns",
     activate: () =>
       id === "si"
-        ? siChat.open(false)
+        ? siWindows.focus().then(focused => focused ? undefined : siChat.open(false))
         : document
             .querySelector<HTMLButtonElement>(`[data-tab="${id}"]`)!
             .click(),
   })),
 });
+const inspectorChatButton = document.createElement("button");
+inspectorChatButton.id = "inspector-chat";
+inspectorChatButton.className = "pane-icon";
+inspectorChatButton.innerHTML = icon("chat");
+inspectorChatButton.setAttribute("aria-controls", "si-chat");
+inspectorChatButton.setAttribute("aria-expanded", "false");
+$("#collapse-right-pane").before(inspectorChatButton);
 const notifications = new NotificationCenter(
   $("#notifications") as HTMLButtonElement,
   icon("close"),
@@ -720,10 +730,8 @@ let nativeIconThemeWork: Promise<void> = Promise.resolve();
 let lastNativeIconPreference: string | null | undefined;
 function theme() {
   setAssistantWording(!!preferences.ai_toolbar_si);
-  $("#si").textContent = assistantName();
-  $("#si").setAttribute("aria-label", `${assistantName()} chat`);
-  $("#si").dataset.tooltip = `Open ${assistantName()} chat. Service and tool settings are in the chat gear. Choose AI or SI in Preferences → General.`;
-  $("#si").setAttribute("aria-description", $("#si").dataset.tooltip!);
+  inspectorChatButton.setAttribute("aria-label", `${assistantName()} chat`);
+  inspectorChatButton.title = `Open ${assistantName()} chat`;
   siChat.setNaming(!!preferences.ai_toolbar_si);
   paneLayout.inspector.setSectionLabel("si", `${assistantName()} chat`);
   const t =
@@ -880,7 +888,7 @@ async function runRefresh(render = true, resources = true,canonical=false) {
   projectPath = s.lifecycle?.source ?? null;
   preferences = s.preferences;
   const dateDisplayChanged = setDateTimeDisplay(preferences);
-  await view.setBasemap(preferences.basemap || "none");
+  await view.setBasemap(mapsEnabled() ? "none" : preferences.basemap || "none");
   $("#save").title = s.lifecycle?.dirty
     ? "Save unsaved changes (Ctrl/Cmd+S)"
     : "Save workspace (Ctrl/Cmd+S)";
@@ -2153,6 +2161,7 @@ async function loadRasterViewport(
     lastMapStack = undefined;
     lastRaster = null;
     view.clearRasters();
+    await view.setBasemap(preferences.basemap || "none");
     $("#cancel-map").hidden = true;
     return;
   }
@@ -2168,8 +2177,8 @@ async function loadRasterViewport(
     lastRaster = stack.result;
     await view.setRasters(stack.result, current);
   }
-  let cursor = 0,
-    loaded = 0,
+  let loaded = 0,
+    requestedLayers = 0,
     failures = 0;
   const loadLayer = async (layer: MapLayer) => {
     let offset: number | null = 0;
@@ -2242,23 +2251,24 @@ async function loadRasterViewport(
       }
     }
   };
-  const worker = async () => {
-    while (
-      cursor < visible.length &&
-      current() &&
-      (!superseded?.() || loaded === 0)
-    )
-      await loadLayer(visible[cursor++]);
-  };
   try {
-    await Promise.all([worker(), worker()]);
+    await view.setBasemap("none");
+    // Resolve top imagery first. Only request underlying sources if actual
+    // decoded pixels leave holes or the configured opacity needs a background.
+    for (const layer of [...visible].reverse()) {
+      if (!current() || (superseded?.() && loaded > 0)) break;
+      requestedLayers++;
+      await loadLayer(layer);
+      if (current() && stack.fullyOpaque(layer)) break;
+    }
+    if (current()) await view.setBasemap(stack.fullyOpaque() ? "none" : preferences.basemap || "none");
   } finally {
     if (current()) {
       $("#cancel-map").hidden = true;
       status(
         superseded?.()
           ? `${loaded.toLocaleString()} map tiles · following viewport`
-          : `${loaded.toLocaleString()} map tiles · ${visible.length - failures} layers loaded${failures ? ` · ${failures} failed` : ""}`,
+          : `${loaded.toLocaleString()} map tiles · ${requestedLayers - failures} layers loaded${failures ? ` · ${failures} failed` : ""}`,
       );
     }
   }
@@ -2517,8 +2527,16 @@ async function loadTerrain(folder = false) {
   view.fit();
   toast(`Loaded ${terrainInfo.tiles.length} DTED tile(s)`);
 }
-function terrainMenu() {
-  modal(
+function terrainMenu(panel?: HTMLElement) {
+  const render = (html: string, small?: boolean) => {
+    if (!panel) return modal(html, small);
+    panel.innerHTML = html;
+    panel.querySelector(".modal-head")?.remove();
+    panel.querySelector("[data-close]")?.remove();
+    panel.insertAdjacentHTML("afterbegin", '<p class="notice">Terrain actions apply immediately to this workspace.</p>');
+  };
+  const finish = () => { if (panel?.isConnected) terrainMenu(panel); else closeModal(); };
+  render(
     `${head("Terrain")}<p class="notice" role="status">Currently loaded: ${terrainInfo ? preferences.terrain_builtin ? "Balanced world terrain · 1.9 km spacing" : `DTED · ${terrainInfo.tiles.length} tile${terrainInfo.tiles.length === 1 ? "" : "s"}` : "No terrain"}</p><p class="description">Balanced world terrain is bundled for offline use at approximately 1.9 km spacing. You can unload it, restore it, or replace it with your own DTED file or folder.</p><div class="row"><button id="restore-balanced" class="secondary">Restore bundled terrain</button><button id="dted-file" class="primary">${icon("terrain")} Load DTED file</button><button id="dted-folder" class="secondary">${icon("folder")} Load folder</button></div><div class="notice">Standard WGS84 DT0/DT1/DT2. Voids remain holes. Choose the source vertical datum explicitly. EGM96 uses the bundled NGA geoid grid to convert mean-sea-level heights to ellipsoid heights for display. Unknown MSL remains undisplayed; source elevations are never modified.</div><label class="field">Source vertical datum<select id="terrain-datum" ${preferences.terrain_builtin ? "disabled" : ""}><option value="unresolved-msl" ${preferences.terrain_vertical_datum === "unresolved-msl" ? "selected" : ""}>Unresolved mean sea level (do not display)</option><option value="egm96" ${preferences.terrain_vertical_datum === "egm96" ? "selected" : ""}>EGM96 mean sea level</option><option value="ellipsoid" ${preferences.terrain_vertical_datum === "ellipsoid" ? "selected" : ""}>WGS84 ellipsoid heights</option></select>${preferences.terrain_builtin ? '<small>Bundled terrain uses the known EGM96 datum.</small>' : ""}</label><label class="field">Vertical exaggeration <output id="exaggeration-value" for="exaggeration">${preferences.terrain_exaggeration.toFixed(1)}×</output><input id="exaggeration" type="range" min=".1" max="20" step=".1" value="${preferences.terrain_exaggeration}"></label><footer><button data-close>Close</button><span class="spacer"></span><button id="remove-terrain">Unload terrain</button><button id="apply-terrain" class="primary">Apply exaggeration</button></footer>`,
     true,
   );
@@ -2531,7 +2549,7 @@ function terrainMenu() {
     terrainInfo = null;
     overrideBounds = null;
     await view.setTerrain(null);
-    closeModal();
+    finish();
     await refresh();
     layers();
   });
@@ -2547,18 +2565,20 @@ function terrainMenu() {
     );
     terrainInfo = await call("terrain_info");
     overrideBounds = null;
-    closeModal();
+    finish();
     await rebuildTerrain();
     layers();
     toast("Balanced world terrain restored");
   });
   on("#dted-file", async () => {
-    closeModal();
+    finish();
     await loadTerrain();
+    if (panel?.isConnected) terrainMenu(panel);
   });
   on("#dted-folder", async () => {
-    closeModal();
+    finish();
     await loadTerrain(true);
+    if (panel?.isConnected) terrainMenu(panel);
   });
   on("#apply-terrain", async () => {
     preferences = {
@@ -2569,7 +2589,7 @@ function terrainMenu() {
       ) as Preferences["terrain_vertical_datum"],
     };
     await call("preferences", { preferences });
-    closeModal();
+    finish();
     await rebuildTerrain();
   });
 }
@@ -2606,7 +2626,7 @@ analyticsButton.id = "analytics-results";
 analyticsButton.textContent = "Results";
 analyticsButton.title =
   "Browse persistent analysis results, charts and linked Event rows";
-$("#si").before(analyzeButton, analyticsButton);
+$("#help").before(analyzeButton, analyticsButton);
 analyticsButton.onclick = () =>
   void showAnalysisResults().catch((error) => toast(String(error), true));
 const siHooks = {
@@ -2654,6 +2674,7 @@ const siChat = new SIChat($("#si-chat"), {
   },
 });
 async function openSIChat() {
+  if (await siWindows.focus()) return;
   await paneLayout.inspector.reveal("si", true);
   await siChat.open();
 }
@@ -2663,6 +2684,9 @@ const siWindows = new SIWindowHost(
   },
   () => siChat.hide(),
 );
+inspectorChatButton.addEventListener("click", () => {
+  void openSIChat().catch(error => toast(String(error), true));
+});
 void workspaceHost({
   before: siHooks.before,
   after: siHooks.after,
@@ -2766,15 +2790,6 @@ async function siConnection(panel?: HTMLElement) {
     if (dialogs.node === owner) await siConnection(panel);
   });
 }
-on("#si", async () => {
-  if (await siWindows.focus()) return;
-  if (paneLayout.inspector.collapsed) {
-    await openSIChat();
-    return;
-  }
-  if ($("#si-chat").hidden) await siChat.open();
-  else siChat.hide();
-});
 async function aggregateEvents() {
   const revision = snapshot.revision;
   modal(
@@ -2821,6 +2836,7 @@ async function aggregateEvents() {
 on("#aggregate-events", aggregateEvents);
 const settings = createPreferencesController({
   mountAI: panel => siConnection(panel),
+  mountTerrain: panel => terrainMenu(panel),
   mapPreferences: () => mapSettings.quickPreferences(),
   mountMaps: (panel, navigation) => mapSettings.mount(panel, navigation),
   preferences: () => preferences,
@@ -3205,8 +3221,7 @@ on("#sync-views", async () => {
     button.disabled = false;
   }
 });
-on("#maps", () => mapMenu());
-on("#terrain", terrainMenu);
+
 on("#settings", () => settings());
 
 on("#theme", async () => {
@@ -4148,24 +4163,15 @@ async function checkForUpdates() {
 async function demoDatasets() {
   const { demos } = await call("demo_catalog");
   const picker = modal(
-    `${head("Demo datasets")}<p class="description">Explore flights, storms, earthquakes and predicted orbits with saved views. All ${demos.length} datasets are bundled for offline use.</p><div class="demo-grid">${demos
-      .map(
-        (demo) =>
-          `<section class="demo-card"><div class="demo-previews">${demo.previews
-            .map(
-              (preview) =>
-                `<button class="demo-preview" data-demo-preview="${esc(demo.id)}" data-demo-view="${preview.view_index}" aria-label="Open ${esc(demo.name)} in ${esc(preview.label)}"><img src="/demos/${esc(demo.id)}-${esc(preview.key)}.jpg" alt="${esc(demo.name)} in ${esc(preview.label)} view" width="480" height="300"><span>${esc(preview.label)}</span></button>`,
-            )
-            .join(
-              "",
-            )}</div><button data-demo-id="${esc(demo.id)}" data-tooltip-disabled aria-label="Open ${esc(demo.name)}"><span class="demo-title">${esc(demo.name)}</span><span class="demo-description">${esc(demo.description)}</span><span class="demo-action">Open demo ${icon("collapse-right")}</span></button><details><summary>Source &amp; license</summary><p>${esc(demo.license)}</p><p class="demo-source">${esc(demo.source_url)}</p></details></section>`,
-      )
-      .join(
-        "",
-      )}</div><p class="demo-footnote">Each demo opens as a new workspace. Save a copy to keep your own investigation.</p>`,
+    `${head("Demo datasets")}<div class="demo-scroll" role="region" aria-label="${demos.length} demo datasets" tabindex="0"><div class="demo-grid">${demos.map(demo =>
+      `<section class="demo-card"><h3 class="demo-title"><button class="demo-title-button" data-demo-id="${esc(demo.id)}" data-tooltip-disabled aria-label="Open ${esc(demo.name)}">${esc(demo.name)}</button></h3><div class="demo-previews">${demo.previews.map(preview =>
+        `<button class="demo-preview" data-demo-preview="${esc(demo.id)}" data-demo-view="${preview.view_index}" data-tooltip-disabled aria-label="Open ${esc(demo.name)} in ${esc(preview.label)}"><span class="demo-preview-image"><img src="/demos/${esc(demo.id)}-${esc(preview.key)}.jpg" alt="${esc(demo.name)} in ${esc(preview.label)} view" width="480" height="300"></span><span class="demo-preview-label">${esc(preview.label)} ${icon("collapse-right")}</span></button>`
+      ).join("")}</div><details><summary>About &amp; source</summary><p>${esc(demo.description)}</p><p>${esc(demo.license)}</p><p class="demo-source">${esc(demo.source_url)}</p></details></section>`
+    ).join("")}</div></div>`,
   );
   picker.querySelector(".modal")!.classList.add("demo-picker");
-  demos.forEach((demo) => {
+  picker.querySelectorAll<HTMLImageElement>(".demo-preview img").forEach(cropDemoPreview);
+  demos.forEach(demo => {
     const openDemo = async (viewIndex?: number) => {
       closeModal();
       await filterIntent.flush();
@@ -4177,7 +4183,6 @@ async function demoDatasets() {
             const result = await call("demo_open", {
               id: demo.id as EngineContracts["demo_open"]["args"]["id"],
             });
-            // Every preview opens its actual saved scene and filter, including year.
             return viewIndex === undefined
               ? result
               : call("restore_view", { index: viewIndex });
@@ -4191,17 +4196,9 @@ async function demoDatasets() {
       });
     };
     on(`[data-demo-id="${demo.id}"]`, () => openDemo());
-    picker
-      .querySelectorAll<HTMLButtonElement>(`[data-demo-preview="${demo.id}"]`)
-      .forEach((button) => {
-        button.addEventListener(
-          "click",
-          () =>
-            void openDemo(Number(button.dataset.demoView)).catch((error) =>
-              toast(String(error), true),
-            ),
-        );
-      });
+    picker.querySelectorAll<HTMLButtonElement>(`[data-demo-preview="${demo.id}"]`).forEach(button => {
+      button.addEventListener("click", () => void openDemo(Number(button.dataset.demoView)).catch(error => toast(String(error), true)));
+    });
   });
 }
 function showHelp(keysOnly = false) {

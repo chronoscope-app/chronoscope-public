@@ -1,3 +1,4 @@
+import { revealDemo } from "./demo-picker.mjs";
 import { withLocalApp } from "./local-browser.mjs";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -18,11 +19,12 @@ await withLocalApp("space-demos", async ({ page, api, out, pass }) => {
       await page.locator("#help").click();
       await page.locator("#demo-datasets").click();
       await page.locator("[data-demo-id]").first().waitFor();
-      assert.equal(await page.locator("[data-demo-id]").count(), 14);
+      assert.equal(await page.locator("[data-demo-id]").count(), (await api("demo_catalog")).demos.length);
       assert.equal(
         await page.locator('[data-demo-id="rocket-altitude"]').count(),
         0,
       );
+      await revealDemo(page,id);
       const previews = page.locator(`[data-demo-preview="${id}"]`);
       assert.equal(await previews.count(), 2);
       await previews

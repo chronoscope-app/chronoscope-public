@@ -371,7 +371,7 @@ try {
   });
   await page.goto(url + "/#token=" + token);
   await ready(8473);
-  await page.locator("#si").click();
+  await page.locator(':is(#inspector-chat, [data-pane-section="si"]):visible').press("Enter");
   await page.fill(
     "#si-prompt",
     "Compare mean recorded vessel speed by vessel type.",

@@ -230,7 +230,8 @@ try {
   let state = await navigate("map");
   record("2D native street tiles; WGS84/mercator pixel alignment", state);
   await capture("streets-2d");
-  await page.locator("#maps").click();
+  await page.locator("#settings").click();
+    await page.locator("#preferences-tab-maps").click();
   await page.waitForSelector("#map-quick-pick");
   assert(await page.locator("#streets-enabled").isChecked());
   assert.equal(await page.locator("#wmts-server").count(), 0);
@@ -246,7 +247,8 @@ try {
     () => window.__chronoscope.view.resources.status.basemap === "none",
   );
   assert.equal((await api("preferences")).basemap, "none");
-  await page.locator("#maps").click();
+  await page.locator("#settings").click();
+    await page.locator("#preferences-tab-maps").click();
   await page.locator("#map-quick-pick").selectOption("streets");
   await page.locator("#save-preferences").click();
   await settled();
@@ -271,7 +273,8 @@ try {
     "fresh vector renderer reloads style, tiles and fonts from private disk cache offline",
     { bytes: before },
   );
-  await page.locator("#maps").click();
+  await page.locator("#settings").click();
+    await page.locator("#preferences-tab-maps").click();
   await page
     .locator("summary")
     .filter({ hasText: "Advanced map settings" })

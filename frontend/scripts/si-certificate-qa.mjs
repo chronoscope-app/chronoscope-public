@@ -69,7 +69,7 @@ try {
       window.__chronoscope?.snapshot?.count === 192 &&
       !window.__chronoscope.busy,
   );
-  await page.click("#si");
+  await page.click(':is(#inspector-chat, [data-pane-section="si"]):visible');
   const open = async () => {
     await page.click("#si-settings");
     await page.waitForSelector("#si-certificate-settings");

@@ -119,12 +119,14 @@ try {
     await page.setViewportSize(viewport);
     for (const [name, trigger] of [
       ["Aggregate", "#aggregate-events"],
-      ["Map", "#maps"],
-      ["Terrain", "#terrain"],
+      ["Map", "#settings"],
+      ["Terrain", "#settings"],
       ["Help", "#help"],
       ["Preferences", "#settings"],
     ]) {
       await page.locator(trigger).click();
+      if (name === "Map") await page.click("#preferences-tab-maps");
+      if (name === "Terrain") await page.click("#preferences-tab-terrain");
       const dialog = await measure(name, ".modal");
       if (name === "Preferences") {
         assert.match(
@@ -164,14 +166,15 @@ try {
       await measure(name + " scrolled", ".modal");
       await close();
     }
-    await page.locator("#maps").click();
+    await page.locator("#settings").click();
+    await page.click("#preferences-tab-maps");
     if (!(await page.locator(".map-advanced").evaluate((e) => e.open)))
       await page.locator(".map-advanced summary").click();
     await measure("Map expanded", ".modal");
     await page.locator("#custom-map-server").click();
     await page
       .locator(".modal h2")
-      .filter({ hasText: /^Maps$/ })
+      .filter({ hasText: /^Map server$/ })
       .waitFor();
     await measure("Maps", ".modal");
     assert.equal(await page.locator("#apply-map").isDisabled(), true);
@@ -196,7 +199,7 @@ try {
       path: path.join(dir, `results-${viewport.width}.png`),
     });
     await page.getByRole("button", { name: "Close analysis results" }).click();
-    await page.locator("#si").click();
+    await page.locator(':is(#inspector-chat, [data-pane-section="si"]):visible').press("Enter");
     await page.locator("#si-connect-service").waitFor({ state: "visible" });
     await page.waitForFunction(
       () => document.activeElement?.id === "si-connect-service",

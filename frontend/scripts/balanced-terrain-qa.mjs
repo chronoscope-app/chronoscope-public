@@ -306,8 +306,10 @@ try {
   await open();
   await frame("antarctic-polar", "globe", [-15, -89.9, 15, -87]);
   await frame("greenland-polar", "globe", [-50, 80, -30, 83]);
-  await page.click("#terrain");
+  await page.click("#settings");
+  await page.click("#preferences-tab-terrain");
   await page.click("#remove-terrain");
+  await page.locator(".preferences-dialog > footer [data-close]").click();
   await terrain(false);
   assert.equal((await api("preferences")).terrain_builtin, false);
   await stop();
@@ -316,15 +318,19 @@ try {
   assert.equal(await api("terrain_info"), null);
   await open();
   await terrain(false);
-  await page.click("#terrain");
+  await page.click("#settings");
+  await page.click("#preferences-tab-terrain");
   await page.click("#restore-balanced");
+  await page.locator(".preferences-dialog > footer [data-close]").click();
   await terrain(true);
   assert.equal((await api("preferences")).terrain_builtin, true);
   const workspace = path.join(dir, "balanced.chronoscope");
   await api("save", { path: workspace });
   assert(fs.statSync(workspace).size < 1024 * 1024);
-  await page.click("#terrain");
+  await page.click("#settings");
+  await page.click("#preferences-tab-terrain");
   await page.click("#remove-terrain");
+  await page.locator(".preferences-dialog > footer [data-close]").click();
   await terrain(false);
   await api("open", { path: workspace });
   // The browser development bridge has no native engine-event subscription.

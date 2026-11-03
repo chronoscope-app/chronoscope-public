@@ -1,3 +1,4 @@
+import { revealDemo } from "./demo-picker.mjs";
 import { chromium, spawn, localServerUrl, createApi } from "./qa-runtime.mjs";
 // Real offline demos, UI picker, attribute tables, saved views and playback.
 
@@ -126,7 +127,8 @@ try {
     await page.locator("#help").click();
     await page.locator("#demo-datasets").click();
     await page.locator("[data-demo-id]").first().waitFor();
-    assert.equal(await page.locator("[data-demo-id]").count(), 14);
+    assert.equal(await page.locator("[data-demo-id]").count(), (await api("demo_catalog")).demos.length);
+    await revealDemo(page,id);
     await page.locator(`[data-demo-id="${id}"]`).click();
     await stateReady(
       (n) =>

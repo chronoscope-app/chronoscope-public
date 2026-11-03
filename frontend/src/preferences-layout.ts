@@ -1,21 +1,27 @@
 import "./preferences-layout.css";
+import { assistantWording } from "./assistant-wording";
 export type PreferencesSection =
-  "general" | "workspace" | "display" | "maps" | "ai" | "agents";
+  "general" | "workspace" | "display" | "maps" | "terrain" | "ai" | "agents";
 const sections: [PreferencesSection, string][] = [
   ["general", "General"],
   ["workspace", "Workspace"],
   ["display", "Display"],
   ["maps", "Maps"],
+  ["terrain", "Terrain"],
   ["ai", "AI chat"],
   ["agents", "Agent access"],
 ];
 export function preferencesLayout(
-  content: Record<Exclude<PreferencesSection, "maps" | "ai">, string> & {
+  content: Record<
+    Exclude<PreferencesSection, "maps" | "terrain" | "ai">,
+    string
+  > & {
     maps?: string;
+    terrain?: string;
     ai?: string;
   },
 ) {
-  return `<div class="preferences-body"><nav class="preferences-nav" role="tablist" aria-label="Preference categories" aria-orientation="vertical">${sections.map(([id, label]) => `<button type="button" role="tab" id="preferences-tab-${id}" aria-controls="preferences-panel-${id}" aria-selected="false" tabindex="-1">${label}</button>`).join("")}</nav><div class="preferences-panels">${sections.map(([id, label]) => `<section id="preferences-panel-${id}" role="tabpanel" aria-labelledby="preferences-tab-${id}" tabindex="0" hidden><h3>${label}</h3>${content[id] ?? ""}</section>`).join("")}</div></div>`;
+  return `<div class="preferences-body"><nav class="preferences-nav" role="tablist" aria-label="Preference categories" aria-orientation="vertical">${sections.map(([id, label]) => `<button type="button" role="tab" id="preferences-tab-${id}" aria-controls="preferences-panel-${id}" aria-selected="false" tabindex="-1">${assistantWording(label)}</button>`).join("")}</nav><div class="preferences-panels">${sections.map(([id, label]) => `<section id="preferences-panel-${id}" role="tabpanel" aria-labelledby="preferences-tab-${id}" tabindex="0" hidden><h3>${assistantWording(label)}</h3>${content[id] ?? ""}</section>`).join("")}</div></div>`;
 }
 export function bindPreferencesLayout(
   root: HTMLElement,
@@ -35,6 +41,9 @@ export function bindPreferencesLayout(
       panels[i].hidden = i !== index;
     });
     if (focus) tabs[index].focus();
+    root.dispatchEvent(
+      new CustomEvent("preferences-section", { detail: sections[index][0] }),
+    );
   };
   tabs.forEach((tab, index) => {
     tab.addEventListener("click", () => show(index));

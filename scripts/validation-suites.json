@@ -3,6 +3,7 @@
   "groups": {
     "unit": [
       "bridge-test.mjs",
+      "demo-preview-crop-test.mjs",
       "base64-bytes-test.mjs",
       "si-chat-test.mjs",
       "camera-stability-test.mjs",
@@ -62,6 +63,7 @@
       "vector-gis-qa.mjs",
       "map-notifications-qa.mjs",
       "maps-preferences-qa.mjs",
+      "map-occlusion-qa.mjs",
       "flight-pan-qa.mjs",
       "navigation-qa.mjs",
       "navigation-table-cleanup-qa.mjs",
@@ -74,6 +76,7 @@
       "playback-speed-qa.mjs",
       "playback-transitions-qa.mjs",
       "real-demos-qa.mjs",
+      "demo-picker-qa.mjs",
       "si-rich-chat-qa.mjs",
       "si-settings-qa.mjs",
       "sidebar-time-qa.mjs",
@@ -262,7 +265,8 @@
         "cesium-terrain-qa.mjs",
         "wkt-wmts-qa.mjs",
         "map-notifications-qa.mjs",
-        "maps-preferences-qa.mjs"
+        "maps-preferences-qa.mjs",
+        "map-occlusion-qa.mjs"
       ],
       "rust": [
         "balanced_terrain",
@@ -287,6 +291,7 @@
         "workspace-boundaries-qa.mjs",
         "toolbar-dialogs-qa.mjs",
         "welcome-qa.mjs",
+        "demo-picker-qa.mjs",
         "presentation-ui-qa.mjs",
         "priority-demos-qa.mjs",
         "table-playback-qa.mjs",

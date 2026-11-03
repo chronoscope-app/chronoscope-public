@@ -1,3 +1,4 @@
+import { assistantWording } from "./assistant-wording";
 import { call, chooseFile, native } from "./bridge";
 import {
   escape as esc,
@@ -26,6 +27,7 @@ interface Hooks {
   head(title: string): string;
   toast(message: string, error?: boolean): void;
   mapPreferences?(): Partial<Preferences>;
+  mountTerrain?(panel: HTMLElement): void;
   mountAI?(panel: HTMLElement): Promise<void>;
   mountMaps?(
     panel: HTMLElement,
@@ -85,7 +87,7 @@ export function createPreferencesController(hooks: Hooks) {
     const general = dialog.querySelector<HTMLElement>("#pref-update-options");
     general?.insertAdjacentHTML(
       "beforeend",
-      `<label class="field">Assistant wording<select id="pref-ai-wording"><option value="ai" ${!(draft?.aiToolbarSI ?? preferences.ai_toolbar_si) ? "selected" : ""}>AI (default)</option><option value="si" ${(draft?.aiToolbarSI ?? preferences.ai_toolbar_si) ? "selected" : ""}>SI · Super Intelligence</option></select></label><p class="description">Changes the assistant’s menu button, chat, settings and help labels.</p>`,
+      `<label class="field">Assistant wording<select id="pref-ai-wording"><option value="ai" ${!(draft?.aiToolbarSI ?? preferences.ai_toolbar_si) ? "selected" : ""}>AI (default)</option><option value="si" ${(draft?.aiToolbarSI ?? preferences.ai_toolbar_si) ? "selected" : ""}>SI · Super Intelligence</option></select></label><p class="description">Changes the assistant’s pane icon, chat, settings and help labels.</p>`,
     );
     general?.insertAdjacentHTML(
       "beforeend",
@@ -141,12 +143,32 @@ export function createPreferencesController(hooks: Hooks) {
         },
       },
     );
-    if (hooks.mountAI) {
-      let mounting: Promise<void> | undefined;
-      const loadAI = () => mounting ??= hooks.mountAI!(dialog.querySelector<HTMLElement>("#preferences-panel-ai")!);
-      dialog.querySelector("#preferences-tab-ai")!.addEventListener("click", () => { void loadAI().catch(error => toast(String(error), true)); });
-      if (section === "ai") await loadAI();
-    }
+    const wordingSelect = dialog.querySelector<HTMLSelectElement>("#pref-ai-wording")!;
+    const updateWording = () => {
+      const si = wordingSelect.value === "si";
+      dialog.querySelector("#preferences-tab-ai")!.textContent = assistantWording("AI chat", si);
+      const duplicate = dialog.querySelector<HTMLSelectElement>("#pref-ai-wording-ai");
+      if (duplicate) duplicate.value = wordingSelect.value;
+    };
+    wordingSelect.addEventListener("change", updateWording);
+    updateWording();
+    let mountingAI: Promise<void> | undefined;
+    const loadAI = () => mountingAI ??= (async () => {
+      const panel = dialog.querySelector<HTMLElement>("#preferences-panel-ai")!;
+      panel.innerHTML = '<div id="ai-wording-options"></div><div id="ai-service-options"></div>';
+      const wording = panel.querySelector("#ai-wording-options")!;
+      wording.innerHTML = `<label class="field">Assistant wording<select id="pref-ai-wording-ai"><option value="ai">AI (default)</option><option value="si">SI · Super Intelligence</option></select></label><p class="description">Save preferences to apply assistant labels throughout the app.</p>`;
+      const duplicate = panel.querySelector<HTMLSelectElement>("#pref-ai-wording-ai")!;
+      duplicate.value = wordingSelect.value;
+      duplicate.addEventListener("change", () => { wordingSelect.value = duplicate.value; updateWording(); });
+      await hooks.mountAI?.(panel.querySelector<HTMLElement>("#ai-service-options")!);
+    })();
+    const loadSection = (section: PreferencesSection) => {
+      if (section === "ai") void loadAI().catch(error => toast(String(error), true));
+      if (section === "terrain") hooks.mountTerrain?.(dialog.querySelector<HTMLElement>("#preferences-panel-terrain")!);
+    };
+    dialog.addEventListener("preferences-section", event => loadSection((event as CustomEvent).detail));
+    loadSection(section);
     if (draft?.mapChoice) {
       const choice = dialog.querySelector<HTMLSelectElement>("#map-quick-pick");
       if (choice) { choice.value = draft.mapChoice; choice.dispatchEvent(new Event("change")); }

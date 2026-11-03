@@ -293,7 +293,8 @@ try {
     }
   });
   await new Promise((resolve) => mapFixture.listen(0, "127.0.0.1", resolve));
-  await page.click("#maps");
+  await page.click("#settings");
+  await page.click("#preferences-tab-maps");
   await page.locator(".map-advanced summary").click();
   await page.click("#custom-map-server");
   await page.fill(

@@ -5,7 +5,10 @@ await withLocalApp(
   "maps-preferences",
   async ({ page, api, out, pass }) => {
     const before = await api("preferences");
-    await page.locator("#maps").click();
+    assert.equal(await page.locator("#maps, #terrain").count(), 0);
+    for (const mode of ["space-time", "map", "globe"]) assert.equal(await page.locator(`[data-view="${mode}"] svg`).count(), 1);
+    await page.locator("#settings").click();
+    await page.locator("#preferences-tab-maps").click();
     await page.locator('#preferences-tab-maps[aria-selected="true"]').waitFor();
     assert.equal(
       await page.locator("#modal-title").textContent(),
@@ -52,6 +55,20 @@ await withLocalApp(
     assert.equal(await page.locator("#streets-enabled").isChecked(), true);
     await page.locator("#preferences-tab-general").click();
     assert.equal(await page.locator("#pref-ai-wording").inputValue(), "si");
+    assert.equal(await page.locator("#preferences-tab-ai").textContent(), "SI chat");
+    await page.locator("#preferences-tab-ai").click();
+    assert.equal(await page.locator("#pref-ai-wording-ai").inputValue(), "si");
+    await page.locator("#pref-ai-wording-ai").selectOption("ai");
+    assert.equal(await page.locator("#pref-ai-wording").inputValue(), "ai");
+    await page.locator("#pref-ai-wording-ai").selectOption("si");
+    await page.locator("#preferences-tab-terrain").click();
+    for (const control of ["restore-balanced", "dted-file", "dted-folder", "terrain-datum", "exaggeration", "remove-terrain", "apply-terrain"]) assert.equal(await page.locator(`#${control}`).isVisible(), true);
+    await page.locator("#exaggeration").fill("2");
+    await page.locator("#apply-terrain").click();
+    assert.equal((await api("preferences")).terrain_exaggeration, 2);
+    assert.equal(await page.locator(".preferences-dialog").isVisible(), true);
+    await page.screenshot({ path: path.join(out, "terrain-in-preferences.png") });
+    pass("View icons, Settings Terrain controls, and synchronized AI/SI choices are available");
     await page.locator("#preferences-tab-maps").click();
     await page.screenshot({ path: path.join(out, "maps-in-preferences.png") });
     await page
@@ -77,6 +94,20 @@ await withLocalApp(
     await page.locator("#save-preferences").click();
     await page.locator(".preferences-dialog").waitFor({ state: "detached" });
     assert.equal((await api("preferences")).basemap, "none");
+    await page.locator("#settings").click();
+    await page.locator("#preferences-tab-ai").click();
+    await page.locator("#pref-ai-wording-ai").selectOption("si");
+    await page.locator("#save-preferences").click();
+    await page.locator(".preferences-dialog").waitFor({ state: "detached" });
+    await page.locator("#settings").click();
+    assert.equal(await page.locator("#preferences-tab-ai").textContent(), "SI chat");
+    await page.locator("#preferences-tab-maps").focus();
+    await page.keyboard.press("ArrowDown");
+    assert.equal(await page.locator("#exaggeration").isVisible(), true);
+    await page.keyboard.press("ArrowDown");
+    assert.equal(await page.locator("#pref-ai-wording-ai").inputValue(), "si");
+    assert.equal(await page.locator("#si-service-heading").textContent(), "SI service");
+    pass("Saved SI wording reaches the Settings category and service headings; keyboard navigation mounts Terrain and assistant controls");
     pass(
       "Maps is also accessible from Preferences; saving Advanced cache settings returns there and saved preferences retain the configured map state",
     );
