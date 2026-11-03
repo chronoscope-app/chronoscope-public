@@ -1,12 +1,17 @@
 Chronoscope tester source access
 
-Exact application and dependency source archives accompany the executable on:
-https://github.com/chronoscope-app/chronoscope-public/releases/tag/tester-20261022
+Exact application and dependency source archives accompany each published
+executable at its matching release on:
+https://github.com/chronoscope-app/chronoscope-public/releases
+
+Choose the release for the downloaded app's version and platform. The latest
+source on main may differ from a published executable; use that executable's
+release manifest and source archives for its exact build revision.
 
 Download chronoscope-source.zip (complete application/local crates/patched GLib)
 and chronoscope-dependency-sources.tar.xz (exact checksum-verified Cargo and npm
-registry archives with original license/copyright/NOTICE files). SHA256SUMS.txt
-and SOURCE-ACCESS.json identify the matching revisions. Extract .crate/.tgz
+registry archives with original license/copyright/NOTICE files). The release's
+checksum and source/release manifests identify the matching revisions. Extract .crate/.tgz
 archives with tar. MPL-covered files remain under MPL-2.0; their exact sources
 are provided in the dependency archive, including conservative extra platform
 packages. Apache-2.0 alternatives are selected where offered; combined/AND
@@ -20,6 +25,6 @@ for debugging those modifications to the extent required by their licenses.
 Linux native source/replacement records are separately required for Linux
 redistribution; registry archives do not stand in for distro source packages.
 
-No executable may be published at that tag until both source archives are
+No executable may be published until its matching source archives are
 attached and anonymously retrievable. Preserve this notice with redistributed
 installers/apps, along with all applicable upstream texts.
