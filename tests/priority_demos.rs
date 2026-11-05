@@ -123,7 +123,14 @@ fn invalid_measurement_ranges_are_rejected_without_replacing_the_scene() {
 #[test]
 fn every_catalog_preview_points_to_a_real_saved_view() {
     let dir = tempfile::tempdir().unwrap();
-    assert_eq!(demos::DEMOS.len(), 14);
+    assert_eq!(demos::DEMOS.len(), 13);
+    let hurricanes: Vec<_> = demos::DEMOS
+        .iter()
+        .filter(|demo| demo.id.starts_with("hurricanes"))
+        .collect();
+    assert_eq!(hurricanes.len(), 1);
+    assert_eq!(hurricanes[0].id, "hurricanes");
+    assert_eq!(hurricanes[0].name, "Atlantic hurricanes · 2016–2025");
     assert_eq!(demos::DEMOS.last().unwrap().id, "starlink-orbits");
     assert!(!demos::DEMOS.iter().any(|demo| demo.id == "covid"));
     for demo in demos::DEMOS {

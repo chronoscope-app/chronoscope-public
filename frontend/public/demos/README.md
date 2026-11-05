@@ -1,6 +1,6 @@
 # Demo hero thumbnails
 
-These 30 JPEGs are 480 × 300 previews of the 15 bundled demo workspaces. Each card selects its own saved views: Time/Map, Globe/Map, heat/detections, count cells, or historical years. Clicking a thumbnail opens the corresponding scene **and filter**. No synthetic observations or AI artwork are used.
+These 26 JPEGs are 480 × 300 previews of the 13 bundled demo workspaces. Each card selects its own saved views: Time/Map, Globe/Map, heat/detections, count cells, or historical years. Clicking a thumbnail opens the corresponding scene **and filter**. No synthetic observations or AI artwork are used.
 
 The background is the bundled **Natural Earth public-domain** reference image. Event source URLs, source licenses/attribution, saved view scenes visible record counts, filters, and image SHA-256 hashes are recorded in `manifest.json`. Source and license details are also available on every demo card in the app. The wildlife data retains its CC BY 4.0 attribution there and in the manifest.
 

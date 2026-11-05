@@ -57,9 +57,7 @@ try {
   const defaults = await api("preferences");
   assert.equal(defaults.basemap, "streets");
   assert.deepEqual(defaults.map_layers, []);
-  const catalog = await api("wmts_servers");
-  assert.deepEqual(catalog.presets, []);
-  record("one default Streets basemap; no built-in WMTS catalog");
+  record("one default Streets basemap; custom overlays start disabled");
   await api("demo");
   await api("preferences", {
     preferences: {
@@ -230,6 +228,59 @@ try {
   let state = await navigate("map");
   record("2D native street tiles; WGS84/mercator pixel alignment", state);
   await capture("streets-2d");
+  const streets = page.locator('[data-geography-toggle="streets"]');
+  const reference = page.locator('[data-geography-toggle="reference"]');
+  assert.equal(await streets.isChecked(), true);
+  assert.equal(await reference.isChecked(), true);
+  const beforeVisibility = await api("snapshot", { compact: true });
+  const cameraBeforeVisibility = await page.evaluate(() => window.__chronoscope.view.captureCamera());
+  await streets.uncheck();
+  await page.waitForFunction(() => window.__chronoscope.view.resources.status.basemap === "none");
+  await page.waitForFunction(() => !document.querySelector('[data-geography-toggle="streets"]').disabled);
+  assert.equal(await streets.isChecked(), false);
+  assert.equal(await streets.count(), 1);
+  assert.equal((await api("preferences")).basemap, "none");
+  await reference.uncheck();
+  await page.waitForFunction(() => {
+    const v = window.__chronoscope.view;
+    return !v.resources.status.referenceVisible &&
+      !v.resources.status.referenceImageryVisible && v.scene.globe.baseColor.alpha === 0;
+  });
+  assert.equal((await api("preferences")).reference_visible, false);
+  const cameraAfterVisibility = await page.evaluate(() => window.__chronoscope.view.captureCamera());
+  // In orthographic Map, viewport placement/scale comes from XY and frustum
+  // width; Cesium can adjust the unused camera height as terrain settles.
+  for (const i of [0, 1])
+    assert(Math.abs(cameraAfterVisibility.cesium_camera.position[i] - cameraBeforeVisibility.cesium_camera.position[i]) < 1e-6);
+  assert.equal(cameraAfterVisibility.cesium_camera.frustum_width, cameraBeforeVisibility.cesium_camera.frustum_width);
+  for (const key of ["direction", "up"])
+    for (let i = 0; i < 3; i++)
+      assert(Math.abs(cameraAfterVisibility.cesium_camera[key][i] - cameraBeforeVisibility.cesium_camera[key][i]) < 1e-12);
+  await capture("geography-hidden");
+  await page.reload();
+  await page.waitForFunction(() => window.__chronoscope?.snapshot && !window.__chronoscope.busy);
+  assert.equal(await streets.isChecked(), false);
+  assert.equal(await reference.isChecked(), false);
+  await streets.check();
+  await settled();
+  assert.equal((await api("preferences")).basemap, "streets");
+  assert.equal(await reference.isChecked(), false);
+  assert.equal(await page.evaluate(() => window.__chronoscope.view.resources.status.referenceImageryVisible), false);
+  await capture("streets-without-reference");
+  for (const mode of ["space-time", "globe", "map"]) {
+    await navigate(mode, mode === "map" ? 0 : 30);
+    assert.equal(await reference.isChecked(), false);
+    assert.equal(await streets.isChecked(), true);
+    assert.equal(await page.evaluate(() => window.__chronoscope.view.scene.globe.baseColor.alpha), 0);
+  }
+  await reference.check();
+  await page.waitForFunction(() => window.__chronoscope.view.resources.status.referenceImageryVisible);
+  const afterVisibility = await api("snapshot", { compact: true });
+  assert.equal(afterVisibility.count, beforeVisibility.count);
+  assert.equal(afterVisibility.visible, beforeVisibility.visible);
+  assert.deepEqual(afterVisibility.selected, beforeVisibility.selected);
+  assert.equal((await api("preferences")).basemap, "streets");
+  record("Layer checkboxes independently hide and restore Streets and reference background, persist on reload and across views, and preserve data, selection and camera");
   await page.locator("#settings").click();
     await page.locator("#preferences-tab-maps").click();
   await page.waitForSelector("#map-quick-pick");
@@ -275,10 +326,7 @@ try {
   );
   await page.locator("#settings").click();
     await page.locator("#preferences-tab-maps").click();
-  await page
-    .locator("summary")
-    .filter({ hasText: "Advanced map settings" })
-    .click();
+  await page.locator(".map-advanced summary").click();
   await page.locator("#custom-map-server").click();
   await page.waitForSelector("#wmts-url");
   assert.equal(

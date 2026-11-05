@@ -4,6 +4,19 @@ Chronoscope is experimental. Source versions and downloadable builds can differ;
 
 ## Unreleased
 
+## 0.16.16 — experimental source preview, 2026-11-04
+
+- Update the Excel reader to Calamine 0.38.0, fixing malformed compound-file inputs that could panic or allocate without bound (RUSTSEC-2026-0436).
+- Re-enable Charts with a single row of eight chart-type icons and tooltips, visible X/Y field selectors, fixed statistical axes, and relevant settings under Chart options. Retain linked Event selection and saved charts.
+- Keep the full chart navigator and drag handles inside the canvas at compact and wide sizes.
+- Put the pinned pane's collapse control, Views, Charts, Inspect, Patterns and SI chat in one compact row; remove the redundant Inspector heading. Keep SI chat accessible at the minimum pane width.
+
+- Add Dismiss all to Notifications, clearing current alerts and the unread indicator while retaining saved recovery copies.
+
+- Add persistent visibility checkboxes for Streets and the offline coordinate reference background in the Layers pane. Hidden layers remain available to re-enable.
+
+- Keep one Atlantic hurricane demo, covering 2016–2025; remove the redundant five-season entry from the demo catalog.
+
 ## 0.16.15 — experimental Windows preview, 2026-11-02
 
 - Audit every Windows installer and embedded web file, including graphics, terrain, fonts and metadata; supply exact NSIS/LZMA, plugin and installer-template source with original notices.

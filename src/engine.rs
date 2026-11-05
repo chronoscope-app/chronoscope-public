@@ -41,6 +41,8 @@ pub struct Preferences {
     /// their explicit WMTS presentation until the user changes their basemap.
     #[serde(default)]
     pub basemap: crate::basemap::Basemap,
+    /// Show the offline reference background independently of online imagery.
+    pub reference_visible: bool,
     pub map: MapConfig,
     /// None preserves the legacy single-map setting. Some([]) explicitly disables the stack.
     pub map_layers: Option<Vec<crate::map_layers::MapLayer>>,
@@ -62,6 +64,7 @@ impl Default for Preferences {
             date_format: "system".into(),
             time_format: "system".into(),
             basemap: crate::basemap::Basemap::Streets,
+            reference_visible: true,
             map: MapConfig::default(),
             map_layers: Some(Vec::new()),
             terrain_path: None,

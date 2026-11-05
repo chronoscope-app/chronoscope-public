@@ -71,7 +71,7 @@ fn retired_rocket_demo_cannot_replace_a_workspace_and_new_ids_are_discoverable()
         .invoke("demo_open", json!({"id":"falcon9-launches"}))
         .is_err());
     assert_eq!(before, e.invoke("snapshot", json!({})).unwrap());
-    assert_eq!(demos::DEMOS.len(), 14);
+    assert_eq!(demos::DEMOS.len(), 13);
 }
 
 #[test]

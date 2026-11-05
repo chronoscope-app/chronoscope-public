@@ -125,7 +125,8 @@
       "file-drop-qa.mjs",
       "import-safety-qa.mjs",
       "radius-navigation-qa.mjs",
-      "settings-rework-qa.mjs"
+      "settings-rework-qa.mjs",
+      "chart-interface-qa.mjs"
     ],
     "performance": [
       "cesium-scale-qa.mjs",
@@ -180,7 +181,8 @@
     "charts": {
       "browser": [
         "analytics-qa.mjs",
-        "field-roles-qa.mjs"
+        "field-roles-qa.mjs",
+        "chart-interface-qa.mjs"
       ],
       "rust": [
         "analytics",

@@ -170,18 +170,6 @@ pub const DEMOS: &[Demo] = &[
         bytes: include_bytes!("../samples/usgs-global-earthquakes-2025-01.chronoscope"),
     },
     Demo {
-        id: "hurricanes-short",
-        name: "Atlantic hurricanes · 2021–2025",
-        description: "The shorter five-season workspace: 1,604 original fixes for 38 Atlantic hurricanes, with saved regional views.",
-        source_url: "https://www.nhc.noaa.gov/data/#hurdat",
-        license: "NOAA public data",
-        previews: &[
-            Preview { key: "time", label: "Time", view_index: 1 },
-            Preview { key: "map", label: "Map", view_index: 0 },
-        ],
-        bytes: include_bytes!("../samples/atlantic-hurricanes-2021-2025-tracks.chronoscope"),
-    },
-    Demo {
         id: "starlink-orbits",
         name: "128 Starlinks · global orbits",
         description: "46,208 predicted positions over six hours, 26 November 2024; opens a 90-minute window. Original 60-second samples; transformed MEME coordinates assume J2000 equinox. Predictions, not measured flight telemetry.",

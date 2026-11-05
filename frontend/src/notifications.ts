@@ -19,6 +19,7 @@ export class NotificationCenter {
   private list: HTMLElement;
   private badge: HTMLElement;
   private closeButton: HTMLButtonElement;
+  private dismissAllButton: HTMLButtonElement;
   constructor(
     private trigger: HTMLButtonElement,
     closeIcon: string,
@@ -30,12 +31,21 @@ export class NotificationCenter {
     this.panel.hidden = true;
     this.panel.setAttribute("role", "dialog");
     this.panel.setAttribute("aria-label", "Notifications");
-    this.panel.innerHTML = `<header><h2>Notifications</h2><button type="button" class="icon" aria-label="Close notifications">${closeIcon}</button></header><div class="notifications-list"></div>`;
+    this.panel.innerHTML = `<header><h2>Notifications</h2><button type="button" id="notifications-dismiss-all" title="Hide all alerts for this session; saved work is kept">Dismiss all</button><button type="button" class="icon" aria-label="Close notifications">${closeIcon}</button></header><div class="notifications-list"></div>`;
     document.body.append(this.panel);
     this.list = this.panel.querySelector(".notifications-list")!;
-    this.closeButton = this.panel.querySelector("button")!;
+    this.closeButton = this.panel.querySelector('[aria-label="Close notifications"]')!;
+    this.dismissAllButton = this.panel.querySelector("#notifications-dismiss-all")!;
     trigger.onclick = () => (this.isOpen ? this.close() : this.open());
     this.closeButton.onclick = () => this.close();
+    this.dismissAllButton.onclick = () => {
+      for (const n of this.entries.values()) {
+        n.dismissed = true;
+        n.read = true;
+      }
+      this.paint();
+      this.closeButton.focus({ preventScroll: true });
+    };
     document.addEventListener("pointerdown", (e) => {
       if (
         this.isOpen &&
@@ -83,6 +93,7 @@ export class NotificationCenter {
     const hadFocus = this.list.contains(document.activeElement);
     const items = [...this.entries.values()].filter((n) => !n.dismissed);
     const unread = items.filter((n) => !n.read).length;
+    this.dismissAllButton.disabled = !items.length;
     this.badge.hidden = !unread;
     this.badge.textContent = unread > 99 ? "99+" : String(unread);
     this.trigger.setAttribute(

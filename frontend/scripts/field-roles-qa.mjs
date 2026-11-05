@@ -148,6 +148,8 @@ try {
       .selectOption(role);
   };
   const open = async () => {
+    await page.locator("#chart-customize").evaluate((e) => (e.open = true));
+    await page.locator("#chart-options").evaluate((e) => (e.open = true));
     await page.locator("#chart-field-roles").click();
     await page
       .getByRole("dialog", { name: "Field roles", exact: true })

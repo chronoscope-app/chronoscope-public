@@ -95,3 +95,43 @@ fn fixed_resource_command_reuses_disk_cache_offline_and_rejects_other_origins() 
         .unwrap_err()
         .contains("offline"));
 }
+
+#[test]
+fn reference_visibility_defaults_on_and_persists_independently_of_streets() {
+    let dir = tempfile::tempdir().unwrap();
+    let mut legacy = serde_json::to_value(chronoscope::engine::Preferences::default()).unwrap();
+    legacy.as_object_mut().unwrap().remove("reference_visible");
+    let decoded: chronoscope::engine::Preferences = serde_json::from_value(legacy).unwrap();
+    assert!(decoded.reference_visible);
+    let e = engine(dir.path());
+    assert_eq!(
+        e.invoke("preferences", json!({})).unwrap()["reference_visible"],
+        true
+    );
+    let preferences = e
+        .invoke(
+            "preferences",
+            json!({"preferences":{"reference_visible":false}}),
+        )
+        .unwrap();
+    assert_eq!(preferences["basemap"], "streets");
+    assert_eq!(preferences["reference_visible"], false);
+    chronoscope::schema::validate_output("preferences", &preferences).unwrap();
+    let path = dir.path().join("hidden-reference.chronoscope");
+    e.invoke("save", json!({"path":path})).unwrap();
+    e.invoke(
+        "preferences",
+        json!({"preferences":{"reference_visible":true,"basemap":"none"}}),
+    )
+    .unwrap();
+    e.invoke("open", json!({"path":path})).unwrap();
+    let reopened = e.invoke("preferences", json!({})).unwrap();
+    assert_eq!(reopened["reference_visible"], false);
+    assert_eq!(reopened["basemap"], "streets");
+    e.invoke("preferences", json!({"preferences":{"basemap":"none"}}))
+        .unwrap();
+    let restarted = engine(dir.path());
+    let retained = restarted.invoke("preferences", json!({})).unwrap();
+    assert_eq!(retained["reference_visible"], false);
+    assert_eq!(retained["basemap"], "none");
+}

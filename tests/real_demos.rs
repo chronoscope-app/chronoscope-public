@@ -13,7 +13,6 @@ fn trajectory_demos_and_saved_views_start_with_readable_entities_and_tracks() {
         "stork-migration",
         "elephant-seals",
         "hurricanes",
-        "hurricanes-short",
     ] {
         let project = chronoscope::demos::load(id, data.path()).unwrap();
         project.validate().unwrap();
@@ -35,7 +34,7 @@ fn check_demos(cases: &[(&str, usize, usize, &str)]) {
     let data = tempfile::tempdir().unwrap();
     let engine = Engine::new(Project::empty(), data.path().into()).unwrap();
     let catalog = engine.invoke("demo_catalog", json!({})).unwrap();
-    assert_eq!(catalog["demos"].as_array().unwrap().len(), 14);
+    assert_eq!(catalog["demos"].as_array().unwrap().len(), 13);
     assert_eq!(engine.invoke("snapshot", json!({})).unwrap()["count"], 0);
     for &(id, count, entities, attribute) in cases {
         let opened = engine.invoke("demo_open", json!({"id":id})).unwrap();

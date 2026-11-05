@@ -199,7 +199,9 @@ try {
       path: path.join(dir, `results-${viewport.width}.png`),
     });
     await page.getByRole("button", { name: "Close analysis results" }).click();
-    await page.locator(':is(#inspector-chat, [data-pane-section="si"]):visible').press("Enter");
+    await page
+      .locator(':is(#inspector-chat, [data-pane-section="si"]):visible')
+      .press("Enter");
     await page.locator("#si-connect-service").waitFor({ state: "visible" });
     await page.waitForFunction(
       () => document.activeElement?.id === "si-connect-service",
@@ -222,7 +224,7 @@ try {
       await page
         .getByRole("button", { name: "Expand right pane", exact: true })
         .click();
-    assert(await page.locator('[data-tab="charts"]').isDisabled());
+    assert(await page.locator('[data-tab="charts"]').isEnabled());
     assert(await page.locator('[data-tab="patterns"]').isDisabled());
     await page.locator('[data-tab="views"]').click();
     for (const key of ["heat", "bloom"]) {

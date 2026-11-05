@@ -4,7 +4,6 @@ import { escape as esc, time, displayTime, type Snapshot } from "./types";
 import type { EngineContracts } from "./contracts";
 import {
   categoryField,
-  activeChartTask,
   weekdays,
   hourLabel,
   periodLabel,
@@ -63,14 +62,14 @@ export interface ChartConfig {
   period_b: [number, number] | null;
 }
 export const defaultChart: ChartConfig = {
-  kind: "bar",
+  kind: "line",
   scope: "visible",
   source: null,
-  x: "entity",
+  x: "time",
   y: "value",
   group: "",
   aggregate: "count",
-  x_axis: "category",
+  x_axis: "time",
   time_bucket: "day",
   stacked: false,
   y2: "",
@@ -84,6 +83,61 @@ export const defaultChart: ChartConfig = {
   period_a: null,
   period_b: null,
 };
+const chartTypes: {
+  kind: ChartConfig["kind"];
+  task: ChartTask;
+  name: string;
+  path: string;
+}[] = [
+  {
+    kind: "line",
+    task: "time",
+    name: "Line",
+    path: "M4 4v16h16M7 14l4-5 4 3 5-7",
+  },
+  {
+    kind: "bar",
+    task: "compare",
+    name: "Bar",
+    path: "M4 4v16h16M8 17V9m5 8V5m5 12v-6",
+  },
+  {
+    kind: "histogram",
+    task: "distribution",
+    name: "Histogram",
+    path: "M4 20V14h4V8h4V4h4v8h4v8H4m4 0V14m4 6V8m4 12v-8",
+  },
+  {
+    kind: "scatter",
+    task: "relationship",
+    name: "Scatter",
+    path: "M4 4v16h16M8 14h.1m2-6h.1m3 4h.1m3-6h.1m1 10h.1",
+  },
+  {
+    kind: "heatmap",
+    task: "patterns",
+    name: "Heatmap",
+    path: "M4 4h16v16H4V4m0 5h16M4 15h16M9 4v16M15 4v16",
+  },
+  {
+    kind: "boxplot",
+    task: "spread",
+    name: "Box plot",
+    path: "M4 12h4m8 0h4M4 9v6m16-6v6M8 7h8v10H8V7m4 0v10",
+  },
+  {
+    kind: "area",
+    task: "composition",
+    name: "Stacked area",
+    path: "M4 4v16h16M4 16l5-5 5 3 6-8M4 19l5-3 5 2 6-5",
+  },
+  {
+    kind: "period",
+    task: "periods",
+    name: "Period comparison",
+    path: "M4 4h6v16H4V4m10 4h6v12h-6V8",
+  },
+];
 export type ChartReport = EngineContracts["chart_data"]["result"];
 export interface ChartMark {
   x: any;
@@ -199,7 +253,7 @@ export class ChartsPanel {
   async render(snapshot: Snapshot) {
     this.snapshot = snapshot;
     if (!this.host.querySelector(".charts-panel")) {
-      this.host.innerHTML = `<section class="charts-panel"><div class="section-head"><h3>Charts</h3><button id="chart-expand" aria-pressed="false">Widen chart</button></div><div id="chart-heading"><h4 id="chart-title"></h4><p id="chart-caption" class="muted"></p></div><div id="chart-start-controls"></div><div id="chart-status" role="status" aria-live="polite">Preparing chart…</div><div id="chart-preview" class="chart-preview" role="img" aria-label="Interactive chart of scoped workspace records"></div><details id="chart-notes" open hidden><summary>Chart notes</summary><div id="chart-warnings" class="chart-warnings"></div></details><div id="chart-guidance" class="chart-guidance"></div><p class="chart-selection-hint muted">Click a mark to select its Events · Shift-click adds · Scatter: use the rectangle brush · Ctrl-scroll zooms</p><div id="chart-controls"></div><div class="row"><button id="chart-select-all" title="Select source Events represented by the displayed marks only">Select displayed Events</button><button id="chart-table">Open attribute table</button></div><details id="chart-data-details"><summary>Chart data</summary><div id="chart-data"></div></details></section>`;
+      this.host.innerHTML = `<section class="charts-panel"><div class="section-head"><h3>Charts</h3><button id="chart-expand" aria-pressed="false">Widen chart</button></div><div id="chart-start-controls"></div><div id="chart-heading"><h4 id="chart-title"></h4><p id="chart-caption" class="muted"></p></div><div id="chart-status" role="status" aria-live="polite">Preparing chart…</div><div id="chart-preview" class="chart-preview" role="img" aria-label="Interactive chart of scoped workspace records"></div><details id="chart-notes" open hidden><summary>Chart notes</summary><div id="chart-warnings" class="chart-warnings"></div></details><div id="chart-guidance" class="chart-guidance"></div><p class="chart-selection-hint muted">Click a mark to select its Events · Shift-click adds · Scatter: use the rectangle brush · Ctrl-scroll zooms</p><div id="chart-controls"></div><div class="row"><button id="chart-select-all" title="Select source Events represented by the displayed marks only">Select displayed Events</button><button id="chart-table">Open attribute table</button></div><details id="chart-data-details"><summary>Chart data</summary><div id="chart-data"></div></details></section>`;
       this.host
         .querySelector("#chart-expand")!
         .addEventListener("click", () => {
@@ -411,6 +465,7 @@ export class ChartsPanel {
       this.config,
       this.presets,
       this.schemaKey,
+      this.result?.value_metadata,
       this.snapshot.field_roles,
       this.snapshot.layers?.map((l) => [l.source, l.count]),
       this.config.kind === "period"
@@ -468,7 +523,6 @@ export class ChartsPanel {
       all = this.fields(),
       measurements = measurementFields(this.schema, this.snapshot.field_roles);
     const layers = this.snapshot.layers || [];
-    const task = activeChartTask(c);
     const labels = (
       ["title", "x_label", "y_label", ...(c.y2 ? ["y2_label"] : [])] as const
     )
@@ -488,10 +542,10 @@ export class ChartsPanel {
     const reason = (task: ChartTask) =>
       ["compare", "composition", "periods", "spread"].includes(task) &&
       !category
-        ? "Assign a Category field in Field roles, or choose grouping in Customize."
+        ? "Assign a Category field in Field roles, or choose an X axis."
         : task === "relationship"
-          ? "Assign two numeric measurements in Field roles, or choose fields in Customize."
-          : "Assign a numeric measurement in Field roles, or choose a field in Customize.";
+          ? "Assign two numeric measurements in Field roles, or choose axis fields."
+          : "Assign a numeric measurement in Field roles, or choose an axis field.";
     const effective = this.result?.config || c;
     const periodFields = (["a", "b"] as const)
       .map((name) => {
@@ -503,7 +557,64 @@ export class ChartsPanel {
       c.kind === "period"
         ? `<details class="chart-period-controls" id="${prefix}-periods"><summary>Comparison periods · ${c.period_a ? "Custom" : "Automatic halves of scope"}</summary><p class="muted">UTC starts included, ends excluded. Enter full dates and times; seconds and fractions are supported.</p><div class="chart-editor-grid">${periodFields}</div><div class="row"><button id="${prefix}-apply-periods">Apply periods</button><button id="${prefix}-auto-periods">Use automatic halves</button></div></details>`
         : "";
-    host.innerHTML = `<div class="chart-starters" role="group" aria-label="Start with a question">${chartTasks.map((t) => `<button data-chart-task="${t.id}" aria-pressed="${task === t.id}" title="${esc(unavailable(t.id) ? reason(t.id) : t.id === "compare" ? "Count Events by " + fieldLabel(categoryField(this.snapshot.field_roles, this.schema) || "category") : t.hint)}" ${unavailable(t.id) ? 'disabled aria-describedby="chart-starter-note"' : ""}>${t.title}</button>`).join("")}</div>${chartTasks.some((t) => unavailable(t.id)) ? '<small id="chart-starter-note" class="muted">Unavailable starters need numeric measurements or a grouping field. Assign Field roles or choose fields in Customize.</small>' : ""}<div class="chart-quick-controls">${field("scope", "Events", ["all", "visible", "selected"], c.scope, "", scopeLabel)}${layers.length > 1 ? `<label class="field">Layer<select id="${prefix}-source" data-chart-key="source"><option value="">All event layers</option>${layers.map((l) => `<option value="${esc(l.source)}" ${c.source === l.source ? "selected" : ""}>${esc(l.source)}</option>`).join("")}</select></label>` : ""}</div>${periodControls}<div class="chart-role-actions"><button id="${prefix}-field-roles">Field roles…</button><small class="muted">${Object.keys(this.snapshot.field_roles || {}).length} assigned</small></div><details id="${prefix}-customize"><summary>Customize</summary><div class="chart-editor-grid">${field("kind", "Chart type", ["bar", "line", "area", "scatter", "histogram", "boxplot", "heatmap", "period"], c.kind)}${c.kind !== "histogram" ? field("x", c.kind === "boxplot" || c.kind === "period" ? "Group by" : c.kind === "heatmap" ? "Time field" : "X field", c.kind === "heatmap" ? ["time", "end"] : c.kind === "scatter" ? numeric : all, c.x) : ""}${field("y", c.kind === "histogram" ? "Distribution field" : "Y field", numeric, c.y, c.aggregate === "count" && !["scatter", "histogram", "boxplot"].includes(c.kind) ? "disabled" : "")}${!["scatter", "histogram", "boxplot"].includes(c.kind) ? field("aggregate", "Calculation", ["count", "sum", "mean", "min", "max"], c.aggregate, "", operationLabel) : ""}${!["heatmap", "period"].includes(c.kind) ? `<label class="field">Series<select id="${prefix}-group" data-chart-key="group"><option value="">No grouping</option>${options(all, c.group)}</select></label>` : ""}${c.x_axis === "time" && !["histogram", "heatmap", "period"].includes(c.kind) ? field("time_bucket", "UTC interval", ["none", ...timeBuckets], c.time_bucket) : ""}</div><details id="${prefix}-options"><summary>More chart options</summary>${!["histogram", "scatter", "heatmap", "period"].includes(c.kind) ? field("x_axis", "X axis", ["category", "number", ...(["time", "end"].includes(c.x) ? ["time"] : [])], c.x_axis) : ""}${["bar", "line", "area"].includes(c.kind) ? `<label class="field">Second Y field<select id="${prefix}-y2" data-chart-key="y2"><option value="">None</option>${options(numeric, c.y2)}</select></label><label class="check-row"><input type="checkbox" data-chart-key="stacked" ${c.stacked ? "checked" : ""}> Stack grouped series</label>` : ""}${c.kind === "scatter" ? `<label class="check-row"><input id="${prefix}-trendline" type="checkbox" data-chart-key="trendline" ${c.trendline ? "checked" : ""}> OLS trendline · full scope</label>` : ""}${c.kind === "histogram" ? `<label class="field">Bins<input id="${prefix}-bins" data-chart-key="bins" type="number" min="2" max="100" step="1" value="${c.bins}"></label>` : ""}<label class="field">Maximum displayed marks<input id="${prefix}-limit" data-chart-key="limit" type="number" min="${c.kind === "period" ? 2 : 1}" max="10000" step="1" value="${c.limit}"></label></details><details id="${prefix}-labels"><summary>Title, labels and units</summary>${labels}<small class="muted">Labels describe the chart; they do not convert values or units. Automatic units require a consistent explicit value_unit in the source.</small></details></details><details id="${prefix}-presets"><summary>Saved charts (${this.presets.length})</summary><div class="chart-presets-list">${this.presets.map((p, i) => `<div class="row"><button data-chart-load="${i}" class="grow">${esc(p.name)}</button><button data-chart-remove="${i}" aria-label="Remove chart preset ${esc(p.name)}">×</button></div>`).join("") || '<small class="muted">No saved charts yet.</small>'}</div><label class="field">Chart name<input id="${prefix}-preset-name" maxlength="128" placeholder="Name this chart…"></label><button id="${prefix}-save-preset">Save chart</button></details><button id="${prefix}-refresh-fields" class="secondary">Refresh available fields</button>`;
+    const fixedAxis = (label: string, value: string) =>
+      `<label class="field">${label}<span class="chart-fixed-axis">${esc(value)} · fixed</span></label>`;
+    const measurementName = (value: string) =>
+      value === "__count"
+        ? "Event count"
+        : measurementLabel(value, this.result);
+    const measure = (label = "Y axis") =>
+      field(
+        "y",
+        label,
+        ["__count", ...numeric],
+        c.aggregate === "count" ? "__count" : c.y,
+        "",
+        measurementName,
+      );
+    const axes =
+      c.kind === "heatmap"
+        ? fixedAxis("X axis", "Hour (UTC)") +
+          fixedAxis("Y axis", "Weekday (UTC)")
+        : c.kind === "histogram"
+          ? field("y", "X axis", numeric, c.y, "", measurementName) +
+            fixedAxis("Y axis", "Event count")
+          : field("x", "X axis", c.kind === "scatter" ? numeric : all, c.x) +
+            (["scatter", "boxplot"].includes(c.kind)
+              ? field("y", "Y axis", numeric, c.y, "", measurementName)
+              : measure());
+    host.innerHTML = `
+      <div class="chart-starters chart-type-toolbar" role="group" aria-label="Chart type">
+        ${chartTypes.map((t) => `<button type="button" data-chart-task="${t.task}" data-chart-kind="${t.kind}" aria-label="${t.name}" aria-pressed="${c.kind === t.kind}" data-tooltip="${esc(unavailable(t.task) ? t.name + ": " + reason(t.task) : t.name)}" ${unavailable(t.task) ? 'disabled aria-describedby="chart-starter-note"' : ""}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${t.path}"/></svg></button>`).join("")}
+      </div>
+      ${chartTasks.some((t) => unavailable(t.id)) ? '<small id="chart-starter-note" class="muted">Some chart types need measurements or a grouping field. Check Field roles in Chart options.</small>' : ""}
+      <div class="chart-quick-controls">
+        ${field("scope", "Events", ["all", "visible", "selected"], c.scope, "", scopeLabel)}
+        ${axes}
+        ${layers.length > 1 ? `<label class="field chart-layer-control">Layer<select id="${prefix}-source" data-chart-key="source"><option value="">All event layers</option>${layers.map((l) => `<option value="${esc(l.source)}" ${c.source === l.source ? "selected" : ""}>${esc(l.source)}</option>`).join("")}</select></label>` : ""}
+      </div>
+      <details id="${prefix}-customize"><summary>Chart options</summary>
+        <div class="chart-editor-grid">
+          ${c.kind === "heatmap" ? field("x", "Time field", ["time", "end"], c.x) + measure("Cell value") : ""}
+          ${!["scatter", "histogram", "boxplot"].includes(c.kind) && c.aggregate !== "count" ? field("aggregate", "Calculation", ["mean", "sum", "min", "max"], c.aggregate, "", operationLabel) : ""}
+          ${!["heatmap", "period"].includes(c.kind) ? `<label class="field">Series<select id="${prefix}-group" data-chart-key="group"><option value="">No grouping</option>${options(all, c.group)}</select></label>` : ""}
+          ${c.x_axis === "time" && !["histogram", "heatmap", "period"].includes(c.kind) ? field("time_bucket", "UTC interval", ["none", ...timeBuckets], c.time_bucket) : ""}
+          ${c.kind === "scatter" ? `<label class="check-row"><input id="${prefix}-trendline" type="checkbox" data-chart-key="trendline" ${c.trendline ? "checked" : ""}> OLS trendline · full scope</label>` : ""}
+          ${c.kind === "histogram" ? `<label class="field">Bins<input id="${prefix}-bins" data-chart-key="bins" type="number" min="2" max="100" step="1" value="${c.bins}"></label>` : ""}
+        </div>
+        ${periodControls}
+        <details id="${prefix}-options"><summary>Advanced</summary>
+          ${["bar", "line", "area"].includes(c.kind) ? field("x_axis", "X axis scale", ["category", "number", ...(["time", "end"].includes(c.x) ? ["time"] : [])], c.x_axis) + `<label class="field">Second Y field<select id="${prefix}-y2" data-chart-key="y2"><option value="">None</option>${options(numeric, c.y2)}</select></label><label class="check-row"><input type="checkbox" data-chart-key="stacked" ${c.stacked ? "checked" : ""}> Stack grouped series</label>` : ""}
+          <label class="field">Maximum displayed marks<input id="${prefix}-limit" data-chart-key="limit" type="number" min="${c.kind === "period" ? 2 : 1}" max="10000" step="1" value="${c.limit}"></label>
+          <div class="chart-role-actions"><button id="${prefix}-field-roles">Field roles…</button><small class="muted">${Object.keys(this.snapshot.field_roles || {}).length} assigned</small></div>
+          <button id="${prefix}-refresh-fields" class="secondary">Refresh available fields</button>
+        </details>
+        <details id="${prefix}-labels"><summary>Title, labels and units</summary>${labels}<small class="muted">Labels describe the chart; they do not convert values or units. Automatic units require a consistent explicit value_unit in the source.</small></details>
+      </details>
+      <details id="${prefix}-presets"><summary>Saved charts (${this.presets.length})</summary>
+        <div class="chart-presets-list">${this.presets.map((p, i) => `<div class="row"><button data-chart-load="${i}" class="grow">${esc(p.name)}</button><button data-chart-remove="${i}" aria-label="Remove chart preset ${esc(p.name)}">×</button></div>`).join("") || '<small class="muted">No saved charts yet.</small>'}</div>
+        <label class="field">Chart name<input id="${prefix}-preset-name" maxlength="128" placeholder="Name this chart…"></label><button id="${prefix}-save-preset">Save chart</button>
+      </details>`;
     for (const [id, open] of detailsState) {
       const details =
         host.querySelector<HTMLDetailsElement>(`#${id}`) ||
@@ -527,15 +638,25 @@ export class ChartsPanel {
               : el.value,
       } as ChartConfig;
       if (key === "source") next.source = el.value || null;
+      if (key === "y" && el.value === "__count") {
+        next.y = this.config.y;
+        next.aggregate = "count";
+        next.y2 = "";
+      } else if (
+        key === "y" &&
+        this.config.aggregate === "count" &&
+        !["scatter", "histogram", "boxplot"].includes(next.kind)
+      ) {
+        next.aggregate = "mean";
+      }
       if (key === "x")
-        next.x_axis =
-          next.kind === "period"
-            ? "category"
-            : ["time", "end"].includes(next.x)
-              ? "time"
-              : numeric.includes(next.x)
-                ? "number"
-                : "category";
+        next.x_axis = ["period", "boxplot"].includes(next.kind)
+          ? "category"
+          : ["time", "end"].includes(next.x)
+            ? "time"
+            : numeric.includes(next.x)
+              ? "number"
+              : "category";
       if (key === "kind") {
         next.period_a = null;
         next.period_b = null;
@@ -636,7 +757,7 @@ export class ChartsPanel {
         return;
       }
       if (b.dataset.chartTask) {
-        this.start(b.dataset.chartTask as ChartTask);
+        this.start(b.dataset.chartTask as ChartTask, true);
         return;
       }
       if (b.id === `${prefix}-refresh-fields`) {
@@ -680,7 +801,7 @@ export class ChartsPanel {
     if (quick) {
       quick.replaceChildren(
         ...host.querySelectorAll(
-          ".chart-starters, #chart-starter-note, .chart-quick-controls, .chart-period-controls",
+          ".chart-starters, #chart-starter-note, .chart-quick-controls",
         ),
       );
       quick.onclick = host.onclick;
@@ -700,7 +821,7 @@ export class ChartsPanel {
     this.host.querySelector("#chart-comparison")?.replaceChildren();
     void this.persist();
   }
-  private start(task: ChartTask) {
+  private start(task: ChartTask, retainFields = false) {
     const fields = measurementFields(this.schema, this.snapshot.field_roles);
     const next = {
       ...defaultChart,
@@ -710,7 +831,9 @@ export class ChartsPanel {
     if (task === "compare") {
       const category = categoryField(this.snapshot.field_roles, this.schema);
       if (!category) return;
+      next.kind = "bar";
       next.x = category;
+      next.x_axis = "category";
     }
     if (task === "time")
       Object.assign(next, {
@@ -722,7 +845,12 @@ export class ChartsPanel {
     if (task === "spread") {
       const category = categoryField(this.snapshot.field_roles, this.schema);
       if (!category || !fields.length) return;
-      Object.assign(next, { kind: "boxplot", x: category, y: fields[0] });
+      Object.assign(next, {
+        kind: "boxplot",
+        x: category,
+        x_axis: "category",
+        y: fields[0],
+      });
     }
     if (task === "patterns")
       Object.assign(next, { kind: "heatmap", x: "time", x_axis: "time" });
@@ -745,7 +873,7 @@ export class ChartsPanel {
     if (task === "periods") {
       const category = categoryField(this.snapshot.field_roles, this.schema);
       if (!category) return;
-      Object.assign(next, { kind: "period", x: category });
+      Object.assign(next, { kind: "period", x: category, x_axis: "category" });
     }
     if (task === "distribution")
       Object.assign(next, { kind: "histogram", y: fields[0] || "value" });
@@ -757,6 +885,45 @@ export class ChartsPanel {
         y: pair[1] || "value",
         x_axis: "number",
       });
+    }
+    if (retainFields) {
+      const previous = this.config;
+      const numeric = this.fields(true);
+      if (
+        numeric.includes(previous.y) &&
+        (task !== "relationship" || previous.kind === "scatter") &&
+        (previous.aggregate !== "count" ||
+          ["scatter", "histogram", "boxplot"].includes(previous.kind))
+      )
+        next.y = previous.y;
+      if (["compare", "time", "patterns", "periods"].includes(task))
+        next.aggregate = ["histogram", "boxplot", "scatter"].includes(
+          previous.kind,
+        )
+          ? "mean"
+          : previous.aggregate;
+      if (
+        ["compare", "spread", "periods"].includes(task) &&
+        previous.x_axis === "category" &&
+        this.fields().includes(previous.x)
+      )
+        next.x = previous.x;
+      if (
+        ["time", "composition", "patterns"].includes(task) &&
+        ["time", "end"].includes(previous.x)
+      ) {
+        next.x = previous.x;
+        next.time_bucket = previous.time_bucket;
+      }
+      if (
+        task === "relationship" &&
+        previous.kind === "scatter" &&
+        numeric.includes(previous.x)
+      )
+        next.x = previous.x;
+      if (["time", "compare"].includes(task) && previous.group)
+        next.group = previous.group;
+      next.limit = Math.max(task === "periods" ? 2 : 1, previous.limit);
     }
     this.applyConfig(next as ChartConfig);
   }

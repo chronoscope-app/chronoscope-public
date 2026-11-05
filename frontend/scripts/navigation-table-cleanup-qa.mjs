@@ -165,9 +165,9 @@ await withLocalApp(
       await page.screenshot({ path: path.join(out, `${mode}-rotation.png`) });
     }
     const catalog = await api("demo_catalog");
-    assert.equal(catalog.demos.length, 14);
+    assert.equal(catalog.demos.length, 13);
     assert(!catalog.demos.some((d) => /madagascar|uav/i.test(d.id)));
-    pass("Synthetic UAV demo is absent from the 14-demo catalog");
+    pass("Synthetic UAV demo is absent from the 13-demo catalog");
   },
   { demo: true },
 );

@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { withLocalApp } from "./local-browser.mjs";
 
-await withLocalApp("time-axis-controls", async ({ page, api, out, pass }) => {
+await withLocalApp("time-axis-controls", async ({ page, api, out, root, pass }) => {
   const ready = () =>
     page.evaluate(async () => {
       await window.__chronoscope.ready;
@@ -210,7 +210,11 @@ await withLocalApp("time-axis-controls", async ({ page, api, out, pass }) => {
   );
   await api("wmts_access", { settings: { offline: true } });
   for (const id of ["hurricanes", "hurricanes-short"]) {
-    await api("demo_open", { id });
+    if (id === "hurricanes-short")
+      await api("open", {
+        path: path.join(root, "samples/atlantic-hurricanes-2021-2025-tracks.chronoscope"),
+      });
+    else await api("demo_open", { id });
     const prefs = await api("preferences");
     await api("preferences", {
       preferences: {

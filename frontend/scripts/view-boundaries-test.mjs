@@ -90,6 +90,12 @@ test("appearance updates have no camera or provider side effects", () => {
   assert.equal(scene.globe.baseColor.toCssHexString(), "#c9d2df");
   applySceneAppearance(scene, "dark");
   assert.equal(scene.backgroundColor.toCssHexString(), "#0e1420");
+  applySceneAppearance(scene, "light", false);
+  assert.equal(scene.globe.baseColor.alpha, 0);
+  applySceneAppearance(scene, "dark", false);
+  assert.equal(scene.globe.baseColor.alpha, 0);
+  applySceneAppearance(scene, "dark", true);
+  assert.equal(scene.globe.baseColor.alpha, 1);
   assert.equal(scene.camera, retained.camera);
   assert.equal(scene.terrainProvider, retained.provider);
 });
@@ -125,6 +131,7 @@ test("display/workspace preferences cannot trigger resource replacement; resourc
     date_format: "dmy",
     time_format: "12h",
     auto_save_unsaved: false,
+    reference_visible: false,
   })) {
     assert.deepEqual(
       preferenceEffects(previous, { ...previous, [key]: value }),

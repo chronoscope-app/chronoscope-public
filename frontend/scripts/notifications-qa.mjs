@@ -205,6 +205,28 @@ try {
   check(
     "Reusable notifications deduplicate, track unread state, preserve dismissals, escape text and display action errors",
   );
+  await unit.click("#bell");
+  assert.equal(await unit.locator(".notification-card").count(), 2);
+  await unit.getByRole("button", { name: "Dismiss all", exact: true }).click();
+  assert.equal(await unit.locator(".notification-card").count(), 0);
+  assert(await unit.getByText("No notifications. You’re all caught up.").isVisible());
+  assert(await unit.getByRole("button", { name: "Dismiss all", exact: true }).isDisabled());
+  assert(await unit.locator(".notification-badge").isHidden());
+  assert.equal(await unit.locator("#bell").getAttribute("aria-label"), "Notifications");
+  assert.equal(await unit.evaluate(() => document.activeElement.getAttribute("aria-label")), "Close notifications");
+  await unit.evaluate(() => window.center.replace("second", [{
+    id: "second", source: "second", title: "Another source", message: "Ready",
+  }]));
+  assert.equal(await unit.locator(".notification-card").count(), 0);
+  await unit.click("#outside");
+  await unit.evaluate(() => window.center.replace("new", [{
+    id: "new", source: "new", title: "New alert", message: "A later notification",
+  }]));
+  assert.equal(await unit.locator("#bell").getAttribute("aria-label"), "Notifications, 1 unread");
+  await unit.click("#bell");
+  assert.equal(await unit.locator(".notification-card").count(), 1);
+  assert(await unit.getByRole("button", { name: "Dismiss all", exact: true }).isEnabled());
+  check("Dismiss all clears multiple sources and badge, preserves unchanged dismissals, restores keyboard focus and allows later alerts");
   await unit.close();
 
   const manual = path.join(out, "manual");
@@ -243,13 +265,13 @@ try {
     "notifications",
   );
   await page.click("#notifications");
-  await page.getByRole("button", { name: "Dismiss", exact: true }).click();
+  await page.getByRole("button", { name: "Dismiss all", exact: true }).click();
   assert.equal((await api("recovery_list")).checkpoints.length, 1);
   assert(
     await page.getByText("No notifications. You’re all caught up.").isVisible(),
   );
   check(
-    "Launch leaves recovery in the bell without a dialog or focus grab; Escape returns focus and Dismiss keeps the checkpoint",
+    "Launch leaves recovery in the bell without a dialog or focus grab; Escape returns focus and Dismiss all keeps the checkpoint",
   );
   await page.reload();
   await page.waitForFunction(

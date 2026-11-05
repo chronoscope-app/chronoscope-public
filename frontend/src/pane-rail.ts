@@ -59,14 +59,19 @@ export class PaneRail {
     const heading = document.createElement("header");
     heading.className = "pane-heading";
     const label = document.createElement("span");
-    label.textContent = side === "left" ? "Data & filters" : "Inspector";
+    label.textContent = "Data & filters";
     const collapse = button(`Collapse ${side} pane`, `collapse-${side}`);
     collapse.id = `collapse-${side}-pane`;
     collapse.addEventListener("click", () => {
       this.change(true);
       this.expand.focus();
     });
-    heading.append(label, collapse);
+    if (side === "left") {
+      heading.append(label, collapse);
+      pane.append(heading);
+    } else {
+      this.body.querySelector(".inspector-tabs")!.prepend(collapse);
+    }
     this.rail.className = "pane-rail";
     this.rail.setAttribute(
       "aria-label",
@@ -83,7 +88,7 @@ export class PaneRail {
     pin.addEventListener("click", () => this.change(false));
     this.heading.append(this.title, pin);
     this.body.prepend(this.heading);
-    pane.append(heading, this.rail, this.body);
+    pane.append(this.rail, this.body);
     for (const section of sections) {
       const b = button(section.label, section.icon);
       b.dataset.paneSection = section.id;
@@ -178,15 +183,16 @@ export class PaneRail {
     this.rail.hidden = !collapsed;
     this.body.hidden = collapsed;
     this.body.inert = collapsed;
-    this.pane.querySelector<HTMLElement>(".pane-heading")!.hidden = collapsed;
+    const heading = this.pane.querySelector<HTMLElement>(".pane-heading");
+    if (heading) heading.hidden = collapsed;
     if (!collapsed && focused)
       this.pane
-        .querySelector<HTMLButtonElement>(".pane-heading button")
+        .querySelector<HTMLButtonElement>(`#collapse-${this.side}-pane`)
         ?.focus();
   }
 
   reveal(id: string, keyboard?: boolean) {
-    if (this.sections.find(section => section.id === id)?.disabled) return;
+    if (this.sections.find((section) => section.id === id)?.disabled) return;
     if (!this.collapsed) return;
     clearTimeout(this.opening);
     this.cancelClose();

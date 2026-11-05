@@ -6,6 +6,10 @@ await withLocalApp(
   "demo-picker",
   async ({ page, api, out, pass }) => {
     const demos = (await api("demo_catalog")).demos;
+    assert.deepEqual(
+      demos.filter((demo) => demo.id.startsWith("hurricanes")).map((demo) => demo.id),
+      ["hurricanes"],
+    );
     const count = demos.reduce((n, demo) => n + demo.previews.length, 0);
     await page.click("#help");
     await page.click("#demo-datasets");

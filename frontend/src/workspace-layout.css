@@ -79,10 +79,6 @@
   font-weight: 600;
   letter-spacing: 0.045em;
 }
-.inspector > .pane-heading {
-  flex-direction: row-reverse;
-  padding: 3px 12px 3px 7px;
-}
 .pane-content {
   display: flex;
   flex-direction: column;

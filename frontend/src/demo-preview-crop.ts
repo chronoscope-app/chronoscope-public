@@ -109,20 +109,6 @@ export const bundledPreviewCrops: Record<
     right: 436,
     sha256: "44c1b8299cb0d888b2a0cfc26e76e4e5babc2c7d9291fc1fdca8ea180e1d34e1",
   },
-  "hurricanes-short-map.jpg": {
-    width: 480,
-    height: 300,
-    left: 45,
-    right: 436,
-    sha256: "0a1a099fc1000997f73c53081ab785727bece8e6fc2f39ad7eb1abab082449f6",
-  },
-  "hurricanes-short-time.jpg": {
-    width: 480,
-    height: 300,
-    left: 46,
-    right: 435,
-    sha256: "d7e6969472f076f02004ec1a28c125ca962997b6579d1955ea3b0d75a8724fc7",
-  },
   "hurricanes-time.jpg": {
     width: 480,
     height: 300,

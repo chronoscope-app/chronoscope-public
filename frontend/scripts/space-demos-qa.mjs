@@ -7,7 +7,7 @@ import path from "node:path";
 await withLocalApp("space-demos", async ({ page, api, out, pass }) => {
   page.setDefaultTimeout(90000);
   const catalog = (await api("demo_catalog")).demos;
-  assert.equal(catalog.length, 14);
+  assert.equal(catalog.length, 13);
   assert(
     !catalog.some((d) =>
       ["rocket-altitude", "falcon9-launches", "covid"].includes(d.id),

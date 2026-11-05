@@ -1,8 +1,10 @@
 # Installation and preview status
 
+Current source is **0.16.16**, with Charts re-enabled, editable chart axes, compact pane navigation, notification dismissal and persistent background visibility controls. The local Mac build is updated to 0.16.16 for testing. Published downloadable packages remain at the platform versions listed below; source promotion does not replace those downloads.
+
 The current Windows x64 download is the [0.16.15 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.15), built and checked on GitHub-hosted Windows runners from frozen Public `1895b72a1e3a2b71bdf2b62b5f49551dc0e126f9`. It adds quiet toolbar clocks, denser Time rail labels and clearer trajectory demo defaults, plus complete Windows installer/web file inventories and matching installer sources. [Release acceptance scope](validation/release-0.16.15-publication/README.md).
 
-Apple Silicon macOS and Linux x64 remain on the [0.16.14 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.14), built on the native development computers. Mac source is `a8f432eb2da8d4a78ac58b33ef39ee99bacba092`; Linux source is `920877a514450848b8cee71d9c87804e9fbff110`. [Their source mapping](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.14/SOURCE-PARITY.json). No Mac or Linux runners or packages were created for 0.16.15. Charts and Patterns remain disabled while in development. See the [changelog](../CHANGELOG.md).
+Apple Silicon macOS and Linux x64 remain on the [0.16.14 experimental preview](https://github.com/chronoscope-app/chronoscope-public/releases/tag/v0.16.14), built on the native development computers. Mac source is `a8f432eb2da8d4a78ac58b33ef39ee99bacba092`; Linux source is `920877a514450848b8cee71d9c87804e9fbff110`. [Their source mapping](https://github.com/chronoscope-app/chronoscope-public/releases/download/v0.16.14/SOURCE-PARITY.json). No Mac or Linux runners or packages were created for 0.16.15. Those older packages keep Charts and Patterns disabled; current 0.16.16 source re-enables Charts. See the [changelog](../CHANGELOG.md).
 
 ## Preview downloads
 

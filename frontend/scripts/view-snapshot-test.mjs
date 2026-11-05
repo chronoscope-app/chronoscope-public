@@ -242,6 +242,7 @@ function harness() {
     theme: "dark",
     playback: false,
     setBasemap: async () => {},
+    setReferenceVisible: () => {},
     mapZoom: () => 4,
     visibleDataBounds: () => null,
     visibleBounds: () => null,

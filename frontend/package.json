@@ -1,6 +1,6 @@
 {
   "name": "chronoscope-ui",
-  "version": "0.16.15",
+  "version": "0.16.16",
   "private": true,
   "type": "module",
   "scripts": {
@@ -46,6 +46,7 @@
     "test:si-settings": "node scripts/si-settings-qa.mjs",
     "test:si-certificates": "node scripts/si-certificate-qa.mjs",
     "test:chart-shortcuts": "node scripts/chart-shortcuts-qa.mjs",
+    "test:chart-interface": "node scripts/chart-interface-qa.mjs",
     "test:charts": "node scripts/charts-qa.mjs",
     "test:charts-timezone": "node scripts/charts-timezone-qa.mjs",
     "test:sidebar-time": "node scripts/sidebar-time-qa.mjs",

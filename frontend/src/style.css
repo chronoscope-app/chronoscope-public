@@ -666,9 +666,21 @@ summary {
   margin: -6px -8px 21px;
 }
 .inspector-tabs button {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: 10px;
-  padding: 8px 4px;
+  padding: 7px 2px;
+}
+.inspector-tabs #collapse-right-pane {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 28px;
+  padding: 4px;
+}
+.inspector-tabs #inspector-chat[aria-expanded="true"] {
+  border-color: var(--accent);
+  background: var(--hover);
+  color: var(--accent);
 }
 .empty-inspector h3 {
   font-size: 14px;
@@ -1324,7 +1336,7 @@ svg {
 .inspector-top > .inspector-tabs {
   flex: 0 0 auto;
   margin: 0;
-  padding: var(--pane-gap) var(--pane-padding);
+  padding: 6px 5px;
   border-bottom: 1px solid var(--line);
   background: var(--panel);
 }
@@ -2029,6 +2041,7 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   padding: 12px 14px;
   border-bottom: 1px solid var(--line);
   position: sticky;
@@ -2039,6 +2052,7 @@ svg {
 .notifications-panel h2 {
   font-size: 14px;
   margin: 0;
+  flex: 1;
 }
 .notifications-list {
   padding: 8px;
@@ -2644,24 +2658,49 @@ svg {
   line-height: 1.5;
 }
 .chart-starters {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 5px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 3px;
+  margin-bottom: 10px;
 }
 .chart-starters button {
-  white-space: normal;
+  flex: 0 1 36px;
+  width: 36px;
+  min-width: 0;
+  padding: 7px 0;
   justify-content: center;
   min-height: 34px;
-  text-align: center;
+}
+.chart-starters svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .chart-starters button[aria-pressed="true"] {
   border-color: var(--accent);
-  color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
-@container (min-width: 580px) {
+@container (max-width: 350px) {
   .chart-starters {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
   }
+  .chart-starters button {
+    flex: 1 1 0;
+  }
+}
+.chart-fixed-axis {
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px;
+  background: var(--raised);
+  color: var(--muted);
+  border-radius: 4px;
 }
 .chart-period-controls {
   margin-top: 8px;
@@ -2691,8 +2730,13 @@ svg {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
-.chart-quick-controls > :only-child {
+.chart-layer-control {
   grid-column: 1 / -1;
+}
+@container (min-width: 460px) {
+  .chart-quick-controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 .chart-selection-hint {
   font-size: 11px;

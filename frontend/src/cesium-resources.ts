@@ -540,6 +540,7 @@ export class CesiumResources {
     provider: RasterPacketImageryProvider;
   }[] = [];
   private baseLayer: ImageryLayer | undefined;
+  private referenceVisible = true;
   private streetsLayer?: ImageryLayer;
   private streetsProvider?: StreetsImageryProvider;
   private basemapGeneration = 0;
@@ -560,6 +561,7 @@ export class CesiumResources {
       .then((provider) => {
         if (this.disposed || viewer.isDestroyed()) return;
         this.baseLayer = viewer.imageryLayers.addImageryProvider(provider, 0);
+        this.baseLayer.show = this.referenceVisible;
         this.requestRender();
       })
       .catch((error) => {
@@ -573,6 +575,8 @@ export class CesiumResources {
   get status() {
     return {
       basemap: this.basemap,
+      referenceVisible: this.referenceVisible,
+      referenceImageryVisible: this.baseLayer?.show ?? false,
       basemapPending: this.streetsProvider?.pending ?? 0,
       basemapError: this.streetsProvider?.lastError ?? "",
       basemapRenderedTiles: this.streetsProvider?.renderedTiles ?? 0,
@@ -610,6 +614,11 @@ export class CesiumResources {
     this.viewer.scene.globe.tileCacheSize = tiles;
     this.viewer.scene.globe.maximumScreenSpaceError = Math.max(this.basemap === "streets" ? 1 : 2, screenError);
     this.streetsProvider?.setCacheLimit(streetCanvases);
+  }
+  setReferenceVisible(visible: boolean) {
+    this.referenceVisible = visible;
+    if (this.baseLayer) this.baseLayer.show = visible;
+    this.requestRender();
   }
   async setBasemap(mode: "streets" | "none") {
     if (

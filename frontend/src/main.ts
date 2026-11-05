@@ -304,7 +304,7 @@ $("#app").innerHTML = `
 <header class="topbar"><div class="toolbar-main"><div class="brand"><div class="brand-mark">${brandMark}</div><div><div class="brand-name" title="Chronoscope">chrono<span>scope</span></div></div></div><button id="open" aria-label="Open workspace or data">${icon("folder")} <span class="toolbar-label">Open</span></button><button id="save" aria-label="Save workspace">${icon("save")} <span class="toolbar-label">Save</span></button><nav class="viewbar" aria-label="Views and data actions"><button class="active" data-view="space-time">${icon("view-clock")} Time</button><button data-view="map">${icon("map")} Map</button><button data-view="globe">${icon("globe")} Globe</button><button id="aggregate-events" title="Preview and summarize visible records by time and proximity">Aggregate</button><button id="export">Export CSV</button><button id="toggle-table" aria-haspopup="menu" aria-controls="tables-menu" aria-expanded="false">${icon("table")} Tables</button></nav><button id="help">Help</button><button class="icon" id="theme" title="Switch theme">${icon("sun")}</button><button class="icon" id="settings" title="Preferences and interfaces">${icon("settings")}</button><button type="button" class="icon renderer-status" id="backend" aria-label="Reset map" title="Reset map"></button></div><button type="button" class="icon notification-trigger" id="notifications" title="Notifications" aria-label="Notifications" aria-controls="notifications-panel" aria-expanded="false">${icon("bell")}<span class="notification-badge" aria-hidden="true" hidden></span></button></header>
 <main class="workspace"><aside class="sidebar"><section class="sidebar-pinned" id="search-section" aria-label="Search and selection"><input id="search" placeholder="Search events…" aria-label="Search events"><button id="reset-filters">Reset filters</button><div class="selection-tools" id="selection-tools"><div class="selection-summary"><strong id="pinned-selection-count" role="status">0 selected</strong><button id="clear" aria-label="Clear selection">Clear</button></div><div class="selection-actions"><button class="secondary" id="select-all">Select visible</button><label class="check-row"><input type="checkbox" id="selected-only" aria-label="Selected events only"> Show only</label></div></div></section><div class="sidebar-scroll"><details open class="sidebar-facet" id="entity-section"><summary><span>Entities</span><select id="entity-field" aria-label="Entity list field" title="Group the list by another column; source track identities stay unchanged"><option value="entity">Entity</option></select></summary><div class="facet-sort" role="group" aria-label="Sort entities"><button id="entity-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="entity-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div class="facet-controls"><input id="entity-search" placeholder="Find an entity…" aria-label="Find entity"><button id="all-entities">Enable all</button></div><div id="entities"></div><div class="facet-footer"><small id="entity-list-count"></small><button id="entity-show-all">Show all</button></div></details><details open class="sidebar-facet" id="category-section"><summary><span>Categories</span><select id="category-field" aria-label="Category list field" title="Group the list by another column"><option value="category">Category</option></select></summary><div class="facet-sort" role="group" aria-label="Sort categories"><button id="category-sort-name" data-facet-sort="name">Name <span aria-hidden="true"></span></button><button id="category-sort-count" data-facet-sort="count">Quantity <span aria-hidden="true"></span></button></div><div id="categories"></div><div class="facet-footer"><small id="category-list-count"></small><button id="category-show-all">Show all</button></div></details><div class="divider"></div><details id="time-section"><summary>Exact time range</summary><label class="field">Start / UTC<input id="exact-start" placeholder="Unbounded"></label><label class="field">End / UTC<input id="exact-end" placeholder="Unbounded"></label><button id="exact-apply" class="secondary">Apply range</button></details><details id="rules-section"><summary>Attribute rules</summary><label class="field">Field<input id="rule-field" placeholder="value, confidence, category…"></label><select id="rule-op"><option>Contains</option><option>Equals</option><option>NotEquals</option><option>Greater</option><option>Less</option><option>IsEmpty</option></select><label class="field">Value<input id="rule-value"></label><button id="add-rule" class="secondary">Add AND rule</button><div id="rules"></div></details><details id="bounds-section"><summary>Geographic bounds</summary><label class="field">West, South, East, North<input id="bounds" placeholder="-80,43,-79,44"></label><button id="apply-bounds" class="secondary">Apply region</button></details><section id="layers-section"><div class="section-head"><span class="caps">Layers</span></div><div id="layer-list"></div><div class="source-foot">WGS84 · UTC</div></section></div></aside>
 <section class="center"><div class="scene-container" id="scene"><div class="legend" id="legend"></div>${navigationTools()}</div><section class="table-panel" id="table-panel">${attributeTableMarkup}</section><section class="timeline"><div class="timeline-title"><span class="caps">Time window</span><span class="range-label mono" id="range-label"></span><span class="spacer"></span><button class="secondary" id="play">${icon("play")} Play</button><button id="full-range">Full range</button></div><div class="time-range-track" id="time-range-track"><div class="histogram" id="histogram"></div></div><div class="timeline-labels" id="timeline-labels"></div><div class="time-range-hint">Drag brackets to resize · Drag the window to move · Arrow keys to adjust</div></section></section>
-<aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts" disabled title="Charts — In development">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns" disabled title="Patterns — In development">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="AI chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
+<aside class="inspector"><div class="inspector-top"><div class="inspector-tabs"><button data-tab="views">Views</button><button data-tab="charts">Charts</button><button class="active" data-tab="inspect">Inspect</button><button data-tab="patterns" disabled title="Patterns — In development">Patterns</button></div><div class="inspector-content" id="inspector-content"></div></div><section id="si-chat" class="si-chat" aria-label="AI chat" hidden></section></aside></main><footer class="statusbar"><span class="status-dot"></span><span id="status">Initializing local Rust engine…</span><div class="map-attribution" id="map-attribution" aria-label="Map credits"></div><div id="cesium-credits" aria-label="Provider credits"></div><span class="spacer"></span><button id="cancel-map" hidden>Stop map loading</button><span id="busy"></span><span class="accent" id="selection-status"></span></footer>`;
 const timeRail = new TimeRail($(".workspace"), {
   icon,
   apply: async (start, end) => {
@@ -345,7 +345,7 @@ const paneLayout = installWorkspaceLayout($(".workspace"), {
     label,
     icon: glyph,
     target: id === "si" ? $("#si-chat") : $(".inspector-top"),
-    disabled: id === "charts" || id === "patterns",
+    disabled: id === "patterns",
     activate: () =>
       id === "si"
         ? siWindows.focus().then(focused => focused ? undefined : siChat.open(false))
@@ -356,11 +356,10 @@ const paneLayout = installWorkspaceLayout($(".workspace"), {
 });
 const inspectorChatButton = document.createElement("button");
 inspectorChatButton.id = "inspector-chat";
-inspectorChatButton.className = "pane-icon";
-inspectorChatButton.innerHTML = icon("chat");
+inspectorChatButton.textContent = "SI chat";
 inspectorChatButton.setAttribute("aria-controls", "si-chat");
 inspectorChatButton.setAttribute("aria-expanded", "false");
-$("#collapse-right-pane").before(inspectorChatButton);
+$(".inspector-tabs").append(inspectorChatButton);
 const notifications = new NotificationCenter(
   $("#notifications") as HTMLButtonElement,
   icon("close"),
@@ -731,6 +730,7 @@ let lastNativeIconPreference: string | null | undefined;
 function theme() {
   setAssistantWording(!!preferences.ai_toolbar_si);
   inspectorChatButton.setAttribute("aria-label", `${assistantName()} chat`);
+  inspectorChatButton.textContent = `${assistantName()} chat`;
   inspectorChatButton.title = `Open ${assistantName()} chat`;
   siChat.setNaming(!!preferences.ai_toolbar_si);
   paneLayout.inspector.setSectionLabel("si", `${assistantName()} chat`);
@@ -743,6 +743,7 @@ function theme() {
   if (setDateTimeDisplay(preferences)) view.rebuild(true);
   document.documentElement.dataset.theme = t;
   view.setTheme(t);
+  view.setReferenceVisible(preferences.reference_visible !== false);
   const preference = preferences.theme === "system" ? null : preferences.theme;
   if (native && preference !== lastNativeIconPreference) {
     lastNativeIconPreference = preference;
@@ -887,8 +888,9 @@ async function runRefresh(render = true, resources = true,canonical=false) {
   renderBudget = s.scene.render_budget === 100000 ? 100000 : 20000;
   projectPath = s.lifecycle?.source ?? null;
   preferences = s.preferences;
+  view.setReferenceVisible(preferences.reference_visible !== false);
   const dateDisplayChanged = setDateTimeDisplay(preferences);
-  await view.setBasemap(mapsEnabled() ? "none" : preferences.basemap || "none");
+  await view.setBasemap(mapsEnabled() && (!lastMapStack?.hasContent || lastMapStack.fullyOpaque()) ? "none" : preferences.basemap || "none");
   $("#save").title = s.lifecycle?.dirty
     ? "Save unsaved changes (Ctrl/Cmd+S)"
     : "Save workspace (Ctrl/Cmd+S)";
@@ -1206,10 +1208,8 @@ function layers() {
           `<div class="layer-card ${layer.enabled ? "" : "muted"}" data-gis-id="${esc(layer.id)}" tabindex="0" role="group" aria-label="${esc(layer.name)}"><input type="checkbox" data-gis-toggle="${esc(layer.id)}" ${layer.enabled ? "checked" : ""} aria-label="Show ${esc(layer.name)}"><div><strong>${esc(layer.name)}</strong><small>${esc((layer.source_format || layer.format).toUpperCase())} · ${layer.feature_count.toLocaleString()} features${view.gis?.errors.has(layer.id) ? " · load error" : ""}</small></div><button class="icon" data-gis-options="${esc(layer.id)}" aria-label="GIS layer options">⋯</button></div>`,
       )
       .join("") +
-    `<div class="layer-heading">Geography</div><div class="layer-card" data-layer-kind="reference" tabindex="0" role="group">${icon("layers")}<div><strong>${mode === "globe" ? "WGS84 globe" : "Coordinate reference plane"}</strong><small>${mode === "globe" ? "Bundled Earth image · offline" : `WGS84 · ${preferences.coordinates.toUpperCase()}`}</small></div><button class="icon" data-geography-options="reference" aria-label="Coordinate reference settings">⋯</button></div>` +
-    (preferences.basemap === "streets"
-      ? `<div class="layer-card" data-layer-kind="reference" tabindex="0" role="group">${icon("layers")}<div><strong>Streets</strong><small>OpenFreeMap · Positron · automatic detail</small></div><button data-open-map title="Map settings">…</button></div>`
-      : "") +
+    `<div class="layer-heading">Geography</div><div class="layer-card ${preferences.reference_visible === false ? "muted" : ""}" data-layer-kind="reference" tabindex="0" role="group"><input type="checkbox" data-geography-toggle="reference" ${preferences.reference_visible !== false ? "checked" : ""} aria-label="Show ${mode === "globe" ? "WGS84 globe" : "coordinate reference plane"}"><div><strong>${mode === "globe" ? "WGS84 globe" : "Coordinate reference plane"}</strong><small>${mode === "globe" ? "Bundled Earth image · offline" : `WGS84 · ${preferences.coordinates.toUpperCase()}`}</small></div><button class="icon" data-geography-options="reference" aria-label="Coordinate reference settings">⋯</button></div>` +
+    `<div class="layer-card ${preferences.basemap === "streets" ? "" : "muted"}" data-layer-kind="streets" tabindex="0" role="group"><input type="checkbox" data-geography-toggle="streets" ${preferences.basemap === "streets" ? "checked" : ""} aria-label="Show Streets"><div><strong>Streets</strong><small>OpenFreeMap · Positron · automatic detail</small></div><button data-open-map title="Map settings">…</button></div>` +
     mapLayers(preferences)
       .map(
         (l) =>
@@ -1411,6 +1411,26 @@ $("#layer-list").addEventListener("click", (event) => {
 });
 $("#layer-list").addEventListener("change", (e) => {
   const c = e.target as HTMLInputElement;
+  if (c.dataset.geographyToggle) {
+    const kind = c.dataset.geographyToggle;
+    const enabled = c.checked;
+    c.disabled = true;
+    void (async () => {
+      preferences = await call("preferences", {
+        preferences: kind === "streets"
+          ? { basemap: enabled ? "streets" : "none" }
+          : { reference_visible: enabled },
+      });
+      view.setReferenceVisible(preferences.reference_visible !== false);
+      if (kind === "streets")
+        await view.setBasemap(enabled && !lastMapStack?.fullyOpaque() ? "streets" : "none");
+      await refresh(false, false);
+    })().catch((error) => {
+      layers();
+      toast(String(error), true);
+    });
+    return;
+  }
   if (c.dataset.gisToggle) {
     void call("gis_set", { id: c.dataset.gisToggle, enabled: c.checked })
       .then(() => refresh(false))
@@ -3457,7 +3477,7 @@ async function applyRestoredScene(scene: SceneState) {
     tables.tableSort = scene.table_sort || "time";
     tables.tableDescending = !!scene.table_descending;
     tables.tableColumnOffset = scene.table_column_offset || 0;
-    tab = scene.inspector_tab === "charts" || scene.inspector_tab === "patterns" ? "inspect" : scene.inspector_tab || "inspect";
+    tab = scene.inspector_tab === "patterns" ? "inspect" : scene.inspector_tab || "inspect";
     $("#table-panel").classList.toggle("open", tables.tableOpen);
     $("#toggle-table").classList.toggle("active", tables.tableOpen);
     document

@@ -21,6 +21,8 @@ Do not widen the allowlist to hide a new finding. Review it, rotate/revoke a rea
 
 ## Dependency advisories
 
+The 2026-11-04 checks for source version 0.16.16 update Calamine from 0.37.0 to 0.38.0 for [RUSTSEC-2026-0436](https://rustsec.org/advisories/RUSTSEC-2026-0436.html), covering panic and unbounded allocation in malformed Excel compound files. No unrelated registry dependency versions changed. The refreshed Rust audit reports zero vulnerability entries, with six unmaintained-package and two yanked-package warnings retained. The frontend npm audit reports zero vulnerabilities. These are source checks, not new Windows/Linux package or quarantined-download acceptance. Earlier dated audit results below remain historical evidence.
+
 ```sh
 cargo audit --file Cargo.lock
 npm --prefix frontend audit --package-lock-only

@@ -574,7 +574,8 @@ export function createWorkspaceChart(
             {
               type: "slider",
               height: 14,
-              bottom: 0,
+              // The move handle and border extend beyond the slider's height.
+              bottom: 14,
               textStyle: { color: text },
               borderColor: grid,
             },

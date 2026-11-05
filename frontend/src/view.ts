@@ -116,6 +116,7 @@ export class SpaceTimeView {
   viewer!: Viewer;
   resources!: CesiumResources;
   private basemap: "streets" | "none" = "none";
+  private referenceVisible = true;
   gis!: GisLayers;
   onGisPick: (layer: string, id: string) => void = () => {};
   onGisError: (id: string, message: string) => void = () => {};
@@ -778,6 +779,7 @@ export class SpaceTimeView {
     this.gis = new GisLayers(this.viewer);
     this.gis.onError = (id, message) => this.onGisError(id, message);
     this.resources.setMode(this.mode);
+    this.setReferenceVisible(this.referenceVisible);
     scene.globe.show = true;
     // Renderer recovery creates a new scene; no cached primitive may survive it.
     this.stemsPrimitive = undefined;
@@ -1200,7 +1202,7 @@ export class SpaceTimeView {
     if (this.theme === theme) return;
     this.theme = theme;
     if (!this.viewer) return;
-    applySceneAppearance(this.scene, theme);
+    applySceneAppearance(this.scene, theme, this.referenceVisible);
     this.rebuild(true);
   }
   setGlobeTimeScale(scale: number) {
@@ -1916,6 +1918,16 @@ export class SpaceTimeView {
   clearRasters() {
     this.lastRaster = undefined;
     this.resources?.clearRasters();
+    this.requestRender();
+  }
+  setReferenceVisible(visible: boolean) {
+    this.referenceVisible = visible;
+    if (!this.resources || !this.viewer || this.disposed) return;
+    this.resources.setReferenceVisible(visible);
+    applySceneAppearance(this.scene, this.theme, visible);
+    // Keep imagery, terrain and geographic navigation on the same surface.
+    // Only the reference image/base color becomes transparent.
+    this.scene.globe.translucency.enabled = !visible;
     this.requestRender();
   }
   async setBasemap(mode: "streets" | "none") {

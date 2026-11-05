@@ -128,12 +128,12 @@ try {
     assert.equal(await page.locator("[data-demo-id]").count(), (await api("demo_catalog")).demos.length);
     await page.waitForFunction(
       () =>
-        [...document.querySelectorAll(".demo-preview img")].length === 28 &&
+        [...document.querySelectorAll(".demo-preview img")].length === 26 &&
         [...document.querySelectorAll(".demo-preview img")].every(
           (i) => i.complete && i.naturalWidth === 480,
         ),
     );
-    assert.equal(await page.locator("[data-demo-view]").count(), 28);
+    assert.equal(await page.locator("[data-demo-view]").count(), 26);
     for (const selector of [".demo-title-button", ".demo-preview-label", ".demo-card summary"])
       assert(
         (await contrast(selector, ".demo-picker")) >= 4.5,
